@@ -1,0 +1,34 @@
+sudo: false
+
+language: python
+
+python:
+- 3.6
+- "3.7-dev"
+
+env:
+  global:
+  - LILYPOND_URL="http://lilypond.org/downloads/binaries/linux-64/"
+  - LILYPOND_VERSION=2.19.65
+
+before_install:
+- wget -q ${LILYPOND_URL}lilypond-${LILYPOND_VERSION}-1.linux-64.sh
+- sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
+- export PATH=/home/travis/bin:$PATH
+- pip install -U pip
+- pip install -U https://github.com/Abjad/abjad/archive/master.zip
+- pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+- pip install --no-deps --target /tmp/typehints https://github.com/Abjad/abjad/archive/master.zip
+- pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+- export MYPYPATH=/tmp/typehints
+
+install:
+- pip install -e .[test]
+
+script:
+- pytest
+- mypy abjadext/
+
+after_success:
+- pip install --quiet coveralls
+- coveralls
