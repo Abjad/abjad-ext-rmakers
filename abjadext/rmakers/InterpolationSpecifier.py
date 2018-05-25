@@ -42,14 +42,14 @@ class InterpolationSpecifier(AbjadValueObject):
 
             Changes accelerando specifier to ritardando specifier:
 
-            >>> specifier = abjad.rmakers.InterpolationSpecifier(
+            >>> specifier = abjadext.rmakers.InterpolationSpecifier(
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
             ...     )
             >>> specifier = specifier.reverse()
             >>> abjad.f(specifier)
-            abjad.rmakers.InterpolationSpecifier(
+            abjadext.rmakers.InterpolationSpecifier(
                 start_duration=abjad.Duration(1, 16),
                 stop_duration=abjad.Duration(1, 4),
                 written_duration=abjad.Duration(1, 16),
@@ -59,14 +59,14 @@ class InterpolationSpecifier(AbjadValueObject):
 
             Changes ritardando specifier to accelerando specifier:
 
-            >>> specifier = abjad.rmakers.InterpolationSpecifier(
+            >>> specifier = abjadext.rmakers.InterpolationSpecifier(
             ...     start_duration=(1, 16),
             ...     stop_duration=(1, 4),
             ...     written_duration=(1, 16),
             ...     )
             >>> specifier = specifier.reverse()
             >>> abjad.f(specifier)
-            abjad.rmakers.InterpolationSpecifier(
+            abjadext.rmakers.InterpolationSpecifier(
                 start_duration=abjad.Duration(1, 4),
                 stop_duration=abjad.Duration(1, 16),
                 written_duration=abjad.Duration(1, 16),

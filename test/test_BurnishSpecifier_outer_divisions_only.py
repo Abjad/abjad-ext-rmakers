@@ -1,7 +1,7 @@
 import abjad
 import pytest
 import sys
-from abjad import rmakers
+from abjadext import rmakers
 
 
 def test_BurnishSpecifier_outer_divisions_only_01():

@@ -20,4 +20,5 @@ from .TieSpecifier import TieSpecifier
 from .TupletRhythmMaker import TupletRhythmMaker
 from .TupletSpecifier import TupletSpecifier
 
-_documentation_section = 'core'
+silence = SilenceMask.silence
+sustain = SustainMask.sustain

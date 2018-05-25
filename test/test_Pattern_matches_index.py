@@ -1,5 +1,5 @@
 import abjad
-from abjad import rmakers
+from abjadext import rmakers
 
 
 def test_Pattern_matches_index_01():

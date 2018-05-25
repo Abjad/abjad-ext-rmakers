@@ -1,6 +1,6 @@
 import abjad
 import pytest
-from abjad import rmakers
+from abjadext import rmakers
 
 
 def test_TaleaRhythmMaker_read_talea_once_only_01():

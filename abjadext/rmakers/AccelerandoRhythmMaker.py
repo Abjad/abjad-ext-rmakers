@@ -12,16 +12,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Makes accelerando for each input division:
 
-        >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-        ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+        >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+        ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
         ...         use_feather_beams=True,
         ...         ),
-        ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+        ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
         ...         start_duration=(1, 8),
         ...         stop_duration=(1, 20),
         ...         written_duration=(1, 16),
         ...         ),
-        ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+        ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
         ...         use_note_duration_bracket=True,
         ...         ),
         ...     )
@@ -253,16 +253,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Makes ritardando for each input division:
 
-        >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-        ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+        >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+        ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
         ...         use_feather_beams=True,
         ...         ),
-        ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+        ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
         ...         start_duration=(1, 20),
         ...         stop_duration=(1, 8),
         ...         written_duration=(1, 16),
         ...         ),
-        ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+        ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
         ...         use_note_duration_bracket=True,
         ...         ),
         ...     )
@@ -568,7 +568,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     def _get_interpolation_specifiers(self):
         import abjad
-        from abjad import rmakers
+        from abjadext import rmakers
         specifiers = self.interpolation_specifiers
         if specifiers is None:
             specifiers = abjad.CyclicTuple([
@@ -590,7 +590,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         Performs cosine interpolation of ``y1`` and ``y2`` with ``mu``
         ``[0, 1]`` normalized:
 
-        >>> abjad.rmakers.AccelerandoRhythmMaker._interpolate_cosine(
+        >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_cosine(
         ...     y1=0,
         ...     y2=1,
         ...     mu=0.5,
@@ -614,7 +614,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         Divides ``total_duration`` into durations computed from interpolating
         between ``start_duration`` and ``stop_duration``:
 
-        >>> abjad.rmakers.AccelerandoRhythmMaker._interpolate_divide(
+        >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_divide(
         ...     total_duration=10,
         ...     start_duration=1,
         ...     stop_duration=1,
@@ -624,7 +624,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         >>> sum(_)
         10.0
 
-        >>> abjad.rmakers.AccelerandoRhythmMaker._interpolate_divide(
+        >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_divide(
         ...     total_duration=10,
         ...     start_duration=5,
         ...     stop_duration=1,
@@ -685,7 +685,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         Interpolates ``reference_durations`` such that the sum of the
         resulting interpolated values equals the given ``total_durations``:
 
-        >>> durations = abjad.rmakers.AccelerandoRhythmMaker._interpolate_divide_multiple(
+        >>> durations = abjadext.rmakers.AccelerandoRhythmMaker._interpolate_divide_multiple(
         ...     total_durations=[100, 50],
         ...     reference_durations=[20, 10, 20],
         ...     )
@@ -734,7 +734,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Exponents equal to 1 leave durations unscaled:
 
-        >>> class_ = abjad.rmakers.AccelerandoRhythmMaker
+        >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
         >>> for mu in (0, 0.25, 0.5, 0.75, 1):
         ...     class_._interpolate_exponential(100, 200, mu, exponent=1)
         ...
@@ -746,7 +746,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Exponents greater than 1 generate ritardandi:
 
-        >>> class_ = abjad.rmakers.AccelerandoRhythmMaker
+        >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
         >>> for mu in (0, 0.25, 0.5, 0.75, 1):
         ...     class_._interpolate_exponential(100, 200, mu, exponent=2)
         ...
@@ -758,7 +758,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Exponents less than 1 generate accelerandi:
 
-        >>> class_ = abjad.rmakers.AccelerandoRhythmMaker
+        >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
         >>> for mu in (0, 0.25, 0.5, 0.75, 1):
         ...     class_._interpolate_exponential(100, 200, mu, exponent=0.5)
         ...
@@ -912,17 +912,17 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Feather beams each division:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -1154,17 +1154,17 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Beams divisions together (without feathering):
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=True,
             ...         use_feather_beams=False,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -1441,17 +1441,17 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Makes no beams:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=False,
             ...         beam_each_division=False,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -1681,17 +1681,17 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             No division masks:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
             ...     division_masks=None,
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -1923,21 +1923,21 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Silences every other division:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
             ...     division_masks=[
-            ...         abjad.rmakers.SilenceMask(
+            ...         abjadext.rmakers.SilenceMask(
             ...             pattern=abjad.index([1], 2),
             ...             ),
             ...         ],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -2086,16 +2086,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Makes accelerando for each input division:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -2327,23 +2327,23 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Makes accelerandi and ritardandi on alternate divisions:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=[
-            ...         abjad.rmakers.InterpolationSpecifier(
+            ...         abjadext.rmakers.InterpolationSpecifier(
             ...             start_duration=(1, 8),
             ...             stop_duration=(1, 20),
             ...             written_duration=(1, 16),
             ...             ),
-            ...         abjad.rmakers.InterpolationSpecifier(
+            ...         abjadext.rmakers.InterpolationSpecifier(
             ...             start_duration=(1, 20),
             ...             stop_duration=(1, 8),
             ...             written_duration=(1, 16),
             ...             ),
             ...         ],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -2578,16 +2578,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Makes a single note in the case that interpolation would take too
             long for a given division:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -2735,30 +2735,30 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Silences first and last logical tie:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         beam_rests=True,
             ...         stemlet_length=0.75,
             ...         use_feather_beams=True,
             ...         ),
             ...     logical_tie_masks=[
-            ...         abjad.silence([0]),
-            ...         abjad.silence([-1]),
+            ...         abjadext.rmakers.silence([0]),
+            ...         abjadext.rmakers.silence([-1]),
             ...         ],
             ...     interpolation_specifiers=[
-            ...         abjad.rmakers.InterpolationSpecifier(
+            ...         abjadext.rmakers.InterpolationSpecifier(
             ...             start_duration=(1, 8),
             ...             stop_duration=(1, 20),
             ...             written_duration=(1, 16),
             ...             ),
-            ...         abjad.rmakers.InterpolationSpecifier(
+            ...         abjadext.rmakers.InterpolationSpecifier(
             ...             start_duration=(1, 20),
             ...             stop_duration=(1, 8),
             ...             written_duration=(1, 16),
             ...             ),
             ...         ],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -2999,29 +2999,29 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Silences every third logical tie:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         beam_rests=True,
             ...         stemlet_length=0.75,
             ...         use_feather_beams=True,
             ...         ),
             ...     logical_tie_masks=[
-            ...         abjad.silence([2], 3),
+            ...         abjadext.rmakers.silence([2], 3),
             ...         ],
             ...     interpolation_specifiers=[
-            ...         abjad.rmakers.InterpolationSpecifier(
+            ...         abjadext.rmakers.InterpolationSpecifier(
             ...             start_duration=(1, 8),
             ...             stop_duration=(1, 20),
             ...             written_duration=(1, 16),
             ...             ),
-            ...         abjad.rmakers.InterpolationSpecifier(
+            ...         abjadext.rmakers.InterpolationSpecifier(
             ...             start_duration=(1, 20),
             ...             stop_duration=(1, 8),
             ...             written_duration=(1, 16),
             ...             ),
             ...         ],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -3275,23 +3275,23 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Consumes 3 divisions:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=[
-            ...         abjad.rmakers.InterpolationSpecifier(
+            ...         abjadext.rmakers.InterpolationSpecifier(
             ...             start_duration=(1, 8),
             ...             stop_duration=(1, 20),
             ...             written_duration=(1, 16),
             ...             ),
-            ...         abjad.rmakers.InterpolationSpecifier(
+            ...         abjadext.rmakers.InterpolationSpecifier(
             ...             start_duration=(1, 20),
             ...             stop_duration=(1, 8),
             ...             written_duration=(1, 16),
             ...             ),
             ...         ],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -3842,19 +3842,19 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Does not tie across divisions:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=False,
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -4086,19 +4086,19 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Ties across divisions:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -4337,19 +4337,19 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...      indices=[0],
             ...      period=2,
             ...  )
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=pattern,
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -4593,19 +4593,19 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Tuplets use note duration bracket:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=False,
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=True,
             ...         ),
             ...     )
@@ -4837,19 +4837,19 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Tuplets do not use note duration bracket:
 
-            >>> rhythm_maker = abjad.rmakers.AccelerandoRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         use_feather_beams=True,
             ...         ),
-            ...     interpolation_specifiers=abjad.rmakers.InterpolationSpecifier(
+            ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=False,
             ...         ),
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         use_note_duration_bracket=False,
             ...         ),
             ...     )

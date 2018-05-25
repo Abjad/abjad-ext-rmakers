@@ -13,9 +13,9 @@ class TupletSpecifier(AbjadValueObject):
 
     ..  container:: example
 
-        >>> specifier = abjad.rmakers.TupletSpecifier()
+        >>> specifier = abjadext.rmakers.TupletSpecifier()
         >>> abjad.f(specifier)
-        abjad.rmakers.TupletSpecifier(
+        abjadext.rmakers.TupletSpecifier(
             diminution=True,
             )
 
@@ -206,9 +206,9 @@ class TupletSpecifier(AbjadValueObject):
             relatively prime when ``denominator`` is set to none. This
             means that ratios like ``6:4`` and ``10:8`` do not arise:
 
-            >>> rhythm_maker = abjad.rmakers.TupletRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         avoid_dots=True,
             ...         denominator=None,
             ...         ),
@@ -268,9 +268,9 @@ class TupletSpecifier(AbjadValueObject):
             numerator and denominator are not necessarily relatively prime.
             This also means that ratios like ``6:4`` and ``10:8`` may arise:
 
-            >>> rhythm_maker = abjad.rmakers.TupletRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         avoid_dots=True,
             ...         denominator='divisions',
             ...         ),
@@ -328,9 +328,9 @@ class TupletSpecifier(AbjadValueObject):
             duration when ``denominator`` is set to a duration. The
             setting does not affect the first tuplet:
 
-            >>> rhythm_maker = abjad.rmakers.TupletRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         avoid_dots=True,
             ...         denominator=(1, 16),
             ...         ),
@@ -387,9 +387,9 @@ class TupletSpecifier(AbjadValueObject):
             Sets the preferred denominator of each tuplet in terms 32nd notes.
             The setting affects all tuplets:
 
-            >>> rhythm_maker = abjad.rmakers.TupletRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         avoid_dots=True,
             ...         denominator=(1, 32),
             ...         ),
@@ -446,9 +446,9 @@ class TupletSpecifier(AbjadValueObject):
             Sets the preferred denominator each tuplet in terms 64th notes. The
             setting affects all tuplets:
 
-            >>> rhythm_maker = abjad.rmakers.TupletRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         avoid_dots=True,
             ...         denominator=(1, 64),
             ...         ),
@@ -507,9 +507,9 @@ class TupletSpecifier(AbjadValueObject):
             sets the preferred denominator of each tuplet to ``8``. Setting
             does not affect the third tuplet:
 
-            >>> rhythm_maker = abjad.rmakers.TupletRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         avoid_dots=True,
             ...         denominator=8,
             ...         ),
@@ -566,9 +566,9 @@ class TupletSpecifier(AbjadValueObject):
             Sets the preferred denominator of each tuplet to ``12``. Setting
             affects all tuplets:
 
-            >>> rhythm_maker = abjad.rmakers.TupletRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         avoid_dots=True,
             ...         denominator=12,
             ...         ),
@@ -625,9 +625,9 @@ class TupletSpecifier(AbjadValueObject):
             Sets the preferred denominator of each tuplet to ``13``. Setting
             does not affect any tuplet:
 
-            >>> rhythm_maker = abjad.rmakers.TupletRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         avoid_dots=True,
             ...         denominator=13,
             ...         ),
@@ -711,7 +711,7 @@ class TupletSpecifier(AbjadValueObject):
 
             This means that even simple tuplets format as explicit fractions:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -761,7 +761,7 @@ class TupletSpecifier(AbjadValueObject):
             We can temporarily restore LilyPond's default tuplet numbering like
             this:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -818,9 +818,9 @@ class TupletSpecifier(AbjadValueObject):
             Which then makes it possible to show that the force fraction
             property cancels LilyPond's default tuplet numbering once again:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     extra_counts_per_division=[1],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         force_fraction=True,
             ...         ),
             ...     )

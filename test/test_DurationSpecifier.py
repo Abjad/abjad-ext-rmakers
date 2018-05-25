@@ -1,5 +1,6 @@
 import abjad
-from abjad import rmakers
+import abjadext
+from abjadext import rmakers
 
 
 def test_DurationSpecifier_01():
@@ -20,7 +21,7 @@ def test_DurationSpecifier_01():
         spell_metrically='unassignable',
         )
 
-    logical_tie_masks = [abjad.silence([0], 2)]
+    logical_tie_masks = [abjadext.rmakers.silence([0], 2)]
 
     talea = rmakers.Talea(counts=[1, 2, 3, 4], denominator=16)
 

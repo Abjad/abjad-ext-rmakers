@@ -13,7 +13,7 @@ class BeamSpecifier(AbjadValueObject):
         >>> staff.extend("c'8 c' c'16 c' c' c' c'8 c' c' c'")
         >>> abjad.setting(staff).auto_beaming = False
         >>> selections = [staff[:4], staff[4:]]
-        >>> specifier = abjad.rmakers.BeamSpecifier()
+        >>> specifier = abjadext.rmakers.BeamSpecifier()
         >>> specifier(selections)
         >>> abjad.show(staff) # doctest: +SKIP
 
@@ -139,9 +139,9 @@ class BeamSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.BeamSpecifier()
+            >>> specifier = abjadext.rmakers.BeamSpecifier()
             >>> abjad.f(specifier)
-            abjad.rmakers.BeamSpecifier(
+            abjadext.rmakers.BeamSpecifier(
                 beam_each_division=True,
                 )
 
@@ -158,7 +158,7 @@ class BeamSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> abjad.rmakers.BeamSpecifier()
+            >>> abjadext.rmakers.BeamSpecifier()
             BeamSpecifier(beam_each_division=True)
 
         Returns string.
@@ -187,7 +187,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 c' c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier()
+            >>> specifier = abjadext.rmakers.BeamSpecifier()
             >>> specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
@@ -224,7 +224,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_divisions_together=True,
             ...     beam_rests=False,
             ...     )
@@ -282,7 +282,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_divisions_together=True,
             ...     beam_rests=True,
             ...     )
@@ -334,7 +334,7 @@ class BeamSpecifier(AbjadValueObject):
 
             Defaults to none:
 
-            >>> specifier = abjad.rmakers.BeamSpecifier()
+            >>> specifier = abjadext.rmakers.BeamSpecifier()
             >>> specifier.beam_divisions_together is None
             True
 
@@ -357,7 +357,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 c' c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_each_division=False,
             ...     )
             >>> specifier(selections)
@@ -392,7 +392,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_each_division=True,
             ...     beam_rests=False,
             ...     )
@@ -434,7 +434,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_each_division=True,
             ...     beam_rests=True,
             ...     )
@@ -470,7 +470,7 @@ class BeamSpecifier(AbjadValueObject):
 
             Defaults to true:
 
-            >>> specifier = abjad.rmakers.BeamSpecifier()
+            >>> specifier = abjadext.rmakers.BeamSpecifier()
             >>> specifier.beam_each_division
             True
 
@@ -493,7 +493,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier()
+            >>> specifier = abjadext.rmakers.BeamSpecifier()
             >>> specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
@@ -532,7 +532,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_rests=True,
             ...     )
             >>> specifier(selections)
@@ -571,7 +571,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 s c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_rests=True,
             ...     )
             >>> specifier(selections)
@@ -606,7 +606,7 @@ class BeamSpecifier(AbjadValueObject):
 
             Defaults to none:
 
-            >>> specifier = abjad.rmakers.BeamSpecifier()
+            >>> specifier = abjadext.rmakers.BeamSpecifier()
             >>> specifier.beam_rests is None
             True
 
@@ -629,7 +629,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 r c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_divisions_together=True,
             ...     beam_rests=False,
             ...     )
@@ -687,7 +687,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 r c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_divisions_together=True,
             ...     beam_rests=False,
             ...     hide_nibs=True,
@@ -741,7 +741,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_rests=True,
             ...     )
             >>> specifier(selections)
@@ -780,7 +780,7 @@ class BeamSpecifier(AbjadValueObject):
             >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjad.rmakers.BeamSpecifier(
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_rests=True,
             ...     stemlet_length=2,
             ...     )
@@ -822,7 +822,7 @@ class BeamSpecifier(AbjadValueObject):
 
             Defaults to none:
 
-            >>> specifier = abjad.rmakers.BeamSpecifier()
+            >>> specifier = abjadext.rmakers.BeamSpecifier()
             >>> specifier.stemlet_length is None
             True
 
@@ -839,7 +839,7 @@ class BeamSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.BeamSpecifier()
+            >>> specifier = abjadext.rmakers.BeamSpecifier()
             >>> specifier.use_feather_beams is None
             True
 

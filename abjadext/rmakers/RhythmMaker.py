@@ -43,7 +43,7 @@ class RhythmMaker(AbjadValueObject):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        from abjad import rmakers
+        from abjadext import rmakers
         if beam_specifier is not None:
             prototype = rmakers.BeamSpecifier
             assert isinstance(beam_specifier, prototype)
@@ -111,7 +111,7 @@ class RhythmMaker(AbjadValueObject):
 
     def _apply_division_masks(self, selections):
         import abjad
-        from abjad import rmakers
+        from abjadext import rmakers
         if not self.division_masks:
             return selections
         new_selections = []
@@ -164,7 +164,7 @@ class RhythmMaker(AbjadValueObject):
 
     def _apply_logical_tie_masks(self, selections):
         import abjad
-        from abjad import rmakers
+        from abjadext import rmakers
         if self.logical_tie_masks is None:
             return selections
         # wrap every selection in a temporary container;
@@ -261,25 +261,25 @@ class RhythmMaker(AbjadValueObject):
         return state_
 
     def _get_beam_specifier(self):
-        from abjad import rmakers
+        from abjadext import rmakers
         if self.beam_specifier is not None:
             return self.beam_specifier
         return rmakers.BeamSpecifier()
 
     def _get_duration_specifier(self):
-        from abjad import rmakers
+        from abjadext import rmakers
         if self.duration_specifier is not None:
             return self.duration_specifier
         return rmakers.DurationSpecifier()
 
     def _get_tie_specifier(self):
-        from abjad import rmakers
+        from abjadext import rmakers
         if self.tie_specifier is not None:
             return self.tie_specifier
         return rmakers.TieSpecifier()
 
     def _get_tuplet_specifier(self):
-        from abjad import rmakers
+        from abjadext import rmakers
         if self.tuplet_specifier is not None:
             return self.tuplet_specifier
         return rmakers.TupletSpecifier()
@@ -343,7 +343,7 @@ class RhythmMaker(AbjadValueObject):
     @staticmethod
     def _prepare_masks(masks):
         import abjad
-        from abjad import rmakers
+        from abjadext import rmakers
         prototype = (
             rmakers.SilenceMask,
             rmakers.SustainMask,

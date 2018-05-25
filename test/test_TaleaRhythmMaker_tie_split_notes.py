@@ -1,5 +1,5 @@
 import abjad
-from abjad import rmakers
+from abjadext import rmakers
 
 
 def test_TaleaRhythmMaker_tie_split_notes_01():

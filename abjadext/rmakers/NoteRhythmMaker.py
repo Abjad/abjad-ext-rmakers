@@ -17,7 +17,7 @@ class NoteRhythmMaker(RhythmMaker):
         Makes notes equal to the duration of input divisions. Adds ties where
         necessary:
 
-        >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker()
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
 
         >>> divisions = [(5, 8), (3, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -69,7 +69,7 @@ class NoteRhythmMaker(RhythmMaker):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        from abjad import rmakers
+        from abjadext import rmakers
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -94,7 +94,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             Calls rhythm-maker on divisions:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
             >>> divisions = [(5, 8), (3, 8)]
             >>> result = rhythm_maker(divisions)
             >>> for x in result:
@@ -116,9 +116,9 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
             >>> abjad.f(rhythm_maker)
-            abjad.rmakers.NoteRhythmMaker()
+            abjadext.rmakers.NoteRhythmMaker()
 
         Returns string.
         """
@@ -131,7 +131,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> abjad.rmakers.NoteRhythmMaker()
+            >>> abjadext.rmakers.NoteRhythmMaker()
             NoteRhythmMaker()
 
         Returns string.
@@ -210,7 +210,7 @@ class NoteRhythmMaker(RhythmMaker):
 
     def _make_music(self, divisions):
         import abjad
-        from abjad import rmakers
+        from abjadext import rmakers
         selections = []
         duration_specifier = self._get_duration_specifier()
         tie_specifier = self._get_tie_specifier()
@@ -264,8 +264,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Beams each division:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
             ...     )
@@ -304,8 +304,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Beams divisions together:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=True,
             ...         ),
             ...     )
@@ -350,8 +350,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Makes no beams:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     beam_specifier=abjad.rmakers.BeamSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=False,
             ...         beam_each_division=False,
             ...         ),
@@ -395,7 +395,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             Burnishes nothing:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
 
             >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -435,8 +435,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Forces leaves of first division to be rests:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     burnish_specifier=abjad.rmakers.BurnishSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     burnish_specifier=abjadext.rmakers.BurnishSpecifier(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         outer_divisions_only=True,
@@ -480,8 +480,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Forces leaves of first two divisions to be rests:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     burnish_specifier=abjad.rmakers.BurnishSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     burnish_specifier=abjadext.rmakers.BurnishSpecifier(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[2],
             ...         outer_divisions_only=True,
@@ -525,8 +525,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Forces leaves of first and last divisions to rests:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     burnish_specifier=abjad.rmakers.BurnishSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     burnish_specifier=abjadext.rmakers.BurnishSpecifier(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         right_classes=[abjad.Rest],
@@ -581,7 +581,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             No division masks:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -618,9 +618,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences every other division:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     division_masks=[
-            ...         abjad.rmakers.SilenceMask(
+            ...         abjadext.rmakers.SilenceMask(
             ...             pattern=abjad.index([0], 2),
             ...             ),
             ...         ],
@@ -661,8 +661,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences every output division:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     division_masks=[abjad.silence([0], 1)],
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     division_masks=[abjadext.rmakers.silence([0], 1)],
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -700,11 +700,11 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences every output division and uses multimeasure rests:
 
-            >>> mask = abjad.rmakers.SilenceMask(
+            >>> mask = abjadext.rmakers.SilenceMask(
             ...     pattern=abjad.index_all(),
             ...     use_multimeasure_rests=True,
             ...     )
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     division_masks=[mask],
             ...     )
 
@@ -746,10 +746,10 @@ class NoteRhythmMaker(RhythmMaker):
             >>> pattern_1 = abjad.index([0], 2)
             >>> pattern_2 = abjad.index([0, -1])
             >>> pattern = pattern_1 & ~pattern_2
-            >>> mask = abjad.rmakers.SilenceMask(
+            >>> mask = abjadext.rmakers.SilenceMask(
             ...     pattern=pattern,
             ...     )
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     division_masks=[mask],
             ...     )
 
@@ -800,7 +800,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             Spells durations with the fewest number of glyphs:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
 
             >>> divisions = [(5, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -832,8 +832,8 @@ class NoteRhythmMaker(RhythmMaker):
             Forbids notes with written duration greater than or equal to
             ``1/2``:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     duration_specifier=abjad.rmakers.DurationSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         forbidden_duration=(1, 2),
             ...         ),
             ...     )
@@ -869,8 +869,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Spells all divisions metrically when ``spell_metrically`` is true:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     duration_specifier=abjad.rmakers.DurationSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically=True,
             ...         ),
             ...     )
@@ -921,8 +921,8 @@ class NoteRhythmMaker(RhythmMaker):
             Spells only unassignable durations metrically when
             ``spell_metrically`` is ``'unassignable'``:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     duration_specifier=abjad.rmakers.DurationSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically='unassignable',
             ...         ),
             ...     )
@@ -968,12 +968,12 @@ class NoteRhythmMaker(RhythmMaker):
 
             Spells durations with custom partition table:
 
-            >>> partition_table = abjad.rmakers.PartitionTable([
+            >>> partition_table = abjadext.rmakers.PartitionTable([
             ...     (5, [3, 2]),
             ...     (9, [3, 3, 3]),
             ...     ])
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     duration_specifier=abjad.rmakers.DurationSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically=partition_table,
             ...         ),
             ...     )
@@ -1021,8 +1021,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     duration_specifier=abjad.rmakers.DurationSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         rewrite_meter=True,
             ...         ),
             ...     )
@@ -1068,7 +1068,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             No logical tie masks:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1105,8 +1105,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences every other logical tie:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     logical_tie_masks=abjad.silence([0], 2),
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     logical_tie_masks=abjadext.rmakers.silence([0], 2),
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1144,8 +1144,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences all logical ties:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     logical_tie_masks=abjad.silence([0], 1),
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     logical_tie_masks=abjadext.rmakers.silence([0], 1),
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1191,8 +1191,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Does not tie across divisions:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=False,
             ...         ),
             ...     )
@@ -1232,8 +1232,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Ties across divisions:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         ),
             ...     )
@@ -1280,8 +1280,8 @@ class NoteRhythmMaker(RhythmMaker):
             ...     indices=[0],
             ...     period=2,
             ...     )
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=pattern,
             ...         ),
             ...     )
@@ -1323,8 +1323,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Uses repeat ties:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         repeat_ties=True,
             ...         ),
@@ -1372,8 +1372,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Strips all ties:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         strip_ties=True,
             ...         ),
             ...     )
@@ -1410,11 +1410,11 @@ class NoteRhythmMaker(RhythmMaker):
 
             Spells durations metrically and then strips all ties:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     duration_specifier=abjad.rmakers.DurationSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically=True,
             ...         ),
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         strip_ties=True,
             ...         ),
             ...     )
@@ -1466,7 +1466,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             Spells tuplets as diminutions:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
 
             >>> divisions = [(5, 14), (3, 7)]
             >>> selections = rhythm_maker(divisions)
@@ -1503,8 +1503,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Spells tuplets as augmentations:
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         diminution=False,
             ...         ),
             ...     )

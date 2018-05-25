@@ -10,7 +10,7 @@ class PartitionTable(OrderedDict):
         Partitions integers roughly ``1:1`` (restricted to assignable values)
         with larger half on left:
 
-        >>> table = abjad.rmakers.PartitionTable([
+        >>> table = abjadext.rmakers.PartitionTable([
         ...     (2, [1, 1]),
         ...     (3, [2, 1]),
         ...     (5, [3, 2]),
@@ -18,7 +18,7 @@ class PartitionTable(OrderedDict):
         ...     ])
 
         >>> abjad.f(table)
-        abjad.rmakers.PartitionTable(
+        abjadext.rmakers.PartitionTable(
             [
                 (
                     2,
@@ -44,7 +44,7 @@ class PartitionTable(OrderedDict):
         Partitions integers roughly ``1:1`` (restricted to assignable values)
         with larger half on right:
 
-        >>> table = abjad.rmakers.PartitionTable([
+        >>> table = abjadext.rmakers.PartitionTable([
         ...     (2, [1, 1]),
         ...     (3, [1, 2]),
         ...     (5, [2, 3]),
@@ -52,7 +52,7 @@ class PartitionTable(OrderedDict):
         ...     ])
 
         >>> abjad.f(table)
-        abjad.rmakers.PartitionTable(
+        abjadext.rmakers.PartitionTable(
             [
                 (
                     2,
@@ -101,7 +101,7 @@ class PartitionTable(OrderedDict):
 
             Respells divisions according to table:
 
-            >>> table = abjad.rmakers.PartitionTable([
+            >>> table = abjadext.rmakers.PartitionTable([
             ...     (2, [1, 1]),
             ...     (3, [2, 1]),
             ...     (5, [3, 2]),
@@ -132,7 +132,7 @@ class PartitionTable(OrderedDict):
 
             Respells divisions according to another table:
 
-            >>> table = abjad.rmakers.PartitionTable([
+            >>> table = abjadext.rmakers.PartitionTable([
             ...     (5, [1, 3, 1]),
             ...     (7, [1, 2, 4]),
             ...     ])

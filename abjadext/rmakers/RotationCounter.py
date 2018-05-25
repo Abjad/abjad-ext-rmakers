@@ -8,7 +8,7 @@ class RotationCounter(TypedCounter):
 
     ..  container:: example
 
-        >>> counter = abjad.rmakers.RotationCounter(default=3)
+        >>> counter = abjadext.rmakers.RotationCounter(default=3)
 
         >>> counter['talea__counts']
         3

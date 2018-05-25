@@ -9,10 +9,10 @@ class SilenceMask(AbjadValueObject):
     ..  container:: example
 
         >>> pattern = abjad.index([0, 1, 7], 16)
-        >>> mask = abjad.rmakers.SilenceMask(pattern)
+        >>> mask = abjadext.rmakers.SilenceMask(pattern)
 
         >>> abjad.f(mask)
-        abjad.SilenceMask(
+        abjadext.rmakers.SilenceMask(
             pattern=abjad.index([0, 1, 7], period=16),
             )
 
@@ -24,10 +24,10 @@ class SilenceMask(AbjadValueObject):
         >>> pattern_2 = abjad.index_first(1)
         >>> pattern_3 = abjad.index_last(1)
         >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
-        >>> mask = abjad.SilenceMask(pattern)
+        >>> mask = abjadext.rmakers.SilenceMask(pattern)
 
         >>> abjad.f(mask)
-        abjad.SilenceMask(
+        abjadext.rmakers.SilenceMask(
             pattern=abjad.Pattern(
                 operator='xor',
                 patterns=(
@@ -38,7 +38,7 @@ class SilenceMask(AbjadValueObject):
                 ),
             )
 
-        >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
         ...     division_masks=[
         ...         mask,
         ...         ],
@@ -83,10 +83,10 @@ class SilenceMask(AbjadValueObject):
         >>> pattern_3 = abjad.index_last(1)
         >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
         >>> pattern = ~pattern
-        >>> mask = abjad.SilenceMask(pattern)
+        >>> mask = abjadext.rmakers.SilenceMask(pattern)
 
         >>> abjad.f(mask)
-        abjad.SilenceMask(
+        abjadext.rmakers.SilenceMask(
             pattern=abjad.Pattern(
                 inverted=True,
                 operator='xor',
@@ -98,7 +98,7 @@ class SilenceMask(AbjadValueObject):
                 ),
             )
 
-        >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
         ...     division_masks=[
         ...         mask,
         ...         ],
@@ -178,7 +178,7 @@ class SilenceMask(AbjadValueObject):
         import abjad
         pattern = ~self.pattern
         inverted = pattern.inverted or None
-        return abjad.silence(pattern.indices, pattern.period, inverted)
+        return abjadext.rmakers.silence(pattern.indices, pattern.period, inverted)
 
     ### PRIVATE METHODS ###
 
@@ -205,7 +205,7 @@ class SilenceMask(AbjadValueObject):
                 frame,
                 static_class=SilenceMask,
                 )
-            template = 'abjad.{}({})'.format(function_name, arguments)
+            template = 'abjadext.rmakers.{}({})'.format(function_name, arguments)
         finally:
             del frame
         return template
@@ -239,7 +239,7 @@ class SilenceMask(AbjadValueObject):
 
             Without multimeasure rests:
 
-            >>> mask = abjad.rmakers.SilenceMask(
+            >>> mask = abjadext.rmakers.SilenceMask(
             ...     abjad.index([0, 1, 7], 16),
             ...     use_multimeasure_rests=False,
             ...     )
@@ -251,7 +251,7 @@ class SilenceMask(AbjadValueObject):
 
             With multimeasure rests:
 
-            >>> mask = abjad.rmakers.SilenceMask(
+            >>> mask = abjadext.rmakers.SilenceMask(
             ...     abjad.index([0, 1, 7], 16),
             ...     use_multimeasure_rests=True,
             ...     )
@@ -279,12 +279,12 @@ class SilenceMask(AbjadValueObject):
 
             Silences divisions 1 and 2:
 
-            >>> mask = abjad.silence([1, 2])
+            >>> mask = abjadext.rmakers.silence([1, 2])
 
             >>> mask
-            abjad.silence([1, 2])
+            abjadext.rmakers.silence([1, 2])
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     division_masks=[mask],
             ...     )
             >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
@@ -322,12 +322,12 @@ class SilenceMask(AbjadValueObject):
 
             Silences divisions -1 and -2:
 
-            >>> mask = abjad.silence([-1, -2])
+            >>> mask = abjadext.rmakers.silence([-1, -2])
 
             >>> mask
-            abjad.silence([-1, -2])
+            abjadext.rmakers.silence([-1, -2])
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     division_masks=[
             ...         mask,
             ...         ],

@@ -9,7 +9,7 @@ class SkipRhythmMaker(RhythmMaker):
 
         Makes skips equal to the duration of input divisions.
 
-        >>> rhythm_maker = abjad.rmakers.SkipRhythmMaker()
+        >>> rhythm_maker = abjadext.rmakers.SkipRhythmMaker()
 
         >>> divisions = [(1, 4), (3, 16), (5, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -70,9 +70,9 @@ class SkipRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> rhythm_maker = abjad.rmakers.SkipRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.SkipRhythmMaker()
             >>> abjad.f(rhythm_maker)
-            abjad.rmakers.SkipRhythmMaker()
+            abjadext.rmakers.SkipRhythmMaker()
 
         Returns string.
         """

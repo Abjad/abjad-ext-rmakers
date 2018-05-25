@@ -10,7 +10,7 @@ class InciseSpecifier(AbjadValueObject):
         Specifies one sixteenth rest cut out of the beginning of every
         division:
 
-        >>> specifier = abjad.rmakers.InciseSpecifier(
+        >>> specifier = abjadext.rmakers.InciseSpecifier(
         ...     prefix_talea=[-1],
         ...     prefix_counts=[1],
         ...     talea_denominator=16,
@@ -21,7 +21,7 @@ class InciseSpecifier(AbjadValueObject):
         Specifies sixteenth rests cut out of the beginning and end of each
         division:
 
-        >>> specifier = abjad.rmakers.InciseSpecifier(
+        >>> specifier = abjadext.rmakers.InciseSpecifier(
         ...     prefix_talea=[-1],
         ...     prefix_counts=[1],
         ...     suffix_talea=[-1],
@@ -115,14 +115,14 @@ class InciseSpecifier(AbjadValueObject):
 
             Formats incise specifier:
 
-            >>> specifier = abjad.rmakers.InciseSpecifier(
+            >>> specifier = abjadext.rmakers.InciseSpecifier(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[1],
             ...     talea_denominator=16,
             ...     )
 
             >>> abjad.f(specifier)
-            abjad.rmakers.InciseSpecifier(
+            abjadext.rmakers.InciseSpecifier(
                 prefix_talea=[-1],
                 prefix_counts=[1],
                 talea_denominator=16,
@@ -132,7 +132,7 @@ class InciseSpecifier(AbjadValueObject):
 
             Formats incise specifier:
 
-            >>> specifier = abjad.rmakers.InciseSpecifier(
+            >>> specifier = abjadext.rmakers.InciseSpecifier(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[0, 1],
             ...     suffix_talea=[-1],
@@ -141,7 +141,7 @@ class InciseSpecifier(AbjadValueObject):
             ...     )
 
             >>> abjad.f(specifier)
-            abjad.rmakers.InciseSpecifier(
+            abjadext.rmakers.InciseSpecifier(
                 prefix_talea=[-1],
                 prefix_counts=[0, 1],
                 suffix_talea=[-1],
@@ -208,7 +208,7 @@ class InciseSpecifier(AbjadValueObject):
 
             Divides middle part of every division ``1:1``:
 
-            >>> specifier = abjad.rmakers.InciseSpecifier(
+            >>> specifier = abjadext.rmakers.InciseSpecifier(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[0, 1],
             ...     suffix_talea=[-1],
@@ -216,7 +216,7 @@ class InciseSpecifier(AbjadValueObject):
             ...     talea_denominator=16,
             ...     body_ratio=abjad.Ratio((1, 1)),
             ...     )
-            >>> rhythm_maker = abjad.rmakers.IncisedRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
             ...     incise_specifier=specifier,
             ...     )
 

@@ -39,7 +39,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         tuplet_specifier=None,
         ):
         import abjad
-        from abjad import rmakers
+        from abjadext import rmakers
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -77,7 +77,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with alternating eighth and sixteenth notes:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[8, 16],
             ...     )
 
@@ -158,7 +158,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Adds extra counts per division according to a pattern of three
             elements:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[0, 1, 2],
             ...     )
@@ -509,8 +509,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Forces the first leaf and the last two leaves to be rests:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
-            ...     burnish_specifier=abjad.rmakers.BurnishSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     burnish_specifier=abjadext.rmakers.BurnishSpecifier(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         right_classes=[abjad.Rest],
@@ -616,8 +616,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Forces the first leaf of every division to be a rest:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
-            ...     burnish_specifier=abjad.rmakers.BurnishSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     burnish_specifier=abjadext.rmakers.BurnishSpecifier(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         ),
@@ -697,7 +697,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             No preferred denominator:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
             ...     denominator=None,
@@ -799,7 +799,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Preferred denominator equal to 4:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
             ...     denominator=4,
@@ -896,7 +896,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Preferred denominator equal to 8:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
             ...     denominator=8,
@@ -993,7 +993,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Preferred denominator equal to 16:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
             ...     denominator=16,
@@ -1092,7 +1092,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Preferred denominator taken from count of elements in tuplet:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
             ...     denominator='from_counts',
@@ -1204,7 +1204,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with 16th notes:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     )
 
@@ -1272,7 +1272,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with 8th notes:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[8],
             ...     )
 
@@ -1330,7 +1330,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with quarter notes:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[4],
             ...     )
 
@@ -1379,7 +1379,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with half notes:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[2],
             ...     )
 
@@ -1436,7 +1436,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             No division masks:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker()
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1503,9 +1503,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every other division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     division_masks=[
-            ...         abjad.silence([0], 2),
+            ...         abjadext.rmakers.silence([0], 2),
             ...         ],
             ...     )
 
@@ -1558,9 +1558,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Sustains every other division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     division_masks=[
-            ...         abjad.sustain([0], 2),
+            ...         abjadext.rmakers.sustain([0], 2),
             ...         ],
             ...     )
 
@@ -1613,8 +1613,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every output division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
-            ...     division_masks=abjad.silence([0], 1),
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     division_masks=abjadext.rmakers.silence([0], 1),
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1689,7 +1689,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Four missing counts per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[-4],
             ...     )
@@ -1765,7 +1765,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Three missing counts per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[-3],
             ...     )
@@ -1840,7 +1840,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Two missing counts per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[-2],
             ...     )
@@ -1915,7 +1915,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             One missing count per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[-1],
             ...     )
@@ -1989,7 +1989,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Neither missing nor extra counts per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=None,
             ...     )
@@ -2066,7 +2066,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             One extra count per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[1],
             ...     )
@@ -2145,7 +2145,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Two extra counts per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[2],
             ...     )
@@ -2227,7 +2227,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Three extra counts per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[3],
             ...     )
@@ -2310,7 +2310,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Four extra counts per division:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
             ...     )
@@ -2402,7 +2402,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             No logical tie masks:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker()
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -2469,9 +2469,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every third logical tie:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     logical_tie_masks=[
-            ...         abjad.silence([0], 3),
+            ...         abjadext.rmakers.silence([0], 3),
             ...         ],
             ...     )
 
@@ -2542,8 +2542,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> pattern_2 = abjad.index_first(2)
             >>> pattern_3 = abjad.index_last(2)
             >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
-            >>> mask = abjad.SilenceMask(pattern)
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> mask = abjadext.rmakers.SilenceMask(pattern)
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     logical_tie_masks=mask,
             ...     )
 
@@ -2608,8 +2608,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             With ties across divisions:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         ),
             ...     )
@@ -2680,9 +2680,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every fourth logical tie:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
-            ...     logical_tie_masks=abjad.silence([3], 4),
-            ...     tie_specifier=abjad.rmakers.TieSpecifier(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     logical_tie_masks=abjadext.rmakers.silence([3], 4),
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         ),
             ...     )
@@ -2767,7 +2767,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             No tuplet specifier:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[4],
             ...     extra_counts_per_division=[0, 0, 1],
             ...     )
@@ -2817,10 +2817,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Extracts trivial tuplets:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[4],
             ...     extra_counts_per_division=[0, 0, 1],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         ),
             ...     )
@@ -2868,10 +2868,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Extracts trivial tuplets and spells tuplet denominators according
             to division numerators:
 
-            >>> rhythm_maker = abjad.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[4],
             ...     extra_counts_per_division=[0, 0, 1],
-            ...     tuplet_specifier=abjad.rmakers.TupletSpecifier(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         denominator='divisions',
             ...         extract_trivial=True,
             ...         ),

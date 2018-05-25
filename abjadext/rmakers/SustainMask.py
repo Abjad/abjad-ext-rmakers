@@ -8,12 +8,12 @@ class SustainMask(AbjadValueObject):
 
     ..  container:: example
 
-        >>> mask = abjad.rmakers.SustainMask(
+        >>> mask = abjadext.rmakers.SustainMask(
         ...     pattern=abjad.index([0, 1, 7], 16),
         ...     )
 
         >>> abjad.f(mask)
-        abjad.SustainMask(
+        abjadext.rmakers.SustainMask(
             pattern=abjad.index([0, 1, 7], period=16),
             )
 
@@ -25,10 +25,10 @@ class SustainMask(AbjadValueObject):
         >>> pattern_2 = abjad.index_first(1)
         >>> pattern_3 = abjad.index_last(1)
         >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
-        >>> mask = abjad.SustainMask(pattern=pattern)
+        >>> mask = abjadext.rmakers.SustainMask(pattern=pattern)
 
         >>> abjad.f(mask)
-        abjad.SustainMask(
+        abjadext.rmakers.SustainMask(
             pattern=abjad.Pattern(
                 operator='xor',
                 patterns=(
@@ -39,9 +39,9 @@ class SustainMask(AbjadValueObject):
                 ),
             )
 
-        >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
         ...     division_masks=[
-        ...         abjad.silence([0], 1),
+        ...         abjadext.rmakers.silence([0], 1),
         ...         mask,
         ...         ],
         ...     )
@@ -85,10 +85,10 @@ class SustainMask(AbjadValueObject):
         >>> pattern_3 = abjad.index_last(1)
         >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
         >>> pattern = ~pattern
-        >>> mask = abjad.SustainMask(pattern=pattern)
+        >>> mask = abjadext.rmakers.SustainMask(pattern=pattern)
 
         >>> abjad.f(mask)
-        abjad.SustainMask(
+        abjadext.rmakers.SustainMask(
             pattern=abjad.Pattern(
                 inverted=True,
                 operator='xor',
@@ -100,9 +100,9 @@ class SustainMask(AbjadValueObject):
                 ),
             )
 
-        >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
         ...     division_masks=[
-        ...         abjad.silence([0], 1),
+        ...         abjadext.rmakers.silence([0], 1),
         ...         mask,
         ...         ],
         ...     )
@@ -176,7 +176,7 @@ class SustainMask(AbjadValueObject):
         import abjad
         pattern = ~self.pattern
         inverted = pattern.inverted or None
-        return abjad.sustain(pattern.indices, pattern.period, inverted)
+        return abjadext.rmakers.sustain(pattern.indices, pattern.period, inverted)
 
     ### PRIVATE METHODS ###
 
@@ -203,7 +203,7 @@ class SustainMask(AbjadValueObject):
                 frame,
                 static_class=SustainMask,
                 )
-            template = 'abjad.{}({})'.format(function_name, arguments)
+            template = 'abjadext.rmakers.{}({})'.format(function_name, arguments)
         finally:
             del frame
         return template
@@ -239,14 +239,14 @@ class SustainMask(AbjadValueObject):
 
             Sustains divisions 1 and 2:
 
-            >>> mask = abjad.sustain([1, 2])
+            >>> mask = abjadext.rmakers.sustain([1, 2])
 
             >>> mask
-            abjad.sustain([1, 2])
+            abjadext.rmakers.sustain([1, 2])
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     division_masks=[
-            ...         abjad.silence([0], 1),
+            ...         abjadext.rmakers.silence([0], 1),
             ...         mask,
             ...         ],
             ...     )
@@ -285,14 +285,14 @@ class SustainMask(AbjadValueObject):
 
             Sustains divisions -1 and -2:
 
-            >>> mask = abjad.sustain([-1, -2])
+            >>> mask = abjadext.rmakers.sustain([-1, -2])
 
             >>> mask
-            abjad.sustain([-1, -2])
+            abjadext.rmakers.sustain([-1, -2])
 
-            >>> rhythm_maker = abjad.rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     division_masks=[
-            ...         abjad.silence([0], 1),
+            ...         abjadext.rmakers.silence([0], 1),
             ...         mask,
             ...         ],
             ...     )

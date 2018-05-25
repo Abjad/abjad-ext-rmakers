@@ -67,9 +67,9 @@ class DurationSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.DurationSpecifier()
+            >>> specifier = abjadext.rmakers.DurationSpecifier()
             >>> abjad.f(specifier)
-            abjad.rmakers.DurationSpecifier(
+            abjadext.rmakers.DurationSpecifier(
                 decrease_monotonic=True,
                 )
 
@@ -85,7 +85,7 @@ class DurationSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> abjad.rmakers.DurationSpecifier()
+            >>> abjadext.rmakers.DurationSpecifier()
             DurationSpecifier(decrease_monotonic=True)
 
         """
@@ -207,7 +207,7 @@ class DurationSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.DurationSpecifier()
+            >>> specifier = abjadext.rmakers.DurationSpecifier()
             >>> specifier.decrease_monotonic
             True
 
@@ -221,7 +221,7 @@ class DurationSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.DurationSpecifier()
+            >>> specifier = abjadext.rmakers.DurationSpecifier()
             >>> specifier.forbid_meter_rewriting is None
             True
 
@@ -235,7 +235,7 @@ class DurationSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.DurationSpecifier()
+            >>> specifier = abjadext.rmakers.DurationSpecifier()
             >>> specifier.forbidden_duration is None
             True
 
@@ -249,7 +249,7 @@ class DurationSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.DurationSpecifier()
+            >>> specifier = abjadext.rmakers.DurationSpecifier()
             >>> specifier.rewrite_meter is None
             True
 
@@ -263,7 +263,7 @@ class DurationSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.DurationSpecifier()
+            >>> specifier = abjadext.rmakers.DurationSpecifier()
             >>> specifier.rewrite_rest_filled is None
             True
 
@@ -278,7 +278,7 @@ class DurationSpecifier(AbjadValueObject):
 
         ..  container:: example
 
-            >>> specifier = abjad.rmakers.DurationSpecifier()
+            >>> specifier = abjadext.rmakers.DurationSpecifier()
             >>> specifier.spell_metrically is None
             True
 
