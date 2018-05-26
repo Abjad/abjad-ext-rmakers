@@ -5,6 +5,8 @@ class PartitionTable(OrderedDict):
     """
     Partition table.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Partitions integers roughly ``1:1`` (restricted to assignable values)

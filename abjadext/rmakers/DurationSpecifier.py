@@ -7,6 +7,9 @@ from .PartitionTable import PartitionTable
 class DurationSpecifier(AbjadValueObject):
     """
     Duration specifier.
+
+    >>> import abjadext
+
     """
 
     ### CLASS VARIABLES ###

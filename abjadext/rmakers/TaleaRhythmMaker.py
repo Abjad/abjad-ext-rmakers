@@ -15,6 +15,8 @@ class TaleaRhythmMaker(RhythmMaker):
     r"""
     Talea rhythm-maker.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Repeats talea of 1/16, 2/16, 3/16, 4/16:

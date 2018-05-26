@@ -5,6 +5,8 @@ class EvenRunRhythmMaker(RhythmMaker):
     r"""
     Even run rhythm-maker.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Makes even run of notes each equal in duration to ``1/d``

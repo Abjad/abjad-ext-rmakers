@@ -4,6 +4,9 @@ from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
 class InterpolationSpecifier(AbjadValueObject):
     """
     Interpolation specifier.
+
+    >>> import abjadext
+
     """
 
     ### CLASS VARIABLES ###

@@ -12,6 +12,8 @@ class NoteRhythmMaker(RhythmMaker):
     r"""
     Note rhythm-maker.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Makes notes equal to the duration of input divisions. Adds ties where

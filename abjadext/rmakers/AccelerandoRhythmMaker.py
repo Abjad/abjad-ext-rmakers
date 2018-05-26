@@ -8,6 +8,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
     r"""
     Accelerando rhythm-maker.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Makes accelerando for each input division:

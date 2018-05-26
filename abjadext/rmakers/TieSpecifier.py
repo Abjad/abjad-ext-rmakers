@@ -7,6 +7,9 @@ from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
 class TieSpecifier(AbjadValueObject):
     """
     Tie specifier.
+
+    >>> import abjadext
+
     """
 
     ### CLASS VARIABLES ###

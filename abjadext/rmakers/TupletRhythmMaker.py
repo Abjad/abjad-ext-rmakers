@@ -13,6 +13,8 @@ class TupletRhythmMaker(RhythmMaker):
     r"""
     Tuplet rhythm-maker.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Makes tuplets with ``3:2`` ratios:

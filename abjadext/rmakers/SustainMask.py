@@ -6,6 +6,8 @@ class SustainMask(AbjadValueObject):
     r"""
     Sustain mask.
 
+    >>> import abjadext
+
     ..  container:: example
 
         >>> mask = abjadext.rmakers.SustainMask(

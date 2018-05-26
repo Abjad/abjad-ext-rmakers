@@ -6,6 +6,8 @@ class SilenceMask(AbjadValueObject):
     r"""
     Silence mask.
 
+    >>> import abjadext
+
     ..  container:: example
 
         >>> pattern = abjad.index([0, 1, 7], 16)

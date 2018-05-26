@@ -5,6 +5,8 @@ class BurnishSpecifier(AbjadValueObject):
     """
     Burnish specifier.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Forces first leaf of each division to be a rest:

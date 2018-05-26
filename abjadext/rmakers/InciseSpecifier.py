@@ -5,6 +5,8 @@ class InciseSpecifier(AbjadValueObject):
     """
     Incise specifier.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Specifies one sixteenth rest cut out of the beginning of every

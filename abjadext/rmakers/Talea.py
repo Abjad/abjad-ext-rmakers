@@ -12,6 +12,8 @@ class Talea(AbjadValueObject):
     """
     Talea.
 
+    >>> import abjadext
+
     ..  container:: example
 
         >>> talea = abjadext.rmakers.Talea(

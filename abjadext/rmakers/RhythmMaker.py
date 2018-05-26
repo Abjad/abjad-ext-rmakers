@@ -12,6 +12,9 @@ from .TupletSpecifier import TupletSpecifier
 class RhythmMaker(AbjadValueObject):
     """
     Abstract rhythm-maker.
+
+    >>> import abjadext
+
     """
 
     ### CLASS VARIABLES ###

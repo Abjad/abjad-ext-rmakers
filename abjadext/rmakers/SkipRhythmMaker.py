@@ -5,6 +5,8 @@ class SkipRhythmMaker(RhythmMaker):
     r"""
     Skip rhythm-maker.
 
+    >>> import abjadext
+
     ..  container:: example
 
         Makes skips equal to the duration of input divisions.

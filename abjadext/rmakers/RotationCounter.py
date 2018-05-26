@@ -6,6 +6,8 @@ class RotationCounter(TypedCounter):
     r"""
     Rotation counter.
 
+    >>> import abjadext
+
     ..  container:: example
 
         >>> counter = abjadext.rmakers.RotationCounter(default=3)
