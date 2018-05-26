@@ -175,10 +175,9 @@ class SustainMask(AbjadValueObject):
 
         Returns new sustain mask.
         """
-        import abjad
         pattern = ~self.pattern
         inverted = pattern.inverted or None
-        return abjadext.rmakers.sustain(pattern.indices, pattern.period, inverted)
+        return SustainMask.sustain(pattern.indices, pattern.period, inverted)
 
     ### PRIVATE METHODS ###
 

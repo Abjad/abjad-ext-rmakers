@@ -177,10 +177,9 @@ class SilenceMask(AbjadValueObject):
 
         Returns new silence mask.
         """
-        import abjad
         pattern = ~self.pattern
         inverted = pattern.inverted or None
-        return abjadext.rmakers.silence(pattern.indices, pattern.period, inverted)
+        return SilenceMask.silence(pattern.indices, pattern.period, inverted)
 
     ### PRIVATE METHODS ###
 
