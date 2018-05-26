@@ -1,2 +1,2 @@
 # abjad-ext-rmakers
-Abjad Rhythm-Maker Extension Package
+Abjad rhythm-makers extension package.
