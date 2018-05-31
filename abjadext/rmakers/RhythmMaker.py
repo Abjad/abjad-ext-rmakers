@@ -76,8 +76,8 @@ class RhythmMaker(abjad.AbjadValueObject):
 
         Returns selections.
         """
-        previous_state = previous_state or abjad.OrderedDict()
-        self._previous_state = abjad.OrderedDict(previous_state or abjad.OrderedDict())
+        #previous_state = previous_state or abjad.OrderedDict()
+        self._previous_state = abjad.OrderedDict(previous_state)
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
         selections = self._apply_specifiers(selections, divisions)

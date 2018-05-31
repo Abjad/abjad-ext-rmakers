@@ -101,6 +101,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
     def _apply_denominator(self, selections, divisions):
         if not self.denominator:
             return
+        for division in divisions:
+            if not isinstance(division, abjad.NonreducedFraction):
+                raise Exception(f'must be division (not {division!r}).')
         tuplets = list(abjad.iterate(selections).components(abjad.Tuplet))
         if divisions is None:
             divisions = len(tuplets) * [None]
@@ -188,7 +191,8 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
     @property
     def denominator(self) -> typing.Optional[
-        typing.Union[str, abjad.Duration, int]]:
+        typing.Union[str, abjad.Duration, int]
+        ]:
         r"""
         Gets preferred denominator.
 
