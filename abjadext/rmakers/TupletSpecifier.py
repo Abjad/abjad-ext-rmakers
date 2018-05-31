@@ -92,7 +92,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
         self._force_fraction_(selections)
         self._trivialize_(selections)
         # avoid dots must follow trivialize:
-        #self._avoid_dots_(selections)
+        self._avoid_dots_(selections)
         selections = self._rewrite_rest_filled_(selections)
         # extract trivial must follow the other operations:
         selections = self._extract_trivial_(selections)

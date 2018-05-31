@@ -1951,7 +1951,6 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
             ...         trivialize=True,
             ...         ),
             ...     )
@@ -1996,6 +1995,65 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8.
                             [
                             c'8.
+                            ]
+                        }
+                    }   % measure
+                }
+
+            REGRESSION: Ignores ``trivialize`` and respects ``avoid_dots`` when
+            both are true. Measures 2 and 4 are first rewritten as trivial but
+            then supplied again with nontrivial prolation when removing dots.
+            The result is that measures 2 and 4 carry nontrivial prolation with
+            no dots:
+            
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         avoid_dots=True,
+            ...         trivialize=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 3/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            r4
+                        }
+                    }   % measure
+                    {   % measure
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'4
+                        }
+                    }   % measure
+                    {   % measure
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            r4
+                            c'4.
+                        }
+                    }   % measure
+                    {   % measure
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'8
+                            [
+                            c'8
                             ]
                         }
                     }   % measure
