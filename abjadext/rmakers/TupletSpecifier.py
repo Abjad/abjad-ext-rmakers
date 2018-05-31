@@ -105,12 +105,13 @@ class TupletSpecifier(abjad.AbjadValueObject):
     def _apply_denominator(self, selections, divisions):
         if not self.denominator:
             return
-        for division in divisions:
-            if not isinstance(division, abjad.NonreducedFraction):
-                raise Exception(f'must be division (not {division!r}).')
         tuplets = list(abjad.iterate(selections).components(abjad.Tuplet))
         if divisions is None:
             divisions = len(tuplets) * [None]
+        else:
+            for division in divisions:
+                if not isinstance(division, abjad.NonreducedFraction):
+                    raise Exception(f'must be division (not {division!r}).')
         assert len(selections) == len(divisions)
         assert len(tuplets) == len(divisions)
         denominator = self.denominator
