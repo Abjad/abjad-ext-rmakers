@@ -1,5 +1,7 @@
 import abjad
+from .InciseSpecifier import InciseSpecifier
 from .RhythmMaker import RhythmMaker
+from .TaleaRhythmMaker import TaleaRhythmMaker
 
 
 class IncisedRhythmMaker(RhythmMaker):
@@ -83,7 +85,6 @@ class IncisedRhythmMaker(RhythmMaker):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        from abjadext import rmakers
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -93,7 +94,7 @@ class IncisedRhythmMaker(RhythmMaker):
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
             )
-        prototype = (rmakers.InciseSpecifier, type(None))
+        prototype = (InciseSpecifier, type(None))
         assert isinstance(incise_specifier, prototype)
         self._incise_specifier = incise_specifier
         if extra_counts_per_division is not None:
@@ -127,10 +128,9 @@ class IncisedRhythmMaker(RhythmMaker):
     ### PRIVATE METHODS ###
 
     def _get_incise_specifier(self):
-        from abjadext import rmakers
         if self.incise_specifier is not None:
             return self.incise_specifier
-        return rmakers.InciseSpecifier()
+        return InciseSpecifier()
 
     def _make_division_incised_numeric_map(
         self,
@@ -196,8 +196,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 else:
                     return ()
             else:
-                message = 'must incise divisions or output.'
-                raise Exception(message)
+                raise Exception('must incise divisions or output.')
 
     def _make_music(self, divisions):
         input_divisions = divisions[:]
@@ -222,12 +221,10 @@ class IncisedRhythmMaker(RhythmMaker):
         divisions = result['divisions']
         lcd = result['lcd']
         counts = result['counts']
-#        prefix_talea = counts[0]
-#        suffix_talea = counts[1]
-#        extra_counts_per_division = counts[2]
-#        split_divisions_by_counts = counts[3]
         secondary_divisions = self._make_secondary_divisions(
-            divisions, counts['split_divisions_by_counts'])
+            divisions,
+            counts['split_divisions_by_counts'],
+            )
         incise_specifier = self._get_incise_specifier()
         if not incise_specifier.outer_divisions_only:
             numeric_map = self._make_division_incised_numeric_map(
@@ -368,11 +365,10 @@ class IncisedRhythmMaker(RhythmMaker):
         return numeric_map
 
     def _numeric_map_to_leaf_selections(self, numeric_map, lcd):
-        from abjadext import rmakers
         selections = []
         specifier = self._get_duration_specifier()
         tie_specifier = self._get_tie_specifier()
-        class_ = rmakers.TaleaRhythmMaker
+        class_ = TaleaRhythmMaker
         for numeric_map_part in numeric_map:
             numeric_map_part = [
                 _ for _ in numeric_map_part if _ != abjad.Duration(0)
@@ -399,31 +395,31 @@ class IncisedRhythmMaker(RhythmMaker):
         return selections
 
     def _prepare_input(self):
-        
+        #
         incise_specifier = self._get_incise_specifier()
         prefix_talea = incise_specifier.prefix_talea or ()
         prefix_talea = abjad.CyclicTuple(prefix_talea)
-
+        #
         prefix_counts = incise_specifier.prefix_counts or (0,)
         prefix_counts = abjad.CyclicTuple(prefix_counts)
-
+        #
         suffix_talea = incise_specifier.suffix_talea or ()
         suffix_talea = abjad.CyclicTuple(suffix_talea)
-
+        #
         suffix_counts = incise_specifier.suffix_counts or (0,)
         suffix_counts = abjad.CyclicTuple(suffix_counts)
-
+        #
         extra_counts_per_division = self.extra_counts_per_division or ()
         if extra_counts_per_division:
             extra_counts_per_division = abjad.CyclicTuple(
                 extra_counts_per_division)
         else:
             extra_counts_per_division = abjad.CyclicTuple([0])
-
+        #
         split_divisions_by_counts = self.split_divisions_by_counts or ()
         split_divisions_by_counts = abjad.CyclicTuple(
             split_divisions_by_counts)
-
+        #
         return (
             prefix_talea,
             prefix_counts,

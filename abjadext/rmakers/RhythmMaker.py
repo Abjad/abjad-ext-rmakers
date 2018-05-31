@@ -76,7 +76,6 @@ class RhythmMaker(abjad.AbjadValueObject):
 
         Returns selections.
         """
-        #previous_state = previous_state or abjad.OrderedDict()
         self._previous_state = abjad.OrderedDict(previous_state)
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
@@ -352,7 +351,6 @@ class RhythmMaker(abjad.AbjadValueObject):
             return 0
         return self.previous_state.get('divisions_consumed', 0)
 
-
     def _previous_incomplete_last_note(self):
         if not self.previous_state:
             return False
@@ -370,24 +368,28 @@ class RhythmMaker(abjad.AbjadValueObject):
 
     def _scale_counts(self, divisions, talea_denominator, counts):
         talea_denominator = talea_denominator or 1
+        scaled_divisions = divisions[:]
         dummy_division = (1, talea_denominator)
-        divisions.append(dummy_division)
-        divisions = abjad.Duration.durations_to_nonreduced_fractions(divisions)
-        dummy_division = divisions.pop()
+        scaled_divisions.append(dummy_division)
+        scaled_divisions = abjad.Duration.durations_to_nonreduced_fractions(
+            scaled_divisions
+            )
+        dummy_division = scaled_divisions.pop()
         lcd = dummy_division.denominator
         multiplier = lcd / talea_denominator
         assert abjad.mathtools.is_integer_equivalent(multiplier)
         multiplier = int(multiplier)
-        counts_ = {}
+        scaled_counts = {}
         for name, vector in counts.items():
             vector = [multiplier * _ for _ in vector]
             vector = abjad.CyclicTuple(vector)
-            counts_[name] = vector
-        counts = counts_
+            scaled_counts[name] = vector
+        assert len(scaled_divisions) == len(divisions)
+        assert len(scaled_counts) == len(counts)
         return {
-            'divisions': divisions,
+            'divisions': scaled_divisions,
             'lcd': lcd,
-            'counts': counts,
+            'counts': scaled_counts,
             }
 
     def _sequence_to_ellipsized_string(self, sequence):

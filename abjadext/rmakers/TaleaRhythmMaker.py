@@ -4192,6 +4192,163 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
+            Working with ``denominator``.
+
+            Reduces terms in tuplet ratio to relative primes when no tuplet
+            specifier is given:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     extra_counts_per_division=[1, 1, 2, 2],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 3/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            c'16
+                            ~
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 4/8
+                        \times 8/9 {
+                            c'8.
+                            [
+                            c'16
+                            c'8
+                            c'8.
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 3/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ~
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 4/8
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ]
+                        }
+                    }   % measure
+                }
+
+            REGRESSION. Spells tuplet denominator in terms of duration when
+            denominator is given as a duration:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     extra_counts_per_division=[1, 1, 2, 2],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         denominator=(1, 16),
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 3/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            c'16
+                            ~
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 4/8
+                        \times 8/9 {
+                            c'8.
+                            [
+                            c'16
+                            c'8
+                            c'8.
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 3/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/8 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ~
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 4/8
+                        \times 8/10 {
+                            c'8
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ]
+                        }
+                    }   % measure
+                }
+
+        ..  container:: example
+
             Working with ``diminution``.
             
             Makes diminished tuplets when ``diminution`` is true (or when no
