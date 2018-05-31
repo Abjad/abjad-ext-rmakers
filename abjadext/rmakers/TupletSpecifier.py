@@ -91,9 +91,13 @@ class TupletSpecifier(abjad.AbjadValueObject):
         self._apply_denominator(selections, divisions)
         self._force_fraction_(selections)
         self._trivialize_(selections)
+        # avoid dots must follow trivialize:
+        #self._avoid_dots_(selections)
         selections = self._rewrite_rest_filled_(selections)
         # extract trivial must follow the other operations:
         selections = self._extract_trivial_(selections)
+        # toggle prolation must follow avoid dots and extract trivial:
+        #self._toggle_prolation(selections)
         return selections
 
     ### PRIVATE METHODS ###
@@ -127,6 +131,12 @@ class TupletSpecifier(abjad.AbjadValueObject):
             else:
                 message = f'invalid preferred denominator: {denominator!r}.'
                 raise Exception(message)
+
+    def _avoid_dots_(self, selections):
+        if not self.avoid_dots:
+            return
+        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+            tuplet.rewrite_dots()
 
     def _extract_trivial_(self, selections):
         if not self.extract_trivial:
@@ -173,6 +183,14 @@ class TupletSpecifier(abjad.AbjadValueObject):
             selection_ = abjad.select(selection_)
             selections_.append(selection_)
         return selections_
+
+    def _toggle_prolation(self, selections):
+        if self.diminution is None:
+            return
+        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+            if ((self.diminution is True and not tuplet.diminution()) or
+                (self.diminution is False and not tuplet.augmentation())):
+                tuplet.toggle_prolation()
 
     def _trivialize_(self, selections):
         if not self.trivialize:

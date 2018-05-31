@@ -321,9 +321,6 @@ class RhythmMaker(abjad.AbjadValueObject):
     def _make_tuplets(self, divisions, leaf_lists):
         assert len(divisions) == len(leaf_lists)
         tuplets = []
-        diminution = None
-        if self.tuplet_specifier:
-            diminution = self.tuplet_specifier.diminution
         for division, leaf_list in zip(divisions, leaf_lists):
             duration = abjad.Duration(division)
             tuplet = abjad.Tuplet.from_duration(duration, leaf_list)
