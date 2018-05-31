@@ -1,10 +1,9 @@
+import abjad
 import typing
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
-from abjad.tools.datastructuretools.Duration import Duration
 from .PartitionTable import PartitionTable
 
 
-class DurationSpecifier(AbjadValueObject):
+class DurationSpecifier(abjad.AbjadValueObject):
     """
     Duration specifier.
 
@@ -34,7 +33,7 @@ class DurationSpecifier(AbjadValueObject):
         *,
         decrease_monotonic: bool = True,
         forbid_meter_rewriting: bool = None,
-        forbidden_duration: typing.Union[tuple, Duration] = None,
+        forbidden_duration: typing.Union[tuple, abjad.Duration] = None,
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
         spell_metrically: typing.Union[bool, str, PartitionTable] = None,
@@ -45,7 +44,7 @@ class DurationSpecifier(AbjadValueObject):
         if forbidden_duration is None:
             forbidden_duration_ = None
         else:
-            forbidden_duration_ = Duration(forbidden_duration)
+            forbidden_duration_ = abjad.Duration(forbidden_duration)
         self._forbidden_duration = forbidden_duration_
         if rewrite_meter is not None:
             rewrite_meter = bool(rewrite_meter)
@@ -77,7 +76,7 @@ class DurationSpecifier(AbjadValueObject):
                 )
 
         """
-        return AbjadValueObject.__format__(
+        return abjad.AbjadValueObject.__format__(
             self,
             format_specification=format_specification,
             )
@@ -104,7 +103,6 @@ class DurationSpecifier(AbjadValueObject):
         rewrite_tuplets=False,
         repeat_ties=False,
         ):
-        import abjad
         meters = [abjad.Meter(_) for _ in meters]
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = reference_meters or ()
@@ -140,7 +138,6 @@ class DurationSpecifier(AbjadValueObject):
         selections,
         multimeasure_rests=None,
         ):
-        import abjad
         selections_ = []
         maker = abjad.LeafMaker()
         prototype = (abjad.MultimeasureRest, abjad.Rest)
@@ -165,7 +162,6 @@ class DurationSpecifier(AbjadValueObject):
         meters,
         repeat_ties=False,
         ):
-        import abjad
         meters = [abjad.Meter(_) for _ in meters]
         durations = [abjad.Duration(_) for _ in meters]
         selections = abjad.sequence(selections).flatten(depth=-1)
@@ -232,7 +228,7 @@ class DurationSpecifier(AbjadValueObject):
         return self._forbid_meter_rewriting
 
     @property
-    def forbidden_duration(self) -> typing.Optional[Duration]:
+    def forbidden_duration(self) -> typing.Optional[abjad.Duration]:
         """
         Gets forbidden written duration.
 

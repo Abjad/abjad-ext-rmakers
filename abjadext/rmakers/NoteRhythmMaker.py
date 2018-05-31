@@ -1,5 +1,5 @@
+import abjad
 import typing
-from abjad.tools.datastructuretools.Pattern import Pattern
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
@@ -157,7 +157,6 @@ class NoteRhythmMaker(RhythmMaker):
         raise NotImplementedError(message)
 
     def _burnish_outer_divisions(self, selections):
-        import abjad
         left_classes = self.burnish_specifier.left_classes
         left_counts = self.burnish_specifier.left_counts
         right_classes = self.burnish_specifier.right_classes
@@ -202,7 +201,6 @@ class NoteRhythmMaker(RhythmMaker):
         return new_selections
 
     def _cast_selection(self, selection, target_class):
-        import abjad
         new_selection = []
         for leaf in selection:
             new_leaf = target_class(leaf)
@@ -211,7 +209,6 @@ class NoteRhythmMaker(RhythmMaker):
         return new_selection
 
     def _make_music(self, divisions):
-        import abjad
         from abjadext import rmakers
         selections = []
         duration_specifier = self._get_duration_specifier()
@@ -575,7 +572,7 @@ class NoteRhythmMaker(RhythmMaker):
         return self._burnish_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[typing.List[Pattern]]:
+    def division_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
         r"""
         Gets division masks.
 
@@ -1062,7 +1059,7 @@ class NoteRhythmMaker(RhythmMaker):
         return super(NoteRhythmMaker, self).duration_specifier
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[typing.List[Pattern]]:
+    def logical_tie_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
         r"""
         Gets logical tie masks.
 

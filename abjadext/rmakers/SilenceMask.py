@@ -1,8 +1,8 @@
+import abjad
 import inspect
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
 
 
-class SilenceMask(AbjadValueObject):
+class SilenceMask(abjad.AbjadValueObject):
     r"""
     Silence mask.
 
@@ -159,7 +159,6 @@ class SilenceMask(AbjadValueObject):
         template=None,
         use_multimeasure_rests=None,
         ):
-        import abjad
         if pattern is None:
             pattern = abjad.index_all()
         assert isinstance(pattern, abjad.Pattern), repr(pattern)
@@ -184,7 +183,6 @@ class SilenceMask(AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _get_format_specification(self):
-        import abjad
         if self.template is None:
             return super(SilenceMask, self)._get_format_specification()
         return abjad.FormatSpecification(
@@ -198,7 +196,6 @@ class SilenceMask(AbjadValueObject):
 
     @staticmethod
     def _get_template(frame):
-        import abjad
         try:
             frame_info = inspect.getframeinfo(frame)
             function_name = frame_info.function
@@ -367,7 +364,6 @@ class SilenceMask(AbjadValueObject):
 
         Returns silence mask.
         """
-        import abjad
         pattern = abjad.index(indices, period=period, inverted=inverted)
         template = SilenceMask._get_template(inspect.currentframe())
         return SilenceMask(

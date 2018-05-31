@@ -1,3 +1,4 @@
+import abjad
 from .RhythmMaker import RhythmMaker
 
 
@@ -82,7 +83,6 @@ class IncisedRhythmMaker(RhythmMaker):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        import abjad
         from abjadext import rmakers
         RhythmMaker.__init__(
             self,
@@ -200,7 +200,6 @@ class IncisedRhythmMaker(RhythmMaker):
                 raise Exception(message)
 
     def _make_music(self, divisions):
-        import abjad
         input_divisions = divisions[:]
         input_ = self._prepare_input()
         prefix_talea = input_[0]
@@ -286,7 +285,6 @@ class IncisedRhythmMaker(RhythmMaker):
         suffix,
         is_note_filled=True,
         ):
-        import abjad
         prefix_weight = abjad.mathtools.weight(prefix)
         suffix_weight = abjad.mathtools.weight(suffix)
         middle = numerator - prefix_weight - suffix_weight
@@ -370,7 +368,6 @@ class IncisedRhythmMaker(RhythmMaker):
         return numeric_map
 
     def _numeric_map_to_leaf_selections(self, numeric_map, lcd):
-        import abjad
         from abjadext import rmakers
         selections = []
         specifier = self._get_duration_specifier()
@@ -402,7 +399,6 @@ class IncisedRhythmMaker(RhythmMaker):
         return selections
 
     def _prepare_input(self):
-        import abjad
         
         incise_specifier = self._get_incise_specifier()
         prefix_talea = incise_specifier.prefix_talea or ()

@@ -1,7 +1,7 @@
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
+import abjad
 
 
-class BeamSpecifier(AbjadValueObject):
+class BeamSpecifier(abjad.AbjadValueObject):
     r"""
     Beam specifier.
 
@@ -100,7 +100,6 @@ class BeamSpecifier(AbjadValueObject):
 
         Returns none.
         """
-        import abjad
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
             if self.hide_nibs:
@@ -149,7 +148,7 @@ class BeamSpecifier(AbjadValueObject):
 
         Returns string.
         """
-        return AbjadValueObject.__format__(
+        return abjad.AbjadValueObject.__format__(
             self,
             format_specification=format_specification,
             )
@@ -170,7 +169,6 @@ class BeamSpecifier(AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _detach_all_beams(self, divisions, grace_notes=False):
-        import abjad
         for leaf in abjad.iterate(divisions).leaves(grace_notes=grace_notes):
             abjad.detach(abjad.Beam, leaf)
 

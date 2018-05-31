@@ -1,6 +1,5 @@
+import abjad
 import math
-from abjad import Left, Right
-from abjad.tools.datastructuretools.OrderedDict import OrderedDict
 from .RhythmMaker import RhythmMaker
 
 
@@ -557,7 +556,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
         total_duration,
         interpolation_specifier,
         ):
-        import abjad
         selection_duration = abjad.inspect(selection).get_duration()
         if not selection_duration == total_duration:
             needed_duration = total_duration - abjad.inspect(
@@ -569,7 +567,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             abjad.attach(multiplier, selection[-1])
 
     def _get_interpolation_specifiers(self):
-        import abjad
         from abjadext import rmakers
         specifiers = self.interpolation_specifiers
         if specifiers is None:
@@ -777,7 +774,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @staticmethod
     def _is_accelerando(selection):
-        import abjad
         first_duration = abjad.inspect(selection[0]).get_duration()
         last_duration = abjad.inspect(selection[-1]).get_duration()
         if last_duration < first_duration:
@@ -786,7 +782,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @staticmethod
     def _is_ritardando(selection):
-        import abjad
         first_duration = abjad.inspect(selection[0]).get_duration()
         last_duration = abjad.inspect(selection[-1]).get_duration()
         if first_duration < last_duration:
@@ -819,7 +814,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Returns selection of notes.
         """
-        import abjad
         total_duration = abjad.Duration(total_duration)
         interpolation_specifier = interpolation_specifiers[index]
         durations = AccelerandoRhythmMaker._interpolate_divide(
@@ -853,9 +847,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
         if not beam_specifier.use_feather_beams:
             pass
         elif class_._is_accelerando(selection):
-            abjad.override(selection[0]).beam.grow_direction = Right
+            abjad.override(selection[0]).beam.grow_direction = abjad.Right
         elif class_._is_ritardando(selection):
-            abjad.override(selection[0]).beam.grow_direction = Left
+            abjad.override(selection[0]).beam.grow_direction = abjad.Left
         tuplet = abjad.Tuplet((1, 1), selection)
         if tuplet_specifier.use_note_duration_bracket:
             #tuplet.force_times_command = True
@@ -867,7 +861,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return selection
 
     def _make_music(self, divisions):
-        import abjad
         selections = []
         interpolation_specifiers = self._get_interpolation_specifiers()
         beam_specifier = self._get_beam_specifier()
@@ -895,7 +888,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @staticmethod
     def _round_durations(durations, denominator):
-        import abjad
         durations_ = []
         for duration in durations:
             numerator = int(round(duration * denominator))
@@ -3269,7 +3261,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return superclass.logical_tie_masks
 
     @property
-    def state(self) -> OrderedDict:
+    def state(self) -> abjad.OrderedDict:
         r"""
         Gets state dictionary.
 

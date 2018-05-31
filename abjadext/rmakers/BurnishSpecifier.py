@@ -1,7 +1,7 @@
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
+import abjad
 
 
-class BurnishSpecifier(AbjadValueObject):
+class BurnishSpecifier(abjad.AbjadValueObject):
     """
     Burnish specifier.
 
@@ -174,7 +174,7 @@ class BurnishSpecifier(AbjadValueObject):
 
         Returns string.
         """
-        return AbjadValueObject.__format__(
+        return abjad.AbjadValueObject.__format__(
             self,
             format_specification=format_specification,
             )
@@ -201,7 +201,6 @@ class BurnishSpecifier(AbjadValueObject):
 
     @staticmethod
     def _burnish_division_part(division_part, token):
-        import abjad
         assert len(division_part) == len(token)
         new_division_part = []
         for number, i in zip(division_part, token):
@@ -220,7 +219,6 @@ class BurnishSpecifier(AbjadValueObject):
 
     @classmethod
     def _burnish_each_division(class_, input_, divisions):
-        import abjad
         left_classes = input_['left_classes']
         middle_classes = input_['middle_classes']
         right_classes = input_['right_classes']
@@ -267,7 +265,6 @@ class BurnishSpecifier(AbjadValueObject):
 
     @classmethod
     def _burnish_outer_divisions(class_, input_, divisions):
-        import abjad
         for list_ in divisions:
             assert all(isinstance(_, int) for _ in list_), repr(list_)
         left_classes = input_['left_classes']
@@ -363,7 +360,6 @@ class BurnishSpecifier(AbjadValueObject):
         return burnished_divisions
 
     def _get_format_specification(self):
-        import abjad
         agent = abjad.StorageFormatManager(self)
         names = list(agent.signature_keyword_names)
         for name in names[:]:
@@ -376,7 +372,6 @@ class BurnishSpecifier(AbjadValueObject):
 
     @staticmethod
     def _is_length_tuple(argument):
-        import abjad
         if argument is None:
             return True
         if abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(
@@ -387,7 +382,6 @@ class BurnishSpecifier(AbjadValueObject):
 
     @staticmethod
     def _is_sign_tuple(argument):
-        import abjad
         if argument is None:
             return True
         if isinstance(argument, tuple):
@@ -396,7 +390,6 @@ class BurnishSpecifier(AbjadValueObject):
         return False
 
     def _prepare_input(self):
-        import abjad
         input_ = {}
         names = (
             'left_classes',
@@ -429,7 +422,7 @@ class BurnishSpecifier(AbjadValueObject):
             ...     )
 
             >>> burnish_specifier.left_classes
-            [<class 'abjad.tools.scoretools.Rest.Rest'>, 0]
+            [<class 'abjad.core.Rest.Rest'>, 0]
 
         Returns tuple or none.
         """
@@ -509,7 +502,7 @@ class BurnishSpecifier(AbjadValueObject):
             ...     )
 
             >>> burnish_specifier.right_classes
-            [<class 'abjad.tools.scoretools.Rest.Rest'>, <class 'abjad.tools.scoretools.Rest.Rest'>, 0]
+            [<class 'abjad.core.Rest.Rest'>, <class 'abjad.core.Rest.Rest'>, 0]
 
         Returns tuple or none.
         """

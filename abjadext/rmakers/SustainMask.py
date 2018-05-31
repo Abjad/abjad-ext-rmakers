@@ -1,8 +1,8 @@
+import abjad
 import inspect
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
 
 
-class SustainMask(AbjadValueObject):
+class SustainMask(abjad.AbjadValueObject):
     r"""
     Sustain mask.
 
@@ -160,7 +160,6 @@ class SustainMask(AbjadValueObject):
         *,
         template=None,
         ):
-        import abjad
         if pattern is None:
             pattern = abjad.index_all()
         assert isinstance(pattern, abjad.Pattern), repr(pattern)
@@ -182,7 +181,6 @@ class SustainMask(AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _get_format_specification(self):
-        import abjad
         if self.template is None:
             return super(SustainMask, self)._get_format_specification()
         return abjad.FormatSpecification(
@@ -196,7 +194,6 @@ class SustainMask(AbjadValueObject):
 
     @staticmethod
     def _get_template(frame):
-        import abjad
         try:
             frame_info = inspect.getframeinfo(frame)
             function_name = frame_info.function
@@ -331,7 +328,6 @@ class SustainMask(AbjadValueObject):
 
         Returns sustain mask.
         """
-        import abjad
         pattern = abjad.index(indices, period=period, inverted=inverted)
         template = SustainMask._get_template(inspect.currentframe())
         return SustainMask(pattern=pattern, template=template)

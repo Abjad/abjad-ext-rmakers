@@ -1,15 +1,13 @@
+import abjad
 import collections
 import typing
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
-from abjad.tools.datastructuretools.OrderedDict import OrderedDict
-from abjad.tools.datastructuretools.Pattern import Pattern
 from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
 
 
-class RhythmMaker(AbjadValueObject):
+class RhythmMaker(abjad.AbjadValueObject):
     """
     Abstract rhythm-maker.
 
@@ -59,8 +57,8 @@ class RhythmMaker(AbjadValueObject):
         self._duration_specifier = duration_specifier
         division_masks = self._prepare_masks(division_masks)
         self._division_masks = division_masks
-        self._previous_state = OrderedDict()
-        self._state = OrderedDict()
+        self._previous_state = abjad.OrderedDict()
+        self._state = abjad.OrderedDict()
         if tie_specifier is not None:
             prototype = rmakers.TieSpecifier
             assert isinstance(tie_specifier, prototype)
@@ -78,8 +76,8 @@ class RhythmMaker(AbjadValueObject):
 
         Returns selections.
         """
-        previous_state = previous_state or OrderedDict()
-        self._previous_state = OrderedDict(previous_state or OrderedDict())
+        previous_state = previous_state or abjad.OrderedDict()
+        self._previous_state = abjad.OrderedDict(previous_state or abjad.OrderedDict())
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
         selections = self._apply_specifiers(selections, divisions)
@@ -92,7 +90,6 @@ class RhythmMaker(AbjadValueObject):
 
         Returns LilyPond file.
         """
-        import abjad
         selections = self(divisions)
         lilypond_file = abjad.LilyPondFile.rhythm(
             selections,
@@ -104,7 +101,6 @@ class RhythmMaker(AbjadValueObject):
 
     @staticmethod
     def _all_are_tuplets_or_all_are_leaf_selections(argument):
-        import abjad
         if all(isinstance(_, abjad.Tuplet) for _ in argument):
             return True
         elif all(_.are_leaves() for _ in argument):
@@ -113,7 +109,6 @@ class RhythmMaker(AbjadValueObject):
             return False
 
     def _apply_division_masks(self, selections):
-        import abjad
         from abjadext import rmakers
         if not self.division_masks:
             return selections
@@ -166,7 +161,6 @@ class RhythmMaker(AbjadValueObject):
         return new_selections
 
     def _apply_logical_tie_masks(self, selections):
-        import abjad
         from abjadext import rmakers
         if self.logical_tie_masks is None:
             return selections
@@ -231,7 +225,6 @@ class RhythmMaker(AbjadValueObject):
         return selections
 
 #    def _check_wellformedness(self, selections):
-#        import abjad
 #        for component in abjad.iterate(selections).components():
 #            inspector = abjad.inspect(component)
 #            if not inspector.is_well_formed():
@@ -241,7 +234,6 @@ class RhythmMaker(AbjadValueObject):
 
     @staticmethod
     def _coerce_divisions(divisions):
-        import abjad
         divisions_ = []
         for division in divisions:
             if isinstance(division, abjad.NonreducedFraction):
@@ -255,7 +247,6 @@ class RhythmMaker(AbjadValueObject):
         return divisions
 
     def _collect_state(self, state):
-        import abjad
         state_ = abjad.OrderedDict()
         for key, value_ in state.items():
             assert hasattr(self, key)
@@ -296,7 +287,6 @@ class RhythmMaker(AbjadValueObject):
 
     @staticmethod
     def _make_cyclic_tuple_generator(iterable):
-        import abjad
         cyclic_tuple = abjad.CyclicTuple(iterable)
         i = 0
         while True:
@@ -308,7 +298,6 @@ class RhythmMaker(AbjadValueObject):
         divisions,
         split_divisions_by_counts,
         ):
-        import abjad
         if not split_divisions_by_counts:
             return divisions[:]
         numerators = [
@@ -331,7 +320,6 @@ class RhythmMaker(AbjadValueObject):
         return secondary_divisions
 
     def _make_tuplets(self, divisions, leaf_lists):
-        import abjad
         assert len(divisions) == len(leaf_lists)
         tuplets = []
         diminution = None
@@ -345,7 +333,6 @@ class RhythmMaker(AbjadValueObject):
 
     @staticmethod
     def _prepare_masks(masks):
-        import abjad
         from abjadext import rmakers
         prototype = (
             rmakers.SilenceMask,
@@ -382,7 +369,6 @@ class RhythmMaker(AbjadValueObject):
             return tuple(reversed(argument))
 
     def _scale_counts(self, divisions, talea_denominator, counts):
-        import abjad
         talea_denominator = talea_denominator or 1
         dummy_division = (1, talea_denominator)
         divisions.append(dummy_division)
@@ -416,14 +402,12 @@ class RhythmMaker(AbjadValueObject):
         return result
 
     def _validate_selections(self, selections):
-        import abjad
         assert isinstance(selections, collections.Sequence), repr(selections)
         assert len(selections), repr(selections)
         for selection in selections:
             assert isinstance(selection, abjad.Selection), selection
 
     def _validate_tuplets(self, selections):
-        import abjad
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             assert tuplet.multiplier.normalized(), repr(tuplet)
             assert len(tuplet), repr(tuplet)
@@ -438,7 +422,7 @@ class RhythmMaker(AbjadValueObject):
         return self._beam_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[typing.List[Pattern]]:
+    def division_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
         """
         Gets division masks.
         """
@@ -452,21 +436,21 @@ class RhythmMaker(AbjadValueObject):
         return self._duration_specifier
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[typing.List[Pattern]]:
+    def logical_tie_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
         """
         Gets logical tie masks.
         """
         return self._logical_tie_masks
 
     @property
-    def previous_state(self) -> OrderedDict:
+    def previous_state(self) -> abjad.OrderedDict:
         """
         Gets previous state dictionary.
         """
         return self._previous_state
 
     @property
-    def state(self) -> OrderedDict:
+    def state(self) -> abjad.OrderedDict:
         """
         Gets state dictionary.
         """

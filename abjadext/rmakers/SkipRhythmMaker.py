@@ -1,3 +1,4 @@
+import abjad
 from .RhythmMaker import RhythmMaker
 
 
@@ -84,7 +85,6 @@ class SkipRhythmMaker(RhythmMaker):
     ### PRIVATE METHODS ###
 
     def _make_music(self, divisions):
-        import abjad
         result = []
         for division in divisions:
             prototype = abjad.NonreducedFraction
@@ -97,7 +97,6 @@ class SkipRhythmMaker(RhythmMaker):
 
     @staticmethod
     def _make_skips(written_duration, multiplied_durations):
-        import abjad
         skips = []
         written_duration = abjad.Duration(written_duration)
         for multiplied_duration in multiplied_durations:

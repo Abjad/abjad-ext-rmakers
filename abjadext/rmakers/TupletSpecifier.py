@@ -1,13 +1,9 @@
+import abjad
 import copy
 import typing
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
-from abjad.tools.datastructuretools.Duration import Duration
-from abjad.tools.datastructuretools.Multiplier import Multiplier
-from abjad.tools.mathtools.NonreducedFraction import NonreducedFraction
-from abjad.tools.scoretools.Selection import Selection
 
 
-class TupletSpecifier(AbjadValueObject):
+class TupletSpecifier(abjad.AbjadValueObject):
     """
     Tuplet specifier.
 
@@ -46,7 +42,7 @@ class TupletSpecifier(AbjadValueObject):
         self,
         *,
         avoid_dots: bool = None,
-        denominator: typing.Union[str, Duration, int] = None,
+        denominator: typing.Union[str, abjad.Duration, int] = None,
         diminution: bool = True,
         extract_trivial: bool = None,
         force_fraction: bool = None,
@@ -54,12 +50,11 @@ class TupletSpecifier(AbjadValueObject):
         trivialize: bool = None,
         use_note_duration_bracket: bool = None,
         ) -> None:
-        import abjad
         if avoid_dots is not None:
             avoid_dots = bool(avoid_dots)
         self._avoid_dots = avoid_dots
         if isinstance(denominator, tuple):
-            denominator = Duration(denominator)
+            denominator = abjad.Duration(denominator)
         self._denominator = denominator
         # TODO: Consider renaming diminution=True to augmentation=None.
         #       That would allow for all keywords to default to None,
@@ -87,13 +82,12 @@ class TupletSpecifier(AbjadValueObject):
 
     def __call__(
         self,
-        selections: typing.List[Selection],
-        divisions: typing.List[NonreducedFraction],
-        ) -> typing.List[Selection]:
+        selections: typing.List[abjad.Selection],
+        divisions: typing.List[abjad.NonreducedFraction],
+        ) -> typing.List[abjad.Selection]:
         """
         Calls tuplet specifier.
         """
-        import abjad
         self._apply_denominator(selections, divisions)
         self._force_fraction_(selections)
         self._trivialize_(selections)
@@ -105,7 +99,6 @@ class TupletSpecifier(AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _apply_denominator(self, selections, divisions):
-        import abjad
         if not self.denominator:
             return
         tuplets = list(abjad.iterate(selections).components(abjad.Tuplet))
@@ -133,7 +126,6 @@ class TupletSpecifier(AbjadValueObject):
                 raise Exception(message)
 
     def _extract_trivial_(self, selections):
-        import abjad
         if not self.extract_trivial:
             return selections
         selections_ = []
@@ -153,14 +145,12 @@ class TupletSpecifier(AbjadValueObject):
         return selections_
 
     def _force_fraction_(self, selections):
-        import abjad
         if not self.force_fraction:
             return
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.force_fraction = True
 
     def _rewrite_rest_filled_(self, selections):
-        import abjad
         if not self.rewrite_rest_filled:
             return selections
         selections_ = []
@@ -182,7 +172,6 @@ class TupletSpecifier(AbjadValueObject):
         return selections_
 
     def _trivialize_(self, selections):
-        import abjad
         if not self.trivialize:
             return
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
@@ -198,7 +187,8 @@ class TupletSpecifier(AbjadValueObject):
         return self._avoid_dots
 
     @property
-    def denominator(self) -> typing.Optional[typing.Union[str, Duration, int]]:
+    def denominator(self) -> typing.Optional[
+        typing.Union[str, abjad.Duration, int]]:
         r"""
         Gets preferred denominator.
 

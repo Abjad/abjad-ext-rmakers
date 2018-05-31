@@ -1,7 +1,5 @@
+import abjad
 import typing
-from abjad.tools.datastructuretools.Duration import Duration
-from abjad.tools.datastructuretools.Pattern import Pattern
-from abjad.tools.mathtools.Ratio import Ratio
 from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
@@ -158,7 +156,6 @@ class TupletRhythmMaker(RhythmMaker):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        import abjad
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -347,7 +344,6 @@ class TupletRhythmMaker(RhythmMaker):
     ### PRIVATE METHODS ###
 
     def _make_music(self, divisions):
-        import abjad
         tuplets = []
         prototype = abjad.NonreducedFraction
         assert all(isinstance(_, prototype) for _ in divisions)
@@ -395,7 +391,6 @@ class TupletRhythmMaker(RhythmMaker):
         avoid_dots=False,
         diminution=True,
         ):
-        import abjad
         tuplet = abjad.Tuplet.from_duration_and_ratio(
             duration,
             ratio,
@@ -658,7 +653,8 @@ class TupletRhythmMaker(RhythmMaker):
         return super(TupletRhythmMaker, self).beam_specifier
 
     @property
-    def denominator(self) -> typing.Optional[typing.Union[str, Duration, int]]:
+    def denominator(self) -> typing.Optional[
+        typing.Union[str, abjad.Duration, int]]:
         r"""
         Gets preferred denominator.
 
@@ -1146,7 +1142,7 @@ class TupletRhythmMaker(RhythmMaker):
         return self._denominator
 
     @property
-    def division_masks(self) -> typing.Optional[typing.List[Pattern]]:
+    def division_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
         r"""
         Gets division masks.
 
@@ -1441,7 +1437,7 @@ class TupletRhythmMaker(RhythmMaker):
         return super(TupletRhythmMaker, self).tie_specifier
 
     @property
-    def tuplet_ratios(self) -> typing.Optional[typing.List[Ratio]]:
+    def tuplet_ratios(self) -> typing.Optional[typing.List[abjad.Ratio]]:
         r"""
         Gets tuplet ratios.
 

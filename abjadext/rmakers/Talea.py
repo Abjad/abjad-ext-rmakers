@@ -1,14 +1,8 @@
+import abjad
 import typing
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
-from abjad.tools.datastructuretools.CyclicTuple import CyclicTuple
-from abjad.tools.datastructuretools.Duration import Duration
-from abjad.tools.datastructuretools.Sequence import Sequence
-from abjad.tools.mathtools.NonreducedFraction import NonreducedFraction
-from abjad.tools.topleveltools.new import new
-from abjad.tools import mathtools
 
 
-class Talea(AbjadValueObject):
+class Talea(abjad.AbjadValueObject):
     """
     Talea.
 
@@ -54,7 +48,7 @@ class Talea(AbjadValueObject):
         ) -> None:
         assert all(isinstance(_, int) for _ in counts)
         self._counts = counts
-        if not mathtools.is_nonnegative_integer_power_of_two(denominator):
+        if not abjad.mathtools.is_nonnegative_integer_power_of_two(denominator):
             message = f'denominator {denominator} must be integer power of 2.'
             raise Exception(message)
         self._denominator = denominator
@@ -109,8 +103,8 @@ class Talea(AbjadValueObject):
         assert isinstance(argument, int), repr(argument)
         assert 0 < argument, repr(argument)
         if self.preamble:
-            preamble = Sequence([abs(_) for _ in self.preamble])
-            cumulative = mathtools.cumulative_sums(preamble)[1:]
+            preamble = abjad.Sequence([abs(_) for _ in self.preamble])
+            cumulative = abjad.mathtools.cumulative_sums(preamble)[1:]
             if argument in cumulative:
                 return True
             preamble_weight = preamble.weight()
@@ -120,13 +114,13 @@ class Talea(AbjadValueObject):
             counts = [abs(_) for _ in self.counts]
         else:
             counts = []
-        cumulative = mathtools.cumulative_sums(counts)[:-1]
+        cumulative = abjad.mathtools.cumulative_sums(counts)[:-1]
         argument -= preamble_weight
         argument %= self.period
         return argument in cumulative
     
     def __getitem__(self, argument) -> typing.Union[
-        NonreducedFraction, typing.List[NonreducedFraction]
+        abjad.NonreducedFraction, typing.List[abjad.NonreducedFraction]
         ]:
         """
         Gets item or slice identified by ``argument``.
@@ -180,14 +174,14 @@ class Talea(AbjadValueObject):
             counts = self.counts
         else:
             counts = []
-        counts_ = CyclicTuple(preamble + counts)
+        counts_ = abjad.CyclicTuple(preamble + counts)
         if isinstance(argument, int):
             count = counts_.__getitem__(argument)
-            return NonreducedFraction(count, self.denominator)
+            return abjad.NonreducedFraction(count, self.denominator)
         elif isinstance(argument, slice):
             counts_ = counts_.__getitem__(argument)
             result = [
-                NonreducedFraction(count, self.denominator)
+                abjad.NonreducedFraction(count, self.denominator)
                 for count in counts_
                 ]
             return result
@@ -222,10 +216,10 @@ class Talea(AbjadValueObject):
 
         """
         for count in self.preamble or []:
-            duration = Duration(count, self.denominator)
+            duration = abjad.Duration(count, self.denominator)
             yield duration
         for count in self.counts or []:
-            duration = Duration(count, self.denominator)
+            duration = abjad.Duration(count, self.denominator)
             yield duration
 
     def __len__(self) -> int:
@@ -339,7 +333,7 @@ class Talea(AbjadValueObject):
             10
 
         """
-        return Sequence(self.counts).weight()
+        return abjad.Sequence(self.counts).weight()
 
     @property
     def preamble(self) -> typing.Optional[typing.List[int]]:
@@ -481,10 +475,10 @@ class Talea(AbjadValueObject):
         if weight < 0:
             raise Exception(f'weight {weight} must be nonnegative.')
         if weight == 0:
-            return new(self)
-        preamble = Sequence(self.preamble or ())
-        counts = Sequence(self.counts or ())
-        preamble_: typing.Optional[Sequence]
+            return abjad.new(self)
+        preamble = abjad.Sequence(self.preamble or ())
+        counts = abjad.Sequence(self.counts or ())
+        preamble_: typing.Optional[abjad.Sequence]
         if weight < preamble.weight():
             consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
@@ -503,7 +497,7 @@ class Talea(AbjadValueObject):
             else:
                 consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
-        return new(
+        return abjad.new(
             self,
             counts=counts,
             denominator=self.denominator,

@@ -1,7 +1,7 @@
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
+import abjad
 
 
-class InterpolationSpecifier(AbjadValueObject):
+class InterpolationSpecifier(abjad.AbjadValueObject):
     """
     Interpolation specifier.
 
@@ -30,7 +30,6 @@ class InterpolationSpecifier(AbjadValueObject):
         stop_duration=(1, 16),
         written_duration=(1, 16),
         ):
-        import abjad
         self._start_duration = abjad.Duration(start_duration)
         self._stop_duration = abjad.Duration(stop_duration)
         self._written_duration = abjad.Duration(written_duration)

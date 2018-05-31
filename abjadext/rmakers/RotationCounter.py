@@ -1,8 +1,7 @@
-from abjad.tools import systemtools
-from abjad.tools.datastructuretools.TypedCounter import TypedCounter
+import abjad
 
 
-class RotationCounter(TypedCounter):
+class RotationCounter(abjad.TypedCounter):
     r"""
     Rotation counter.
 
@@ -40,7 +39,7 @@ class RotationCounter(TypedCounter):
         items=None,
         **keywords
         ):
-        TypedCounter.__init__(
+        abjad.TypedCounter.__init__(
             self,
             items=items,
             **keywords
@@ -68,14 +67,14 @@ class RotationCounter(TypedCounter):
     ### PRIVATE METHODS ###
 
     def _get_format_specification(self):
-        agent = systemtools.StorageFormatManager(self)
+        agent = abjad.StorageFormatManager(self)
         names = list(agent.signature_keyword_names)
         names.extend(sorted(self._collection.keys()))
         if 'items' in names:
             names.remove('items')
         if not self.autoincrement:
             names.remove('autoincrement')
-        return systemtools.FormatSpecification(
+        return abjad.FormatSpecification(
             self,
             repr_is_indented=False,
             storage_format_args_values=[],

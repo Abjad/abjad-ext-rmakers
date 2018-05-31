@@ -1,10 +1,10 @@
+import abjad
 import collections
 import itertools
 import typing
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
 
 
-class TieSpecifier(AbjadValueObject):
+class TieSpecifier(abjad.AbjadValueObject):
     """
     Tie specifier.
 
@@ -33,7 +33,6 @@ class TieSpecifier(AbjadValueObject):
         tie_across_divisions=None,
         tie_consecutive_notes=None,
         ):
-        import abjad
         if repeat_ties is not None:
             repeat_ties = bool(repeat_ties)
         self._repeat_ties = repeat_ties
@@ -72,7 +71,6 @@ class TieSpecifier(AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _configure_repeat_ties(self, divisions):
-        import abjad
         if not self.repeat_ties:
             return
         ties = set()
@@ -83,7 +81,6 @@ class TieSpecifier(AbjadValueObject):
             tie._repeat = True
 
     def _strip_ties_(self, divisions):
-        import abjad
         if not self.strip_ties:
             return
         for division in divisions:
@@ -91,7 +88,6 @@ class TieSpecifier(AbjadValueObject):
                 abjad.detach(abjad.Tie, leaf)
 
     def _tie_across_divisions_(self, divisions):
-        import abjad
         if not self.tie_across_divisions:
             return
         if self.strip_ties:
@@ -138,7 +134,6 @@ class TieSpecifier(AbjadValueObject):
             tie._constrain_contiguity()
 
     def _tie_consecutive_notes_(self, divisions):
-        import abjad
         if not self.tie_consecutive_notes:
             return
         leaves = list(abjad.iterate(divisions).leaves())

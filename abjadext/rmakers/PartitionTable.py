@@ -1,7 +1,7 @@
-from abjad.tools.datastructuretools.OrderedDict import OrderedDict
+import abjad
 
 
-class PartitionTable(OrderedDict):
+class PartitionTable(abjad.OrderedDict):
     """
     Partition table.
 
@@ -89,7 +89,6 @@ class PartitionTable(OrderedDict):
 
     @staticmethod
     def _item_coercer(item):
-        import abjad
         item = abjad.NonreducedRatio(item)
         return item
 
@@ -161,7 +160,6 @@ class PartitionTable(OrderedDict):
 
         Returns list of new divisions.
         """
-        import abjad
         division = abjad.NonreducedFraction(division)
         result = [division]
         divisors = abjad.mathtools.divisors(division.numerator)

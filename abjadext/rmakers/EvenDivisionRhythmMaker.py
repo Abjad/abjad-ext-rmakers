@@ -1,3 +1,4 @@
+import abjad
 import math
 from .RhythmMaker import RhythmMaker
 
@@ -41,7 +42,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        import abjad
         from abjadext import rmakers
         RhythmMaker.__init__(
             self,
@@ -259,7 +259,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     ### PRIVATE METHODS ###
 
     def _apply_burnish_specifier(self, selections):
-        import abjad
         if self.burnish_specifier is None:
             return selections
         rotation = self.state.get('rotation')
@@ -299,7 +298,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return selections
 
     def _burnish_division_part(self, division_part, token):
-        import abjad
         assert len(division_part) == len(token)
         new_division_part = []
         for leaf, burnishing in zip(division_part, token):
@@ -325,7 +323,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         left_counts,
         right_counts,
         ):
-        import abjad
         lefts_index, rights_index = 0, 0
         for selection_index, selection in enumerate(selections):
             tuplet = selection[0]
@@ -369,7 +366,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         left_counts,
         right_counts,
         ):
-        import abjad
         if len(selections) == 1:
             self._burnish_each_selection(
                 selections,
@@ -444,7 +440,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return selections
 
     def _make_music(self, divisions):
-        import abjad
         rotation = self.state.get('rotation', 0)
         selections = []
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]

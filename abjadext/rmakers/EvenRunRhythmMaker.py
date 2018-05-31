@@ -1,3 +1,4 @@
+import abjad
 from .RhythmMaker import RhythmMaker
 
 
@@ -77,7 +78,6 @@ class EvenRunRhythmMaker(RhythmMaker):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        import abjad
         if exponent is not None:
             assert abjad.mathtools.is_nonnegative_integer(exponent)
         RhythmMaker.__init__(
@@ -130,7 +130,6 @@ class EvenRunRhythmMaker(RhythmMaker):
     ### PRIVATE METHODS ###
 
     def _make_container(self, division):
-        import abjad
         duration_specifier = self._get_duration_specifier()
         forbidden_duration = \
             duration_specifier.forbidden_duration
@@ -161,7 +160,6 @@ class EvenRunRhythmMaker(RhythmMaker):
         return result
 
     def _make_music(self, divisions):
-        import abjad
         selections = []
         for division in divisions:
             prototype = abjad.NonreducedFraction

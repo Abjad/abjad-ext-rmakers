@@ -1,7 +1,7 @@
-from abjad.tools.abctools.AbjadValueObject import AbjadValueObject
+import abjad
 
 
-class InciseSpecifier(AbjadValueObject):
+class InciseSpecifier(abjad.AbjadValueObject):
     """
     Incise specifier.
 
@@ -64,7 +64,6 @@ class InciseSpecifier(AbjadValueObject):
         fill_with_notes=True,
         outer_divisions_only=None,
         ):
-        import abjad
         prefix_talea = prefix_talea or ()
         prefix_talea = tuple(prefix_talea)
         assert self._is_integer_tuple(prefix_talea)
@@ -159,8 +158,7 @@ class InciseSpecifier(AbjadValueObject):
     ### PRIVATE METHODS ###
 
     def _get_format_specification(self):
-        from abjad.tools import systemtools
-        agent = systemtools.StorageFormatManager(self)
+        agent = abjad.StorageFormatManager(self)
         names = list(agent.signature_keyword_names)
         for name in names[:]:
             if name == 'talea_denominator':
@@ -170,7 +168,7 @@ class InciseSpecifier(AbjadValueObject):
         # TODO: keywords defaults checking
         if self.fill_with_notes:
             names.remove('fill_with_notes')
-        return systemtools.FormatSpecification(
+        return abjad.FormatSpecification(
             client=self,
             storage_format_kwargs_names=names,
             )
@@ -185,7 +183,6 @@ class InciseSpecifier(AbjadValueObject):
 
     @staticmethod
     def _is_length_tuple(argument):
-        import abjad
         if argument is None:
             return True
         if abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(

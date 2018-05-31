@@ -1,7 +1,5 @@
+import abjad
 import typing
-from abjad.tools.datastructuretools.Duration import Duration
-from abjad.tools.datastructuretools.OrderedDict import OrderedDict
-from abjad.tools.datastructuretools.Pattern import Pattern
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
@@ -115,7 +113,6 @@ class TaleaRhythmMaker(RhythmMaker):
         tie_split_notes=True,
         tuplet_specifier=None,
         ):
-        import abjad
         from abjadext import rmakers
         RhythmMaker.__init__(
             self,
@@ -321,7 +318,6 @@ class TaleaRhythmMaker(RhythmMaker):
         unscaled_preamble,
         unscaled_talea,
         ):
-        import abjad
         if not self.tie_split_notes:
             return
         leaves = abjad.select(result).leaves()
@@ -334,7 +330,7 @@ class TaleaRhythmMaker(RhythmMaker):
             preamble_weights = []
             for numerator in unscaled_preamble:
                 pair = (numerator, self.talea.denominator)
-                duration = Duration(*pair)
+                duration = abjad.Duration(*pair)
                 weight = abs(duration)
                 preamble_weights.append(weight)
         preamble_duration = sum(preamble_weights)
@@ -357,7 +353,7 @@ class TaleaRhythmMaker(RhythmMaker):
             talea_weights = []
             for numerator in unscaled_talea:
                 pair = (numerator, self.talea.denominator)
-                weight = abs(Duration(*pair))
+                weight = abs(abjad.Duration(*pair))
                 talea_weights.append(weight)
             preamble_length = len(preamble_parts.flatten())
             talea_written_durations = written_durations[preamble_length:]
@@ -396,12 +392,11 @@ class TaleaRhythmMaker(RhythmMaker):
         return rmakers.BurnishSpecifier()
 
     def _get_format_specification(self):
-        from abjad.tools import systemtools
-        agent = systemtools.StorageFormatManager(self)
+        agent = abjad.StorageFormatManager(self)
         names = list(agent.signature_keyword_names)
         if self.tie_split_notes:
             names.remove('tie_split_notes')
-        return systemtools.FormatSpecification(
+        return abjad.FormatSpecification(
             self,
             storage_format_kwargs_names=names,
             )
@@ -413,7 +408,6 @@ class TaleaRhythmMaker(RhythmMaker):
         return rmakers.Talea()
 
     def _handle_rest_tied_notes(self, selections):
-        import abjad
         if not self.rest_tied_notes:
             return selections
         # wrap every selection in a temporary container;
@@ -461,7 +455,6 @@ class TaleaRhythmMaker(RhythmMaker):
         spell_metrically=None,
         repeat_ties=False,
         ):
-        import abjad
         assert all(x != 0 for x in talea), repr(talea)
         result = []
         leaf_maker = abjad.LeafMaker(
@@ -498,7 +491,6 @@ class TaleaRhythmMaker(RhythmMaker):
         return result
 
     def _make_music(self, divisions):
-        import abjad
         input_divisions = divisions[:]
         input_ = self._prepare_input()
         preamble = input_['preamble']
@@ -598,7 +590,7 @@ class TaleaRhythmMaker(RhythmMaker):
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += talea_weight_consumed
         items = self.state.items()
-        state = OrderedDict(sorted(items))
+        state = abjad.OrderedDict(sorted(items))
         self._state = state
         return selections
 
@@ -609,7 +601,6 @@ class TaleaRhythmMaker(RhythmMaker):
         talea,
         extra_counts_per_division,
         ):
-        import abjad
         assert all(isinstance(_, int) for _ in preamble), repr(preamble)
         assert all(isinstance(_, int) for _ in talea), repr(talea)
         prolated_divisions = self._make_prolated_divisions(
@@ -666,7 +657,6 @@ class TaleaRhythmMaker(RhythmMaker):
         return prolated_divisions
 
     def _prepare_input(self):
-        import abjad
         talea_weight_consumed = self.previous_state.get(
             'talea_weight_consumed',
             0,
@@ -701,7 +691,6 @@ class TaleaRhythmMaker(RhythmMaker):
             }
 
     def _split_talea_extended_to_weights(self, preamble, talea, weights):
-        import abjad
         assert abjad.mathtools.all_are_positive_integers(weights)
         preamble_weight = abjad.mathtools.weight(preamble)
         talea_weight = abjad.mathtools.weight(talea)
@@ -1388,7 +1377,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return self._burnish_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[typing.List[Pattern]]:
+    def division_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
         r"""
         Gets division masks.
 
@@ -2642,7 +2631,7 @@ class TaleaRhythmMaker(RhythmMaker):
             return None
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[typing.List[Pattern]]:
+    def logical_tie_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
         r"""
         Gets logical tie masks.
 
@@ -3513,7 +3502,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return self._split_divisions_by_counts
 
     @property
-    def state(self) -> OrderedDict:
+    def state(self) -> abjad.OrderedDict:
         r"""
         Gets state dictionary.
 
