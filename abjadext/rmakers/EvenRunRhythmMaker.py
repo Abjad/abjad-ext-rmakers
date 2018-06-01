@@ -709,7 +709,73 @@ class EvenRunRhythmMaker(RhythmMaker):
         r"""
         Gets tuplet specifier.
 
-        ..  note:: not yet implemented.
+        ..  container:: example
+
+            Does nothing because EvenRunRhythmMaker produces containers instead
+            of tuplets:
+
+            >>> rhythm_maker = abjadext.rmakers.EvenRunRhythmMaker(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         force_fraction=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 8), (3, 8), (4, 8), (2, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 5/8
+                        {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 3/8
+                        {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 4/8
+                        {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 2/8
+                        {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }   % measure
+                }
 
         Returns tuplet specifier or none.
         """

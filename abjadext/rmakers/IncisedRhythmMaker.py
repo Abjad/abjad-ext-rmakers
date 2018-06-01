@@ -1536,10 +1536,67 @@ class IncisedRhythmMaker(RhythmMaker):
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
-        """
+        r"""
         Gets tuplet specifier.
 
-        ..  note:: not yet implemented.
+        ..  container:: example
+
+            Makes augmentations:
+
+            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     extra_counts_per_division=[1],
+            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...         prefix_talea=[-1],
+            ...         prefix_counts=[1],
+            ...         outer_divisions_only=True,
+            ...         suffix_talea=[-1],
+            ...         suffix_counts=[1],
+            ...         talea_denominator=8,
+            ...         ),
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         diminution=False,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(8, 8), (4, 8), (6, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 8/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 16/9 {
+                            r16
+                            c'2
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 4/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/5 {
+                            c'4
+                            ~
+                            c'16
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 6/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/7 {
+                            c'4.
+                            r16
+                        }
+                    }   % measure
+                }
 
         Returns tuplet specifier or none.
         """

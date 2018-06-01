@@ -123,29 +123,30 @@ class TaleaRhythmMaker(RhythmMaker):
             tuplet_specifier=tuplet_specifier,
             )
         if talea is not None:
-            assert isinstance(talea, Talea)
+            assert isinstance(talea, Talea), repr(talea)
         self._talea = talea
+        if burnish_specifier is not None:
+            assert isinstance(burnish_specifier, BurnishSpecifier)
+        self._burnish_specifier = burnish_specifier
+        if extra_counts_per_division is not None:
+            assert abjad.mathtools.all_are_integer_equivalent_numbers(
+                extra_counts_per_division)
+        self._extra_counts_per_division = extra_counts_per_division
         if read_talea_once_only is not None:
             read_talea_once_only = bool(read_talea_once_only)
         self._read_talea_once_only = read_talea_once_only
-        if tie_split_notes is not None:
-            assert isinstance(tie_split_notes, bool), repr(tie_split_notes)
-        self._tie_split_notes = tie_split_notes
-        prototype = (BurnishSpecifier, type(None))
-        assert isinstance(burnish_specifier, prototype)
-        self._burnish_specifier = burnish_specifier
+        if rest_tied_notes is not None:
+            rest_tied_notes = bool(rest_tied_notes)
+        self._rest_tied_notes = rest_tied_notes
         if split_divisions_by_counts is not None:
             split_divisions_by_counts = tuple(split_divisions_by_counts)
-        assert extra_counts_per_division is None or \
-            abjad.mathtools.all_are_integer_equivalent_numbers(
-                extra_counts_per_division)
-        assert split_divisions_by_counts is None or \
-            abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(
+        if split_divisions_by_counts is not None:
+            assert abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(
                 split_divisions_by_counts)
-        self._extra_counts_per_division = extra_counts_per_division
         self._split_divisions_by_counts = split_divisions_by_counts
-        assert isinstance(rest_tied_notes, (bool, type(None))), rest_tied_notes
-        self._rest_tied_notes = rest_tied_notes
+        if tie_split_notes is not None:
+            tie_split_notes = bool(tie_split_notes)
+        self._tie_split_notes = tie_split_notes
 
     ### SPECIAL METHODS ###
 
@@ -555,21 +556,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 unscaled_talea,
                 )
         selections = self._handle_rest_tied_notes(selections)
-
-        # TODO: remove
-        if self.tuplet_specifier:
-            diminution = self.tuplet_specifier.diminution
-        else:
-            diminution = None
-        if diminution is not None:
-            for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
-                if tuplet.multiplier == 1:
-                    continue
-                if diminution is True and not tuplet.diminution():
-                    tuplet.toggle_prolation()
-                elif diminution is False and tuplet.diminution():
-                    tuplet.toggle_prolation()
-
         selections = self._apply_division_masks(selections)
         specifier = self._get_duration_specifier()
         if specifier.rewrite_meter:

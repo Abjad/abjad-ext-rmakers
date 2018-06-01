@@ -354,53 +354,16 @@ class TupletRhythmMaker(RhythmMaker):
         tuplet_ratios = abjad.CyclicTuple(
             abjad.sequence(self.tuplet_ratios).rotate(n=rotation)
             )
-
-        # TODO: remove
-        tuplet_specifier = self._get_tuplet_specifier()
-
         for duration_index, division in enumerate(divisions):
             ratio = tuplet_ratios[duration_index]
             duration = abjad.Duration(division)
-            tuplet = self._make_tuplet(duration, ratio)
-
-            # TODO: remove
-            if not tuplet.trivial():
-                if tuplet_specifier.diminution is True:
-                    if not tuplet.diminution():
-                        tuplet.toggle_prolation()
-                elif tuplet_specifier.diminution is False:
-                    if not tuplet.augmentation():
-                        tuplet.toggle_prolation()
-            if tuplet_specifier.avoid_dots is True:
-                tuplet.rewrite_dots()
-
-            # TODO: remove
-            denominator = tuplet_specifier.denominator
-            if denominator is None:
-                pass
-            elif denominator == 'divisions':
-                tuplet.denominator = division.numerator
-            elif isinstance(denominator, abjad.Duration):
-                unit_duration = denominator
-                assert unit_duration.numerator == 1
-                duration = abjad.inspect(tuplet).get_duration()
-                denominator_ = unit_duration.denominator
-                nonreduced_fraction = duration.with_denominator(denominator_)
-                tuplet.denominator = nonreduced_fraction.numerator
-            elif abjad.mathtools.is_positive_integer(denominator):
-                tuplet.denominator = denominator
-            else:
-                raise ValueError(denominator)
-
+            tuplet = abjad.Tuplet.from_duration_and_ratio(duration, ratio)
             tuplets.append(tuplet)
         selections = [abjad.select(_) for _ in tuplets]
         beam_specifier = self._get_beam_specifier()
         beam_specifier(selections)
         selections = self._apply_division_masks(selections)
         return selections
-
-    def _make_tuplet(self, duration, ratio):
-        return abjad.Tuplet.from_duration_and_ratio( duration, ratio)
 
     ### PUBLIC PROPERTIES ###
 

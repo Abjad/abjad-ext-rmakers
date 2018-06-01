@@ -451,7 +451,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             extra_counts_per_division
             )
         for i, division in enumerate(divisions, rotation):
-            # not yet extended to work with non-power-of-two divisions
             if not abjad.mathtools.is_positive_integer_power_of_two(
                 division.denominator):
                 message = 'non-power-of-two divisions not implemented: {!r}.'

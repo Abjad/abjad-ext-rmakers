@@ -113,10 +113,46 @@ class SkipRhythmMaker(RhythmMaker):
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
-        """
+        r"""
         Gets tuplet specifier.
 
-        ..  note:: not yet implemented.
+        ..  container:: example
+
+            No effect because ``SkipRhythmMaker`` makes skips instead of
+            tuplets:
+
+            >>> rhythm_maker = abjadext.rmakers.SkipRhythmMaker(
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         force_fraction=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(1, 4), (3, 16), (5, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 1/4
+                        s1 * 1/4
+                    }   % measure
+                    {   % measure
+                        \time 3/16
+                        s1 * 3/16
+                    }   % measure
+                    {   % measure
+                        \time 5/8
+                        s1 * 5/8
+                    }   % measure
+                }
 
         Returns tuplet specifier or none.
         """
