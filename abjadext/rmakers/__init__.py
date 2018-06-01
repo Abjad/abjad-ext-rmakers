@@ -4,7 +4,6 @@ from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .EvenDivisionRhythmMaker import EvenDivisionRhythmMaker
-from .EvenRunRhythmMaker import EvenRunRhythmMaker
 from .InciseSpecifier import InciseSpecifier
 from .IncisedRhythmMaker import IncisedRhythmMaker
 from .InterpolationSpecifier import InterpolationSpecifier
