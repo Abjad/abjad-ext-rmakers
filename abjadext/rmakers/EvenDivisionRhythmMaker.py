@@ -2767,11 +2767,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             No tuplet specifier:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     denominators=[4],
+            ...     denominators=[8],
             ...     extra_counts_per_division=[0, 0, 1],
             ...     )
 
-            >>> divisions = [(5, 8), (6, 8), (6, 8)]
+            >>> divisions = [(5, 16), (6, 16), (6, 16)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
@@ -2785,29 +2785,35 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 \new RhythmicStaff
                 {
                     {   % measure
-                        \time 5/8
+                        \time 5/16
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 5/4 {
-                            c'4
-                            c'4
+                            c'8
+                            [
+                            c'8
+                            ]
                         }
                     }   % measure
                     {   % measure
-                        \time 6/8
+                        \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/3 {
-                            c'4
-                            c'4
-                            c'4
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
                         }
                     }   % measure
                     {   % measure
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/4 {
-                            c'4
-                            c'4
-                            c'4
-                            c'4
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
                         }
                     }   % measure
                 }
@@ -2817,14 +2823,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Extracts trivial tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     denominators=[4],
+            ...     denominators=[8],
             ...     extra_counts_per_division=[0, 0, 1],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         ),
             ...     )
 
-            >>> divisions = [(5, 8), (6, 8), (6, 8)]
+            >>> divisions = [(5, 16), (6, 16), (6, 16)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
@@ -2838,26 +2844,142 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 \new RhythmicStaff
                 {
                     {   % measure
-                        \time 5/8
+                        \time 5/16
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 5/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 6/16
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }   % measure
+                    {   % measure
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }   % measure
+                }
+
+        ..  container:: example
+
+            Extracts trivial tuplets and spells tuplets as diminutions:
+
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     denominators=[8],
+            ...     extra_counts_per_division=[0, 0, 1],
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         diminution=True,
+            ...         extract_trivial=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 16), (6, 16), (6, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 5/16
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/8 {
                             c'4
                             c'4
                         }
                     }   % measure
                     {   % measure
-                        \time 6/8
-                        c'4
-                        c'4
-                        c'4
+                        \time 6/16
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
                     }   % measure
                     {   % measure
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/4 {
-                            c'4
-                            c'4
-                            c'4
-                            c'4
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }   % measure
+                }
+
+            Extracts trivial tuplets and spells tuplets as augmentations:
+
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     denominators=[8],
+            ...     extra_counts_per_division=[0, 0, 1],
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         diminution=False,
+            ...         extract_trivial=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 16), (6, 16), (6, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 5/16
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }   % measure
+                    {   % measure
+                        \time 6/16
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }   % measure
+                    {   % measure
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
                         }
                     }   % measure
                 }
@@ -2868,7 +2990,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             to division numerators:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     denominators=[4],
+            ...     denominators=[8],
             ...     extra_counts_per_division=[0, 0, 1],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         denominator='divisions',
@@ -2876,7 +2998,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...         ),
             ...     )
 
-            >>> divisions = [(5, 8), (6, 8), (6, 8)]
+            >>> divisions = [(5, 16), (6, 16), (6, 16)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
@@ -2890,26 +3012,32 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 \new RhythmicStaff
                 {
                     {   % measure
-                        \time 5/8
+                        \time 5/16
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 5/4 {
-                            c'4
-                            c'4
+                            c'8
+                            [
+                            c'8
+                            ]
                         }
                     }   % measure
                     {   % measure
-                        \time 6/8
-                        c'4
-                        c'4
-                        c'4
+                        \time 6/16
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
                     }   % measure
                     {   % measure
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8 {
-                            c'4
-                            c'4
-                            c'4
-                            c'4
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
                         }
                     }   % measure
                 }
