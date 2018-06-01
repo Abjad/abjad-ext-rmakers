@@ -359,8 +359,14 @@ class TupletRhythmMaker(RhythmMaker):
                 duration,
                 ratio,
                 avoid_dots=tuplet_specifier.avoid_dots,
-                diminution=tuplet_specifier.diminution,
                 )
+            if not tuplet.trivial():
+                if tuplet_specifier.diminution is True:
+                    if not tuplet.diminution():
+                        tuplet.toggle_prolation()
+                elif tuplet_specifier.diminution is False:
+                    if not tuplet.augmentation():
+                        tuplet.toggle_prolation()
             denominator = tuplet_specifier.denominator
             if denominator is None:
                 pass
@@ -389,13 +395,11 @@ class TupletRhythmMaker(RhythmMaker):
         duration,
         ratio,
         avoid_dots=False,
-        diminution=True,
         ):
         tuplet = abjad.Tuplet.from_duration_and_ratio(
             duration,
             ratio,
             avoid_dots=avoid_dots,
-            diminution=diminution,
             )
         return tuplet
 
