@@ -113,7 +113,6 @@ class TaleaRhythmMaker(RhythmMaker):
         tie_split_notes=True,
         tuplet_specifier=None,
         ):
-        from abjadext import rmakers
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -123,15 +122,16 @@ class TaleaRhythmMaker(RhythmMaker):
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
             )
-        prototype = (rmakers.Talea, type(None))
-        assert isinstance(talea, prototype)
-        assert isinstance(read_talea_once_only, (bool, type(None)))
-        self._read_talea_once_only = read_talea_once_only
+        if talea is not None:
+            assert isinstance(talea, Talea)
         self._talea = talea
+        if read_talea_once_only is not None:
+            read_talea_once_only = bool(read_talea_once_only)
+        self._read_talea_once_only = read_talea_once_only
         if tie_split_notes is not None:
             assert isinstance(tie_split_notes, bool), repr(tie_split_notes)
         self._tie_split_notes = tie_split_notes
-        prototype = (rmakers.BurnishSpecifier, type(None))
+        prototype = (BurnishSpecifier, type(None))
         assert isinstance(burnish_specifier, prototype)
         self._burnish_specifier = burnish_specifier
         if split_divisions_by_counts is not None:
@@ -386,10 +386,9 @@ class TaleaRhythmMaker(RhythmMaker):
             tie_spanner._constrain_contiguity()
 
     def _get_burnish_specifier(self):
-        from abjadext import rmakers
         if self.burnish_specifier is not None:
             return self.burnish_specifier
-        return rmakers.BurnishSpecifier()
+        return BurnishSpecifier()
 
     def _get_format_specification(self):
         agent = abjad.StorageFormatManager(self)
@@ -402,10 +401,9 @@ class TaleaRhythmMaker(RhythmMaker):
             )
 
     def _get_talea(self):
-        from abjadext import rmakers
         if self.talea is not None:
             return self.talea
-        return rmakers.Talea()
+        return Talea()
 
     def _handle_rest_tied_notes(self, selections):
         if not self.rest_tied_notes:

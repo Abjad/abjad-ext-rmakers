@@ -1,5 +1,6 @@
 import abjad
 import math
+from .BurnishSpecifier import BurnishSpecifier
 from .RhythmMaker import RhythmMaker
 
 
@@ -42,7 +43,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        from abjadext import rmakers
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -64,8 +64,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 ]
             extra_counts_per_division = tuple(extra_counts_per_division)
         self._extra_counts_per_division = extra_counts_per_division
-        prototype = (rmakers.BurnishSpecifier, type(None))
-        assert isinstance(burnish_specifier, prototype)
+        if burnish_specifier is not None:
+            assert isinstance(burnish_specifier, BurnishSpecifier)
         self._burnish_specifier = burnish_specifier
         extra_counts_per_division = extra_counts_per_division or (0,)
         self._denominator = denominator

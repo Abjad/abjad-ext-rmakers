@@ -3,6 +3,8 @@ import collections
 import typing
 from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
+from .SilenceMask import SilenceMask
+from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
 
@@ -44,28 +46,23 @@ class RhythmMaker(abjad.AbjadValueObject):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        from abjadext import rmakers
         if beam_specifier is not None:
-            prototype = rmakers.BeamSpecifier
-            assert isinstance(beam_specifier, prototype)
+            assert isinstance(beam_specifier, BeamSpecifier)
         self._beam_specifier = beam_specifier
         logical_tie_masks = self._prepare_masks(logical_tie_masks)
         self._logical_tie_masks = logical_tie_masks
         if duration_specifier is not None:
-            prototype = rmakers.DurationSpecifier
-            assert isinstance(duration_specifier, prototype)
+            assert isinstance(duration_specifier, DurationSpecifier)
         self._duration_specifier = duration_specifier
         division_masks = self._prepare_masks(division_masks)
         self._division_masks = division_masks
         self._previous_state = abjad.OrderedDict()
         self._state = abjad.OrderedDict()
         if tie_specifier is not None:
-            prototype = rmakers.TieSpecifier
-            assert isinstance(tie_specifier, prototype)
+            assert isinstance(tie_specifier, TieSpecifier)
         self._tie_specifier = tie_specifier
         if tuplet_specifier is not None:
-            prototype = rmakers.TupletSpecifier
-            assert isinstance(tuplet_specifier, prototype)
+            assert isinstance(tuplet_specifier, TupletSpecifier)
         self._tuplet_specifier = tuplet_specifier
 
     ### SPECIAL METHODS ###
@@ -108,7 +105,6 @@ class RhythmMaker(abjad.AbjadValueObject):
             return False
 
     def _apply_division_masks(self, selections):
-        from abjadext import rmakers
         if not self.division_masks:
             return selections
         new_selections = []
@@ -134,10 +130,7 @@ class RhythmMaker(abjad.AbjadValueObject):
                 new_selections.append(selection)
                 continue
             duration = abjad.inspect(selection).get_duration()
-            if isinstance(
-                matching_division_mask,
-                rmakers.SustainMask,
-                ):
+            if isinstance(matching_division_mask, SustainMask):
                 leaf_maker = abjad.new(
                     leaf_maker,
                     use_multimeasure_rests=False,
@@ -160,7 +153,6 @@ class RhythmMaker(abjad.AbjadValueObject):
         return new_selections
 
     def _apply_logical_tie_masks(self, selections):
-        from abjadext import rmakers
         if self.logical_tie_masks is None:
             return selections
         # wrap every selection in a temporary container;
@@ -181,7 +173,7 @@ class RhythmMaker(abjad.AbjadValueObject):
                 index + previous_logical_ties_produced,
                 total_logical_ties + previous_logical_ties_produced,
                 )
-            if not isinstance(matching_mask, rmakers.SilenceMask):
+            if not isinstance(matching_mask, SilenceMask):
                 continue
             if isinstance(logical_tie.head, abjad.Rest):
                 continue
@@ -254,28 +246,24 @@ class RhythmMaker(abjad.AbjadValueObject):
         return state_
 
     def _get_beam_specifier(self):
-        from abjadext import rmakers
         if self.beam_specifier is not None:
             return self.beam_specifier
-        return rmakers.BeamSpecifier()
+        return BeamSpecifier()
 
     def _get_duration_specifier(self):
-        from abjadext import rmakers
         if self.duration_specifier is not None:
             return self.duration_specifier
-        return rmakers.DurationSpecifier()
+        return DurationSpecifier()
 
     def _get_tie_specifier(self):
-        from abjadext import rmakers
         if self.tie_specifier is not None:
             return self.tie_specifier
-        return rmakers.TieSpecifier()
+        return TieSpecifier()
 
     def _get_tuplet_specifier(self):
-        from abjadext import rmakers
         if self.tuplet_specifier is not None:
             return self.tuplet_specifier
-        return rmakers.TupletSpecifier()
+        return TupletSpecifier()
 
     @staticmethod
     def _is_sign_tuple(argument):
@@ -329,11 +317,7 @@ class RhythmMaker(abjad.AbjadValueObject):
 
     @staticmethod
     def _prepare_masks(masks):
-        from abjadext import rmakers
-        prototype = (
-            rmakers.SilenceMask,
-            rmakers.SustainMask,
-            )
+        prototype = (SilenceMask, SustainMask)
         if masks is None:
             return
         if isinstance(masks, abjad.Pattern):

@@ -1,5 +1,6 @@
 import abjad
 import math
+from .InterpolationSpecifier import InterpolationSpecifier
 from .RhythmMaker import RhythmMaker
 
 
@@ -567,13 +568,10 @@ class AccelerandoRhythmMaker(RhythmMaker):
             abjad.attach(multiplier, selection[-1])
 
     def _get_interpolation_specifiers(self):
-        from abjadext import rmakers
         specifiers = self.interpolation_specifiers
         if specifiers is None:
-            specifiers = abjad.CyclicTuple([
-                rmakers.InterpolationSpecifier(),
-                ])
-        elif isinstance(specifiers, rmakers.InterpolationSpecifier):
+            specifiers = abjad.CyclicTuple([InterpolationSpecifier()])
+        elif isinstance(specifiers, InterpolationSpecifier):
             specifiers = abjad.CyclicTuple([specifiers])
         else:
             specifiers = abjad.CyclicTuple(specifiers)

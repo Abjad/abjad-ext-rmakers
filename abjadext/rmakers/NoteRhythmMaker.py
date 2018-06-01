@@ -3,6 +3,7 @@ import typing
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
+from .PartitionTable import PartitionTable
 from .RhythmMaker import RhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
@@ -71,7 +72,6 @@ class NoteRhythmMaker(RhythmMaker):
         tie_specifier=None,
         tuplet_specifier=None,
         ):
-        from abjadext import rmakers
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -82,8 +82,7 @@ class NoteRhythmMaker(RhythmMaker):
             tuplet_specifier=tuplet_specifier,
             )
         if burnish_specifier is not None:
-            prototype = rmakers.BurnishSpecifier
-            assert isinstance(burnish_specifier, prototype)
+            assert isinstance(burnish_specifier, BurnishSpecifier)
         self._burnish_specifier = burnish_specifier
 
     ### SPECIAL METHODS ###
@@ -209,7 +208,6 @@ class NoteRhythmMaker(RhythmMaker):
         return new_selection
 
     def _make_music(self, divisions):
-        from abjadext import rmakers
         selections = []
         duration_specifier = self._get_duration_specifier()
         tie_specifier = self._get_tie_specifier()
@@ -229,7 +227,8 @@ class NoteRhythmMaker(RhythmMaker):
                 durations = [_.duration for _ in rhythm_tree_container]
             elif isinstance(
                 duration_specifier.spell_metrically,
-                rmakers.PartitionTable):
+                PartitionTable,
+                ):
                 partition_table = duration_specifier.spell_metrically
                 durations = partition_table.respell_division(division)
             else:
