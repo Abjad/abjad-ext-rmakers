@@ -31,17 +31,12 @@ before_install:
     - export PATH=$PATH:$ABJAD/abjad/scr
 
     # set path:
-    #- export PATH=/home/travis/bin:$PATH
+    - export PATH=/home/travis/bin:$PATH
 
-    #- pip install -U https://github.com/Abjad/abjad/archive/master.zip
-    
     # install uqbar:
-    #- pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-    #- pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-    #- export MYPYPATH=$MYPYPATH:/tmp/typehints
-    - UQBAR=/tmp/uqbar
-    - pip install --no-deps --target $UQBAR uqbar
-    - export MYPYPATH=$MYPYPATH:$UQBAR
+    - pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+    - pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+    - export MYPYPATH=$MYPYPATH:/tmp/typehints
 
     # log setup:
     - echo $MYPYPATH
@@ -53,12 +48,12 @@ before_install:
 
 install:
     - pip install coverage
-    #- pip install -e .[test] # maybe don't need test dependencies
-    - pip install -e .
+    - pip install -e .[test] # maybe don't need test dependencies
 
 script:
+    #- mypy abjadext/
     - mypy $PACKAGE
-    - `which py.test` -rf $PACKAGE
+    - coverage run -a `which py.test` -rf $PACKAGE
 
 after_success:
     - pip install --quiet coveralls
