@@ -36,9 +36,9 @@ before_install:
     #- pip install -U https://github.com/Abjad/abjad/archive/master.zip
     
     # install uqbar:
-#    - pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-#    - pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-#    - export MYPYPATH=$MYPYPATH:/tmp/typehints
+    #- pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+    #- pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+    #- export MYPYPATH=$MYPYPATH:/tmp/typehints
     - UQBAR=/tmp/uqbar
     - pip install --no-deps --target $UQBAR uqbar
     - export MYPYPATH=$MYPYPATH:$UQBAR
