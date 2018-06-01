@@ -1,6 +1,6 @@
-language: python
-
 sudo: false
+
+language: python
 
 python:
     - 3.6
@@ -31,15 +31,17 @@ before_install:
     - export PATH=$PATH:$ABJAD/abjad/scr
 
     # set path:
-    - export PATH=/home/travis/bin:$PATH
+    #- export PATH=/home/travis/bin:$PATH
 
     #- pip install -U https://github.com/Abjad/abjad/archive/master.zip
     
     # install uqbar:
-    - pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-    #- pip install --no-deps --target /tmp/typehints https://github.com/Abjad/abjad/archive/master.zip
-    - pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-    - export MYPYPATH=$MYPYPATH:/tmp/typehints
+#    - pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+#    - pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+#    - export MYPYPATH=$MYPYPATH:/tmp/typehints
+    - UQBAR=/tmp/uqbar
+    - pip install --no-deps --target $UQBAR 'uqbar>=0.2.13'
+    - export MYPYPATH=$MYPYPATH:$UQBAR
 
     # log setup:
     - echo $MYPYPATH
@@ -48,17 +50,15 @@ before_install:
     - ls /tmp
     - pwd
     - which mypy
-    #- which prime-parser-tables
 
 install:
     - pip install coverage
-    - pip install -e .[test] # maybe don't need test dependencies
-    #- prime-parser-tables # do we need this?
+    #- pip install -e .[test] # maybe don't need test dependencies
+    - pip install -e .
 
 script:
-    #- mypy abjadext/
     - mypy $PACKAGE
-    - coverage run -a `which py.test` -rf $PACKAGE
+    - `which py.test` -rf $PACKAGE
 
 after_success:
     - pip install --quiet coveralls
