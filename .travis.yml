@@ -39,7 +39,7 @@ before_install:
     - pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
     #- pip install --no-deps --target /tmp/typehints https://github.com/Abjad/abjad/archive/master.zip
     - pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-    - export MYPYPATH=/tmp/typehints
+    - export MYPYPATH=$MYPYPATH:/tmp/typehints
 
     # log setup:
     - echo $MYPYPATH
@@ -58,7 +58,7 @@ install:
 script:
     #- mypy abjadext/
     - mypy $PACKAGE
-    - coverage pytest
+    - coverage run -a `which py.test` -rf $PACKAGE
 
 after_success:
     - pip install --quiet coveralls
