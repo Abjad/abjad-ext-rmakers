@@ -555,6 +555,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 unscaled_talea,
                 )
         selections = self._handle_rest_tied_notes(selections)
+
+        # TODO: remove
         if self.tuplet_specifier:
             diminution = self.tuplet_specifier.diminution
         else:
@@ -567,6 +569,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     tuplet.toggle_prolation()
                 elif diminution is False and tuplet.diminution():
                     tuplet.toggle_prolation()
+
         selections = self._apply_division_masks(selections)
         specifier = self._get_duration_specifier()
         if specifier.rewrite_meter:

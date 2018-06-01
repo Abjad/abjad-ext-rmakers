@@ -1,5 +1,7 @@
 import abjad
+import typing
 from .RhythmMaker import RhythmMaker
+from .TupletSpecifier import TupletSpecifier
 
 
 class SkipRhythmMaker(RhythmMaker):
@@ -110,7 +112,7 @@ class SkipRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def tuplet_specifier(self):
+    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
         """
         Gets tuplet specifier.
 
@@ -118,5 +120,4 @@ class SkipRhythmMaker(RhythmMaker):
 
         Returns tuplet specifier or none.
         """
-        superclass = super(SkipRhythmMaker, self)
-        return superclass.tuplet_specifier
+        return super(SkipRhythmMaker, self).tuplet_specifier

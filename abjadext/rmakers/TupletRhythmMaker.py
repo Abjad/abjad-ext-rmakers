@@ -142,7 +142,6 @@ class TupletRhythmMaker(RhythmMaker):
     __slots__ = (
         '_denominator',
         '_tuplet_ratios',
-        '_tuplet_specifier',
         )
 
     ### INITIALIZER ###
@@ -355,11 +354,16 @@ class TupletRhythmMaker(RhythmMaker):
         tuplet_ratios = abjad.CyclicTuple(
             abjad.sequence(self.tuplet_ratios).rotate(n=rotation)
             )
+
+        # TODO: remove
         tuplet_specifier = self._get_tuplet_specifier()
+
         for duration_index, division in enumerate(divisions):
             ratio = tuplet_ratios[duration_index]
             duration = abjad.Duration(division)
             tuplet = self._make_tuplet(duration, ratio)
+
+            # TODO: remove
             if not tuplet.trivial():
                 if tuplet_specifier.diminution is True:
                     if not tuplet.diminution():
@@ -369,6 +373,8 @@ class TupletRhythmMaker(RhythmMaker):
                         tuplet.toggle_prolation()
             if tuplet_specifier.avoid_dots is True:
                 tuplet.rewrite_dots()
+
+            # TODO: remove
             denominator = tuplet_specifier.denominator
             if denominator is None:
                 pass
@@ -385,6 +391,7 @@ class TupletRhythmMaker(RhythmMaker):
                 tuplet.denominator = denominator
             else:
                 raise ValueError(denominator)
+
             tuplets.append(tuplet)
         selections = [abjad.select(_) for _ in tuplets]
         beam_specifier = self._get_beam_specifier()

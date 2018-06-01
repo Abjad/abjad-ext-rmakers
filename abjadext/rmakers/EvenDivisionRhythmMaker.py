@@ -1,7 +1,9 @@
 import abjad
 import math
+import typing
 from .BurnishSpecifier import BurnishSpecifier
 from .RhythmMaker import RhythmMaker
+from .TupletSpecifier import TupletSpecifier
 
 
 class EvenDivisionRhythmMaker(RhythmMaker):
@@ -2757,7 +2759,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return superclass.logical_tie_masks
 
     @property
-    def tuplet_specifier(self):
+    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
         r"""
         Gets tuplet specifier.
 
@@ -2915,5 +2917,4 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         Returns tuplet specifier or none.
         """
-        superclass = super(EvenDivisionRhythmMaker, self)
-        return superclass.tuplet_specifier
+        return super(EvenDivisionRhythmMaker, self).tuplet_specifier

@@ -850,7 +850,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             abjad.override(selection[0]).beam.grow_direction = abjad.Left
         tuplet = abjad.Tuplet((1, 1), selection)
         if tuplet_specifier.use_note_duration_bracket:
-            #tuplet.force_times_command = True
             duration = abjad.inspect(tuplet).get_duration()
             markup = duration.to_score_markup()
             markup = markup.scale((0.75, 0.75))

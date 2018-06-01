@@ -1,5 +1,7 @@
 import abjad
+import typing
 from .RhythmMaker import RhythmMaker
+from .TupletSpecifier import TupletSpecifier
 
 
 class EvenRunRhythmMaker(RhythmMaker):
@@ -703,7 +705,7 @@ class EvenRunRhythmMaker(RhythmMaker):
         return RhythmMaker.tie_specifier.fget(self)
 
     @property
-    def tuplet_specifier(self):
+    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
         r"""
         Gets tuplet specifier.
 
@@ -711,5 +713,4 @@ class EvenRunRhythmMaker(RhythmMaker):
 
         Returns tuplet specifier or none.
         """
-        superclass = super(EvenRunRhythmMaker, self)
-        return superclass.tuplet_specifier
+        return super(EvenRunRhythmMaker, self).tuplet_specifier

@@ -1,7 +1,9 @@
 import abjad
+import typing
 from .InciseSpecifier import InciseSpecifier
 from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
+from .TupletSpecifier import TupletSpecifier
 
 
 class IncisedRhythmMaker(RhythmMaker):
@@ -1533,7 +1535,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return superclass.tie_specifier
 
     @property
-    def tuplet_specifier(self):
+    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
         """
         Gets tuplet specifier.
 
@@ -1541,5 +1543,4 @@ class IncisedRhythmMaker(RhythmMaker):
 
         Returns tuplet specifier or none.
         """
-        superclass = super(IncisedRhythmMaker, self)
-        return superclass.tuplet_specifier
+        return super(IncisedRhythmMaker, self).tuplet_specifier

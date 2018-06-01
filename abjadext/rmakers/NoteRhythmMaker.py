@@ -211,7 +211,6 @@ class NoteRhythmMaker(RhythmMaker):
         selections = []
         duration_specifier = self._get_duration_specifier()
         tie_specifier = self._get_tie_specifier()
-        tuplet_specifier = self._get_tuplet_specifier()
         leaf_maker = abjad.LeafMaker(
             decrease_monotonic=duration_specifier.decrease_monotonic,
             forbidden_duration=duration_specifier.forbidden_duration,
