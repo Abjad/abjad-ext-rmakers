@@ -13,6 +13,9 @@ before_install:
     # upgrade pip:
     - pip install --upgrade pip
 
+    # install mypy:
+    - pip install mypy
+
     # install lilypond:
     - LILYPOND=/tmp/lilypond
     - LILYPOND_URL=http://download.linuxaudio.org/lilypond/binaries/linux-64
@@ -49,13 +52,13 @@ before_install:
 
 install:
     - pip install coverage
-    - pip install -e .[test]
+    - pip install -e .[test] # maybe don't need test dependencies
     #- prime-parser-tables # do we need this?
 
 script:
     #- mypy abjadext/
     - mypy $PACKAGE
-    - pytest
+    - coverage pytest
 
 after_success:
     - pip install --quiet coveralls
