@@ -1521,18 +1521,20 @@ class NoteRhythmMaker(RhythmMaker):
                 {
                     {   % measure
                         \time 5/14
+                        \tweak text #tuplet-number::calc-fraction-text
                         \tweak edge-height #'(0.7 . 0)
-                        \times 4/7 {
-                            c'2
+                        \times 8/7 {
+                            c'4
                             ~
-                            c'8
+                            c'16
                         }
                     }   % measure
                     {   % measure
                         \time 3/7
+                        \tweak text #tuplet-number::calc-fraction-text
                         \tweak edge-height #'(0.7 . 0)
-                        \times 4/7 {
-                            c'2.
+                        \times 8/7 {
+                            c'4.
                         }
                     }   % measure
                 }

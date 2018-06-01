@@ -4386,11 +4386,12 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }   % measure
                     {   % measure
-                        \times 2/3 {
-                            c'8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
                             [
-                            c'8
-                            c'8
+                            c'16
+                            c'16
                             ]
                         }
                     }   % measure
@@ -4403,11 +4404,12 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }   % measure
                     {   % measure
-                        \times 2/3 {
-                            c'8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
                             [
-                            c'8
-                            c'8
+                            c'16
+                            c'16
                             ]
                         }
                     }   % measure
@@ -4420,11 +4422,12 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }   % measure
                     {   % measure
-                        \times 2/3 {
-                            c'8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
                             [
-                            c'8
-                            c'8
+                            c'16
+                            c'16
                             ]
                         }
                     }   % measure

@@ -13,9 +13,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
         >>> specifier = abjadext.rmakers.TupletSpecifier()
         >>> abjad.f(specifier)
-        abjadext.rmakers.TupletSpecifier(
-            diminution=True,
-            )
+        abjadext.rmakers.TupletSpecifier()
 
     """
 
@@ -43,7 +41,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
         *,
         avoid_dots: bool = None,
         denominator: typing.Union[str, abjad.Duration, int] = None,
-        diminution: bool = True,
+        diminution: bool = None,
         extract_trivial: bool = None,
         force_fraction: bool = None,
         rewrite_rest_filled: bool = None,
@@ -56,9 +54,6 @@ class TupletSpecifier(abjad.AbjadValueObject):
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
         self._denominator = denominator
-        # TODO: Consider renaming diminution=True to augmentation=None.
-        #       That would allow for all keywords to default to None,
-        #       and therefore a single-line storage format.
         if diminution is not None:
             diminution = bool(diminution)
         self._diminution = diminution
@@ -97,7 +92,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
         # extract trivial must follow the other operations:
         selections = self._extract_trivial_(selections)
         # toggle prolation must follow avoid dots and extract trivial:
-        #self._toggle_prolation(selections)
+        self._toggle_prolation(selections)
         return selections
 
     ### PRIVATE METHODS ###
@@ -702,6 +697,10 @@ class TupletSpecifier(abjad.AbjadValueObject):
     def diminution(self) -> typing.Optional[bool]:
         """
         Is true when tuplet should be spelled as diminution.
+
+        Is false when tuplet should be spelled as augmentation.
+
+        Is none when tuplet spelling does not force prolation.
         """
         return self._diminution
 
