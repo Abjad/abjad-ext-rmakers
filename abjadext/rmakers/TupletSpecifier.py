@@ -261,9 +261,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -323,9 +323,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -383,9 +383,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -442,9 +442,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/20 {
-                            c'8
-                            c'2
+                        \times 12/10 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -501,9 +501,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 24/40 {
-                            c'8
-                            c'2
+                        \times 24/20 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -562,9 +562,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -621,9 +621,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/20 {
-                            c'8
-                            c'2
+                        \times 12/10 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -680,9 +680,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure

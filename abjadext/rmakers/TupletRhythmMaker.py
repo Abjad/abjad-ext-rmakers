@@ -355,11 +355,7 @@ class TupletRhythmMaker(RhythmMaker):
         for duration_index, division in enumerate(divisions):
             ratio = tuplet_ratios[duration_index]
             duration = abjad.Duration(division)
-            tuplet = self._make_tuplet(
-                duration,
-                ratio,
-                avoid_dots=tuplet_specifier.avoid_dots,
-                )
+            tuplet = self._make_tuplet(duration, ratio)
             if not tuplet.trivial():
                 if tuplet_specifier.diminution is True:
                     if not tuplet.diminution():
@@ -367,6 +363,8 @@ class TupletRhythmMaker(RhythmMaker):
                 elif tuplet_specifier.diminution is False:
                     if not tuplet.augmentation():
                         tuplet.toggle_prolation()
+            if tuplet_specifier.avoid_dots is True:
+                tuplet.rewrite_dots()
             denominator = tuplet_specifier.denominator
             if denominator is None:
                 pass
@@ -390,18 +388,8 @@ class TupletRhythmMaker(RhythmMaker):
         selections = self._apply_division_masks(selections)
         return selections
 
-    def _make_tuplet(
-        self,
-        duration,
-        ratio,
-        avoid_dots=False,
-        ):
-        tuplet = abjad.Tuplet.from_duration_and_ratio(
-            duration,
-            ratio,
-            avoid_dots=avoid_dots,
-            )
-        return tuplet
+    def _make_tuplet(self, duration, ratio):
+        return abjad.Tuplet.from_duration_and_ratio( duration, ratio)
 
     ### PUBLIC PROPERTIES ###
 
@@ -708,9 +696,9 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -770,9 +758,9 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -830,9 +818,9 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -889,9 +877,9 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/20 {
-                            c'8
-                            c'2
+                        \times 12/10 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -948,9 +936,9 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 24/40 {
-                            c'8
-                            c'2
+                        \times 24/20 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -1009,9 +997,9 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -1068,9 +1056,9 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/20 {
-                            c'8
-                            c'2
+                        \times 12/10 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -1127,9 +1115,9 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 6/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'8
-                            c'2
+                        \times 6/5 {
+                            c'16
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -1761,17 +1749,21 @@ class TupletRhythmMaker(RhythmMaker):
                     {   % measure
                         \time 3/8
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'4
-                            c'4
+                        \times 3/2 {
+                            c'8
+                            [
+                            c'8
+                            ]
                         }
                     }   % measure
                     {   % measure
                         \time 7/16
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 7/8 {
-                            c'4
-                            c'4
+                        \times 7/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
                         }
                     }   % measure
                 }
@@ -1925,8 +1917,8 @@ class TupletRhythmMaker(RhythmMaker):
                     }   % measure
                     {   % measure
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'2
+                        \times 3/2 {
+                            c'4
                         }
                     }   % measure
                     {   % measure
@@ -1938,9 +1930,11 @@ class TupletRhythmMaker(RhythmMaker):
                     }   % measure
                     {   % measure
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'4
-                            c'4
+                        \times 3/2 {
+                            c'8
+                            [
+                            c'8
+                            ]
                         }
                     }   % measure
                 }
