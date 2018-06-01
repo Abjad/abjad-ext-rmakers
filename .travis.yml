@@ -53,7 +53,7 @@ install:
 script:
     #- mypy abjadext/
     - mypy $PACKAGE
-    - `which py.test` -rf $PACKAGE
+    - pytest $PACKAGE
 
 after_success:
     - pip install --quiet coveralls
