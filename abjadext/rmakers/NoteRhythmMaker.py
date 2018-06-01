@@ -215,7 +215,6 @@ class NoteRhythmMaker(RhythmMaker):
         leaf_maker = abjad.LeafMaker(
             decrease_monotonic=duration_specifier.decrease_monotonic,
             forbidden_duration=duration_specifier.forbidden_duration,
-            diminution=tuplet_specifier.diminution,
             repeat_ties=tie_specifier.repeat_ties,
             )
         for division in divisions:
@@ -1522,20 +1521,18 @@ class NoteRhythmMaker(RhythmMaker):
                 {
                     {   % measure
                         \time 5/14
-                        \tweak text #tuplet-number::calc-fraction-text
                         \tweak edge-height #'(0.7 . 0)
-                        \times 8/7 {
-                            c'4
+                        \times 4/7 {
+                            c'2
                             ~
-                            c'16
+                            c'8
                         }
                     }   % measure
                     {   % measure
                         \time 3/7
-                        \tweak text #tuplet-number::calc-fraction-text
                         \tweak edge-height #'(0.7 . 0)
-                        \times 8/7 {
-                            c'4.
+                        \times 4/7 {
+                            c'2.
                         }
                     }   % measure
                 }
