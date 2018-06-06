@@ -55,11 +55,13 @@ class SkipRhythmMaker(RhythmMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions, previous_state=None):
+    def __call__(
+        self,
+        divisions: typing.List[typing.Tuple[int, int]],
+        previous_state: abjad.OrderedDict = None,
+        ) -> typing.List[abjad.Selection]:
         """
         Calls skip rhythm-maker on ``divisions``.
-
-        Returns list of selections.
         """
         return RhythmMaker.__call__(
             self,
@@ -67,7 +69,7 @@ class SkipRhythmMaker(RhythmMaker):
             previous_state=previous_state,
             )
 
-    def __format__(self, format_specification=''):
+    def __format__(self, format_specification='') -> str:
         """
         Formats skip rhythm-maker.
 
@@ -79,10 +81,10 @@ class SkipRhythmMaker(RhythmMaker):
             >>> abjad.f(rhythm_maker)
             abjadext.rmakers.SkipRhythmMaker()
 
-        Returns string.
         """
-        superclass = super(SkipRhythmMaker, self)
-        return superclass.__format__(format_specification=format_specification)
+        return super(SkipRhythmMaker, self).__format__(
+            format_specification=format_specification,
+            )
 
     ### PRIVATE METHODS ###
 

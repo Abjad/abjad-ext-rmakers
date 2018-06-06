@@ -18,6 +18,7 @@ from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletRhythmMaker import TupletRhythmMaker
 from .TupletSpecifier import TupletSpecifier
+from .typings import *
 
 silence = SilenceMask.silence
 sustain = SustainMask.sustain

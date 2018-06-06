@@ -28,11 +28,11 @@ class TieSpecifier(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        repeat_ties=None,
-        strip_ties=None,
-        tie_across_divisions=None,
-        tie_consecutive_notes=None,
-        ):
+        repeat_ties: bool = None,
+        strip_ties: bool = None,
+        tie_across_divisions: bool = None,
+        tie_consecutive_notes: bool = None,
+        ) -> None:
         if repeat_ties is not None:
             repeat_ties = bool(repeat_ties)
         self._repeat_ties = repeat_ties
@@ -57,11 +57,12 @@ class TieSpecifier(abjad.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions):
+    def __call__(
+        self,
+        divisions: typing.List[abjad.NonreducedFraction],
+        ) -> None:
         """
         Calls tie specifier on ``divisions``.
-
-        Returns none.
         """
         self._tie_across_divisions_(divisions)
         self._tie_consecutive_notes_(divisions)
@@ -170,17 +171,15 @@ class TieSpecifier(abjad.AbjadValueObject):
         return self._repeat_ties
 
     @property
-    def strip_ties(self):
+    def strip_ties(self) -> typing.Optional[bool]:
         """
         Is true when rhythm-maker should strip all ties from all leaves in
         each division.
-
-        Set to true, false or none.
         """
         return self._strip_ties
 
     @property
-    def tie_across_divisions(self):
+    def tie_across_divisions(self) -> typing.Optional[bool]:
         """
         Is true or is a boolean vector when rhythm-maker should tie across
         divisons.
@@ -190,12 +189,8 @@ class TieSpecifier(abjad.AbjadValueObject):
         return self._tie_across_divisions
 
     @property
-    def tie_consecutive_notes(self):
+    def tie_consecutive_notes(self) -> typing.Optional[bool]:
         """
         Is true when rhythm-maker should tie consecutive notes.
-
-        Set to true, false or none.
-
-        Returns true, false or none.
         """
         return self._tie_consecutive_notes

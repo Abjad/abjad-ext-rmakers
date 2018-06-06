@@ -1,9 +1,13 @@
 import abjad
 import typing
+from .BeamSpecifier import BeamSpecifier
+from .DurationSpecifier import DurationSpecifier
 from .InciseSpecifier import InciseSpecifier
 from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
+from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .typings import mask_typing
 
 
 class IncisedRhythmMaker(RhythmMaker):
@@ -76,17 +80,17 @@ class IncisedRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *,
-        beam_specifier=None,
-        duration_specifier=None,
-        division_masks=None,
-        extra_counts_per_division=None,
-        incise_specifier=None,
-        logical_tie_masks=None,
-        replace_rests_with_skips=None,
-        split_divisions_by_counts=None,
-        tie_specifier=None,
-        tuplet_specifier=None,
-        ):
+        beam_specifier: BeamSpecifier = None,
+        duration_specifier: DurationSpecifier = None,
+        division_masks: typing.Sequence[mask_typing] = None,
+        extra_counts_per_division: typing.Sequence[int] = None,
+        incise_specifier: InciseSpecifier = None,
+        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        replace_rests_with_skips: bool = None,
+        split_divisions_by_counts: typing.Sequence[int] = None,
+        tie_specifier: TieSpecifier = None,
+        tuplet_specifier: TupletSpecifier = None,
+        ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -115,11 +119,13 @@ class IncisedRhythmMaker(RhythmMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions, previous_state=None):
+    def __call__(
+        self,
+        divisions: typing.List[typing.Tuple[int, int]],
+        previous_state: abjad.OrderedDict = None,
+        ) -> typing.List[abjad.Selection]:
         """
         Calls incised rhythm-maker on ``divisions``.
-
-        Returns list of selections.
         """
         return RhythmMaker.__call__(
             self,
@@ -434,7 +440,7 @@ class IncisedRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def division_masks(self):
+    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
         r"""
         Gets division masks.
 
@@ -544,13 +550,11 @@ class IncisedRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Set to division masks or none.
         """
-        superclass = super(IncisedRhythmMaker, self)
-        return superclass.division_masks
+        return super(IncisedRhythmMaker, self).division_masks
 
     @property
-    def duration_specifier(self):
+    def duration_specifier(self) -> typing.Optional[DurationSpecifier]:
         r"""
         Gets duration specifier.
 
@@ -812,21 +816,19 @@ class IncisedRhythmMaker(RhythmMaker):
 
         Returns duration specifier or none.
         """
-        superclass = super(IncisedRhythmMaker, self)
-        return superclass.duration_specifier
+        return super(IncisedRhythmMaker, self).duration_specifier
 
     @property
-    def extra_counts_per_division(self):
+    def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
         """
         Gets extra counts per division.
-
-        Returns tuple or none.
         """
         if self._extra_counts_per_division:
             return list(self._extra_counts_per_division)
+        return None
 
     @property
-    def incise_specifier(self):
+    def incise_specifier(self) -> typing.Optional[InciseSpecifier]:
         r"""
         Gets incise specifier.
 
@@ -972,12 +974,11 @@ class IncisedRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Returns incise specifier or none.
         """
         return self._incise_specifier
 
     @property
-    def logical_tie_masks(self):
+    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
         r"""
         Gets logical tie masks.
 
@@ -1084,17 +1085,11 @@ class IncisedRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Set to masks or none.
-
-        Defaults to none.
-
-        Returns masks or none.
         """
-        superclass = super(IncisedRhythmMaker, self)
-        return superclass.logical_tie_masks
+        return super(IncisedRhythmMaker, self).logical_tie_masks
 
     @property
-    def replace_rests_with_skips(self):
+    def replace_rests_with_skips(self) -> typing.Optional[bool]:
         r"""
         Is true when rhythm-maker should replace rests with skips.
 
@@ -1203,23 +1198,18 @@ class IncisedRhythmMaker(RhythmMaker):
             Use in keyboard and other polyphonic selections where other voices
             provide rhythmic alignment.
 
-        Set to true, false or none.
-
-        Returns true, false or none.
         """
         return self._replace_rests_with_skips
 
     @property
-    def split_divisions_by_counts(self):
+    def split_divisions_by_counts(self) -> typing.Optional[typing.List[int]]:
         """
         Gets secondary divisions.
-
-        Returns tuple or none.
         """
         return self._split_divisions_by_counts
 
     @property
-    def tie_specifier(self):
+    def tie_specifier(self) -> typing.Optional[TieSpecifier]:
         r"""
         Gets tie specifier.
 
@@ -1527,12 +1517,8 @@ class IncisedRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Set to tie specifier or none.
-
-        Returns tie specifier or none.
         """
-        superclass = super(IncisedRhythmMaker, self)
-        return superclass.tie_specifier
+        return super(IncisedRhythmMaker, self).tie_specifier
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
@@ -1598,6 +1584,5 @@ class IncisedRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Returns tuplet specifier or none.
         """
         return super(IncisedRhythmMaker, self).tuplet_specifier

@@ -7,6 +7,7 @@ from .RhythmMaker import RhythmMaker
 from .Talea import Talea
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .typings import mask_typing
 
 
 class TaleaRhythmMaker(RhythmMaker):
@@ -99,20 +100,20 @@ class TaleaRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *,
-        talea=None,
-        beam_specifier=None,
-        burnish_specifier=None,
-        division_masks=None,
-        duration_specifier=None,
-        extra_counts_per_division=None,
-        logical_tie_masks=None,
-        read_talea_once_only=None,
-        rest_tied_notes=None,
-        split_divisions_by_counts=None,
-        tie_specifier=None,
-        tie_split_notes=True,
-        tuplet_specifier=None,
-        ):
+        talea: Talea = None,
+        beam_specifier: BeamSpecifier = None,
+        burnish_specifier: BurnishSpecifier = None,
+        division_masks: typing.Sequence[abjad.Pattern] = None,
+        duration_specifier: DurationSpecifier = None,
+        extra_counts_per_division: typing.List[int] = None,
+        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        read_talea_once_only: bool = None,
+        rest_tied_notes: bool = None,
+        split_divisions_by_counts: typing.List[int] = None,
+        tie_specifier: TieSpecifier = None,
+        tie_split_notes: bool = True,
+        tuplet_specifier: TupletSpecifier = None,
+        ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -138,19 +139,22 @@ class TaleaRhythmMaker(RhythmMaker):
         if rest_tied_notes is not None:
             rest_tied_notes = bool(rest_tied_notes)
         self._rest_tied_notes = rest_tied_notes
+        split_divisions_by_counts_ = None
         if split_divisions_by_counts is not None:
-            split_divisions_by_counts = tuple(split_divisions_by_counts)
-        if split_divisions_by_counts is not None:
-            assert abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(
-                split_divisions_by_counts)
-        self._split_divisions_by_counts = split_divisions_by_counts
+            split_divisions_by_counts_ = tuple(split_divisions_by_counts)
+            assert all(isinstance(_, int) for _ in split_divisions_by_counts_)
+        self._split_divisions_by_counts = split_divisions_by_counts_
         if tie_split_notes is not None:
             tie_split_notes = bool(tie_split_notes)
         self._tie_split_notes = tie_split_notes
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions, previous_state=None):
+    def __call__(
+        self,
+        divisions: typing.List[typing.Tuple[int, int]],
+        previous_state: abjad.OrderedDict = None,
+        ) -> typing.List[abjad.Selection]:
         """
         Calls talea rhythm-maker on ``divisions``.
 
@@ -173,7 +177,6 @@ class TaleaRhythmMaker(RhythmMaker):
             Selection([Note("c'8"), Note("c'4")])
             Selection([Note("c'16"), Note("c'8"), Note("c'8."), Note("c'8")])
 
-        Returns list of of selections.
         """
         return RhythmMaker.__call__(
             self,
@@ -181,7 +184,7 @@ class TaleaRhythmMaker(RhythmMaker):
             previous_state=previous_state,
             )
 
-    def __format__(self, format_specification=''):
+    def __format__(self, format_specification='') -> str:
         """
         Formats talea rhythm-maker.
 
@@ -223,12 +226,17 @@ class TaleaRhythmMaker(RhythmMaker):
                     ),
                 )
 
-        Returns string.
         """
-        superclass = super(TaleaRhythmMaker, self)
-        return superclass.__format__(format_specification=format_specification)
+        return super(TaleaRhythmMaker, self).__format__(
+            format_specification=format_specification,
+            )
 
-    def __illustrate__(self, divisions=((3, 8), (4, 8), (3, 16), (4, 16))):
+    def __illustrate__(
+        self,
+        divisions: typing.List[typing.Tuple[int, int]] = [
+            (3, 8), (4, 8), (3, 16), (4, 16)
+            ],
+        ) -> abjad.LilyPondFile:
         r"""
         Illustrates talea rhythm-maker.
 
@@ -289,7 +297,7 @@ class TaleaRhythmMaker(RhythmMaker):
         """
         return RhythmMaker.__illustrate__(self, divisions=divisions)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         Gets interpreter representation.
 
@@ -1364,7 +1372,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return self._burnish_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
+    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
         r"""
         Gets division masks.
 
@@ -2618,7 +2626,7 @@ class TaleaRhythmMaker(RhythmMaker):
             return None
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
+    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
         r"""
         Gets logical tie masks.
 
@@ -3232,7 +3240,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
     # TODO: remove
     @property
-    def split_divisions_by_counts(self) -> typing.Optional[int]:
+    def split_divisions_by_counts(self) -> typing.Optional[
+        typing.Tuple[int, ...]
+        ]:
         r"""
         Gets secondary divisions.
 
@@ -3695,7 +3705,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return super(TaleaRhythmMaker, self).state
 
     @property
-    def talea(self) -> Talea:
+    def talea(self) -> typing.Optional[Talea]:
         r"""
         Gets talea.
 

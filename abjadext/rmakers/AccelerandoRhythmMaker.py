@@ -1,7 +1,13 @@
 import abjad
 import math
+import typing
+from .BeamSpecifier import BeamSpecifier
+from .DurationSpecifier import DurationSpecifier
 from .InterpolationSpecifier import InterpolationSpecifier
 from .RhythmMaker import RhythmMaker
+from .TieSpecifier import TieSpecifier
+from .TupletSpecifier import TupletSpecifier
+from .typings import mask_typing
 
 
 class AccelerandoRhythmMaker(RhythmMaker):
@@ -516,14 +522,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *,
-        beam_specifier=None,
-        logical_tie_masks=None,
-        division_masks=None,
-        duration_specifier=None,
-        interpolation_specifiers=None,
-        tie_specifier=None,
-        tuplet_specifier=None,
-        ):
+        beam_specifier: BeamSpecifier = None,
+        division_masks: typing.Sequence[mask_typing] = None,
+        duration_specifier: DurationSpecifier = None,
+        interpolation_specifiers: typing.Sequence[
+            InterpolationSpecifier] = None,
+        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        tie_specifier: TieSpecifier = None,
+        tuplet_specifier: TupletSpecifier = None,
+        ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,

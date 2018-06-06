@@ -1,9 +1,13 @@
 import abjad
 import math
 import typing
+from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
+from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
+from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .typings import mask_typing
 
 
 class EvenDivisionRhythmMaker(RhythmMaker):
@@ -24,9 +28,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     __slots__ = (
         '_burnish_specifier',
+        '_denominator',
         '_denominators',
         '_extra_counts_per_division',
-        '_denominator',
         )
 
     ### INITIALIZER ###
@@ -34,17 +38,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *,
-        denominators=[8],
-        beam_specifier=None,
-        burnish_specifier=None,
-        logical_tie_masks=None,
-        division_masks=None,
-        duration_specifier=None,
-        extra_counts_per_division=None,
-        denominator='from_counts',
-        tie_specifier=None,
-        tuplet_specifier=None,
-        ):
+        beam_specifier: BeamSpecifier = None,
+        burnish_specifier: BurnishSpecifier = None,
+        denominator: typing.Union[str, int] = 'from_counts',
+        denominators: typing.Sequence[int] = [8],
+        division_masks: typing.Sequence[mask_typing] = None,
+        duration_specifier: DurationSpecifier = None,
+        extra_counts_per_division: typing.Sequence[int] = None,
+        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        tie_specifier: TieSpecifier = None,
+        tuplet_specifier: TupletSpecifier = None,
+        ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -57,7 +61,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         assert abjad.mathtools.all_are_nonnegative_integer_powers_of_two(
             denominators), repr(denominators)
         denominators = tuple(denominators)
-        self._denominators = denominators
+        self._denominators: typing.Tuple[int, ...] = denominators
         if extra_counts_per_division is not None:
             assert abjad.mathtools.all_are_integer_equivalent(
                 extra_counts_per_division), repr(extra_counts_per_division)
@@ -74,7 +78,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions, previous_state=None):
+    def __call__(
+        self,
+        divisions: typing.List[typing.Tuple[int, int]],
+        previous_state: abjad.OrderedDict = None,
+        ) -> typing.List[abjad.Selection]:
         r"""
         Calls even division rhythm-maker on ``divisions``.
 
@@ -253,10 +261,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Returns list of of selections.
         """
-        superclass = super(EvenDivisionRhythmMaker, self)
-        return superclass.__call__(divisions, previous_state=previous_state)
+        return super(EvenDivisionRhythmMaker, self).__call__(
+            divisions,
+            previous_state=previous_state,
+            )
 
     ### PRIVATE METHODS ###
 
@@ -500,7 +509,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def burnish_specifier(self):
+    def burnish_specifier(self) -> typing.Optional[BurnishSpecifier]:
         r"""
         Gets burnish specifier.
 
@@ -683,12 +692,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Returns burnish specifier or none.
         """
         return self._burnish_specifier
 
     @property
-    def denominator(self):
+    def denominator(self) -> typing.Union[str, int]:
         r"""
         Gets preferred denominator.
 
@@ -1186,16 +1194,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Defaults to none.
-
-        Set to none or positive integer.
-
-        Returns none or positive integer.
         """
         return self._denominator
 
     @property
-    def denominators(self):
+    def denominators(self) -> typing.Optional[typing.List[int]]:
         r"""
         Gets denominators.
 
@@ -1421,13 +1424,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Fills divisions less than twice the duration of a half note with a
             single attack.
 
-        Returns tuple of nonnegative integer powers of two.
         """
         if self._denominators:
             return list(self._denominators)
+        return None
 
     @property
-    def division_masks(self):
+    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
         r"""
         Gets division masks.
 
@@ -1647,13 +1650,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Set to division masks or none.
         """
-        superclass = super(EvenDivisionRhythmMaker, self)
-        return superclass.division_masks
+        return super(EvenDivisionRhythmMaker, self).division_masks
 
     @property
-    def extra_counts_per_division(self):
+    def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
         r"""
         Gets extra counts per division.
 
@@ -2387,13 +2388,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Returns (possibly empty) tuple of integers or none.
         """
         if self._extra_counts_per_division:
             return list(self._extra_counts_per_division)
+        return None
 
     @property
-    def logical_tie_masks(self):
+    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
         r"""
         Gets logical tie masks.
 
@@ -2752,10 +2753,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silencing the fourth logical tie produces two rests. Silencing the
             eighth logical tie produces only one rest.
 
-        Returns patterns or none.
         """
-        superclass = super(EvenDivisionRhythmMaker, self)
-        return superclass.logical_tie_masks
+        return super(EvenDivisionRhythmMaker, self).logical_tie_masks
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
@@ -3042,6 +3041,5 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-        Returns tuplet specifier or none.
         """
         return super(EvenDivisionRhythmMaker, self).tuplet_specifier

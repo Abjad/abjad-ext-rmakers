@@ -1,4 +1,5 @@
 import abjad
+import typing
 
 
 class RotationCounter(abjad.TypedCounter):
@@ -34,11 +35,11 @@ class RotationCounter(abjad.TypedCounter):
     def __init__(
         self,
         *,
-        autoincrement=None,
-        default=None,
+        autoincrement: bool = None,
+        default: int = None,
         items=None,
         **keywords
-        ):
+        ) -> None:
         abjad.TypedCounter.__init__(
             self,
             items=items,
@@ -53,11 +54,9 @@ class RotationCounter(abjad.TypedCounter):
 
     ### SPECIAL METHODS ###
 
-    def __getitem__(self, argument):
+    def __getitem__(self, argument) -> typing.Any:
         """
         Gets item or slice identified by ``argument``.
-
-        Returns item or slice.
         """
         argument = self._item_coercer(argument)
         if argument not in self._collection:
@@ -85,19 +84,15 @@ class RotationCounter(abjad.TypedCounter):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def autoincrement(self):
+    def autoincrement(self) -> typing.Optional[bool]:
         """
         Is true if rotation counter should be auto-incremented.
-
-        Returns true or false.
         """
         return self._autoincrement
 
     @property
-    def default(self):
+    def default(self) -> typing.Optional[int]:
         """
         Gets default count.
-
-        Returns integer.
         """
         return self._default

@@ -5,8 +5,11 @@ from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .PartitionTable import PartitionTable
 from .RhythmMaker import RhythmMaker
+from .SilenceMask import SilenceMask
+from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .typings import mask_typing
 
 
 class NoteRhythmMaker(RhythmMaker):
@@ -64,14 +67,14 @@ class NoteRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *,
-        beam_specifier=None,
-        burnish_specifier=None,
-        division_masks=None,
-        duration_specifier=None,
-        logical_tie_masks=None,
-        tie_specifier=None,
-        tuplet_specifier=None,
-        ):
+        beam_specifier: BeamSpecifier = None,
+        burnish_specifier: BurnishSpecifier = None,
+        division_masks: typing.Sequence[mask_typing] = None,
+        duration_specifier: DurationSpecifier = None,
+        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        tie_specifier: TieSpecifier = None,
+        tuplet_specifier: TupletSpecifier = None,
+        ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -87,7 +90,11 @@ class NoteRhythmMaker(RhythmMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions, previous_state=None):
+    def __call__(
+        self,
+        divisions: typing.List[typing.Tuple[int, int]],
+        previous_state: abjad.OrderedDict = None,
+        ) -> typing.List[abjad.Selection]:
         """
         Calls note rhythm-maker on ``divisions``.
 
@@ -103,7 +110,6 @@ class NoteRhythmMaker(RhythmMaker):
             Selection([Note("c'2"), Note("c'8")])
             Selection([Note("c'4.")])
 
-        Returns list of selections. Each selection holds one or more notes.
         """
         return RhythmMaker.__call__(
             self,
@@ -111,7 +117,7 @@ class NoteRhythmMaker(RhythmMaker):
             previous_state=previous_state,
             )
 
-    def __format__(self, format_specification=''):
+    def __format__(self, format_specification='') -> str:
         """
         Formats note rhythm-maker.
 
@@ -121,12 +127,12 @@ class NoteRhythmMaker(RhythmMaker):
             >>> abjad.f(rhythm_maker)
             abjadext.rmakers.NoteRhythmMaker()
 
-        Returns string.
         """
-        superclass = super(NoteRhythmMaker, self)
-        return superclass.__format__(format_specification=format_specification)
+        return super(NoteRhythmMaker, self).__format__(
+            format_specification=format_specification,
+            )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         Gets interpreter representation.
 
@@ -569,7 +575,7 @@ class NoteRhythmMaker(RhythmMaker):
         return self._burnish_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
+    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
         r"""
         Gets division masks.
 
@@ -1056,7 +1062,7 @@ class NoteRhythmMaker(RhythmMaker):
         return super(NoteRhythmMaker, self).duration_specifier
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
+    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
         r"""
         Gets logical tie masks.
 

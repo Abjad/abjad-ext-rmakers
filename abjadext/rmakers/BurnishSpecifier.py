@@ -1,4 +1,6 @@
 import abjad
+import typing
+class_typing = typing.Union[int, type]
 
 
 class BurnishSpecifier(abjad.AbjadValueObject):
@@ -106,13 +108,13 @@ class BurnishSpecifier(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        left_classes=None,
-        middle_classes=None,
-        right_classes=None,
-        left_counts=None,
-        right_counts=None,
-        outer_divisions_only=False,
-        ):
+        left_classes: typing.Sequence[class_typing] = None,
+        middle_classes: typing.Sequence[class_typing] = None,
+        right_classes: typing.Sequence[class_typing] = None,
+        left_counts: typing.Sequence[int] = None,
+        right_counts: typing.Sequence[int] = None,
+        outer_divisions_only: bool = False,
+        ) -> None:
         assert isinstance(outer_divisions_only, bool)
         self._outer_divisions_only = outer_divisions_only
         if left_classes is not None:
@@ -140,11 +142,9 @@ class BurnishSpecifier(abjad.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions):
+    def __call__(self, divisions) -> typing.List[abjad.NonreducedFraction]:
         """
         Calls burnish specifier on ``divisions``.
-
-        Returns list of burnished divisions.
         """
         input_ = self._prepare_input()
         if self.outer_divisions_only:
@@ -152,7 +152,7 @@ class BurnishSpecifier(abjad.AbjadValueObject):
         else:
             return self._burnish_each_division(input_, divisions)
 
-    def __format__(self, format_specification=''):
+    def __format__(self, format_specification='') -> str:
         """
         Formats burnish specifier.
 
@@ -172,14 +172,13 @@ class BurnishSpecifier(abjad.AbjadValueObject):
                 left_counts=[1],
                 )
 
-        Returns string.
         """
         return abjad.AbjadValueObject.__format__(
             self,
             format_specification=format_specification,
             )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         Gets interpreter representation.
 
@@ -193,7 +192,6 @@ class BurnishSpecifier(abjad.AbjadValueObject):
             >>> burnish_specifier
             BurnishSpecifier(left_classes=[Rest, 0], left_counts=[1])
 
-        Returns string.
         """
         return super(BurnishSpecifier, self).__repr__()
 
@@ -211,9 +209,7 @@ class BurnishSpecifier(abjad.AbjadValueObject):
             elif i in (1, abjad.Note):
                 new_division_part.append(abs(number))
             else:
-                message = 'unknown burnshing: {!r}.'
-                message = message.format(i)
-                raise ValueError(message)
+                raise ValueError('unknown burnshing: {i!r}.')
         new_division_part = type(division_part)(new_division_part)
         return new_division_part
 
@@ -408,7 +404,7 @@ class BurnishSpecifier(abjad.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def left_classes(self):
+    def left_classes(self) -> typing.Optional[typing.List[class_typing]]:
         """
         Gets left classes.
 
@@ -424,13 +420,13 @@ class BurnishSpecifier(abjad.AbjadValueObject):
             >>> burnish_specifier.left_classes
             [<class 'abjad.core.Rest.Rest'>, 0]
 
-        Returns tuple or none.
         """
         if self._left_classes:
             return list(self._left_classes)
+        return None
 
     @property
-    def left_counts(self):
+    def left_counts(self) -> typing.Optional[typing.List[int]]:
         """
         Gets left counts.
 
@@ -446,13 +442,13 @@ class BurnishSpecifier(abjad.AbjadValueObject):
             >>> burnish_specifier.left_counts
             [2]
 
-        Returns tuple or none.
         """
         if self._left_counts:
             return list(self._left_counts)
+        return None
 
     @property
-    def middle_classes(self):
+    def middle_classes(self) -> typing.Optional[typing.List[class_typing]]:
         """
         Gets middle_classes.
 
@@ -468,27 +464,23 @@ class BurnishSpecifier(abjad.AbjadValueObject):
             >>> burnish_specifier.middle_classes is None
             True
 
-        Returns tuple or none.
         """
         if self._middle_classes:
             return list(self._middle_classes)
+        return None
 
     @property
-    def outer_divisions_only(self):
+    def outer_divisions_only(self) -> typing.Optional[bool]:
         """
         Is true when rhythm-maker should burnish only first and last
         division in output.
 
         Is false when rhythm-maker should burnish all divisions.
-
-        Defaults to false.
-
-        Set to true or false.
         """
         return self._outer_divisions_only
 
     @property
-    def right_classes(self):
+    def right_classes(self) -> typing.Optional[typing.List[class_typing]]:
         """
         Gets right classes.
 
@@ -504,13 +496,13 @@ class BurnishSpecifier(abjad.AbjadValueObject):
             >>> burnish_specifier.right_classes
             [<class 'abjad.core.Rest.Rest'>, <class 'abjad.core.Rest.Rest'>, 0]
 
-        Returns tuple or none.
         """
         if self._right_classes:
             return list(self._right_classes)
+        return None
 
     @property
-    def right_counts(self):
+    def right_counts(self) -> typing.Optional[typing.List[int]]:
         """
         Gets right counts.
 
@@ -526,7 +518,7 @@ class BurnishSpecifier(abjad.AbjadValueObject):
             >>> burnish_specifier.right_counts
             [1]
 
-        Returns tuple or none.
         """
         if self._right_counts:
             return list(self._right_counts)
+        return None

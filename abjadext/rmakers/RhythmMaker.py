@@ -7,6 +7,7 @@ from .SilenceMask import SilenceMask
 from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .typings import mask_typing
 
 
 class RhythmMaker(abjad.AbjadValueObject):
@@ -39,22 +40,26 @@ class RhythmMaker(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        beam_specifier=None,
-        logical_tie_masks=None,
+        beam_specifier: BeamSpecifier = None,
+        logical_tie_masks: typing.Sequence[mask_typing] = None,
         division_masks=None,
         duration_specifier=None,
         tie_specifier=None,
         tuplet_specifier=None,
-        ):
+        ) -> None:
         if beam_specifier is not None:
             assert isinstance(beam_specifier, BeamSpecifier)
         self._beam_specifier = beam_specifier
         logical_tie_masks = self._prepare_masks(logical_tie_masks)
+        if logical_tie_masks is not None:
+            assert isinstance(logical_tie_masks, abjad.PatternTuple)
         self._logical_tie_masks = logical_tie_masks
         if duration_specifier is not None:
             assert isinstance(duration_specifier, DurationSpecifier)
         self._duration_specifier = duration_specifier
         division_masks = self._prepare_masks(division_masks)
+        if division_masks is not None:
+            assert isinstance(division_masks, abjad.PatternTuple)
         self._division_masks = division_masks
         self._previous_state = abjad.OrderedDict()
         self._state = abjad.OrderedDict()
@@ -67,11 +72,13 @@ class RhythmMaker(abjad.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions, previous_state=None):
+    def __call__(
+        self,
+        divisions: typing.List[typing.Tuple[int, int]],
+        previous_state: abjad.OrderedDict = None,
+        ) -> typing.List[abjad.Selection]:
         """
         Calls rhythm-maker.
-
-        Returns selections.
         """
         self._previous_state = abjad.OrderedDict(previous_state)
         divisions = self._coerce_divisions(divisions)
@@ -280,6 +287,9 @@ class RhythmMaker(abjad.AbjadValueObject):
             yield cyclic_tuple[i]
             i += 1
 
+    def _make_music(self, divisions):
+        return []
+
     def _make_secondary_divisions(
         self,
         divisions,
@@ -405,7 +415,7 @@ class RhythmMaker(abjad.AbjadValueObject):
         return self._beam_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
+    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
         """
         Gets division masks.
         """
@@ -419,7 +429,7 @@ class RhythmMaker(abjad.AbjadValueObject):
         return self._duration_specifier
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[typing.List[abjad.Pattern]]:
+    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
         """
         Gets logical tie masks.
         """

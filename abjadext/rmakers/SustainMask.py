@@ -1,5 +1,6 @@
 import abjad
 import inspect
+import typing
 
 
 class SustainMask(abjad.AbjadValueObject):
@@ -156,10 +157,10 @@ class SustainMask(abjad.AbjadValueObject):
 
     def __init__(
         self,
-        pattern=None,
+        pattern: abjad.Pattern = None,
         *,
-        template=None,
-        ):
+        template: str = None,
+        ) -> None:
         if pattern is None:
             pattern = abjad.index_all()
         assert isinstance(pattern, abjad.Pattern), repr(pattern)
@@ -168,11 +169,9 @@ class SustainMask(abjad.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __invert__(self):
+    def __invert__(self) -> 'SustainMask':
         """
         Inverts pattern.
-
-        Returns new sustain mask.
         """
         pattern = ~self.pattern
         inverted = pattern.inverted or None
@@ -201,7 +200,7 @@ class SustainMask(abjad.AbjadValueObject):
                 frame,
                 static_class=SustainMask,
                 )
-            template = 'abjadext.rmakers.{}({})'.format(function_name, arguments)
+            template = f'abjadext.rmakers.{function_name}({arguments})'
         finally:
             del frame
         return template
@@ -209,27 +208,27 @@ class SustainMask(abjad.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def pattern(self):
+    def pattern(self) -> abjad.Pattern:
         """
         Gets pattern.
-
-        Returns pattern.
         """
         return self._pattern
 
     @property
-    def template(self):
+    def template(self) -> typing.Optional[str]:
         """
         Gets template.
-
-        Returns template.
         """
         return self._template
 
     ### PUBLIC METHODS ###
 
     @staticmethod
-    def sustain(indices, period=None, inverted=None):
+    def sustain(
+        indices: typing.Sequence[int],
+        period: int = None,
+        inverted: bool = None,
+        ) -> 'SustainMask':
         r"""
         Makes sustain mask that matches ``indices``.
 

@@ -1,4 +1,5 @@
 import abjad
+import typing
 
 
 class PartitionTable(abjad.OrderedDict):
@@ -94,7 +95,10 @@ class PartitionTable(abjad.OrderedDict):
 
     ### PUBLIC METHODS ###
 
-    def respell_division(self, division):
+    def respell_division(
+        self,
+        division: abjad.NonreducedFraction,
+        ) -> typing.List[ abjad.NonreducedFraction]:
         """
         Respells ``division`` according to partition table.
 
@@ -158,7 +162,6 @@ class PartitionTable(abjad.OrderedDict):
             (NonreducedFraction(13, 4), [NonreducedFraction(13, 4)])
             (NonreducedFraction(14, 4), [NonreducedFraction(2, 4), NonreducedFraction(4, 4), NonreducedFraction(8, 4)])
 
-        Returns list of new divisions.
         """
         division = abjad.NonreducedFraction(division)
         result = [division]

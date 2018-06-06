@@ -1,4 +1,5 @@
 import abjad
+import typing
 
 
 class InterpolationSpecifier(abjad.AbjadValueObject):
@@ -26,17 +27,17 @@ class InterpolationSpecifier(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        start_duration=(1, 8),
-        stop_duration=(1, 16),
-        written_duration=(1, 16),
-        ):
+        start_duration: typing.Tuple[int, int] = (1, 8),
+        stop_duration: typing.Tuple[int, int] = (1, 16),
+        written_duration: typing.Tuple[int, int] = (1, 16),
+        ) -> None:
         self._start_duration = abjad.Duration(start_duration)
         self._stop_duration = abjad.Duration(stop_duration)
         self._written_duration = abjad.Duration(written_duration)
 
     ### PUBLIC METHODS ###
 
-    def reverse(self):
+    def reverse(self) -> 'InterpolationSpecifier':
         """
         Swaps start duration and stop duration of interpolation specifier.
 
@@ -74,7 +75,6 @@ class InterpolationSpecifier(abjad.AbjadValueObject):
                 written_duration=abjad.Duration(1, 16),
                 )
 
-        Copies written duration from source.
         """
         return type(self)(
             start_duration=self.stop_duration,
@@ -85,40 +85,22 @@ class InterpolationSpecifier(abjad.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def start_duration(self):
+    def start_duration(self) -> abjad.Duration:
         """
         Gets start duration.
-
-        Defaults to ``1/8``.
-
-        Set to positive duration.
-
-        Returns position duration.
         """
         return self._start_duration
 
     @property
-    def stop_duration(self):
+    def stop_duration(self) -> abjad.Duration:
         """
         Gets stop duration.
-
-        Defaults to ``1/16``.
-
-        Set to positive duration.
-
-        Returns position duration.
         """
         return self._stop_duration
 
     @property
-    def written_duration(self):
+    def written_duration(self) -> abjad.Duration:
         """
         Gets written duration.
-
-        Defaults to ``1/16``.
-
-        Set to positive duration.
-
-        Returns position duration.
         """
         return self._written_duration

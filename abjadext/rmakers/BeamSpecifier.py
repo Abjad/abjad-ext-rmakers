@@ -1,4 +1,5 @@
 import abjad
+import typing
 
 
 class BeamSpecifier(abjad.AbjadValueObject):
@@ -66,13 +67,13 @@ class BeamSpecifier(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        beam_each_division=True,
-        beam_divisions_together=None,
-        beam_rests=None,
-        hide_nibs=None,
-        stemlet_length=None,
-        use_feather_beams=None,
-        ):
+        beam_each_division: bool = True,
+        beam_divisions_together: bool = None,
+        beam_rests: bool = None,
+        hide_nibs: bool = None,
+        stemlet_length: typing.Union[int, float] = None,
+        use_feather_beams: bool = None,
+        ) -> None:
         if beam_each_division is None:
             beam_each_division = bool(beam_each_division)
         self._beam_each_division = beam_each_division
@@ -94,12 +95,15 @@ class BeamSpecifier(abjad.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections):
+    def __call__(self, selections) -> None:
         """
         Calls beam specifier on ``selections``.
-
-        Returns none.
         """
+        beam: typing.Union[
+            abjad.DuratedComplexBeam,
+            abjad.MultipartBeam,
+            None,
+            ] = None
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
             if self.hide_nibs:
@@ -115,7 +119,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
                     span_beam_count=1,
                     stemlet_length=self.stemlet_length,
                     )
-            components = []
+            components: typing.List[abjad.Component] = []
             for selection in selections:
                 if isinstance(selection, abjad.Selection):
                     components.extend(selection)
@@ -134,7 +138,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
                 leaves = abjad.select(selection).leaves(grace_notes=False)
                 abjad.attach(beam, leaves)
 
-    def __format__(self, format_specification=''):
+    def __format__(self, format_specification='') -> str:
         """
         Formats beam specifier.
 
@@ -146,14 +150,13 @@ class BeamSpecifier(abjad.AbjadValueObject):
                 beam_each_division=True,
                 )
 
-        Returns string.
         """
         return abjad.AbjadValueObject.__format__(
             self,
             format_specification=format_specification,
             )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         Gets interpreter representation of beam specifier.
 
@@ -162,7 +165,6 @@ class BeamSpecifier(abjad.AbjadValueObject):
             >>> abjadext.rmakers.BeamSpecifier()
             BeamSpecifier(beam_each_division=True)
 
-        Returns string.
         """
         return super(BeamSpecifier, self).__repr__()
 
@@ -175,7 +177,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def beam_divisions_together(self):
+    def beam_divisions_together(self) -> typing.Optional[bool]:
         r"""
         Is true when divisions should beam together.
 
@@ -338,14 +340,11 @@ class BeamSpecifier(abjad.AbjadValueObject):
             >>> specifier.beam_divisions_together is None
             True
 
-        Set to true, false or none.
-
-        Returns true, false or none.
         """
         return self._beam_divisions_together
 
     @property
-    def beam_each_division(self):
+    def beam_each_division(self) -> typing.Optional[bool]:
         r"""
         Is true when specifier beams each division.
 
@@ -474,14 +473,11 @@ class BeamSpecifier(abjad.AbjadValueObject):
             >>> specifier.beam_each_division
             True
 
-        Set to true or false.
-
-        Returns true or false.
         """
         return self._beam_each_division
 
     @property
-    def beam_rests(self):
+    def beam_rests(self) -> typing.Optional[bool]:
         r"""
         Is true when beams should include rests.
 
@@ -610,14 +606,11 @@ class BeamSpecifier(abjad.AbjadValueObject):
             >>> specifier.beam_rests is None
             True
 
-        Set to true, false or none.
-
-        Returns true, false or none.
         """
         return self._beam_rests
 
     @property
-    def hide_nibs(self):
+    def hide_nibs(self) -> typing.Optional[bool]:
         r"""
         Is true when specifier hides nibs.
 
@@ -720,16 +713,11 @@ class BeamSpecifier(abjad.AbjadValueObject):
                     ]
                 }
 
-        Set to true, false or none.
-
-        Defaults to none.
-
-        Returns true, false or none.
         """
         return self._hide_nibs
 
     @property
-    def stemlet_length(self):
+    def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
         r"""
         Gets stemlet length.
 
@@ -826,14 +814,11 @@ class BeamSpecifier(abjad.AbjadValueObject):
             >>> specifier.stemlet_length is None
             True
 
-        Set to integer, float or none.
-
-        Returns integer, float or none.
         """
         return self._stemlet_length
 
     @property
-    def use_feather_beams(self):
+    def use_feather_beams(self) -> typing.Optional[bool]:
         """
         Is true when multiple beams should feather.
 
@@ -843,10 +828,5 @@ class BeamSpecifier(abjad.AbjadValueObject):
             >>> specifier.use_feather_beams is None
             True
 
-        Defaults to none.
-
-        Set to true, false or none.
-
-        Returns true, false or none.
         """
         return self._use_feather_beams

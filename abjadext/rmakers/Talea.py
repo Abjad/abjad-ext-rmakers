@@ -48,7 +48,8 @@ class Talea(abjad.AbjadValueObject):
         ) -> None:
         assert all(isinstance(_, int) for _ in counts)
         self._counts = counts
-        if not abjad.mathtools.is_nonnegative_integer_power_of_two(denominator):
+        if not abjad.mathtools.is_nonnegative_integer_power_of_two(
+            denominator):
             message = f'denominator {denominator} must be integer power of 2.'
             raise Exception(message)
         self._denominator = denominator
