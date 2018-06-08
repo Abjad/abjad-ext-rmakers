@@ -30,7 +30,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...         written_duration=(1, 16),
         ...         ),
         ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-        ...         use_note_duration_bracket=True,
+        ...         duration_bracket=True,
         ...         ),
         ...     )
 
@@ -271,7 +271,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...         written_duration=(1, 16),
         ...         ),
         ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-        ...         use_note_duration_bracket=True,
+        ...         duration_bracket=True,
         ...         ),
         ...     )
 
@@ -856,7 +856,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         elif class_._is_ritardando(selection):
             abjad.override(selection[0]).beam.grow_direction = abjad.Left
         tuplet = abjad.Tuplet((1, 1), selection)
-        if tuplet_specifier.use_note_duration_bracket:
+        if tuplet_specifier.duration_bracket:
             duration = abjad.inspect(tuplet).get_duration()
             markup = duration.to_score_markup()
             markup = markup.scale((0.75, 0.75))
@@ -921,7 +921,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         written_duration=(1, 16),
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -1163,7 +1163,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         written_duration=(1, 16),
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -1450,7 +1450,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         written_duration=(1, 16),
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -1690,7 +1690,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         ),
             ...     division_masks=None,
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -1936,7 +1936,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...             ),
             ...         ],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -2094,7 +2094,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         written_duration=(1, 16),
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -2342,7 +2342,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...             ),
             ...         ],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -2586,7 +2586,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         written_duration=(1, 16),
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -2757,7 +2757,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...             ),
             ...         ],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -3020,7 +3020,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...             ),
             ...         ],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -3290,7 +3290,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...             ),
             ...         ],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -3853,7 +3853,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         tie_across_divisions=False,
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -4097,7 +4097,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         tie_across_divisions=True,
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -4348,7 +4348,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         tie_across_divisions=pattern,
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -4604,7 +4604,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         tie_across_divisions=False,
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=True,
+            ...         duration_bracket=True,
             ...         ),
             ...     )
 
@@ -4848,7 +4848,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         tie_across_divisions=False,
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         use_note_duration_bracket=False,
+            ...         duration_bracket=False,
             ...         ),
             ...     )
 

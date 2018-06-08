@@ -22,14 +22,14 @@ class TupletSpecifier(abjad.AbjadValueObject):
     __documentation_section__ = 'Specifiers'
 
     __slots__ = (
-        '_rewrite_dots',
         '_denominator',
         '_diminution',
+        '_duration_bracket',
         '_extract_trivial',
         '_force_fraction',
+        '_rewrite_dots',
         '_rewrite_rest_filled',
         '_trivialize',
-        '_use_note_duration_bracket',
         )
 
     _publish_storage_format = True
@@ -39,39 +39,39 @@ class TupletSpecifier(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        rewrite_dots: bool = None,
         denominator: typing.Union[str, abjad.Duration, int] = None,
         diminution: bool = None,
+        duration_bracket: bool = None,
         extract_trivial: bool = None,
         force_fraction: bool = None,
+        rewrite_dots: bool = None,
         rewrite_rest_filled: bool = None,
         trivialize: bool = None,
-        use_note_duration_bracket: bool = None,
         ) -> None:
-        if rewrite_dots is not None:
-            rewrite_dots = bool(rewrite_dots)
-        self._rewrite_dots = rewrite_dots
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
         self._denominator = denominator
         if diminution is not None:
             diminution = bool(diminution)
         self._diminution = diminution
+        if duration_bracket is not None:
+            duration_bracket = bool(duration_bracket)
+        self._duration_bracket = duration_bracket
         if extract_trivial is not None:
             extract_trivial = bool(extract_trivial)
         self._extract_trivial = extract_trivial
         if force_fraction is not None:
             force_fraction = bool(force_fraction)
         self._force_fraction = force_fraction
+        if rewrite_dots is not None:
+            rewrite_dots = bool(rewrite_dots)
+        self._rewrite_dots = rewrite_dots
         if rewrite_rest_filled is not None:
             rewrite_rest_fille = bool(rewrite_rest_filled)
         self._rewrite_rest_filled = rewrite_rest_filled
         if trivialize is not None:
             trivialize = bool(trivialize)
         self._trivialize = trivialize
-        if use_note_duration_bracket is not None:
-            use_note_duration_bracket = bool(use_note_duration_bracket)
-        self._use_note_duration_bracket = use_note_duration_bracket
 
     ### SPECIAL METHODS ###
 
@@ -128,12 +128,6 @@ class TupletSpecifier(abjad.AbjadValueObject):
                 message = f'invalid preferred denominator: {denominator!r}.'
                 raise Exception(message)
 
-    def _rewrite_dots_(self, selections):
-        if not self.rewrite_dots:
-            return
-        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
-            tuplet.rewrite_dots()
-
     def _extract_trivial_(self, selections):
         if not self.extract_trivial:
             return selections
@@ -158,6 +152,12 @@ class TupletSpecifier(abjad.AbjadValueObject):
             return
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.force_fraction = True
+
+    def _rewrite_dots_(self, selections):
+        if not self.rewrite_dots:
+            return
+        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+            tuplet.rewrite_dots()
 
     def _rewrite_rest_filled_(self, selections):
         if not self.rewrite_rest_filled:
@@ -195,13 +195,6 @@ class TupletSpecifier(abjad.AbjadValueObject):
             tuplet.trivialize()
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def rewrite_dots(self) -> typing.Optional[bool]:
-        """
-        Is true when tuplet rewrites dots.
-        """
-        return self._rewrite_dots
 
     @property
     def denominator(self) -> typing.Optional[
@@ -705,6 +698,14 @@ class TupletSpecifier(abjad.AbjadValueObject):
         return self._diminution
 
     @property
+    def duration_bracket(self) -> typing.Optional[bool]:
+        """
+        Is true when tuplet should override tuplet number text with note
+        duration bracket giving tuplet duration.
+        """
+        return self._duration_bracket
+
+    @property
     def extract_trivial(self) -> typing.Optional[bool]:
         """
         Is true when rhythm-maker should extract trivial tuplets.
@@ -896,6 +897,13 @@ class TupletSpecifier(abjad.AbjadValueObject):
         return self._force_fraction
 
     @property
+    def rewrite_dots(self) -> typing.Optional[bool]:
+        """
+        Is true when tuplet rewrites dots.
+        """
+        return self._rewrite_dots
+
+    @property
     def rewrite_rest_filled(self) -> typing.Optional[bool]:
         """
         Is true when rhythm-maker rewrites rest-filled tuplets.
@@ -908,11 +916,3 @@ class TupletSpecifier(abjad.AbjadValueObject):
         Is true when trivializable tuplets should be trivialized.
         """
         return self._trivialize
-
-    @property
-    def use_note_duration_bracket(self) -> typing.Optional[bool]:
-        """
-        Is true when tuplet should override tuplet number text with note
-        duration bracket giving tuplet duration.
-        """
-        return self._use_note_duration_bracket
