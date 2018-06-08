@@ -639,7 +639,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=None,
             ...         ),
             ...     )
@@ -701,7 +701,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator='divisions',
             ...         ),
             ...     )
@@ -761,7 +761,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=(1, 16),
             ...         ),
             ...     )
@@ -820,7 +820,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=(1, 32),
             ...         ),
             ...     )
@@ -879,7 +879,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=(1, 64),
             ...         ),
             ...     )
@@ -940,7 +940,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=8,
             ...         ),
             ...     )
@@ -999,7 +999,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=12,
             ...         ),
             ...     )
@@ -1058,7 +1058,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=13,
             ...         ),
             ...     )
@@ -1638,12 +1638,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Makes diminished tuplets and does not avoid dots:
+            Makes diminished tuplets and does not rewrite dots:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=False,
+            ...         rewrite_dots=False,
             ...         diminution=True,
             ...         ),
             ...     )
@@ -1695,12 +1695,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Makes diminished tuplets and avoids dots:
+            Makes diminished tuplets and rewrites dots:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         diminution=True,
             ...         ),
             ...     )
@@ -1748,12 +1748,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Makes augmented tuplets and does not avoid dots:
+            Makes augmented tuplets and does not rewrite dots:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=False,
+            ...         rewrite_dots=False,
             ...         diminution=False,
             ...         ),
             ...     )
@@ -1805,12 +1805,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Makes augmented tuplets and avoids dots:
+            Makes augmented tuplets and rewrites dots:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         diminution=False,
             ...         ),
             ...     )
@@ -1867,7 +1867,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         trivialize=False,
             ...         ),
             ...     )
@@ -1976,7 +1976,7 @@ class TupletRhythmMaker(RhythmMaker):
                     }   % measure
                 }
 
-            REGRESSION: Ignores ``trivialize`` and respects ``avoid_dots`` when
+            REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when
             both are true. Measures 2 and 4 are first rewritten as trivial but
             then supplied again with nontrivial prolation when removing dots.
             The result is that measures 2 and 4 carry nontrivial prolation with
@@ -1985,7 +1985,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         trivialize=True,
             ...         ),
             ...     )

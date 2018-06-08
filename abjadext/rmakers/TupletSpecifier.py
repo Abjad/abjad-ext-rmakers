@@ -22,7 +22,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
     __documentation_section__ = 'Specifiers'
 
     __slots__ = (
-        '_avoid_dots',
+        '_rewrite_dots',
         '_denominator',
         '_diminution',
         '_extract_trivial',
@@ -39,7 +39,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        avoid_dots: bool = None,
+        rewrite_dots: bool = None,
         denominator: typing.Union[str, abjad.Duration, int] = None,
         diminution: bool = None,
         extract_trivial: bool = None,
@@ -48,9 +48,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
         trivialize: bool = None,
         use_note_duration_bracket: bool = None,
         ) -> None:
-        if avoid_dots is not None:
-            avoid_dots = bool(avoid_dots)
-        self._avoid_dots = avoid_dots
+        if rewrite_dots is not None:
+            rewrite_dots = bool(rewrite_dots)
+        self._rewrite_dots = rewrite_dots
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
         self._denominator = denominator
@@ -86,12 +86,12 @@ class TupletSpecifier(abjad.AbjadValueObject):
         self._apply_denominator(selections, divisions)
         self._force_fraction_(selections)
         self._trivialize_(selections)
-        # avoid dots must follow trivialize:
-        self._avoid_dots_(selections)
+        # rewrite dots must follow trivialize:
+        self._rewrite_dots_(selections)
         selections = self._rewrite_rest_filled_(selections)
         # extract trivial must follow the other operations:
         selections = self._extract_trivial_(selections)
-        # toggle prolation must follow avoid dots and extract trivial:
+        # toggle prolation must follow rewrite dots and extract trivial:
         self._toggle_prolation(selections)
         return selections
 
@@ -128,8 +128,8 @@ class TupletSpecifier(abjad.AbjadValueObject):
                 message = f'invalid preferred denominator: {denominator!r}.'
                 raise Exception(message)
 
-    def _avoid_dots_(self, selections):
-        if not self.avoid_dots:
+    def _rewrite_dots_(self, selections):
+        if not self.rewrite_dots:
             return
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.rewrite_dots()
@@ -197,11 +197,11 @@ class TupletSpecifier(abjad.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def avoid_dots(self) -> typing.Optional[bool]:
+    def rewrite_dots(self) -> typing.Optional[bool]:
         """
-        Is true when tuplet should avoid dotted rhythmic values.
+        Is true when tuplet rewrites dots.
         """
-        return self._avoid_dots
+        return self._rewrite_dots
 
     @property
     def denominator(self) -> typing.Optional[
@@ -219,7 +219,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=None,
             ...         ),
             ...     )
@@ -281,7 +281,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator='divisions',
             ...         ),
             ...     )
@@ -341,7 +341,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=(1, 16),
             ...         ),
             ...     )
@@ -400,7 +400,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=(1, 32),
             ...         ),
             ...     )
@@ -459,7 +459,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=(1, 64),
             ...         ),
             ...     )
@@ -520,7 +520,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=8,
             ...         ),
             ...     )
@@ -579,7 +579,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=12,
             ...         ),
             ...     )
@@ -638,7 +638,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         avoid_dots=True,
+            ...         rewrite_dots=True,
             ...         denominator=13,
             ...         ),
             ...     )
