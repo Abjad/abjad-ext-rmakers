@@ -7,7 +7,7 @@ from .RhythmMaker import RhythmMaker
 from .Talea import Talea
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import mask_typing
+from .typings import Mask
 
 
 class TaleaRhythmMaker(RhythmMaker):
@@ -106,7 +106,7 @@ class TaleaRhythmMaker(RhythmMaker):
         division_masks: typing.Sequence[abjad.Pattern] = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.List[int] = None,
-        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        logical_tie_masks: typing.Sequence[Mask] = None,
         read_talea_once_only: bool = None,
         rest_tied_notes: bool = None,
         split_divisions_by_counts: typing.List[int] = None,

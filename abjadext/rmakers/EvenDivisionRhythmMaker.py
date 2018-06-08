@@ -7,7 +7,7 @@ from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import mask_typing
+from .typings import Mask
 
 
 class EvenDivisionRhythmMaker(RhythmMaker):
@@ -42,10 +42,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         burnish_specifier: BurnishSpecifier = None,
         denominator: typing.Union[str, int] = 'from_counts',
         denominators: typing.Sequence[int] = [8],
-        division_masks: typing.Sequence[mask_typing] = None,
+        division_masks: typing.Sequence[Mask] = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
-        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        logical_tie_masks: typing.Sequence[Mask] = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:

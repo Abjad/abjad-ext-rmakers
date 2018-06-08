@@ -29,6 +29,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
         '_force_fraction',
         '_rewrite_dots',
         '_rewrite_rest_filled',
+        '_rewrite_sustained',
         '_trivialize',
         )
 
@@ -46,6 +47,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
         force_fraction: bool = None,
         rewrite_dots: bool = None,
         rewrite_rest_filled: bool = None,
+        rewrite_sustained: bool = None,
         trivialize: bool = None,
         ) -> None:
         if isinstance(denominator, tuple):
@@ -69,6 +71,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
         if rewrite_rest_filled is not None:
             rewrite_rest_fille = bool(rewrite_rest_filled)
         self._rewrite_rest_filled = rewrite_rest_filled
+        if rewrite_sustained is not None:
+            rewrite_rest_fille = bool(rewrite_sustained)
+        self._rewrite_sustained = rewrite_sustained
         if trivialize is not None:
             trivialize = bool(trivialize)
         self._trivialize = trivialize
@@ -88,6 +93,8 @@ class TupletSpecifier(abjad.AbjadValueObject):
         self._trivialize_(selections)
         # rewrite dots must follow trivialize:
         self._rewrite_dots_(selections)
+        # rewrites must precede extract trivial:
+        selections = self._rewrite_sustained_(selections)
         selections = self._rewrite_rest_filled_(selections)
         # extract trivial must follow the other operations:
         selections = self._extract_trivial_(selections)
@@ -164,6 +171,30 @@ class TupletSpecifier(abjad.AbjadValueObject):
             return
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.rewrite_dots()
+
+    def _rewrite_sustained_(self, selections):
+        if not self.rewrite_sustained:
+            return selections
+        selections_ = []
+        maker = abjad.LeafMaker()
+        for selection in selections:
+            selection_ = []
+            for component in selection:
+                if not self.is_sustained_tuplet(component):
+                    selection_.append(component)
+                    continue
+                tuplet = component
+                duration = abjad.inspect(tuplet).get_duration()
+                leaves = abjad.select(tuplet).leaves()
+                for leaf in leaves[1:]:
+                    tuplet.remove(leaf)
+                assert len(tuplet) == 1, repr(tuplet)
+                tuplet[0]._set_duration(duration)
+                tuplet.multiplier = abjad.Multiplier(1)
+                selection_.append(tuplet)
+            selection_ = abjad.select(selection_)
+            selections_.append(selection_)
+        return selections_
 
     def _rewrite_rest_filled_(self, selections):
         if not self.rewrite_rest_filled:
@@ -909,6 +940,205 @@ class TupletSpecifier(abjad.AbjadValueObject):
         return self._rewrite_dots
 
     @property
+    def rewrite_sustained(self) -> typing.Optional[bool]:
+        r"""
+        Is true when rhythm-maker rewrites sustained tuplets.
+
+        ..  container:: example
+
+            Sustained tuplets generalize a class of rhythms composers are
+            likely to rewrite:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     extra_counts_per_division=[2, 1, 1, 1],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[6, 5, 5, 4, 1],
+            ...         denominator=16,
+            ...         ),
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...         tie_across_divisions=abjad.index([1, 2]),
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 4/16
+                        \times 2/3 {
+                            c'4.
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/5 {
+                            c'4
+                            ~
+                            c'16
+                            ~
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/5 {
+                            c'4
+                            ~
+                            c'16
+                            ~
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/5 {
+                            c'4
+                            c'16
+                        }
+                    }   % measure
+                }
+
+            The first three tuplets in the example above qualify as sustained:
+
+                >>> staff = lilypond_file[abjad.Staff]
+                >>> for tuplet in abjad.iterate(staff).components(abjad.Tuplet):
+                ...     abjadext.rmakers.TupletSpecifier.is_sustained_tuplet(tuplet)
+                ...
+                True
+                True
+                True
+                False
+
+            Tuplets 0 and 1 each contain only a single **tuplet-initial**
+            attack. Tuplet 2 contains no attack at all. All three fill their
+            duration completely.
+
+            Tuplet 3 contains a **nonintial** attack that rearticulates the
+            tuplet's duration midway through the course of the figure. Tuplet 3
+            does not qualify as sustained.
+
+        ..  container:: example
+
+            Rewrite sustained tuplets like this:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     extra_counts_per_division=[2, 1, 1, 1],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[6, 5, 5, 4, 1],
+            ...         denominator=16,
+            ...         ),
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...         tie_across_divisions=abjad.index([1, 2]),
+            ...         ),
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_sustained=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 4/16
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                        }
+                    }   % measure
+                    {   % measure
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            ~
+                        }
+                    }   % measure
+                    {   % measure
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            ~
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/5 {
+                            c'4
+                            c'16
+                        }
+                    }   % measure
+                }
+
+        ..  container:: example
+
+            Rewrite sustained tuplets -- and then extract the trivial tuplets
+            that result -- like this:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     extra_counts_per_division=[2, 1, 1, 1],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[6, 5, 5, 4, 1],
+            ...         denominator=16,
+            ...         ),
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...         tie_across_divisions=abjad.index([1, 2]),
+            ...         ),
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...         rewrite_sustained=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 4/16
+                        c'4
+                    }   % measure
+                    {   % measure
+                        c'4
+                        ~
+                    }   % measure
+                    {   % measure
+                        c'4
+                        ~
+                    }   % measure
+                    {   % measure
+                        \times 4/5 {
+                            c'4
+                            c'16
+                        }
+                    }   % measure
+                }
+
+        """
+        return self._rewrite_sustained
+
+    @property
     def rewrite_rest_filled(self) -> typing.Optional[bool]:
         """
         Is true when rhythm-maker rewrites rest-filled tuplets.
@@ -921,3 +1151,25 @@ class TupletSpecifier(abjad.AbjadValueObject):
         Is true when trivializable tuplets should be trivialized.
         """
         return self._trivialize
+
+    ### PUBLIC METHODS ###
+
+    @staticmethod
+    def is_sustained_tuplet(argument):
+        r"""
+        Is true when ``argument`` is sustained tuplet.
+        """
+        if not isinstance(argument, abjad.Tuplet):
+            return False
+        lt_head_count = 0
+        leaves = abjad.select(argument).leaves()
+        for leaf in leaves:
+            lt = abjad.inspect(leaf).get_logical_tie()
+            if lt.head is leaf:
+                lt_head_count += 1
+        if lt_head_count == 0:
+            return True
+        lt = abjad.inspect(leaves[0]).get_logical_tie()
+        if lt.head is leaves[0] and lt_head_count == 1:
+            return True
+        return False

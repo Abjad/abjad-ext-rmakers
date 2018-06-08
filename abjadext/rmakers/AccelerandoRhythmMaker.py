@@ -7,7 +7,7 @@ from .InterpolationSpecifier import InterpolationSpecifier
 from .RhythmMaker import RhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import mask_typing
+from .typings import Mask
 
 
 class AccelerandoRhythmMaker(RhythmMaker):
@@ -523,11 +523,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
         self,
         *,
         beam_specifier: BeamSpecifier = None,
-        division_masks: typing.Sequence[mask_typing] = None,
+        division_masks: typing.Sequence[Mask] = None,
         duration_specifier: DurationSpecifier = None,
         interpolation_specifiers: typing.Sequence[
             InterpolationSpecifier] = None,
-        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        logical_tie_masks: typing.Sequence[Mask] = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:

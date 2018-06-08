@@ -8,7 +8,7 @@ from .SilenceMask import SilenceMask
 from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import mask_typing
+from .typings import Mask
 
 
 class NoteRhythmMaker(RhythmMaker):
@@ -68,9 +68,9 @@ class NoteRhythmMaker(RhythmMaker):
         *,
         beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
-        division_masks: typing.Sequence[mask_typing] = None,
+        division_masks: typing.Sequence[Mask] = None,
         duration_specifier: DurationSpecifier = None,
-        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        logical_tie_masks: typing.Sequence[Mask] = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:

@@ -7,7 +7,7 @@ from .SilenceMask import SilenceMask
 from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import mask_typing
+from .typings import Mask
 
 
 class RhythmMaker(abjad.AbjadValueObject):
@@ -41,7 +41,7 @@ class RhythmMaker(abjad.AbjadValueObject):
         self,
         *,
         beam_specifier: BeamSpecifier = None,
-        logical_tie_masks: typing.Sequence[mask_typing] = None,
+        logical_tie_masks: typing.Sequence[Mask] = None,
         division_masks=None,
         duration_specifier=None,
         tie_specifier=None,
