@@ -1,6 +1,5 @@
 import abjad
 import typing
-from .PartitionTable import PartitionTable
 
 
 class DurationSpecifier(abjad.AbjadValueObject):
@@ -36,7 +35,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         forbidden_duration: typing.Union[tuple, abjad.Duration] = None,
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
-        spell_metrically: typing.Union[bool, str, PartitionTable] = None,
+        spell_metrically: typing.Union[bool, str] = None,
         ) -> None:
         if decrease_monotonic is not None:
             decrease_monotonic = bool(decrease_monotonic)
@@ -54,8 +53,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         self._rewrite_rest_filled = rewrite_rest_filled
         assert (spell_metrically is None or
             isinstance(spell_metrically, bool) or
-            spell_metrically == 'unassignable' or
-            isinstance(spell_metrically, PartitionTable))
+            spell_metrically == 'unassignable')
         self._spell_metrically = spell_metrically
         if forbid_meter_rewriting is not None:
             forbid_meter_rewriting = bool(forbid_meter_rewriting)
@@ -270,7 +268,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         return self._rewrite_rest_filled
 
     @property
-    def spell_metrically(self) -> typing.Union[bool, str, PartitionTable, None]:
+    def spell_metrically(self) -> typing.Union[bool, str, None]:
         """
         Is true when durations should spell according to approximate common
         practice understandings of meter.

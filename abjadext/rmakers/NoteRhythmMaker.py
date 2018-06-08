@@ -3,7 +3,6 @@ import typing
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
-from .PartitionTable import PartitionTable
 from .RhythmMaker import RhythmMaker
 from .SilenceMask import SilenceMask
 from .SustainMask import SustainMask
@@ -229,12 +228,6 @@ class NoteRhythmMaker(RhythmMaker):
                 meter = abjad.Meter(division)
                 rhythm_tree_container = meter.root_node
                 durations = [_.duration for _ in rhythm_tree_container]
-            elif isinstance(
-                duration_specifier.spell_metrically,
-                PartitionTable,
-                ):
-                partition_table = duration_specifier.spell_metrically
-                durations = partition_table.respell_division(division)
             else:
                 durations = [division]
             selection = leaf_maker(pitches=0, durations=durations)
@@ -965,59 +958,6 @@ class NoteRhythmMaker(RhythmMaker):
             ``9/16`` is spelled metrically because it is unassignable.
             The other durations are spelled with the fewest number of symbols
             possible.
-
-        ..  container:: example
-
-            Spells durations with custom partition table:
-
-            >>> partition_table = abjadext.rmakers.PartitionTable([
-            ...     (5, [3, 2]),
-            ...     (9, [3, 3, 3]),
-            ...     ])
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically=partition_table,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 16), (9, 16), (10, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    {   % measure
-                        \time 5/16
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 9/16
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 10/16
-                        c'4.
-                        ~
-                        c'4
-                    }   % measure
-                }
 
         ..  container:: example
 

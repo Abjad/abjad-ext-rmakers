@@ -8,7 +8,6 @@ from .InciseSpecifier import InciseSpecifier
 from .IncisedRhythmMaker import IncisedRhythmMaker
 from .InterpolationSpecifier import InterpolationSpecifier
 from .NoteRhythmMaker import NoteRhythmMaker
-from .PartitionTable import PartitionTable
 from .RotationCounter import RotationCounter
 from .SilenceMask import SilenceMask
 from .SustainMask import SustainMask
