@@ -11,7 +11,6 @@ from .NoteRhythmMaker import NoteRhythmMaker
 from .PartitionTable import PartitionTable
 from .RotationCounter import RotationCounter
 from .SilenceMask import SilenceMask
-from .SkipRhythmMaker import SkipRhythmMaker
 from .SustainMask import SustainMask
 from .Talea import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker
