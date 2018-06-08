@@ -153,6 +153,12 @@ class TupletSpecifier(abjad.AbjadValueObject):
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.force_fraction = True
 
+    @staticmethod
+    def _is_rest_filled_tuplet(tuplet):
+        if not isinstance(tuplet, abjad.Tuplet):
+            return False
+        return all(isinstance(_, abjad.Rest) for _ in tuplet)
+
     def _rewrite_dots_(self, selections):
         if not self.rewrite_dots:
             return
@@ -167,8 +173,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
         for selection in selections:
             selection_ = []
             for component in selection:
-                if not (isinstance(component, abjad.Tuplet) and
-                    component._rest_filled()):
+                if not self._is_rest_filled_tuplet(component):
                     selection_.append(component)
                     continue
                 duration = abjad.inspect(component).get_duration()
