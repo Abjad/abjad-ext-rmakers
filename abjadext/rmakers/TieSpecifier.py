@@ -2,6 +2,7 @@ import abjad
 import collections
 import itertools
 import typing
+from abjad import typings as abjad_typings
 
 
 class TieSpecifier(abjad.AbjadValueObject):
@@ -28,14 +29,24 @@ class TieSpecifier(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        repeat_ties: bool = None,
+        repeat_ties: typing.Union[
+            bool,
+            abjad_typings.IntegerPair,
+            abjad.DurationInequality,
+            ] = None,
         strip_ties: bool = None,
         tie_across_divisions: bool = None,
         tie_consecutive_notes: bool = None,
         ) -> None:
-        if repeat_ties is not None:
-            repeat_ties = bool(repeat_ties)
-        self._repeat_ties = repeat_ties
+        repeat_ties_ = repeat_ties
+        if isinstance(repeat_ties, tuple) and len(repeat_ties) == 2:
+            repeat_ties_ = abjad.DurationInequality(
+                operator_string='>=',
+                duration=repeat_ties,
+                )
+        if repeat_ties_ is not None:
+            assert isinstance(repeat_ties_, (bool, abjad.DurationInequality))
+        self._repeat_ties = repeat_ties_
         if strip_ties is not None:
             strip_ties = bool(strip_ties)
         self._strip_ties = strip_ties
@@ -79,7 +90,8 @@ class TieSpecifier(abjad.AbjadValueObject):
             ties_ = abjad.inspect(leaf).get_spanners(abjad.Tie)
             ties.update(ties_)
         for tie in ties:
-            tie._repeat = True
+            #tie._repeat = True
+            tie._repeat = self.repeat_ties
 
     def _strip_ties_(self, divisions):
         if not self.strip_ties:
@@ -164,9 +176,15 @@ class TieSpecifier(abjad.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def repeat_ties(self) -> typing.Optional[bool]:
+    def repeat_ties(self) -> typing.Union[
+        bool, abjad.DurationInequality, None,
+        ]:
         r"""
-        Is true when ties should format with LilyPond ``\repeatTie``.
+        Is true when ties should format all notes in tie with LilyPond
+        ``\repeatTie``.
+
+        Is duration inequality when ties should format with LilyPond
+        ``\repeatTie`` all notes that satisfy duration inequality.
         """
         return self._repeat_ties
 
