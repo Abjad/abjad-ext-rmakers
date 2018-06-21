@@ -101,13 +101,13 @@ class BeamSpecifier(abjad.AbjadValueObject):
         """
         beam: typing.Union[
             abjad.DuratedComplexBeam,
-            abjad.MultipartBeam,
+            abjad.Beam,
             None,
             ] = None
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
             if self.hide_nibs:
-                beam = abjad.MultipartBeam(beam_rests=self.beam_rests)
+                beam = abjad.Beam(beam_rests=self.beam_rests)
             else:
                 durations = []
                 for selection in selections:
@@ -131,7 +131,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
             abjad.attach(beam, leaves)
         elif self.beam_each_division:
             for selection in selections:
-                beam = abjad.MultipartBeam(
+                beam = abjad.Beam(
                     beam_rests=self.beam_rests,
                     stemlet_length=self.stemlet_length,
                     )

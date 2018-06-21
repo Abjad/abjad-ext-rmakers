@@ -266,11 +266,11 @@ class IncisedRhythmMaker(RhythmMaker):
             raise Exception(message)
         beam_specifier = self._get_beam_specifier()
         if beam_specifier.beam_divisions_together:
-            beam = abjad.MultipartBeam()
+            beam = abjad.Beam()
             abjad.attach(beam, result)
         elif beam_specifier.beam_each_division:
             for x in result:
-                beam = abjad.MultipartBeam()
+                beam = abjad.Beam()
                 leaves = abjad.select(x).leaves()
                 abjad.attach(beam, leaves)
         selections = [abjad.select(_) for _ in result]
