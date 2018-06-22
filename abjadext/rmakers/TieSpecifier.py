@@ -2,7 +2,7 @@ import abjad
 import collections
 import itertools
 import typing
-from abjad import typings as abjad_typings
+from . import typings
 
 
 class TieSpecifier(abjad.AbjadValueObject):
@@ -31,7 +31,7 @@ class TieSpecifier(abjad.AbjadValueObject):
         *,
         repeat_ties: typing.Union[
             bool,
-            abjad_typings.IntegerPair,
+            typings.IntegerPair,
             abjad.DurationInequality,
             ] = None,
         strip_ties: bool = None,
