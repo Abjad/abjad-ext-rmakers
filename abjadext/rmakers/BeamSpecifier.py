@@ -99,11 +99,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
         """
         Calls beam specifier on ``selections``.
         """
-        beam: typing.Union[
-            abjad.DuratedComplexBeam,
-            abjad.Beam,
-            None,
-            ] = None
+        beam: typing[abjad.Beam] = None
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
             if self.hide_nibs:
@@ -113,7 +109,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
                 for selection in selections:
                     duration = abjad.inspect(selection).get_duration()
                     durations.append(duration)
-                beam = abjad.DuratedComplexBeam(
+                beam = abjad.Beam(
                     beam_rests=self.beam_rests,
                     durations=durations,
                     span_beam_count=1,
