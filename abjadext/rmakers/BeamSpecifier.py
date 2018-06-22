@@ -99,7 +99,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
         """
         Calls beam specifier on ``selections``.
         """
-        beam: typing[abjad.Beam] = None
+        beam: typing.Optional[abjad.Beam] = None
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
             if self.hide_nibs:
