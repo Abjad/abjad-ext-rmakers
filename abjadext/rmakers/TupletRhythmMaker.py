@@ -496,7 +496,7 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8.
                             [
                             \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 1
+                            \set stemRightBeamCount = 0
                             c'8.
                             ]
                         }
@@ -532,7 +532,7 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             [
                             \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 1
+                            \set stemRightBeamCount = 0
                             c'8
                             ]
                         }
