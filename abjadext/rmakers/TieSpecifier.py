@@ -8,9 +8,6 @@ from . import typings
 class TieSpecifier(abjad.AbjadValueObject):
     """
     Tie specifier.
-
-    >>> import abjadext
-
     """
 
     ### CLASS VARIABLES ###

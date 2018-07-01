@@ -17,9 +17,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     Object model of a partially evaluated function that accepts a (possibly
     empty) list of divisions as input and returns a list of selections as
     output (structured one selection per input division).
-
-    >>> import abjadext
-
     """
 
     ### CLASS VARIABLES ###

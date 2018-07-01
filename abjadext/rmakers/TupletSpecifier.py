@@ -7,8 +7,6 @@ class TupletSpecifier(abjad.AbjadValueObject):
     """
     Tuplet specifier.
 
-    >>> import abjadext
-
     ..  container:: example
 
         >>> specifier = abjadext.rmakers.TupletSpecifier()

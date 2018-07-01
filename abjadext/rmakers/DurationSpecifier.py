@@ -5,9 +5,6 @@ import typing
 class DurationSpecifier(abjad.AbjadValueObject):
     """
     Duration specifier.
-
-    >>> import abjadext
-
     """
 
     ### CLASS VARIABLES ###

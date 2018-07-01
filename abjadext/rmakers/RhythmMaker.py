@@ -13,9 +13,6 @@ from .typings import Mask
 class RhythmMaker(abjad.AbjadValueObject):
     """
     Abstract rhythm-maker.
-
-    >>> import abjadext
-
     """
 
     ### CLASS VARIABLES ###

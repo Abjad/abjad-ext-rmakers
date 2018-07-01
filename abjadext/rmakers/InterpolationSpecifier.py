@@ -5,9 +5,6 @@ import typing
 class InterpolationSpecifier(abjad.AbjadValueObject):
     """
     Interpolation specifier.
-
-    >>> import abjadext
-
     """
 
     ### CLASS VARIABLES ###

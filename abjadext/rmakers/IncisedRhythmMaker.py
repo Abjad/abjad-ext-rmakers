@@ -14,8 +14,6 @@ class IncisedRhythmMaker(RhythmMaker):
     r"""
     Incised rhythm-maker.
 
-    >>> import abjadext
-
     ..  container:: example
 
         >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(

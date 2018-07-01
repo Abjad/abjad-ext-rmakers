@@ -6,8 +6,6 @@ class BeamSpecifier(abjad.AbjadValueObject):
     r"""
     Beam specifier.
 
-    >>> import abjadext
-
     ..  container:: example
 
         Beams each division by default:
