@@ -30,6 +30,12 @@ before_install:
     - export MYPYPATH=$ABJAD
     - export PATH=$PATH:$ABJAD/abjad/scr
 
+    # clone & install tonality:
+    - TONALITY=/tmp/abjad-ext-tonality
+    - git clone https://github.com/Abjad/abjad-ext-tonality.git $TONALITY
+    - pip install -e $TONALITY
+    - export MYPYPATH=$MYPYPATH:$TONALITY
+
     # set path:
     - export PATH=/home/travis/bin:$PATH
 
@@ -51,7 +57,6 @@ install:
     - pip install -e .[test] # maybe don't need test dependencies
 
 script:
-    #- mypy abjadext/
     - mypy $PACKAGE
     - pytest $PACKAGE
 
