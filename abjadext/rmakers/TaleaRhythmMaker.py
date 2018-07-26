@@ -1,5 +1,6 @@
 import abjad
 import typing
+from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
@@ -7,7 +8,6 @@ from .RhythmMaker import RhythmMaker
 from .Talea import Talea
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import Mask
 
 
 class TaleaRhythmMaker(RhythmMaker):
@@ -101,10 +101,10 @@ class TaleaRhythmMaker(RhythmMaker):
         talea: Talea = None,
         beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
-        division_masks: typing.Sequence[abjad.Pattern] = None,
+        division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.List[int] = None,
-        logical_tie_masks: typing.Sequence[Mask] = None,
+        logical_tie_masks: typings.MaskKeyword = None,
         read_talea_once_only: bool = None,
         rest_tied_notes: bool = None,
         split_divisions_by_counts: typing.List[int] = None,

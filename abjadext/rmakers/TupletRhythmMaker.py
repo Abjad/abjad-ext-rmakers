@@ -1,5 +1,6 @@
 import abjad
 import typing
+from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
@@ -147,12 +148,12 @@ class TupletRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *,
-        tuplet_ratios: typing.Sequence[typing.Tuple[int, ...]] = None,
         beam_specifier: BeamSpecifier = None,
         denominator: int = None,
-        division_masks: typing.Sequence[abjad.Pattern] = None,
+        division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
         tie_specifier: TieSpecifier = None,
+        tuplet_ratios: typing.Sequence[typing.Tuple[int, ...]] = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:
         RhythmMaker.__init__(

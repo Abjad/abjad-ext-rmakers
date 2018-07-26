@@ -1,5 +1,6 @@
 import abjad
 import typing
+from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .InciseSpecifier import InciseSpecifier
@@ -7,7 +8,6 @@ from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import Mask
 
 
 class IncisedRhythmMaker(RhythmMaker):
@@ -80,10 +80,10 @@ class IncisedRhythmMaker(RhythmMaker):
         *,
         beam_specifier: BeamSpecifier = None,
         duration_specifier: DurationSpecifier = None,
-        division_masks: typing.Sequence[Mask] = None,
+        division_masks: typings.MaskKeyword = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         incise_specifier: InciseSpecifier = None,
-        logical_tie_masks: typing.Sequence[Mask] = None,
+        logical_tie_masks: typings.MaskKeyword = None,
         replace_rests_with_skips: bool = None,
         split_divisions_by_counts: typing.Sequence[int] = None,
         tie_specifier: TieSpecifier = None,

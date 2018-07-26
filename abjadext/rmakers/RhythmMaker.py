@@ -1,13 +1,13 @@
 import abjad
 import collections
 import typing
+from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .SilenceMask import SilenceMask
 from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import Mask
 
 
 class RhythmMaker(abjad.AbjadValueObject):
@@ -38,9 +38,9 @@ class RhythmMaker(abjad.AbjadValueObject):
         self,
         *,
         beam_specifier: BeamSpecifier = None,
-        logical_tie_masks: typing.Sequence[Mask] = None,
-        division_masks=None,
+        division_masks: typings.MaskKeyword = None,
         duration_specifier=None,
+        logical_tie_masks: typings.MaskKeyword = None,
         tie_specifier=None,
         tuplet_specifier=None,
         ) -> None:

@@ -1,13 +1,13 @@
 import abjad
 import math
 import typing
+from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .InterpolationSpecifier import InterpolationSpecifier
 from .RhythmMaker import RhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import Mask
 
 
 class AccelerandoRhythmMaker(RhythmMaker):
@@ -549,11 +549,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
         self,
         *,
         beam_specifier: BeamSpecifier = None,
-        division_masks: typing.Sequence[Mask] = None,
+        division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
         interpolation_specifiers: typing.Sequence[
             InterpolationSpecifier] = None,
-        logical_tie_masks: typing.Sequence[Mask] = None,
+        logical_tie_masks: typings.MaskKeyword = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:

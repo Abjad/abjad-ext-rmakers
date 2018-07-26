@@ -1,13 +1,13 @@
 import abjad
 import math
 import typing
+from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import Mask
 
 
 class EvenDivisionRhythmMaker(RhythmMaker):
@@ -39,10 +39,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         burnish_specifier: BurnishSpecifier = None,
         denominator: typing.Union[str, int] = 'from_counts',
         denominators: typing.Sequence[int] = [8],
-        division_masks: typing.Sequence[Mask] = None,
+        division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
-        logical_tie_masks: typing.Sequence[Mask] = None,
+        logical_tie_masks: typings.MaskKeyword = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:

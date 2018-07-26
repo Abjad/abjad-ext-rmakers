@@ -1,5 +1,6 @@
 import abjad
 import typing
+from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
@@ -8,7 +9,6 @@ from .SilenceMask import SilenceMask
 from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .typings import Mask
 
 
 class NoteRhythmMaker(RhythmMaker):
@@ -66,9 +66,9 @@ class NoteRhythmMaker(RhythmMaker):
         *,
         beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
-        division_masks: typing.Sequence[Mask] = None,
+        division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
-        logical_tie_masks: typing.Sequence[Mask] = None,
+        logical_tie_masks: typings.MaskKeyword = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:
