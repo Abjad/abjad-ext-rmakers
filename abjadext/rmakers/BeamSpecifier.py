@@ -105,7 +105,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
             else:
                 durations = []
                 for selection in selections:
-                    duration = abjad.inspect(selection).get_duration()
+                    duration = abjad.inspect(selection).duration()
                     durations.append(duration)
                 beam = abjad.Beam(
                     beam_rests=self.beam_rests,

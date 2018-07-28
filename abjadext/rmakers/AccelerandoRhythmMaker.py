@@ -590,10 +590,10 @@ class AccelerandoRhythmMaker(RhythmMaker):
         total_duration,
         interpolation_specifier,
         ):
-        selection_duration = abjad.inspect(selection).get_duration()
+        selection_duration = abjad.inspect(selection).duration()
         if not selection_duration == total_duration:
             needed_duration = total_duration - abjad.inspect(
-                selection[:-1]).get_duration()
+                selection[:-1]).duration()
             multiplier = needed_duration / \
                 interpolation_specifier.written_duration
             multiplier = abjad.Multiplier(multiplier)
@@ -805,16 +805,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @staticmethod
     def _is_accelerando(selection):
-        first_duration = abjad.inspect(selection[0]).get_duration()
-        last_duration = abjad.inspect(selection[-1]).get_duration()
+        first_duration = abjad.inspect(selection[0]).duration()
+        last_duration = abjad.inspect(selection[-1]).duration()
         if last_duration < first_duration:
             return True
         return False
 
     @staticmethod
     def _is_ritardando(selection):
-        first_duration = abjad.inspect(selection[0]).get_duration()
-        last_duration = abjad.inspect(selection[-1]).get_duration()
+        first_duration = abjad.inspect(selection[0]).duration()
+        last_duration = abjad.inspect(selection[-1]).duration()
         if first_duration < last_duration:
             return True
         return False
@@ -873,7 +873,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             total_duration,
             interpolation_specifier,
             )
-        pair = (abjad.inspect(selection).get_duration(), total_duration)
+        pair = (abjad.inspect(selection).duration(), total_duration)
         assert pair[0] == pair[1], repr(pair)
         if not beam_specifier.use_feather_beams:
             pass
@@ -883,7 +883,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             abjad.override(selection[0]).beam.grow_direction = abjad.Left
         tuplet = abjad.Tuplet((1, 1), selection)
         if tuplet_specifier.duration_bracket:
-            duration = abjad.inspect(tuplet).get_duration()
+            duration = abjad.inspect(tuplet).duration()
             markup = duration.to_score_markup()
             markup = markup.scale((0.75, 0.75))
             abjad.override(tuplet).tuplet_number.text = markup

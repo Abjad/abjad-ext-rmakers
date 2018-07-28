@@ -391,7 +391,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 new_components = []
                 for component in selection:
                     if isinstance(component, abjad.Rest):
-                        duration = abjad.inspect(component).get_duration()
+                        duration = abjad.inspect(component).duration()
                         skip = abjad.Skip(duration)
                         new_components.append(skip)
                     else:

@@ -432,7 +432,7 @@ class TaleaRhythmMaker(RhythmMaker):
         new_selections = []
         for container in containers:
             inspection = abjad.inspect(container)
-            assert inspection.get_indicator(str) == 'temporary container'
+            assert inspection.indicator(str) == 'temporary container'
             new_selection = abjad.mutate(container).eject_contents()
             new_selections.append(new_selection)
         return new_selections
@@ -570,7 +570,7 @@ class TaleaRhythmMaker(RhythmMaker):
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += len(divisions)
         if talea and talea_weight_consumed not in advanced_talea:
-            last_leaf = abjad.inspect(selections).get_leaf(-1)
+            last_leaf = abjad.inspect(selections).leaf(-1)
             if isinstance(last_leaf, abjad.Note):
                 self.state['incomplete_last_note'] = True
         previous_logical_ties_produced = self._previous_logical_ties_produced()

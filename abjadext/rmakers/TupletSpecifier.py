@@ -123,7 +123,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
             elif isinstance(denominator, abjad.Duration):
                 unit_duration = denominator
                 assert unit_duration.numerator == 1
-                duration = abjad.inspect(tuplet).get_duration()
+                duration = abjad.inspect(tuplet).duration()
                 denominator_ = unit_duration.denominator
                 nonreduced_fraction = duration.with_denominator(denominator_)
                 tuplet.denominator = nonreduced_fraction.numerator
@@ -182,7 +182,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
                     selection_.append(component)
                     continue
                 tuplet = component
-                duration = abjad.inspect(tuplet).get_duration()
+                duration = abjad.inspect(tuplet).duration()
                 leaves = abjad.select(tuplet).leaves()
                 for leaf in leaves[1:]:
                     tuplet.remove(leaf)
@@ -205,7 +205,7 @@ class TupletSpecifier(abjad.AbjadValueObject):
                 if not self._is_rest_filled_tuplet(component):
                     selection_.append(component)
                     continue
-                duration = abjad.inspect(component).get_duration()
+                duration = abjad.inspect(component).duration()
                 rests = maker([None], [duration])
                 abjad.mutate(component[:]).replace(rests)
                 component.multiplier = abjad.Multiplier(1)
@@ -1162,12 +1162,12 @@ class TupletSpecifier(abjad.AbjadValueObject):
         lt_head_count = 0
         leaves = abjad.select(argument).leaves()
         for leaf in leaves:
-            lt = abjad.inspect(leaf).get_logical_tie()
+            lt = abjad.inspect(leaf).logical_tie()
             if lt.head is leaf:
                 lt_head_count += 1
         if lt_head_count == 0:
             return True
-        lt = abjad.inspect(leaves[0]).get_logical_tie()
+        lt = abjad.inspect(leaves[0]).logical_tie()
         if lt.head is leaves[0] and lt_head_count == 1:
             return True
         return False

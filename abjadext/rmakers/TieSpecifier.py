@@ -84,7 +84,7 @@ class TieSpecifier(abjad.AbjadValueObject):
             return
         ties = set()
         for leaf in abjad.iterate(divisions).leaves():
-            ties_ = abjad.inspect(leaf).get_spanners(abjad.Tie)
+            ties_ = abjad.inspect(leaf).spanners(abjad.Tie)
             ties.update(ties_)
         for tie in ties:
             #tie._repeat = True
@@ -127,8 +127,8 @@ class TieSpecifier(abjad.AbjadValueObject):
             pitched_prototype = (abjad.Note, abjad.Chord)
             if not all(isinstance(_, pitched_prototype) for _ in leaves):
                 continue
-            logical_tie_one = abjad.inspect(leaf_one).get_logical_tie()
-            logical_tie_two = abjad.inspect(leaf_two).get_logical_tie()
+            logical_tie_one = abjad.inspect(leaf_one).logical_tie()
+            logical_tie_two = abjad.inspect(leaf_two).logical_tie()
             if logical_tie_one == logical_tie_two:
                 continue
             combined_logical_tie = logical_tie_one + logical_tie_two

@@ -140,7 +140,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
             if not all(isinstance(_, prototype) for _ in selection):
                 selections_.append(selection)
             else:
-                duration = abjad.inspect(selection).get_duration()
+                duration = abjad.inspect(selection).duration()
                 if multimeasure_rests:
                     multiplier = abjad.Multiplier(duration)
                     rest = abjad.MultimeasureRest(1)
@@ -162,7 +162,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         selections = abjad.sequence(selections).flatten(depth=-1)
         meter_duration = sum(durations)
         music_duration = sum(
-            abjad.inspect(_).get_duration() for _ in selections)
+            abjad.inspect(_).duration() for _ in selections)
         if not meter_duration == music_duration:
             message = f'Duration of meters is {meter_duration!s}'
             message += f' but duration of selections is {music_duration!s}:'
@@ -177,7 +177,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
             )
         components = abjad.mutate(voice).eject_contents()
         component_durations = [
-            abjad.inspect(_).get_duration() for _ in components]
+            abjad.inspect(_).duration() for _ in components]
         parts = abjad.sequence(component_durations)
         parts = parts.partition_by_weights(
             weights=durations,

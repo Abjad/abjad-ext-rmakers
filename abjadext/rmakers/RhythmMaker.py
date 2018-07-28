@@ -133,7 +133,7 @@ class RhythmMaker(abjad.AbjadValueObject):
             if not matching_division_mask:
                 new_selections.append(selection)
                 continue
-            duration = abjad.inspect(selection).get_duration()
+            duration = abjad.inspect(selection).duration()
             if isinstance(matching_division_mask, SustainMask):
                 leaf_maker = abjad.new(
                     leaf_maker,
@@ -185,7 +185,7 @@ class RhythmMaker(abjad.AbjadValueObject):
                 rest = abjad.Rest(leaf.written_duration)
                 inspector = abjad.inspect(leaf)
                 if inspector.has_indicator(abjad.Multiplier):
-                    multiplier = inspector.get_indicator(abjad.Multiplier)
+                    multiplier = inspector.indicator(abjad.Multiplier)
                     multiplier = abjad.Multiplier(multiplier)
                     abjad.attach(multiplier, rest)
                 abjad.mutate(leaf).replace([rest])
@@ -194,7 +194,7 @@ class RhythmMaker(abjad.AbjadValueObject):
         new_selections = []
         for container in containers:
             inspector = abjad.inspect(container)
-            assert inspector.get_indicator(abjad.tags.TEMPORARY_CONTAINER)
+            assert inspector.indicator(abjad.tags.TEMPORARY_CONTAINER)
             new_selection = abjad.mutate(container).eject_contents()
             new_selections.append(new_selection)
         return new_selections
