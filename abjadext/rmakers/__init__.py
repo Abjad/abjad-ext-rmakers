@@ -1,3 +1,6 @@
+"""
+Tools for making rhythm.
+"""
 from .RhythmMaker import RhythmMaker
 from .AccelerandoRhythmMaker import AccelerandoRhythmMaker
 from .BeamSpecifier import BeamSpecifier
