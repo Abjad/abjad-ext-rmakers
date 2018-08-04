@@ -108,6 +108,7 @@ class TaleaRhythmMaker(RhythmMaker):
         read_talea_once_only: bool = None,
         rest_tied_notes: bool = None,
         split_divisions_by_counts: typing.List[int] = None,
+        tag: str = None,
         tie_specifier: TieSpecifier = None,
         tie_split_notes: bool = True,
         tuplet_specifier: TupletSpecifier = None,
@@ -118,6 +119,7 @@ class TaleaRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             logical_tie_masks=logical_tie_masks,
+            tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
             )
@@ -447,6 +449,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 decrease_monotonic=specifier.decrease_monotonic,
                 forbidden_duration=specifier.forbidden_duration,
                 spell_metrically=specifier.spell_metrically,
+                tag=self.tag,
                 )
             leaf_lists.append(leaf_list)
         return leaf_lists
@@ -459,6 +462,7 @@ class TaleaRhythmMaker(RhythmMaker):
         forbidden_duration=None,
         spell_metrically=None,
         repeat_ties=False,
+        tag: str = None,
         ):
         assert all(x != 0 for x in talea), repr(talea)
         result = []
@@ -466,6 +470,7 @@ class TaleaRhythmMaker(RhythmMaker):
             decrease_monotonic=decrease_monotonic,
             forbidden_duration=forbidden_duration,
             repeat_ties=repeat_ties,
+            tag=tag,
             )
         for note_value in talea:
             if 0 < note_value:
@@ -548,13 +553,13 @@ class TaleaRhythmMaker(RhythmMaker):
             selections = [abjad.select(_) for _ in result]
         else:
             talea_weight_consumed = 0
-            leaf_maker = abjad.LeafMaker()
+            leaf_maker = abjad.LeafMaker(tag=self.tag)
             selections = []
             for division in secondary_divisions:
                 selection = leaf_maker([0], [division])
                 selections.append(selection)
         beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections)
+        beam_specifier(selections, tag=self.tag)
         if counts['talea']:
             self._apply_ties_to_split_notes(
                 selections,

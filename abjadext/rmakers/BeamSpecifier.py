@@ -93,7 +93,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections) -> None:
+    def __call__(self, selections, tag: str = None) -> None:
         """
         Calls beam specifier on ``selections``.
         """
@@ -122,7 +122,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
                 else:
                     raise TypeError(selection)
             leaves = abjad.select(components).leaves(grace_notes=False)
-            abjad.attach(beam, leaves)
+            abjad.attach(beam, leaves, tag=tag)
         elif self.beam_each_division:
             for selection in selections:
                 beam = abjad.Beam(
@@ -130,7 +130,7 @@ class BeamSpecifier(abjad.AbjadValueObject):
                     stemlet_length=self.stemlet_length,
                     )
                 leaves = abjad.select(selection).leaves(grace_notes=False)
-                abjad.attach(beam, leaves)
+                abjad.attach(beam, leaves, tag=tag)
 
     def __format__(self, format_specification='') -> str:
         """

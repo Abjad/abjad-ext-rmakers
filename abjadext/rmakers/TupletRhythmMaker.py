@@ -152,6 +152,7 @@ class TupletRhythmMaker(RhythmMaker):
         denominator: int = None,
         division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
+        tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_ratios: typing.Sequence[typing.Tuple[int, ...]] = None,
         tuplet_specifier: TupletSpecifier = None,
@@ -161,6 +162,7 @@ class TupletRhythmMaker(RhythmMaker):
             beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
+            tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
             )
@@ -361,11 +363,15 @@ class TupletRhythmMaker(RhythmMaker):
         for duration_index, division in enumerate(divisions):
             ratio = tuplet_ratios[duration_index]
             duration = abjad.Duration(division)
-            tuplet = abjad.Tuplet.from_duration_and_ratio(duration, ratio)
+            tuplet = abjad.Tuplet.from_duration_and_ratio(
+                duration,
+                ratio,
+                tag=self.tag,
+                )
             tuplets.append(tuplet)
         selections = [abjad.select(_) for _ in tuplets]
         beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections)
+        beam_specifier(selections, tag=self.tag)
         selections = self._apply_division_masks(selections)
         return selections
 

@@ -43,6 +43,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         logical_tie_masks: typings.MaskKeyword = None,
+        tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:
@@ -52,6 +53,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             logical_tie_masks=logical_tie_masks,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
+            tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
             )
@@ -466,7 +468,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             extra_count = extra_counts_per_division[i]
             basic_duration = abjad.Duration(1, denominator_)
             unprolated_note_count = None
-            maker = abjad.NoteMaker()
+            maker = abjad.NoteMaker(tag=self.tag)
             if division < 2 * basic_duration:
                 notes = maker([0], [division])
             else:
@@ -488,7 +490,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     for _ in notes
                     )
             tuplet_duration = abjad.Duration(division)
-            tuplet = abjad.Tuplet.from_duration(tuplet_duration, notes)
+            tuplet = abjad.Tuplet.from_duration(
+                tuplet_duration,
+                notes,
+                tag=self.tag,
+                )
             if (self.denominator == 'from_counts' and
                 unprolated_note_count is not None):
                 denominator = unprolated_note_count
@@ -499,7 +505,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
         beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections)
+        beam_specifier(selections, tag=self.tag)
         selections = self._apply_division_masks(selections)
         return selections
 

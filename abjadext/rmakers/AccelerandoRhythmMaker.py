@@ -554,6 +554,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         interpolation_specifiers: typing.Sequence[
             InterpolationSpecifier] = None,
         logical_tie_masks: typings.MaskKeyword = None,
+        tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:
@@ -563,6 +564,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             logical_tie_masks=logical_tie_masks,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
+            tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
             )
@@ -827,6 +829,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
         index,
         beam_specifier,
         tuplet_specifier,
+        *,
+        tag: str = None,
         ):
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
@@ -853,16 +857,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
             stop_duration=interpolation_specifier.stop_duration,
             )
         if durations == 'too small':
-            maker = abjad.NoteMaker()
+            maker = abjad.NoteMaker(tag=tag)
             notes = maker([0], [total_duration])
-            tuplet = abjad.Tuplet((1, 1), notes)
+            tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
             selection = abjad.select([tuplet])
             return selection
         durations = class_._round_durations(durations, 2**10)
         notes = []
         for i, duration in enumerate(durations):
             written_duration = interpolation_specifier.written_duration
-            note = abjad.Note(0, written_duration)
+            note = abjad.Note(0, written_duration, tag=tag)
             multiplier = duration / written_duration
             multiplier = abjad.Multiplier(multiplier)
             abjad.attach(multiplier, note)
@@ -905,7 +909,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 )
             selections.append(accelerando)
         beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections)
+        beam_specifier(selections, tag=self.tag)
         selections = self._apply_division_masks(selections)
         string = 'divisions_consumed'
         self.state[string] = self.previous_state.get(string, 0)

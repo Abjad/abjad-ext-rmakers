@@ -26,6 +26,7 @@ class RhythmMaker(abjad.AbjadValueObject):
         '_logical_tie_masks',
         '_previous_state',
         '_state',
+        '_tag',
         '_tie_specifier',
         '_tuplet_specifier',
         )
@@ -39,10 +40,11 @@ class RhythmMaker(abjad.AbjadValueObject):
         *,
         beam_specifier: BeamSpecifier = None,
         division_masks: typings.MaskKeyword = None,
-        duration_specifier=None,
+        duration_specifier: DurationSpecifier = None,
         logical_tie_masks: typings.MaskKeyword = None,
-        tie_specifier=None,
-        tuplet_specifier=None,
+        tag: str = None,
+        tie_specifier: TieSpecifier = None,
+        tuplet_specifier: TupletSpecifier = None,
         ) -> None:
         if beam_specifier is not None:
             assert isinstance(beam_specifier, BeamSpecifier)
@@ -60,6 +62,9 @@ class RhythmMaker(abjad.AbjadValueObject):
         self._division_masks = division_masks
         self._previous_state = abjad.OrderedDict()
         self._state = abjad.OrderedDict()
+        if tag is not None:
+            assert isinstance(tag, str), repr(tag)
+        self._tag = tag
         if tie_specifier is not None:
             assert isinstance(tie_specifier, TieSpecifier)
         self._tie_specifier = tie_specifier
@@ -318,7 +323,11 @@ class RhythmMaker(abjad.AbjadValueObject):
         tuplets = []
         for division, leaf_list in zip(divisions, leaf_lists):
             duration = abjad.Duration(division)
-            tuplet = abjad.Tuplet.from_duration(duration, leaf_list)
+            tuplet = abjad.Tuplet.from_duration(
+                duration,
+                leaf_list,
+                tag=self.tag,
+                )
             tuplets.append(tuplet)
         return tuplets
 
@@ -445,6 +454,13 @@ class RhythmMaker(abjad.AbjadValueObject):
         Gets state dictionary.
         """
         return self._state
+
+    @property
+    def tag(self) -> typing.Optional[str]:
+        """
+        Gets tag.
+        """
+        return self._tag
 
     @property
     def tie_specifier(self) -> typing.Optional[TieSpecifier]:

@@ -69,6 +69,7 @@ class NoteRhythmMaker(RhythmMaker):
         division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
         logical_tie_masks: typings.MaskKeyword = None,
+        tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:
@@ -78,6 +79,7 @@ class NoteRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             logical_tie_masks=logical_tie_masks,
+            tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
             )
@@ -218,6 +220,7 @@ class NoteRhythmMaker(RhythmMaker):
             decrease_monotonic=duration_specifier.decrease_monotonic,
             forbidden_duration=duration_specifier.forbidden_duration,
             repeat_ties=tie_specifier.repeat_ties,
+            tag=self.tag,
             )
         for division in divisions:
             if (duration_specifier.spell_metrically is True or
@@ -236,7 +239,7 @@ class NoteRhythmMaker(RhythmMaker):
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
         beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections)
+        beam_specifier(selections, tag=self.tag)
         selections = self._apply_division_masks(selections)
         if duration_specifier.rewrite_meter:
             selections = duration_specifier._rewrite_meter_(
@@ -1121,6 +1124,42 @@ class NoteRhythmMaker(RhythmMaker):
 
         """
         return super(NoteRhythmMaker, self).logical_tie_masks
+
+
+    @property
+    def tag(self):
+        r"""
+        Gets tag.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(tag='NRM')
+
+            >>> divisions = [(5, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            >>> abjad.f(lilypond_file[abjad.Staff])
+            \new RhythmicStaff
+            {
+                {   % measure
+                    \time 5/8
+                    c'2 %! NRM
+                    ~
+                    c'8 %! NRM
+                }   % measure
+                {   % measure
+                    \time 3/8
+                    c'4. %! NRM
+                }   % measure
+            }
+
+        """
+        return super().tag
 
     @property
     def tie_specifier(self) -> typing.Optional[TieSpecifier]:

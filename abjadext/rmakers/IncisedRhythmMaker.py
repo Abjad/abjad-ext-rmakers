@@ -86,6 +86,7 @@ class IncisedRhythmMaker(RhythmMaker):
         logical_tie_masks: typings.MaskKeyword = None,
         replace_rests_with_skips: bool = None,
         split_divisions_by_counts: typing.Sequence[int] = None,
+        tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
         ) -> None:
@@ -95,6 +96,7 @@ class IncisedRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             logical_tie_masks=logical_tie_masks,
+            tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
             )
@@ -386,13 +388,14 @@ class IncisedRhythmMaker(RhythmMaker):
                 decrease_monotonic=specifier.decrease_monotonic,
                 spell_metrically=specifier.spell_metrically,
                 repeat_ties=tie_specifier.repeat_ties,
+                tag=self.tag,
                 )
             if self.replace_rests_with_skips:
                 new_components = []
                 for component in selection:
                     if isinstance(component, abjad.Rest):
                         duration = abjad.inspect(component).duration()
-                        skip = abjad.Skip(duration)
+                        skip = abjad.Skip(duration, tag=self.tag)
                         new_components.append(skip)
                     else:
                         new_components.append(component)
