@@ -465,13 +465,14 @@ class TaleaRhythmMaker(RhythmMaker):
         tag: str = None,
         ):
         assert all(x != 0 for x in talea), repr(talea)
-        result = []
+        result: typing.List[abjad.Leaf] = []
         leaf_maker = abjad.LeafMaker(
             decrease_monotonic=decrease_monotonic,
             forbidden_duration=forbidden_duration,
             repeat_ties=repeat_ties,
             tag=tag,
             )
+        pitches: typing.List[typing.Union[int, None]]
         for note_value in talea:
             if 0 < note_value:
                 pitches = [0]

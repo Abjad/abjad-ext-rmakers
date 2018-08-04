@@ -858,7 +858,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             )
         if durations == 'too small':
             maker = abjad.NoteMaker(tag=tag)
-            notes = maker([0], [total_duration])
+            notes = list(maker([0], [total_duration]))
             tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
             selection = abjad.select([tuplet])
             return selection
