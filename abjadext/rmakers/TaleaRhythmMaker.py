@@ -3708,6 +3708,81 @@ class TaleaRhythmMaker(RhythmMaker):
         """
         return super(TaleaRhythmMaker, self).state
 
+
+    @property
+    def tag(self) -> typing.Optional[str]:
+        r"""
+        Gets tag.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     tag='TALEA_RHYTHM_MAKER',
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     extra_counts_per_division=[0, 1],
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            >>> abjad.f(lilypond_file[abjad.Staff], strict=30)
+            \new RhythmicStaff
+            {
+                {   % measure
+                    \time 3/8
+                    \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
+                    \times 1/1 {          %! TALEA_RHYTHM_MAKER
+                        c'16              %! TALEA_RHYTHM_MAKER
+                        [                 %! TALEA_RHYTHM_MAKER
+                        c'8               %! TALEA_RHYTHM_MAKER
+                        c'8.              %! TALEA_RHYTHM_MAKER
+                        ]                 %! TALEA_RHYTHM_MAKER
+                    }                     %! TALEA_RHYTHM_MAKER
+                }   % measure
+                {   % measure
+                    \time 4/8
+                    \times 8/9 {          %! TALEA_RHYTHM_MAKER
+                        c'4               %! TALEA_RHYTHM_MAKER
+                        c'16              %! TALEA_RHYTHM_MAKER
+                        [                 %! TALEA_RHYTHM_MAKER
+                        c'8               %! TALEA_RHYTHM_MAKER
+                        c'8               %! TALEA_RHYTHM_MAKER
+                        ~
+                        ]                 %! TALEA_RHYTHM_MAKER
+                    }                     %! TALEA_RHYTHM_MAKER
+                }   % measure
+                {   % measure
+                    \time 3/8
+                    \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
+                    \times 1/1 {          %! TALEA_RHYTHM_MAKER
+                        c'16              %! TALEA_RHYTHM_MAKER
+                        c'4               %! TALEA_RHYTHM_MAKER
+                        c'16              %! TALEA_RHYTHM_MAKER
+                    }                     %! TALEA_RHYTHM_MAKER
+                }   % measure
+                {   % measure
+                    \time 4/8
+                    \times 8/9 {          %! TALEA_RHYTHM_MAKER
+                        c'8               %! TALEA_RHYTHM_MAKER
+                        [                 %! TALEA_RHYTHM_MAKER
+                        c'8.              %! TALEA_RHYTHM_MAKER
+                        ]                 %! TALEA_RHYTHM_MAKER
+                        c'4               %! TALEA_RHYTHM_MAKER
+                    }                     %! TALEA_RHYTHM_MAKER
+                }   % measure
+            }
+
+        """
+        return super().tag
+
     @property
     def talea(self) -> typing.Optional[Talea]:
         r"""

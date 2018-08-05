@@ -1234,6 +1234,68 @@ class TupletRhythmMaker(RhythmMaker):
         return super(TupletRhythmMaker, self).division_masks
 
     @property
+    def tag(self) -> typing.Optional[str]:
+        r"""
+        Gets tag.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     tag='TUPLET_RHYTHM_MAKER',
+            ...     tuplet_ratios=[(3, 2)],
+            ...     )
+
+            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            >>> abjad.f(lilypond_file[abjad.Staff], strict=30)
+            \new RhythmicStaff
+            {
+                {   % measure
+                    \time 1/2
+                    \times 4/5 {          %! TUPLET_RHYTHM_MAKER
+                        c'4.              %! TUPLET_RHYTHM_MAKER
+                        c'4               %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                }   % measure
+                {   % measure
+                    \time 3/8
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 3/5 {          %! TUPLET_RHYTHM_MAKER
+                        c'4.              %! TUPLET_RHYTHM_MAKER
+                        c'4               %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                }   % measure
+                {   % measure
+                    \time 5/16
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                        c'8.              %! TUPLET_RHYTHM_MAKER
+                        [                 %! TUPLET_RHYTHM_MAKER
+                        c'8               %! TUPLET_RHYTHM_MAKER
+                        ]                 %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                }   % measure
+                {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                        c'8.              %! TUPLET_RHYTHM_MAKER
+                        [                 %! TUPLET_RHYTHM_MAKER
+                        c'8               %! TUPLET_RHYTHM_MAKER
+                        ]                 %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                }   % measure
+            }
+
+        """
+        return super().tag
+
+    @property
     def tie_specifier(self) -> typing.Optional[TieSpecifier]:
         r"""
         Gets tie specifier.

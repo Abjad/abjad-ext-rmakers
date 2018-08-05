@@ -1133,7 +1133,9 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(tag='NRM')
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tag='NOTE_RHYTHM_MAKER',
+            ...     )
 
             >>> divisions = [(5, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1148,13 +1150,13 @@ class NoteRhythmMaker(RhythmMaker):
             {
                 {   % measure
                     \time 5/8
-                    c'2 %! NRM
+                    c'2 %! NOTE_RHYTHM_MAKER
                     ~
-                    c'8 %! NRM
+                    c'8 %! NOTE_RHYTHM_MAKER
                 }   % measure
                 {   % measure
                     \time 3/8
-                    c'4. %! NRM
+                    c'4. %! NOTE_RHYTHM_MAKER
                 }   % measure
             }
 

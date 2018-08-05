@@ -1210,6 +1210,72 @@ class IncisedRhythmMaker(RhythmMaker):
         return self._split_divisions_by_counts
 
     @property
+    def tag(self) -> typing.Optional[str]:
+        r"""
+        Gets tag.
+
+        ..  container:: example
+
+            Makes augmentations:
+
+            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     extra_counts_per_division=[1],
+            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...         prefix_talea=[-1],
+            ...         prefix_counts=[1],
+            ...         outer_divisions_only=True,
+            ...         suffix_talea=[-1],
+            ...         suffix_counts=[1],
+            ...         talea_denominator=8,
+            ...         ),
+            ...     tag='INCISED_RHYTHM_MAKER',
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         diminution=False,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(8, 8), (4, 8), (6, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            >>> abjad.f(lilypond_file[abjad.Staff], strict=40)
+            \new RhythmicStaff
+            {
+                {   % measure
+                    \time 8/8
+                    \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
+                    \times 16/9 {                   %! INCISED_RHYTHM_MAKER
+                        r16                         %! INCISED_RHYTHM_MAKER
+                        c'2                         %! INCISED_RHYTHM_MAKER
+                    }                               %! INCISED_RHYTHM_MAKER
+                }   % measure
+                {   % measure
+                    \time 4/8
+                    \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
+                    \times 8/5 {                    %! INCISED_RHYTHM_MAKER
+                        c'4                         %! INCISED_RHYTHM_MAKER
+                        ~
+                        c'16                        %! INCISED_RHYTHM_MAKER
+                    }                               %! INCISED_RHYTHM_MAKER
+                }   % measure
+                {   % measure
+                    \time 6/8
+                    \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
+                    \times 12/7 {                   %! INCISED_RHYTHM_MAKER
+                        c'4.                        %! INCISED_RHYTHM_MAKER
+                        r16                         %! INCISED_RHYTHM_MAKER
+                    }                               %! INCISED_RHYTHM_MAKER
+                }   % measure
+            }
+
+        """
+        return super().tag
+
+    @property
     def tie_specifier(self) -> typing.Optional[TieSpecifier]:
         r"""
         Gets tie specifier.
