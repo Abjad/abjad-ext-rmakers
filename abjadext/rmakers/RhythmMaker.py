@@ -127,6 +127,7 @@ class RhythmMaker(abjad.AbjadValueObject):
             decrease_monotonic=decrease_monotonic,
             forbidden_duration=forbidden_duration,
             repeat_ties=tie_specifier.repeat_ties,
+            tag=self.tag,
             )
         previous_divisions_consumed = self._previous_divisions_consumed()
         for i, selection in enumerate(selections):

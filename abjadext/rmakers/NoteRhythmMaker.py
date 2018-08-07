@@ -207,7 +207,7 @@ class NoteRhythmMaker(RhythmMaker):
     def _cast_selection(self, selection, target_class):
         new_selection = []
         for leaf in selection:
-            new_leaf = target_class(leaf)
+            new_leaf = target_class(leaf, tag=self.tag)
             new_selection.append(new_leaf)
         new_selection = abjad.select(new_selection)
         return new_selection

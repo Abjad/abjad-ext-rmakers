@@ -82,6 +82,8 @@ class TupletSpecifier(abjad.AbjadValueObject):
         self,
         selections: typing.List[abjad.Selection],
         divisions: typing.List[abjad.NonreducedFraction],
+        *,
+        tag: str = None,
         ) -> typing.List[abjad.Selection]:
         """
         Calls tuplet specifier.
@@ -92,8 +94,8 @@ class TupletSpecifier(abjad.AbjadValueObject):
         # rewrite dots must follow trivialize:
         self._rewrite_dots_(selections)
         # rewrites must precede extract trivial:
-        selections = self._rewrite_sustained_(selections)
-        selections = self._rewrite_rest_filled_(selections)
+        selections = self._rewrite_sustained_(selections, tag=tag)
+        selections = self._rewrite_rest_filled_(selections, tag=tag)
         # extract trivial must follow the other operations:
         selections = self._extract_trivial_(selections)
         # toggle prolation must follow rewrite dots and extract trivial:
@@ -170,11 +172,11 @@ class TupletSpecifier(abjad.AbjadValueObject):
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.rewrite_dots()
 
-    def _rewrite_sustained_(self, selections):
+    def _rewrite_sustained_(self, selections, tag=None):
         if not self.rewrite_sustained:
             return selections
         selections_ = []
-        maker = abjad.LeafMaker()
+        maker = abjad.LeafMaker(tag=tag)
         for selection in selections:
             selection_ = []
             for component in selection:
@@ -194,11 +196,11 @@ class TupletSpecifier(abjad.AbjadValueObject):
             selections_.append(selection_)
         return selections_
 
-    def _rewrite_rest_filled_(self, selections):
+    def _rewrite_rest_filled_(self, selections, tag=None):
         if not self.rewrite_rest_filled:
             return selections
         selections_ = []
-        maker = abjad.LeafMaker()
+        maker = abjad.LeafMaker(tag=tag)
         for selection in selections:
             selection_ = []
             for component in selection:
