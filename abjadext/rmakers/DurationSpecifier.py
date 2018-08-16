@@ -1,5 +1,6 @@
 import abjad
 import typing
+from . import typings
 
 
 class DurationSpecifier(abjad.AbjadValueObject):
@@ -29,7 +30,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         *,
         decrease_monotonic: bool = True,
         forbid_meter_rewriting: bool = None,
-        forbidden_duration: typing.Union[tuple, abjad.Duration] = None,
+        forbidden_duration: typings.DurationTyping = None,
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
         spell_metrically: typing.Union[bool, str] = None,

@@ -1463,6 +1463,7 @@ class NoteRhythmMaker(RhythmMaker):
                 \new RhythmicStaff
                 {
                     {   % measure
+                        #(ly:expect-warning "strange time signature found")
                         \time 5/14
                         \tweak edge-height #'(0.7 . 0)
                         \times 4/7 {
@@ -1472,6 +1473,7 @@ class NoteRhythmMaker(RhythmMaker):
                         }
                     }   % measure
                     {   % measure
+                        #(ly:expect-warning "strange time signature found")
                         \time 3/7
                         \tweak edge-height #'(0.7 . 0)
                         \times 4/7 {
@@ -1504,6 +1506,7 @@ class NoteRhythmMaker(RhythmMaker):
                 \new RhythmicStaff
                 {
                     {   % measure
+                        #(ly:expect-warning "strange time signature found")
                         \time 5/14
                         \tweak text #tuplet-number::calc-fraction-text
                         \tweak edge-height #'(0.7 . 0)
@@ -1514,6 +1517,7 @@ class NoteRhythmMaker(RhythmMaker):
                         }
                     }   % measure
                     {   % measure
+                        #(ly:expect-warning "strange time signature found")
                         \time 3/7
                         \tweak text #tuplet-number::calc-fraction-text
                         \tweak edge-height #'(0.7 . 0)
