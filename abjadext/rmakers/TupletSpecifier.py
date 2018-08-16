@@ -172,6 +172,26 @@ class TupletSpecifier(abjad.AbjadValueObject):
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.rewrite_dots()
 
+    def _rewrite_rest_filled_(self, selections, tag=None):
+        if not self.rewrite_rest_filled:
+            return selections
+        selections_ = []
+        maker = abjad.LeafMaker(tag=tag)
+        for selection in selections:
+            selection_ = []
+            for component in selection:
+                if not self._is_rest_filled_tuplet(component):
+                    selection_.append(component)
+                    continue
+                duration = abjad.inspect(component).duration()
+                rests = maker([None], [duration])
+                abjad.mutate(component[:]).replace(rests)
+                component.multiplier = abjad.Multiplier(1)
+                selection_.append(component)
+            selection_ = abjad.select(selection_)
+            selections_.append(selection_)
+        return selections_
+
     def _rewrite_sustained_(self, selections, tag=None):
         if not self.rewrite_sustained:
             return selections
@@ -192,26 +212,6 @@ class TupletSpecifier(abjad.AbjadValueObject):
                 tuplet[0]._set_duration(duration)
                 tuplet.multiplier = abjad.Multiplier(1)
                 selection_.append(tuplet)
-            selection_ = abjad.select(selection_)
-            selections_.append(selection_)
-        return selections_
-
-    def _rewrite_rest_filled_(self, selections, tag=None):
-        if not self.rewrite_rest_filled:
-            return selections
-        selections_ = []
-        maker = abjad.LeafMaker(tag=tag)
-        for selection in selections:
-            selection_ = []
-            for component in selection:
-                if not self._is_rest_filled_tuplet(component):
-                    selection_.append(component)
-                    continue
-                duration = abjad.inspect(component).duration()
-                rests = maker([None], [duration])
-                abjad.mutate(component[:]).replace(rests)
-                component.multiplier = abjad.Multiplier(1)
-                selection_.append(component)
             selection_ = abjad.select(selection_)
             selections_.append(selection_)
         return selections_
@@ -940,6 +940,13 @@ class TupletSpecifier(abjad.AbjadValueObject):
         return self._rewrite_dots
 
     @property
+    def rewrite_rest_filled(self) -> typing.Optional[bool]:
+        """
+        Is true when rhythm-maker rewrites rest-filled tuplets.
+        """
+        return self._rewrite_rest_filled
+
+    @property
     def rewrite_sustained(self) -> typing.Optional[bool]:
         r"""
         Is true when rhythm-maker rewrites sustained tuplets.
@@ -1137,13 +1144,6 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
         """
         return self._rewrite_sustained
-
-    @property
-    def rewrite_rest_filled(self) -> typing.Optional[bool]:
-        """
-        Is true when rhythm-maker rewrites rest-filled tuplets.
-        """
-        return self._rewrite_rest_filled
 
     @property
     def trivialize(self) -> typing.Optional[bool]:

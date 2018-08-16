@@ -19,6 +19,7 @@ class TieSpecifier(abjad.AbjadValueObject):
         '_strip_ties',
         '_tie_across_divisions',
         '_tie_consecutive_notes',
+        '_tie_within_divisions',
         )
 
     ### INITIALIZER ###
@@ -34,6 +35,7 @@ class TieSpecifier(abjad.AbjadValueObject):
         strip_ties: bool = None,
         tie_across_divisions: bool = None,
         tie_consecutive_notes: bool = None,
+        tie_within_divisions: bool = None,
         ) -> None:
         repeat_ties_ = repeat_ties
         if isinstance(repeat_ties, tuple) and len(repeat_ties) == 2:
@@ -62,6 +64,9 @@ class TieSpecifier(abjad.AbjadValueObject):
         if self.tie_consecutive_notes and self.strip_ties:
             message = 'can not tie leaves and strip ties at same time.'
             raise Exception(message)
+        if tie_within_divisions is not None:
+            tie_within_divisions = bool(tie_within_divisions)
+        self._tie_within_divisions = tie_within_divisions
 
     ### SPECIAL METHODS ###
 
@@ -72,8 +77,10 @@ class TieSpecifier(abjad.AbjadValueObject):
         """
         Calls tie specifier on ``divisions``.
         """
+        self._tie_within_divisions_(divisions)
         self._tie_across_divisions_(divisions)
-        self._tie_consecutive_notes_(divisions)
+        if self.tie_consecutive_notes:
+            self._tie_consecutive_notes_(divisions)
         self._strip_ties_(divisions)
         self._configure_repeat_ties(divisions)
 
@@ -87,7 +94,6 @@ class TieSpecifier(abjad.AbjadValueObject):
             ties_ = abjad.inspect(leaf).spanners(abjad.Tie)
             ties.update(ties_)
         for tie in ties:
-            #tie._repeat = True
             tie._repeat = self.repeat_ties
 
     def _strip_ties_(self, divisions):
@@ -144,8 +150,6 @@ class TieSpecifier(abjad.AbjadValueObject):
             tie._constrain_contiguity()
 
     def _tie_consecutive_notes_(self, divisions):
-        if not self.tie_consecutive_notes:
-            return
         leaves = list(abjad.iterate(divisions).leaves())
         for leaf in leaves:
             abjad.detach(abjad.Tie, leaf)
@@ -170,6 +174,12 @@ class TieSpecifier(abjad.AbjadValueObject):
                 assert tie._attachment_test_all(subgroup) is True
                 abjad.attach(tie, abjad.select(subgroup))
 
+    def _tie_within_divisions_(self, divisions):
+        if not self.tie_within_divisions:
+            return
+        for division in divisions:
+            self._tie_consecutive_notes_(division)
+
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -187,17 +197,161 @@ class TieSpecifier(abjad.AbjadValueObject):
 
     @property
     def strip_ties(self) -> typing.Optional[bool]:
-        """
-        Is true when rhythm-maker should strip all ties from all leaves in
-        each division.
+        r"""
+        Is true when rhythm-maker strips ties.
+
+        ..  container:: example
+
+            Without ``strip_ties``:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     tuplet_ratios=[(5, 2)],
+            ...     )
+
+            >>> divisions = [(4, 8), (4, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 4/8
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                    }   % measure
+                }
+
+            With ``strip_ties``:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     tuplet_ratios=[(5, 2)],
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...         strip_ties=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (4, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 4/8
+                        \times 4/7 {
+                            c'2
+                            c'8
+                            c'4
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            c'8
+                            c'4
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            c'8
+                            c'4
+                        }
+                    }   % measure
+                }
+
         """
         return self._strip_ties
 
     @property
     def tie_across_divisions(self) -> typing.Optional[bool]:
-        """
-        Is true or is a boolean vector when rhythm-maker should tie across
-        divisons.
+        r"""
+        Is true when rhythm-maker ties across divisons.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     tuplet_ratios=[(5, 2)],
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...         tie_across_divisions=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (4, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 4/8
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                            ~
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                            ~
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                    }   % measure
+                }
 
         Set to true, false or to a boolean vector.
         """
@@ -205,7 +359,124 @@ class TieSpecifier(abjad.AbjadValueObject):
 
     @property
     def tie_consecutive_notes(self) -> typing.Optional[bool]:
-        """
+        r"""
         Is true when rhythm-maker should tie consecutive notes.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     tuplet_ratios=[(5, 2)],
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...         tie_consecutive_notes=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (4, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 4/8
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                            ~
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                            ~
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                        }
+                    }   % measure
+                }
+
         """
         return self._tie_consecutive_notes
+
+    @property
+    def tie_within_divisions(self) -> typing.Optional[bool]:
+        r"""
+        Is true when rhythm-maker ties within divisions.
+
+        ..  container:: example
+
+            Ties within divisions:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     tuplet_ratios=[(5, 2)],
+            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...         tie_within_divisions=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (4, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 4/8
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                        }
+                    }   % measure
+                    {   % measure
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                        }
+                    }   % measure
+                }
+
+        """
+        return self._tie_within_divisions
