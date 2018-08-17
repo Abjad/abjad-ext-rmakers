@@ -124,7 +124,7 @@ class RhythmMaker(abjad.AbjadValueObject):
         total_divisions = len(selections)
         division_masks = self.division_masks
         leaf_maker = abjad.LeafMaker(
-            decrease_monotonic=decrease_monotonic,
+            increase_monotonic=not(decrease_monotonic),
             forbidden_note_duration=forbidden_note_duration,
             repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,

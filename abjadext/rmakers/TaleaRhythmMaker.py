@@ -467,7 +467,7 @@ class TaleaRhythmMaker(RhythmMaker):
         assert all(x != 0 for x in talea), repr(talea)
         result: typing.List[abjad.Leaf] = []
         leaf_maker = abjad.LeafMaker(
-            decrease_monotonic=decrease_monotonic,
+            increase_monotonic=not(decrease_monotonic),
             forbidden_note_duration=forbidden_note_duration,
             repeat_ties=repeat_ties,
             tag=tag,
