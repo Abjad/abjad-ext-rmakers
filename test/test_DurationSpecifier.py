@@ -15,7 +15,7 @@ def test_DurationSpecifier_01():
         )
 
     duration_specifier = rmakers.DurationSpecifier(
-        decrease_monotonic=True,
+        increase_monotonic=False,
         forbid_meter_rewriting=False,
         rewrite_meter=True,
         spell_metrically='unassignable',

@@ -36,7 +36,7 @@ def test_NoteRhythmMaker___call___01():
 def test_NoteRhythmMaker___call___02():
 
     duration_specifier = rmakers.DurationSpecifier(
-        decrease_monotonic=False,
+        increase_monotonic=True,
         )
     maker = rmakers.NoteRhythmMaker(
         duration_specifier=duration_specifier,

@@ -13,10 +13,10 @@ class DurationSpecifier(abjad.AbjadValueObject):
     __documentation_section__ = 'Specifiers'
 
     __slots__ = (
-        '_decrease_monotonic',
         '_forbid_meter_rewriting',
         '_forbidden_note_duration',
         '_forbidden_rest_duration',
+        '_increase_monotonic',
         '_rewrite_meter',
         '_rewrite_rest_filled',
         '_spell_metrically',
@@ -29,17 +29,14 @@ class DurationSpecifier(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        decrease_monotonic: bool = True,
         forbid_meter_rewriting: bool = None,
         forbidden_note_duration: typings.DurationTyping = None,
         forbidden_rest_duration: typings.DurationTyping = None,
+        increase_monotonic: bool = None,
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
         spell_metrically: typing.Union[bool, str] = None,
         ) -> None:
-        if decrease_monotonic is not None:
-            decrease_monotonic = bool(decrease_monotonic)
-        self._decrease_monotonic = decrease_monotonic
         if forbid_meter_rewriting is not None:
             forbid_meter_rewriting = bool(forbid_meter_rewriting)
         self._forbid_meter_rewriting = forbid_meter_rewriting
@@ -53,6 +50,9 @@ class DurationSpecifier(abjad.AbjadValueObject):
         else:
             forbidden_rest_duration_ = abjad.Duration(forbidden_rest_duration)
         self._forbidden_rest_duration = forbidden_rest_duration_
+        if increase_monotonic is not None:
+            increase_monotonic = bool(increase_monotonic)
+        self._increase_monotonic = increase_monotonic
         if rewrite_meter is not None:
             rewrite_meter = bool(rewrite_meter)
         self._rewrite_meter = rewrite_meter
@@ -74,9 +74,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
 
             >>> specifier = abjadext.rmakers.DurationSpecifier()
             >>> abjad.f(specifier)
-            abjadext.rmakers.DurationSpecifier(
-                decrease_monotonic=True,
-                )
+            abjadext.rmakers.DurationSpecifier()
 
         """
         return abjad.AbjadValueObject.__format__(
@@ -91,7 +89,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         ..  container:: example
 
             >>> abjadext.rmakers.DurationSpecifier()
-            DurationSpecifier(decrease_monotonic=True)
+            DurationSpecifier()
 
         """
         return super(DurationSpecifier, self).__repr__()
@@ -202,10 +200,10 @@ class DurationSpecifier(abjad.AbjadValueObject):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def decrease_monotonic(self) -> typing.Optional[bool]:
+    def increase_monotonic(self) -> typing.Optional[bool]:
         r"""
         Is true when all durations should be spelled as a tied series of
-        monotonically decreasing values.
+        monotonically increasing values.
 
         ..  container:: example
 
@@ -217,7 +215,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
             ...         denominator=16,
             ...         ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         decrease_monotonic=True,
+            ...         increase_monotonic=False,
             ...         ),
             ...     )
 
@@ -266,7 +264,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
             ...         denominator=16,
             ...         ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         decrease_monotonic=False,
+            ...         increase_monotonic=True,
             ...         ),
             ...     )
 
@@ -306,7 +304,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
                 }
 
         """
-        return self._decrease_monotonic
+        return self._increase_monotonic
 
     @property
     def forbid_meter_rewriting(self) -> typing.Optional[bool]:
