@@ -120,12 +120,14 @@ class RhythmMaker(abjad.AbjadValueObject):
         duration_specifier = self._get_duration_specifier()
         increase_monotonic = duration_specifier.increase_monotonic
         forbidden_note_duration = duration_specifier.forbidden_note_duration
+        forbidden_rest_duration = duration_specifier.forbidden_rest_duration
         tie_specifier = self._get_tie_specifier()
         total_divisions = len(selections)
         division_masks = self.division_masks
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=increase_monotonic,
             forbidden_note_duration=forbidden_note_duration,
+            forbidden_rest_duration=forbidden_rest_duration,
             repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,
             )

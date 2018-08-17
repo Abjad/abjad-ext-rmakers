@@ -385,6 +385,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 numeric_map_part,
                 lcd,
                 forbidden_note_duration=specifier.forbidden_note_duration,
+                forbidden_rest_duration=specifier.forbidden_rest_duration,
                 increase_monotonic=specifier.increase_monotonic,
                 spell_metrically=specifier.spell_metrically,
                 repeat_ties=tie_specifier.repeat_ties,

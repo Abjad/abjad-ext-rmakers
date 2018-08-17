@@ -363,8 +363,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
                         ~
                         c'8
                         ]
-                        r8
-                        r8
+                        r4
                     }   % measure
                     {   % measure
                         c'16
@@ -376,8 +375,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
                         ~
                         c'8
                         ]
-                        r8
-                        r8
+                        r4
                     }   % measure
                 }
 
@@ -386,14 +384,60 @@ class DurationSpecifier(abjad.AbjadValueObject):
 
     @property
     def forbidden_rest_duration(self) -> typing.Optional[abjad.Duration]:
-        """
+        r"""
         Gets forbidden rest duration.
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.DurationSpecifier()
-            >>> specifier.forbidden_rest_duration is None
-            True
+            Forbids rest durations equal to ``1/4`` or greater:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 1, 1, 1, 4, -4],
+            ...         denominator=16,
+            ...         ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         forbidden_rest_duration=(1, 4),
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 4), (3, 4)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 3/4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        r8
+                        r8
+                    }   % measure
+                    {   % measure
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        r8
+                        r8
+                    }   % measure
+                }
 
         """
         return self._forbidden_rest_duration

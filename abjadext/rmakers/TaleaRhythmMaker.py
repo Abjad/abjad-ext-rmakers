@@ -448,6 +448,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 talea_denominator,
                 increase_monotonic=specifier.increase_monotonic,
                 forbidden_note_duration=specifier.forbidden_note_duration,
+                forbidden_rest_duration=specifier.forbidden_rest_duration,
                 spell_metrically=specifier.spell_metrically,
                 tag=self.tag,
                 )
@@ -460,6 +461,7 @@ class TaleaRhythmMaker(RhythmMaker):
         talea_denominator,
         increase_monotonic=None,
         forbidden_note_duration=None,
+        forbidden_rest_duration=None,
         spell_metrically=None,
         repeat_ties=False,
         tag: str = None,
@@ -469,6 +471,7 @@ class TaleaRhythmMaker(RhythmMaker):
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=increase_monotonic,
             forbidden_note_duration=forbidden_note_duration,
+            forbidden_rest_duration=forbidden_rest_duration,
             repeat_ties=repeat_ties,
             tag=tag,
             )

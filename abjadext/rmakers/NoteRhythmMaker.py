@@ -219,6 +219,7 @@ class NoteRhythmMaker(RhythmMaker):
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=duration_specifier.increase_monotonic,
             forbidden_note_duration=duration_specifier.forbidden_note_duration,
+            forbidden_rest_duration=duration_specifier.forbidden_rest_duration,
             repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,
             )
