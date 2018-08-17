@@ -384,7 +384,7 @@ class IncisedRhythmMaker(RhythmMaker):
             selection = class_._make_leaves_from_talea(
                 numeric_map_part,
                 lcd,
-                forbidden_duration=specifier.forbidden_duration,
+                forbidden_note_duration=specifier.forbidden_note_duration,
                 decrease_monotonic=specifier.decrease_monotonic,
                 spell_metrically=specifier.spell_metrically,
                 repeat_ties=tie_specifier.repeat_ties,
@@ -620,7 +620,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         talea_denominator=8,
             ...         ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         forbidden_duration=(1, 2),
+            ...         forbidden_note_duration=(1, 2),
             ...         ),
             ...     )
 

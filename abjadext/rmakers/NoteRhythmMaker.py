@@ -218,7 +218,7 @@ class NoteRhythmMaker(RhythmMaker):
         tie_specifier = self._get_tie_specifier()
         leaf_maker = abjad.LeafMaker(
             decrease_monotonic=duration_specifier.decrease_monotonic,
-            forbidden_duration=duration_specifier.forbidden_duration,
+            forbidden_note_duration=duration_specifier.forbidden_note_duration,
             repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,
             )
@@ -830,7 +830,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         forbidden_duration=(1, 2),
+            ...         forbidden_note_duration=(1, 2),
             ...         ),
             ...     )
 

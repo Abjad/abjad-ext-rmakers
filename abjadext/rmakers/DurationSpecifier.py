@@ -15,7 +15,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
     __slots__ = (
         '_decrease_monotonic',
         '_forbid_meter_rewriting',
-        '_forbidden_duration',
+        '_forbidden_note_duration',
         '_rewrite_meter',
         '_rewrite_rest_filled',
         '_spell_metrically',
@@ -30,7 +30,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         *,
         decrease_monotonic: bool = True,
         forbid_meter_rewriting: bool = None,
-        forbidden_duration: typings.DurationTyping = None,
+        forbidden_note_duration: typings.DurationTyping = None,
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
         spell_metrically: typing.Union[bool, str] = None,
@@ -38,11 +38,11 @@ class DurationSpecifier(abjad.AbjadValueObject):
         if decrease_monotonic is not None:
             decrease_monotonic = bool(decrease_monotonic)
         self._decrease_monotonic = decrease_monotonic
-        if forbidden_duration is None:
-            forbidden_duration_ = None
+        if forbidden_note_duration is None:
+            forbidden_note_duration_ = None
         else:
-            forbidden_duration_ = abjad.Duration(forbidden_duration)
-        self._forbidden_duration = forbidden_duration_
+            forbidden_note_duration_ = abjad.Duration(forbidden_note_duration)
+        self._forbidden_note_duration = forbidden_note_duration_
         if rewrite_meter is not None:
             rewrite_meter = bool(rewrite_meter)
         self._rewrite_meter = rewrite_meter
@@ -224,18 +224,18 @@ class DurationSpecifier(abjad.AbjadValueObject):
         return self._forbid_meter_rewriting
 
     @property
-    def forbidden_duration(self) -> typing.Optional[abjad.Duration]:
+    def forbidden_note_duration(self) -> typing.Optional[abjad.Duration]:
         """
         Gets forbidden written duration.
 
         ..  container:: example
 
             >>> specifier = abjadext.rmakers.DurationSpecifier()
-            >>> specifier.forbidden_duration is None
+            >>> specifier.forbidden_note_duration is None
             True
 
         """
-        return self._forbidden_duration
+        return self._forbidden_note_duration
 
     @property
     def rewrite_meter(self) -> typing.Optional[bool]:

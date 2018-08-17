@@ -447,7 +447,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 map_division,
                 talea_denominator,
                 decrease_monotonic=specifier.decrease_monotonic,
-                forbidden_duration=specifier.forbidden_duration,
+                forbidden_note_duration=specifier.forbidden_note_duration,
                 spell_metrically=specifier.spell_metrically,
                 tag=self.tag,
                 )
@@ -459,7 +459,7 @@ class TaleaRhythmMaker(RhythmMaker):
         talea,
         talea_denominator,
         decrease_monotonic=True,
-        forbidden_duration=None,
+        forbidden_note_duration=None,
         spell_metrically=None,
         repeat_ties=False,
         tag: str = None,
@@ -468,7 +468,7 @@ class TaleaRhythmMaker(RhythmMaker):
         result: typing.List[abjad.Leaf] = []
         leaf_maker = abjad.LeafMaker(
             decrease_monotonic=decrease_monotonic,
-            forbidden_duration=forbidden_duration,
+            forbidden_note_duration=forbidden_note_duration,
             repeat_ties=repeat_ties,
             tag=tag,
             )
@@ -2044,7 +2044,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         denominator=16,
             ...         ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         forbidden_duration=None,
+            ...         forbidden_note_duration=None,
             ...         ),
             ...     )
 
@@ -2094,7 +2094,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 ...         denominator=16,
                 ...         ),
                 ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-                ...         forbidden_duration=(1, 4),
+                ...         forbidden_note_duration=(1, 4),
                 ...         ),
                 ...     )
 
