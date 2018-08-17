@@ -16,6 +16,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         '_decrease_monotonic',
         '_forbid_meter_rewriting',
         '_forbidden_note_duration',
+        '_forbidden_rest_duration',
         '_rewrite_meter',
         '_rewrite_rest_filled',
         '_spell_metrically',
@@ -31,6 +32,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
         decrease_monotonic: bool = True,
         forbid_meter_rewriting: bool = None,
         forbidden_note_duration: typings.DurationTyping = None,
+        forbidden_rest_duration: typings.DurationTyping = None,
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
         spell_metrically: typing.Union[bool, str] = None,
@@ -38,11 +40,19 @@ class DurationSpecifier(abjad.AbjadValueObject):
         if decrease_monotonic is not None:
             decrease_monotonic = bool(decrease_monotonic)
         self._decrease_monotonic = decrease_monotonic
+        if forbid_meter_rewriting is not None:
+            forbid_meter_rewriting = bool(forbid_meter_rewriting)
+        self._forbid_meter_rewriting = forbid_meter_rewriting
         if forbidden_note_duration is None:
             forbidden_note_duration_ = None
         else:
             forbidden_note_duration_ = abjad.Duration(forbidden_note_duration)
         self._forbidden_note_duration = forbidden_note_duration_
+        if forbidden_rest_duration is None:
+            forbidden_rest_duration_ = None
+        else:
+            forbidden_rest_duration_ = abjad.Duration(forbidden_rest_duration)
+        self._forbidden_rest_duration = forbidden_rest_duration_
         if rewrite_meter is not None:
             rewrite_meter = bool(rewrite_meter)
         self._rewrite_meter = rewrite_meter
@@ -53,9 +63,6 @@ class DurationSpecifier(abjad.AbjadValueObject):
             isinstance(spell_metrically, bool) or
             spell_metrically == 'unassignable')
         self._spell_metrically = spell_metrically
-        if forbid_meter_rewriting is not None:
-            forbid_meter_rewriting = bool(forbid_meter_rewriting)
-        self._forbid_meter_rewriting = forbid_meter_rewriting
 
     ### SPECIAL METHODS ###
 
@@ -196,15 +203,107 @@ class DurationSpecifier(abjad.AbjadValueObject):
 
     @property
     def decrease_monotonic(self) -> typing.Optional[bool]:
-        """
+        r"""
         Is true when all durations should be spelled as a tied series of
         monotonically decreasing values.
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.DurationSpecifier()
-            >>> specifier.decrease_monotonic
-            True
+            Decreases monotically:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5],
+            ...         denominator=16,
+            ...         ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         decrease_monotonic=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 4), (3, 4)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 3/4
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8
+                        ~
+                        ]
+                    }   % measure
+                    {   % measure
+                        c'8.
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                    }   % measure
+                }
+
+        ..  container:: example
+
+            Increases monotically:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5],
+            ...         denominator=16,
+            ...         ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         decrease_monotonic=False,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 4), (3, 4)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 3/4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'8
+                        ~
+                    }   % measure
+                    {   % measure
+                        c'8.
+                        [
+                        c'16
+                        ~
+                        ]
+                        c'4
+                        c'4
+                    }   % measure
+                }
 
         """
         return self._decrease_monotonic
@@ -225,17 +324,81 @@ class DurationSpecifier(abjad.AbjadValueObject):
 
     @property
     def forbidden_note_duration(self) -> typing.Optional[abjad.Duration]:
+        r"""
+        Gets forbidden note duration.
+
+        ..  container:: example
+
+            Forbids note durations equal to ``1/4`` or greater:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 1, 1, 1, 4, -4],
+            ...         denominator=16,
+            ...         ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         forbidden_note_duration=(1, 4),
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 4), (3, 4)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Staff])
+                \new RhythmicStaff
+                {
+                    {   % measure
+                        \time 3/4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        r8
+                        r8
+                    }   % measure
+                    {   % measure
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        r8
+                        r8
+                    }   % measure
+                }
+
         """
-        Gets forbidden written duration.
+        return self._forbidden_note_duration
+
+    @property
+    def forbidden_rest_duration(self) -> typing.Optional[abjad.Duration]:
+        """
+        Gets forbidden rest duration.
 
         ..  container:: example
 
             >>> specifier = abjadext.rmakers.DurationSpecifier()
-            >>> specifier.forbidden_note_duration is None
+            >>> specifier.forbidden_rest_duration is None
             True
 
         """
-        return self._forbidden_note_duration
+        return self._forbidden_rest_duration
 
     @property
     def rewrite_meter(self) -> typing.Optional[bool]:
