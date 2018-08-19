@@ -59,22 +59,14 @@ class SustainMask(abjad.AbjadValueObject):
             >>> abjad.f(lilypond_file[abjad.Staff])
             \new RhythmicStaff
             {
-                {   % measure
-                    \time 7/16
-                    r4..
-                }   % measure
-                {   % measure
-                    \time 3/8
-                    c'4.
-                }   % measure
-                {   % measure
-                    \time 7/16
-                    c'4..
-                }   % measure
-                {   % measure
-                    \time 3/8
-                    r4.
-                }   % measure
+                \time 7/16
+                r4..
+                \time 3/8
+                c'4.
+                \time 7/16
+                c'4..
+                \time 3/8
+                r4.
             }
 
     ..  container:: example
@@ -120,22 +112,14 @@ class SustainMask(abjad.AbjadValueObject):
             >>> abjad.f(lilypond_file[abjad.Staff])
             \new RhythmicStaff
             {
-                {   % measure
-                    \time 7/16
-                    c'4..
-                }   % measure
-                {   % measure
-                    \time 3/8
-                    r4.
-                }   % measure
-                {   % measure
-                    \time 7/16
-                    r4..
-                }   % measure
-                {   % measure
-                    \time 3/8
-                    c'4.
-                }   % measure
+                \time 7/16
+                c'4..
+                \time 3/8
+                r4.
+                \time 7/16
+                r4..
+                \time 3/8
+                c'4.
             }
 
     """
@@ -258,22 +242,14 @@ class SustainMask(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 7/16
-                        r4..
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 7/16
-                        c'4..
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
+                    \time 7/16
+                    r4..
+                    \time 3/8
+                    c'4.
+                    \time 7/16
+                    c'4..
+                    \time 3/8
+                    r4.
                 }
 
         ..  container:: example
@@ -304,22 +280,14 @@ class SustainMask(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 7/16
-                        r4..
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
-                    {   % measure
-                        \time 7/16
-                        c'4..
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 7/16
+                    r4..
+                    \time 3/8
+                    r4.
+                    \time 7/16
+                    c'4..
+                    \time 3/8
+                    c'4.
                 }
 
 

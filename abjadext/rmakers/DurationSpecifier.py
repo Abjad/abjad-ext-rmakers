@@ -232,26 +232,23 @@ class DurationSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8.
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                    }   % measure
+                    \time 3/4
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8
+                    ~
+                    ]
+                    \time 3/4
+                    c'8.
+                    c'4
+                    ~
+                    c'16
+                    c'4
                 }
 
         ..  container:: example
@@ -281,26 +278,23 @@ class DurationSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                        c'8
-                        ~
-                    }   % measure
-                    {   % measure
-                        c'8.
-                        [
-                        c'16
-                        ~
-                        ]
-                        c'4
-                        c'4
-                    }   % measure
+                    \time 3/4
+                    c'16
+                    ~
+                    c'4
+                    c'16
+                    ~
+                    c'4
+                    c'8
+                    ~
+                    \time 3/4
+                    c'8.
+                    [
+                    c'16
+                    ~
+                    ]
+                    c'4
+                    c'4
                 }
 
         """
@@ -352,31 +346,28 @@ class DurationSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'8
-                        ~
-                        c'8
-                        ]
-                        r4
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'8
-                        ~
-                        c'8
-                        ]
-                        r4
-                    }   % measure
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'8
+                    ~
+                    c'8
+                    ]
+                    r4
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'8
+                    ~
+                    c'8
+                    ]
+                    r4
                 }
 
         """
@@ -414,29 +405,26 @@ class DurationSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'4
-                        r8
-                        r8
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'4
-                        r8
-                        r8
-                    }   % measure
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'4
+                    r8
+                    r8
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'4
+                    r8
+                    r8
                 }
 
         """

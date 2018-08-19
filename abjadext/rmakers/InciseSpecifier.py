@@ -221,37 +221,32 @@ class InciseSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r16
-                    }   % measure
-                    {   % measure
-                        r16
-                        c'16.
-                        [
-                        c'16.
-                        ]
-                        r16
-                    }   % measure
-                    {   % measure
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r16
-                    }   % measure
-                    {   % measure
-                        r16
-                        c'16.
-                        [
-                        c'16.
-                        ]
-                        r16
-                    }   % measure
+                    \time 5/16
+                    c'8
+                    [
+                    c'8
+                    ]
+                    r16
+                    \time 5/16
+                    r16
+                    c'16.
+                    [
+                    c'16.
+                    ]
+                    r16
+                    \time 5/16
+                    c'8
+                    [
+                    c'8
+                    ]
+                    r16
+                    \time 5/16
+                    r16
+                    c'16.
+                    [
+                    c'16.
+                    ]
+                    r16
                 }
 
         """

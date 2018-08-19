@@ -38,38 +38,30 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> abjad.f(lilypond_file[abjad.Staff])
             \new RhythmicStaff
             {
-                {   % measure
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                }   % measure
-                {   % measure
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ~
-                    ]
-                }   % measure
-                {   % measure
-                    \time 3/8
-                    c'8
-                    c'4
-                }   % measure
-                {   % measure
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    c'8
-                    ]
-                }   % measure
+                \time 3/8
+                c'16
+                [
+                c'8
+                c'8.
+                ]
+                \time 4/8
+                c'4
+                c'16
+                [
+                c'8
+                c'16
+                ~
+                ]
+                \time 3/8
+                c'8
+                c'4
+                \time 4/8
+                c'16
+                [
+                c'8
+                c'8.
+                c'8
+                ]
             }
 
     Follows the configure-once / call-repeatedly pattern shown here.
@@ -256,39 +248,31 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/16
-                        c'8
-                        [
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/16
-                        c'8.
-                        [
-                        c'16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    \time 3/16
+                    c'8
+                    [
+                    c'16
+                    ~
+                    ]
+                    \time 4/16
+                    c'8.
+                    [
+                    c'16
+                    ]
                 }
 
         Defaults ``divisions`` to ``3/8``, ``4/8``, ``3/16``, ``4/16``.
@@ -746,54 +730,46 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
                 }
 
         ..  container:: example
@@ -823,104 +799,96 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 2
-                        c'16
-                        [
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 0
-                        c'16
-                        ]
-                    }   % measure
+                    \set stemLeftBeamCount = 0
+                    \set stemRightBeamCount = 2
+                    \time 3/8
+                    c'16
+                    [
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    \time 4/8
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    \time 3/8
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    \time 4/8
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 0
+                    c'16
+                    ]
                 }
 
         ..  container:: example
@@ -951,46 +919,38 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    \time 4/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    \time 3/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    \time 4/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
                 }
 
         ..  container:: example
@@ -1020,60 +980,52 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
                 }
 
         ..  container:: example
@@ -1104,54 +1056,46 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    ]
                 }
 
         ..  container:: example
@@ -1183,62 +1127,54 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        \override RhythmicStaff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        \revert RhythmicStaff.Stem.stemlet-length
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \override RhythmicStaff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        \revert RhythmicStaff.Stem.stemlet-length
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        \override RhythmicStaff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        \revert RhythmicStaff.Stem.stemlet-length
-                        r16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \override RhythmicStaff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        \revert RhythmicStaff.Stem.stemlet-length
-                        r16
-                        ]
-                    }   % measure
+                    \override RhythmicStaff.Stem.stemlet-length = 0.75
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    \revert RhythmicStaff.Stem.stemlet-length
+                    c'16
+                    ]
+                    \override RhythmicStaff.Stem.stemlet-length = 0.75
+                    \time 4/8
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    \revert RhythmicStaff.Stem.stemlet-length
+                    c'16
+                    ]
+                    \override RhythmicStaff.Stem.stemlet-length = 0.75
+                    \time 3/8
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    \revert RhythmicStaff.Stem.stemlet-length
+                    r16
+                    ]
+                    \override RhythmicStaff.Stem.stemlet-length = 0.75
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    \revert RhythmicStaff.Stem.stemlet-length
+                    r16
+                    ]
                 }
 
         """
@@ -1280,38 +1216,30 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        [
-                        c'8
-                        ]
-                        r8.
-                        r8
-                    }   % measure
+                    \time 3/8
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    c'16
+                    [
+                    c'8
+                    ]
+                    r8.
+                    r8
                 }
 
         ..  container:: example
@@ -1342,37 +1270,29 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        c'8
-                        ]
-                    }   % measure
+                    \time 3/8
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    r4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ]
+                    \time 3/8
+                    r8
+                    c'4
+                    \time 4/8
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    c'8
+                    ]
                 }
 
         """
@@ -1407,38 +1327,30 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'8
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    c'8
+                    ]
                 }
 
         ..  container:: example
@@ -1470,27 +1382,19 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    r2
                 }
 
         ..  container:: example
@@ -1520,27 +1424,19 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    c'2
                 }
 
         ..  container:: example
@@ -1573,41 +1469,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r8.
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r4..
-                        c'16
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    r8.
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    r4
+                    c'16
+                    [
+                    c'16
+                    ]
+                    \time 4/8
+                    r4..
+                    c'16
                 }
 
         ..  container:: example
@@ -1638,41 +1526,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'8.
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4..
-                        c'16
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    c'8.
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'4
+                    c'16
+                    [
+                    c'16
+                    ]
+                    \time 4/8
+                    c'4..
+                    c'16
                 }
 
         ..  container:: example
@@ -1706,28 +1586,20 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
-                    {   % measure
+                    \time 3/8
+                    r4.
+                    \times 8/9 {
                         \time 4/8
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
+                        c'8
                         c'4
                         c'8.
-                    }   % measure
+                    }
+                    \time 3/8
+                    r4.
+                    \time 4/8
+                    c'16
+                    c'4
+                    c'8.
                 }
 
             >>> state = rhythm_maker.state
@@ -1756,33 +1628,25 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 3/8
+                        c'16
                         c'4
                         c'8
-                    }   % measure
-                    {   % measure
+                        ~
+                    }
+                    \times 4/5 {
                         \time 4/8
-                        r2
-                    }   % measure
+                        c'8
+                        c'4
+                        c'4
+                    }
+                    \time 3/8
+                    c'4
+                    c'8
+                    \time 4/8
+                    r2
                 }
 
             >>> state = rhythm_maker.state
@@ -1825,30 +1689,22 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'4
+                    \time 3/8
+                    c'4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        \time 4/8
                         c'8
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
                         c'4
                         c'8.
-                    }   % measure
+                    }
+                    \time 3/8
+                    r4.
+                    \time 4/8
+                    c'16
+                    c'4
+                    c'8.
                 }
 
             >>> state = rhythm_maker.state
@@ -1877,33 +1733,25 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
+                        c'16
                         c'4
                         c'8
-                        ~
-                    }   % measure
-                    {   % measure
+                    }
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'4
+                    c'8
+                    ~
+                    \times 8/9 {
                         \time 4/8
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                    }   % measure
+                        c'8
+                        c'4
+                        c'8.
+                    }
                 }
 
             >>> state = rhythm_maker.state
@@ -1955,31 +1803,27 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/8
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                    }   % measure
-                    {   % measure
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                    }   % measure
-                    {   % measure
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                    }   % measure
+                    \time 5/8
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                    ~
+                    c'16
+                    \time 5/8
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                    ~
+                    c'16
+                    \time 5/8
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                    ~
+                    c'16
                 }
 
         ..  container:: example
@@ -2010,31 +1854,27 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/8
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                    }   % measure
-                    {   % measure
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                    }   % measure
-                    {   % measure
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                    }   % measure
+                    \time 5/8
+                    c'16
+                    ~
+                    c'4
+                    c'16
+                    ~
+                    c'4
+                    \time 5/8
+                    c'16
+                    ~
+                    c'4
+                    c'16
+                    ~
+                    c'4
+                    \time 5/8
+                    c'16
+                    ~
+                    c'4
+                    c'16
+                    ~
+                    c'4
                 }
 
         ..  container:: example
@@ -2064,27 +1904,24 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'4
-                        c'4
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'4
-                        c'4
-                    }   % measure
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'4
+                    c'4
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'4
+                    c'4
                 }
 
         ..  container:: example
@@ -2114,35 +1951,32 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'8
-                        ~
-                        c'8
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'8
-                        ~
-                        c'8
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }   % measure
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'8
+                    ~
+                    c'8
+                    c'8
+                    ~
+                    c'8
+                    ]
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'8
+                    ~
+                    c'8
+                    c'8
+                    ~
+                    c'8
+                    ]
                 }
 
             Rewrites forbidden durations with smaller durations tied together.
@@ -2174,47 +2008,43 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        ]
-                        c'4
-                        c'16
-                        ~
-                        [
-                        c'16
-                        ~
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8
-                        c'4
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        ~
-                        [
-                        c'16
-                        ~
-                        c'16
-                        c'8.
-                        ~
-                        c'8
-                        ]
-                        c'4
-                    }   % measure
+                    \time 3/4
+                    c'8.
+                    ~
+                    [
+                    c'8
+                    ]
+                    c'4
+                    c'16
+                    ~
+                    [
+                    c'16
+                    ~
+                    c'16
+                    ~
+                    ]
+                    \time 3/4
+                    c'8
+                    c'4
+                    c'8.
+                    ~
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    \time 3/4
+                    c'16
+                    ~
+                    [
+                    c'16
+                    ~
+                    c'16
+                    c'8.
+                    ~
+                    c'8
+                    ]
+                    c'4
                 }
 
         ..  container:: example
@@ -2244,37 +2074,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        ]
-                        c'4
-                        c'8.
-                        ~
-                    }   % measure
-                    {   % measure
-                        c'8
-                        c'4
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8.
-                        [
-                        c'8.
-                        ~
-                        c'8
-                        ]
-                        c'4
-                    }   % measure
+                    \time 3/4
+                    c'8.
+                    ~
+                    [
+                    c'8
+                    ]
+                    c'4
+                    c'8.
+                    ~
+                    \time 3/4
+                    c'8
+                    c'4
+                    c'8.
+                    ~
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    \time 3/4
+                    c'8.
+                    [
+                    c'8.
+                    ~
+                    c'8
+                    ]
+                    c'4
                 }
 
         ..  container:: example
@@ -2304,41 +2130,37 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        c'16
-                        c'8.
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8
-                        [
-                        c'8
-                        ~
-                        c'8
-                        c'8
-                        ~
-                        c'8.
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8.
-                        [
-                        c'16
-                        ~
-                        ]
-                        c'4
-                        c'4
-                    }   % measure
+                    \time 3/4
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    c'16
+                    c'8.
+                    ~
+                    ]
+                    \time 3/4
+                    c'8
+                    [
+                    c'8
+                    ~
+                    c'8
+                    c'8
+                    ~
+                    c'8.
+                    c'16
+                    ~
+                    ]
+                    \time 3/4
+                    c'8.
+                    [
+                    c'16
+                    ~
+                    ]
+                    c'4
+                    c'4
                 }
 
         """
@@ -2373,38 +2195,30 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'8
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    c'8
+                    ]
                 }
 
         ..  container:: example
@@ -2432,48 +2246,40 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \times 8/9 {
                         \time 4/8
-                        \times 8/9 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            c'4
-                            c'16
-                        }
-                    }   % measure
-                    {   % measure
+                        c'16
+                        c'4
+                        c'16
+                    }
+                    \times 8/9 {
                         \time 4/8
-                        \times 8/9 {
-                            c'8
-                            [
-                            c'8.
-                            ]
-                            c'4
-                        }
-                    }   % measure
+                        c'8
+                        [
+                        c'8.
+                        ]
+                        c'4
+                    }
                 }
 
         ..  container:: example
@@ -2501,54 +2307,46 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \times 4/5 {
                         \time 4/8
-                        \times 4/5 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'16
-                            [
-                            c'16
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 4/5 {
                         \time 4/8
-                        \times 4/5 {
-                            c'16
-                            [
-                            c'8.
-                            ]
-                            c'4
-                            c'16
-                            [
-                            c'16
-                            ]
-                        }
-                    }   % measure
+                        c'16
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        ]
+                    }
                 }
 
             The duration of each added count equals the duration
@@ -2579,51 +2377,43 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 8/7 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/7 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 8/7 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/7 {
-                            c'16
-                            [
-                            c'16
-                            c'8
-                            c'8.
-                            ]
-                        }
-                    }   % measure
+                        c'16
+                        [
+                        c'16
+                        c'8
+                        c'8.
+                        ]
+                    }
                 }
 
         """
@@ -2664,35 +2454,30 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        ]
-                        r8.
-                    }   % measure
-                    {   % measure
-                        c'4
-                        c'16
-                        r16
-                    }   % measure
-                    {   % measure
-                        r16
-                        c'8.
-                        [
-                        c'8
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8
-                        r16
-                        c'8
-                        [
-                        c'16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    ]
+                    r8.
+                    \time 3/8
+                    c'4
+                    c'16
+                    r16
+                    \time 3/8
+                    r16
+                    c'8.
+                    [
+                    c'8
+                    ~
+                    ]
+                    \time 3/8
+                    c'8
+                    r16
+                    c'8
+                    [
+                    c'16
+                    ]
                 }
 
             Silences the first and last logical ties:
@@ -2721,38 +2506,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'8.
-                        c'8
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8
-                        [
-                        c'16
-                        c'8
-                        ]
-                        r16
-                    }   % measure
+                    \time 3/8
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'4
+                    c'16
+                    [
+                    c'16
+                    ~
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'8.
+                    c'8
+                    ~
+                    ]
+                    \time 3/8
+                    c'8
+                    [
+                    c'16
+                    c'8
+                    ]
+                    r16
                 }
 
         ..  container:: example
@@ -2786,37 +2566,29 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        r4
+                    \time 3/8
+                    r4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        \time 4/8
                         c'8
+                        r4
+                        c'8.
                         ~
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \times 8/9 {
-                            c'8
-                            r4
-                            c'8.
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
                         c'16
                         c'4
                         c'8.
-                    }   % measure
+                        ~
+                    }
+                    \time 4/8
+                    c'16
+                    c'4
+                    c'8.
                 }
 
             >>> state = rhythm_maker.state
@@ -2845,38 +2617,30 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4
+                        c'16
+                        c'4
                         c'8
                         ~
-                    }   % measure
-                    {   % measure
+                    }
+                    \times 4/5 {
                         \time 4/8
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                    }   % measure
+                        c'8
+                        c'4
+                        c'4
+                    }
+                    \time 3/8
+                    r4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        \time 4/8
+                        c'8
+                        c'4
+                        c'8.
+                    }
                 }
             
             >>> state = rhythm_maker.state
@@ -2923,36 +2687,28 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'4
+                    \time 3/8
+                    c'4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        \time 4/8
                         c'8
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            r8.
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            r16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'16
                         c'4
                         r8.
-                    }   % measure
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
+                        \time 3/8
+                        r16
+                        c'4
+                        c'8.
+                        ~
+                    }
+                    \time 4/8
+                    c'16
+                    c'4
+                    r8.
                 }
 
             >>> state = rhythm_maker.state
@@ -2981,38 +2737,30 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            r16
-                            c'4
-                            c'8
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            r4
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 3/8
+                        r16
                         c'4
                         c'8
                         ~
-                    }   % measure
-                    {   % measure
+                    }
+                    \times 4/5 {
                         \time 4/8
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            r8.
-                        }
-                    }   % measure
+                        c'8
+                        c'4
+                        r4
+                    }
+                    \time 3/8
+                    c'4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        \time 4/8
+                        c'8
+                        c'4
+                        r8.
+                    }
                 }
 
             >>> state = rhythm_maker.state
@@ -3058,38 +2806,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'8.
-                        c'8
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8
-                        [
-                        c'16
-                        c'8
-                        c'16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'4
+                    c'16
+                    [
+                    c'16
+                    ~
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'8.
+                    c'8
+                    ~
+                    ]
+                    \time 3/8
+                    c'8
+                    [
+                    c'16
+                    c'8
+                    c'16
+                    ]
                 }
 
         ..  container:: example
@@ -3151,38 +2894,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'8.
-                        c'8
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8
-                        [
-                        c'16
-                        c'8
-                        c'16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'4
+                    c'16
+                    [
+                    c'16
+                    ~
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'8.
+                    c'8
+                    ~
+                    ]
+                    \time 3/8
+                    c'8
+                    [
+                    c'16
+                    c'8
+                    c'16
+                    ]
                 }
 
         ..  container:: example
@@ -3210,36 +2948,31 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        r16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }   % measure
-                    {   % measure
-                        r8
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'4
+                    c'16
+                    [
+                    c'16
+                    ]
+                    \time 3/8
+                    r16
+                    c'8.
+                    [
+                    c'8
+                    ]
+                    \time 3/8
+                    r8
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ]
                 }
 
         """
@@ -3283,47 +3016,42 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
                 }
 
         ..  container:: example
@@ -3356,51 +3084,46 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'32
-                        ~
-                        ]
-                        c'32
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                    }   % measure
-                    {   % measure
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }   % measure
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'32
+                    ~
+                    ]
+                    c'32
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'16
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
                 }
 
             Additional divisions created when using
@@ -3435,71 +3158,66 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'32
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 10/11 {
-                            c'32
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                        }
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/13 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'32
-                            ]
-                        }
-                    }   % measure
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6 {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'32
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 10/11 {
+                        \time 3/8
+                        c'32
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 12/13 {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'32
+                        ]
+                    }
                 }
 
         """
@@ -3538,37 +3256,29 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'4
+                    \time 3/8
+                    c'4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        \time 4/8
                         c'8
+                        c'4
+                        c'8.
                         ~
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
                         c'16
                         c'4
                         c'8.
-                    }   % measure
+                        ~
+                    }
+                    \time 4/8
+                    c'16
+                    c'4
+                    c'8.
                 }
 
             >>> state = rhythm_maker.state
@@ -3598,38 +3308,30 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 3/8
+                        c'16
                         c'4
                         c'8
                         ~
-                    }   % measure
-                    {   % measure
+                    }
+                    \times 4/5 {
                         \time 4/8
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                    }   % measure
+                        c'8
+                        c'4
+                        c'4
+                    }
+                    \time 3/8
+                    c'4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        \time 4/8
+                        c'8
+                        c'4
+                        c'8.
+                    }
                 }
 
             >>> state = rhythm_maker.state
@@ -3659,41 +3361,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \time 4/8
                         c'16
                         c'4
                         c'8.
                         ~
-                    }   % measure
-                    {   % measure
+                    }
+                    \time 4/8
+                    c'16
+                    c'4
+                    c'8.
+                    ~
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
+                        c'16
+                        c'4
+                        c'8
+                        ~
+                    }
+                    \times 4/5 {
                         \time 4/8
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'4
-                        }
-                    }   % measure
+                        c'8
+                        c'4
+                        c'4
+                    }
                 }
 
             >>> state = rhythm_maker.state
@@ -3739,48 +3433,40 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> abjad.f(lilypond_file[abjad.Staff], strict=30)
             \new RhythmicStaff
             {
-                {   % measure
+                \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
+                \times 1/1 {              %! TALEA_RHYTHM_MAKER
                     \time 3/8
-                    \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
-                    \times 1/1 {          %! TALEA_RHYTHM_MAKER
-                        c'16              %! TALEA_RHYTHM_MAKER
-                        [                 %! TALEA_RHYTHM_MAKER
-                        c'8               %! TALEA_RHYTHM_MAKER
-                        c'8.              %! TALEA_RHYTHM_MAKER
-                        ]                 %! TALEA_RHYTHM_MAKER
-                    }                     %! TALEA_RHYTHM_MAKER
-                }   % measure
-                {   % measure
+                    c'16                  %! TALEA_RHYTHM_MAKER
+                    [                     %! TALEA_RHYTHM_MAKER
+                    c'8                   %! TALEA_RHYTHM_MAKER
+                    c'8.                  %! TALEA_RHYTHM_MAKER
+                    ]                     %! TALEA_RHYTHM_MAKER
+                }                         %! TALEA_RHYTHM_MAKER
+                \times 8/9 {              %! TALEA_RHYTHM_MAKER
                     \time 4/8
-                    \times 8/9 {          %! TALEA_RHYTHM_MAKER
-                        c'4               %! TALEA_RHYTHM_MAKER
-                        c'16              %! TALEA_RHYTHM_MAKER
-                        [                 %! TALEA_RHYTHM_MAKER
-                        c'8               %! TALEA_RHYTHM_MAKER
-                        c'8               %! TALEA_RHYTHM_MAKER
-                        ~
-                        ]                 %! TALEA_RHYTHM_MAKER
-                    }                     %! TALEA_RHYTHM_MAKER
-                }   % measure
-                {   % measure
+                    c'4                   %! TALEA_RHYTHM_MAKER
+                    c'16                  %! TALEA_RHYTHM_MAKER
+                    [                     %! TALEA_RHYTHM_MAKER
+                    c'8                   %! TALEA_RHYTHM_MAKER
+                    c'8                   %! TALEA_RHYTHM_MAKER
+                    ~
+                    ]                     %! TALEA_RHYTHM_MAKER
+                }                         %! TALEA_RHYTHM_MAKER
+                \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
+                \times 1/1 {              %! TALEA_RHYTHM_MAKER
                     \time 3/8
-                    \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
-                    \times 1/1 {          %! TALEA_RHYTHM_MAKER
-                        c'16              %! TALEA_RHYTHM_MAKER
-                        c'4               %! TALEA_RHYTHM_MAKER
-                        c'16              %! TALEA_RHYTHM_MAKER
-                    }                     %! TALEA_RHYTHM_MAKER
-                }   % measure
-                {   % measure
+                    c'16                  %! TALEA_RHYTHM_MAKER
+                    c'4                   %! TALEA_RHYTHM_MAKER
+                    c'16                  %! TALEA_RHYTHM_MAKER
+                }                         %! TALEA_RHYTHM_MAKER
+                \times 8/9 {              %! TALEA_RHYTHM_MAKER
                     \time 4/8
-                    \times 8/9 {          %! TALEA_RHYTHM_MAKER
-                        c'8               %! TALEA_RHYTHM_MAKER
-                        [                 %! TALEA_RHYTHM_MAKER
-                        c'8.              %! TALEA_RHYTHM_MAKER
-                        ]                 %! TALEA_RHYTHM_MAKER
-                        c'4               %! TALEA_RHYTHM_MAKER
-                    }                     %! TALEA_RHYTHM_MAKER
-                }   % measure
+                    c'8                   %! TALEA_RHYTHM_MAKER
+                    [                     %! TALEA_RHYTHM_MAKER
+                    c'8.                  %! TALEA_RHYTHM_MAKER
+                    ]                     %! TALEA_RHYTHM_MAKER
+                    c'4                   %! TALEA_RHYTHM_MAKER
+                }                         %! TALEA_RHYTHM_MAKER
             }
 
         """
@@ -3810,19 +3496,14 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        c'4.
-                    }   % measure
+                    \time 3/8
+                    c'4.
+                    \time 3/8
+                    c'4.
+                    \time 3/8
+                    c'4.
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -3852,36 +3533,28 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'32
-                        [
-                        c'32
-                        c'32
-                        c'32
-                        ]
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r8
-                        c'4
-                        c'8
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8
-                        r8
-                        c'8
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'8
-                        c'4
-                        r8
-                    }   % measure
+                    \time 3/8
+                    c'32
+                    [
+                    c'32
+                    c'32
+                    c'32
+                    ]
+                    c'4
+                    \time 4/8
+                    r8
+                    c'4
+                    c'8
+                    ~
+                    \time 3/8
+                    c'8
+                    r8
+                    c'8
+                    ~
+                    \time 4/8
+                    c'8
+                    c'4
+                    r8
                 }
 
             Preamble more than total duration; ignores counts:
@@ -3907,26 +3580,18 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8
-                        c'4
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
+                    \time 3/8
+                    c'4.
+                    ~
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 3/8
+                    c'8
+                    c'4
+                    ~
+                    \time 4/8
+                    c'2
                 }
 
         """
@@ -3961,38 +3626,30 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }   % measure
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
                 }
 
         ..  container:: example
@@ -4022,41 +3679,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }   % measure
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ~
+                    ]
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
                 }
 
         ..  container:: example
@@ -4090,40 +3739,32 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }   % measure
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
                 }
 
         ..  container:: example
@@ -4154,41 +3795,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        c'16
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        \repeatTie
-                        c'16
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                    }   % measure
+                    \time 4/8
+                    c'4
+                    c'16
+                    \repeatTie
+                    [
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'8.
+                    \repeatTie
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    \repeatTie
+                    c'16
+                    \repeatTie
+                    [
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'8.
+                    \repeatTie
+                    [
+                    c'8.
+                    ]
                 }
 
         ..  container:: example
@@ -4218,37 +3851,29 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                        r8.
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                        r8.
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ]
-                    }   % measure
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    r8.
+                    \time 3/8
+                    c'8.
+                    ~
+                    [
+                    c'8.
+                    ~
+                    ]
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    r8.
+                    \time 3/8
+                    c'8.
+                    ~
+                    [
+                    c'8.
+                    ]
                 }
 
         """
@@ -4297,55 +3922,47 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            c'16
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 8/9 {
                         \time 4/8
-                        \times 8/9 {
-                            c'8.
-                            [
-                            c'16
-                            c'8
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'16
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 4/5 {
                         \time 4/8
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ]
-                        }
-                    }   % measure
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                    }
                 }
 
             REGRESSION. Spells tuplet denominator in terms of duration when
@@ -4375,55 +3992,47 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            c'16
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 8/9 {
                         \time 4/8
-                        \times 8/9 {
-                            c'8.
-                            [
-                            c'16
-                            c'8
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'16
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/8 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 8/10 {
                         \time 4/8
-                        \times 8/10 {
-                            c'8
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ]
-                        }
-                    }   % measure
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                    }
                 }
 
         ..  container:: example
@@ -4457,61 +4066,54 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
                         \time 1/4
                         c'16
                         [
                         c'16
                         c'16
-                        c'16
                         ]
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                    }
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        \time 1/4
                         c'16
                         [
                         c'16
                         c'16
-                        c'16
                         ]
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                    }
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        \time 1/4
                         c'16
                         [
                         c'16
                         c'16
-                        c'16
                         ]
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }   % measure
+                    }
                 }
 
             Makes augmented tuplets when ``diminution`` is set to false:
@@ -4541,61 +4143,54 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
                         \time 1/4
                         c'16
                         [
                         c'16
                         c'16
-                        c'16
                         ]
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                    }
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        \time 1/4
                         c'16
                         [
                         c'16
                         c'16
-                        c'16
                         ]
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                    }
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        \time 1/4
                         c'16
                         [
                         c'16
                         c'16
-                        c'16
                         ]
-                    }   % measure
-                    {   % measure
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }   % measure
+                    }
                 }
 
         ..  container:: example
@@ -4627,40 +4222,32 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \times 2/3 {
                         \time 4/8
-                        \times 2/3 {
-                            c'4.
-                            c'4.
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4.
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \times 2/3 {
                         \time 4/8
-                        \times 2/3 {
-                            c'4.
-                            c'4.
-                        }
-                    }   % measure
+                        c'4.
+                        c'4.
+                    }
                 }
 
             Rewrites trivializable tuplets as trivial (1:1) tuplets when
@@ -4690,42 +4277,34 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'4
-                        }
-                    }   % measure
+                        c'4
+                        c'4
+                    }
                 }
 
             REGRESSION #907a. Rewrites trivializable tuplets even when
@@ -4758,45 +4337,37 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'4
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        c'4
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'4
-                        }
-                    }   % measure
+                        c'4
+                        c'4
+                    }
                 }
 
             REGRESSION #907b. Rewrites trivializable tuplets even when
@@ -4830,49 +4401,41 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            ~
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            ~
-                            c'4
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        ~
+                        c'4
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            ~
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            ~
-                            c'4
-                        }
-                    }   % measure
+                        c'4
+                        ~
+                        c'4
+                    }
                 }
 
         ..  container:: example
@@ -4903,46 +4466,38 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                            r16
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r4
-                            r16
-                            r8.
-                        }
-                    }   % measure
-                    {   % measure
+                        r4
+                        r16
+                        r8.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            r8.
-                            c'8.
-                            [
-                            c'16
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        r8.
+                        c'8.
+                        [
+                        c'16
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            r4.
-                        }
-                    }   % measure
+                        c'8
+                        r4.
+                    }
                 }
 
             Rewrites rest-filled tuplets when ``rewrite_rest_filled`` is true:
@@ -4971,44 +4526,36 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                            r16
-                        }
-                    }   % measure
-                    {   % measure
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r2
-                        }
-                    }   % measure
-                    {   % measure
+                        r2
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
                         \time 3/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            r8.
-                            c'8.
-                            [
-                            c'16
-                            ~
-                            ]
-                        }
-                    }   % measure
-                    {   % measure
+                        r8.
+                        c'8.
+                        [
+                        c'16
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
                         \time 4/8
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            r4.
-                        }
-                    }   % measure
+                        c'8
+                        r4.
+                    }
                 }
 
         """

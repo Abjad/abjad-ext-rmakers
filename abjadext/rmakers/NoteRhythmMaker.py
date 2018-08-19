@@ -35,16 +35,12 @@ class NoteRhythmMaker(RhythmMaker):
             >>> abjad.f(lilypond_file[abjad.Staff])
             \new RhythmicStaff
             {
-                {   % measure
-                    \time 5/8
-                    c'2
-                    ~
-                    c'8
-                }   % measure
-                {   % measure
-                    \time 3/8
-                    c'4.
-                }   % measure
+                \time 5/8
+                c'2
+                ~
+                c'8
+                \time 3/8
+                c'4.
             }
 
     Usage follows the two-step configure-once / call-repeatedly pattern shown
@@ -280,21 +276,18 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/32
-                        c'8
-                        ~
-                        [
-                        c'32
-                        ]
-                    }   % measure
-                    {   % measure
-                        c'8
-                        ~
-                        [
-                        c'32
-                        ]
-                    }   % measure
+                    \time 5/32
+                    c'8
+                    ~
+                    [
+                    c'32
+                    ]
+                    \time 5/32
+                    c'8
+                    ~
+                    [
+                    c'32
+                    ]
                 }
 
         ..  container:: example
@@ -320,27 +313,24 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/32
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8
-                        ~
-                        [
-                        \set stemLeftBeamCount = 3
-                        \set stemRightBeamCount = 1
-                        c'32
-                    }   % measure
-                    {   % measure
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                        ~
-                        \set stemLeftBeamCount = 3
-                        \set stemRightBeamCount = 0
-                        c'32
-                        ]
-                    }   % measure
+                    \set stemLeftBeamCount = 0
+                    \set stemRightBeamCount = 1
+                    \time 5/32
+                    c'8
+                    ~
+                    [
+                    \set stemLeftBeamCount = 3
+                    \set stemRightBeamCount = 1
+                    c'32
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 1
+                    \time 5/32
+                    c'8
+                    ~
+                    \set stemLeftBeamCount = 3
+                    \set stemRightBeamCount = 0
+                    c'32
+                    ]
                 }
 
         ..  container:: example
@@ -367,17 +357,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/32
-                        c'8
-                        ~
-                        c'32
-                    }   % measure
-                    {   % measure
-                        c'8
-                        ~
-                        c'32
-                    }   % measure
+                    \time 5/32
+                    c'8
+                    ~
+                    c'32
+                    \time 5/32
+                    c'8
+                    ~
+                    c'32
                 }
 
         """
@@ -407,25 +394,18 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/8
-                        c'2
-                        ~
-                        c'8
-                    }   % measure
-                    {   % measure
-                        \time 2/8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 5/8
-                        c'2
-                        ~
-                        c'8
-                    }   % measure
+                    \time 5/8
+                    c'2
+                    ~
+                    c'8
+                    \time 2/8
+                    c'4
+                    \time 2/8
+                    c'4
+                    \time 5/8
+                    c'2
+                    ~
+                    c'8
                 }
 
         ..  container:: example
@@ -453,24 +433,17 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/8
-                        r2
-                        r8
-                    }   % measure
-                    {   % measure
-                        \time 2/8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 5/8
-                        c'2
-                        ~
-                        c'8
-                    }   % measure
+                    \time 5/8
+                    r2
+                    r8
+                    \time 2/8
+                    c'4
+                    \time 2/8
+                    c'4
+                    \time 5/8
+                    c'2
+                    ~
+                    c'8
                 }
 
         ..  container:: example
@@ -498,24 +471,17 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/8
-                        r2
-                        r8
-                    }   % measure
-                    {   % measure
-                        \time 2/8
-                        r4
-                    }   % measure
-                    {   % measure
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 5/8
-                        c'2
-                        ~
-                        c'8
-                    }   % measure
+                    \time 5/8
+                    r2
+                    r8
+                    \time 2/8
+                    r4
+                    \time 2/8
+                    c'4
+                    \time 5/8
+                    c'2
+                    ~
+                    c'8
                 }
 
         ..  container:: example
@@ -545,23 +511,16 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/8
-                        r2
-                        r8
-                    }   % measure
-                    {   % measure
-                        \time 2/8
-                        c'4
-                    }   % measure
-                    {   % measure
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 5/8
-                        r2
-                        r8
-                    }   % measure
+                    \time 5/8
+                    r2
+                    r8
+                    \time 2/8
+                    c'4
+                    \time 2/8
+                    c'4
+                    \time 5/8
+                    r2
+                    r8
                 }
 
         ..  note:: Currently only works when ``outer_divisions_only`` is true.
@@ -593,22 +552,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'4.
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -636,22 +587,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'4.
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -675,22 +618,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    r4.
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    r4.
                 }
 
         ..  container:: example
@@ -718,22 +653,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        R1 * 1/2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        R1 * 3/8
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        R1 * 1/2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        R1 * 3/8
-                    }   % measure
+                    \time 4/8
+                    R1 * 1/2
+                    \time 3/8
+                    R1 * 3/8
+                    \time 4/8
+                    R1 * 1/2
+                    \time 3/8
+                    R1 * 3/8
                 }
 
         ..  container:: example
@@ -763,26 +690,16 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 2/8
-                        c'4
-                    }   % measure
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'4.
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'4.
+                    \time 2/8
+                    c'4
                 }
 
         """
@@ -812,16 +729,12 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/8
-                        c'2
-                        ~
-                        c'8
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 5/8
+                    c'2
+                    ~
+                    c'8
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -848,18 +761,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 5/8
-                        c'4
-                        ~
-                        c'4
-                        ~
-                        c'8
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 5/8
+                    c'4
+                    ~
+                    c'4
+                    ~
+                    c'8
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -885,32 +794,26 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'4
-                        ~
-                        c'4
-                        ~
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 6/16
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 9/16
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        c'8.
-                        ]
-                    }   % measure
+                    \time 3/4
+                    c'4
+                    ~
+                    c'4
+                    ~
+                    c'4
+                    \time 6/16
+                    c'8.
+                    ~
+                    [
+                    c'8.
+                    ]
+                    \time 9/16
+                    c'8.
+                    ~
+                    [
+                    c'8.
+                    ~
+                    c'8.
+                    ]
                 }
 
         ..  container:: example
@@ -937,24 +840,18 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'2.
-                    }   % measure
-                    {   % measure
-                        \time 6/16
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 9/16
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        c'8.
-                        ]
-                    }   % measure
+                    \time 3/4
+                    c'2.
+                    \time 6/16
+                    c'4.
+                    \time 9/16
+                    c'8.
+                    ~
+                    [
+                    c'8.
+                    ~
+                    c'8.
+                    ]
                 }
 
             ``9/16`` is spelled metrically because it is unassignable.
@@ -984,20 +881,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 3/4
-                        c'2.
-                    }   % measure
-                    {   % measure
-                        \time 6/16
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 9/16
-                        c'4.
-                        ~
-                        c'8.
-                    }   % measure
+                    \time 3/4
+                    c'2.
+                    \time 6/16
+                    c'4.
+                    \time 9/16
+                    c'4.
+                    ~
+                    c'8.
                 }
 
         """
@@ -1027,22 +918,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'4.
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -1066,22 +949,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'4.
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -1105,22 +980,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        r2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        r4.
-                    }   % measure
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    r4.
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    r4.
                 }
 
         """
@@ -1149,16 +1016,12 @@ class NoteRhythmMaker(RhythmMaker):
             >>> abjad.f(lilypond_file[abjad.Staff])
             \new RhythmicStaff
             {
-                {   % measure
-                    \time 5/8
-                    c'2 %! NOTE_RHYTHM_MAKER
-                    ~
-                    c'8 %! NOTE_RHYTHM_MAKER
-                }   % measure
-                {   % measure
-                    \time 3/8
-                    c'4. %! NOTE_RHYTHM_MAKER
-                }   % measure
+                \time 5/8
+                c'2 %! NOTE_RHYTHM_MAKER
+                ~
+                c'8 %! NOTE_RHYTHM_MAKER
+                \time 3/8
+                c'4. %! NOTE_RHYTHM_MAKER
             }
 
         """
@@ -1192,22 +1055,14 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'4.
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -1233,25 +1088,17 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'2
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 3/8
+                    c'4.
+                    ~
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -1281,24 +1128,16 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'2
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
-                    {   % measure
-                        \time 4/8
-                        c'2
-                        ~
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                    }   % measure
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 3/8
+                    c'4.
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 3/8
+                    c'4.
                 }
 
         ..  container:: example
@@ -1325,29 +1164,21 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 4/8
-                        c'2
-                    }   % measure
-                    {   % measure
-                        \time 3/8
-                        c'4.
-                        \repeatTie
-                    }   % measure
-                    {   % measure
-                        \time 9/16
-                        c'2
-                        \repeatTie
-                        c'16
-                        \repeatTie
-                    }   % measure
-                    {   % measure
-                        \time 5/16
-                        c'4
-                        \repeatTie
-                        c'16
-                        \repeatTie
-                    }   % measure
+                    \time 4/8
+                    c'2
+                    \time 3/8
+                    c'4.
+                    \repeatTie
+                    \time 9/16
+                    c'2
+                    \repeatTie
+                    c'16
+                    \repeatTie
+                    \time 5/16
+                    c'4
+                    \repeatTie
+                    c'16
+                    \repeatTie
                 }
 
         ..  container:: example
@@ -1373,19 +1204,13 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 7/16
-                        c'4..
-                    }   % measure
-                    {   % measure
-                        \time 1/4
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 5/16
-                        c'4
-                        c'16
-                    }   % measure
+                    \time 7/16
+                    c'4..
+                    \time 1/4
+                    c'4
+                    \time 5/16
+                    c'4
+                    c'16
                 }
 
         ..  container:: example
@@ -1414,25 +1239,19 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
-                        \time 7/16
-                        c'8.
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }   % measure
-                    {   % measure
-                        \time 1/4
-                        c'4
-                    }   % measure
-                    {   % measure
-                        \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }   % measure
+                    \time 7/16
+                    c'8.
+                    [
+                    c'8
+                    c'8
+                    ]
+                    \time 1/4
+                    c'4
+                    \time 5/16
+                    c'8.
+                    [
+                    c'8
+                    ]
                 }
 
         Returns tie specifier.
@@ -1463,24 +1282,20 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 4/7 {
                         #(ly:expect-warning "strange time signature found")
                         \time 5/14
-                        \tweak edge-height #'(0.7 . 0)
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                        }
-                    }   % measure
-                    {   % measure
+                        c'2
+                        ~
+                        c'8
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 4/7 {
                         #(ly:expect-warning "strange time signature found")
                         \time 3/7
-                        \tweak edge-height #'(0.7 . 0)
-                        \times 4/7 {
-                            c'2.
-                        }
-                    }   % measure
+                        c'2.
+                    }
                 }
 
         ..  container:: example
@@ -1506,26 +1321,22 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 8/7 {
                         #(ly:expect-warning "strange time signature found")
                         \time 5/14
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \tweak edge-height #'(0.7 . 0)
-                        \times 8/7 {
-                            c'4
-                            ~
-                            c'16
-                        }
-                    }   % measure
-                    {   % measure
+                        c'4
+                        ~
+                        c'16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 8/7 {
                         #(ly:expect-warning "strange time signature found")
                         \time 3/7
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \tweak edge-height #'(0.7 . 0)
-                        \times 8/7 {
-                            c'4.
-                        }
-                    }   % measure
+                        c'4.
+                    }
                 }
 
         """

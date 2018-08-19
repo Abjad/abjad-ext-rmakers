@@ -221,31 +221,27 @@ class TieSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \times 4/7 {
                         \time 4/8
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                        }
-                    }   % measure
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                    }
                 }
 
             With ``strip_ties``:
@@ -270,28 +266,24 @@ class TieSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \times 4/7 {
                         \time 4/8
-                        \times 4/7 {
-                            c'2
-                            c'8
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            c'8
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            c'8
-                            c'4
-                        }
-                    }   % measure
+                        c'2
+                        c'8
+                        c'4
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        c'8
+                        c'4
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        c'8
+                        c'4
+                    }
                 }
 
         """
@@ -324,33 +316,29 @@ class TieSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \times 4/7 {
                         \time 4/8
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                        }
-                    }   % measure
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                        ~
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                        ~
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                    }
                 }
 
         Set to true, false or to a boolean vector.
@@ -384,36 +372,32 @@ class TieSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \times 4/7 {
                         \time 4/8
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                            ~
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                        }
-                    }   % measure
+                        c'2
+                        ~
+                        c'8
+                        ~
+                        c'4
+                        ~
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        ~
+                        c'4
+                        ~
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        ~
+                        c'4
+                    }
                 }
 
         """
@@ -448,34 +432,30 @@ class TieSpecifier(abjad.AbjadValueObject):
                 >>> abjad.f(lilypond_file[abjad.Staff])
                 \new RhythmicStaff
                 {
-                    {   % measure
+                    \times 4/7 {
                         \time 4/8
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                        }
-                    }   % measure
-                    {   % measure
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                        }
-                    }   % measure
+                        c'2
+                        ~
+                        c'8
+                        ~
+                        c'4
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        ~
+                        c'4
+                    }
+                    \times 4/7 {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        ~
+                        c'4
+                    }
                 }
 
         """
