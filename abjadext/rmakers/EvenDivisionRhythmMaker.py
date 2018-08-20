@@ -103,61 +103,72 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/6 {
+                        s1 * 3/8
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 3/8
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/6 {
+                        s1 * 3/8
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 3/8
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -179,74 +190,85 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/6 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                        s1 * 3/8
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8 {
+                        s1 * 3/8
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/6 {
+                        s1 * 3/8
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                        s1 * 3/8
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/8 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         """
         return super(EvenDivisionRhythmMaker, self).__call__(
@@ -528,48 +550,58 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                        r8
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                            r8
+                            r8
+                        }
+                    }
+                >>
 
             Burnishing outer divisions also works when given a single division:
 
@@ -583,23 +615,30 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 7/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                        r8
-                        r8
+                        s1 * 7/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 7/7 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                            r8
+                            r8
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -622,48 +661,58 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         """
         return self._burnish_specifier
@@ -693,76 +742,86 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 2/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 2/3 {
+                        s1 * 3/8
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 2/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 2/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
             Expresses tuplet ratios in the usual way with numerator and
             denominator relatively prime.
@@ -787,76 +846,86 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/6 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 4/6 {
+                        s1 * 3/8
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 4/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
             Preferred denominator equal to 8:
 
@@ -876,76 +945,86 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 8/12 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 8/12 {
+                        s1 * 3/8
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 8/12 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 8/12 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
             Preferred denominator equal to 16:
 
@@ -965,76 +1044,86 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 16/24 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 16/24 {
+                        s1 * 3/8
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 16/24 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 16/24 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1056,76 +1145,86 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 8/12 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/10 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 8/12 {
+                        s1 * 3/8
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/10 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 8/12 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/10 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 8/12 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/10 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         """
         return self._denominator
@@ -1153,49 +1252,58 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/6 {
+                        s1 * 3/16
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/12 {
+                        s1 * 3/8
                         \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 3/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/12 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1215,36 +1323,45 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/16
-                        c'8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 3/16
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/6 {
+                        s1 * 3/8
                         \time 3/4
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/6 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
             Fills divisions less than twice the duration of an eighth note with
             a single attack.
@@ -1267,27 +1384,36 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/16
-                        c'8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/16
                         \time 3/8
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 3/8
                         \time 3/4
-                        c'4
-                        c'4
-                        c'4
+                        s1 * 3/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'4
+                            c'4
+                            c'4
+                        }
+                    }
+                >>
 
             Divisions less than twice the duration of a quarter note are filled
             with a single attack.
@@ -1310,25 +1436,34 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/16
-                        c'8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/16
                         \time 3/8
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 3/4
-                        c'2.
+                        s1 * 3/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'2.
+                        }
+                    }
+                >>
 
             Fills divisions less than twice the duration of a half note with a
             single attack.
@@ -1359,48 +1494,58 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1422,32 +1567,42 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    r2
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \time 4/8
-                    r2
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        r2
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1469,32 +1624,42 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    c'2
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \time 4/8
-                    c'2
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        c'2
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'2
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1514,18 +1679,28 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    r4.
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    r4.
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        r4.
+                        r2
+                        r4.
+                    }
+                >>
 
         """
         return super(EvenDivisionRhythmMaker, self).division_masks
@@ -1581,52 +1756,63 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/2 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1647,51 +1833,62 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/2 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/5 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1712,51 +1909,62 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/2 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/3 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1777,50 +1985,61 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/2 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1841,53 +2060,64 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/2 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/5 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1908,55 +2138,66 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \times 2/3 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \times 2/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1977,58 +2218,69 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/2 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 4/6 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/7 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 4/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/7 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -2049,58 +2301,69 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \times 2/3 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 4/7 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/8 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \times 2/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 4/7 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/8 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
 
         ..  container:: example
@@ -2122,58 +2385,69 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/16
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/2 {
+                        s1 * 1/16
                         \time 2/16
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 1/8
                         \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/16
                         \time 4/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9 {
+                        s1 * 1/4
                         \time 5/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/9 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         """
         if self._extra_counts_per_division:
@@ -2201,48 +2475,58 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -2264,46 +2548,56 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        r8
-                        c'8
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            ]
+                            r8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                            r8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                            r8
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            r8
+                            c'8
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -2328,44 +2622,54 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        r8
-                        r8
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        r8
-                        r8
-                        r8
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                            r8
+                            r8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            r8
+                            r8
+                            r8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            r8
+                            r8
+                            r8
+                            r8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -2387,51 +2691,61 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
             Silences every fourth logical tie:
 
@@ -2452,50 +2766,60 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                        c'8
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                            r8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            r8
+                            c'8
+                            [
+                            c'8
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                            r8
+                            c'8
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
             Silencing the fourth logical tie produces two rests. Silencing the
             eighth logical tie produces only one rest.
@@ -2527,37 +2851,46 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 5/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                        s1 * 5/16
                         \time 6/16
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 3/8
                         \time 6/16
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -2581,34 +2914,43 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 5/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \time 6/16
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 5/16
                         \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
                         c'8
                         [
                         c'8
                         c'8
-                        c'8
                         ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
                     }
-                }
+                >>
 
         ..  container:: example
 
@@ -2633,32 +2975,41 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/8 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 5/16
-                        c'4
-                        c'4
-                    }
-                    \time 6/16
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 5/16
                         \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/8 {
+                            c'4
+                            c'4
+                        }
                         c'8
                         [
                         c'8
                         c'8
-                        c'8
                         ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
                     }
-                }
+                >>
 
             Extracts trivial tuplets and spells tuplets as augmentations:
 
@@ -2681,34 +3032,43 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 5/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \time 6/16
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                        s1 * 5/16
                         \time 6/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -2734,34 +3094,43 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 5/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \time 6/16
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8 {
+                        s1 * 5/16
                         \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
                         c'8
                         [
                         c'8
                         c'8
-                        c'8
                         ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/8 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
                     }
-                }
+                >>
 
         """
         return super(EvenDivisionRhythmMaker, self).tuplet_specifier

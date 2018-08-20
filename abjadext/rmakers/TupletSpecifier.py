@@ -263,33 +263,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -317,33 +327,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -369,33 +389,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -420,33 +450,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 16/20 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 8/10 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10 {
+                            c'16
+                            c'4
+                        }
+                        \times 16/20 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -471,33 +511,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 8/10 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 16/20 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 24/20 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 32/40 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 8/10 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 16/20 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 24/20 {
+                            c'16
+                            c'4
+                        }
+                        \times 32/40 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -524,33 +574,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 8/10 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 8/10 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 8/10 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -575,33 +635,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 12/15 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 12/15 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 12/15 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 12/15 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 12/15 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10 {
+                            c'16
+                            c'4
+                        }
+                        \times 12/15 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -626,33 +696,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         Set to ``'divisions'``, duration, positive integer or none.
         """
@@ -712,34 +792,43 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 2/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3 {
+                        s1 * 1/4
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3 {
+                        s1 * 1/4
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 1/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
             We can temporarily restore LilyPond's default tuplet numbering like
             this:
@@ -754,45 +843,54 @@ class TupletSpecifier(abjad.AbjadValueObject):
             ...     selections,
             ...     divisions,
             ...     )
-            >>> staff = lilypond_file[abjad.Staff]
+            >>> staff = lilypond_file[abjad.Score]
             >>> string = 'tuplet-number::calc-denominator-text'
             >>> abjad.override(staff).tuplet_number.text = string
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
                 \with
                 {
                     \override TupletNumber.text = #tuplet-number::calc-denominator-text
                 }
-                {
-                    \times 2/3 {
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3 {
+                        s1 * 1/4
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3 {
+                        s1 * 1/4
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 1/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
             Which then makes it possible to show that the force fraction
             property cancels LilyPond's default tuplet numbering once again:
@@ -810,48 +908,57 @@ class TupletSpecifier(abjad.AbjadValueObject):
             ...     selections,
             ...     divisions,
             ...     )
-            >>> staff = lilypond_file[abjad.Staff]
+            >>> staff = lilypond_file[abjad.Score]
             >>> string = 'tuplet-number::calc-denominator-text'
             >>> abjad.override(staff).tuplet_number.text = string
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
                 \with
                 {
                     \override TupletNumber.text = #tuplet-number::calc-denominator-text
                 }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/3 {
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/3 {
+                        s1 * 1/4
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/3 {
+                        s1 * 1/4
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
+                        s1 * 1/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         """
         return self._force_fraction
@@ -901,37 +1008,47 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 2/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/16
-                        c'4.
-                    }
-                    \times 4/5 {
+                        s1 * 1/4
                         \time 4/16
-                        c'4
-                        ~
-                        c'16
-                        ~
-                    }
-                    \times 4/5 {
+                        s1 * 1/4
                         \time 4/16
-                        c'4
-                        ~
-                        c'16
-                        ~
-                    }
-                    \times 4/5 {
+                        s1 * 1/4
                         \time 4/16
-                        c'4
-                        c'16
+                        s1 * 1/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 2/3 {
+                            c'4.
+                        }
+                        \times 4/5 {
+                            c'4
+                            ~
+                            c'16
+                            ~
+                        }
+                        \times 4/5 {
+                            c'4
+                            ~
+                            c'16
+                            ~
+                        }
+                        \times 4/5 {
+                            c'4
+                            c'16
+                        }
+                    }
+                >>
 
             The first three tuplets in the example above qualify as sustained:
 
-                >>> staff = lilypond_file[abjad.Staff]
+                >>> staff = lilypond_file[abjad.Score]
                 >>> for tuplet in abjad.iterate(staff).components(abjad.Tuplet):
                 ...     abjadext.rmakers.TupletSpecifier.is_sustained_tuplet(tuplet)
                 ...
@@ -976,32 +1093,42 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/4
                         \time 4/16
-                        c'4
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/4
                         \time 4/16
-                        c'4
-                        ~
-                    }
-                    \times 4/5 {
+                        s1 * 1/4
                         \time 4/16
-                        c'4
-                        c'16
+                        s1 * 1/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            ~
+                        }
+                        \times 4/5 {
+                            c'4
+                            c'16
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1033,23 +1160,33 @@ class TupletSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/16
-                    c'4
-                    \time 4/16
-                    c'4
-                    ~
-                    \time 4/16
-                    c'4
-                    ~
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/16
-                        c'4
-                        c'16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        c'4
+                        ~
+                        c'4
+                        ~
+                        \times 4/5 {
+                            c'4
+                            c'16
+                        }
+                    }
+                >>
 
         """
         return self._rewrite_sustained

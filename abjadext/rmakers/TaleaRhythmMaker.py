@@ -35,34 +35,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Staff])
-            \new RhythmicStaff
-            {
-                \time 3/8
-                c'16
-                [
-                c'8
-                c'8.
-                ]
-                \time 4/8
-                c'4
-                c'16
-                [
-                c'8
-                c'16
-                ~
-                ]
-                \time 3/8
-                c'8
-                c'4
-                \time 4/8
-                c'16
-                [
-                c'8
-                c'8.
-                c'8
-                ]
-            }
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    c'8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    c'8
+                    ]
+                }
+            >>
 
     Follows the configure-once / call-repeatedly pattern shown here.
 
@@ -245,35 +255,45 @@ class TaleaRhythmMaker(RhythmMaker):
             ..  docs::
 
                 >>> lilypond_file = rhythm_maker.__illustrate__()
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ~
-                    ]
-                    \time 3/16
-                    c'8
-                    [
-                    c'16
-                    ~
-                    ]
-                    \time 4/16
-                    c'8.
-                    [
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/16
+                        s1 * 3/16
+                        \time 4/16
+                        s1 * 1/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'8
+                        [
+                        c'16
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'16
+                        ]
+                    }
+                >>
 
         Defaults ``divisions`` to ``3/8``, ``4/8``, ``3/16``, ``4/16``.
 
@@ -727,50 +747,60 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -796,100 +826,110 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \set stemLeftBeamCount = 0
-                    \set stemRightBeamCount = 2
-                    \time 3/8
-                    c'16
-                    [
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 4/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 3/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 4/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 0
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 2
+                        c'16
+                        [
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 0
+                        c'16
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -916,42 +956,52 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 4/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 3/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 4/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                    }
+                >>
 
         ..  container:: example
 
@@ -977,56 +1027,66 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        ]
+                        c'16
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        ]
+                        c'16
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                    }
+                >>
 
         ..  container:: example
 
@@ -1053,50 +1113,60 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -1124,58 +1194,68 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \override RhythmicStaff.Stem.stemlet-length = 0.75
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    \revert RhythmicStaff.Stem.stemlet-length
-                    c'16
-                    ]
-                    \override RhythmicStaff.Stem.stemlet-length = 0.75
-                    \time 4/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    \revert RhythmicStaff.Stem.stemlet-length
-                    c'16
-                    ]
-                    \override RhythmicStaff.Stem.stemlet-length = 0.75
-                    \time 3/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    \revert RhythmicStaff.Stem.stemlet-length
-                    r16
-                    ]
-                    \override RhythmicStaff.Stem.stemlet-length = 0.75
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    \revert RhythmicStaff.Stem.stemlet-length
-                    r16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \override RhythmicStaff.Stem.stemlet-length = 0.75
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        \revert RhythmicStaff.Stem.stemlet-length
+                        c'16
+                        ]
+                        \override RhythmicStaff.Stem.stemlet-length = 0.75
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        \revert RhythmicStaff.Stem.stemlet-length
+                        c'16
+                        ]
+                        \override RhythmicStaff.Stem.stemlet-length = 0.75
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        \revert RhythmicStaff.Stem.stemlet-length
+                        r16
+                        ]
+                        \override RhythmicStaff.Stem.stemlet-length = 0.75
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        \revert RhythmicStaff.Stem.stemlet-length
+                        r16
+                        ]
+                    }
+                >>
 
         """
         return super(TaleaRhythmMaker, self).beam_specifier
@@ -1213,34 +1293,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    r16
-                    c'8
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ~
-                    ]
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    ]
-                    r8.
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        ]
+                        r8.
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -1267,33 +1357,43 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    r16
-                    c'8
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    r4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ]
-                    \time 3/8
-                    r8
-                    c'4
-                    \time 4/8
-                    r16
-                    c'8
-                    [
-                    c'8.
-                    c'8
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                        r4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                        r8
+                        c'4
+                        r16
+                        c'8
+                        [
+                        c'8.
+                        c'8
+                        ]
+                    }
+                >>
 
         """
         return self._burnish_specifier
@@ -1324,34 +1424,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ~
-                    ]
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    c'8
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'8
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -1379,23 +1489,33 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    r2
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        r2
+                        c'8
+                        c'4
+                        r2
+                    }
+                >>
 
         ..  container:: example
 
@@ -1421,23 +1541,33 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'2
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'2
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'2
+                        c'8
+                        c'4
+                        c'2
+                    }
+                >>
 
         ..  container:: example
 
@@ -1466,37 +1596,47 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    r8.
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    r4
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 4/8
-                    r4..
-                    c'16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        r8.
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        r4
+                        c'16
+                        [
+                        c'16
+                        ]
+                        r4..
+                        c'16
+                    }
+                >>
 
         ..  container:: example
 
@@ -1523,37 +1663,47 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'8.
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'4
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 4/8
-                    c'4..
-                    c'16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'8.
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        ]
+                        c'4..
+                        c'16
+                    }
+                >>
 
         ..  container:: example
 
@@ -1583,24 +1733,34 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    r4.
-                    \times 8/9 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
                         \time 4/8
-                        c'8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        r4.
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                        }
+                        r4.
+                        c'16
                         c'4
                         c'8.
                     }
-                    \time 3/8
-                    r4.
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
-                }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -1625,29 +1785,39 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        c'4
-                        c'8
-                        ~
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        c'4
-                        c'4
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
                     }
-                    \time 3/8
-                    c'4
-                    c'8
-                    \time 4/8
-                    r2
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'4
+                        }
+                        c'4
+                        c'8
+                        r2
+                    }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -1686,26 +1856,36 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
                         \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
                         c'8
+                        ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                        }
+                        r4.
+                        c'16
                         c'4
                         c'8.
                     }
-                    \time 3/8
-                    r4.
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
-                }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -1730,29 +1910,39 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        c'4
-                        c'8
-                    }
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        c'4
-                        c'8.
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            c'4
+                            c'8
+                        }
+                        r2
+                        c'4
+                        c'8
+                        ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                        }
+                    }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -1800,31 +1990,40 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 5/8
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    \time 5/8
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    \time 5/8
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                    }
+                >>
 
         ..  container:: example
 
@@ -1851,31 +2050,40 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 5/8
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    \time 5/8
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    \time 5/8
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                    }
+                >>
 
         ..  container:: example
 
@@ -1901,28 +2109,36 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    c'4
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    c'4
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        c'4
+                    }
+                >>
 
         ..  container:: example
 
@@ -1948,36 +2164,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    c'8
-                    ~
-                    c'8
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                >>
 
             Rewrites forbidden durations with smaller durations tied together.
 
@@ -2005,47 +2229,56 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'8.
-                    ~
-                    [
-                    c'8
-                    ]
-                    c'4
-                    c'16
-                    ~
-                    [
-                    c'16
-                    ~
-                    c'16
-                    ~
-                    ]
-                    \time 3/4
-                    c'8
-                    c'4
-                    c'8.
-                    ~
-                    [
-                    c'8
-                    c'16
-                    ~
-                    ]
-                    \time 3/4
-                    c'16
-                    ~
-                    [
-                    c'16
-                    ~
-                    c'16
-                    c'8.
-                    ~
-                    c'8
-                    ]
-                    c'4
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'8.
+                        ~
+                        [
+                        c'8
+                        ]
+                        c'4
+                        c'16
+                        ~
+                        [
+                        c'16
+                        ~
+                        c'16
+                        ~
+                        ]
+                        c'8
+                        c'4
+                        c'8.
+                        ~
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'16
+                        ~
+                        [
+                        c'16
+                        ~
+                        c'16
+                        c'8.
+                        ~
+                        c'8
+                        ]
+                        c'4
+                    }
+                >>
 
         ..  container:: example
 
@@ -2071,37 +2304,46 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'8.
-                    ~
-                    [
-                    c'8
-                    ]
-                    c'4
-                    c'8.
-                    ~
-                    \time 3/4
-                    c'8
-                    c'4
-                    c'8.
-                    ~
-                    [
-                    c'8
-                    c'16
-                    ~
-                    ]
-                    \time 3/4
-                    c'8.
-                    [
-                    c'8.
-                    ~
-                    c'8
-                    ]
-                    c'4
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'8.
+                        ~
+                        [
+                        c'8
+                        ]
+                        c'4
+                        c'8.
+                        ~
+                        c'8
+                        c'4
+                        c'8.
+                        ~
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        c'8
+                        ]
+                        c'4
+                    }
+                >>
 
         ..  container:: example
 
@@ -2127,41 +2369,50 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ~
-                    c'16
-                    c'8.
-                    ~
-                    ]
-                    \time 3/4
-                    c'8
-                    [
-                    c'8
-                    ~
-                    c'8
-                    c'8
-                    ~
-                    c'8.
-                    c'16
-                    ~
-                    ]
-                    \time 3/4
-                    c'8.
-                    [
-                    c'16
-                    ~
-                    ]
-                    c'4
-                    c'4
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        c'16
+                        c'8.
+                        ~
+                        ]
+                        c'8
+                        [
+                        c'8
+                        ~
+                        c'8
+                        c'8
+                        ~
+                        c'8.
+                        c'16
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'16
+                        ~
+                        ]
+                        c'4
+                        c'4
+                    }
+                >>
 
         """
         return super(TaleaRhythmMaker, self).duration_specifier
@@ -2192,34 +2443,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ~
-                    ]
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    c'8
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'8
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -2243,44 +2504,54 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \times 8/9 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'8
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16
-                        c'4
-                        c'16
-                    }
-                    \times 8/9 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \times 8/9 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'8
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            c'4
+                            c'16
+                        }
+                        \times 8/9 {
+                            c'8
+                            [
+                            c'8.
+                            ]
+                            c'4
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -2304,50 +2575,60 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ~
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 4/8
-                        c'16
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ]
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \times 4/5 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            c'16
+                            [
+                            c'16
+                            ~
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            [
+                            c'8.
+                            ]
+                            c'4
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
             The duration of each added count equals the duration
             of each count in the rhythm-maker's input talea.
@@ -2374,47 +2655,57 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 8/7 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 8/7 {
+                        s1 * 3/8
                         \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'8
-                        c'8.
-                        ]
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/7 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/7 {
+                            c'16
+                            [
+                            c'16
+                            c'8
+                            c'8.
+                            ]
+                        }
+                    }
+                >>
 
         """
         if self._extra_counts_per_division:
@@ -2451,34 +2742,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    ]
-                    r8.
-                    \time 3/8
-                    c'4
-                    c'16
-                    r16
-                    \time 3/8
-                    r16
-                    c'8.
-                    [
-                    c'8
-                    ~
-                    ]
-                    \time 3/8
-                    c'8
-                    r16
-                    c'8
-                    [
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        ]
+                        r8.
+                        c'4
+                        c'16
+                        r16
+                        r16
+                        c'8.
+                        [
+                        c'8
+                        ~
+                        ]
+                        c'8
+                        r16
+                        c'8
+                        [
+                        c'16
+                        ]
+                    }
+                >>
 
             Silences the first and last logical ties:
 
@@ -2503,37 +2804,47 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    r16
-                    c'8
-                    [
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'4
-                    c'16
-                    [
-                    c'16
-                    ~
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'8.
-                    c'8
-                    ~
-                    ]
-                    \time 3/8
-                    c'8
-                    [
-                    c'16
-                    c'8
-                    ]
-                    r16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        ~
+                        ]
+                        c'16
+                        [
+                        c'8.
+                        c'8
+                        ~
+                        ]
+                        c'8
+                        [
+                        c'16
+                        c'8
+                        ]
+                        r16
+                    }
+                >>
 
         ..  container:: example
 
@@ -2563,33 +2874,43 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    r4
-                    c'8
-                    ~
-                    \times 8/9 {
-                        \time 4/8
-                        c'8
-                        r4
-                        c'8.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        r4
+                        c'8
+                        ~
+                        \times 8/9 {
+                            c'8
+                            r4
+                            c'8.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
                         c'16
                         c'4
                         c'8.
-                        ~
                     }
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
-                }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -2614,34 +2935,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        c'4
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'4
+                        }
+                        r4
                         c'8
                         ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                        }
                     }
-                    \times 4/5 {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'4
-                    }
-                    \time 3/8
-                    r4
-                    c'8
-                    ~
-                    \times 8/9 {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'8.
-                    }
-                }
+                >>
             
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -2684,32 +3015,42 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
                         \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
                         c'8
+                        ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            r8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            r16
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        c'16
                         c'4
                         r8.
                     }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
-                        \time 3/8
-                        r16
-                        c'4
-                        c'8.
-                        ~
-                    }
-                    \time 4/8
-                    c'16
-                    c'4
-                    r8.
-                }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -2734,34 +3075,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        r16
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            r16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            r4
+                        }
                         c'4
                         c'8
                         ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            r8.
+                        }
                     }
-                    \times 4/5 {
-                        \time 4/8
-                        c'8
-                        c'4
-                        r4
-                    }
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9 {
-                        \time 4/8
-                        c'8
-                        c'4
-                        r8.
-                    }
-                }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -2803,37 +3154,47 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'4
-                    c'16
-                    [
-                    c'16
-                    ~
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'8.
-                    c'8
-                    ~
-                    ]
-                    \time 3/8
-                    c'8
-                    [
-                    c'16
-                    c'8
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        ~
+                        ]
+                        c'16
+                        [
+                        c'8.
+                        c'8
+                        ~
+                        ]
+                        c'8
+                        [
+                        c'16
+                        c'8
+                        c'16
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -2891,37 +3252,47 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'4
-                    c'16
-                    [
-                    c'16
-                    ~
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'8.
-                    c'8
-                    ~
-                    ]
-                    \time 3/8
-                    c'8
-                    [
-                    c'16
-                    c'8
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        ~
+                        ]
+                        c'16
+                        [
+                        c'8.
+                        c'8
+                        ~
+                        ]
+                        c'8
+                        [
+                        c'16
+                        c'8
+                        c'16
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -2945,35 +3316,45 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'4
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 3/8
-                    r16
-                    c'8.
-                    [
-                    c'8
-                    ]
-                    \time 3/8
-                    r8
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        ]
+                        r16
+                        c'8.
+                        [
+                        c'8
+                        ]
+                        r8
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                    }
+                >>
 
         """
         return self._rest_tied_notes
@@ -3013,46 +3394,56 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -3081,50 +3472,60 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'32
-                    ~
-                    ]
-                    c'32
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'32
+                        ~
+                        ]
+                        c'32
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                >>
 
             Additional divisions created when using
             ``split_divisions_by_counts`` are subject to
@@ -3155,70 +3556,80 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                        s1 * 3/8
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'32
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 10/11 {
+                        s1 * 3/8
                         \time 3/8
-                        c'32
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/13 {
+                        s1 * 3/8
                         \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'32
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'32
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 10/11 {
+                            c'32
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/13 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'32
+                            ]
+                        }
+                    }
+                >>
 
         """
         return self._split_divisions_by_counts
@@ -3253,33 +3664,43 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9 {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'8.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        c'8
+                        ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
                         c'16
                         c'4
                         c'8.
-                        ~
                     }
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
-                }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -3305,34 +3726,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'4
+                        }
                         c'4
                         c'8
                         ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                        }
                     }
-                    \times 4/5 {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'4
-                    }
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9 {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'8.
-                    }
-                }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -3358,37 +3789,47 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
                         c'16
                         c'4
                         c'8.
                         ~
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'4
+                        }
                     }
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
-                    ~
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
-                        \time 3/8
-                        c'16
-                        c'4
-                        c'8
-                        ~
-                    }
-                    \times 4/5 {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'4
-                    }
-                }
+                >>
 
             >>> state = rhythm_maker.state
             >>> abjad.f(state)
@@ -3430,44 +3871,54 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> abjad.f(lilypond_file[abjad.Staff], strict=30)
-            \new RhythmicStaff
-            {
-                \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
-                \times 1/1 {              %! TALEA_RHYTHM_MAKER
+            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
+            \new Score
+            <<
+                \new GlobalContext
+                {
                     \time 3/8
-                    c'16                  %! TALEA_RHYTHM_MAKER
-                    [                     %! TALEA_RHYTHM_MAKER
-                    c'8                   %! TALEA_RHYTHM_MAKER
-                    c'8.                  %! TALEA_RHYTHM_MAKER
-                    ]                     %! TALEA_RHYTHM_MAKER
-                }                         %! TALEA_RHYTHM_MAKER
-                \times 8/9 {              %! TALEA_RHYTHM_MAKER
+                    s1 * 3/8
                     \time 4/8
-                    c'4                   %! TALEA_RHYTHM_MAKER
-                    c'16                  %! TALEA_RHYTHM_MAKER
-                    [                     %! TALEA_RHYTHM_MAKER
-                    c'8                   %! TALEA_RHYTHM_MAKER
-                    c'8                   %! TALEA_RHYTHM_MAKER
-                    ~
-                    ]                     %! TALEA_RHYTHM_MAKER
-                }                         %! TALEA_RHYTHM_MAKER
-                \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
-                \times 1/1 {              %! TALEA_RHYTHM_MAKER
+                    s1 * 1/2
                     \time 3/8
-                    c'16                  %! TALEA_RHYTHM_MAKER
-                    c'4                   %! TALEA_RHYTHM_MAKER
-                    c'16                  %! TALEA_RHYTHM_MAKER
-                }                         %! TALEA_RHYTHM_MAKER
-                \times 8/9 {              %! TALEA_RHYTHM_MAKER
+                    s1 * 3/8
                     \time 4/8
-                    c'8                   %! TALEA_RHYTHM_MAKER
-                    [                     %! TALEA_RHYTHM_MAKER
-                    c'8.                  %! TALEA_RHYTHM_MAKER
-                    ]                     %! TALEA_RHYTHM_MAKER
-                    c'4                   %! TALEA_RHYTHM_MAKER
-                }                         %! TALEA_RHYTHM_MAKER
-            }
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
+                    \times 1/1 {          %! TALEA_RHYTHM_MAKER
+                        c'16              %! TALEA_RHYTHM_MAKER
+                        [                 %! TALEA_RHYTHM_MAKER
+                        c'8               %! TALEA_RHYTHM_MAKER
+                        c'8.              %! TALEA_RHYTHM_MAKER
+                        ]                 %! TALEA_RHYTHM_MAKER
+                    }                     %! TALEA_RHYTHM_MAKER
+                    \times 8/9 {          %! TALEA_RHYTHM_MAKER
+                        c'4               %! TALEA_RHYTHM_MAKER
+                        c'16              %! TALEA_RHYTHM_MAKER
+                        [                 %! TALEA_RHYTHM_MAKER
+                        c'8               %! TALEA_RHYTHM_MAKER
+                        c'8               %! TALEA_RHYTHM_MAKER
+                        ~
+                        ]                 %! TALEA_RHYTHM_MAKER
+                    }                     %! TALEA_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
+                    \times 1/1 {          %! TALEA_RHYTHM_MAKER
+                        c'16              %! TALEA_RHYTHM_MAKER
+                        c'4               %! TALEA_RHYTHM_MAKER
+                        c'16              %! TALEA_RHYTHM_MAKER
+                    }                     %! TALEA_RHYTHM_MAKER
+                    \times 8/9 {          %! TALEA_RHYTHM_MAKER
+                        c'8               %! TALEA_RHYTHM_MAKER
+                        [                 %! TALEA_RHYTHM_MAKER
+                        c'8.              %! TALEA_RHYTHM_MAKER
+                        ]                 %! TALEA_RHYTHM_MAKER
+                        c'4               %! TALEA_RHYTHM_MAKER
+                    }                     %! TALEA_RHYTHM_MAKER
+                }
+            >>
 
         """
         return super().tag
@@ -3493,18 +3944,28 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'4.
-                    \time 3/8
-                    c'4.
-                    \time 3/8
-                    c'4.
-                    \time 3/8
-                    c'4.
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4.
+                        c'4.
+                        c'4.
+                        c'4.
+                    }
+                >>
 
         ..  container:: example
 
@@ -3530,32 +3991,42 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'32
-                    [
-                    c'32
-                    c'32
-                    c'32
-                    ]
-                    c'4
-                    \time 4/8
-                    r8
-                    c'4
-                    c'8
-                    ~
-                    \time 3/8
-                    c'8
-                    r8
-                    c'8
-                    ~
-                    \time 4/8
-                    c'8
-                    c'4
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'32
+                        [
+                        c'32
+                        c'32
+                        c'32
+                        ]
+                        c'4
+                        r8
+                        c'4
+                        c'8
+                        ~
+                        c'8
+                        r8
+                        c'8
+                        ~
+                        c'8
+                        c'4
+                        r8
+                    }
+                >>
 
             Preamble more than total duration; ignores counts:
 
@@ -3577,22 +4048,32 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/8
-                    c'4.
-                    ~
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 3/8
-                    c'8
-                    c'4
-                    ~
-                    \time 4/8
-                    c'2
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4.
+                        ~
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                        ~
+                        c'2
+                    }
+                >>
 
         """
         return self._talea
@@ -3623,34 +4104,44 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -3676,37 +4167,47 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ~
-                    ]
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ~
-                    ]
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ~
-                    ]
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -3736,36 +4237,46 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ~
-                    ]
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ~
-                    ]
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -3792,37 +4303,47 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    c'4
-                    c'16
-                    \repeatTie
-                    [
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'8.
-                    \repeatTie
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    \repeatTie
-                    c'16
-                    \repeatTie
-                    [
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'8.
-                    \repeatTie
-                    [
-                    c'8.
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        c'16
+                        \repeatTie
+                        [
+                        c'8.
+                        ]
+                        c'8.
+                        \repeatTie
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        \repeatTie
+                        c'16
+                        \repeatTie
+                        [
+                        c'8.
+                        ]
+                        c'8.
+                        \repeatTie
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
 
         ..  container:: example
 
@@ -3848,33 +4369,43 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    r8.
-                    \time 3/8
-                    c'8.
-                    ~
-                    [
-                    c'8.
-                    ~
-                    ]
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    r8.
-                    \time 3/8
-                    c'8.
-                    ~
-                    [
-                    c'8.
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        r8.
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'4
+                        ~
+                        c'16
+                        r8.
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
 
         """
         return super(TaleaRhythmMaker, self).tie_specifier
@@ -3919,51 +4450,61 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'16
-                        ~
-                        ]
-                    }
-                    \times 8/9 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8.
-                        [
-                        c'16
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 1/2
                         \time 3/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            c'16
+                            ~
+                            ]
+                        }
+                        \times 8/9 {
+                            c'8.
+                            [
+                            c'16
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ~
+                            ]
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
             REGRESSION. Spells tuplet denominator in terms of duration when
             denominator is given as a duration:
@@ -3989,51 +4530,61 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'16
-                        ~
-                        ]
-                    }
-                    \times 8/9 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8.
-                        [
-                        c'16
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8 {
+                        s1 * 1/2
                         \time 3/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                    }
-                    \times 8/10 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            c'16
+                            ~
+                            ]
+                        }
+                        \times 8/9 {
+                            c'8.
+                            [
+                            c'16
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/8 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ~
+                            ]
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -4063,58 +4614,70 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                    }
+                    \new RhythmicStaff
+                    {
                         c'16
                         [
                         c'16
                         c'16
+                        c'16
                         ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
-                        \time 1/4
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
                         c'16
                         [
                         c'16
                         c'16
+                        c'16
                         ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
-                        \time 1/4
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
                         c'16
                         [
                         c'16
                         c'16
+                        c'16
                         ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
                     }
-                }
+                >>
 
             Makes augmented tuplets when ``diminution`` is set to false:
 
@@ -4140,58 +4703,70 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                        \time 1/4
+                        s1 * 1/4
+                    }
+                    \new RhythmicStaff
+                    {
                         c'16
                         [
                         c'16
                         c'16
+                        c'16
                         ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
-                        \time 1/4
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
                         c'16
                         [
                         c'16
                         c'16
+                        c'16
                         ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
-                        \time 1/4
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
                         c'16
                         [
                         c'16
                         c'16
+                        c'16
                         ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
                     }
-                }
+                >>
 
         ..  container:: example
 
@@ -4219,36 +4794,46 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \times 2/3 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4.
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \times 2/3 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4.
-                        c'4.
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \times 2/3 {
+                            c'4.
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \times 2/3 {
+                            c'4.
+                            c'4.
+                        }
+                    }
+                >>
 
             Rewrites trivializable tuplets as trivial (1:1) tuplets when
             ``trivialize`` is true:
@@ -4274,38 +4859,48 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            c'4
+                        }
+                    }
+                >>
 
             REGRESSION #907a. Rewrites trivializable tuplets even when
             tuplets contain multiple ties:
@@ -4334,41 +4929,51 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        c'4
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            c'4
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            c'4
+                        }
+                    }
+                >>
 
             REGRESSION #907b. Rewrites trivializable tuplets even when
             tuplets contain very long ties:
@@ -4398,45 +5003,55 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        ~
-                        c'4
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        c'4
-                        ~
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            ~
+                            [
+                            c'8.
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            ~
+                            c'4
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            ~
+                            [
+                            c'8.
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            ~
+                            c'4
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -4463,42 +5078,52 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        r4
-                        r16
-                        r8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                        s1 * 1/2
                         \time 3/8
-                        r8.
-                        c'8.
-                        [
-                        c'16
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        r4.
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                            r16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            r4
+                            r16
+                            r8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            r8.
+                            c'8.
+                            [
+                            c'16
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            r4.
+                        }
+                    }
+                >>
 
             Rewrites rest-filled tuplets when ``rewrite_rest_filled`` is true:
 
@@ -4523,40 +5148,50 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        r2
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                        s1 * 1/2
                         \time 3/8
-                        r8.
-                        c'8.
-                        [
-                        c'16
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 4/8
-                        c'8
-                        r4.
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                            r16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            r2
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            r8.
+                            c'8.
+                            [
+                            c'16
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            r4.
+                        }
+                    }
+                >>
 
         """
         return super(TaleaRhythmMaker, self).tuplet_specifier

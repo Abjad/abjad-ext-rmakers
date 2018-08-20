@@ -218,31 +218,40 @@ class TieSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                    }
+                >>
 
             With ``strip_ties``:
 
@@ -263,28 +272,37 @@ class TieSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'2
-                        c'8
-                        c'4
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        c'8
-                        c'4
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        c'8
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/7 {
+                            c'2
+                            c'8
+                            c'4
+                        }
+                        \times 4/7 {
+                            c'2
+                            c'8
+                            c'4
+                        }
+                        \times 4/7 {
+                            c'2
+                            c'8
+                            c'4
+                        }
+                    }
+                >>
 
         """
         return self._strip_ties
@@ -313,33 +331,42 @@ class TieSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                        ~
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                        ~
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                            ~
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                            ~
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                    }
+                >>
 
         Set to true, false or to a boolean vector.
         """
@@ -369,36 +396,45 @@ class TieSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        ~
-                        c'4
-                        ~
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        ~
-                        c'4
-                        ~
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        ~
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                            ~
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                            ~
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                        }
+                    }
+                >>
 
         """
         return self._tie_consecutive_notes
@@ -429,34 +465,43 @@ class TieSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/7 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        ~
-                        c'4
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        ~
-                        c'4
-                    }
-                    \times 4/7 {
+                        s1 * 1/2
                         \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        ~
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            ~
+                            c'4
+                        }
+                    }
+                >>
 
         """
         return self._tie_within_divisions

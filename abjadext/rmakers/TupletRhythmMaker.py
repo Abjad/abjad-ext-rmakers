@@ -30,37 +30,47 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Staff])
-            \new RhythmicStaff
-            {
-                \times 4/5 {
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
                     \time 1/2
-                    c'4.
-                    c'4
-                }
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 3/5 {
+                    s1 * 1/2
                     \time 3/8
-                    c'4.
-                    c'4
-                }
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 1/1 {
+                    s1 * 3/8
                     \time 5/16
-                    c'8.
-                    [
-                    c'8
-                    ]
-                }
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 1/1 {
+                    s1 * 5/16
                     \time 5/16
-                    c'8.
-                    [
-                    c'8
-                    ]
+                    s1 * 5/16
                 }
-            }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'4.
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4.
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
 
     ..  container:: example
 
@@ -80,36 +90,46 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Staff])
-            \new RhythmicStaff
-            {
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 1/1 {
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
                     \time 1/2
-                    c'4
-                    r4
-                }
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 3/4 {
+                    s1 * 1/2
                     \time 3/8
-                    c'4.
-                    c'8
-                }
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 5/6 {
+                    s1 * 3/8
                     \time 5/16
-                    c'8.
-                    r8.
-                }
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 5/4 {
+                    s1 * 5/16
                     \time 5/16
-                    c'8.
-                    [
-                    c'16
-                    ]
+                    s1 * 5/16
                 }
-            }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
+                        c'4.
+                        c'8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6 {
+                        c'8.
+                        r8.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/4 {
+                        c'8.
+                        [
+                        c'16
+                        ]
+                    }
+                }
+            >>
 
     Object model of a partially evaluated function that accepts a (possibly
     empty) list of divisions as input and returns a list of selections as
@@ -192,37 +212,47 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/2
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 5/16
                         \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -242,36 +272,46 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/2
-                        c'4
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 1/2
                         \time 3/8
-                        c'4.
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                        s1 * 3/8
                         \time 5/16
-                        c'8.
-                        r8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                        s1 * 5/16
                         \time 5/16
-                        c'8.
-                        [
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'4.
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            c'8.
+                            r8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'8.
+                            [
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         Returns list of selections structured one selection per division.
         Each selection wraps a single tuplet.
@@ -375,53 +415,63 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 5/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        c'4.
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 5/8
                         \time 3/8
-                        c'4.
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 6/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        c'4
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 3/4
                         \time 4/8
-                        c'4.
-                        c'8
-                        [
-                        c'8
-                        ]
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/9 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                            c'4.
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                            c'4
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'4.
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -444,75 +494,85 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9 {
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 5/8
-                        c'8.
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8.
-                        ]
-                        c'4.
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8.
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 5/8
                         \time 3/8
-                        c'4.
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
+                        s1 * 3/8
                         \time 6/8
-                        c'8
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                        ]
-                        c'4
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 3/4
                         \time 4/8
-                        c'4.
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8
-                        ]
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/9 {
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8.
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8.
+                            ]
+                            c'4.
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8.
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                            ]
+                            c'4
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'4.
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -536,41 +596,51 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 5/8
-                        c'8.
-                        c'8.
-                        c'4.
-                        c'8.
-                        c'8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 5/8
                         \time 3/8
-                        c'4.
-                        c'8
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 6/8
-                        c'8
-                        c'8
-                        c'4
-                        c'8
-                        c'8
-                    }
-                    \times 4/5 {
+                        s1 * 3/4
                         \time 4/8
-                        c'4.
-                        c'8
-                        c'8
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/9 {
+                            c'8.
+                            c'8.
+                            c'4.
+                            c'8.
+                            c'8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            c'8
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            c'8
+                            c'4
+                            c'8
+                            c'8
+                        }
+                        \times 4/5 {
+                            c'4.
+                            c'8
+                            c'8
+                        }
+                    }
+                >>
 
         Ignores ``beam_each_division`` when ``beam_division_together`` is true.
         """
@@ -607,33 +677,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -661,33 +741,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -713,33 +803,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -764,33 +864,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 16/20 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 8/10 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10 {
+                            c'16
+                            c'4
+                        }
+                        \times 16/20 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -815,33 +925,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 8/10 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 16/20 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 24/20 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 32/40 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 8/10 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 16/20 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 24/20 {
+                            c'16
+                            c'4
+                        }
+                        \times 32/40 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -868,33 +988,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 8/10 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 8/10 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 8/10 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -919,33 +1049,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 12/15 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 12/15 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 12/15 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 12/15 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 12/15 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10 {
+                            c'16
+                            c'4
+                        }
+                        \times 12/15 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -970,33 +1110,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5 {
+                        s1 * 1/8
                         \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5 {
+                        s1 * 1/4
                         \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 8/16
-                        c'8
-                        c'2
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
         Set to ``'divisions'``, duration, positive integer or none.
         """
@@ -1029,30 +1179,40 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'4.
-                        c'16.
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 4/8
-                        c'2
-                        c'8
-                    }
-                    \times 4/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'4.
-                        c'16.
-                    }
-                    \times 4/5 {
+                        s1 * 3/8
                         \time 4/8
-                        c'2
-                        c'8
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4.
+                            c'16.
+                        }
+                        \times 4/5 {
+                            c'2
+                            c'8
+                        }
+                        \times 4/5 {
+                            c'4.
+                            c'16.
+                        }
+                        \times 4/5 {
+                            c'2
+                            c'8
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1079,24 +1239,34 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'4.
-                        c'16.
-                    }
-                    \time 4/8
-                    r2
-                    \times 4/5 {
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
                         \time 3/8
-                        c'4.
-                        c'16.
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
                     }
-                    \time 4/8
-                    r2
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4.
+                            c'16.
+                        }
+                        r2
+                        \times 4/5 {
+                            c'4.
+                            c'16.
+                        }
+                        r2
+                    }
+                >>
 
         """
         return super(TupletRhythmMaker, self).division_masks
@@ -1121,37 +1291,47 @@ class TupletRhythmMaker(RhythmMaker):
             ...     )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> abjad.f(lilypond_file[abjad.Staff], strict=30)
-            \new RhythmicStaff
-            {
-                \times 4/5 {              %! TUPLET_RHYTHM_MAKER
+            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
+            \new Score
+            <<
+                \new GlobalContext
+                {
                     \time 1/2
-                    c'4.                  %! TUPLET_RHYTHM_MAKER
-                    c'4                   %! TUPLET_RHYTHM_MAKER
-                }                         %! TUPLET_RHYTHM_MAKER
-                \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                \times 3/5 {              %! TUPLET_RHYTHM_MAKER
+                    s1 * 1/2
                     \time 3/8
-                    c'4.                  %! TUPLET_RHYTHM_MAKER
-                    c'4                   %! TUPLET_RHYTHM_MAKER
-                }                         %! TUPLET_RHYTHM_MAKER
-                \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                \times 1/1 {              %! TUPLET_RHYTHM_MAKER
+                    s1 * 3/8
                     \time 5/16
-                    c'8.                  %! TUPLET_RHYTHM_MAKER
-                    [                     %! TUPLET_RHYTHM_MAKER
-                    c'8                   %! TUPLET_RHYTHM_MAKER
-                    ]                     %! TUPLET_RHYTHM_MAKER
-                }                         %! TUPLET_RHYTHM_MAKER
-                \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                \times 1/1 {              %! TUPLET_RHYTHM_MAKER
+                    s1 * 5/16
                     \time 5/16
-                    c'8.                  %! TUPLET_RHYTHM_MAKER
-                    [                     %! TUPLET_RHYTHM_MAKER
-                    c'8                   %! TUPLET_RHYTHM_MAKER
-                    ]                     %! TUPLET_RHYTHM_MAKER
-                }                         %! TUPLET_RHYTHM_MAKER
-            }
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {          %! TUPLET_RHYTHM_MAKER
+                        c'4.              %! TUPLET_RHYTHM_MAKER
+                        c'4               %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 3/5 {          %! TUPLET_RHYTHM_MAKER
+                        c'4.              %! TUPLET_RHYTHM_MAKER
+                        c'4               %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                        c'8.              %! TUPLET_RHYTHM_MAKER
+                        [                 %! TUPLET_RHYTHM_MAKER
+                        c'8               %! TUPLET_RHYTHM_MAKER
+                        ]                 %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                        c'8.              %! TUPLET_RHYTHM_MAKER
+                        [                 %! TUPLET_RHYTHM_MAKER
+                        c'8               %! TUPLET_RHYTHM_MAKER
+                        ]                 %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                }
+            >>
 
         """
         return super().tag
@@ -1182,30 +1362,39 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/2
-                        c'4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16.
+                            r8.
+                            c'16.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8.
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1228,32 +1417,41 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/2
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16.
+                            r8.
+                            c'16.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8.
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1280,39 +1478,49 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/2
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/2
                         \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                        s1 * 5/16
                         \time 5/16
-                        c'16.
-                        r8.
-                        c'16.
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16.
+                            r8.
+                            c'16.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8.
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            c'16.
+                            r8.
+                            c'16.
+                        }
+                    }
+                >>
 
         """
         return super(TupletRhythmMaker, self).tie_specifier
@@ -1340,37 +1548,47 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 4/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/2
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/2
                         \time 3/8
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 5/16
                         \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1390,36 +1608,46 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 1/2
-                        c'4
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 1/2
                         \time 3/8
-                        c'4.
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                        s1 * 3/8
                         \time 5/16
-                        c'8.
-                        r8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                        s1 * 5/16
                         \time 5/16
-                        c'8.
-                        [
-                        c'16
-                        ]
+                        s1 * 5/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'4.
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            c'8.
+                            r8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'8.
+                            [
+                            c'16
+                            ]
+                        }
+                    }
+                >>
 
         """
         if self._tuplet_ratios:
@@ -1453,25 +1681,34 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \times 2/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'4
-                        c'8
-                    }
-                    \times 2/3 {
+                        s1 * 1/4
                         \time 2/8
-                        c'4
-                        c'8
-                    }
-                    \times 2/3 {
+                        s1 * 1/4
                         \time 4/8
-                        c'2
-                        c'4
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \times 2/3 {
+                            c'4
+                            c'8
+                        }
+                        \times 2/3 {
+                            c'4
+                            c'8
+                        }
+                        \times 2/3 {
+                            c'2
+                            c'4
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1494,32 +1731,41 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'8
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                        s1 * 1/4
                         \time 2/8
-                        c'8
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                        s1 * 1/4
                         \time 4/8
-                        c'4
-                        c'8
+                        s1 * 1/2
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'8
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'8
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3 {
+                            c'4
+                            c'8
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1543,34 +1789,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/4
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 7/16
-                        c'8..
-                        [
-                        c'8..
-                        ]
+                        s1 * 7/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8..
+                            [
+                            c'8..
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1594,30 +1849,39 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                        s1 * 1/4
                         \time 3/8
-                        c'4
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/8 {
+                        s1 * 3/8
                         \time 7/16
-                        c'4
-                        c'4
+                        s1 * 7/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'4
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 7/8 {
+                            c'4
+                            c'4
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1641,34 +1905,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 1/4
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 7/16
-                        c'8..
-                        [
-                        c'8..
-                        ]
+                        s1 * 7/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8..
+                            [
+                            c'8..
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1692,34 +1965,43 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                        s1 * 1/4
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/4 {
+                        s1 * 3/8
                         \time 7/16
-                        c'8
-                        [
-                        c'8
-                        ]
+                        s1 * 7/16
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 7/4 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1743,35 +2025,45 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                        s1 * 3/8
                         \time 3/8
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 3/8
                         \time 3/8
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                        s1 * 3/8
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            r4
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1797,35 +2089,45 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 3/8
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 3/8
                         \time 3/8
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            r4
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                    }
+                >>
 
             REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when
             both are true. Measures 2 and 4 are first rewritten as trivial but
@@ -1851,35 +2153,45 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                        s1 * 3/8
                         \time 3/8
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 3/8
                         \time 3/8
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                        s1 * 3/8
                         \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
+                        s1 * 3/8
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            r4
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1906,41 +2218,51 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 1/4
                         \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                        s1 * 3/8
                         \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
+                        s1 * 1/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
 
         ..  container:: example
 
@@ -1968,35 +2290,45 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \time 2/8
-                    c'8
-                    [
-                    c'8
-                    ~
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 3/8
+                        \time 2/8
+                        s1 * 1/4
                         \time 3/8
-                        c'4
-                        c'4.
-                        ~
+                        s1 * 3/8
+                        \time 2/8
+                        s1 * 1/4
                     }
-                    \time 2/8
-                    c'8
-                    [
-                    c'8
-                    ]
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        c'8
+                        [
+                        c'8
+                        ~
+                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                >>
 
             .. note:: Flattening trivial tuplets makes it possible
                 subsequently to rewrite the meter of the untupletted notes.
@@ -2027,39 +2359,49 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 3/8
-                        c'4
-                        ~
-                        c'4.
-                        ~
-                    }
-                    \time 2/8
-                    c'8
-                    ~
-                    [
-                    c'8
-                    ~
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                        s1 * 3/8
+                        \time 2/8
+                        s1 * 1/4
                         \time 3/8
-                        c'4
-                        ~
-                        c'4.
-                        ~
+                        s1 * 3/8
+                        \time 2/8
+                        s1 * 1/4
                     }
-                    \time 2/8
-                    c'8
-                    ~
-                    [
-                    c'8
-                    ]
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4
+                            ~
+                            c'4.
+                            ~
+                        }
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4
+                            ~
+                            c'4.
+                            ~
+                        }
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ]
+                    }
+                >>
 
         """
         return super(TupletRhythmMaker, self).tuplet_specifier

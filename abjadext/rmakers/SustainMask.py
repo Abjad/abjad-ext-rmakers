@@ -56,18 +56,28 @@ class SustainMask(abjad.AbjadValueObject):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Staff])
-            \new RhythmicStaff
-            {
-                \time 7/16
-                r4..
-                \time 3/8
-                c'4.
-                \time 7/16
-                c'4..
-                \time 3/8
-                r4.
-            }
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    r4..
+                    c'4.
+                    c'4..
+                    r4.
+                }
+            >>
 
     ..  container:: example
 
@@ -109,18 +119,28 @@ class SustainMask(abjad.AbjadValueObject):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Staff])
-            \new RhythmicStaff
-            {
-                \time 7/16
-                c'4..
-                \time 3/8
-                r4.
-                \time 7/16
-                r4..
-                \time 3/8
-                c'4.
-            }
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'4..
+                    r4.
+                    r4..
+                    c'4.
+                }
+            >>
 
     """
 
@@ -239,18 +259,28 @@ class SustainMask(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 7/16
-                    r4..
-                    \time 3/8
-                    c'4.
-                    \time 7/16
-                    c'4..
-                    \time 3/8
-                    r4.
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 7/16
+                        s1 * 7/16
+                        \time 3/8
+                        s1 * 3/8
+                        \time 7/16
+                        s1 * 7/16
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r4..
+                        c'4.
+                        c'4..
+                        r4.
+                    }
+                >>
 
         ..  container:: example
 
@@ -277,18 +307,28 @@ class SustainMask(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 7/16
-                    r4..
-                    \time 3/8
-                    r4.
-                    \time 7/16
-                    c'4..
-                    \time 3/8
-                    c'4.
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 7/16
+                        s1 * 7/16
+                        \time 3/8
+                        s1 * 3/8
+                        \time 7/16
+                        s1 * 7/16
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r4..
+                        r4.
+                        c'4..
+                        c'4.
+                    }
+                >>
 
 
         Returns sustain mask.

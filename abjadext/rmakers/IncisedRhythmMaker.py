@@ -36,24 +36,34 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Staff])
-            \new RhythmicStaff
-            {
-                \time 5/16
-                c'4
-                r16
-                \time 5/16
-                r16
-                c'8.
-                r16
-                \time 5/16
-                c'4
-                r16
-                \time 5/16
-                r16
-                c'8.
-                r16
-            }
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    c'4
+                    r16
+                    r16
+                    c'8.
+                    r16
+                    c'4
+                    r16
+                    r16
+                    c'8.
+                    r16
+                }
+            >>
 
     """
 
@@ -463,26 +473,36 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    r16
-                    c'4..
-                    \time 3/8
-                    r16
-                    c'4
-                    ~
-                    c'16
-                    \time 4/8
-                    r16
-                    c'4..
-                    \time 3/8
-                    r16
-                    c'4
-                    ~
-                    c'16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'4..
+                        r16
+                        c'4
+                        ~
+                        c'16
+                        r16
+                        c'4..
+                        r16
+                        c'4
+                        ~
+                        c'16
+                    }
+                >>
 
         ..  container:: example
 
@@ -512,24 +532,34 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    r16
-                    c'4
-                    ~
-                    c'16
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    r16
-                    c'4
-                    ~
-                    c'16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        r16
+                        c'4
+                        ~
+                        c'16
+                        r2
+                        r16
+                        c'4
+                        ~
+                        c'16
+                    }
+                >>
 
         """
         return super(IncisedRhythmMaker, self).division_masks
@@ -564,20 +594,29 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'2
-                    ~
-                    c'8
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'2..
+                        c'2
+                        c'2
+                        ~
+                        c'8
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -608,28 +647,37 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'4
-                    ~
-                    c'4
-                    ~
-                    c'4.
-                    \time 4/8
-                    c'4
-                    ~
-                    c'4
-                    \time 6/8
-                    c'4
-                    ~
-                    c'4
-                    ~
-                    c'8
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'4
+                        ~
+                        c'4
+                        ~
+                        c'4.
+                        c'4
+                        ~
+                        c'4
+                        c'4
+                        ~
+                        c'4
+                        ~
+                        c'8
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -659,24 +707,33 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'4.
-                    ~
-                    c'4
-                    ~
-                    c'4
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'4.
-                    ~
-                    c'4
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'4.
+                        ~
+                        c'4
+                        ~
+                        c'4
+                        c'2
+                        c'4.
+                        ~
+                        c'4
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -707,20 +764,29 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'4.
-                    ~
-                    c'4
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'2..
+                        c'2
+                        c'4.
+                        ~
+                        c'4
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -750,20 +816,29 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'4.
-                    ~
-                    c'4
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'2..
+                        c'2
+                        c'4.
+                        ~
+                        c'4
+                        r8
+                    }
+                >>
 
         Returns duration specifier or none.
         """
@@ -799,22 +874,31 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 5/8
-                    c'2
-                    ~
-                    c'8
-                    \time 5/8
-                    c'2
-                    ~
-                    c'8
-                    \time 5/8
-                    c'2
-                    ~
-                    c'8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'2
+                        ~
+                        c'8
+                        c'2
+                        ~
+                        c'8
+                        c'2
+                        ~
+                        c'8
+                    }
+                >>
 
         ..  container:: example
 
@@ -842,28 +926,37 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 5/8
-                    r4
-                    r8..
-                    c'8
-                    ~
-                    [
-                    c'32
-                    ]
-                    \time 5/8
-                    c'2
-                    ~
-                    c'8
-                    \time 5/8
-                    c'4
-                    r16.
-                    r16.
-                    r16.
-                    r16.
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r4
+                        r8..
+                        c'8
+                        ~
+                        [
+                        c'32
+                        ]
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                        r16.
+                        r16.
+                        r16.
+                        r16.
+                    }
+                >>
 
         ..  container:: example
 
@@ -892,26 +985,35 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 5/8
-                    c'8..
-                    c'4
-                    r8
-                    r32
-                    \time 5/8
-                    r2
-                    r8
-                    \time 5/8
-                    r4
-                    c'16.
-                    [
-                    c'16.
-                    c'16.
-                    c'16.
-                    ]
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'8..
+                        c'4
+                        r8
+                        r32
+                        r2
+                        r8
+                        r4
+                        c'16.
+                        [
+                        c'16.
+                        c'16.
+                        c'16.
+                        ]
+                    }
+                >>
 
         """
         return self._incise_specifier
@@ -946,22 +1048,32 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    r16
-                    c'4..
-                    \time 3/8
-                    c'4.
-                    \time 4/8
-                    c'2
-                    \time 3/8
-                    c'4
-                    ~
-                    c'16
-                    r16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'4..
+                        c'4.
+                        c'2
+                        c'4
+                        ~
+                        c'16
+                        r16
+                    }
+                >>
 
         ..  container:: example
 
@@ -991,22 +1103,32 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    r16
-                    r4..
-                    \time 3/8
-                    c'4.
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    c'4
-                    ~
-                    c'16
-                    r16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        r4..
+                        c'4.
+                        r2
+                        c'4
+                        ~
+                        c'16
+                        r16
+                    }
+                >>
 
         """
         return super(IncisedRhythmMaker, self).logical_tie_masks
@@ -1040,24 +1162,34 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    c'16
-                    r4..
-                    \time 3/8
-                    c'16
-                    r4
-                    r16
-                    \time 4/8
-                    c'16
-                    r4..
-                    \time 3/8
-                    c'16
-                    r4
-                    r16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        r4..
+                        c'16
+                        r4
+                        r16
+                        c'16
+                        r4..
+                        c'16
+                        r4
+                        r16
+                    }
+                >>
 
         ..  container:: example
 
@@ -1083,24 +1215,34 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 4/8
-                    c'16
-                    s4..
-                    \time 3/8
-                    c'16
-                    s4
-                    s16
-                    \time 4/8
-                    c'16
-                    s4..
-                    \time 3/8
-                    c'16
-                    s4
-                    s16
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        s4..
+                        c'16
+                        s4
+                        s16
+                        c'16
+                        s4..
+                        c'16
+                        s4
+                        s16
+                    }
+                >>
 
             Use in keyboard and other polyphonic selections where other voices
             provide rhythmic alignment.
@@ -1148,29 +1290,38 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> abjad.f(lilypond_file[abjad.Staff], strict=40)
-            \new RhythmicStaff
-            {
-                \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
-                \times 16/9 {                       %! INCISED_RHYTHM_MAKER
+            >>> abjad.f(lilypond_file[abjad.Score], strict=40)
+            \new Score
+            <<
+                \new GlobalContext
+                {
                     \time 8/8
-                    r16                             %! INCISED_RHYTHM_MAKER
-                    c'2                             %! INCISED_RHYTHM_MAKER
-                }                                   %! INCISED_RHYTHM_MAKER
-                \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
-                \times 8/5 {                        %! INCISED_RHYTHM_MAKER
+                    s1 * 1
                     \time 4/8
-                    c'4                             %! INCISED_RHYTHM_MAKER
-                    ~
-                    c'16                            %! INCISED_RHYTHM_MAKER
-                }                                   %! INCISED_RHYTHM_MAKER
-                \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
-                \times 12/7 {                       %! INCISED_RHYTHM_MAKER
+                    s1 * 1/2
                     \time 6/8
-                    c'4.                            %! INCISED_RHYTHM_MAKER
-                    r16                             %! INCISED_RHYTHM_MAKER
-                }                                   %! INCISED_RHYTHM_MAKER
-            }
+                    s1 * 3/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
+                    \times 16/9 {                   %! INCISED_RHYTHM_MAKER
+                        r16                         %! INCISED_RHYTHM_MAKER
+                        c'2                         %! INCISED_RHYTHM_MAKER
+                    }                               %! INCISED_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
+                    \times 8/5 {                    %! INCISED_RHYTHM_MAKER
+                        c'4                         %! INCISED_RHYTHM_MAKER
+                        ~
+                        c'16                        %! INCISED_RHYTHM_MAKER
+                    }                               %! INCISED_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
+                    \times 12/7 {                   %! INCISED_RHYTHM_MAKER
+                        c'4.                        %! INCISED_RHYTHM_MAKER
+                        r16                         %! INCISED_RHYTHM_MAKER
+                    }                               %! INCISED_RHYTHM_MAKER
+                }
+            >>
 
         """
         return super().tag
@@ -1205,20 +1356,29 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'2
-                    ~
-                    c'8
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'2..
+                        c'2
+                        c'2
+                        ~
+                        c'8
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -1248,22 +1408,31 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    ~
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 6/8
-                    c'2
-                    ~
-                    c'8
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'2..
+                        ~
+                        c'2
+                        ~
+                        c'2
+                        ~
+                        c'8
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -1297,21 +1466,30 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    ~
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'2
-                    ~
-                    c'8
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'2..
+                        ~
+                        c'2
+                        c'2
+                        ~
+                        c'8
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -1342,22 +1520,31 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \repeatTie
-                    \time 6/8
-                    c'2
-                    \repeatTie
-                    c'8
-                    \repeatTie
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'2..
+                        c'2
+                        \repeatTie
+                        c'2
+                        \repeatTie
+                        c'8
+                        \repeatTie
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -1387,19 +1574,28 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'2
-                    c'8
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'2..
+                        c'2
+                        c'2
+                        c'8
+                        r8
+                    }
+                >>
 
         ..  container:: example
 
@@ -1432,21 +1628,30 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 8/8
-                    r8
-                    c'4.
-                    c'4
-                    c'4
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'4.
-                    c'4
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        r8
+                        c'4.
+                        c'4
+                        c'4
+                        c'2
+                        c'4.
+                        c'4
+                        r8
+                    }
+                >>
 
         """
         return super(IncisedRhythmMaker, self).tie_specifier
@@ -1485,29 +1690,38 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 16/9 {
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
                         \time 8/8
-                        r16
-                        c'2
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 8/5 {
+                        s1 * 1
                         \time 4/8
-                        c'4
-                        ~
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/7 {
+                        s1 * 1/2
                         \time 6/8
-                        c'4.
-                        r16
+                        s1 * 3/4
                     }
-                }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 16/9 {
+                            r16
+                            c'2
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/5 {
+                            c'4
+                            ~
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/7 {
+                            c'4.
+                            r16
+                        }
+                    }
+                >>
 
         """
         return super(IncisedRhythmMaker, self).tuplet_specifier

@@ -229,27 +229,35 @@ class DurationSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8
-                    ~
-                    ]
-                    \time 3/4
-                    c'8.
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8
+                        ~
+                        ]
+                        c'8.
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                    }
+                >>
 
         ..  container:: example
 
@@ -275,27 +283,35 @@ class DurationSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    c'8
-                    ~
-                    \time 3/4
-                    c'8.
-                    [
-                    c'16
-                    ~
-                    ]
-                    c'4
-                    c'4
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'8
+                        ~
+                        c'8.
+                        [
+                        c'16
+                        ~
+                        ]
+                        c'4
+                        c'4
+                    }
+                >>
 
         """
         return self._increase_monotonic
@@ -343,32 +359,40 @@ class DurationSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    r4
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    r4
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        r4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        r4
+                    }
+                >>
 
         """
         return self._forbidden_note_duration
@@ -402,30 +426,38 @@ class DurationSpecifier(abjad.AbjadValueObject):
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Staff])
-                \new RhythmicStaff
-                {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    r8
-                    r8
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    r8
-                    r8
-                }
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        r8
+                        r8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        r8
+                        r8
+                    }
+                >>
 
         """
         return self._forbidden_rest_duration
