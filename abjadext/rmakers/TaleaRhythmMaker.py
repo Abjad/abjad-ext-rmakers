@@ -2349,15 +2349,15 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-                >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-                ...     talea=abjadext.rmakers.Talea(
-                ...         counts=[5, 4],
-                ...         denominator=16,
-                ...         ),
-                ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-                ...         rewrite_meter=True,
-                ...         ),
-                ...     )
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         rewrite_meter=True,
+            ...         ),
+            ...     )
 
             >>> divisions = [(3, 4), (3, 4), (3, 4)]
             >>> selections = rhythm_maker(divisions)
