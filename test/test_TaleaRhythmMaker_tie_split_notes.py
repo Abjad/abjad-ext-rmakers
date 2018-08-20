@@ -13,47 +13,52 @@ def test_TaleaRhythmMaker_tie_split_notes_01():
         )
 
     divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
-    result = rhythm_maker(divisions)
-
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    measures = abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
-        r"""
-        \new Staff
-        {
-            {   % measure
-                \time 2/8
-                c'4
-                ~
-            }   % measure
-            {   % measure
-                c'16
-                [
-                c'8.
-                ~
-                ]
-            }   % measure
-            {   % measure
-                c'8
-                [
-                c'8
-                ~
-                ]
-            }   % measure
-            {   % measure
-                c'8.
-                [
-                c'16
-                ]
-            }   % measure
-        }
-        """
+    selections = rhythm_maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
         )
 
-    assert abjad.inspect(staff).is_wellformed()
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
+        r"""
+        \new Score
+        <<
+            \new GlobalContext
+            {
+                \time 2/8
+                s1 * 1/4
+                \time 2/8
+                s1 * 1/4
+                \time 2/8
+                s1 * 1/4
+                \time 2/8
+                s1 * 1/4
+            }
+            \new RhythmicStaff
+            {
+                c'4
+                ~
+                c'16
+                [
+                c'8.
+                ~
+                ]
+                c'8
+                [
+                c'8
+                ~
+                ]
+                c'8.
+                [
+                c'16
+                ]
+            }
+        >>
+        """
+        ), print(format(score))
+
+    assert abjad.inspect(score).is_wellformed()
 
 
 def test_TaleaRhythmMaker_tie_split_notes_02():
@@ -67,51 +72,53 @@ def test_TaleaRhythmMaker_tie_split_notes_02():
         )
 
     divisions = [(3, 16), (5, 8), (4, 8), (7, 16)]
-    result = rhythm_maker(divisions)
-
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    measures = abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
-        r"""
-        \new Staff
-        {
-            {   % measure
-                \time 3/16
-                c'8.
-                ~
-            }   % measure
-            {   % measure
-                \time 5/8
-                c'8
-                c'4
-                ~
-                c'16
-                [
-                c'8.
-                ~
-                ]
-            }   % measure
-            {   % measure
-                \time 4/8
-                c'8
-                c'4
-                ~
-                c'16
-                [
-                c'16
-                ~
-                ]
-            }   % measure
-            {   % measure
-                \time 7/16
-                c'4
-                c'8.
-            }   % measure
-        }
-        """
+    selections = rhythm_maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
         )
 
-    assert abjad.inspect(staff).is_wellformed()
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
+        r"""
+        \new Score
+        <<
+            \new GlobalContext
+            {
+                \time 3/16
+                s1 * 3/16
+                \time 5/8
+                s1 * 5/8
+                \time 4/8
+                s1 * 1/2
+                \time 7/16
+                s1 * 7/16
+            }
+            \new RhythmicStaff
+            {
+                c'8.
+                ~
+                c'8
+                c'4
+                ~
+                c'16
+                [
+                c'8.
+                ~
+                ]
+                c'8
+                c'4
+                ~
+                c'16
+                [
+                c'16
+                ~
+                ]
+                c'4
+                c'8.
+            }
+        >>
+        """
+        ), print(format(score))
+
+    assert abjad.inspect(score).is_wellformed()

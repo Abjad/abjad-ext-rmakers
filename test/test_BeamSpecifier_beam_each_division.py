@@ -19,20 +19,25 @@ def test_BeamSpecifier_beam_each_division_01():
 
     divisions = [(2, 16), (5, 16)]
     selections = rhythm_maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(selections)
-    score = abjad.Score([staff])
-    abjad.setting(score).autoBeaming = False
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 2/16
+                s1 * 1/8
+                \time 5/16
+                s1 * 5/16
+            }
+            \new RhythmicStaff
+            {
                 \times 4/7 {
                     c'32
                     [
@@ -46,9 +51,6 @@ def test_BeamSpecifier_beam_each_division_01():
                     ~
                     ]
                 }
-            }   % measure
-            {   % measure
-                \time 5/16
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 5/7 {
                     c'32
@@ -68,7 +70,7 @@ def test_BeamSpecifier_beam_each_division_01():
                     r32
                     c'32
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))

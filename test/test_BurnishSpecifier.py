@@ -24,18 +24,25 @@ def test_BurnishSpecifier_01():
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(selections)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/16
+                s1 * 5/16
+                \time 6/16
+                s1 * 3/8
+            }
+            \new RhythmicStaff
+            {
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r32
@@ -47,9 +54,6 @@ def test_BurnishSpecifier_01():
                     ]
                     r32
                 }
-            }   % measure
-            {   % measure
-                \time 6/16
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r16
@@ -61,10 +65,10 @@ def test_BurnishSpecifier_01():
                     ]
                     r16
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_BurnishSpecifier_02():
@@ -90,18 +94,25 @@ def test_BurnishSpecifier_02():
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(selections)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/16
+                s1 * 5/16
+                \time 6/16
+                s1 * 3/8
+            }
+            \new RhythmicStaff
+            {
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     c'32
@@ -113,9 +124,6 @@ def test_BurnishSpecifier_02():
                     r32
                     c'32
                 }
-            }   % measure
-            {   % measure
-                \time 6/16
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     c'16
@@ -127,10 +135,10 @@ def test_BurnishSpecifier_02():
                     r16
                     c'16
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_BurnishSpecifier_03():
@@ -156,18 +164,25 @@ def test_BurnishSpecifier_03():
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(selections)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/16
+                s1 * 5/16
+                \time 6/16
+                s1 * 3/8
+            }
+            \new RhythmicStaff
+            {
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 10/13 {
                     c'32
@@ -182,9 +197,6 @@ def test_BurnishSpecifier_03():
                     c'32
                     ~
                 }
-            }   % measure
-            {   % measure
-                \time 6/16
                 \times 4/5 {
                     c'16.
                     [
@@ -197,10 +209,10 @@ def test_BurnishSpecifier_03():
                     r32
                     c'16
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_BurnishSpecifier_04():
@@ -225,18 +237,25 @@ def test_BurnishSpecifier_04():
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(selections)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/16
+                s1 * 5/16
+                \time 6/16
+                s1 * 3/8
+            }
+            \new RhythmicStaff
+            {
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r32
@@ -248,9 +267,6 @@ def test_BurnishSpecifier_04():
                     ]
                     r32
                 }
-            }   % measure
-            {   % measure
-                \time 6/16
                 \times 4/5 {
                     r16
                     c'8
@@ -262,10 +278,10 @@ def test_BurnishSpecifier_04():
                     ]
                     r32
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_BurnishSpecifier_05():
@@ -291,18 +307,25 @@ def test_BurnishSpecifier_05():
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(selections)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/16
+                s1 * 5/16
+                \time 6/16
+                s1 * 3/8
+            }
+            \new RhythmicStaff
+            {
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r32
@@ -314,9 +337,6 @@ def test_BurnishSpecifier_05():
                     ]
                     r32
                 }
-            }   % measure
-            {   % measure
-                \time 6/16
                 \times 4/7 {
                     r16
                     c'8
@@ -331,7 +351,7 @@ def test_BurnishSpecifier_05():
                     ]
                     r32
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))

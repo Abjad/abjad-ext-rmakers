@@ -17,47 +17,52 @@ def test_IncisedRhythmMaker___call___01():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
-
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
-        r"""
-        \new Staff
-        {
-            {   % measure
-                \time 5/8
-                c'2
-                ~
-                c'16.
-                r32
-            }   % measure
-            {   % measure
-                r4
-                c'4
-                ~
-                c'16.
-                r32
-            }   % measure
-            {   % measure
-                c'2
-                ~
-                c'16.
-                r32
-            }   % measure
-            {   % measure
-                r4
-                c'4
-                ~
-                c'16.
-                r32
-            }   % measure
-        }
-        """
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
         )
+
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
+        r"""
+        \new Score
+        <<
+            \new GlobalContext
+            {
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
+                c'2
+                ~
+                c'16.
+                r32
+                r4
+                c'4
+                ~
+                c'16.
+                r32
+                c'2
+                ~
+                c'16.
+                r32
+                r4
+                c'4
+                ~
+                c'16.
+                r32
+            }
+        >>
+        """
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___02():
@@ -75,44 +80,49 @@ def test_IncisedRhythmMaker___call___02():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
                 r4
                 c'4
                 ~
                 c'16.
                 r32
-            }   % measure
-            {   % measure
                 r4
                 r4
                 c'16.
                 r32
-            }   % measure
-            {   % measure
                 r4
                 r4
                 r8
-            }   % measure
-            {   % measure
                 r4
                 r4
                 r8
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___03():
@@ -130,40 +140,45 @@ def test_IncisedRhythmMaker___call___03():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
                 r32
                 c'4
                 ~
                 c'16.
                 r4
-            }   % measure
-            {   % measure
                 r32
                 c'16.
                 r4
                 r4
-            }   % measure
-            {   % measure
                 r32
                 r4
                 r4
                 r16.
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___04():
@@ -175,36 +190,41 @@ def test_IncisedRhythmMaker___call___04():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
-
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
-        r"""
-        \new Staff
-        {
-            {   % measure
-                \time 5/8
-                c'2
-                ~
-                c'8
-            }   % measure
-            {   % measure
-                c'2
-                ~
-                c'8
-            }   % measure
-            {   % measure
-                c'2
-                ~
-                c'8
-            }   % measure
-        }
-        """
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
         )
+
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
+        r"""
+        \new Score
+        <<
+            \new GlobalContext
+            {
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
+                c'2
+                ~
+                c'8
+                c'2
+                ~
+                c'8
+                c'2
+                ~
+                c'8
+            }
+        >>
+        """
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___05():
@@ -223,34 +243,39 @@ def test_IncisedRhythmMaker___call___05():
         )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+            }
+            \new RhythmicStaff
+            {
                 \times 4/5 {
                     r8
                     c'4.
                     r8
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r8
                     c'4
                     r8
                 }
-            }   % measure
-            {   % measure
                 \times 4/7 {
                     r8
                     c'2
@@ -258,10 +283,10 @@ def test_IncisedRhythmMaker___call___05():
                     c'8
                     r8
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___06():
@@ -279,27 +304,34 @@ def test_IncisedRhythmMaker___call___06():
         )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+            }
+            \new RhythmicStaff
+            {
                 \times 8/9 {
                     r32
                     c'2
                     ~
                     c'32
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r32
@@ -312,8 +344,6 @@ def test_IncisedRhythmMaker___call___06():
                     ~
                     c'32
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r32
@@ -325,10 +355,10 @@ def test_IncisedRhythmMaker___call___06():
                     ~
                     c'32
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___07():
@@ -347,43 +377,48 @@ def test_IncisedRhythmMaker___call___07():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
-
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
-        r"""
-        \new Staff
-        {
-            {   % measure
-                \time 5/8
-                r2
-                r16.
-                c'32
-            }   % measure
-            {   % measure
-                c'4
-                r4
-                r16.
-                c'32
-            }   % measure
-            {   % measure
-                r2
-                r16.
-                c'32
-            }   % measure
-            {   % measure
-                c'4
-                r4
-                r16.
-                c'32
-            }   % measure
-        }
-        """
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
         )
+
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
+        r"""
+        \new Score
+        <<
+            \new GlobalContext
+            {
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
+                r2
+                r16.
+                c'32
+                c'4
+                r4
+                r16.
+                c'32
+                r2
+                r16.
+                c'32
+                c'4
+                r4
+                r16.
+                c'32
+            }
+        >>
+        """
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___08():
@@ -402,43 +437,48 @@ def test_IncisedRhythmMaker___call___08():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
                 c'4
                 r4
                 r16.
                 c'32
-            }   % measure
-            {   % measure
                 c'4
                 c'4
                 r16.
                 c'32
-            }   % measure
-            {   % measure
                 c'4
                 c'4
                 c'8
-            }   % measure
-            {   % measure
                 c'4
                 c'4
                 c'8
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___09():
@@ -457,39 +497,44 @@ def test_IncisedRhythmMaker___call___09():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
                 c'32
                 r4
                 r16.
                 c'4
-            }   % measure
-            {   % measure
                 c'32
                 r16.
                 c'4
                 c'4
-            }   % measure
-            {   % measure
                 c'32
                 c'4
                 c'4
                 c'16.
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___10():
@@ -503,33 +548,38 @@ def test_IncisedRhythmMaker___call___10():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
-
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
-        r"""
-        \new Staff
-        {
-            {   % measure
-                \time 5/8
-                r2
-                r8
-            }   % measure
-            {   % measure
-                r2
-                r8
-            }   % measure
-            {   % measure
-                r2
-                r8
-            }   % measure
-        }
-        """
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
         )
+
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
+        r"""
+        \new Score
+        <<
+            \new GlobalContext
+            {
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
+                r2
+                r8
+                r2
+                r8
+                r2
+                r8
+            }
+        >>
+        """
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___11():
@@ -549,48 +599,54 @@ def test_IncisedRhythmMaker___call___11():
         )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+            }
+            \new RhythmicStaff
+            {
                 \times 4/5 {
                     c'8
                     r4.
                     c'8
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     c'8
                     r4
                     c'8
                 }
-            }   % measure
-            {   % measure
                 \times 4/7 {
                     c'8
                     r2
                     r8
                     c'8
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___12():
-    r"""Adds 32nd note to beginning of every division.
+    """
+    Adds 32nd note to beginning of every division.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -607,26 +663,33 @@ def test_IncisedRhythmMaker___call___12():
         )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+            }
+            \new RhythmicStaff
+            {
                 \times 8/9 {
                     c'32
                     r2
                     r32
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     c'32
@@ -638,8 +701,6 @@ def test_IncisedRhythmMaker___call___12():
                     r4.
                     r32
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     c'32
@@ -650,14 +711,15 @@ def test_IncisedRhythmMaker___call___12():
                     r4
                     r32
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___13():
-    r"""Incises outer divisions only.
+    """
+    Incises outer divisions only.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -674,42 +736,48 @@ def test_IncisedRhythmMaker___call___13():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
                 r4
                 r4
                 c'8
-            }   % measure
-            {   % measure
                 c'2
                 ~
                 c'8
-            }   % measure
-            {   % measure
                 c'4
                 r16.
                 r16.
                 r16.
                 r16.
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___14():
-    r"""Incises outer divisions only.
+    """
+    Incises outer divisions only.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -726,40 +794,46 @@ def test_IncisedRhythmMaker___call___14():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
                 r4
                 r4
                 r8
-            }   % measure
-            {   % measure
                 c'2
                 ~
                 c'8
-            }   % measure
-            {   % measure
                 c'8
                 r4
                 r4
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___15():
-    r"""Unincised notes.
+    """
+    Unincised notes.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -771,40 +845,46 @@ def test_IncisedRhythmMaker___call___15():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
-
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
-        r"""
-        \new Staff
-        {
-            {   % measure
-                \time 5/8
-                c'2
-                ~
-                c'8
-            }   % measure
-            {   % measure
-                c'2
-                ~
-                c'8
-            }   % measure
-            {   % measure
-                c'2
-                ~
-                c'8
-            }   % measure
-        }
-        """
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
         )
+
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
+        r"""
+        \new Score
+        <<
+            \new GlobalContext
+            {
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
+                c'2
+                ~
+                c'8
+                c'2
+                ~
+                c'8
+                c'2
+                ~
+                c'8
+            }
+        >>
+        """
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___16():
-    r"""Incises outer divisions only.
+    """
+    Incises outer divisions only.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -822,43 +902,49 @@ def test_IncisedRhythmMaker___call___16():
         )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+            }
+            \new RhythmicStaff
+            {
                 \times 4/5 {
                     r8
                     c'2
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     c'2
                 }
-            }   % measure
-            {   % measure
                 \times 4/7 {
                     c'2.
                     r8
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___17():
-    r"""Incises outer divisions only.
+    """
+    Incises outer divisions only.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -877,19 +963,28 @@ def test_IncisedRhythmMaker___call___17():
         )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+            }
+            \new RhythmicStaff
+            {
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 3/4 {
                     r8
@@ -899,14 +994,10 @@ def test_IncisedRhythmMaker___call___17():
                 \times 1/1 {
                     c'8
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     c'2
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     c'8
@@ -916,14 +1007,15 @@ def test_IncisedRhythmMaker___call___17():
                     c'2
                     r8
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___18():
-    r"""Incises outer divisions only. Fills with rests.
+    """
+    Incises outer divisions only. Fills with rests.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -941,28 +1033,33 @@ def test_IncisedRhythmMaker___call___18():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
                 c'4
                 c'4
                 r8
-            }   % measure
-            {   % measure
                 r2
                 r8
-            }   % measure
-            {   % measure
                 r4
                 c'16.
                 [
@@ -970,14 +1067,15 @@ def test_IncisedRhythmMaker___call___18():
                 c'16.
                 c'16.
                 ]
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___19():
-    r"""Incises outer divisions only. Fills with rests.
+    """
+    Incises outer divisions only. Fills with rests.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -995,39 +1093,45 @@ def test_IncisedRhythmMaker___call___19():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
                 c'4
                 c'4
                 c'8
-            }   % measure
-            {   % measure
                 r2
                 r8
-            }   % measure
-            {   % measure
                 r8
                 c'4
                 c'4
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___20():
-    r"""Unincised rests.
+    """
+    Unincised rests.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -1040,37 +1144,43 @@ def test_IncisedRhythmMaker___call___20():
         )
 
     divisions = [(5, 8), (5, 8), (5, 8)]
-    result = maker(divisions)
-
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
-        r"""
-        \new Staff
-        {
-            {   % measure
-                \time 5/8
-                r2
-                r8
-            }   % measure
-            {   % measure
-                r2
-                r8
-            }   % measure
-            {   % measure
-                r2
-                r8
-            }   % measure
-        }
-        """
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
         )
+
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
+        r"""
+        \new Score
+        <<
+            \new GlobalContext
+            {
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+                \time 5/8
+                s1 * 5/8
+            }
+            \new RhythmicStaff
+            {
+                r2
+                r8
+                r2
+                r8
+                r2
+                r8
+            }
+        >>
+        """
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___21():
-    r"""Incises outer divisions only. Fills with rests.
+    """
+    Incises outer divisions only. Fills with rests.
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -1089,43 +1199,49 @@ def test_IncisedRhythmMaker___call___21():
         )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+            }
+            \new RhythmicStaff
+            {
                 \times 4/5 {
                     c'8
                     r2
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r2
                 }
-            }   % measure
-            {   % measure
                 \times 4/7 {
                     r2.
                     c'8
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___22():
-    r"""Incises outer divisions only. Fills with rests:
+    """
+    Incises outer divisions only. Fills with rests:
     """
 
     incise_specifier = rmakers.InciseSpecifier(
@@ -1145,19 +1261,28 @@ def test_IncisedRhythmMaker___call___22():
         )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
-    result = maker(divisions)
+    selections = maker(divisions)
+    lilypond_file = abjad.LilyPondFile.rhythm(
+        selections,
+        divisions,
+        )
 
-    maker = abjad.MeasureMaker()
-    measures = maker(divisions)
-    staff = abjad.Staff(measures)
-    abjad.mutate(staff).replace_measure_contents(result)
-
-    assert format(staff) == abjad.String.normalize(
+    score = lilypond_file[abjad.Score]
+    assert format(score) == abjad.String.normalize(
         r"""
-        \new Staff
-        {
-            {   % measure
+        \new Score
+        <<
+            \new GlobalContext
+            {
                 \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+                \time 4/8
+                s1 * 1/2
+            }
+            \new RhythmicStaff
+            {
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 3/4 {
                     c'8
@@ -1167,14 +1292,10 @@ def test_IncisedRhythmMaker___call___22():
                 \times 1/1 {
                     r8
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r2
                 }
-            }   % measure
-            {   % measure
                 \tweak text #tuplet-number::calc-fraction-text
                 \times 1/1 {
                     r8
@@ -1184,7 +1305,7 @@ def test_IncisedRhythmMaker___call___22():
                     r2
                     c'8
                 }
-            }   % measure
-        }
+            }
+        >>
         """
-        )
+        ), print(format(score))
