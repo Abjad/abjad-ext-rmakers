@@ -58,7 +58,7 @@ def test_TaleaRhythmMaker_tie_split_notes_01():
         """
         ), print(format(score))
 
-    assert abjad.inspect(score).is_wellformed()
+    assert abjad.inspect(score).wellformed()
 
 
 def test_TaleaRhythmMaker_tie_split_notes_02():
@@ -121,4 +121,4 @@ def test_TaleaRhythmMaker_tie_split_notes_02():
         """
         ), print(format(score))
 
-    assert abjad.inspect(score).is_wellformed()
+    assert abjad.inspect(score).wellformed()
