@@ -602,9 +602,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 selection[:-1]).duration()
             multiplier = needed_duration / \
                 interpolation_specifier.written_duration
-            multiplier = abjad.Multiplier(multiplier)
-            abjad.detach(abjad.Multiplier, selection[-1])
-            abjad.attach(multiplier, selection[-1])
+            selection[-1].multiplier = multiplier
 
     def _get_interpolation_specifiers(self):
         specifiers = self.interpolation_specifiers
@@ -870,10 +868,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         notes = []
         for i, duration in enumerate(durations):
             written_duration = interpolation_specifier.written_duration
-            note = abjad.Note(0, written_duration, tag=tag)
             multiplier = duration / written_duration
-            multiplier = abjad.Multiplier(multiplier)
-            abjad.attach(multiplier, note)
+            note = abjad.Note(
+                0,
+                written_duration,
+                multiplier=multiplier,
+                tag=tag,
+                )
             notes.append(note)
         selection = abjad.select(notes)
         class_._fix_rounding_error(

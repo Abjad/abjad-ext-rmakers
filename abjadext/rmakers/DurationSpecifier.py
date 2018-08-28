@@ -155,9 +155,8 @@ class DurationSpecifier(abjad.AbjadValueObject):
             else:
                 duration = abjad.inspect(selection).duration()
                 if multimeasure_rests:
-                    multiplier = abjad.Multiplier(duration)
                     rest = abjad.MultimeasureRest(1)
-                    abjad.attach(multiplier, rest, tag=None)
+                    rest.multiplier = duration
                     rests = abjad.select(rest)
                 else:
                     rests = maker([None], [duration])

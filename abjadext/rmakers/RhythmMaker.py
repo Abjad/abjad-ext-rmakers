@@ -191,11 +191,8 @@ class RhythmMaker(abjad.AbjadValueObject):
                 continue
             for leaf in logical_tie:
                 rest = abjad.Rest(leaf.written_duration)
-                inspector = abjad.inspect(leaf)
-                if inspector.has_indicator(abjad.Multiplier):
-                    multiplier = inspector.indicator(abjad.Multiplier)
-                    multiplier = abjad.Multiplier(multiplier)
-                    abjad.attach(multiplier, rest)
+                if leaf.multiplier is not None:
+                    rest.multiplier = leaf.multiplier
                 abjad.mutate(leaf).replace([rest])
                 abjad.detach(abjad.Tie, rest)
         # remove every temporary container and recreate selections
