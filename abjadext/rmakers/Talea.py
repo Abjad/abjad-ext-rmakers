@@ -29,6 +29,7 @@ class Talea(abjad.AbjadValueObject):
 
     __slots__ = (
         '_counts',
+        '_end_counts',
         '_denominator',
         '_preamble',
         )
@@ -40,8 +41,9 @@ class Talea(abjad.AbjadValueObject):
     def __init__(
         self,
         *,
-        counts: typing.Iterable[int] = (1,),
+        counts: typing.Sequence[int] = (1,),
         denominator: int = 16,
+        end_counts: typing.Sequence[int] = None,
         preamble: typing.List[int] = None,
         ) -> None:
         assert all(isinstance(_, int) for _ in counts)
@@ -51,6 +53,11 @@ class Talea(abjad.AbjadValueObject):
             message = f'denominator {denominator} must be integer power of 2.'
             raise Exception(message)
         self._denominator = denominator
+        end_counts_ = None
+        if end_counts is not None:
+            assert all(isinstance(_, int) for _ in end_counts)
+            end_counts_ = tuple(end_counts)
+        self._end_counts = end_counts_
         if preamble is not None:
             assert all(isinstance(_, int) for _ in preamble), repr(preamble)
         self._preamble = preamble
@@ -282,6 +289,28 @@ class Talea(abjad.AbjadValueObject):
         Defaults to 16.
         """
         return self._denominator
+
+    @property
+    def end_counts(self) -> typing.Optional[typing.List[int]]:
+        """
+        Gets counts.
+
+        ..  container:: example
+
+            >>> talea = abjadext.rmakers.Talea(
+            ...     counts=[3, 4],
+            ...     denominator=16,
+            ...     end_counts=[1, 1],
+            ...     )
+
+            >>> talea.end_counts
+            [1, 1]
+
+        """
+        if self._end_counts:
+            return list(self._end_counts)
+        else:
+            return None
 
     @property
     def period(self) -> int:

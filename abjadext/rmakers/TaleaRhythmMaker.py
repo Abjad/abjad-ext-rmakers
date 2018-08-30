@@ -328,6 +328,7 @@ class TaleaRhythmMaker(RhythmMaker):
     def _apply_ties_to_split_notes(
         self,
         result,
+        unscaled_end_counts,
         unscaled_preamble,
         unscaled_talea,
         ):
@@ -381,22 +382,35 @@ class TaleaRhythmMaker(RhythmMaker):
         assert part_durations == abjad.sequence(written_durations)
         counts = [len(part) for part in parts]
         parts = abjad.sequence(leaves).partition_by_counts(counts)
-        prototype = (abjad.Tie,)
         for part in parts:
             if any(isinstance(_, abjad.Rest) for _ in part):
                 continue
             part = abjad.select(part)
-            tie_spanner = abjad.Tie()
+            tie = abjad.Tie()
             # voodoo to temporarily neuter the contiguity constraint
-            tie_spanner._unconstrain_contiguity()
+            tie._unconstrain_contiguity()
             for component in part:
                 # TODO: make top-level abjad.detach() work here
-                for spanner in component._get_spanners(prototype=prototype):
+                for spanner in component._get_spanners(abjad.Tie):
                     spanner._sever_all_leaves()
-                #abjad.detach(prototype, component)
+                #abjad.detach(abjad.Tie, component)
             # TODO: remove usage of Spanner._extend()
-            tie_spanner._extend(part)
-            tie_spanner._constrain_contiguity()
+            tie._extend(part)
+            tie._constrain_contiguity()
+        # TODO: this will need to be generalized and better tested:
+        if unscaled_end_counts:
+            total = len(unscaled_end_counts)
+            end_leaves = leaves[-total:]
+            for leaf in reversed(end_leaves):
+                tie = abjad.inspect(leaf).spanner(abjad.Tie)
+                if tie is None:
+                    continue
+                assert leaf is tie[-1]
+                leaves = tie.leaves[:-1]
+                abjad.detach(abjad.Tie, leaf)
+                if 2 <= len(leaves):
+                    tie = abjad.new(tie)
+                    abjad.attach(tie, leaves)
 
     def _get_burnish_specifier(self):
         if self.burnish_specifier is not None:
@@ -511,25 +525,29 @@ class TaleaRhythmMaker(RhythmMaker):
     def _make_music(self, divisions):
         input_divisions = divisions[:]
         input_ = self._prepare_input()
+        end_counts = input_['end_counts']
         preamble = input_['preamble']
         talea = input_['talea']
         if talea:
             advanced_talea = Talea(
                 counts=talea,
                 denominator=self.talea.denominator,
+                end_counts=end_counts,
                 preamble=preamble,
                 )
         else:
             advanced_talea = None
         extra_counts_per_division = input_['extra_counts_per_division']
+        unscaled_end_counts = tuple(end_counts)
         unscaled_preamble = tuple(preamble)
         unscaled_talea = tuple(talea)
         split_divisions_by_counts = input_['split_divisions_by_counts']
         counts = {
-            'preamble': preamble,
-            'talea': talea,
+            'end_counts': end_counts,
             'extra_counts_per_division': extra_counts_per_division,
+            'preamble': preamble,
             'split_divisions_by_counts': split_divisions_by_counts,
+            'talea': talea,
             }
         if self.talea is not None:
             talea_denominator = self.talea.denominator
@@ -550,6 +568,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 counts['preamble'],
                 counts['talea'],
                 counts['extra_counts_per_division'],
+                counts['end_counts'],
                 )
             talea_weight_consumed = sum(_.weight() for _ in numeric_map)
             leaf_lists = self._make_leaf_lists(numeric_map, lcd)
@@ -571,6 +590,7 @@ class TaleaRhythmMaker(RhythmMaker):
         if counts['talea']:
             self._apply_ties_to_split_notes(
                 selections,
+                unscaled_end_counts,
                 unscaled_preamble,
                 unscaled_talea,
                 )
@@ -606,7 +626,9 @@ class TaleaRhythmMaker(RhythmMaker):
         preamble,
         talea,
         extra_counts_per_division,
+        end_counts,
         ):
+        assert all(isinstance(_, int) for _ in end_counts), repr(end_counts)
         assert all(isinstance(_, int) for _ in preamble), repr(preamble)
         assert all(isinstance(_, int) for _ in talea), repr(talea)
         prolated_divisions = self._make_prolated_divisions(
@@ -624,8 +646,21 @@ class TaleaRhythmMaker(RhythmMaker):
             talea,
             prolated_numerators,
             )
-        for list_ in result:
-            assert all(isinstance(_, int) for _ in list_), repr(list_)
+        if end_counts:
+            end_counts = abjad.sequence(end_counts)
+            end_weight = end_counts.weight()
+            division_weights = [_.weight() for _ in result]
+            counts = result.flatten()
+            counts_weight = counts.weight()
+            assert end_weight <= counts_weight, repr(end_counts)
+            left = counts_weight - end_weight
+            right = end_weight
+            counts = counts.split([left, right])
+            counts = counts[0] + end_counts
+            assert counts.weight() == counts_weight
+            result = counts.partition_by_weights(division_weights)
+        for sequence in result:
+            assert all(isinstance(_, int) for _ in sequence), repr(sequence)
         if self.burnish_specifier is not None:
             result = self._apply_burnish_specifier(result)
         return result
@@ -668,10 +703,12 @@ class TaleaRhythmMaker(RhythmMaker):
             0,
             )
         if self.talea is None:
+            end_counts = ()
             preamble = ()
             talea = ()
         else:
             talea = self.talea.advance(talea_weight_consumed)
+            end_counts = talea.end_counts or ()
             preamble = talea.preamble or ()
             talea = talea.counts or ()
         talea = abjad.CyclicTuple(talea)
@@ -690,6 +727,7 @@ class TaleaRhythmMaker(RhythmMaker):
         split_divisions_by_counts = abjad.CyclicTuple(
             split_divisions_by_counts)
         return {
+            'end_counts': end_counts,
             'extra_counts_per_division': extra_counts_per_division,
             'preamble': preamble,
             'split_divisions_by_counts': split_divisions_by_counts,
@@ -4072,6 +4110,105 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'4
                         ~
                         c'2
+                    }
+                >>
+
+        ..  container:: example
+
+            Working with ``end_counts``.
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[8, -4, 8],
+            ...         denominator=32,
+            ...         end_counts=[1, 1, 1, 1],
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        r8
+                        c'4
+                        c'4
+                        r8
+                        c'4
+                        c'4
+                        r8
+                        c'32
+                        [
+                        c'32
+                        c'32
+                        c'32
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            REGRESSION. End counts leave 5-durated tie in tact:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[6],
+            ...         denominator=16,
+            ...         end_counts=[1],
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4.
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'16
+                        ]
                     }
                 >>
 
