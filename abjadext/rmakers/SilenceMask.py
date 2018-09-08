@@ -3,7 +3,7 @@ import inspect
 import typing
 
 
-class SilenceMask(abjad.AbjadValueObject):
+class SilenceMask(object):
     r"""
     Silence mask.
 
@@ -173,6 +173,12 @@ class SilenceMask(abjad.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
+    def __format__(self, format_specification='') -> str:
+        """
+        Formats Abjad object.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
     def __invert__(self) -> 'SilenceMask':
         """
         Inverts pattern.
@@ -181,11 +187,17 @@ class SilenceMask(abjad.AbjadValueObject):
         inverted = pattern.inverted or None
         return SilenceMask.silence(pattern.indices, pattern.period, inverted)
 
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
     ### PRIVATE METHODS ###
 
     def _get_format_specification(self):
         if self.template is None:
-            return super(SilenceMask, self)._get_format_specification()
+            return abjad.FormatSpecification(client=self)
         return abjad.FormatSpecification(
             client=self,
             repr_is_indented=False,

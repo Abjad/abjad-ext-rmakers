@@ -3,7 +3,7 @@ import copy
 import typing
 
 
-class TupletSpecifier(abjad.AbjadValueObject):
+class TupletSpecifier(object):
     """
     Tuplet specifier.
 
@@ -102,6 +102,36 @@ class TupletSpecifier(abjad.AbjadValueObject):
         self._toggle_prolation(selections)
         return selections
 
+    def __eq__(self, argument) -> bool:
+        """
+        Is true when all initialization values of Abjad value object equal
+        the initialization values of ``argument``.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
+    def __hash__(self) -> int:
+        """
+        Hashes Abjad value object.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f'unhashable type: {self}')
+        return result
+
+    def __format__(self, format_specification='') -> str:
+        """
+        Formats Abjad object.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
     ### PRIVATE METHODS ###
 
     def _apply_denominator(self, selections, divisions):
@@ -159,6 +189,9 @@ class TupletSpecifier(abjad.AbjadValueObject):
             return
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.force_fraction = True
+
+    def _get_format_specification(self):
+        return abjad.FormatSpecification(client=self)
 
     @staticmethod
     def _is_rest_filled_tuplet(tuplet):

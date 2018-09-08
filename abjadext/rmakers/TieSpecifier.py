@@ -5,7 +5,7 @@ import typing
 from . import typings
 
 
-class TieSpecifier(abjad.AbjadValueObject):
+class TieSpecifier(object):
     """
     Tie specifier.
     """
@@ -84,6 +84,36 @@ class TieSpecifier(abjad.AbjadValueObject):
         self._strip_ties_(divisions)
         self._configure_repeat_ties(divisions)
 
+    def __eq__(self, argument) -> bool:
+        """
+        Is true when all initialization values of Abjad value object equal
+        the initialization values of ``argument``.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
+    def __format__(self, format_specification='') -> str:
+        """
+        Formats Abjad object.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __hash__(self) -> int:
+        """
+        Hashes Abjad value object.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f'unhashable type: {self}')
+        return result
+
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
     ### PRIVATE METHODS ###
 
     def _configure_repeat_ties(self, divisions):
@@ -95,6 +125,9 @@ class TieSpecifier(abjad.AbjadValueObject):
             ties.update(ties_)
         for tie in ties:
             tie._repeat = self.repeat_ties
+
+    def _get_format_specification(self):
+        return abjad.FormatSpecification(client=self)
 
     def _strip_ties_(self, divisions):
         if not self.strip_ties:

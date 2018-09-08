@@ -10,7 +10,7 @@ from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
 
 
-class RhythmMaker(abjad.AbjadValueObject):
+class RhythmMaker(object):
     """
     Abstract rhythm-maker.
     """
@@ -101,6 +101,36 @@ class RhythmMaker(abjad.AbjadValueObject):
             divisions,
             )
         return lilypond_file
+
+    def __eq__(self, argument) -> bool:
+        """
+        Is true when all initialization values of Abjad value object equal
+        the initialization values of ``argument``.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
+    def __hash__(self) -> int:
+        """
+        Hashes Abjad value object.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f'unhashable type: {self}')
+        return result
+
+    def __format__(self, format_specification='') -> str:
+        """
+        Formats Abjad object.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
 
@@ -263,6 +293,9 @@ class RhythmMaker(abjad.AbjadValueObject):
         if self.duration_specifier is not None:
             return self.duration_specifier
         return DurationSpecifier()
+
+    def _get_format_specification(self):
+        return abjad.FormatSpecification(client=self)
 
     def _get_tie_specifier(self):
         if self.tie_specifier is not None:

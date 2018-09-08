@@ -2,7 +2,7 @@ import abjad
 import typing
 
 
-class InterpolationSpecifier(abjad.AbjadValueObject):
+class InterpolationSpecifier(object):
     """
     Interpolation specifier.
     """

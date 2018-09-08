@@ -2,7 +2,7 @@ import abjad
 import typing
 
 
-class InciseSpecifier(abjad.AbjadValueObject):
+class InciseSpecifier(object):
     """
     Incise specifier.
 
@@ -156,9 +156,7 @@ class InciseSpecifier(abjad.AbjadValueObject):
                 )
 
         """
-        return super(InciseSpecifier, self).__format__(
-            format_specification=format_specification,
-            )
+        return abjad.StorageFormatManager(self).get_storage_format()
 
     ### PRIVATE METHODS ###
 

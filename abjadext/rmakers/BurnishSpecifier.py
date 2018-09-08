@@ -3,7 +3,7 @@ import typing
 class_typing = typing.Union[int, type]
 
 
-class BurnishSpecifier(abjad.AbjadValueObject):
+class BurnishSpecifier(object):
     """
     Burnish specifier.
 
@@ -171,10 +171,7 @@ class BurnishSpecifier(abjad.AbjadValueObject):
                 )
 
         """
-        return abjad.AbjadValueObject.__format__(
-            self,
-            format_specification=format_specification,
-            )
+        return abjad.StorageFormatManager(self).get_storage_format()
 
     def __repr__(self) -> str:
         """
@@ -191,7 +188,7 @@ class BurnishSpecifier(abjad.AbjadValueObject):
             BurnishSpecifier(left_classes=[Rest, 0], left_counts=[1])
 
         """
-        return super(BurnishSpecifier, self).__repr__()
+        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
 

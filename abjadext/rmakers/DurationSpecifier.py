@@ -3,7 +3,7 @@ import typing
 from . import typings
 
 
-class DurationSpecifier(abjad.AbjadValueObject):
+class DurationSpecifier(object):
     """
     Duration specifier.
     """
@@ -77,10 +77,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
             abjadext.rmakers.DurationSpecifier()
 
         """
-        return abjad.AbjadValueObject.__format__(
-            self,
-            format_specification=format_specification,
-            )
+        return abjad.StorageFormatManager(self).get_storage_format()
 
     def __repr__(self) -> str:
         """
@@ -92,7 +89,7 @@ class DurationSpecifier(abjad.AbjadValueObject):
             DurationSpecifier()
 
         """
-        return super(DurationSpecifier, self).__repr__()
+        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
 

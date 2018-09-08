@@ -3,7 +3,7 @@ import inspect
 import typing
 
 
-class SustainMask(abjad.AbjadValueObject):
+class SustainMask(object):
     r"""
     Sustain mask.
 
@@ -171,6 +171,12 @@ class SustainMask(abjad.AbjadValueObject):
 
     ### SPECIAL METHODS ###
 
+    def __format__(self, format_specification='') -> str:
+        """
+        Formats Abjad object.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
     def __invert__(self) -> 'SustainMask':
         """
         Inverts pattern.
@@ -179,11 +185,17 @@ class SustainMask(abjad.AbjadValueObject):
         inverted = pattern.inverted or None
         return SustainMask.sustain(pattern.indices, pattern.period, inverted)
 
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
     ### PRIVATE METHODS ###
 
     def _get_format_specification(self):
         if self.template is None:
-            return super(SustainMask, self)._get_format_specification()
+            return abjad.FormatSpecification(client=self)
         return abjad.FormatSpecification(
             client=self,
             repr_is_indented=False,
