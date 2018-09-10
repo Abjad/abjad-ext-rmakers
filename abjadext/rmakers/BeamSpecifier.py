@@ -164,6 +164,8 @@ class BeamSpecifier(object):
     def _detach_all_beams(self, divisions, grace_notes=False):
         for leaf in abjad.iterate(divisions).leaves(grace_notes=grace_notes):
             abjad.detach(abjad.Beam, leaf)
+            abjad.detach(abjad.StartBeam, leaf)
+            abjad.detach(abjad.StopBeam, leaf)
 
     ### PUBLIC PROPERTIES ###
 
