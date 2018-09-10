@@ -585,8 +585,7 @@ class TaleaRhythmMaker(RhythmMaker):
             for division in secondary_divisions:
                 selection = leaf_maker([0], [division])
                 selections.append(selection)
-        beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections, tag=self.tag)
+        self._apply_beam_specifier(selections)
         if counts['talea']:
             self._apply_ties_to_split_notes(
                 selections,

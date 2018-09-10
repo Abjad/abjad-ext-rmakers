@@ -269,16 +269,8 @@ class IncisedRhythmMaker(RhythmMaker):
             message = 'should be tuplets or leaf selections: {!r}.'
             message = message.format(result)
             raise Exception(message)
-        beam_specifier = self._get_beam_specifier()
-        if beam_specifier.beam_divisions_together:
-            beam = abjad.Beam()
-            abjad.attach(beam, result)
-        elif beam_specifier.beam_each_division:
-            for x in result:
-                beam = abjad.Beam()
-                leaves = abjad.select(x).leaves()
-                abjad.attach(beam, leaves)
         selections = [abjad.select(_) for _ in result]
+        self._apply_beam_specifier(selections)
         selections = self._apply_division_masks(selections)
         duration_specifier = self._get_duration_specifier()
         if duration_specifier.rewrite_meter:

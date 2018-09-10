@@ -914,8 +914,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 tag=self.tag,
                 )
             selections.append(accelerando)
-        beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections, tag=self.tag)
+        self._apply_beam_specifier(selections)
         selections = self._apply_division_masks(selections)
         string = 'divisions_consumed'
         self.state[string] = self.previous_state.get(string, 0)

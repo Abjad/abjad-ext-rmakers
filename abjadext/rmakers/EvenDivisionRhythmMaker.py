@@ -514,8 +514,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             selection = abjad.Selection(tuplet)
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
-        beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections, tag=self.tag)
+        self._apply_beam_specifier(selections)
         selections = self._apply_division_masks(selections)
         return selections
 
