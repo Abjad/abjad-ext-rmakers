@@ -594,10 +594,17 @@ class TaleaRhythmMaker(RhythmMaker):
                 unscaled_talea,
                 )
         selections = self._handle_rest_tied_notes(selections)
+
         selections = self._apply_division_masks(selections)
-        specifier = self._get_duration_specifier()
-        if specifier.rewrite_meter:
-            selections = specifier._rewrite_meter_(selections, input_divisions)
+        duration_specifier = self._get_duration_specifier()
+        tie_specifier = self._get_tie_specifier()
+        if duration_specifier.rewrite_meter:
+            selections = duration_specifier._rewrite_meter_(
+                selections,
+                input_divisions,
+                repeat_ties=tie_specifier.repeat_ties,
+                )
+
         string = 'divisions_consumed'
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += len(divisions)

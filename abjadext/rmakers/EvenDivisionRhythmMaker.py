@@ -515,6 +515,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
         selections = self._apply_division_masks(selections)
+
+        duration_specifier = self._get_duration_specifier()
+        tie_specifier = self._get_tie_specifier()
+        if duration_specifier.rewrite_meter:
+            selections = duration_specifier._rewrite_meter_(
+                selections,
+                input_divisions,
+                repeat_ties=tie_specifier.repeat_ties,
+                )
+
         return selections
 
     ### PUBLIC PROPERTIES ###

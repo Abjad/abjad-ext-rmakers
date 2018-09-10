@@ -244,6 +244,7 @@ class NoteRhythmMaker(RhythmMaker):
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
         #self._apply_beam_specifier(selections)
+
         selections = self._apply_division_masks(selections)
         if duration_specifier.rewrite_meter:
             selections = duration_specifier._rewrite_meter_(
@@ -251,6 +252,7 @@ class NoteRhythmMaker(RhythmMaker):
                 divisions,
                 repeat_ties=tie_specifier.repeat_ties,
                 )
+
         return selections
 
     ### PUBLIC PROPERTIES ###

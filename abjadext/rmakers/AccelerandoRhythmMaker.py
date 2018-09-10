@@ -915,7 +915,18 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 )
             selections.append(accelerando)
         #self._apply_beam_specifier(selections)
+
         selections = self._apply_division_masks(selections)
+        selections = self._apply_division_masks(selections)
+        duration_specifier = self._get_duration_specifier()
+        tie_specifier = self._get_tie_specifier()
+        if duration_specifier.rewrite_meter:
+            selections = duration_specifier._rewrite_meter_(
+                selections,
+                input_divisions,
+                repeat_ties=tie_specifier.repeat_ties,
+                )
+
         string = 'divisions_consumed'
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += len(divisions)
