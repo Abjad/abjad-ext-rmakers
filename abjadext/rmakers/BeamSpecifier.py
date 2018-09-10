@@ -125,12 +125,18 @@ class BeamSpecifier(object):
             abjad.attach(beam, leaves, tag=tag)
         elif self.beam_each_division:
             for selection in selections:
+                leaves = abjad.select(selection).leaves(grace_notes=False)
                 beam = abjad.Beam(
                     beam_rests=self.beam_rests,
                     stemlet_length=self.stemlet_length,
                     )
-                leaves = abjad.select(selection).leaves(grace_notes=False)
                 abjad.attach(beam, leaves, tag=tag)
+                # TODO:
+                #abjad.beam(
+                #    leaves,
+                #    beam_rests=self.beam_rests,
+                #    stemlet_length=self.stemlet_length,
+                #    )
 
     def __format__(self, format_specification='') -> str:
         """

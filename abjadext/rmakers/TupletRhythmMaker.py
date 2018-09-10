@@ -382,7 +382,7 @@ class TupletRhythmMaker(RhythmMaker):
                 )
             tuplets.append(tuplet)
         selections = [abjad.select(_) for _ in tuplets]
-        self._apply_beam_specifier(selections)
+        #self._apply_beam_specifier(selections)
         selections = self._apply_division_masks(selections)
         return selections
 

@@ -243,6 +243,7 @@ class RhythmMaker(object):
             selections,
             divisions,
             )
+        self._apply_beam_specifier(selections)
         self._apply_tie_specifier(selections)
         selections = self._apply_logical_tie_masks(selections)
         self._validate_selections(selections)
