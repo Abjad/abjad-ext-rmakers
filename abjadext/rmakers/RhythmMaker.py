@@ -240,18 +240,9 @@ class RhythmMaker(object):
         return new_selections
 
     def _apply_specifiers(self, selections, divisions=None):
-
         # TODO:
         #selections = self._apply_division_masks(selections)
-        #duration_specifier = self._get_duration_specifier()
-        #tie_specifier = self._get_tie_specifier()
-        #if duration_specifier.rewrite_meter:
-        #    selections = duration_specifier._rewrite_meter_(
-        #        selections,
-        #        input_divisions,
-        #        repeat_ties=tie_specifier.repeat_ties,
-        #        )
-
+        #selections = self._rewrite_meter(selections, divisions)
         selections = self._apply_tuplet_specifier(
             selections,
             divisions,
@@ -427,6 +418,17 @@ class RhythmMaker(object):
     def _reverse_tuple(argument):
         if argument is not None:
             return tuple(reversed(argument))
+
+    def _rewrite_meter(self, selections, divisions):
+        duration_specifier = self._get_duration_specifier()
+        if duration_specifier.rewrite_meter:
+            tie_specifier = self._get_tie_specifier()
+            selections = duration_specifier._rewrite_meter_(
+                selections,
+                divisions,
+                repeat_ties=tie_specifier.repeat_ties,
+                )
+        return selections
 
     def _scale_counts(self, divisions, talea_denominator, counts):
         talea_denominator = talea_denominator or 1

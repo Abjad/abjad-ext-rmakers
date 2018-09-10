@@ -585,7 +585,6 @@ class TaleaRhythmMaker(RhythmMaker):
             for division in secondary_divisions:
                 selection = leaf_maker([0], [division])
                 selections.append(selection)
-        #self._apply_beam_specifier(selections)
         if counts['talea']:
             self._apply_ties_to_split_notes(
                 selections,
@@ -594,17 +593,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 unscaled_talea,
                 )
         selections = self._handle_rest_tied_notes(selections)
-
         selections = self._apply_division_masks(selections)
-        duration_specifier = self._get_duration_specifier()
-        tie_specifier = self._get_tie_specifier()
-        if duration_specifier.rewrite_meter:
-            selections = duration_specifier._rewrite_meter_(
-                selections,
-                input_divisions,
-                repeat_ties=tie_specifier.repeat_ties,
-                )
-
+        selections = self._rewrite_meter(selections, input_divisions)
         if talea and talea_weight_consumed not in advanced_talea:
             last_leaf = abjad.inspect(selections).leaf(-1)
             if isinstance(last_leaf, abjad.Note):

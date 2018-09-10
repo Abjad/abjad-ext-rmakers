@@ -243,16 +243,8 @@ class NoteRhythmMaker(RhythmMaker):
                 abjad.attach(tie, selection[:])
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
-        #self._apply_beam_specifier(selections)
-
         selections = self._apply_division_masks(selections)
-        if duration_specifier.rewrite_meter:
-            selections = duration_specifier._rewrite_meter_(
-                selections,
-                divisions,
-                repeat_ties=tie_specifier.repeat_ties,
-                )
-
+        selections = self._rewrite_meter(selections, divisions)
         return selections
 
     ### PUBLIC PROPERTIES ###

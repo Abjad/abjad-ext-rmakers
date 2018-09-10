@@ -269,17 +269,8 @@ class IncisedRhythmMaker(RhythmMaker):
             message = f'should be tuplets or leaf selections: {result!r}.'
             raise Exception(message)
         selections = [abjad.select(_) for _ in result]
-
         selections = self._apply_division_masks(selections)
-        duration_specifier = self._get_duration_specifier()
-        tie_specifier = self._get_tie_specifier()
-        if duration_specifier.rewrite_meter:
-            selections = duration_specifier._rewrite_meter_(
-                selections,
-                input_divisions,
-                repeat_ties=tie_specifier.repeat_ties,
-                )
-
+        selections = self._rewrite_meter(selections, divisions)
         return selections
 
     def _make_numeric_map_part(
