@@ -917,7 +917,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
         #self._apply_beam_specifier(selections)
 
         selections = self._apply_division_masks(selections)
-        selections = self._apply_division_masks(selections)
         duration_specifier = self._get_duration_specifier()
         tie_specifier = self._get_tie_specifier()
         if duration_specifier.rewrite_meter:
@@ -927,13 +926,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 repeat_ties=tie_specifier.repeat_ties,
                 )
 
-        string = 'divisions_consumed'
-        self.state[string] = self.previous_state.get(string, 0)
-        self.state[string] += len(divisions)
-        previous_logical_ties_produced = self._previous_logical_ties_produced()
-        logical_ties_produced = len(abjad.select(selections).logical_ties())
-        logical_ties_produced += previous_logical_ties_produced
-        self.state['logical_ties_produced'] = logical_ties_produced
         return selections
 
     @staticmethod

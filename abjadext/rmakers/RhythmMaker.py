@@ -85,6 +85,7 @@ class RhythmMaker(object):
         self._previous_state = abjad.OrderedDict(previous_state)
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
+        self._cache_state(selections, divisions)
         selections = self._apply_specifiers(selections, divisions)
         #self._check_wellformedness(selections)
         return selections
@@ -270,6 +271,20 @@ class RhythmMaker(object):
         tuplet_specifier = self._get_tuplet_specifier()
         selections = tuplet_specifier(selections, divisions)
         return selections
+
+    def _cache_state(self, selections, divisions):
+        string = 'divisions_consumed'
+        self.state[string] = self.previous_state.get(string, 0)
+        self.state[string] += len(divisions)
+        previous_logical_ties_produced = self._previous_logical_ties_produced()
+        logical_ties_produced = len(abjad.select(selections).logical_ties())
+        logical_ties_produced += previous_logical_ties_produced
+        if self._previous_incomplete_last_note():
+            logical_ties_produced -= 1
+        self.state['logical_ties_produced'] = logical_ties_produced
+        items = self.state.items()
+        state = abjad.OrderedDict(sorted(items))
+        self._state = state
 
 #    def _check_wellformedness(self, selections):
 #        for component in abjad.iterate(selections).components():

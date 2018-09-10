@@ -605,25 +605,14 @@ class TaleaRhythmMaker(RhythmMaker):
                 repeat_ties=tie_specifier.repeat_ties,
                 )
 
-        string = 'divisions_consumed'
-        self.state[string] = self.previous_state.get(string, 0)
-        self.state[string] += len(divisions)
         if talea and talea_weight_consumed not in advanced_talea:
             last_leaf = abjad.inspect(selections).leaf(-1)
             if isinstance(last_leaf, abjad.Note):
                 self.state['incomplete_last_note'] = True
-        previous_logical_ties_produced = self._previous_logical_ties_produced()
-        logical_ties_produced = len(abjad.select(selections).logical_ties())
-        logical_ties_produced += previous_logical_ties_produced
-        if self._previous_incomplete_last_note():
-            logical_ties_produced -= 1
-        self.state['logical_ties_produced'] = logical_ties_produced
         string = 'talea_weight_consumed'
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += talea_weight_consumed
-        items = self.state.items()
-        state = abjad.OrderedDict(sorted(items))
-        self._state = state
+
         return selections
 
     def _make_numeric_map(
