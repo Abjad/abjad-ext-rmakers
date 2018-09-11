@@ -914,8 +914,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 tag=self.tag,
                 )
             selections.append(accelerando)
-        selections = self._apply_division_masks(selections)
-        selections = self._rewrite_meter(selections, divisions)
         return selections
 
     @staticmethod

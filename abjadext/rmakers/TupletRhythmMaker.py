@@ -382,8 +382,6 @@ class TupletRhythmMaker(RhythmMaker):
                 )
             tuplets.append(tuplet)
         selections = [abjad.select(_) for _ in tuplets]
-        selections = self._apply_division_masks(selections)
-        selections = self._rewrite_meter(selections, divisions)
         return selections
 
     ### PUBLIC PROPERTIES ###

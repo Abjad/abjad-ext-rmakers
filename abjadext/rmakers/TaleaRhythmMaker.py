@@ -593,8 +593,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 unscaled_talea,
                 )
         selections = self._handle_rest_tied_notes(selections)
-        selections = self._apply_division_masks(selections)
-        selections = self._rewrite_meter(selections, input_divisions)
         if talea and talea_weight_consumed not in advanced_talea:
             last_leaf = abjad.inspect(selections).leaf(-1)
             if isinstance(last_leaf, abjad.Note):
@@ -602,7 +600,6 @@ class TaleaRhythmMaker(RhythmMaker):
         string = 'talea_weight_consumed'
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += talea_weight_consumed
-
         return selections
 
     def _make_numeric_map(

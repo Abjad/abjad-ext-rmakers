@@ -85,6 +85,10 @@ class RhythmMaker(object):
         self._previous_state = abjad.OrderedDict(previous_state)
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
+        selections = self._apply_tuplet_specifier(selections, divisions)
+        self._apply_beam_specifier(selections)
+        selections = self._apply_division_masks(selections)
+        selections = self._rewrite_meter(selections, divisions)
         self._cache_state(selections, divisions)
         selections = self._apply_specifiers(selections, divisions)
         #self._check_wellformedness(selections)
@@ -240,14 +244,6 @@ class RhythmMaker(object):
         return new_selections
 
     def _apply_specifiers(self, selections, divisions=None):
-        # TODO:
-        #selections = self._apply_division_masks(selections)
-        #selections = self._rewrite_meter(selections, divisions)
-        selections = self._apply_tuplet_specifier(
-            selections,
-            divisions,
-            )
-        self._apply_beam_specifier(selections)
         self._apply_tie_specifier(selections)
         selections = self._apply_logical_tie_masks(selections)
         self._validate_selections(selections)
@@ -258,7 +254,7 @@ class RhythmMaker(object):
         tie_specifier = self._get_tie_specifier()
         tie_specifier(selections)
 
-    def _apply_tuplet_specifier(self, selections, divisions):
+    def _apply_tuplet_specifier(self, selections, divisions=None):
         tuplet_specifier = self._get_tuplet_specifier()
         selections = tuplet_specifier(selections, divisions)
         return selections
