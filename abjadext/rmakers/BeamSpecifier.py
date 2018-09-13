@@ -97,11 +97,6 @@ class BeamSpecifier(object):
         """
         Calls beam specifier on ``selections``.
         """
-
-        #_ll = abjad.select(selections).leaves()
-        #print(selections, 'AAA1')
-        #print(_ll, 'AAA2', len(_ll))
-
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
 
@@ -109,14 +104,6 @@ class BeamSpecifier(object):
             for selection in selections:
                 duration = abjad.inspect(selection).duration()
                 durations.append(duration)
-
-#            beam = abjad.Beam(
-#                beam_rests=self.beam_rests,
-#                durations=durations,
-#                span_beam_count=1,
-#                stemlet_length=self.stemlet_length,
-#                )
-
             components: typing.List[abjad.Component] = []
             for selection in selections:
                 if isinstance(selection, abjad.Selection):
@@ -127,8 +114,6 @@ class BeamSpecifier(object):
                     raise TypeError(selection)
             # TODO: possibly do_not_iterate_grace_containers=True instead?
             leaves = abjad.select(components).leaves(grace_notes=False)
-            #abjad.attach(beam, leaves, tag=tag)
-            #print(leaves, 'AAA-together', len(leaves))
             abjad.beam(
                 leaves,
                 beam_lone_notes=self.beam_lone_notes,
@@ -142,13 +127,6 @@ class BeamSpecifier(object):
             for selection in selections:
                 # TODO: possibly do_not_iterate_grace_containers=True instead?
                 leaves = abjad.select(selection).leaves(grace_notes=False)
-#                beam = abjad.Beam(
-#                    beam_rests=self.beam_rests,
-#                    stemlet_length=self.stemlet_length,
-#                    )
-#                abjad.attach(beam, leaves, tag=tag)
-#                # TODO:
-                #print(leaves, 'AAA-each', len(leaves))
                 abjad.beam(
                     leaves,
                     beam_lone_notes=self.beam_lone_notes,
@@ -190,7 +168,6 @@ class BeamSpecifier(object):
     @staticmethod
     def _detach_all_beams(divisions, grace_notes=False):
         for leaf in abjad.iterate(divisions).leaves(grace_notes=grace_notes):
-            abjad.detach(abjad.Beam, leaf)
             abjad.detach(abjad.BeamCount, leaf)
             abjad.detach(abjad.StartBeam, leaf)
             abjad.detach(abjad.StopBeam, leaf)
