@@ -52,8 +52,8 @@ class BeamSpecifier(object):
     __slots__ = (
         '_beam_divisions_together',
         '_beam_each_division',
+        '_beam_lone_notes',
         '_beam_rests',
-        '_hide_nibs',
         '_stemlet_length',
         '_use_feather_beams',
         )
@@ -67,8 +67,8 @@ class BeamSpecifier(object):
         *,
         beam_each_division: bool = True,
         beam_divisions_together: bool = None,
+        beam_lone_notes: bool = None,
         beam_rests: bool = None,
-        hide_nibs: bool = None,
         stemlet_length: typing.Union[int, float] = None,
         use_feather_beams: bool = None,
         ) -> None:
@@ -78,12 +78,12 @@ class BeamSpecifier(object):
         if beam_divisions_together is not None:
             beam_divisions_together = bool(beam_divisions_together)
         self._beam_divisions_together = beam_divisions_together
+        if beam_lone_notes is not None:
+            beam_lone_notes = bool(beam_lone_notes)
+        self._beam_lone_notes = beam_lone_notes
         if beam_rests is not None:
             beam_rests = bool(beam_rests)
         self._beam_rests = beam_rests
-        if hide_nibs is not None:
-            hide_nibs = bool(hide_nibs)
-        self._hide_nibs = hide_nibs
         if stemlet_length is not None:
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
@@ -97,22 +97,26 @@ class BeamSpecifier(object):
         """
         Calls beam specifier on ``selections``.
         """
-        beam: typing.Optional[abjad.Beam] = None
+
+        #_ll = abjad.select(selections).leaves()
+        #print(selections, 'AAA1')
+        #print(_ll, 'AAA2', len(_ll))
+
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
-            if self.hide_nibs:
-                beam = abjad.Beam(beam_rests=self.beam_rests)
-            else:
-                durations = []
-                for selection in selections:
-                    duration = abjad.inspect(selection).duration()
-                    durations.append(duration)
-                beam = abjad.Beam(
-                    beam_rests=self.beam_rests,
-                    durations=durations,
-                    span_beam_count=1,
-                    stemlet_length=self.stemlet_length,
-                    )
+
+            durations = []
+            for selection in selections:
+                duration = abjad.inspect(selection).duration()
+                durations.append(duration)
+
+#            beam = abjad.Beam(
+#                beam_rests=self.beam_rests,
+#                durations=durations,
+#                span_beam_count=1,
+#                stemlet_length=self.stemlet_length,
+#                )
+
             components: typing.List[abjad.Component] = []
             for selection in selections:
                 if isinstance(selection, abjad.Selection):
@@ -121,22 +125,37 @@ class BeamSpecifier(object):
                     components.append(selection)
                 else:
                     raise TypeError(selection)
+            # TODO: possibly do_not_iterate_grace_containers=True instead?
             leaves = abjad.select(components).leaves(grace_notes=False)
-            abjad.attach(beam, leaves, tag=tag)
+            #abjad.attach(beam, leaves, tag=tag)
+            #print(leaves, 'AAA-together', len(leaves))
+            abjad.beam(
+                leaves,
+                beam_lone_notes=self.beam_lone_notes,
+                beam_rests=self.beam_rests,
+                durations=durations,
+                span_beam_count=1,
+                stemlet_length=self.stemlet_length,
+                tag=tag,
+                )
         elif self.beam_each_division:
             for selection in selections:
+                # TODO: possibly do_not_iterate_grace_containers=True instead?
                 leaves = abjad.select(selection).leaves(grace_notes=False)
-                beam = abjad.Beam(
+#                beam = abjad.Beam(
+#                    beam_rests=self.beam_rests,
+#                    stemlet_length=self.stemlet_length,
+#                    )
+#                abjad.attach(beam, leaves, tag=tag)
+#                # TODO:
+                #print(leaves, 'AAA-each', len(leaves))
+                abjad.beam(
+                    leaves,
+                    beam_lone_notes=self.beam_lone_notes,
                     beam_rests=self.beam_rests,
                     stemlet_length=self.stemlet_length,
+                    tag=tag,
                     )
-                abjad.attach(beam, leaves, tag=tag)
-                # TODO:
-                #abjad.beam(
-                #    leaves,
-                #    beam_rests=self.beam_rests,
-                #    stemlet_length=self.stemlet_length,
-                #    )
 
     def __format__(self, format_specification='') -> str:
         """
@@ -167,11 +186,49 @@ class BeamSpecifier(object):
 
     ### PRIVATE METHODS ###
 
-    def _detach_all_beams(self, divisions, grace_notes=False):
+    # TODO: possibly do_not_iterate_grace_containers=True instead?
+    @staticmethod
+    def _detach_all_beams(divisions, grace_notes=False):
         for leaf in abjad.iterate(divisions).leaves(grace_notes=grace_notes):
             abjad.detach(abjad.Beam, leaf)
+            abjad.detach(abjad.BeamCount, leaf)
             abjad.detach(abjad.StartBeam, leaf)
             abjad.detach(abjad.StopBeam, leaf)
+
+    @staticmethod
+    def _make_beamable_groups(components, durations):
+        assert abjad.inspect(components).duration() == sum(durations)
+        component_to_timespan = []
+        start_offset = abjad.Offset(0)
+        for component in components:
+            duration = abjad.inspect(component).duration()
+            stop_offset = start_offset + duration
+            timespan = abjad.Timespan(start_offset, stop_offset)
+            pair = (component, timespan)
+            component_to_timespan.append(pair)
+            start_offset = stop_offset
+        group_to_target_duration = []
+        start_offset = abjad.Offset(0)
+        for target_duration in durations:
+            stop_offset = start_offset + target_duration
+            group_timespan = abjad.Timespan(start_offset, stop_offset)
+            start_offset = stop_offset
+            group = []
+            for component, component_timespan in component_to_timespan:
+                if component_timespan.happens_during_timespan(group_timespan):
+                    group.append(component)
+            selection = abjad.select(group)
+            pair = (selection, target_duration)
+            group_to_target_duration.append(pair)
+        beamable_groups = []
+        for group, target_duration in group_to_target_duration:
+            group_duration = abjad.inspect(group).duration()
+            assert group_duration <= target_duration
+            if group_duration == target_duration:
+                beamable_groups.append(group)
+            else:
+                beamable_groups.append(abjad.select([]))
+        return beamable_groups
 
     ### PUBLIC PROPERTIES ###
 
@@ -261,11 +318,11 @@ class BeamSpecifier(object):
                     \set stemRightBeamCount = 1
                     c'16
                     \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 1
+                    \set stemRightBeamCount = 0
                     c'8
                     ]
                     r8
-                    \set stemLeftBeamCount = 1
+                    \set stemLeftBeamCount = 0
                     \set stemRightBeamCount = 1
                     c'8
                     [
@@ -476,6 +533,13 @@ class BeamSpecifier(object):
         return self._beam_each_division
 
     @property
+    def beam_lone_notes(self) -> typing.Optional[bool]:
+        """
+        Is true when specifier beams lone notes.
+        """
+        return self._beam_lone_notes
+
+    @property
     def beam_rests(self) -> typing.Optional[bool]:
         r"""
         Is true when beams should include rests.
@@ -607,113 +671,6 @@ class BeamSpecifier(object):
 
         """
         return self._beam_rests
-
-    @property
-    def hide_nibs(self) -> typing.Optional[bool]:
-        r"""
-        Is true when specifier hides nibs.
-
-        ..  container:: example
-
-            Does not hide nibs:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 r c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_divisions_together=True,
-            ...     beam_rests=False,
-            ...     )
-            >>> specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    \set stemLeftBeamCount = 0
-                    \set stemRightBeamCount = 1
-                    c'8
-                    [
-                    ]
-                    r8
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    [
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 1
-                    c'8
-                    ]
-                    r8
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 1
-                    c'8
-                    [
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 0
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Hides nibs:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 r c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_divisions_together=True,
-            ...     beam_rests=False,
-            ...     hide_nibs=True,
-            ...     )
-            >>> specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    r8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ]
-                    r8
-                    c'8
-                    [
-                    c'8
-                    ]
-                }
-
-        """
-        return self._hide_nibs
 
     @property
     def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:

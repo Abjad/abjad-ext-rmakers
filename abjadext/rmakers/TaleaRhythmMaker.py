@@ -1230,17 +1230,17 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \new RhythmicStaff
                     {
-                        \override RhythmicStaff.Stem.stemlet-length = 0.75
+                        \override Staff.Stem.stemlet-length = 0.75
                         c'16
                         [
                         c'16
                         c'16
                         r16
                         c'16
-                        \revert RhythmicStaff.Stem.stemlet-length
+                        \revert Staff.Stem.stemlet-length
                         c'16
                         ]
-                        \override RhythmicStaff.Stem.stemlet-length = 0.75
+                        \override Staff.Stem.stemlet-length = 0.75
                         c'16
                         [
                         r16
@@ -1249,20 +1249,20 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'16
                         r16
                         c'16
-                        \revert RhythmicStaff.Stem.stemlet-length
+                        \revert Staff.Stem.stemlet-length
                         c'16
                         ]
-                        \override RhythmicStaff.Stem.stemlet-length = 0.75
+                        \override Staff.Stem.stemlet-length = 0.75
                         c'16
                         [
                         r16
                         c'16
                         c'16
                         c'16
-                        \revert RhythmicStaff.Stem.stemlet-length
+                        \revert Staff.Stem.stemlet-length
                         r16
                         ]
-                        \override RhythmicStaff.Stem.stemlet-length = 0.75
+                        \override Staff.Stem.stemlet-length = 0.75
                         c'16
                         [
                         c'16
@@ -1271,7 +1271,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'16
                         c'16
                         c'16
-                        \revert RhythmicStaff.Stem.stemlet-length
+                        \revert Staff.Stem.stemlet-length
                         r16
                         ]
                     }

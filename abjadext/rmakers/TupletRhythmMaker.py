@@ -514,11 +514,11 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8.
                             [
                             \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 1
+                            \set stemRightBeamCount = 0
                             c'8.
                             ]
                             c'4.
-                            \set stemLeftBeamCount = 1
+                            \set stemLeftBeamCount = 0
                             \set stemRightBeamCount = 1
                             c'8.
                             [
@@ -530,7 +530,7 @@ class TupletRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5 {
                             c'4.
-                            \set stemLeftBeamCount = 1
+                            \set stemLeftBeamCount = 0
                             \set stemRightBeamCount = 1
                             c'8
                             [
@@ -544,11 +544,11 @@ class TupletRhythmMaker(RhythmMaker):
                             \set stemRightBeamCount = 1
                             c'8
                             \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 1
+                            \set stemRightBeamCount = 0
                             c'8
                             ]
                             c'4
-                            \set stemLeftBeamCount = 1
+                            \set stemLeftBeamCount = 0
                             \set stemRightBeamCount = 1
                             c'8
                             [
@@ -559,7 +559,7 @@ class TupletRhythmMaker(RhythmMaker):
                         }
                         \times 4/5 {
                             c'4.
-                            \set stemLeftBeamCount = 1
+                            \set stemLeftBeamCount = 0
                             \set stemRightBeamCount = 1
                             c'8
                             [

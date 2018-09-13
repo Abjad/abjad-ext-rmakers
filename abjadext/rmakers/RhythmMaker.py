@@ -86,7 +86,6 @@ class RhythmMaker(object):
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
         selections = self._apply_tuplet_specifier(selections, divisions)
-        self._apply_beam_specifier(selections)
         selections = self._apply_division_masks(selections)
         selections = self._rewrite_meter(selections, divisions)
         self._cache_state(selections, divisions)
@@ -246,6 +245,7 @@ class RhythmMaker(object):
     def _apply_specifiers(self, selections, divisions=None):
         self._apply_tie_specifier(selections)
         selections = self._apply_logical_tie_masks(selections)
+        self._apply_beam_specifier(selections)
         self._validate_selections(selections)
         self._validate_tuplets(selections)
         return selections

@@ -2971,7 +2971,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     }
                             }
                         \times 1/1 {
-                            \override RhythmicStaff.Stem.stemlet-length = 0.75
+                            \override Staff.Stem.stemlet-length = 0.75
                             r16 * 61/32
                             [
                             c'16 * 115/64
@@ -2980,7 +2980,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                             c'16 * 33/32
                             c'16 * 57/64
                             c'16 * 13/16
-                            \revert RhythmicStaff.Stem.stemlet-length
+                            \revert Staff.Stem.stemlet-length
                             c'16 * 25/32
                             ]
                         }
@@ -3025,15 +3025,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     }
                             }
                         \times 1/1 {
-                            \override RhythmicStaff.Stem.stemlet-length = 0.75
                             \once \override Beam.grow-direction = #left
+                            \override Staff.Stem.stemlet-length = 0.75
                             c'16 * 5/8
                             [
                             c'16 * 43/64
                             c'16 * 51/64
                             c'16 * 65/64
                             c'16 * 85/64
-                            \revert RhythmicStaff.Stem.stemlet-length
+                            \revert Staff.Stem.stemlet-length
                             c'16 * 25/16
                             ]
                         }
@@ -3080,8 +3080,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     }
                             }
                         \times 1/1 {
-                            \override RhythmicStaff.Stem.stemlet-length = 0.75
                             \once \override Beam.grow-direction = #right
+                            \override Staff.Stem.stemlet-length = 0.75
                             c'16 * 61/32
                             [
                             c'16 * 115/64
@@ -3090,7 +3090,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                             c'16 * 33/32
                             c'16 * 57/64
                             c'16 * 13/16
-                            \revert RhythmicStaff.Stem.stemlet-length
+                            \revert Staff.Stem.stemlet-length
                             c'16 * 25/32
                             ]
                         }
@@ -3135,15 +3135,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     }
                             }
                         \times 1/1 {
-                            \override RhythmicStaff.Stem.stemlet-length = 0.75
                             \once \override Beam.grow-direction = #left
+                            \override Staff.Stem.stemlet-length = 0.75
                             c'16 * 5/8
                             [
                             c'16 * 43/64
                             c'16 * 51/64
                             c'16 * 65/64
                             c'16 * 85/64
-                            \revert RhythmicStaff.Stem.stemlet-length
+                            \revert Staff.Stem.stemlet-length
                             r16 * 25/16
                             ]
                         }
@@ -3250,8 +3250,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     }
                             }
                         \times 1/1 {
-                            \override RhythmicStaff.Stem.stemlet-length = 0.75
                             \once \override Beam.grow-direction = #right
+                            \override Staff.Stem.stemlet-length = 0.75
                             c'16 * 61/32
                             [
                             c'16 * 115/64
@@ -3260,7 +3260,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                             c'16 * 33/32
                             r16 * 57/64
                             c'16 * 13/16
-                            \revert RhythmicStaff.Stem.stemlet-length
+                            \revert Staff.Stem.stemlet-length
                             c'16 * 25/32
                             ]
                         }
@@ -3305,14 +3305,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     }
                             }
                         \times 1/1 {
-                            \override RhythmicStaff.Stem.stemlet-length = 0.75
+                            \override Staff.Stem.stemlet-length = 0.75
                             r16 * 5/8
                             [
                             c'16 * 43/64
                             c'16 * 51/64
                             r16 * 65/64
                             c'16 * 85/64
-                            \revert RhythmicStaff.Stem.stemlet-length
+                            \revert Staff.Stem.stemlet-length
                             c'16 * 25/16
                             ]
                         }
@@ -3359,7 +3359,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     }
                             }
                         \times 1/1 {
-                            \override RhythmicStaff.Stem.stemlet-length = 0.75
+                            \override Staff.Stem.stemlet-length = 0.75
                             r16 * 61/32
                             [
                             c'16 * 115/64
@@ -3368,7 +3368,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                             c'16 * 33/32
                             c'16 * 57/64
                             r16 * 13/16
-                            \revert RhythmicStaff.Stem.stemlet-length
+                            \revert Staff.Stem.stemlet-length
                             c'16 * 25/32
                             ]
                         }
@@ -3413,15 +3413,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     }
                             }
                         \times 1/1 {
-                            \override RhythmicStaff.Stem.stemlet-length = 0.75
                             \once \override Beam.grow-direction = #left
+                            \override Staff.Stem.stemlet-length = 0.75
                             c'16 * 5/8
                             [
                             r16 * 43/64
                             c'16 * 51/64
                             c'16 * 65/64
                             r16 * 85/64
-                            \revert RhythmicStaff.Stem.stemlet-length
+                            \revert Staff.Stem.stemlet-length
                             c'16 * 25/16
                             ]
                         }

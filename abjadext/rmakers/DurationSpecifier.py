@@ -1,6 +1,7 @@
 import abjad
 import typing
 from . import typings
+from .BeamSpecifier import BeamSpecifier
 
 
 class DurationSpecifier(object):
@@ -123,11 +124,40 @@ class DurationSpecifier(object):
                 if str(reference_meter) == str(meter):
                     meter = reference_meter
                     break
+
+            nontupletted_leaves = []
+            for leaf in abjad.iterate(container).leaves():
+                if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
+                    nontupletted_leaves.append(leaf)
+            BeamSpecifier._detach_all_beams(nontupletted_leaves)
+
             abjad.mutate(container[:]).rewrite_meter(
                 meter,
                 rewrite_tuplets=rewrite_tuplets,
                 repeat_ties=repeat_ties,
                 )
+            leaves = abjad.select(container).leaves(
+                do_not_iterate_grace_containers=True,
+                )
+            beat_durations = []
+            beat_offsets = meter.depthwise_offset_inventory[1]
+            for start, stop in abjad.sequence(beat_offsets).nwise():
+                beat_duration = stop - start
+                beat_durations.append(beat_duration)
+            beamable_groups = BeamSpecifier._make_beamable_groups(
+                leaves,
+                beat_durations,
+                )
+            #print(leaves, 'LEAVES')
+            #print(beat_durations, 'BEATS')
+            for beamable_group in beamable_groups:
+                if not beamable_group:
+                    continue
+                abjad.beam(
+                    beamable_group,
+                    beam_rests=False,
+                    tag='Duration_Specifier__rewrite_meter_',
+                    )
         selections = []
         for container in staff:
             selection = container[:]
