@@ -408,6 +408,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 assert leaf is tie[-1]
                 leaves = tie.leaves[:-1]
                 abjad.detach(abjad.Tie, leaf)
+                abjad.detach(abjad.TieIndicator, leaf)
+                abjad.detach(abjad.RepeatTie, leaf)
                 if 2 <= len(leaves):
                     tie = abjad.new(tie)
                     abjad.attach(tie, leaves)
@@ -448,6 +450,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     rest = abjad.Rest(note)
                     abjad.mutate(note).replace(rest)
                 abjad.detach(abjad.Tie, logical_tie.head)
+                abjad.detach(abjad.TieIndicator, logical_tie.head)
+                abjad.detach(abjad.RepeatTie, logical_tie.head)
         # remove every temporary container and recreate selections
         new_selections = []
         for container in containers:

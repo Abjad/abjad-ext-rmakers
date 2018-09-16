@@ -135,6 +135,8 @@ class TieSpecifier(object):
         for division in divisions:
             for leaf in abjad.iterate(division).leaves():
                 abjad.detach(abjad.Tie, leaf)
+                abjad.detach(abjad.TieIndicator, leaf)
+                abjad.detach(abjad.RepeatTie, leaf)
 
     def _tie_across_divisions_(self, divisions):
         if not self.tie_across_divisions:
@@ -173,6 +175,8 @@ class TieSpecifier(object):
             combined_logical_tie = logical_tie_one + logical_tie_two
             for leaf in combined_logical_tie:
                 abjad.detach(abjad.Tie, leaf)
+                abjad.detach(abjad.TieIndicator, leaf)
+                abjad.detach(abjad.RepeatTie, leaf)
             tie = abjad.Tie(repeat=self.repeat_ties)
             tie._unconstrain_contiguity()
             if tie._attachment_test_all(combined_logical_tie) is True:
@@ -186,6 +190,8 @@ class TieSpecifier(object):
         leaves = list(abjad.iterate(divisions).leaves())
         for leaf in leaves:
             abjad.detach(abjad.Tie, leaf)
+            abjad.detach(abjad.TieIndicator, leaf)
+            abjad.detach(abjad.RepeatTie, leaf)
         pairs = itertools.groupby(leaves, lambda _: _.__class__)
         def _get_pitches(component):
             if isinstance(component, abjad.Note):
