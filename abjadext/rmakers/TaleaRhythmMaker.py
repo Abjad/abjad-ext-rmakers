@@ -387,31 +387,23 @@ class TaleaRhythmMaker(RhythmMaker):
                 continue
             part = abjad.select(part)
             tie = abjad.Tie()
-            # voodoo to temporarily neuter the contiguity constraint
-            tie._unconstrain_contiguity()
-            for component in part:
-                # TODO: make top-level abjad.detach() work here
-                for spanner in component._get_spanners(abjad.Tie):
-                    spanner._sever_all_leaves()
-                #abjad.detach(abjad.Tie, component)
-            # TODO: remove usage of Spanner._extend()
-            tie._extend(part)
-            tie._constrain_contiguity()
+            leaves = abjad.select(part).leaves()
+            abjad.attach(tie, leaves)
         # TODO: this will need to be generalized and better tested:
         if unscaled_end_counts:
             total = len(unscaled_end_counts)
             end_leaves = leaves[-total:]
             for leaf in reversed(end_leaves):
-                tie = abjad.inspect(leaf).spanner(abjad.Tie)
-                if tie is None:
+                logical_tie = abjad.inspect(leaf).logical_tie()
+                if logical_tie.is_trivial:
                     continue
-                assert leaf is tie[-1]
-                leaves = tie.leaves[:-1]
+                assert leaf is logical_tie[-1]
+                leaves = logical_tie.leaves[:-1]
                 abjad.detach(abjad.Tie, leaf)
                 abjad.detach(abjad.TieIndicator, leaf)
                 abjad.detach(abjad.RepeatTie, leaf)
                 if 2 <= len(leaves):
-                    tie = abjad.new(tie)
+                    tie = abjad.Tie()
                     abjad.attach(tie, leaves)
 
     def _get_burnish_specifier(self):
@@ -518,7 +510,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 durations = [division]
             leaves = leaf_maker(pitches, durations)
             if (1 < len(leaves) and
-                not leaves[0]._has_spanner(abjad.Tie) and
+                abjad.inspect(leaves[0]).logical_tie().is_trivial and
                 not isinstance(leaves[0], abjad.Rest)):
                 tie = abjad.Tie(repeat=repeat_ties)
                 abjad.attach(tie, leaves[:])

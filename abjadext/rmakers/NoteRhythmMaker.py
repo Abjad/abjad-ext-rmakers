@@ -238,7 +238,7 @@ class NoteRhythmMaker(RhythmMaker):
                 durations = [division]
             selection = leaf_maker(pitches=0, durations=durations)
             if (1 < len(selection) and
-                not selection[0]._has_spanner(abjad.Tie)):
+                abjad.inspect(selection[0]).logical_tie().is_trivial):
                 tie = abjad.Tie(repeat=tie_specifier.repeat_ties)
                 abjad.attach(tie, selection[:])
             selections.append(selection)
