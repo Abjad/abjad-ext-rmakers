@@ -87,6 +87,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     __slots__ = (
         '_burnish_specifier',
+        '_curtail_ties',
         '_extra_counts_per_division',
         '_read_talea_once_only',
         '_rest_tied_notes',
@@ -103,6 +104,7 @@ class TaleaRhythmMaker(RhythmMaker):
         talea: Talea = None,
         beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
+        curtail_ties: bool = None,
         division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.List[int] = None,
@@ -131,6 +133,9 @@ class TaleaRhythmMaker(RhythmMaker):
         if burnish_specifier is not None:
             assert isinstance(burnish_specifier, BurnishSpecifier)
         self._burnish_specifier = burnish_specifier
+        if curtail_ties is not None:
+            curtail_ties = bool(curtail_ties)
+        self._curtail_ties = curtail_ties
         if extra_counts_per_division is not None:
             assert abjad.mathtools.all_are_integer_equivalent_numbers(
                 extra_counts_per_division)
@@ -338,9 +343,8 @@ class TaleaRhythmMaker(RhythmMaker):
         written_durations = [leaf.written_duration for leaf in leaves]
         written_durations = abjad.sequence(written_durations)
         total_duration = written_durations.weight()
-        if unscaled_preamble is None:
-            preamble_weights = []
-        else:
+        preamble_weights = []
+        if unscaled_preamble:
             preamble_weights = []
             for numerator in unscaled_preamble:
                 pair = (numerator, self.talea.denominator)
@@ -382,29 +386,28 @@ class TaleaRhythmMaker(RhythmMaker):
         assert part_durations == abjad.sequence(written_durations)
         counts = [len(part) for part in parts]
         parts = abjad.sequence(leaves).partition_by_counts(counts)
-        for part in parts:
+        for i, part in enumerate(parts):
             if any(isinstance(_, abjad.Rest) for _ in part):
                 continue
-            part = abjad.select(part)
-            tie = abjad.Tie()
-            leaves = abjad.select(part).leaves()
-            abjad.attach(tie, leaves)
+            #part = abjad.select(part)
+            if len(part) == 1:
+                continue
+            if self.curtail_ties:
+                # this appears to be an ancient accidental constraint
+                # induced by the way tie spanners used to attach:
+                abjad.tie(part[-2:])
+            else:
+                abjad.tie(part)
         # TODO: this will need to be generalized and better tested:
+        temporary_container = abjad.Container(result)
         if unscaled_end_counts:
             total = len(unscaled_end_counts)
             end_leaves = leaves[-total:]
             for leaf in reversed(end_leaves):
-                logical_tie = abjad.inspect(leaf).logical_tie()
-                if logical_tie.is_trivial:
-                    continue
-                assert leaf is logical_tie[-1]
-                leaves = logical_tie.leaves[:-1]
-                abjad.detach(abjad.Tie, leaf)
-                abjad.detach(abjad.TieIndicator, leaf)
-                abjad.detach(abjad.RepeatTie, leaf)
-                if 2 <= len(leaves):
-                    tie = abjad.Tie()
-                    abjad.attach(tie, leaves)
+                previous_leaf = abjad.inspect(leaf).leaf(-1)
+                if previous_leaf is not None:
+                    abjad.detach(abjad.TieIndicator, previous_leaf)
+        temporary_container[:] = []
 
     def _get_burnish_specifier(self):
         if self.burnish_specifier is not None:
@@ -436,15 +439,17 @@ class TaleaRhythmMaker(RhythmMaker):
             container = abjad.Container(selection)
             abjad.attach('temporary container', container)
             containers.append(container)
+        temporary_container = abjad.Container(containers)
         for logical_tie in abjad.iterate(selections).logical_ties():
             if not logical_tie.is_trivial:
                 for note in logical_tie[1:]:
                     rest = abjad.Rest(note)
                     abjad.mutate(note).replace(rest)
-                abjad.detach(abjad.Tie, logical_tie.head)
+                #abjad.detach(abjad.Tie, logical_tie.head)
                 abjad.detach(abjad.TieIndicator, logical_tie.head)
                 abjad.detach(abjad.RepeatTie, logical_tie.head)
         # remove every temporary container and recreate selections
+        temporary_container[:] = []
         new_selections = []
         for container in containers:
             inspection = abjad.inspect(container)
@@ -512,8 +517,9 @@ class TaleaRhythmMaker(RhythmMaker):
             if (1 < len(leaves) and
                 abjad.inspect(leaves[0]).logical_tie().is_trivial and
                 not isinstance(leaves[0], abjad.Rest)):
-                tie = abjad.Tie(repeat=repeat_ties)
-                abjad.attach(tie, leaves[:])
+                #tie = abjad.Tie(repeat=repeat_ties)
+                #abjad.attach(tie, leaves[:])
+                abjad.tie(leaves, repeat=repeat_ties)
             result.extend(leaves)
         result = abjad.select(result)
         return result
@@ -1413,6 +1419,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
         """
         return self._burnish_specifier
+
+    @property
+    def curtail_ties(self) -> typing.Optional[bool]:
+        """
+        Deprecated: included only for backwards compatibility.
+        """
+        return self._curtail_ties
 
     @property
     def division_masks(self) -> typing.Optional[abjad.PatternTuple]:

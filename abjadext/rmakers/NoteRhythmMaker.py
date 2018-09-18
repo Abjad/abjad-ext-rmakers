@@ -212,6 +212,9 @@ class NoteRhythmMaker(RhythmMaker):
         new_selection = []
         for leaf in selection:
             new_leaf = target_class(leaf, tag=self.tag)
+            if not isinstance(new_leaf, (abjad.Chord, abjad.Note)):
+                abjad.detach(abjad.TieIndicator, new_leaf)
+                abjad.detach(abjad.RepeatTie, new_leaf)
             new_selection.append(new_leaf)
         new_selection = abjad.select(new_selection)
         return new_selection
@@ -239,8 +242,9 @@ class NoteRhythmMaker(RhythmMaker):
             selection = leaf_maker(pitches=0, durations=durations)
             if (1 < len(selection) and
                 abjad.inspect(selection[0]).logical_tie().is_trivial):
-                tie = abjad.Tie(repeat=tie_specifier.repeat_ties)
-                abjad.attach(tie, selection[:])
+                #tie = abjad.Tie(repeat=tie_specifier.repeat_ties)
+                #abjad.attach(tie, selection[:])
+                abjad.tie(selection[:], repeat=tie_specifier.repeat_ties)
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
         return selections

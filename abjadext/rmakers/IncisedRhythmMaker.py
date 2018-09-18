@@ -1234,7 +1234,9 @@ class IncisedRhythmMaker(RhythmMaker):
         return self._replace_rests_with_skips
 
     @property
-    def split_divisions_by_counts(self) -> typing.Optional[typing.List[int]]:
+    def split_divisions_by_counts(self) -> typing.Optional[
+        typing.Tuple[int, ...]
+        ]:
         """
         Gets secondary divisions.
         """

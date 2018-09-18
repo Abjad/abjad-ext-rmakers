@@ -86,9 +86,27 @@ class RhythmMaker(object):
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
         selections = self._apply_tuplet_specifier(selections, divisions)
+
+#        previous_logical_ties_produced = self._previous_logical_ties_produced()
+#        temporary_container = abjad.Container(selections)
+#        logical_ties_produced = len(abjad.select(selections).logical_ties())
+#        temporary_container[:] = []
+#        logical_ties_produced += previous_logical_ties_produced
+#        if self._previous_incomplete_last_note():
+#            logical_ties_produced -= 1
+
         selections = self._apply_division_masks(selections)
+
+        previous_logical_ties_produced = self._previous_logical_ties_produced()
+        temporary_container = abjad.Container(selections)
+        logical_ties_produced = len(abjad.select(selections).logical_ties())
+        temporary_container[:] = []
+        logical_ties_produced += previous_logical_ties_produced
+        if self._previous_incomplete_last_note():
+            logical_ties_produced -= 1
+
         selections = self._rewrite_meter(selections, divisions)
-        self._cache_state(selections, divisions)
+        self._cache_state(selections, divisions, logical_ties_produced)
         selections = self._apply_specifiers(selections, divisions)
         #self._check_wellformedness(selections)
         return selections
@@ -198,9 +216,12 @@ class RhythmMaker(object):
                     )
                 new_selection = leaf_maker([None], [duration])
             for component in abjad.iterate(selection).components():
-                abjad.detach(abjad.Tie, component)
+                #abjad.detach(abjad.Tie, component)
                 abjad.detach(abjad.TieIndicator, component)
                 abjad.detach(abjad.RepeatTie, component)
+            if new_selections:
+                previous_leaf = abjad.select(new_selections).leaf(-1)
+                abjad.detach(abjad.TieIndicator, previous_leaf)
             new_selections.append(new_selection)
         return new_selections
 
@@ -214,6 +235,7 @@ class RhythmMaker(object):
             container = abjad.Container(selection)
             abjad.attach(abjad.tags.TEMPORARY_CONTAINER, container)
             containers.append(container)
+        temporary_container = abjad.Container(containers)
         logical_ties = abjad.iterate(selections).logical_ties()
         logical_ties = list(logical_ties)
         total_logical_ties = len(logical_ties)
@@ -234,10 +256,11 @@ class RhythmMaker(object):
                 if leaf.multiplier is not None:
                     rest.multiplier = leaf.multiplier
                 abjad.mutate(leaf).replace([rest])
-                abjad.detach(abjad.Tie, rest)
+                #abjad.detach(abjad.Tie, rest)
                 abjad.detach(abjad.TieIndicator, rest)
                 abjad.detach(abjad.RepeatTie, rest)
         # remove every temporary container and recreate selections
+        temporary_container[:] = []
         new_selections = []
         for container in containers:
             inspector = abjad.inspect(container)
@@ -263,15 +286,17 @@ class RhythmMaker(object):
         selections = tuplet_specifier(selections, divisions)
         return selections
 
-    def _cache_state(self, selections, divisions):
+    def _cache_state(self, selections, divisions, logical_ties_produced):
         string = 'divisions_consumed'
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += len(divisions)
-        previous_logical_ties_produced = self._previous_logical_ties_produced()
-        logical_ties_produced = len(abjad.select(selections).logical_ties())
-        logical_ties_produced += previous_logical_ties_produced
-        if self._previous_incomplete_last_note():
-            logical_ties_produced -= 1
+
+#        previous_logical_ties_produced = self._previous_logical_ties_produced()
+#        logical_ties_produced = len(abjad.select(selections).logical_ties())
+#        logical_ties_produced += previous_logical_ties_produced
+#        if self._previous_incomplete_last_note():
+#            logical_ties_produced -= 1
+
         self.state['logical_ties_produced'] = logical_ties_produced
         items = self.state.items()
         state = abjad.OrderedDict(sorted(items))
@@ -450,11 +475,11 @@ class RhythmMaker(object):
             scaled_counts[name] = vector
         assert len(scaled_divisions) == len(divisions)
         assert len(scaled_counts) == len(counts)
-        return {
+        return abjad.OrderedDict({
             'divisions': scaled_divisions,
             'lcd': lcd,
             'counts': scaled_counts,
-            }
+            })
 
     def _sequence_to_ellipsized_string(self, sequence):
         if not sequence:
