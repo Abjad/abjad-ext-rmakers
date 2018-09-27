@@ -368,10 +368,7 @@ class TupletRhythmMaker(RhythmMaker):
         tuplets = []
         prototype = abjad.NonreducedFraction
         assert all(isinstance(_, prototype) for _ in divisions)
-        rotation = self.state.get('rotation', 0)
-        tuplet_ratios = abjad.CyclicTuple(
-            abjad.sequence(self.tuplet_ratios).rotate(n=rotation)
-            )
+        tuplet_ratios = abjad.CyclicTuple(self.tuplet_ratios)
         for duration_index, division in enumerate(divisions):
             ratio = tuplet_ratios[duration_index]
             duration = abjad.Duration(division)
