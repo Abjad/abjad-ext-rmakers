@@ -281,27 +281,26 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     def _apply_burnish_specifier(self, selections):
         if self.burnish_specifier is None:
             return selections
-        rotation = self.state.get('rotation')
         left_classes = self.burnish_specifier.left_classes
         middle_classes = self.burnish_specifier.middle_classes
         right_classes = self.burnish_specifier.right_classes
         left_counts = self.burnish_specifier.left_counts
         right_counts = self.burnish_specifier.right_counts
         left_classes = left_classes or ()
-        left_classes = abjad.sequence(left_classes).rotate(n=rotation)
+        left_classes = abjad.sequence(left_classes)
         left_classes = abjad.CyclicTuple(left_classes)
         if middle_classes == () or middle_classes is None:
             middle_classes = (0,)
-        middle_classes = abjad.sequence(middle_classes).rotate(n=rotation)
+        middle_classes = abjad.sequence(middle_classes)
         middle_classes = abjad.CyclicTuple(middle_classes)
         right_classes = right_classes or ()
-        right_classes = abjad.sequence(right_classes).rotate(n=rotation)
+        right_classes = abjad.sequence(right_classes)
         right_classes = abjad.CyclicTuple(right_classes)
         left_counts = left_counts or (0,)
-        left_counts = abjad.sequence(left_counts).rotate(n=rotation)
+        left_counts = abjad.sequence(left_counts)
         left_counts = abjad.CyclicTuple(left_counts)
         right_counts = right_counts or (0,)
-        right_counts = abjad.sequence(right_counts).rotate(n=rotation)
+        right_counts = abjad.sequence(right_counts)
         right_counts = abjad.CyclicTuple(right_counts)
         if self.burnish_specifier.outer_divisions_only:
             procedure = self._burnish_outer_selections
@@ -460,7 +459,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return selections
 
     def _make_music(self, divisions):
-        rotation = self.state.get('rotation', 0)
         selections = []
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         denominators = abjad.CyclicTuple(self.denominators)
@@ -468,7 +466,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         extra_counts_per_division = abjad.CyclicTuple(
             extra_counts_per_division
             )
-        for i, division in enumerate(divisions, rotation):
+        for i, division in enumerate(divisions):
             if not abjad.mathtools.is_positive_integer_power_of_two(
                 division.denominator):
                 message = 'non-power-of-two divisions not implemented: {!r}.'
