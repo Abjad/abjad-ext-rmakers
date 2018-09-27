@@ -271,7 +271,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(EvenDivisionRhythmMaker, self).__call__(
+        return super().__call__(
             divisions,
             previous_state=previous_state,
             )
@@ -1231,10 +1231,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Fills divisions with 16th notes:
+            Fills divisions with alternating 16th / 8th notes:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     denominators=[16],
+            ...     denominators=[16, 8],
             ...     )
 
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
@@ -1270,14 +1270,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/6 {
-                            c'16
+                        \times 3/3 {
+                            c'8
                             [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
+                            c'8
+                            c'8
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
@@ -1698,7 +1695,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(EvenDivisionRhythmMaker, self).division_masks
+        return super().division_masks
 
     @property
     def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
@@ -2820,7 +2817,83 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             eighth logical tie produces only one rest.
 
         """
-        return super(EvenDivisionRhythmMaker, self).logical_tie_masks
+        return super().logical_tie_masks
+
+    @property
+    def state(self) -> abjad.OrderedDict:
+        r"""
+        Gets state dictionary.
+
+        ..  container:: example
+
+            Fills divisions with alternating 16th / 8th notes:
+
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     denominators=[16, 8],
+            ...     )
+
+            >>> divisions = [(3, 16), (3, 8), (3, 4)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/16
+                        s1 * 3/16
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/12 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
+
+        """
+        return super().state
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
@@ -3128,4 +3201,4 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(EvenDivisionRhythmMaker, self).tuplet_specifier
+        return super().tuplet_specifier

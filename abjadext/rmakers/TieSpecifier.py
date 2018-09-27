@@ -140,7 +140,6 @@ class TieSpecifier(object):
             return
         for division in divisions:
             for leaf in abjad.iterate(division).leaves():
-                #abjad.detach(abjad.Tie, leaf)
                 abjad.detach(abjad.TieIndicator, leaf)
                 abjad.detach(abjad.RepeatTie, leaf)
 
@@ -184,24 +183,14 @@ class TieSpecifier(object):
             if 1 < len(pitch_set):
                 continue
             for leaf in combined_logical_tie:
-                #abjad.detach(abjad.Tie, leaf)
                 abjad.detach(abjad.TieIndicator, leaf)
                 abjad.detach(abjad.RepeatTie, leaf)
-#            tie = abjad.Tie(repeat=self.repeat_ties)
-#            tie._unconstrain_contiguity()
-#            if tie._attachment_test_all(combined_logical_tie) is True:
-#                try:
-#                    abjad.attach(tie, combined_logical_tie)
-#                except:
-#                    raise Exception(tie, combined_logical_tie)
-#            tie._constrain_contiguity()
             abjad.tie(combined_logical_tie, repeat=self.repeat_ties)
         temporary_container[:] = []
 
     def _tie_consecutive_notes_(self, divisions):
         leaves = list(abjad.iterate(divisions).leaves())
         for leaf in leaves:
-            #abjad.detach(abjad.Tie, leaf)
             abjad.detach(abjad.TieIndicator, leaf)
             abjad.detach(abjad.RepeatTie, leaf)
         pairs = itertools.groupby(leaves, lambda _: _.__class__)
@@ -221,10 +210,6 @@ class TieSpecifier(object):
                 subgroup = list(subgroup)
                 if len(subgroup) == 1:
                     continue
-
-#                tie = abjad.Tie()
-#                assert tie._attachment_test_all(subgroup) is True
-#                abjad.attach(tie, abjad.select(subgroup))
                 abjad.tie(subgroup)
 
     def _tie_within_divisions_(self, divisions):

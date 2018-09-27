@@ -358,7 +358,7 @@ class TupletRhythmMaker(RhythmMaker):
                 )
 
         """
-        return super(TupletRhythmMaker, self).__format__(
+        return super().__format__(
             format_specification=format_specification,
             )
 
@@ -641,7 +641,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Ignores ``beam_each_division`` when ``beam_division_together`` is true.
         """
-        return super(TupletRhythmMaker, self).beam_specifier
+        return super().beam_specifier
 
     @property
     def denominator(self) -> typing.Optional[
@@ -1266,7 +1266,7 @@ class TupletRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(TupletRhythmMaker, self).division_masks
+        return super().division_masks
 
     @property
     def tag(self) -> typing.Optional[str]:
@@ -1520,7 +1520,7 @@ class TupletRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(TupletRhythmMaker, self).tie_specifier
+        return super().tie_specifier
 
     @property
     def tuplet_ratios(self) -> typing.Optional[typing.List[abjad.Ratio]]:
@@ -2401,4 +2401,4 @@ class TupletRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(TupletRhythmMaker, self).tuplet_specifier
+        return super().tuplet_specifier

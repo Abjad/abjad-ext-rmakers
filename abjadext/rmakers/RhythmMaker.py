@@ -216,7 +216,6 @@ class RhythmMaker(object):
                     )
                 new_selection = leaf_maker([None], [duration])
             for component in abjad.iterate(selection).components():
-                #abjad.detach(abjad.Tie, component)
                 abjad.detach(abjad.TieIndicator, component)
                 abjad.detach(abjad.RepeatTie, component)
             if new_selections:
@@ -256,7 +255,6 @@ class RhythmMaker(object):
                 if leaf.multiplier is not None:
                     rest.multiplier = leaf.multiplier
                 abjad.mutate(leaf).replace([rest])
-                #abjad.detach(abjad.Tie, rest)
                 abjad.detach(abjad.TieIndicator, rest)
                 abjad.detach(abjad.RepeatTie, rest)
         # remove every temporary container and recreate selections

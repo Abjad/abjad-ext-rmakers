@@ -1741,8 +1741,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Returns beam specifier.
         """
-        superclass = super(AccelerandoRhythmMaker, self)
-        return superclass.beam_specifier
+        return super().beam_specifier
 
     @property
     def division_masks(self):
@@ -2172,8 +2171,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>
 
         """
-        superclass = super(AccelerandoRhythmMaker, self)
-        return superclass.division_masks
+        return super().division_masks
 
     @property
     def interpolation_specifiers(self):
@@ -3435,8 +3433,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Returns patterns or none.
         """
-        superclass = super(AccelerandoRhythmMaker, self)
-        return superclass.logical_tie_masks
+        return super().logical_tie_masks
 
     @property
     def state(self) -> abjad.OrderedDict:
@@ -4039,7 +4036,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 )
 
         """
-        return super(AccelerandoRhythmMaker, self).state
+        return super().state
 
     @property
     def tag(self) -> typing.Optional[str]:
@@ -5101,8 +5098,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Returns tie specifier.
         """
-        superclass = super(AccelerandoRhythmMaker, self)
-        return superclass.tie_specifier
+        return super().tie_specifier
 
     @property
     def tuplet_specifier(self):
@@ -5471,5 +5467,4 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Returns tuplet specifier or none.
         """
-        superclass = super(AccelerandoRhythmMaker, self)
-        return superclass.tuplet_specifier
+        return super().tuplet_specifier

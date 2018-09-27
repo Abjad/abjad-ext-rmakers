@@ -234,7 +234,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 )
 
         """
-        return super(TaleaRhythmMaker, self).__format__(
+        return super().__format__(
             format_specification=format_specification,
             )
 
@@ -322,7 +322,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Returns string.
         """
-        return super(TaleaRhythmMaker, self).__repr__()
+        return super().__repr__()
 
     ### PRIVATE METHODS ###
 
@@ -445,7 +445,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 for note in logical_tie[1:]:
                     rest = abjad.Rest(note)
                     abjad.mutate(note).replace(rest)
-                #abjad.detach(abjad.Tie, logical_tie.head)
                 abjad.detach(abjad.TieIndicator, logical_tie.head)
                 abjad.detach(abjad.RepeatTie, logical_tie.head)
         # remove every temporary container and recreate selections
@@ -517,8 +516,6 @@ class TaleaRhythmMaker(RhythmMaker):
             if (1 < len(leaves) and
                 abjad.inspect(leaves[0]).logical_tie().is_trivial and
                 not isinstance(leaves[0], abjad.Rest)):
-                #tie = abjad.Tie(repeat=repeat_ties)
-                #abjad.attach(tie, leaves[:])
                 abjad.tie(leaves, repeat=repeat_ties)
             result.extend(leaves)
         result = abjad.select(result)
@@ -1280,7 +1277,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(TaleaRhythmMaker, self).beam_specifier
+        return super().beam_specifier
 
     @property
     def burnish_specifier(self) -> typing.Optional[BurnishSpecifier]:
@@ -1985,7 +1982,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 )
 
         """
-        return super(TaleaRhythmMaker, self).division_masks
+        return super().division_masks
 
     @property
     def duration_specifier(self) -> typing.Optional[DurationSpecifier]:
@@ -2444,7 +2441,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(TaleaRhythmMaker, self).duration_specifier
+        return super().duration_specifier
 
     @property
     def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
@@ -3155,7 +3152,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 )
 
         """
-        return super(TaleaRhythmMaker, self).logical_tie_masks
+        return super().logical_tie_masks
 
     @property
     def read_talea_once_only(self) -> typing.Optional[bool]:
@@ -3873,8 +3870,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
 
         """
-        return super(TaleaRhythmMaker, self).state
-
+        return super().state
 
     @property
     def tag(self) -> typing.Optional[str]:
@@ -4536,7 +4532,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(TaleaRhythmMaker, self).tie_specifier
+        return super().tie_specifier
 
     @property
     def tie_split_notes(self) -> typing.Optional[bool]:
@@ -5322,4 +5318,4 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(TaleaRhythmMaker, self).tuplet_specifier
+        return super().tuplet_specifier

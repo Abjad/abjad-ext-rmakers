@@ -545,7 +545,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(IncisedRhythmMaker, self).division_masks
+        return super().division_masks
 
     @property
     def duration_specifier(self) -> typing.Optional[DurationSpecifier]:
@@ -825,7 +825,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
         Returns duration specifier or none.
         """
-        return super(IncisedRhythmMaker, self).duration_specifier
+        return super().duration_specifier
 
     @property
     def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
@@ -1114,7 +1114,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(IncisedRhythmMaker, self).logical_tie_masks
+        return super().logical_tie_masks
 
     @property
     def replace_rests_with_skips(self) -> typing.Optional[bool]:
@@ -1639,7 +1639,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(IncisedRhythmMaker, self).tie_specifier
+        return super().tie_specifier
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
@@ -1709,4 +1709,4 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(IncisedRhythmMaker, self).tuplet_specifier
+        return super().tuplet_specifier

@@ -131,7 +131,7 @@ class NoteRhythmMaker(RhythmMaker):
             abjadext.rmakers.NoteRhythmMaker()
 
         """
-        return super(NoteRhythmMaker, self).__format__(
+        return super().__format__(
             format_specification=format_specification,
             )
 
@@ -146,7 +146,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         Returns string.
         """
-        return super(NoteRhythmMaker, self).__repr__()
+        return super().__repr__()
 
     ### PRIVATE METHODS ###
 
@@ -242,8 +242,6 @@ class NoteRhythmMaker(RhythmMaker):
             selection = leaf_maker(pitches=0, durations=durations)
             if (1 < len(selection) and
                 abjad.inspect(selection[0]).logical_tie().is_trivial):
-                #tie = abjad.Tie(repeat=tie_specifier.repeat_ties)
-                #abjad.attach(tie, selection[:])
                 abjad.tie(selection[:], repeat=tie_specifier.repeat_ties)
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
@@ -395,7 +393,7 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(NoteRhythmMaker, self).beam_specifier
+        return super().beam_specifier
 
     @property
     def burnish_specifier(self) -> typing.Optional[BurnishSpecifier]:
@@ -821,7 +819,7 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(NoteRhythmMaker, self).division_masks
+        return super().division_masks
 
     @property
     def duration_specifier(self) -> typing.Optional[DurationSpecifier]:
@@ -1053,7 +1051,7 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(NoteRhythmMaker, self).duration_specifier
+        return super().duration_specifier
 
     @property
     def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
@@ -1182,8 +1180,7 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(NoteRhythmMaker, self).logical_tie_masks
-
+        return super().logical_tie_masks
 
     @property
     def tag(self):
@@ -1513,7 +1510,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         Returns tie specifier.
         """
-        return super(NoteRhythmMaker, self).tie_specifier
+        return super().tie_specifier
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
@@ -1613,4 +1610,4 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super(NoteRhythmMaker, self).tuplet_specifier
+        return super().tuplet_specifier
