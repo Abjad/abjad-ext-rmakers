@@ -460,8 +460,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     def _make_music(self, divisions):
         selections = []
+        divisions_consumed = self.previous_state.get('divisions_consumed', 0)
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
-        denominators = abjad.CyclicTuple(self.denominators)
+        denominators = abjad.sequence(self.denominators)
+        denominators = denominators.rotate(n=-divisions_consumed)
+        denominators = abjad.CyclicTuple(denominators)
         extra_counts_per_division = self.extra_counts_per_division or (0,)
         extra_counts_per_division = abjad.CyclicTuple(
             extra_counts_per_division
@@ -2826,14 +2829,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Fills divisions with alternating 16th / 8th notes. Consumes 3
+            Fills divisions with 16th, 8th, quarter notes. Consumes 4
             divisions and produces 18 logical ties:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     denominators=[16, 8],
+            ...     denominators=[16, 8, 4],
             ...     )
 
-            >>> divisions = [(3, 16), (3, 8), (3, 4)]
+            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
@@ -2848,43 +2851,41 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 <<
                     \new GlobalContext
                     {
-                        \time 3/16
-                        s1 * 3/16
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/4
-                        s1 * 3/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
                     }
                     \new RhythmicStaff
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/3 {
+                        \times 4/4 {
                             c'16
                             [
+                            c'16
                             c'16
                             c'16
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/3 {
+                        \times 2/2 {
                             c'8
                             [
-                            c'8
                             c'8
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/12 {
+                        \times 1/1 {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
                             c'16
                             [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
                             c'16
                             c'16
                             c'16
@@ -2897,8 +2898,75 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> abjad.f(state)
             abjad.OrderedDict(
                 [
-                    ('divisions_consumed', 3),
-                    ('logical_ties_produced', 18),
+                    ('divisions_consumed', 4),
+                    ('logical_ties_produced', 11),
+                    ]
+                )
+
+            Advances 4 divisions; then consumes another 4 divisions:
+
+            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
+            >>> selections = rhythm_maker(divisions, previous_state=state)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/4 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
+
+            >>> state = rhythm_maker.state
+            >>> abjad.f(state)
+            abjad.OrderedDict(
+                [
+                    ('divisions_consumed', 8),
+                    ('logical_ties_produced', 20),
                     ]
                 )
 
