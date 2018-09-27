@@ -2826,7 +2826,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Fills divisions with alternating 16th / 8th notes:
+            Fills divisions with alternating 16th / 8th notes. Consumes 3
+            divisions and produces 18 logical ties:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     denominators=[16, 8],
@@ -2891,6 +2892,15 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                     }
                 >>
+
+            >>> state = rhythm_maker.state
+            >>> abjad.f(state)
+            abjad.OrderedDict(
+                [
+                    ('divisions_consumed', 3),
+                    ('logical_ties_produced', 18),
+                    ]
+                )
 
         """
         return super().state
