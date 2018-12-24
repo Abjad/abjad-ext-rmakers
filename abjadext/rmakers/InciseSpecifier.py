@@ -54,14 +54,15 @@ class InciseSpecifier(object):
     def __init__(
         self,
         *,
+        body_ratio: abjad.Ratio = None,
+        # TODO: change to fill_with_rests: bool = None:
+        fill_with_notes: bool = True,
+        outer_divisions_only: bool = None,
         prefix_talea: typing.Sequence[int] = None,
         prefix_counts: typing.Sequence[int] = None,
         suffix_talea: typing.Sequence[int] = None,
         suffix_counts: typing.Sequence[int] = None,
         talea_denominator: int = None,
-        body_ratio: abjad.Ratio = None,
-        fill_with_notes: bool = True,
-        outer_divisions_only: bool = None,
         ) -> None:
         prefix_talea = prefix_talea or ()
         prefix_talea = tuple(prefix_talea)
@@ -125,12 +126,12 @@ class InciseSpecifier(object):
 
             >>> abjad.f(specifier)
             abjadext.rmakers.InciseSpecifier(
+                fill_with_notes=True,
                 prefix_talea=[-1],
                 prefix_counts=[1],
                 suffix_talea=(),
                 suffix_counts=(),
                 talea_denominator=16,
-                fill_with_notes=True,
                 )
 
         ..  container:: example
@@ -147,12 +148,12 @@ class InciseSpecifier(object):
 
             >>> abjad.f(specifier)
             abjadext.rmakers.InciseSpecifier(
+                fill_with_notes=True,
                 prefix_talea=[-1],
                 prefix_counts=[0, 1],
                 suffix_talea=[-1],
                 suffix_counts=[1],
                 talea_denominator=16,
-                fill_with_notes=True,
                 )
 
         """
