@@ -1015,12 +1015,12 @@ class TupletSpecifier(object):
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[-6, -5, -5, -4, -1],
+            ...         counts=[-1],
             ...         denominator=16,
             ...         ),
             ...     )
 
-            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+            >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
@@ -1039,26 +1039,44 @@ class TupletSpecifier(object):
                         s1 * 1/4
                         \time 4/16
                         s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
+                        \time 5/16
+                        s1 * 5/16
+                        \time 5/16
+                        s1 * 5/16
                     }
                     \new RhythmicStaff
                     {
                         \times 2/3 {
-                            r4.
-                        }
-                        \times 4/5 {
-                            r4
+                            r16
+                            r16
+                            r16
+                            r16
+                            r16
                             r16
                         }
                         \times 4/5 {
-                            r4
+                            r16
+                            r16
+                            r16
+                            r16
                             r16
                         }
-                        \times 4/5 {
-                            r4
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            r16
+                            r16
+                            r16
+                            r16
+                            r16
+                            r16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            r16
+                            r16
+                            r16
+                            r16
+                            r16
                             r16
                         }
                     }
@@ -1071,7 +1089,7 @@ class TupletSpecifier(object):
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[-6, -5, -5, -4, -1],
+            ...         counts=[-1],
             ...         denominator=16,
             ...         ),
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
@@ -1079,7 +1097,7 @@ class TupletSpecifier(object):
             ...         ),
             ...     )
 
-            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+            >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
@@ -1098,10 +1116,10 @@ class TupletSpecifier(object):
                         s1 * 1/4
                         \time 4/16
                         s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
+                        \time 5/16
+                        s1 * 5/16
+                        \time 5/16
+                        s1 * 5/16
                     }
                     \new RhythmicStaff
                     {
@@ -1116,13 +1134,18 @@ class TupletSpecifier(object):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1 {
                             r4
+                            r16
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1 {
                             r4
+                            r16
                         }
                     }
                 >>
+
+            Note that nonassignable divisions necessitate multiple rests
+            even after rewriting.
 
         """
         return self._rewrite_rest_filled
