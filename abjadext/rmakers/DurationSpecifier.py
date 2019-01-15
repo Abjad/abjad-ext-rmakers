@@ -172,9 +172,10 @@ class DurationSpecifier(object):
     def _rewrite_rest_filled_(
         selections,
         multimeasure_rests=None,
+        tag='rmakers_DurationSpecifier__rewrite_rest_filled_',
         ):
         selections_ = []
-        maker = abjad.LeafMaker()
+        maker = abjad.LeafMaker(tag=tag)
         prototype = (abjad.MultimeasureRest, abjad.Rest)
         for selection in selections:
             if not all(isinstance(_, prototype) for _ in selection):
@@ -182,7 +183,7 @@ class DurationSpecifier(object):
             else:
                 duration = abjad.inspect(selection).duration()
                 if multimeasure_rests:
-                    rest = abjad.MultimeasureRest(1)
+                    rest = abjad.MultimeasureRest(1, tag=tag)
                     rest.multiplier = duration
                     rests = abjad.select(rest)
                 else:
