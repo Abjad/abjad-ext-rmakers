@@ -1005,8 +1005,125 @@ class TupletSpecifier(object):
 
     @property
     def rewrite_rest_filled(self) -> typing.Optional[bool]:
-        """
+        r"""
         Is true when rhythm-maker rewrites rest-filled tuplets.
+
+        ..  container:: example
+
+            Does not rewrite rest-filled tuplets:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     extra_counts_per_division=[2, 1, 1, 1],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[-6, -5, -5, -4, -1],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 2/3 {
+                            r4.
+                        }
+                        \times 4/5 {
+                            r4
+                            r16
+                        }
+                        \times 4/5 {
+                            r4
+                            r16
+                        }
+                        \times 4/5 {
+                            r4
+                            r16
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Rewrites rest-filled tuplets:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     extra_counts_per_division=[2, 1, 1, 1],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[-6, -5, -5, -4, -1],
+            ...         denominator=16,
+            ...         ),
+            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            r4
+                        }
+                    }
+                >>
+
         """
         return self._rewrite_rest_filled
 
