@@ -232,7 +232,7 @@ class RhythmMaker(object):
         containers = []
         for selection in selections:
             container = abjad.Container(selection)
-            abjad.attach(abjad.tags.TEMPORARY_CONTAINER, container)
+            abjad.attach(abjad.const.TEMPORARY_CONTAINER, container)
             containers.append(container)
         temporary_container = abjad.Container(containers)
         logical_ties = abjad.iterate(selections).logical_ties()
@@ -262,7 +262,7 @@ class RhythmMaker(object):
         new_selections = []
         for container in containers:
             inspector = abjad.inspect(container)
-            assert inspector.indicator(abjad.tags.TEMPORARY_CONTAINER)
+            assert inspector.indicator(abjad.const.TEMPORARY_CONTAINER)
             new_selection = abjad.mutate(container).eject_contents()
             new_selections.append(new_selection)
         return new_selections
