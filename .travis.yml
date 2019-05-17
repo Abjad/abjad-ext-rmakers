@@ -57,6 +57,7 @@ install:
     - pip install -e .[test] # maybe don't need test dependencies
 
 script:
+    - black --target-version=py36 --line-length=79 --check --diff $PACKAGE
     - mypy --ignore-missing-imports $PACKAGE
     - pytest $PACKAGE
 
