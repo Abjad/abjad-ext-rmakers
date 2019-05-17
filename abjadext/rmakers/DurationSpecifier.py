@@ -11,17 +11,17 @@ class DurationSpecifier(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Specifiers'
+    __documentation_section__ = "Specifiers"
 
     __slots__ = (
-        '_forbid_meter_rewriting',
-        '_forbidden_note_duration',
-        '_forbidden_rest_duration',
-        '_increase_monotonic',
-        '_rewrite_meter',
-        '_rewrite_rest_filled',
-        '_spell_metrically',
-        )
+        "_forbid_meter_rewriting",
+        "_forbidden_note_duration",
+        "_forbidden_rest_duration",
+        "_increase_monotonic",
+        "_rewrite_meter",
+        "_rewrite_rest_filled",
+        "_spell_metrically",
+    )
 
     _publish_storage_format = True
 
@@ -37,7 +37,7 @@ class DurationSpecifier(object):
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
         spell_metrically: typing.Union[bool, str] = None,
-        ) -> None:
+    ) -> None:
         if forbid_meter_rewriting is not None:
             forbid_meter_rewriting = bool(forbid_meter_rewriting)
         self._forbid_meter_rewriting = forbid_meter_rewriting
@@ -60,14 +60,16 @@ class DurationSpecifier(object):
         if rewrite_rest_filled is not None:
             rewrite_rest_filled = bool(rewrite_rest_filled)
         self._rewrite_rest_filled = rewrite_rest_filled
-        assert (spell_metrically is None or
-            isinstance(spell_metrically, bool) or
-            spell_metrically == 'unassignable')
+        assert (
+            spell_metrically is None
+            or isinstance(spell_metrically, bool)
+            or spell_metrically == "unassignable"
+        )
         self._spell_metrically = spell_metrically
 
     ### SPECIAL METHODS ###
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats duration specifier.
 
@@ -101,15 +103,13 @@ class DurationSpecifier(object):
         reference_meters=None,
         rewrite_tuplets=False,
         repeat_ties=False,
-        ):
+    ):
         meters = [abjad.Meter(_) for _ in meters]
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = reference_meters or ()
         selections = DurationSpecifier._split_at_measure_boundaries(
-            selections,
-            meters,
-            repeat_ties=repeat_ties,
-            )
+            selections, meters, repeat_ties=repeat_ties
+        )
         lengths = [len(_) for _ in selections]
         staff = abjad.Staff(selections)
         assert sum(durations) == abjad.inspect(staff).duration()
@@ -132,32 +132,29 @@ class DurationSpecifier(object):
             BeamSpecifier._detach_all_beams(nontupletted_leaves)
 
             abjad.mutate(container[:]).rewrite_meter(
-                meter,
-                rewrite_tuplets=rewrite_tuplets,
-                repeat_ties=repeat_ties,
-                )
+                meter, rewrite_tuplets=rewrite_tuplets, repeat_ties=repeat_ties
+            )
             leaves = abjad.select(container).leaves(
-                do_not_iterate_grace_containers=True,
-                )
+                do_not_iterate_grace_containers=True
+            )
             beat_durations = []
             beat_offsets = meter.depthwise_offset_inventory[1]
             for start, stop in abjad.sequence(beat_offsets).nwise():
                 beat_duration = stop - start
                 beat_durations.append(beat_duration)
             beamable_groups = BeamSpecifier._make_beamable_groups(
-                leaves,
-                beat_durations,
-                )
-            #print(leaves, 'LEAVES')
-            #print(beat_durations, 'BEATS')
+                leaves, beat_durations
+            )
+            # print(leaves, 'LEAVES')
+            # print(beat_durations, 'BEATS')
             for beamable_group in beamable_groups:
                 if not beamable_group:
                     continue
                 abjad.beam(
                     beamable_group,
                     beam_rests=False,
-                    tag='Duration_Specifier__rewrite_meter_',
-                    )
+                    tag="Duration_Specifier__rewrite_meter_",
+                )
         selections = []
         for container in staff:
             selection = container[:]
@@ -172,8 +169,8 @@ class DurationSpecifier(object):
     def _rewrite_rest_filled_(
         selections,
         multimeasure_rests=None,
-        tag='rmakers_DurationSpecifier__rewrite_rest_filled_',
-        ):
+        tag="rmakers_DurationSpecifier__rewrite_rest_filled_",
+    ):
         selections_ = []
         maker = abjad.LeafMaker(tag=tag)
         prototype = (abjad.MultimeasureRest, abjad.Rest)
@@ -192,42 +189,32 @@ class DurationSpecifier(object):
         return selections_
 
     @staticmethod
-    def _split_at_measure_boundaries(
-        selections,
-        meters,
-        repeat_ties=False,
-        ):
+    def _split_at_measure_boundaries(selections, meters, repeat_ties=False):
         meters = [abjad.Meter(_) for _ in meters]
         durations = [abjad.Duration(_) for _ in meters]
         selections = abjad.sequence(selections).flatten(depth=-1)
         meter_duration = sum(durations)
-        music_duration = sum(
-            abjad.inspect(_).duration() for _ in selections)
+        music_duration = sum(abjad.inspect(_).duration() for _ in selections)
         if not meter_duration == music_duration:
-            message = f'Duration of meters is {meter_duration!s}'
-            message += f' but duration of selections is {music_duration!s}:'
-            message += f'\nmeters: {meters}.'
-            message += f'\nmusic: {selections}.'
+            message = f"Duration of meters is {meter_duration!s}"
+            message += f" but duration of selections is {music_duration!s}:"
+            message += f"\nmeters: {meters}."
+            message += f"\nmusic: {selections}."
             raise Exception(message)
         voice = abjad.Voice(selections)
         abjad.mutate(voice[:]).split(
-            durations=durations,
-            tie_split_notes=True,
-            repeat_ties=repeat_ties,
-            )
+            durations=durations, tie_split_notes=True, repeat_ties=repeat_ties
+        )
         components = abjad.mutate(voice).eject_contents()
-        component_durations = [
-            abjad.inspect(_).duration() for _ in components]
+        component_durations = [abjad.inspect(_).duration() for _ in components]
         parts = abjad.sequence(component_durations)
         parts = parts.partition_by_weights(
-            weights=durations,
-            allow_part_weights=abjad.Exact,
-            )
+            weights=durations, allow_part_weights=abjad.Exact
+        )
         part_lengths = [len(_) for _ in parts]
         parts = abjad.sequence(components).partition_by_counts(
-            counts=part_lengths,
-            overhang=abjad.Exact,
-            )
+            counts=part_lengths, overhang=abjad.Exact
+        )
         selections = [abjad.select(_) for _ in parts]
         return selections
 

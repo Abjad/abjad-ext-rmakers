@@ -9,13 +9,9 @@ class InterpolationSpecifier(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Specifiers'
+    __documentation_section__ = "Specifiers"
 
-    __slots__ = (
-        '_start_duration',
-        '_stop_duration',
-        '_written_duration',
-        )
+    __slots__ = ("_start_duration", "_stop_duration", "_written_duration")
 
     _publish_storage_format = True
 
@@ -27,14 +23,14 @@ class InterpolationSpecifier(object):
         start_duration: typing.Tuple[int, int] = (1, 8),
         stop_duration: typing.Tuple[int, int] = (1, 16),
         written_duration: typing.Tuple[int, int] = (1, 16),
-        ) -> None:
+    ) -> None:
         self._start_duration = abjad.Duration(start_duration)
         self._stop_duration = abjad.Duration(stop_duration)
         self._written_duration = abjad.Duration(written_duration)
 
     ### PUBLIC METHODS ###
 
-    def reverse(self) -> 'InterpolationSpecifier':
+    def reverse(self) -> "InterpolationSpecifier":
         """
         Swaps start duration and stop duration of interpolation specifier.
 
@@ -77,7 +73,7 @@ class InterpolationSpecifier(object):
             start_duration=self.stop_duration,
             stop_duration=self.start_duration,
             written_duration=self.written_duration,
-            )
+        )
 
     ### PUBLIC PROPERTIES ###
 

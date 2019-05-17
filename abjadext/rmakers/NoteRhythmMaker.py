@@ -57,11 +57,9 @@ class NoteRhythmMaker(RhythmMaker):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Rhythm-makers'
+    __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = (
-        '_burnish_specifier',
-        )
+    __slots__ = ("_burnish_specifier",)
 
     ### INITIALIZER ###
 
@@ -76,7 +74,7 @@ class NoteRhythmMaker(RhythmMaker):
         tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
-        ) -> None:
+    ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -86,7 +84,7 @@ class NoteRhythmMaker(RhythmMaker):
             tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
-            )
+        )
         if burnish_specifier is not None:
             assert isinstance(burnish_specifier, BurnishSpecifier)
         self._burnish_specifier = burnish_specifier
@@ -97,7 +95,7 @@ class NoteRhythmMaker(RhythmMaker):
         self,
         divisions: typing.List[typing.Tuple[int, int]],
         previous_state: abjad.OrderedDict = None,
-        ) -> typing.List[abjad.Selection]:
+    ) -> typing.List[abjad.Selection]:
         """
         Calls note rhythm-maker on ``divisions``.
 
@@ -115,12 +113,10 @@ class NoteRhythmMaker(RhythmMaker):
 
         """
         return RhythmMaker.__call__(
-            self,
-            divisions,
-            previous_state=previous_state,
-            )
+            self, divisions, previous_state=previous_state
+        )
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats note rhythm-maker.
 
@@ -131,9 +127,7 @@ class NoteRhythmMaker(RhythmMaker):
             abjadext.rmakers.NoteRhythmMaker()
 
         """
-        return super().__format__(
-            format_specification=format_specification,
-            )
+        return super().__format__(format_specification=format_specification)
 
     def __repr__(self) -> str:
         """
@@ -160,8 +154,8 @@ class NoteRhythmMaker(RhythmMaker):
         return selections
 
     def _burnish_each_division(self, selections):
-        message = 'NoteRhythmMaker does not yet implement'
-        message += ' burnishing each division.'
+        message = "NoteRhythmMaker does not yet implement"
+        message += " burnishing each division."
         raise NotImplementedError(message)
 
     def _burnish_outer_divisions(self, selections):
@@ -229,19 +223,24 @@ class NoteRhythmMaker(RhythmMaker):
             forbidden_rest_duration=duration_specifier.forbidden_rest_duration,
             repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,
-            )
+        )
         for division in divisions:
-            if (duration_specifier.spell_metrically is True or
-                (duration_specifier.spell_metrically == 'unassignable' and
-                not abjad.mathtools.is_assignable_integer(division.numerator))):
+            if duration_specifier.spell_metrically is True or (
+                duration_specifier.spell_metrically == "unassignable"
+                and not abjad.mathtools.is_assignable_integer(
+                    division.numerator
+                )
+            ):
                 meter = abjad.Meter(division)
                 rhythm_tree_container = meter.root_node
                 durations = [_.duration for _ in rhythm_tree_container]
             else:
                 durations = [division]
             selection = leaf_maker(pitches=0, durations=durations)
-            if (1 < len(selection) and
-                abjad.inspect(selection[0]).logical_tie().is_trivial):
+            if (
+                1 < len(selection)
+                and abjad.inspect(selection[0]).logical_tie().is_trivial
+            ):
                 abjad.tie(selection[:], repeat=tie_specifier.repeat_ties)
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)

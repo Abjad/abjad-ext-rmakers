@@ -1,5 +1,6 @@
 import abjad
 import typing
+
 class_typing = typing.Union[int, type]
 
 
@@ -88,16 +89,16 @@ class BurnishSpecifier(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Specifiers'
+    __documentation_section__ = "Specifiers"
 
     __slots__ = (
-        '_left_classes',
-        '_left_counts',
-        '_middle_classes',
-        '_outer_divisions_only',
-        '_right_counts',
-        '_right_classes',
-        )
+        "_left_classes",
+        "_left_counts",
+        "_middle_classes",
+        "_outer_divisions_only",
+        "_right_counts",
+        "_right_classes",
+    )
 
     _publish_storage_format = True
 
@@ -112,7 +113,7 @@ class BurnishSpecifier(object):
         left_counts: typing.Sequence[int] = None,
         right_counts: typing.Sequence[int] = None,
         outer_divisions_only: bool = False,
-        ) -> None:
+    ) -> None:
         assert isinstance(outer_divisions_only, bool)
         self._outer_divisions_only = outer_divisions_only
         if left_classes is not None:
@@ -150,7 +151,7 @@ class BurnishSpecifier(object):
         else:
             return self._burnish_each_division(input_, divisions)
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats burnish specifier.
 
@@ -204,27 +205,27 @@ class BurnishSpecifier(object):
             elif i in (1, abjad.Note):
                 new_division_part.append(abs(number))
             else:
-                raise ValueError('unknown burnshing: {i!r}.')
+                raise ValueError("unknown burnshing: {i!r}.")
         new_division_part = type(division_part)(new_division_part)
         return new_division_part
 
     @classmethod
     def _burnish_each_division(class_, input_, divisions):
-        left_classes = input_['left_classes']
-        middle_classes = input_['middle_classes']
-        right_classes = input_['right_classes']
-        left_counts = input_['left_counts']
+        left_classes = input_["left_classes"]
+        middle_classes = input_["middle_classes"]
+        right_classes = input_["right_classes"]
+        left_counts = input_["left_counts"]
         left_counts = left_counts or abjad.CyclicTuple([0])
-        right_counts = input_['right_counts']
+        right_counts = input_["right_counts"]
         right_counts = right_counts or abjad.CyclicTuple([0])
         lefts_index, rights_index = 0, 0
         burnished_divisions = []
         for division_index, division in enumerate(divisions):
             left_count = left_counts[division_index]
-            left = left_classes[lefts_index:lefts_index + left_count]
+            left = left_classes[lefts_index : lefts_index + left_count]
             lefts_index += left_count
             right_count = right_counts[division_index]
-            right = right_classes[rights_index:rights_index + right_count]
+            right = right_classes[rights_index : rights_index + right_count]
             rights_index += right_count
             available_left_count = len(division)
             left_count = min([left_count, available_left_count])
@@ -241,7 +242,7 @@ class BurnishSpecifier(object):
                 [left_count, middle_count, right_count],
                 cyclic=False,
                 overhang=False,
-                )
+            )
             left_part, middle_part, right_part = result
             left_part = class_._burnish_division_part(left_part, left)
             middle_part = class_._burnish_division_part(middle_part, middle)
@@ -250,7 +251,8 @@ class BurnishSpecifier(object):
             burnished_divisions.append(burnished_division)
         unburnished_weights = [abjad.mathtools.weight(x) for x in divisions]
         burnished_weights = [
-            abjad.mathtools.weight(x) for x in burnished_divisions]
+            abjad.mathtools.weight(x) for x in burnished_divisions
+        ]
         assert burnished_weights == unburnished_weights
         return burnished_divisions
 
@@ -258,12 +260,12 @@ class BurnishSpecifier(object):
     def _burnish_outer_divisions(class_, input_, divisions):
         for list_ in divisions:
             assert all(isinstance(_, int) for _ in list_), repr(list_)
-        left_classes = input_['left_classes']
-        middle_classes = input_['middle_classes']
-        right_classes = input_['right_classes']
-        left_counts = input_['left_counts']
+        left_classes = input_["left_classes"]
+        middle_classes = input_["middle_classes"]
+        right_classes = input_["right_classes"]
+        left_counts = input_["left_counts"]
         left_counts = left_counts or abjad.CyclicTuple([0])
-        right_counts = input_['right_counts']
+        right_counts = input_["right_counts"]
         right_counts = right_counts or abjad.CyclicTuple([0])
         burnished_divisions = []
         left_count = 0
@@ -290,7 +292,7 @@ class BurnishSpecifier(object):
                 [left_count, middle_count, right_count],
                 cyclic=False,
                 overhang=abjad.Exact,
-                )
+            )
             left_part, middle_part, right_part = result
             left_part = class_._burnish_division_part(left_part, left)
             middle_part = class_._burnish_division_part(middle_part, middle)
@@ -308,10 +310,8 @@ class BurnishSpecifier(object):
             middle = [middle_classes[0]]
             middle = middle_count * middle
             result = abjad.sequence(divisions[0]).partition_by_counts(
-                [left_count, middle_count],
-                cyclic=False,
-                overhang=abjad.Exact,
-                )
+                [left_count, middle_count], cyclic=False, overhang=abjad.Exact
+            )
             left_part, middle_part = result
             left_part = class_._burnish_division_part(left_part, left)
             middle_part = class_._burnish_division_part(middle_part, middle)
@@ -322,9 +322,8 @@ class BurnishSpecifier(object):
                 middle_part = division
                 middle = len(division) * [middle_classes[0]]
                 middle_part = class_._burnish_division_part(
-                    middle_part,
-                    middle,
-                    )
+                    middle_part, middle
+                )
                 burnished_division = middle_part
                 burnished_divisions.append(burnished_division)
             # last division:
@@ -334,10 +333,8 @@ class BurnishSpecifier(object):
             right = right[:right_count]
             middle = middle_count * [middle_classes[0]]
             result = abjad.sequence(divisions[-1]).partition_by_counts(
-                [middle_count, right_count],
-                cyclic=False,
-                overhang=abjad.Exact,
-                )
+                [middle_count, right_count], cyclic=False, overhang=abjad.Exact
+            )
             middle_part, right_part = result
             middle_part = class_._burnish_division_part(middle_part, middle)
             right_part = class_._burnish_division_part(right_part, right)
@@ -345,7 +342,8 @@ class BurnishSpecifier(object):
             burnished_divisions.append(burnished_division)
         unburnished_weights = [abjad.mathtools.weight(x) for x in divisions]
         burnished_weights = [
-            abjad.mathtools.weight(x) for x in burnished_divisions]
+            abjad.mathtools.weight(x) for x in burnished_divisions
+        ]
         assert burnished_weights == unburnished_weights
         assert tuple(burnished_weights) == tuple(unburnished_weights)
         return burnished_divisions
@@ -357,16 +355,16 @@ class BurnishSpecifier(object):
             if not getattr(self, name):
                 names.remove(name)
         return abjad.FormatSpecification(
-            client=self,
-            storage_format_kwargs_names=names,
-            )
+            client=self, storage_format_kwargs_names=names
+        )
 
     @staticmethod
     def _is_length_tuple(argument):
         if argument is None:
             return True
         if abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(
-            argument):
+            argument
+        ):
             if isinstance(argument, tuple):
                 return True
         return False
@@ -383,12 +381,12 @@ class BurnishSpecifier(object):
     def _prepare_input(self):
         input_ = {}
         names = (
-            'left_classes',
-            'left_counts',
-            'middle_classes',
-            'right_classes',
-            'right_counts',
-            )
+            "left_classes",
+            "left_counts",
+            "middle_classes",
+            "right_classes",
+            "right_counts",
+        )
         for name in names:
             value = getattr(self, name)
             value = value or ()

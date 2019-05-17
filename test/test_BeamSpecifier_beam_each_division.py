@@ -7,22 +7,15 @@ def test_BeamSpecifier_beam_each_division_01():
     Beam each cell with a multipart beam spanner.
     """
 
-    talea = rmakers.Talea(
-        counts=[1, 1, 1, -1, 2, 2],
-        denominator=32,
-        )
+    talea = rmakers.Talea(counts=[1, 1, 1, -1, 2, 2], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
-        talea=talea,
-        extra_counts_per_division=[3, 4],
-        )
+        talea=talea, extra_counts_per_division=[3, 4]
+    )
 
     divisions = [(2, 16), (5, 16)]
     selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -73,4 +66,4 @@ def test_BeamSpecifier_beam_each_division_01():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))

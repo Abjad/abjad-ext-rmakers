@@ -540,12 +540,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Rhythm-makers'
+    __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = (
-        '_exponent',
-        '_interpolation_specifiers',
-        )
+    __slots__ = ("_exponent", "_interpolation_specifiers")
 
     ### INITIALIZER ###
 
@@ -556,12 +553,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
         interpolation_specifiers: typing.Sequence[
-            InterpolationSpecifier] = None,
+            InterpolationSpecifier
+        ] = None,
         logical_tie_masks: typings.MaskKeyword = None,
         tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
-        ) -> None:
+    ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -571,7 +569,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
-            )
+        )
         self._interpolation_specifiers = interpolation_specifiers
 
     ### SPECIAL METHODS ###
@@ -583,25 +581,23 @@ class AccelerandoRhythmMaker(RhythmMaker):
         Returns list of selections.
         """
         return RhythmMaker.__call__(
-            self,
-            divisions,
-            previous_state=previous_state,
-            )
+            self, divisions, previous_state=previous_state
+        )
 
     ### PRIVATE METHODS ###
 
     @staticmethod
     def _fix_rounding_error(
-        selection,
-        total_duration,
-        interpolation_specifier,
-        ):
+        selection, total_duration, interpolation_specifier
+    ):
         selection_duration = abjad.inspect(selection).duration()
         if not selection_duration == total_duration:
-            needed_duration = total_duration - abjad.inspect(
-                selection[:-1]).duration()
-            multiplier = needed_duration / \
-                interpolation_specifier.written_duration
+            needed_duration = (
+                total_duration - abjad.inspect(selection[:-1]).duration()
+            )
+            multiplier = (
+                needed_duration / interpolation_specifier.written_duration
+            )
             selection[-1].multiplier = multiplier
 
     def _get_interpolation_specifiers(self):
@@ -612,7 +608,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             specifiers = abjad.CyclicTuple([specifiers])
         else:
             specifiers = abjad.CyclicTuple(specifiers)
-        string = 'divisions_consumed'
+        string = "divisions_consumed"
         divisions_consumed = self.previous_state.get(string, 0)
         specifiers = abjad.sequence(specifiers).rotate(n=-divisions_consumed)
         specifiers = abjad.CyclicTuple(specifiers)
@@ -635,15 +631,12 @@ class AccelerandoRhythmMaker(RhythmMaker):
         """
 
         mu2 = (1 - math.cos(mu * math.pi)) / 2
-        return (y1 * (1 - mu2) + y2 * mu2)
+        return y1 * (1 - mu2) + y2 * mu2
 
     @staticmethod
     def _interpolate_divide(
-        total_duration,
-        start_duration,
-        stop_duration,
-        exponent='cosine',
-        ):
+        total_duration, start_duration, stop_duration, exponent="cosine"
+    ):
         """
         Divides ``total_duration`` into durations computed from interpolating
         between ``start_duration`` and ``stop_duration``:
@@ -682,27 +675,25 @@ class AccelerandoRhythmMaker(RhythmMaker):
             raise ValueError(message)
         if start_duration <= 0 or stop_duration <= 0:
             message = "Both 'start_duration' and 'stop_duration'"
-            message += ' must be positive.'
+            message += " must be positive."
             raise ValueError(message)
         if total_duration < (stop_duration + start_duration):
-            return 'too small'
+            return "too small"
         durations = []
         total_duration = float(total_duration)
         partial_sum = 0
         while partial_sum < total_duration:
-            if exponent == 'cosine':
+            if exponent == "cosine":
                 duration = AccelerandoRhythmMaker._interpolate_cosine(
-                    start_duration,
-                    stop_duration,
-                    partial_sum / total_duration,
-                    )
+                    start_duration, stop_duration, partial_sum / total_duration
+                )
             else:
                 duration = AccelerandoRhythmMaker._interpolate_exponential(
                     start_duration,
                     stop_duration,
                     partial_sum / total_duration,
                     exponent,
-                    )
+                )
             durations.append(duration)
             partial_sum += duration
         # scale result to fit total exaclty
@@ -711,10 +702,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @staticmethod
     def _interpolate_divide_multiple(
-        total_durations,
-        reference_durations,
-        exponent='cosine',
-        ):
+        total_durations, reference_durations, exponent="cosine"
+    ):
         """
         Interpolates ``reference_durations`` such that the sum of the
         resulting interpolated values equals the given ``total_durations``:
@@ -756,7 +745,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 reference_durations[i],
                 reference_durations[i + 1],
                 exponent,
-                )
+            )
             # we want a flat list
             durations.extend(durations_)
         return durations
@@ -804,7 +793,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Returns float.
         """
-        result = (y1 * (1 - mu ** exponent) + y2 * mu ** exponent)
+        result = y1 * (1 - mu ** exponent) + y2 * mu ** exponent
         return result
 
     @staticmethod
@@ -833,7 +822,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         tuplet_specifier,
         *,
         tag: str = None,
-        ):
+    ):
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
 
@@ -857,31 +846,26 @@ class AccelerandoRhythmMaker(RhythmMaker):
             total_duration=total_duration,
             start_duration=interpolation_specifier.start_duration,
             stop_duration=interpolation_specifier.stop_duration,
-            )
-        if durations == 'too small':
+        )
+        if durations == "too small":
             maker = abjad.NoteMaker(tag=tag)
             notes = list(maker([0], [total_duration]))
             tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
             selection = abjad.select([tuplet])
             return selection
-        durations = class_._round_durations(durations, 2**10)
+        durations = class_._round_durations(durations, 2 ** 10)
         notes = []
         for i, duration in enumerate(durations):
             written_duration = interpolation_specifier.written_duration
             multiplier = duration / written_duration
             note = abjad.Note(
-                0,
-                written_duration,
-                multiplier=multiplier,
-                tag=tag,
-                )
+                0, written_duration, multiplier=multiplier, tag=tag
+            )
             notes.append(note)
         selection = abjad.select(notes)
         class_._fix_rounding_error(
-            selection,
-            total_duration,
-            interpolation_specifier,
-            )
+            selection, total_duration, interpolation_specifier
+        )
         pair = (abjad.inspect(selection).duration(), total_duration)
         assert pair[0] == pair[1], repr(pair)
         if not beam_specifier.use_feather_beams:
@@ -912,7 +896,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 beam_specifier,
                 tuplet_specifier,
                 tag=self.tag,
-                )
+            )
             selections.append(accelerando)
         return selections
 

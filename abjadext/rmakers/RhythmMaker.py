@@ -17,19 +17,19 @@ class RhythmMaker(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Rhythm-makers'
+    __documentation_section__ = "Rhythm-makers"
 
     __slots__ = (
-        '_beam_specifier',
-        '_division_masks',
-        '_duration_specifier',
-        '_logical_tie_masks',
-        '_previous_state',
-        '_state',
-        '_tag',
-        '_tie_specifier',
-        '_tuplet_specifier',
-        )
+        "_beam_specifier",
+        "_division_masks",
+        "_duration_specifier",
+        "_logical_tie_masks",
+        "_previous_state",
+        "_state",
+        "_tag",
+        "_tie_specifier",
+        "_tuplet_specifier",
+    )
 
     _publish_storage_format = True
 
@@ -45,7 +45,7 @@ class RhythmMaker(object):
         tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
-        ) -> None:
+    ) -> None:
         if beam_specifier is not None:
             assert isinstance(beam_specifier, BeamSpecifier)
         self._beam_specifier = beam_specifier
@@ -78,7 +78,7 @@ class RhythmMaker(object):
         self,
         divisions: typing.List[typing.Tuple[int, int]],
         previous_state: abjad.OrderedDict = None,
-        ) -> typing.List[abjad.Selection]:
+    ) -> typing.List[abjad.Selection]:
         """
         Calls rhythm-maker.
         """
@@ -87,13 +87,13 @@ class RhythmMaker(object):
         selections = self._make_music(divisions)
         selections = self._apply_tuplet_specifier(selections, divisions)
 
-#        previous_logical_ties_produced = self._previous_logical_ties_produced()
-#        temporary_container = abjad.Container(selections)
-#        logical_ties_produced = len(abjad.select(selections).logical_ties())
-#        temporary_container[:] = []
-#        logical_ties_produced += previous_logical_ties_produced
-#        if self._previous_incomplete_last_note():
-#            logical_ties_produced -= 1
+        #        previous_logical_ties_produced = self._previous_logical_ties_produced()
+        #        temporary_container = abjad.Container(selections)
+        #        logical_ties_produced = len(abjad.select(selections).logical_ties())
+        #        temporary_container[:] = []
+        #        logical_ties_produced += previous_logical_ties_produced
+        #        if self._previous_incomplete_last_note():
+        #            logical_ties_produced -= 1
 
         selections = self._apply_division_masks(selections)
 
@@ -108,7 +108,7 @@ class RhythmMaker(object):
         selections = self._rewrite_meter(selections, divisions)
         self._cache_state(selections, divisions, logical_ties_produced)
         selections = self._apply_specifiers(selections, divisions)
-        #self._check_wellformedness(selections)
+        # self._check_wellformedness(selections)
         return selections
 
     def __illustrate__(self, divisions=((3, 8), (4, 8), (3, 16), (4, 16))):
@@ -118,10 +118,7 @@ class RhythmMaker(object):
         Returns LilyPond file.
         """
         selections = self(divisions)
-        lilypond_file = abjad.LilyPondFile.rhythm(
-            selections,
-            divisions,
-            )
+        lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         return lilypond_file
 
     def __eq__(self, argument) -> bool:
@@ -139,10 +136,10 @@ class RhythmMaker(object):
         try:
             result = hash(hash_values)
         except TypeError:
-            raise TypeError(f'unhashable type: {self}')
+            raise TypeError(f"unhashable type: {self}")
         return result
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats Abjad object.
         """
@@ -186,34 +183,30 @@ class RhythmMaker(object):
             forbidden_rest_duration=forbidden_rest_duration,
             repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,
-            )
+        )
         previous_divisions_consumed = self._previous_divisions_consumed()
         for i, selection in enumerate(selections):
             matching_division_mask = division_masks.get_matching_pattern(
                 i + previous_divisions_consumed,
                 total_divisions + previous_divisions_consumed,
-                rotation=self.previous_state.get('rotation'),
-                )
+                rotation=self.previous_state.get("rotation"),
+            )
             if not matching_division_mask:
                 new_selections.append(selection)
                 continue
             duration = abjad.inspect(selection).duration()
             if isinstance(matching_division_mask, SustainMask):
                 leaf_maker = abjad.new(
-                    leaf_maker,
-                    use_multimeasure_rests=False,
-                    )
+                    leaf_maker, use_multimeasure_rests=False
+                )
                 new_selection = leaf_maker([0], [duration])
             else:
                 use_multimeasure_rests = getattr(
-                    matching_division_mask,
-                    'use_multimeasure_rests',
-                    False,
-                    )
+                    matching_division_mask, "use_multimeasure_rests", False
+                )
                 leaf_maker = abjad.new(
-                    leaf_maker,
-                    use_multimeasure_rests=use_multimeasure_rests,
-                    )
+                    leaf_maker, use_multimeasure_rests=use_multimeasure_rests
+                )
                 new_selection = leaf_maker([None], [duration])
             for component in abjad.iterate(selection).components():
                 abjad.detach(abjad.TieIndicator, component)
@@ -245,7 +238,7 @@ class RhythmMaker(object):
             matching_mask = self.logical_tie_masks.get_matching_pattern(
                 index + previous_logical_ties_produced,
                 total_logical_ties + previous_logical_ties_produced,
-                )
+            )
             if not isinstance(matching_mask, SilenceMask):
                 continue
             if isinstance(logical_tie.head, abjad.Rest):
@@ -285,28 +278,28 @@ class RhythmMaker(object):
         return selections
 
     def _cache_state(self, selections, divisions, logical_ties_produced):
-        string = 'divisions_consumed'
+        string = "divisions_consumed"
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += len(divisions)
 
-#        previous_logical_ties_produced = self._previous_logical_ties_produced()
-#        logical_ties_produced = len(abjad.select(selections).logical_ties())
-#        logical_ties_produced += previous_logical_ties_produced
-#        if self._previous_incomplete_last_note():
-#            logical_ties_produced -= 1
+        #        previous_logical_ties_produced = self._previous_logical_ties_produced()
+        #        logical_ties_produced = len(abjad.select(selections).logical_ties())
+        #        logical_ties_produced += previous_logical_ties_produced
+        #        if self._previous_incomplete_last_note():
+        #            logical_ties_produced -= 1
 
-        self.state['logical_ties_produced'] = logical_ties_produced
+        self.state["logical_ties_produced"] = logical_ties_produced
         items = self.state.items()
         state = abjad.OrderedDict(sorted(items))
         self._state = state
 
-#    def _check_wellformedness(self, selections):
-#        for component in abjad.iterate(selections).components():
-#            inspector = abjad.inspect(component)
-#            if not inspector.is_well_formed():
-#                report = inspector.tabulate_wellformedness()
-#                report = repr(component) + '\n' + report
-#                raise Exception(report)
+    #    def _check_wellformedness(self, selections):
+    #        for component in abjad.iterate(selections).components():
+    #            inspector = abjad.inspect(component)
+    #            if not inspector.is_well_formed():
+    #                report = inspector.tabulate_wellformedness()
+    #                report = repr(component) + '\n' + report
+    #                raise Exception(report)
 
     @staticmethod
     def _coerce_divisions(divisions):
@@ -371,30 +364,18 @@ class RhythmMaker(object):
     def _make_music(self, divisions):
         return []
 
-    def _make_secondary_divisions(
-        self,
-        divisions,
-        split_divisions_by_counts,
-        ):
+    def _make_secondary_divisions(self, divisions, split_divisions_by_counts):
         if not split_divisions_by_counts:
             return divisions[:]
-        numerators = [
-            division.numerator
-            for division in divisions
-            ]
+        numerators = [division.numerator for division in divisions]
         secondary_numerators = abjad.sequence(numerators)
         secondary_numerators = secondary_numerators.split(
-            split_divisions_by_counts,
-            cyclic=True,
-            overhang=True,
-            )
+            split_divisions_by_counts, cyclic=True, overhang=True
+        )
         secondary_numerators = abjad.sequence(secondary_numerators)
         secondary_numerators = secondary_numerators.flatten(depth=-1)
         denominator = divisions[0].denominator
-        secondary_divisions = [
-            (n, denominator)
-            for n in secondary_numerators
-            ]
+        secondary_divisions = [(n, denominator) for n in secondary_numerators]
         return secondary_divisions
 
     def _make_tuplets(self, divisions, leaf_lists):
@@ -403,10 +384,8 @@ class RhythmMaker(object):
         for division, leaf_list in zip(divisions, leaf_lists):
             duration = abjad.Duration(division)
             tuplet = abjad.Tuplet.from_duration(
-                duration,
-                leaf_list,
-                tag=self.tag,
-                )
+                duration, leaf_list, tag=self.tag
+            )
             tuplets.append(tuplet)
         return tuplets
 
@@ -425,17 +404,17 @@ class RhythmMaker(object):
     def _previous_divisions_consumed(self):
         if not self.previous_state:
             return 0
-        return self.previous_state.get('divisions_consumed', 0)
+        return self.previous_state.get("divisions_consumed", 0)
 
     def _previous_incomplete_last_note(self):
         if not self.previous_state:
             return False
-        return self.previous_state.get('incomplete_last_note', False)
+        return self.previous_state.get("incomplete_last_note", False)
 
     def _previous_logical_ties_produced(self):
         if not self.previous_state:
             return 0
-        return self.previous_state.get('logical_ties_produced', 0)
+        return self.previous_state.get("logical_ties_produced", 0)
 
     @staticmethod
     def _reverse_tuple(argument):
@@ -447,10 +426,8 @@ class RhythmMaker(object):
         if duration_specifier.rewrite_meter:
             tie_specifier = self._get_tie_specifier()
             selections = duration_specifier._rewrite_meter_(
-                selections,
-                divisions,
-                repeat_ties=tie_specifier.repeat_ties,
-                )
+                selections, divisions, repeat_ties=tie_specifier.repeat_ties
+            )
         return selections
 
     def _scale_counts(self, divisions, talea_denominator, counts):
@@ -460,7 +437,7 @@ class RhythmMaker(object):
         scaled_divisions.append(dummy_division)
         scaled_divisions = abjad.Duration.durations_to_nonreduced_fractions(
             scaled_divisions
-            )
+        )
         dummy_division = scaled_divisions.pop()
         lcd = dummy_division.denominator
         multiplier = lcd / talea_denominator
@@ -473,21 +450,23 @@ class RhythmMaker(object):
             scaled_counts[name] = vector
         assert len(scaled_divisions) == len(divisions)
         assert len(scaled_counts) == len(counts)
-        return abjad.OrderedDict({
-            'divisions': scaled_divisions,
-            'lcd': lcd,
-            'counts': scaled_counts,
-            })
+        return abjad.OrderedDict(
+            {
+                "divisions": scaled_divisions,
+                "lcd": lcd,
+                "counts": scaled_counts,
+            }
+        )
 
     def _sequence_to_ellipsized_string(self, sequence):
         if not sequence:
-            return '[]'
+            return "[]"
         if len(sequence) <= 4:
-            result = ', '.join([str(x) for x in sequence])
+            result = ", ".join([str(x) for x in sequence])
         else:
-            result = ', '.join([str(x) for x in sequence[:4]])
-            result += ', ...'
-        result = '[${}$]'.format(result)
+            result = ", ".join([str(x) for x in sequence[:4]])
+            result += ", ..."
+        result = "[${}$]".format(result)
         return result
 
     def _validate_selections(self, selections):

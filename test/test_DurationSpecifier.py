@@ -12,14 +12,14 @@ def test_DurationSpecifier_01():
         beam_each_division=True,
         beam_divisions_together=False,
         use_feather_beams=False,
-        )
+    )
 
     duration_specifier = rmakers.DurationSpecifier(
         increase_monotonic=False,
         forbid_meter_rewriting=False,
         rewrite_meter=True,
-        spell_metrically='unassignable',
-        )
+        spell_metrically="unassignable",
+    )
 
     logical_tie_masks = [abjadext.rmakers.silence([0], 2)]
 
@@ -30,9 +30,13 @@ def test_DurationSpecifier_01():
         duration_specifier=duration_specifier,
         logical_tie_masks=logical_tie_masks,
         talea=talea,
-        )
+    )
 
-    divisions = [abjad.TimeSignature((3, 8)), abjad.TimeSignature((2, 4)), abjad.TimeSignature((5, 16))]
+    divisions = [
+        abjad.TimeSignature((3, 8)),
+        abjad.TimeSignature((2, 4)),
+        abjad.TimeSignature((5, 16)),
+    ]
 
     result = maker(divisions)
 
@@ -60,4 +64,5 @@ def test_DurationSpecifier_01():
             r8
             c'8.
         }
-        """)
+        """
+    )

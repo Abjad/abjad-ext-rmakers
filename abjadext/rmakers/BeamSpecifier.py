@@ -47,16 +47,16 @@ class BeamSpecifier(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Specifiers'
+    __documentation_section__ = "Specifiers"
 
     __slots__ = (
-        '_beam_divisions_together',
-        '_beam_each_division',
-        '_beam_lone_notes',
-        '_beam_rests',
-        '_stemlet_length',
-        '_use_feather_beams',
-        )
+        "_beam_divisions_together",
+        "_beam_each_division",
+        "_beam_lone_notes",
+        "_beam_rests",
+        "_stemlet_length",
+        "_use_feather_beams",
+    )
 
     _publish_storage_format = True
 
@@ -71,7 +71,7 @@ class BeamSpecifier(object):
         beam_rests: bool = None,
         stemlet_length: typing.Union[int, float] = None,
         use_feather_beams: bool = None,
-        ) -> None:
+    ) -> None:
         if beam_each_division is None:
             beam_each_division = bool(beam_each_division)
         self._beam_each_division = beam_each_division
@@ -122,7 +122,7 @@ class BeamSpecifier(object):
                 span_beam_count=1,
                 stemlet_length=self.stemlet_length,
                 tag=tag,
-                )
+            )
         elif self.beam_each_division:
             for selection in selections:
                 # TODO: possibly do_not_iterate_grace_containers=True instead?
@@ -133,9 +133,9 @@ class BeamSpecifier(object):
                     beam_rests=self.beam_rests,
                     stemlet_length=self.stemlet_length,
                     tag=tag,
-                    )
+                )
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats beam specifier.
 

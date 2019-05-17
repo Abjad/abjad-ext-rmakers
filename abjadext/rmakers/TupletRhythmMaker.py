@@ -142,12 +142,9 @@ class TupletRhythmMaker(RhythmMaker):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Rhythm-makers'
+    __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = (
-        '_denominator',
-        '_tuplet_ratios',
-        )
+    __slots__ = ("_denominator", "_tuplet_ratios")
 
     ### INITIALIZER ###
 
@@ -162,7 +159,7 @@ class TupletRhythmMaker(RhythmMaker):
         tie_specifier: TieSpecifier = None,
         tuplet_ratios: typing.Sequence[typing.Tuple[int, ...]] = None,
         tuplet_specifier: TupletSpecifier = None,
-        ) -> None:
+    ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -171,13 +168,14 @@ class TupletRhythmMaker(RhythmMaker):
             tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
-            )
+        )
         if denominator is not None:
             if isinstance(denominator, tuple):
                 denominator = abjad.Duration(denominator)
             prototype = (abjad.Duration, int)
-            assert (denominator == 'divisions' or
-                isinstance(denominator, prototype))
+            assert denominator == "divisions" or isinstance(
+                denominator, prototype
+            )
         self._denominator = denominator
         tuple_ratios_ = None
         if tuplet_ratios is not None:
@@ -190,7 +188,7 @@ class TupletRhythmMaker(RhythmMaker):
         self,
         divisions: typing.List[typing.Tuple[int, int]],
         previous_state: abjad.OrderedDict = None,
-        ) -> typing.List[abjad.Selection]:
+    ) -> typing.List[abjad.Selection]:
         r"""
         Calls tuplet rhythm-maker on ``divisions``.
 
@@ -317,12 +315,10 @@ class TupletRhythmMaker(RhythmMaker):
         Each selection wraps a single tuplet.
         """
         return RhythmMaker.__call__(
-            self,
-            divisions,
-            previous_state=previous_state,
-            )
+            self, divisions, previous_state=previous_state
+        )
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         r"""
         Formats tuplet rhythm-maker.
 
@@ -358,9 +354,7 @@ class TupletRhythmMaker(RhythmMaker):
                 )
 
         """
-        return super().__format__(
-            format_specification=format_specification,
-            )
+        return super().__format__(format_specification=format_specification)
 
     ### PRIVATE METHODS ###
 
@@ -373,10 +367,8 @@ class TupletRhythmMaker(RhythmMaker):
             ratio = tuplet_ratios[duration_index]
             duration = abjad.Duration(division)
             tuplet = abjad.Tuplet.from_duration_and_ratio(
-                duration,
-                ratio,
-                tag=self.tag,
-                )
+                duration, ratio, tag=self.tag
+            )
             tuplets.append(tuplet)
         selections = [abjad.select(_) for _ in tuplets]
         return selections
@@ -641,9 +633,9 @@ class TupletRhythmMaker(RhythmMaker):
         return super().beam_specifier
 
     @property
-    def denominator(self) -> typing.Optional[
-        typing.Union[str, abjad.Duration, int]
-        ]:
+    def denominator(
+        self
+    ) -> typing.Optional[typing.Union[str, abjad.Duration, int]]:
         r"""
         Gets preferred denominator.
 

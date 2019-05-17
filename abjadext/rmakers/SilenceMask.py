@@ -143,13 +143,9 @@ class SilenceMask(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Masks'
+    __documentation_section__ = "Masks"
 
-    __slots__ = (
-        '_pattern',
-        '_template',
-        '_use_multimeasure_rests',
-        )
+    __slots__ = ("_pattern", "_template", "_use_multimeasure_rests")
 
     _publish_storage_format = True
 
@@ -161,7 +157,7 @@ class SilenceMask(object):
         *,
         template: str = None,
         use_multimeasure_rests: bool = None,
-        ) -> None:
+    ) -> None:
         if pattern is None:
             pattern = abjad.index_all()
         assert isinstance(pattern, abjad.Pattern), repr(pattern)
@@ -173,13 +169,13 @@ class SilenceMask(object):
 
     ### SPECIAL METHODS ###
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats Abjad object.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
-    def __invert__(self) -> 'SilenceMask':
+    def __invert__(self) -> "SilenceMask":
         """
         Inverts pattern.
         """
@@ -205,7 +201,7 @@ class SilenceMask(object):
             storage_format_args_values=[self.template],
             storage_format_forced_override=self.template,
             storage_format_kwargs_names=(),
-            )
+        )
 
     @staticmethod
     def _get_template(frame):
@@ -213,10 +209,9 @@ class SilenceMask(object):
             frame_info = inspect.getframeinfo(frame)
             function_name = frame_info.function
             arguments = abjad.Expression._wrap_arguments(
-                frame,
-                static_class=SilenceMask,
-                )
-            template = f'abjadext.rmakers.{function_name}({arguments})'
+                frame, static_class=SilenceMask
+            )
+            template = f"abjadext.rmakers.{function_name}({arguments})"
         finally:
             del frame
         return template
@@ -277,7 +272,7 @@ class SilenceMask(object):
         period: int = None,
         inverted: bool = None,
         use_multimeasure_rests: bool = None,
-        ) -> 'SilenceMask':
+    ) -> "SilenceMask":
         r"""
         Makes silence mask that matches ``indices``.
 
@@ -381,4 +376,4 @@ class SilenceMask(object):
             pattern=pattern,
             template=template,
             use_multimeasure_rests=use_multimeasure_rests,
-            )
+        )

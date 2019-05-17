@@ -4,20 +4,12 @@ from abjadext import rmakers
 
 def test_TaleaRhythmMaker_tie_split_notes_01():
 
-    talea = rmakers.Talea(
-        counts=[5],
-        denominator=16,
-        )
-    rhythm_maker = rmakers.TaleaRhythmMaker(
-        talea=talea,
-        )
+    talea = rmakers.Talea(counts=[5], denominator=16)
+    rhythm_maker = rmakers.TaleaRhythmMaker(talea=talea)
 
     divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
     selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -56,27 +48,19 @@ def test_TaleaRhythmMaker_tie_split_notes_01():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
     assert abjad.inspect(score).wellformed()
 
 
 def test_TaleaRhythmMaker_tie_split_notes_02():
 
-    talea = rmakers.Talea(
-        counts=[5],
-        denominator=16,
-        )
-    rhythm_maker = rmakers.TaleaRhythmMaker(
-        talea=talea,
-        )
+    talea = rmakers.Talea(counts=[5], denominator=16)
+    rhythm_maker = rmakers.TaleaRhythmMaker(talea=talea)
 
     divisions = [(3, 16), (5, 8), (4, 8), (7, 16)]
     selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -119,6 +103,6 @@ def test_TaleaRhythmMaker_tie_split_notes_02():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
     assert abjad.inspect(score).wellformed()

@@ -7,7 +7,6 @@ def test_TupletRhythmMaker___call___01():
     TupletRhythmMaker can make tuplet monads.
     """
 
-
     tuplet_ratios = [(1,)]
     maker = rmakers.TupletRhythmMaker(tuplet_ratios=tuplet_ratios)
 
@@ -37,4 +36,4 @@ def test_TupletRhythmMaker___call___01():
             }
         }
         """
-        )
+    )

@@ -9,25 +9,19 @@ def test_BurnishSpecifier_01():
         right_classes=[abjad.Rest],
         left_counts=[2],
         right_counts=[1],
-        )
+    )
 
-    talea = rmakers.Talea(
-        counts=[1, 1, 2, 4],
-        denominator=32,
-        )
+    talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
         talea=talea,
         burnish_specifier=burnish_specifier,
         extra_counts_per_division=[0],
-        )
+    )
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -68,7 +62,7 @@ def test_BurnishSpecifier_01():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_BurnishSpecifier_02():
@@ -79,25 +73,19 @@ def test_BurnishSpecifier_02():
         right_classes=[0],
         left_counts=[2],
         right_counts=[1],
-        )
+    )
 
-    talea = rmakers.Talea(
-        counts=[1, 1, 2, 4],
-        denominator=32,
-        )
+    talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
         talea=talea,
         extra_counts_per_division=[0],
         burnish_specifier=burnish_specifier,
-        )
+    )
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -138,7 +126,7 @@ def test_BurnishSpecifier_02():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_BurnishSpecifier_03():
@@ -149,25 +137,19 @@ def test_BurnishSpecifier_03():
         right_classes=[0],
         left_counts=[2],
         right_counts=[1],
-        )
+    )
 
-    talea= rmakers.Talea(
-        counts=[1, 1, 2, 4],
-        denominator=32,
-        )
+    talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
         talea=talea,
         extra_counts_per_division=[3],
         burnish_specifier=burnish_specifier,
-        )
+    )
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -212,7 +194,7 @@ def test_BurnishSpecifier_03():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_BurnishSpecifier_04():
@@ -222,25 +204,19 @@ def test_BurnishSpecifier_04():
         right_classes=[abjad.Rest],
         left_counts=[1],
         right_counts=[1],
-        )
+    )
 
-    talea = rmakers.Talea(
-        counts=[1, 1, 2, 4],
-        denominator=32,
-        )
+    talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
         talea=talea,
         extra_counts_per_division=[0, 3],
         burnish_specifier=burnish_specifier,
-        )
+    )
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -281,7 +257,7 @@ def test_BurnishSpecifier_04():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_BurnishSpecifier_05():
@@ -291,26 +267,20 @@ def test_BurnishSpecifier_05():
         right_classes=[abjad.Rest],
         left_counts=[1],
         right_counts=[1],
-        )
+    )
 
-    talea = rmakers.Talea(
-        counts=[1, 1, 2, 4],
-        denominator=32,
-        )
+    talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
         talea=talea,
         extra_counts_per_division=[0, 3],
         burnish_specifier=burnish_specifier,
         split_divisions_by_counts=[14],
-        )
+    )
 
     divisions = [(5, 16), (6, 16)]
     selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -354,4 +324,4 @@ def test_BurnishSpecifier_05():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))

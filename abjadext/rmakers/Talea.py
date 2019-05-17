@@ -25,14 +25,9 @@ class Talea(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Specifiers'
+    __documentation_section__ = "Specifiers"
 
-    __slots__ = (
-        '_counts',
-        '_end_counts',
-        '_denominator',
-        '_preamble',
-        )
+    __slots__ = ("_counts", "_end_counts", "_denominator", "_preamble")
 
     _publish_storage_format = True
 
@@ -45,12 +40,13 @@ class Talea(object):
         denominator: int = 16,
         end_counts: typing.Sequence[int] = None,
         preamble: typing.List[int] = None,
-        ) -> None:
+    ) -> None:
         assert all(isinstance(_, int) for _ in counts)
         self._counts = counts
         if not abjad.mathtools.is_nonnegative_integer_power_of_two(
-            denominator):
-            message = f'denominator {denominator} must be integer power of 2.'
+            denominator
+        ):
+            message = f"denominator {denominator} must be integer power of 2."
             raise Exception(message)
         self._denominator = denominator
         end_counts_ = None
@@ -132,15 +128,17 @@ class Talea(object):
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats Abjad object.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
-    def __getitem__(self, argument) -> typing.Union[
+    def __getitem__(
+        self, argument
+    ) -> typing.Union[
         abjad.NonreducedFraction, typing.List[abjad.NonreducedFraction]
-        ]:
+    ]:
         """
         Gets item or slice identified by ``argument``.
 
@@ -202,7 +200,7 @@ class Talea(object):
             result = [
                 abjad.NonreducedFraction(count, self.denominator)
                 for count in counts_
-                ]
+            ]
             return result
         raise ValueError(argument)
 
@@ -214,7 +212,7 @@ class Talea(object):
         try:
             result = hash(hash_values)
         except TypeError:
-            raise TypeError(f'unhashable type: {self}')
+            raise TypeError(f"unhashable type: {self}")
         return result
 
     def __iter__(self) -> typing.Generator:
@@ -280,7 +278,7 @@ class Talea(object):
 
     def _get_format_specification(self):
         return abjad.FormatSpecification(client=self)
-    
+
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -438,7 +436,7 @@ class Talea(object):
 
     ### PUBLIC METHODS ###
 
-    def advance(self, weight: int) -> 'Talea':
+    def advance(self, weight: int) -> "Talea":
         """
         Advances talea by ``weight``.
 
@@ -536,7 +534,7 @@ class Talea(object):
         """
         assert isinstance(weight, int), repr(weight)
         if weight < 0:
-            raise Exception(f'weight {weight} must be nonnegative.')
+            raise Exception(f"weight {weight} must be nonnegative.")
         if weight == 0:
             return abjad.new(self)
         preamble = abjad.Sequence(self.preamble or ())
@@ -565,4 +563,4 @@ class Talea(object):
             counts=counts,
             denominator=self.denominator,
             preamble=preamble_,
-            )
+        )

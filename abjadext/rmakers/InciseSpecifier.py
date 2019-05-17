@@ -34,18 +34,18 @@ class InciseSpecifier(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Specifiers'
+    __documentation_section__ = "Specifiers"
 
     __slots__ = (
-        '_body_ratio',
-        '_fill_with_notes',
-        '_outer_divisions_only',
-        '_prefix_counts',
-        '_prefix_talea',
-        '_suffix_counts',
-        '_suffix_talea',
-        '_talea_denominator',
-        )
+        "_body_ratio",
+        "_fill_with_notes",
+        "_outer_divisions_only",
+        "_prefix_counts",
+        "_prefix_talea",
+        "_suffix_counts",
+        "_suffix_talea",
+        "_talea_denominator",
+    )
 
     _publish_storage_format = True
 
@@ -63,7 +63,7 @@ class InciseSpecifier(object):
         suffix_talea: typing.Sequence[int] = None,
         suffix_counts: typing.Sequence[int] = None,
         talea_denominator: int = None,
-        ) -> None:
+    ) -> None:
         prefix_talea = prefix_talea or ()
         prefix_talea = tuple(prefix_talea)
         assert self._is_integer_tuple(prefix_talea)
@@ -90,9 +90,10 @@ class InciseSpecifier(object):
             assert suffix_counts
         if talea_denominator is not None:
             if not abjad.mathtools.is_nonnegative_integer_power_of_two(
-                talea_denominator):
-                message = 'talea denominator {!r} must be nonnegative'
-                message += ' integer power of 2.'
+                talea_denominator
+            ):
+                message = "talea denominator {!r} must be nonnegative"
+                message += " integer power of 2."
                 message = message.format(talea_denominator)
                 raise Exception(message)
         self._talea_denominator: typing.Optional[int] = talea_denominator
@@ -106,11 +107,13 @@ class InciseSpecifier(object):
         self._fill_with_notes: typing.Optional[bool] = fill_with_notes
         if outer_divisions_only is not None:
             outer_divisions_only = bool(outer_divisions_only)
-        self._outer_divisions_only: typing.Optional[bool] = outer_divisions_only
+        self._outer_divisions_only: typing.Optional[
+            bool
+        ] = outer_divisions_only
 
     ### SPECIAL METHODS ###
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats incise specifier.
 
@@ -174,7 +177,8 @@ class InciseSpecifier(object):
         if argument is None:
             return True
         if abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(
-            argument):
+            argument
+        ):
             if isinstance(argument, (tuple, list)):
                 return True
         return False

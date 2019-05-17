@@ -17,19 +17,19 @@ class TupletSpecifier(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Specifiers'
+    __documentation_section__ = "Specifiers"
 
     __slots__ = (
-        '_denominator',
-        '_diminution',
-        '_duration_bracket',
-        '_extract_trivial',
-        '_force_fraction',
-        '_rewrite_dots',
-        '_rewrite_rest_filled',
-        '_rewrite_sustained',
-        '_trivialize',
-        )
+        "_denominator",
+        "_diminution",
+        "_duration_bracket",
+        "_extract_trivial",
+        "_force_fraction",
+        "_rewrite_dots",
+        "_rewrite_rest_filled",
+        "_rewrite_sustained",
+        "_trivialize",
+    )
 
     _publish_storage_format = True
 
@@ -47,7 +47,7 @@ class TupletSpecifier(object):
         rewrite_rest_filled: bool = None,
         rewrite_sustained: bool = None,
         trivialize: bool = None,
-        ) -> None:
+    ) -> None:
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
         self._denominator = denominator
@@ -84,7 +84,7 @@ class TupletSpecifier(object):
         divisions: typing.List[abjad.NonreducedFraction],
         *,
         tag: str = None,
-        ) -> typing.List[abjad.Selection]:
+    ) -> typing.List[abjad.Selection]:
         """
         Calls tuplet specifier.
         """
@@ -117,10 +117,10 @@ class TupletSpecifier(object):
         try:
             result = hash(hash_values)
         except TypeError:
-            raise TypeError(f'unhashable type: {self}')
+            raise TypeError(f"unhashable type: {self}")
         return result
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats Abjad object.
         """
@@ -143,14 +143,14 @@ class TupletSpecifier(object):
         else:
             for division in divisions:
                 if not isinstance(division, abjad.NonreducedFraction):
-                    raise Exception(f'must be division (not {division!r}).')
+                    raise Exception(f"must be division (not {division!r}).")
         assert len(selections) == len(divisions)
         assert len(tuplets) == len(divisions)
         denominator = self.denominator
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
         for tuplet, division in zip(tuplets, divisions):
-            if denominator == 'divisions':
+            if denominator == "divisions":
                 tuplet.denominator = division.numerator
             elif isinstance(denominator, abjad.Duration):
                 unit_duration = denominator
@@ -162,7 +162,7 @@ class TupletSpecifier(object):
             elif abjad.mathtools.is_positive_integer(denominator):
                 tuplet.denominator = denominator
             else:
-                message = f'invalid preferred denominator: {denominator!r}.'
+                message = f"invalid preferred denominator: {denominator!r}."
                 raise Exception(message)
 
     def _extract_trivial_(self, selections):
@@ -172,8 +172,9 @@ class TupletSpecifier(object):
         for selection in selections:
             selection_ = []
             for component in selection:
-                if not (isinstance(component, abjad.Tuplet) and
-                    component.trivial()):
+                if not (
+                    isinstance(component, abjad.Tuplet) and component.trivial()
+                ):
                     selection_.append(component)
                     continue
                 tuplet = component
@@ -253,8 +254,9 @@ class TupletSpecifier(object):
         if self.diminution is None:
             return
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
-            if ((self.diminution is True and not tuplet.diminution()) or
-                (self.diminution is False and not tuplet.augmentation())):
+            if (self.diminution is True and not tuplet.diminution()) or (
+                self.diminution is False and not tuplet.augmentation()
+            ):
                 tuplet.toggle_prolation()
 
     def _trivialize_(self, selections):
@@ -266,9 +268,9 @@ class TupletSpecifier(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def denominator(self) -> typing.Optional[
-        typing.Union[str, abjad.Duration, int]
-        ]:
+    def denominator(
+        self
+    ) -> typing.Optional[typing.Union[str, abjad.Duration, int]]:
         r"""
         Gets preferred denominator.
 

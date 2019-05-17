@@ -146,23 +146,17 @@ class SustainMask(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Masks'
+    __documentation_section__ = "Masks"
 
-    __slots__ = (
-        '_pattern',
-        '_template',
-        )
+    __slots__ = ("_pattern", "_template")
 
     _publish_storage_format = True
 
     ### INITIALIZER ###
 
     def __init__(
-        self,
-        pattern: abjad.Pattern = None,
-        *,
-        template: str = None,
-        ) -> None:
+        self, pattern: abjad.Pattern = None, *, template: str = None
+    ) -> None:
         if pattern is None:
             pattern = abjad.index_all()
         assert isinstance(pattern, abjad.Pattern), repr(pattern)
@@ -171,13 +165,13 @@ class SustainMask(object):
 
     ### SPECIAL METHODS ###
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats Abjad object.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
-    def __invert__(self) -> 'SustainMask':
+    def __invert__(self) -> "SustainMask":
         """
         Inverts pattern.
         """
@@ -203,7 +197,7 @@ class SustainMask(object):
             storage_format_args_values=[self.template],
             storage_format_forced_override=self.template,
             storage_format_kwargs_names=(),
-            )
+        )
 
     @staticmethod
     def _get_template(frame):
@@ -211,10 +205,9 @@ class SustainMask(object):
             frame_info = inspect.getframeinfo(frame)
             function_name = frame_info.function
             arguments = abjad.Expression._wrap_arguments(
-                frame,
-                static_class=SustainMask,
-                )
-            template = f'abjadext.rmakers.{function_name}({arguments})'
+                frame, static_class=SustainMask
+            )
+            template = f"abjadext.rmakers.{function_name}({arguments})"
         finally:
             del frame
         return template
@@ -242,7 +235,7 @@ class SustainMask(object):
         indices: typing.Sequence[int],
         period: int = None,
         inverted: bool = None,
-        ) -> 'SustainMask':
+    ) -> "SustainMask":
         r"""
         Makes sustain mask that matches ``indices``.
 

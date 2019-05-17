@@ -10,18 +10,13 @@ def test_IncisedRhythmMaker___call___01():
         suffix_talea=[-1],
         suffix_counts=[1],
         talea_denominator=32,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -62,7 +57,7 @@ def test_IncisedRhythmMaker___call___01():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___02():
@@ -73,18 +68,13 @@ def test_IncisedRhythmMaker___call___02():
         suffix_talea=[-1],
         suffix_counts=[1],
         talea_denominator=32,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -122,7 +112,7 @@ def test_IncisedRhythmMaker___call___02():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___03():
@@ -133,18 +123,13 @@ def test_IncisedRhythmMaker___call___03():
         suffix_talea=[-8],
         suffix_counts=[1, 2, 3],
         talea_denominator=32,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -178,23 +163,18 @@ def test_IncisedRhythmMaker___call___03():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___04():
 
     incise_specifier = rmakers.InciseSpecifier()
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -224,7 +204,7 @@ def test_IncisedRhythmMaker___call___04():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___05():
@@ -235,19 +215,15 @@ def test_IncisedRhythmMaker___call___05():
         suffix_talea=[-1],
         suffix_counts=[1],
         talea_denominator=8,
-        )
+    )
 
     maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        extra_counts_per_division=[1, 0, 3],
-        )
+        incise_specifier=incise_specifier, extra_counts_per_division=[1, 0, 3]
+    )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -286,29 +262,24 @@ def test_IncisedRhythmMaker___call___05():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___06():
 
     incise_specifier = rmakers.InciseSpecifier(
-        prefix_talea=[-1],
-        prefix_counts=[1],
-        talea_denominator=32,
-        )
+        prefix_talea=[-1], prefix_counts=[1], talea_denominator=32
+    )
 
     maker = rmakers.IncisedRhythmMaker(
         incise_specifier=incise_specifier,
         extra_counts_per_division=[2, 0],
         split_divisions_by_counts=[20],
-        )
+    )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -358,7 +329,7 @@ def test_IncisedRhythmMaker___call___06():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___07():
@@ -370,18 +341,13 @@ def test_IncisedRhythmMaker___call___07():
         suffix_counts=[1],
         talea_denominator=32,
         fill_with_notes=False,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -418,7 +384,7 @@ def test_IncisedRhythmMaker___call___07():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___08():
@@ -430,18 +396,13 @@ def test_IncisedRhythmMaker___call___08():
         suffix_counts=[1],
         talea_denominator=32,
         fill_with_notes=False,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -478,7 +439,7 @@ def test_IncisedRhythmMaker___call___08():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___09():
@@ -490,18 +451,13 @@ def test_IncisedRhythmMaker___call___09():
         suffix_counts=[1, 2, 3],
         talea_denominator=32,
         fill_with_notes=False,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -534,25 +490,18 @@ def test_IncisedRhythmMaker___call___09():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___10():
 
-    incise_specifier = rmakers.InciseSpecifier(
-        fill_with_notes=False,
-        )
+    incise_specifier = rmakers.InciseSpecifier(fill_with_notes=False)
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -579,7 +528,7 @@ def test_IncisedRhythmMaker___call___10():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___11():
@@ -591,19 +540,15 @@ def test_IncisedRhythmMaker___call___11():
         suffix_counts=[1],
         talea_denominator=8,
         fill_with_notes=False,
-        )
+    )
 
     maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        extra_counts_per_division=[1, 0, 3],
-        )
+        incise_specifier=incise_specifier, extra_counts_per_division=[1, 0, 3]
+    )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -641,7 +586,7 @@ def test_IncisedRhythmMaker___call___11():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___12():
@@ -654,20 +599,17 @@ def test_IncisedRhythmMaker___call___12():
         prefix_counts=[1],
         talea_denominator=32,
         fill_with_notes=False,
-        )
+    )
 
     maker = rmakers.IncisedRhythmMaker(
         incise_specifier=incise_specifier,
         extra_counts_per_division=[2, 0],
         split_divisions_by_counts=[20],
-        )
+    )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -714,7 +656,7 @@ def test_IncisedRhythmMaker___call___12():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___13():
@@ -729,18 +671,13 @@ def test_IncisedRhythmMaker___call___13():
         suffix_counts=[4],
         talea_denominator=32,
         outer_divisions_only=True,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -772,7 +709,7 @@ def test_IncisedRhythmMaker___call___13():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___14():
@@ -787,18 +724,13 @@ def test_IncisedRhythmMaker___call___14():
         suffix_counts=[2],
         talea_denominator=4,
         outer_divisions_only=True,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -828,7 +760,7 @@ def test_IncisedRhythmMaker___call___14():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___15():
@@ -836,20 +768,13 @@ def test_IncisedRhythmMaker___call___15():
     Unincised notes.
     """
 
-    incise_specifier = rmakers.InciseSpecifier(
-        outer_divisions_only=True,
-        )
+    incise_specifier = rmakers.InciseSpecifier(outer_divisions_only=True)
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -879,7 +804,7 @@ def test_IncisedRhythmMaker___call___15():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___16():
@@ -894,19 +819,15 @@ def test_IncisedRhythmMaker___call___16():
         suffix_counts=[1],
         talea_denominator=8,
         outer_divisions_only=True,
-        )
+    )
 
     maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        extra_counts_per_division=[1, 0, 3],
-        )
+        incise_specifier=incise_specifier, extra_counts_per_division=[1, 0, 3]
+    )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -939,7 +860,7 @@ def test_IncisedRhythmMaker___call___16():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___17():
@@ -954,20 +875,17 @@ def test_IncisedRhythmMaker___call___17():
         suffix_counts=[1],
         talea_denominator=8,
         outer_divisions_only=True,
-        )
+    )
 
     maker = rmakers.IncisedRhythmMaker(
         incise_specifier=incise_specifier,
         extra_counts_per_division=[1, 0, 0, 0, 2],
         split_divisions_by_counts=[3, 1, 4, 1, 3],
-        )
+    )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -1010,7 +928,7 @@ def test_IncisedRhythmMaker___call___17():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___18():
@@ -1026,18 +944,13 @@ def test_IncisedRhythmMaker___call___18():
         talea_denominator=32,
         fill_with_notes=False,
         outer_divisions_only=True,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -1070,7 +983,7 @@ def test_IncisedRhythmMaker___call___18():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___19():
@@ -1086,18 +999,13 @@ def test_IncisedRhythmMaker___call___19():
         talea_denominator=4,
         fill_with_notes=False,
         outer_divisions_only=True,
-        )
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -1126,7 +1034,7 @@ def test_IncisedRhythmMaker___call___19():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___20():
@@ -1135,20 +1043,14 @@ def test_IncisedRhythmMaker___call___20():
     """
 
     incise_specifier = rmakers.InciseSpecifier(
-        fill_with_notes=False,
-        outer_divisions_only=True,
-        )
+        fill_with_notes=False, outer_divisions_only=True
+    )
 
-    maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        )
+    maker = rmakers.IncisedRhythmMaker(incise_specifier=incise_specifier)
 
     divisions = [(5, 8), (5, 8), (5, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -1175,7 +1077,7 @@ def test_IncisedRhythmMaker___call___20():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___21():
@@ -1191,19 +1093,15 @@ def test_IncisedRhythmMaker___call___21():
         talea_denominator=8,
         fill_with_notes=False,
         outer_divisions_only=True,
-        )
+    )
 
     maker = rmakers.IncisedRhythmMaker(
-        incise_specifier=incise_specifier,
-        extra_counts_per_division=[1, 0, 3],
-        )
+        incise_specifier=incise_specifier, extra_counts_per_division=[1, 0, 3]
+    )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -1236,7 +1134,7 @@ def test_IncisedRhythmMaker___call___21():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))
 
 
 def test_IncisedRhythmMaker___call___22():
@@ -1252,20 +1150,17 @@ def test_IncisedRhythmMaker___call___22():
         talea_denominator=8,
         fill_with_notes=False,
         outer_divisions_only=True,
-        )
+    )
 
     maker = rmakers.IncisedRhythmMaker(
         incise_specifier=incise_specifier,
         extra_counts_per_division=[1, 0, 0, 0, 2],
         split_divisions_by_counts=[3, 1, 4, 1, 3],
-        )
+    )
 
     divisions = [(4, 8), (4, 8), (4, 8)]
     selections = maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(
-        selections,
-        divisions,
-        )
+    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
 
     score = lilypond_file[abjad.Score]
     assert format(score) == abjad.String.normalize(
@@ -1308,4 +1203,4 @@ def test_IncisedRhythmMaker___call___22():
             }
         >>
         """
-        ), print(format(score))
+    ), print(format(score))

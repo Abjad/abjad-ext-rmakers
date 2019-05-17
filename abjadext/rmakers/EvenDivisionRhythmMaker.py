@@ -21,14 +21,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Rhythm-makers'
+    __documentation_section__ = "Rhythm-makers"
 
     __slots__ = (
-        '_burnish_specifier',
-        '_denominator',
-        '_denominators',
-        '_extra_counts_per_division',
-        )
+        "_burnish_specifier",
+        "_denominator",
+        "_denominators",
+        "_extra_counts_per_division",
+    )
 
     ### INITIALIZER ###
 
@@ -37,7 +37,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         *,
         beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
-        denominator: typing.Union[str, int] = 'from_counts',
+        denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         division_masks: typings.MaskKeyword = None,
         duration_specifier: DurationSpecifier = None,
@@ -46,7 +46,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
-        ) -> None:
+    ) -> None:
         RhythmMaker.__init__(
             self,
             beam_specifier=beam_specifier,
@@ -56,17 +56,19 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
-            )
+        )
         assert abjad.mathtools.all_are_nonnegative_integer_powers_of_two(
-            denominators), repr(denominators)
+            denominators
+        ), repr(denominators)
         denominators = tuple(denominators)
         self._denominators: typing.Tuple[int, ...] = denominators
         if extra_counts_per_division is not None:
             assert abjad.mathtools.all_are_integer_equivalent(
-                extra_counts_per_division), repr(extra_counts_per_division)
+                extra_counts_per_division
+            ), repr(extra_counts_per_division)
             extra_counts_per_division = [
                 int(_) for _ in extra_counts_per_division
-                ]
+            ]
             extra_counts_per_division = tuple(extra_counts_per_division)
         self._extra_counts_per_division = extra_counts_per_division
         if burnish_specifier is not None:
@@ -81,7 +83,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         self,
         divisions: typing.List[typing.Tuple[int, int]],
         previous_state: abjad.OrderedDict = None,
-        ) -> typing.List[abjad.Selection]:
+    ) -> typing.List[abjad.Selection]:
         r"""
         Calls even division rhythm-maker on ``divisions``.
 
@@ -271,10 +273,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().__call__(
-            divisions,
-            previous_state=previous_state,
-            )
+        return super().__call__(divisions, previous_state=previous_state)
 
     ### PRIVATE METHODS ###
 
@@ -313,7 +312,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             right_classes,
             left_counts,
             right_counts,
-            )
+        )
         return selections
 
     def _burnish_division_part(self, division_part, token):
@@ -327,7 +326,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             elif burnishing in (1, abjad.Note):
                 new_division_part.append(abjad.Note(leaf))
             else:
-                message = 'unknown burnishing: {!r}.'
+                message = "unknown burnishing: {!r}."
                 message = message.format(burnishing)
                 raise ValueError(message)
         new_division_part = type(division_part)(new_division_part)
@@ -341,7 +340,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         right_classes,
         left_counts,
         right_counts,
-        ):
+    ):
         lefts_index, rights_index = 0, 0
         for selection_index, selection in enumerate(selections):
             tuplet = selection[0]
@@ -349,10 +348,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             leaves = tuplet[:]
             leaf_count = len(leaves)
             left_length = left_counts[selection_index]
-            left = left_classes[lefts_index:lefts_index + left_length]
+            left = left_classes[lefts_index : lefts_index + left_length]
             lefts_index += left_length
             right_length = right_counts[selection_index]
-            right = right_classes[rights_index:rights_index + right_length]
+            right = right_classes[rights_index : rights_index + right_length]
             rights_index += right_length
             available_left_length = leaf_count
             left_length = min([left_length, available_left_length])
@@ -366,7 +365,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 [left_length, middle_length, right_length],
                 cyclic=False,
                 overhang=False,
-                )
+            )
             left_part, middle_part, right_part = result
             left_part = self._burnish_division_part(left_part, left)
             middle_part = self._burnish_division_part(middle_part, middle)
@@ -384,7 +383,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         right_classes,
         left_counts,
         right_counts,
-        ):
+    ):
         if len(selections) == 1:
             self._burnish_each_selection(
                 selections,
@@ -393,7 +392,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 right_classes,
                 left_counts,
                 right_counts,
-                )
+            )
             return selections
         left_length = 0
         if left_counts:
@@ -417,10 +416,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         middle = [middle_classes[0]]
         middle = middle_length * middle
         left_part, middle_part = abjad.sequence(leaves).partition_by_counts(
-            [left_length, middle_length],
-            cyclic=False,
-            overhang=False,
-            )
+            [left_length, middle_length], cyclic=False, overhang=False
+        )
         left_part = self._burnish_division_part(left_part, left)
         middle_part = self._burnish_division_part(middle_part, middle)
         burnished_leaves = left_part + middle_part
@@ -447,10 +444,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         right = right[:right_length]
         middle = middle_length * [middle_classes[0]]
         middle_part, right_part = abjad.sequence(leaves).partition_by_counts(
-            [middle_length, right_length],
-            cyclic=False,
-            overhang=False,
-            )
+            [middle_length, right_length], cyclic=False, overhang=False
+        )
         middle_part = self._burnish_division_part(middle_part, middle)
         right_part = self._burnish_division_part(right_part, right)
         burnished_leaves = middle_part + right_part
@@ -460,25 +455,24 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     def _make_music(self, divisions):
         selections = []
-        divisions_consumed = self.previous_state.get('divisions_consumed', 0)
+        divisions_consumed = self.previous_state.get("divisions_consumed", 0)
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         denominators = abjad.sequence(self.denominators)
         denominators = denominators.rotate(-divisions_consumed)
         denominators = abjad.CyclicTuple(denominators)
         extra_counts_per_division = self.extra_counts_per_division or (0,)
-        extra_counts_per_division = abjad.sequence(
-            extra_counts_per_division
-            )
+        extra_counts_per_division = abjad.sequence(extra_counts_per_division)
         extra_counts_per_division = extra_counts_per_division.rotate(
             -divisions_consumed
-            )
+        )
         extra_counts_per_division = abjad.CyclicTuple(
             extra_counts_per_division
-            )
+        )
         for i, division in enumerate(divisions):
             if not abjad.mathtools.is_positive_integer_power_of_two(
-                division.denominator):
-                message = 'non-power-of-two divisions not implemented: {!r}.'
+                division.denominator
+            ):
+                message = "non-power-of-two divisions not implemented: {!r}."
                 message = message.format(division)
                 raise Exception(message)
             denominator_ = denominators[i]
@@ -505,15 +499,15 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 assert all(
                     _.written_duration.denominator == denominator_
                     for _ in notes
-                    )
+                )
             tuplet_duration = abjad.Duration(division)
             tuplet = abjad.Tuplet.from_duration(
-                tuplet_duration,
-                notes,
-                tag=self.tag,
-                )
-            if (self.denominator == 'from_counts' and
-                unprolated_note_count is not None):
+                tuplet_duration, notes, tag=self.tag
+            )
+            if (
+                self.denominator == "from_counts"
+                and unprolated_note_count is not None
+            ):
                 denominator = unprolated_note_count
                 tuplet.denominator = denominator
             elif isinstance(self.denominator, int):

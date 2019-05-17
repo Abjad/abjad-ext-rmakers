@@ -12,15 +12,15 @@ class TieSpecifier(object):
 
     ### CLASS VARIABLES ###
 
-    __documentation_section__ = 'Specifiers'
+    __documentation_section__ = "Specifiers"
 
     __slots__ = (
-        '_repeat_ties',
-        '_strip_ties',
-        '_tie_across_divisions',
-        '_tie_consecutive_notes',
-        '_tie_within_divisions',
-        )
+        "_repeat_ties",
+        "_strip_ties",
+        "_tie_across_divisions",
+        "_tie_consecutive_notes",
+        "_tie_within_divisions",
+    )
 
     ### INITIALIZER ###
 
@@ -28,21 +28,18 @@ class TieSpecifier(object):
         self,
         *,
         repeat_ties: typing.Union[
-            bool,
-            typings.IntegerPair,
-            abjad.DurationInequality,
-            ] = None,
+            bool, typings.IntegerPair, abjad.DurationInequality
+        ] = None,
         strip_ties: bool = None,
         tie_across_divisions: bool = None,
         tie_consecutive_notes: bool = None,
         tie_within_divisions: bool = None,
-        ) -> None:
+    ) -> None:
         repeat_ties_ = repeat_ties
         if isinstance(repeat_ties, tuple) and len(repeat_ties) == 2:
             repeat_ties_ = abjad.DurationInequality(
-                operator_string='>=',
-                duration=repeat_ties,
-                )
+                operator_string=">=", duration=repeat_ties
+            )
         if repeat_ties_ is not None:
             assert isinstance(repeat_ties_, (bool, abjad.DurationInequality))
         self._repeat_ties = repeat_ties_
@@ -55,14 +52,14 @@ class TieSpecifier(object):
             collections.Sequence,
             abjad.Pattern,
             abjad.PatternTuple,
-            )
+        )
         assert isinstance(tie_across_divisions, prototype)
         self._tie_across_divisions = tie_across_divisions
         if tie_consecutive_notes is not None:
             tie_consecutive_notes = bool(tie_consecutive_notes)
         self._tie_consecutive_notes = tie_consecutive_notes
         if self.tie_consecutive_notes and self.strip_ties:
-            message = 'can not tie leaves and strip ties at same time.'
+            message = "can not tie leaves and strip ties at same time."
             raise Exception(message)
         if tie_within_divisions is not None:
             tie_within_divisions = bool(tie_within_divisions)
@@ -71,9 +68,8 @@ class TieSpecifier(object):
     ### SPECIAL METHODS ###
 
     def __call__(
-        self,
-        divisions: typing.List[abjad.NonreducedFraction],
-        ) -> None:
+        self, divisions: typing.List[abjad.NonreducedFraction]
+    ) -> None:
         """
         Calls tie specifier on ``divisions``.
         """
@@ -91,7 +87,7 @@ class TieSpecifier(object):
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 
-    def __format__(self, format_specification='') -> str:
+    def __format__(self, format_specification="") -> str:
         """
         Formats Abjad object.
         """
@@ -105,7 +101,7 @@ class TieSpecifier(object):
         try:
             result = hash(hash_values)
         except TypeError:
-            raise TypeError(f'unhashable type: {self}')
+            raise TypeError(f"unhashable type: {self}")
         return result
 
     def __repr__(self) -> str:
@@ -156,7 +152,8 @@ class TieSpecifier(object):
             tie_across_divisions = [tie_across_divisions]
         if not isinstance(tie_across_divisions, abjad.Pattern):
             tie_across_divisions = abjad.Pattern.from_vector(
-                tie_across_divisions)
+                tie_across_divisions
+            )
         pairs = abjad.sequence(divisions).nwise()
         rest_prototype = (abjad.Rest, abjad.MultimeasureRest)
         temporary_container = abjad.Container(divisions)
@@ -194,6 +191,7 @@ class TieSpecifier(object):
             abjad.detach(abjad.TieIndicator, leaf)
             abjad.detach(abjad.RepeatTie, leaf)
         pairs = itertools.groupby(leaves, lambda _: _.__class__)
+
         def _get_pitches(component):
             if isinstance(component, abjad.Note):
                 return component.written_pitch
@@ -201,6 +199,7 @@ class TieSpecifier(object):
                 return component.written_pitches
             else:
                 raise TypeError(component)
+
         for class_, group in pairs:
             group = list(group)
             if not isinstance(group[0], (abjad.Note, abjad.Chord)):
@@ -221,9 +220,9 @@ class TieSpecifier(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def repeat_ties(self) -> typing.Union[
-        bool, abjad.DurationInequality, None,
-        ]:
+    def repeat_ties(
+        self
+    ) -> typing.Union[bool, abjad.DurationInequality, None]:
         r"""
         Is true when ties should format all notes in tie with LilyPond
         ``\repeatTie``.

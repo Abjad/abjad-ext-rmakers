@@ -4,10 +4,7 @@ from abjadext import rmakers
 
 def test_Pattern_matches_index_01():
 
-    mask = abjad.Pattern(
-        indices=[0, 1],
-        period=None,
-        )
+    mask = abjad.Pattern(indices=[0, 1], period=None)
 
     length = 9
     assert mask.matches_index(0, length)
@@ -22,10 +19,7 @@ def test_Pattern_matches_index_01():
 
 def test_Pattern_matches_index_02():
 
-    mask = abjad.Pattern(
-        indices=[0, 1],
-        period=4,
-        )
+    mask = abjad.Pattern(indices=[0, 1], period=4)
 
     length = 9
     assert mask.matches_index(0, length)
@@ -40,10 +34,7 @@ def test_Pattern_matches_index_02():
 
 def test_Pattern_matches_index_03():
 
-    mask = abjad.Pattern(
-        indices=[0, 1, 2, 3, 4, 5, 6, 7],
-        period=None,
-        )
+    mask = abjad.Pattern(indices=[0, 1, 2, 3, 4, 5, 6, 7], period=None)
 
     length = 9
     assert mask.matches_index(0, length)
@@ -58,10 +49,7 @@ def test_Pattern_matches_index_03():
 
 def test_Pattern_matches_index_04():
 
-    mask = abjad.Pattern(
-        indices=[0, 1, 2, 3, 4, 5, 6, 7],
-        period=None,
-        )
+    mask = abjad.Pattern(indices=[0, 1, 2, 3, 4, 5, 6, 7], period=None)
 
     length = 2
     assert mask.matches_index(0, length)
@@ -76,10 +64,7 @@ def test_Pattern_matches_index_04():
 
 def test_Pattern_matches_index_05():
 
-    mask = abjad.Pattern(
-        indices=[-2, -1],
-        period=None,
-        )
+    mask = abjad.Pattern(indices=[-2, -1], period=None)
 
     length = 4
     assert not mask.matches_index(0, length)
@@ -94,10 +79,7 @@ def test_Pattern_matches_index_05():
 
 def test_Pattern_matches_index_06():
 
-    mask = abjad.Pattern(
-        indices=[-2, -1],
-        period=4,
-        )
+    mask = abjad.Pattern(indices=[-2, -1], period=4)
 
     length = 4
     assert not mask.matches_index(0, length)
