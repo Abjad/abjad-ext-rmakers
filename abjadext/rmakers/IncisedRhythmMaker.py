@@ -185,7 +185,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     def _make_middle_of_numeric_map_part(self, middle):
         incise_specifier = self._get_incise_specifier()
-        if incise_specifier.fill_with_notes:
+        if not (incise_specifier.fill_with_rests):
             if not incise_specifier.outer_divisions_only:
                 if 0 < middle:
                     if incise_specifier.body_ratio is not None:
@@ -201,8 +201,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 else:
                     return ()
             else:
-                message = "must incise divisions or output."
-                raise Exception(message)
+                raise Exception("must incise divisions or output.")
         else:
             if not incise_specifier.outer_divisions_only:
                 if 0 < middle:
@@ -958,7 +957,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     suffix_talea=[3],
             ...     suffix_counts=[4],
             ...     talea_denominator=32,
-            ...     fill_with_notes=False,
+            ...     fill_with_rests=True,
             ...     outer_divisions_only=True,
             ...     )
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
@@ -1134,7 +1133,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         fill_with_notes=False,
+            ...         fill_with_rests=True,
             ...         prefix_talea=[1],
             ...         prefix_counts=[1],
             ...         talea_denominator=16,
@@ -1187,7 +1186,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         fill_with_notes=False,
+            ...         fill_with_rests=True,
             ...         prefix_talea=[1],
             ...         prefix_counts=[1],
             ...         talea_denominator=16,

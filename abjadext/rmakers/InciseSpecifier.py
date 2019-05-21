@@ -38,7 +38,7 @@ class InciseSpecifier(object):
 
     __slots__ = (
         "_body_ratio",
-        "_fill_with_notes",
+        "_fill_with_rests",
         "_outer_divisions_only",
         "_prefix_counts",
         "_prefix_talea",
@@ -55,8 +55,7 @@ class InciseSpecifier(object):
         self,
         *,
         body_ratio: abjad.Ratio = None,
-        # TODO: change to fill_with_rests: bool = None:
-        fill_with_notes: bool = True,
+        fill_with_rests: bool = None,
         outer_divisions_only: bool = None,
         prefix_talea: typing.Sequence[int] = None,
         prefix_counts: typing.Sequence[int] = None,
@@ -102,9 +101,9 @@ class InciseSpecifier(object):
         if body_ratio is not None:
             body_ratio = abjad.Ratio(body_ratio)
         self._body_ratio: typing.Optional[abjad.Ratio] = body_ratio
-        if fill_with_notes is not None:
-            fill_with_notes = bool(fill_with_notes)
-        self._fill_with_notes: typing.Optional[bool] = fill_with_notes
+        if fill_with_rests is not None:
+            fill_with_rests = bool(fill_with_rests)
+        self._fill_with_rests: typing.Optional[bool] = fill_with_rests
         if outer_divisions_only is not None:
             outer_divisions_only = bool(outer_divisions_only)
         self._outer_divisions_only: typing.Optional[
@@ -129,7 +128,6 @@ class InciseSpecifier(object):
 
             >>> abjad.f(specifier)
             abjadext.rmakers.InciseSpecifier(
-                fill_with_notes=True,
                 prefix_talea=[-1],
                 prefix_counts=[1],
                 suffix_talea=(),
@@ -151,7 +149,6 @@ class InciseSpecifier(object):
 
             >>> abjad.f(specifier)
             abjadext.rmakers.InciseSpecifier(
-                fill_with_notes=True,
                 prefix_talea=[-1],
                 prefix_counts=[0, 1],
                 suffix_talea=[-1],
@@ -266,14 +263,15 @@ class InciseSpecifier(object):
         return self._body_ratio
 
     @property
-    def fill_with_notes(self) -> typing.Optional[bool]:
+    def fill_with_rests(self) -> typing.Optional[bool]:
         """
-        Is true when rhythm-maker should fill divisions with notes.
+        Is true when rhythm-maker should fill divisions with rests instead of
+        notes.
 
         ..  todo:: Add examples.
 
         """
-        return self._fill_with_notes
+        return self._fill_with_rests
 
     @property
     def outer_divisions_only(self) -> typing.Optional[bool]:
