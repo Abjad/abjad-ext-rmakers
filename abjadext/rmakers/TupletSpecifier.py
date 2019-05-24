@@ -38,7 +38,9 @@ class TupletSpecifier(object):
     def __init__(
         self,
         *,
-        denominator: typing.Union[str, abjad.Duration, int] = None,
+        denominator: typing.Union[
+            int, str, abjad.Duration, abjad.typings.IntegerPair
+        ] = None,
         diminution: bool = None,
         duration_bracket: bool = None,
         extract_trivial: bool = None,
