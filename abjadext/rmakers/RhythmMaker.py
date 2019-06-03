@@ -76,7 +76,7 @@ class RhythmMaker(object):
 
     def __call__(
         self,
-        divisions: typing.List[typing.Tuple[int, int]],
+        divisions: typing.Sequence[abjad.IntegerPair],
         previous_state: abjad.OrderedDict = None,
     ) -> typing.List[abjad.Selection]:
         """

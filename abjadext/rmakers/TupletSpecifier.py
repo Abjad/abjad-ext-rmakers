@@ -82,8 +82,8 @@ class TupletSpecifier(object):
 
     def __call__(
         self,
-        selections: typing.List[abjad.Selection],
-        divisions: typing.List[abjad.NonreducedFraction],
+        selections: typing.Sequence[abjad.Selection],
+        divisions: typing.Sequence[abjad.NonreducedFraction],
         *,
         tag: str = None,
     ) -> typing.List[abjad.Selection]:
@@ -102,7 +102,7 @@ class TupletSpecifier(object):
         selections = self._extract_trivial_(selections)
         # toggle prolation must follow rewrite dots and extract trivial:
         self._toggle_prolation(selections)
-        return selections
+        return list(selections)
 
     def __eq__(self, argument) -> bool:
         """

@@ -107,11 +107,11 @@ class TaleaRhythmMaker(RhythmMaker):
         curtail_ties: bool = None,
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
-        extra_counts_per_division: typing.List[int] = None,
+        extra_counts_per_division: abjad.IntegerSequence = None,
         logical_tie_masks: typings.MasksTyping = None,
         read_talea_once_only: bool = None,
         rest_tied_notes: bool = None,
-        split_divisions_by_counts: typing.List[int] = None,
+        split_divisions_by_counts: abjad.IntegerSequence = None,
         tag: str = None,
         tie_specifier: TieSpecifier = None,
         tie_split_notes: bool = True,
@@ -160,7 +160,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     def __call__(
         self,
-        divisions: typing.List[typing.Tuple[int, int]],
+        divisions: typing.Sequence[abjad.IntegerPair],
         previous_state: abjad.OrderedDict = None,
     ) -> typing.List[abjad.Selection]:
         """
@@ -237,7 +237,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     def __illustrate__(
         self,
-        divisions: typing.List[typing.Tuple[int, int]] = [
+        divisions: typing.Sequence[abjad.IntegerPair] = [
             (3, 8),
             (4, 8),
             (3, 16),

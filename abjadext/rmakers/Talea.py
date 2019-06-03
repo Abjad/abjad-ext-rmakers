@@ -36,10 +36,10 @@ class Talea(object):
     def __init__(
         self,
         *,
-        counts: typing.Sequence[int] = (1,),
+        counts: abjad.IntegerSequence = (1,),
         denominator: int = 16,
-        end_counts: typing.Sequence[int] = None,
-        preamble: typing.List[int] = None,
+        end_counts: abjad.IntegerSequence = None,
+        preamble: abjad.IntegerSequence = None,
     ) -> None:
         assert all(isinstance(_, int) for _ in counts)
         self._counts = counts

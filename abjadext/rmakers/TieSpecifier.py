@@ -68,7 +68,7 @@ class TieSpecifier(object):
     ### SPECIAL METHODS ###
 
     def __call__(
-        self, divisions: typing.List[abjad.NonreducedFraction]
+        self, divisions: typing.Sequence[abjad.NonreducedFraction]
     ) -> None:
         """
         Calls tie specifier on ``divisions``.
