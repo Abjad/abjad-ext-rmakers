@@ -39,7 +39,7 @@ class TupletSpecifier(object):
         self,
         *,
         denominator: typing.Union[
-            int, str, abjad.Duration, abjad.typings.IntegerPair
+            int, str, abjad.Duration, abjad.IntegerPair
         ] = None,
         diminution: bool = None,
         duration_bracket: bool = None,

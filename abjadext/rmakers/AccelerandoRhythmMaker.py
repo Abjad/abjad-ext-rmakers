@@ -550,12 +550,12 @@ class AccelerandoRhythmMaker(RhythmMaker):
         self,
         *,
         beam_specifier: BeamSpecifier = None,
-        division_masks: typings.MaskKeyword = None,
+        division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         interpolation_specifiers: typing.Sequence[
             InterpolationSpecifier
         ] = None,
-        logical_tie_masks: typings.MaskKeyword = None,
+        logical_tie_masks: typings.MasksTyping = None,
         tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,

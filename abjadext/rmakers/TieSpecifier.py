@@ -28,7 +28,7 @@ class TieSpecifier(object):
         self,
         *,
         repeat_ties: typing.Union[
-            bool, typings.IntegerPair, abjad.DurationInequality
+            bool, abjad.IntegerPair, abjad.DurationInequality
         ] = None,
         strip_ties: bool = None,
         tie_across_divisions: bool = None,

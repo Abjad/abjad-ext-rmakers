@@ -153,7 +153,7 @@ class TupletRhythmMaker(RhythmMaker):
         *,
         beam_specifier: BeamSpecifier = None,
         denominator: int = None,
-        division_masks: typings.MaskKeyword = None,
+        division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
         tie_specifier: TieSpecifier = None,
