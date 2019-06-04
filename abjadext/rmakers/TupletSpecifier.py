@@ -38,9 +38,7 @@ class TupletSpecifier(object):
     def __init__(
         self,
         *,
-        denominator: typing.Union[
-            int, str, abjad.Duration, abjad.IntegerPair
-        ] = None,
+        denominator: typing.Union[int, str, abjad.DurationTyping] = None,
         diminution: bool = None,
         duration_bracket: bool = None,
         extract_trivial: bool = None,
@@ -270,9 +268,7 @@ class TupletSpecifier(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def denominator(
-        self
-    ) -> typing.Optional[typing.Union[str, abjad.Duration, int]]:
+    def denominator(self) -> typing.Union[int, str, abjad.Duration, None]:
         r"""
         Gets preferred denominator.
 
@@ -296,12 +292,18 @@ class TupletSpecifier(object):
             ...     selections,
             ...     divisions,
             ...     )
+            >>> score = lilypond_file[abjad.Score]
+            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
                 >>> abjad.f(lilypond_file[abjad.Score])
                 \new Score
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4.5
+                }
                 <<
                     \new GlobalContext
                     {
@@ -342,7 +344,7 @@ class TupletSpecifier(object):
 
             The preferred denominator of each tuplet is set to the numerator of
             the division that generates the tuplet when ``denominator``
-            is set to the string ``'divisions'``. This means that the tuplet
+            is set to the string ``"divisions"``. This means that the tuplet
             numerator and denominator are not necessarily relatively prime.
             This also means that ratios like ``6:4`` and ``10:8`` may arise:
 
@@ -350,7 +352,7 @@ class TupletSpecifier(object):
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
-            ...         denominator='divisions',
+            ...         denominator="divisions",
             ...         ),
             ...     )
 
@@ -360,12 +362,18 @@ class TupletSpecifier(object):
             ...     selections,
             ...     divisions,
             ...     )
+            >>> score = lilypond_file[abjad.Score]
+            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
                 >>> abjad.f(lilypond_file[abjad.Score])
                 \new Score
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4.5
+                }
                 <<
                     \new GlobalContext
                     {
@@ -422,12 +430,18 @@ class TupletSpecifier(object):
             ...     selections,
             ...     divisions,
             ...     )
+            >>> score = lilypond_file[abjad.Score]
+            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
                 >>> abjad.f(lilypond_file[abjad.Score])
                 \new Score
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4.5
+                }
                 <<
                     \new GlobalContext
                     {
@@ -483,12 +497,18 @@ class TupletSpecifier(object):
             ...     selections,
             ...     divisions,
             ...     )
+            >>> score = lilypond_file[abjad.Score]
+            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
                 >>> abjad.f(lilypond_file[abjad.Score])
                 \new Score
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4.5
+                }
                 <<
                     \new GlobalContext
                     {
@@ -544,12 +564,18 @@ class TupletSpecifier(object):
             ...     selections,
             ...     divisions,
             ...     )
+            >>> score = lilypond_file[abjad.Score]
+            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
                 >>> abjad.f(lilypond_file[abjad.Score])
                 \new Score
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4.5
+                }
                 <<
                     \new GlobalContext
                     {
@@ -607,12 +633,18 @@ class TupletSpecifier(object):
             ...     selections,
             ...     divisions,
             ...     )
+            >>> score = lilypond_file[abjad.Score]
+            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
                 >>> abjad.f(lilypond_file[abjad.Score])
                 \new Score
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4.5
+                }
                 <<
                     \new GlobalContext
                     {
@@ -668,12 +700,21 @@ class TupletSpecifier(object):
             ...     selections,
             ...     divisions,
             ...     )
+            >>> score = lilypond_file[abjad.Score]
+            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+            >>> moment = abjad.SchemeMoment((1, 28))
+            >>> abjad.setting(score).proportional_notation_duration = moment
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
                 >>> abjad.f(lilypond_file[abjad.Score])
                 \new Score
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4.5
+                    proportionalNotationDuration = #(ly:make-moment 1 28)
+                }
                 <<
                     \new GlobalContext
                     {
@@ -729,12 +770,18 @@ class TupletSpecifier(object):
             ...     selections,
             ...     divisions,
             ...     )
+            >>> score = lilypond_file[abjad.Score]
+            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
                 >>> abjad.f(lilypond_file[abjad.Score])
                 \new Score
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4.5
+                }
                 <<
                     \new GlobalContext
                     {
@@ -771,7 +818,7 @@ class TupletSpecifier(object):
                     }
                 >>
 
-        Set to ``'divisions'``, duration, positive integer or none.
+        Set to ``"divisions"``, duration, positive integer or none.
         """
         return self._denominator
 
