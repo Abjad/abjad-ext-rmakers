@@ -364,20 +364,6 @@ class RhythmMaker(object):
     def _make_music(self, divisions):
         return []
 
-    def _make_secondary_divisions(self, divisions, split_divisions_by_counts):
-        if not split_divisions_by_counts:
-            return divisions[:]
-        numerators = [division.numerator for division in divisions]
-        secondary_numerators = abjad.sequence(numerators)
-        secondary_numerators = secondary_numerators.split(
-            split_divisions_by_counts, cyclic=True, overhang=True
-        )
-        secondary_numerators = abjad.sequence(secondary_numerators)
-        secondary_numerators = secondary_numerators.flatten(depth=-1)
-        denominator = divisions[0].denominator
-        secondary_divisions = [(n, denominator) for n in secondary_numerators]
-        return secondary_divisions
-
     def _make_tuplets(self, divisions, leaf_lists):
         assert len(divisions) == len(leaf_lists)
         tuplets = []
