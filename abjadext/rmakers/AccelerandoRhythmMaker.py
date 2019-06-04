@@ -574,11 +574,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, divisions, previous_state=None):
+    def __call__(
+        self, divisions, previous_state=None
+    ) -> typing.List[abjad.Selection]:
         """
         Calls interpolated rhythm-maker on ``divisions``.
-
-        Returns list of selections.
         """
         return RhythmMaker.__call__(
             self, divisions, previous_state=previous_state
@@ -615,50 +615,52 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return specifiers
 
     @staticmethod
-    def _interpolate_cosine(y1, y2, mu):
+    def _interpolate_cosine(y1, y2, mu) -> float:
         """
         Performs cosine interpolation of ``y1`` and ``y2`` with ``mu``
-        ``[0, 1]`` normalized:
+        ``[0, 1]`` normalized.
 
-        >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_cosine(
-        ...     y1=0,
-        ...     y2=1,
-        ...     mu=0.5,
-        ...     )
-        0.49999999999999994
+        ..  container:: example
+        
+            >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_cosine(
+            ...     y1=0,
+            ...     y2=1,
+            ...     mu=0.5,
+            ...     )
+            0.49999999999999994
 
-        Returns float.
         """
-
         mu2 = (1 - math.cos(mu * math.pi)) / 2
         return y1 * (1 - mu2) + y2 * mu2
 
     @staticmethod
     def _interpolate_divide(
         total_duration, start_duration, stop_duration, exponent="cosine"
-    ):
+    ) -> typing.Union[str, typing.List[float]]:
         """
         Divides ``total_duration`` into durations computed from interpolating
-        between ``start_duration`` and ``stop_duration``:
+        between ``start_duration`` and ``stop_duration``.
 
-        >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_divide(
-        ...     total_duration=10,
-        ...     start_duration=1,
-        ...     stop_duration=1,
-        ...     exponent=1,
-        ...     )
-        [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-        >>> sum(_)
-        10.0
+        ..  container:: example
 
-        >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_divide(
-        ...     total_duration=10,
-        ...     start_duration=5,
-        ...     stop_duration=1,
-        ...     )
-        [4.798..., 2.879..., 1.326..., 0.995...]
-        >>> sum(_)
-        10.0
+            >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_divide(
+            ...     total_duration=10,
+            ...     start_duration=1,
+            ...     stop_duration=1,
+            ...     exponent=1,
+            ...     )
+            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+            >>> sum(_)
+            10.0
+
+            >>> abjadext.rmakers.AccelerandoRhythmMaker._interpolate_divide(
+            ...     total_duration=10,
+            ...     start_duration=5,
+            ...     stop_duration=1,
+            ...     )
+            [4.798..., 2.879..., 1.326..., 0.995...]
+            >>> sum(_)
+            10.0
 
         Set ``exponent`` to ``'cosine'`` for cosine interpolation.
 
@@ -667,8 +669,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Scales resulting durations so that their sum equals ``total_duration``
         exactly.
-
-        Returns a list of floats.
         """
         if total_duration <= 0:
             message = "Total duration must be positive."
@@ -681,7 +681,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             return "too small"
         durations = []
         total_duration = float(total_duration)
-        partial_sum = 0
+        partial_sum = 0.0
         while partial_sum < total_duration:
             if exponent == "cosine":
                 duration = AccelerandoRhythmMaker._interpolate_cosine(
@@ -703,28 +703,31 @@ class AccelerandoRhythmMaker(RhythmMaker):
     @staticmethod
     def _interpolate_divide_multiple(
         total_durations, reference_durations, exponent="cosine"
-    ):
+    ) -> typing.List[float]:
         """
         Interpolates ``reference_durations`` such that the sum of the
-        resulting interpolated values equals the given ``total_durations``:
+        resulting interpolated values equals the given ``total_durations``.
 
-        >>> durations = abjadext.rmakers.AccelerandoRhythmMaker._interpolate_divide_multiple(
-        ...     total_durations=[100, 50],
-        ...     reference_durations=[20, 10, 20],
-        ...     )
-        >>> for duration in durations:
-        ...     duration
-        19.448...
-        18.520...
-        16.227...
-        13.715...
-        11.748...
-        10.487...
-        9.8515...
-        9.5130...
-        10.421...
-        13.073...
-        16.991...
+        ..  container:: example
+
+            >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
+            >>> durations = class_._interpolate_divide_multiple(
+            ...     total_durations=[100, 50],
+            ...     reference_durations=[20, 10, 20],
+            ...     )
+            >>> for duration in durations:
+            ...     duration
+            19.448...
+            18.520...
+            16.227...
+            13.715...
+            11.748...
+            10.487...
+            9.8515...
+            9.5130...
+            10.421...
+            13.073...
+            16.991...
 
         The operation is the same as the interpolate_divide() method
         implemented on this class. But this function takes multiple
@@ -734,8 +737,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Set ``exponent`` to ``cosine`` for cosine interpolation. Set
         ``exponent`` to a number for exponential interpolation.
-
-        Returns a list of floats.
         """
         assert len(total_durations) == len(reference_durations) - 1
         durations = []
@@ -746,52 +747,54 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 reference_durations[i + 1],
                 exponent,
             )
-            # we want a flat list
-            durations.extend(durations_)
+            for duration_ in durations_:
+                assert isinstance(duration_, float)
+                durations.append(duration_)
         return durations
 
     @staticmethod
-    def _interpolate_exponential(y1, y2, mu, exponent=1):
+    def _interpolate_exponential(y1, y2, mu, exponent=1) -> float:
         """
         Interpolates between ``y1`` and ``y2`` at position ``mu``.
 
-        Exponents equal to 1 leave durations unscaled:
+        ..  container:: example
 
-        >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
-        >>> for mu in (0, 0.25, 0.5, 0.75, 1):
-        ...     class_._interpolate_exponential(100, 200, mu, exponent=1)
-        ...
-        100
-        125.0
-        150.0
-        175.0
-        200
+            Exponents equal to 1 leave durations unscaled:
 
-        Exponents greater than 1 generate ritardandi:
+            >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
+            >>> for mu in (0, 0.25, 0.5, 0.75, 1):
+            ...     class_._interpolate_exponential(100, 200, mu, exponent=1)
+            ...
+            100
+            125.0
+            150.0
+            175.0
+            200
 
-        >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
-        >>> for mu in (0, 0.25, 0.5, 0.75, 1):
-        ...     class_._interpolate_exponential(100, 200, mu, exponent=2)
-        ...
-        100
-        106.25
-        125.0
-        156.25
-        200
+            Exponents greater than 1 generate ritardandi:
 
-        Exponents less than 1 generate accelerandi:
+            >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
+            >>> for mu in (0, 0.25, 0.5, 0.75, 1):
+            ...     class_._interpolate_exponential(100, 200, mu, exponent=2)
+            ...
+            100
+            106.25
+            125.0
+            156.25
+            200
 
-        >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
-        >>> for mu in (0, 0.25, 0.5, 0.75, 1):
-        ...     class_._interpolate_exponential(100, 200, mu, exponent=0.5)
-        ...
-        100.0
-        150.0
-        170.71067811865476
-        186.60254037844388
-        200.0
+            Exponents less than 1 generate accelerandi:
 
-        Returns float.
+            >>> class_ = abjadext.rmakers.AccelerandoRhythmMaker
+            >>> for mu in (0, 0.25, 0.5, 0.75, 1):
+            ...     class_._interpolate_exponential(100, 200, mu, exponent=0.5)
+            ...
+            100.0
+            150.0
+            170.71067811865476
+            186.60254037844388
+            200.0
+
         """
         result = y1 * (1 - mu ** exponent) + y2 * mu ** exponent
         return result
@@ -822,7 +825,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         tuplet_specifier,
         *,
         tag: str = None,
-    ):
+    ) -> abjad.Selection:
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
 
@@ -837,8 +840,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Sets note written durations according to interpolation specifier.
         multipliers.
-
-        Returns selection of notes.
         """
         total_duration = abjad.Duration(total_duration)
         interpolation_specifier = interpolation_specifiers[index]
@@ -876,8 +877,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
             abjad.override(selection[0]).beam.grow_direction = abjad.Left
         tuplet = abjad.Tuplet((1, 1), selection, tag=tag)
         if tuplet_specifier.duration_bracket:
-            duration = abjad.inspect(tuplet).duration()
-            markup = duration.to_score_markup()
+            duration_ = abjad.inspect(tuplet).duration()
+            markup = duration_.to_score_markup()
             markup = markup.scale((0.75, 0.75))
             abjad.override(tuplet).tuplet_number.text = markup
         selection = abjad.select([tuplet])
@@ -912,7 +913,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def beam_specifier(self):
+    def beam_specifier(self) -> typing.Optional[BeamSpecifier]:
         r"""
         Gets beam specifier.
 
@@ -1723,12 +1724,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Returns beam specifier.
         """
         return super().beam_specifier
 
     @property
-    def division_masks(self):
+    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets division masks.
 
@@ -2158,7 +2158,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return super().division_masks
 
     @property
-    def interpolation_specifiers(self):
+    def interpolation_specifiers(
+        self
+    ) -> typing.Optional[typing.Sequence[InterpolationSpecifier]]:
         r"""
         Gets interpolation specifier.
 
@@ -2840,16 +2842,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Defaults to none.
-
-        Set to interpolation specifier or none.
-
-        Returns interpolation specifier or none.
         """
         return self._interpolation_specifiers
 
     @property
-    def logical_tie_masks(self):
+    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets logical tie masks.
 
@@ -3411,11 +3408,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Defaults to none.
-
-        Set to patterns or none.
-
-        Returns patterns or none.
         """
         return super().logical_tie_masks
 
@@ -4287,7 +4279,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return super().tag
 
     @property
-    def tie_specifier(self):
+    def tie_specifier(self) -> typing.Optional[TieSpecifier]:
         r"""
         Gets tie specifier.
 
@@ -5080,12 +5072,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Returns tie specifier.
         """
         return super().tie_specifier
 
     @property
-    def tuplet_specifier(self):
+    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
         r"""
         Gets tuplet specifier.
 
@@ -5449,6 +5440,5 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Returns tuplet specifier or none.
         """
         return super().tuplet_specifier

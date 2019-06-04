@@ -1469,7 +1469,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets division masks.
 
@@ -2450,7 +2450,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets logical tie masks.
 

@@ -111,11 +111,11 @@ class RhythmMaker(object):
         # self._check_wellformedness(selections)
         return selections
 
-    def __illustrate__(self, divisions=((3, 8), (4, 8), (3, 16), (4, 16))):
+    def __illustrate__(
+        self, divisions=((3, 8), (4, 8), (3, 16), (4, 16))
+    ) -> abjad.LilyPondFile:
         """
         Illustrates rhythm-maker.
-
-        Returns LilyPond file.
         """
         selections = self(divisions)
         lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
@@ -490,7 +490,7 @@ class RhythmMaker(object):
         return self._beam_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
         """
         Gets division masks.
         """
@@ -504,7 +504,7 @@ class RhythmMaker(object):
         return self._duration_specifier
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
         """
         Gets logical tie masks.
         """

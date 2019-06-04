@@ -138,7 +138,6 @@ class NoteRhythmMaker(RhythmMaker):
             >>> abjadext.rmakers.NoteRhythmMaker()
             NoteRhythmMaker()
 
-        Returns string.
         """
         return super().__repr__()
 
@@ -593,7 +592,7 @@ class NoteRhythmMaker(RhythmMaker):
         return self._burnish_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets division masks.
 
@@ -1053,7 +1052,7 @@ class NoteRhythmMaker(RhythmMaker):
         return super().duration_specifier
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets logical tie masks.
 
@@ -1507,7 +1506,6 @@ class NoteRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Returns tie specifier.
         """
         return super().tie_specifier
 

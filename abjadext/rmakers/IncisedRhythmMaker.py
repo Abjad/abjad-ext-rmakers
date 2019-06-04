@@ -436,7 +436,7 @@ class IncisedRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets division masks.
 
@@ -829,7 +829,6 @@ class IncisedRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Returns duration specifier or none.
         """
         return super().duration_specifier
 
@@ -1008,7 +1007,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return self._incise_specifier
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets logical tie masks.
 

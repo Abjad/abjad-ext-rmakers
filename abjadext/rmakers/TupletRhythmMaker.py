@@ -311,7 +311,8 @@ class TupletRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Returns list of selections structured one selection per division.
+        Stuctures selections one selection per division.
+        
         Each selection wraps a single tuplet.
         """
         return RhythmMaker.__call__(
@@ -1139,7 +1140,7 @@ class TupletRhythmMaker(RhythmMaker):
         return self._denominator
 
     @property
-    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets division masks.
 

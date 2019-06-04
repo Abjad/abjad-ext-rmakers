@@ -335,8 +335,6 @@ class SustainMask(object):
                     }
                 >>
 
-
-        Returns sustain mask.
         """
         pattern = abjad.index(indices, period=period, inverted=inverted)
         template = SustainMask._get_template(inspect.currentframe())

@@ -301,8 +301,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
         Defaults ``divisions`` to ``3/8``, ``4/8``, ``3/16``, ``4/16``.
-
-        Returns LilyPond file.
         """
         return RhythmMaker.__illustrate__(self, divisions=divisions)
 
@@ -320,7 +318,6 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
             TaleaRhythmMaker(talea=Talea(counts=[1, 2, 3, 4], denominator=16))
 
-        Returns string.
         """
         return super().__repr__()
 
@@ -1409,7 +1406,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return self._curtail_ties
 
     @property
-    def division_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets division masks.
 
@@ -2724,7 +2721,7 @@ class TaleaRhythmMaker(RhythmMaker):
             return None
 
     @property
-    def logical_tie_masks(self) -> typing.Optional[abjad.PatternTuple]:
+    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets logical tie masks.
 
