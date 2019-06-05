@@ -157,7 +157,7 @@ class TupletRhythmMaker(RhythmMaker):
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
         tie_specifier: TieSpecifier = None,
-        tuplet_ratios: typing.Sequence[typing.Tuple[int, ...]] = None,
+        tuplet_ratios: abjad.RatioSequenceTyping = None,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         RhythmMaker.__init__(
