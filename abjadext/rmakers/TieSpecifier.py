@@ -31,7 +31,7 @@ class TieSpecifier(object):
             bool, abjad.IntegerPair, abjad.DurationInequality
         ] = None,
         strip_ties: bool = None,
-        tie_across_divisions: bool = None,
+        tie_across_divisions: typing.Union[bool, abjad.IntegerSequence] = None,
         tie_consecutive_notes: bool = None,
         tie_within_divisions: bool = None,
     ) -> None:
@@ -345,7 +345,9 @@ class TieSpecifier(object):
         return self._strip_ties
 
     @property
-    def tie_across_divisions(self) -> typing.Optional[bool]:
+    def tie_across_divisions(
+        self
+    ) -> typing.Union[bool, abjad.IntegerSequence, None]:
         r"""
         Is true when rhythm-maker ties across divisons.
 
