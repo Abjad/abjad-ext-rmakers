@@ -152,7 +152,7 @@ class TupletRhythmMaker(RhythmMaker):
         self,
         *,
         beam_specifier: BeamSpecifier = None,
-        denominator: int = None,
+        denominator: typing.Union[int, abjad.DurationTyping] = None,
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
