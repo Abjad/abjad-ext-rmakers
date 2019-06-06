@@ -65,7 +65,7 @@ class BeamSpecifier(object):
     def __init__(
         self,
         *,
-        beam_each_division: bool = True,
+        beam_each_division: bool = None,
         beam_divisions_together: bool = None,
         beam_lone_notes: bool = None,
         beam_rests: bool = None,
