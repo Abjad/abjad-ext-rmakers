@@ -112,9 +112,10 @@ class BurnishSpecifier(object):
         right_classes: typing.Sequence[class_typing] = None,
         left_counts: typing.Sequence[int] = None,
         right_counts: typing.Sequence[int] = None,
-        outer_divisions_only: bool = False,
+        outer_divisions_only: bool = None,
     ) -> None:
-        assert isinstance(outer_divisions_only, bool)
+        if outer_divisions_only is not None:
+            outer_divisions_only = bool(outer_divisions_only)
         self._outer_divisions_only = outer_divisions_only
         if left_classes is not None:
             left_classes = tuple(left_classes)
