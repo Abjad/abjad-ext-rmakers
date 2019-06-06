@@ -17,6 +17,9 @@ class TupletRhythmMaker(RhythmMaker):
         Makes tuplets with ``3:2`` ratios:
 
         >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+        ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+        ...         beam_each_division=True,
+        ...     ),
         ...     tuplet_ratios=[(3, 2)],
         ...     )
 
@@ -77,6 +80,9 @@ class TupletRhythmMaker(RhythmMaker):
         Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
 
         >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+        ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+        ...         beam_each_division=True,
+        ...     ),
         ...     tuplet_ratios=[(1, -1), (3, 1)],
         ...     )
 
@@ -197,6 +203,9 @@ class TupletRhythmMaker(RhythmMaker):
             Calls tuplet rhythm-maker with one ratio:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     tuplet_ratios=[(3, 2)],
             ...     )
 
@@ -257,6 +266,9 @@ class TupletRhythmMaker(RhythmMaker):
             Calls tuplet rhythm-maker on two ratios:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     tuplet_ratios=[(1, -1), (3, 1)],
             ...     )
 
@@ -386,10 +398,10 @@ class TupletRhythmMaker(RhythmMaker):
             Beams each division:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
+            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     )
 
             >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
@@ -465,10 +477,11 @@ class TupletRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         beam_divisions_together=True,
             ...         ),
+            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     )
 
             >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
@@ -566,11 +579,11 @@ class TupletRhythmMaker(RhythmMaker):
             Beams nothing:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=False,
             ...         beam_each_division=False,
             ...         ),
+            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     )
 
             >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
@@ -647,6 +660,9 @@ class TupletRhythmMaker(RhythmMaker):
             means that ratios like ``6:4`` and ``10:8`` do not arise:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -711,6 +727,9 @@ class TupletRhythmMaker(RhythmMaker):
             This also means that ratios like ``6:4`` and ``10:8`` may arise:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -773,6 +792,9 @@ class TupletRhythmMaker(RhythmMaker):
             setting does not affect the first tuplet:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -834,6 +856,9 @@ class TupletRhythmMaker(RhythmMaker):
             The setting affects all tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -895,6 +920,9 @@ class TupletRhythmMaker(RhythmMaker):
             setting affects all tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -958,6 +986,9 @@ class TupletRhythmMaker(RhythmMaker):
             does not affect the third tuplet:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -1019,6 +1050,9 @@ class TupletRhythmMaker(RhythmMaker):
             affects all tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -1080,6 +1114,9 @@ class TupletRhythmMaker(RhythmMaker):
             does not affect any tuplet:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -1149,11 +1186,10 @@ class TupletRhythmMaker(RhythmMaker):
             No division masks:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     tuplet_ratios=[(4, 1)],
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=False,
-            ...         beam_each_division=False,
             ...         ),
+            ...     tuplet_ratios=[(4, 1)],
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -1206,7 +1242,6 @@ class TupletRhythmMaker(RhythmMaker):
             Masks every other output division:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     tuplet_ratios=[(4, 1)],
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=False,
             ...         beam_each_division=False,
@@ -1214,6 +1249,7 @@ class TupletRhythmMaker(RhythmMaker):
             ...     division_masks=[
             ...         abjadext.rmakers.silence([1], 2),
             ...         ],
+            ...     tuplet_ratios=[(4, 1)],
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -1266,6 +1302,9 @@ class TupletRhythmMaker(RhythmMaker):
         ..  container:: example
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tag='TUPLET_RHYTHM_MAKER',
             ...     tuplet_ratios=[(3, 2)],
             ...     )
@@ -1333,6 +1372,9 @@ class TupletRhythmMaker(RhythmMaker):
             Ties nothing:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(2, 3), (1, -2, 1)],
             ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=False,
@@ -1388,6 +1430,9 @@ class TupletRhythmMaker(RhythmMaker):
             Ties across all divisions:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(2, 3), (1, -2, 1)],
             ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
@@ -1449,6 +1494,9 @@ class TupletRhythmMaker(RhythmMaker):
             ...     period=2,
             ...     )
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(2, 3), (1, -2, 1)],
             ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=pattern,
@@ -1522,6 +1570,9 @@ class TupletRhythmMaker(RhythmMaker):
             Makes tuplets with ``3:2`` ratios:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(3, 2)],
             ...     )
 
@@ -1582,6 +1633,9 @@ class TupletRhythmMaker(RhythmMaker):
             Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, -1), (3, 1)],
             ...     )
 
@@ -1652,6 +1706,9 @@ class TupletRhythmMaker(RhythmMaker):
             Makes diminished tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(2, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         diminution=True,
@@ -1702,6 +1759,9 @@ class TupletRhythmMaker(RhythmMaker):
             Makes augmented tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(2, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         diminution=False,
@@ -1759,6 +1819,9 @@ class TupletRhythmMaker(RhythmMaker):
             Makes diminished tuplets and does not rewrite dots:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=False,
@@ -1819,6 +1882,9 @@ class TupletRhythmMaker(RhythmMaker):
             Makes diminished tuplets and rewrites dots:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -1875,6 +1941,9 @@ class TupletRhythmMaker(RhythmMaker):
             Makes augmented tuplets and does not rewrite dots:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=False,
@@ -1935,6 +2004,9 @@ class TupletRhythmMaker(RhythmMaker):
             Makes augmented tuplets and rewrites dots:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -1995,6 +2067,9 @@ class TupletRhythmMaker(RhythmMaker):
             Leaves trivializable tuplets as-is when ``trivialize`` is false:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -2060,6 +2135,9 @@ class TupletRhythmMaker(RhythmMaker):
             example:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         trivialize=True,
@@ -2123,6 +2201,9 @@ class TupletRhythmMaker(RhythmMaker):
             no dots:
             
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -2186,6 +2267,9 @@ class TupletRhythmMaker(RhythmMaker):
             false:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         ),
@@ -2258,6 +2342,9 @@ class TupletRhythmMaker(RhythmMaker):
             of notes:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         ),
@@ -2326,6 +2413,9 @@ class TupletRhythmMaker(RhythmMaker):
             is true:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tie_specifier=abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         tie_consecutive_notes=True,

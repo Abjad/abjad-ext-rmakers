@@ -20,6 +20,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
         ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+        ...         beam_each_division=True,
         ...         use_feather_beams=True,
         ...         ),
         ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -277,6 +278,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
         ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+        ...         beam_each_division=True,
         ...         use_feather_beams=True,
         ...         ),
         ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -1181,6 +1183,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         beam_divisions_together=True,
             ...         use_feather_beams=False,
             ...         ),
@@ -1738,6 +1741,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -1996,6 +2000,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -2170,6 +2175,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -2427,6 +2433,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=[
@@ -2694,6 +2701,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -3422,6 +3430,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=[
@@ -4025,6 +4034,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -4289,6 +4299,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -4549,6 +4560,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -4816,6 +4828,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...  )
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -5086,6 +5099,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -5346,6 +5360,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(

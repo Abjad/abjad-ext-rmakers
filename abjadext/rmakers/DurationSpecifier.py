@@ -231,12 +231,15 @@ class DurationSpecifier(object):
             Decreases monotically:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         increase_monotonic=False,
+            ...         ),
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[5],
             ...         denominator=16,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         increase_monotonic=False,
             ...         ),
             ...     )
 
@@ -285,12 +288,15 @@ class DurationSpecifier(object):
             Increases monotically:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         increase_monotonic=True,
+            ...         ),
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[5],
             ...         denominator=16,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         increase_monotonic=True,
             ...         ),
             ...     )
 
@@ -361,12 +367,15 @@ class DurationSpecifier(object):
             Forbids note durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         forbidden_note_duration=(1, 4),
+            ...         ),
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[1, 1, 1, 1, 4, -4],
             ...         denominator=16,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         forbidden_note_duration=(1, 4),
             ...         ),
             ...     )
 
@@ -428,12 +437,15 @@ class DurationSpecifier(object):
             Forbids rest durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         forbidden_rest_duration=(1, 4),
+            ...         ),
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[1, 1, 1, 1, 4, -4],
             ...         denominator=16,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         forbidden_rest_duration=(1, 4),
             ...         ),
             ...     )
 

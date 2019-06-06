@@ -279,6 +279,9 @@ class TupletSpecifier(object):
             means that ratios like ``6:4`` and ``10:8`` do not arise:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -349,6 +352,9 @@ class TupletSpecifier(object):
             This also means that ratios like ``6:4`` and ``10:8`` may arise:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -417,6 +423,9 @@ class TupletSpecifier(object):
             setting does not affect the first tuplet:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -484,6 +493,9 @@ class TupletSpecifier(object):
             The setting affects all tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -551,6 +563,9 @@ class TupletSpecifier(object):
             setting affects all tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -620,6 +635,9 @@ class TupletSpecifier(object):
             does not affect the third tuplet:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -687,6 +705,9 @@ class TupletSpecifier(object):
             affects all tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -757,6 +778,9 @@ class TupletSpecifier(object):
             does not affect any tuplet:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     tuplet_ratios=[(1, 4)],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
@@ -863,6 +887,9 @@ class TupletSpecifier(object):
             This means that even simple tuplets format as explicit fractions:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -918,6 +945,9 @@ class TupletSpecifier(object):
             this:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -980,6 +1010,9 @@ class TupletSpecifier(object):
             property cancels LilyPond's default tuplet numbering once again:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     extra_counts_per_division=[1],
             ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
             ...         force_fraction=True,
@@ -1064,6 +1097,9 @@ class TupletSpecifier(object):
             Does not rewrite rest-filled tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[-1],
@@ -1138,6 +1174,9 @@ class TupletSpecifier(object):
             Rewrites rest-filled tuplets:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[-1],
@@ -1212,6 +1251,9 @@ class TupletSpecifier(object):
             likely to rewrite:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],
@@ -1294,6 +1336,9 @@ class TupletSpecifier(object):
             Rewrite sustained tuplets like this:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],
@@ -1360,6 +1405,9 @@ class TupletSpecifier(object):
             that result -- like this:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],

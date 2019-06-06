@@ -17,6 +17,9 @@ class IncisedRhythmMaker(RhythmMaker):
     ..  container:: example
 
         >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+        ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+        ...         beam_each_division=True,
+        ...     ),
         ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
         ...         prefix_talea=[-1],
         ...         prefix_counts=[0, 1],
@@ -424,6 +427,9 @@ class IncisedRhythmMaker(RhythmMaker):
             No division masks:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -477,17 +483,20 @@ class IncisedRhythmMaker(RhythmMaker):
             Masks every other output division:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         talea_denominator=16,
-            ...         ),
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     division_masks=[
             ...         abjad.Pattern(
             ...             indices=[0],
             ...             period=2,
             ...             ),
             ...         ],
+            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...         prefix_talea=[-1],
+            ...         prefix_counts=[1],
+            ...         talea_denominator=16,
+            ...         ),
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -542,6 +551,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Spells durations with the fewest number of glyphs:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -592,6 +604,9 @@ class IncisedRhythmMaker(RhythmMaker):
             ``1/2``:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -652,6 +667,12 @@ class IncisedRhythmMaker(RhythmMaker):
             Spells all divisions metrically when ``spell_metrically`` is true:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         spell_metrically=True,
+            ...         ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -659,9 +680,6 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_talea=[-1],
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically=True,
             ...         ),
             ...     )
 
@@ -709,6 +727,12 @@ class IncisedRhythmMaker(RhythmMaker):
             ``spell_metrically`` is ``'unassignable'``:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         spell_metrically='unassignable',
+            ...         ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -716,9 +740,6 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_talea=[-1],
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically='unassignable',
             ...         ),
             ...     )
 
@@ -761,6 +782,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Rewrites meter:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -829,7 +853,11 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Doesn't incise:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker()
+            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ... )
 
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -880,6 +908,9 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     outer_divisions_only=True,
             ...     )
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=incise_specifier,
             ...     )
 
@@ -939,6 +970,9 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     outer_divisions_only=True,
             ...     )
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=incise_specifier,
             ...     )
 
@@ -995,6 +1029,9 @@ class IncisedRhythmMaker(RhythmMaker):
             No logical tie masks:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         outer_divisions_only=True,
             ...         prefix_talea=[-1],
@@ -1047,6 +1084,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Silences every other logical tie:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         outer_divisions_only=True,
             ...         prefix_talea=[-1],
@@ -1110,6 +1150,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Does not replace rests with skips:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         fill_with_rests=True,
             ...         prefix_talea=[1],
@@ -1163,6 +1206,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Does replace rests with skips:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         fill_with_rests=True,
             ...         prefix_talea=[1],
@@ -1227,6 +1273,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Makes augmentations:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     extra_counts_per_division=[1],
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
@@ -1296,6 +1345,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Does not tie across divisions:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1345,6 +1397,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Ties across divisions:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1403,6 +1458,9 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     period=2,
             ...     )
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1456,6 +1514,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Uses repeat ties:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1511,6 +1572,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Strips all ties:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1562,6 +1626,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Spells durations metrically and then strips all ties:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically=True,
             ...         ),
@@ -1626,6 +1693,9 @@ class IncisedRhythmMaker(RhythmMaker):
             Makes augmentations:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     extra_counts_per_division=[1],
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],

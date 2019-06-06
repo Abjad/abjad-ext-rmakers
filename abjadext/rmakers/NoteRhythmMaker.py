@@ -906,6 +906,9 @@ class NoteRhythmMaker(RhythmMaker):
             Spells all divisions metrically when ``spell_metrically`` is true:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically=True,
             ...         ),
@@ -961,6 +964,9 @@ class NoteRhythmMaker(RhythmMaker):
             ``spell_metrically`` is ``'unassignable'``:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically='unassignable',
             ...         ),
@@ -1461,6 +1467,9 @@ class NoteRhythmMaker(RhythmMaker):
             Spells durations metrically and then strips all ties:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically=True,
             ...         ),
