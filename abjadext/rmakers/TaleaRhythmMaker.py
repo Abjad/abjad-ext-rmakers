@@ -5,6 +5,8 @@ from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
+from .SilenceMask import SilenceMask
+from .SustainMask import SustainMask
 from .Talea import Talea
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
@@ -102,7 +104,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *,
+        *specifiers: typings.SpecifierTyping,
         talea: Talea = None,
         beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
@@ -120,6 +122,7 @@ class TaleaRhythmMaker(RhythmMaker):
     ) -> None:
         RhythmMaker.__init__(
             self,
+            *specifiers,
             beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
@@ -233,78 +236,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         """
         return super().__format__(format_specification=format_specification)
-
-    def __illustrate__(
-        self,
-        divisions: typing.Sequence[abjad.IntegerPair] = [
-            (3, 8),
-            (4, 8),
-            (3, 16),
-            (4, 16),
-        ],
-    ) -> abjad.LilyPondFile:
-        r"""
-        Illustrates talea rhythm-maker.
-
-        ..  container:: example
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-            >>> abjad.show(rhythm_maker) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> lilypond_file = rhythm_maker.__illustrate__()
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/16
-                        s1 * 3/16
-                        \time 4/16
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                        c'8
-                        [
-                        c'16
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'16
-                        ]
-                    }
-                >>
-
-        Defaults ``divisions`` to ``3/8``, ``4/8``, ``3/16``, ``4/16``.
-        """
-        return RhythmMaker.__illustrate__(self, divisions=divisions)
 
     def __repr__(self) -> str:
         """
@@ -3516,6 +3447,78 @@ class TaleaRhythmMaker(RhythmMaker):
 
         """
         return super().state
+
+    @property
+    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+        r"""
+        Gets specifiers.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().logical_ties()[abjad.index([0, -1])],
+            ...     ),
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...     ),
+            ... )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        r8
+                    }
+                >>
+
+        """
+        return super().specifiers
 
     @property
     def tag(self) -> typing.Optional[str]:

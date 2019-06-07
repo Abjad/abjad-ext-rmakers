@@ -5,6 +5,8 @@ from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .InciseSpecifier import InciseSpecifier
 from .RhythmMaker import RhythmMaker
+from .SilenceMask import SilenceMask
+from .SustainMask import SustainMask
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
@@ -84,7 +86,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *,
+        *specifiers: typings.SpecifierTyping,
         beam_specifier: BeamSpecifier = None,
         duration_specifier: DurationSpecifier = None,
         division_masks: typings.MasksTyping = None,
@@ -98,6 +100,7 @@ class IncisedRhythmMaker(RhythmMaker):
     ) -> None:
         RhythmMaker.__init__(
             self,
+            *specifiers,
             beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,

@@ -6,3 +6,5 @@ from .SustainMask import SustainMask
 MaskTyping = typing.Union[SilenceMask, SustainMask]
 
 MasksTyping = typing.Union[MaskTyping, typing.Sequence[MaskTyping]]
+
+SpecifierTyping = typing.Union[SilenceMask, SustainMask]

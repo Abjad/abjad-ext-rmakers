@@ -25,6 +25,7 @@ class RhythmMaker(object):
         "_duration_specifier",
         "_logical_tie_masks",
         "_previous_state",
+        "_specifiers",
         "_state",
         "_tag",
         "_tie_specifier",
@@ -37,7 +38,7 @@ class RhythmMaker(object):
 
     def __init__(
         self,
-        *,
+        *specifiers: typings.SpecifierTyping,
         beam_specifier: BeamSpecifier = None,
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
@@ -46,6 +47,9 @@ class RhythmMaker(object):
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
+        specifiers = specifiers or ()
+        specifiers_ = list(specifiers)
+        self._specifiers = specifiers_
         if beam_specifier is not None:
             assert isinstance(beam_specifier, BeamSpecifier)
         self._beam_specifier = beam_specifier
@@ -96,19 +100,10 @@ class RhythmMaker(object):
             logical_ties_produced -= 1
         selections = self._rewrite_meter(selections, divisions)
         self._cache_state(selections, divisions, logical_ties_produced)
-        selections = self._apply_specifiers(selections, divisions)
+        selections = self._apply_specifier_stack(selections, divisions)
+        selections = self._apply_specifiers(selections)
         # self._check_wellformedness(selections)
         return selections
-
-    def __illustrate__(
-        self, divisions=((3, 8), (4, 8), (3, 16), (4, 16))
-    ) -> abjad.LilyPondFile:
-        """
-        Illustrates rhythm-maker.
-        """
-        selections = self(divisions)
-        lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        return lilypond_file
 
     def __eq__(self, argument) -> bool:
         """
@@ -249,12 +244,19 @@ class RhythmMaker(object):
             new_selections.append(new_selection)
         return new_selections
 
-    def _apply_specifiers(self, selections, divisions=None):
+    def _apply_specifiers(self, selections):
         self._apply_tie_specifier(selections)
         selections = self._apply_logical_tie_masks(selections)
         self._apply_beam_specifier(selections)
         self._validate_selections(selections)
         self._validate_tuplets(selections)
+        return selections
+
+    def _apply_specifier_stack(self, selections, divisions):
+        if not self.specifiers:
+            return selections
+        for specifier in self.specifiers:
+            selections = specifier(selections, divisions)
         return selections
 
     def _apply_tie_specifier(self, selections):
@@ -270,13 +272,6 @@ class RhythmMaker(object):
         string = "divisions_consumed"
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += len(divisions)
-
-        #        previous_logical_ties_produced = self._previous_logical_ties_produced()
-        #        logical_ties_produced = len(abjad.select(selections).logical_ties())
-        #        logical_ties_produced += previous_logical_ties_produced
-        #        if self._previous_incomplete_last_note():
-        #            logical_ties_produced -= 1
-
         self.state["logical_ties_produced"] = logical_ties_produced
         items = self.state.items()
         state = abjad.OrderedDict(sorted(items))
@@ -491,6 +486,13 @@ class RhythmMaker(object):
         Gets previous state dictionary.
         """
         return self._previous_state
+
+    @property
+    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+        """
+        Gets specifiers.
+        """
+        return self._specifiers
 
     @property
     def state(self) -> abjad.OrderedDict:
