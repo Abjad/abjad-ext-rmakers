@@ -86,17 +86,7 @@ class RhythmMaker(object):
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
         selections = self._apply_tuplet_specifier(selections, divisions)
-
-        #        previous_logical_ties_produced = self._previous_logical_ties_produced()
-        #        temporary_container = abjad.Container(selections)
-        #        logical_ties_produced = len(abjad.select(selections).logical_ties())
-        #        temporary_container[:] = []
-        #        logical_ties_produced += previous_logical_ties_produced
-        #        if self._previous_incomplete_last_note():
-        #            logical_ties_produced -= 1
-
         selections = self._apply_division_masks(selections)
-
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         temporary_container = abjad.Container(selections)
         logical_ties_produced = len(abjad.select(selections).logical_ties())
@@ -104,7 +94,6 @@ class RhythmMaker(object):
         logical_ties_produced += previous_logical_ties_produced
         if self._previous_incomplete_last_note():
             logical_ties_produced -= 1
-
         selections = self._rewrite_meter(selections, divisions)
         self._cache_state(selections, divisions, logical_ties_produced)
         selections = self._apply_specifiers(selections, divisions)
