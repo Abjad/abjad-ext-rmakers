@@ -255,6 +255,7 @@ class RhythmMaker(object):
     def _apply_specifier_stack(self, selections, divisions):
         if not self.specifiers:
             return selections
+        #print(self.specifiers, "FOO")
         for specifier in self.specifiers:
             selections = specifier(selections, divisions)
         return selections

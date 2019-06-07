@@ -28,6 +28,46 @@ class InterpolationSpecifier(object):
         self._stop_duration = abjad.Duration(stop_duration)
         self._written_duration = abjad.Duration(written_duration)
 
+    ### SPECIAL METHODS ###
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Formats interpolation specifier.
+
+        ..  container:: example
+
+            >>> specifier = abjadext.rmakers.InterpolationSpecifier(
+            ...     start_duration=(1, 4),
+            ...     stop_duration=(1, 16),
+            ...     written_duration=(1, 16),
+            ...     )
+            >>> abjad.f(specifier)
+            abjadext.rmakers.InterpolationSpecifier(
+                start_duration=abjad.Duration(1, 4),
+                stop_duration=abjad.Duration(1, 16),
+                written_duration=abjad.Duration(1, 16),
+                )
+
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation of interpolation specifier.
+
+        ..  container:: example
+
+            >>> abjadext.rmakers.InterpolationSpecifier(
+            ...     start_duration=(1, 4),
+            ...     stop_duration=(1, 16),
+            ...     written_duration=(1, 16),
+            ...     )
+            InterpolationSpecifier(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
+
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+
     ### PUBLIC METHODS ###
 
     def reverse(self) -> "InterpolationSpecifier":
