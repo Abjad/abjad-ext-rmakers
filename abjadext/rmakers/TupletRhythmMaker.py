@@ -156,7 +156,7 @@ class TupletRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *,
+        *specifiers: typings.SpecifierTyping,
         beam_specifier: BeamSpecifier = None,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
         division_masks: typings.MasksTyping = None,
@@ -168,6 +168,7 @@ class TupletRhythmMaker(RhythmMaker):
     ) -> None:
         RhythmMaker.__init__(
             self,
+            *specifiers,
             beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,

@@ -550,7 +550,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *,
+        *specifiers: typings.SpecifierTyping,
         beam_specifier: BeamSpecifier = None,
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
@@ -564,6 +564,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
     ) -> None:
         RhythmMaker.__init__(
             self,
+            *specifiers,
             beam_specifier=beam_specifier,
             logical_tie_masks=logical_tie_masks,
             duration_specifier=duration_specifier,
