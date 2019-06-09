@@ -181,7 +181,7 @@ class SilenceMask(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections, divisions):
+    def __call__(self, selections, divisions, tag=None):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
         # wrap every selection in a temporary container;
@@ -202,7 +202,7 @@ class SilenceMask(object):
         #    previous_logical_ties_produced -= 1
         leaves = abjad.select(components).leaves()
         for leaf in leaves:
-            rest = abjad.Rest(leaf.written_duration)
+            rest = abjad.Rest(leaf.written_duration, tag=tag)
             if leaf.multiplier is not None:
                 rest.multiplier = leaf.multiplier
             abjad.mutate(leaf).replace([rest])

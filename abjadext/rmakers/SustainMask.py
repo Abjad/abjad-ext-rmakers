@@ -173,7 +173,7 @@ class SustainMask(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections, divisions):
+    def __call__(self, selections, divisions, tag=None):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
         # wrap every selection in a temporary container;
@@ -196,7 +196,7 @@ class SustainMask(object):
         for leaf in leaves:
             if isinstance(leaf, abjad.Note):
                 continue
-            note = abjad.Note("C4", leaf.written_duration)
+            note = abjad.Note("C4", leaf.written_duration, tag=tag)
             if leaf.multiplier is not None:
                 note.multiplier = leaf.multiplier
             abjad.mutate(leaf).replace([note])

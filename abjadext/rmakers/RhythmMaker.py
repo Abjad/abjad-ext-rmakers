@@ -261,7 +261,7 @@ class RhythmMaker(object):
         if not self.specifiers:
             return selections
         for specifier in self.specifiers:
-            selections = specifier(selections, divisions)
+            selections = specifier(selections, divisions, tag=self.tag)
         return selections
 
     def _apply_tie_specifier(self, selections):
