@@ -3455,6 +3455,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
+            Silences first and last logical ties:
+
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
             ...         selector=abjad.select().logical_ties()[abjad.index([0, -1])],
@@ -3514,6 +3516,69 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         ]
                         r8
+                    }
+                >>
+
+        ..  container:: example
+
+            Silences all logical ties. Then sustains first and last logical
+            ties:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().logical_ties()
+            ...     ),
+            ...     abjadext.rmakers.SustainMask(
+            ...         selector=abjad.select().logical_ties()[abjad.index([0, -1])],
+            ...     ),
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...     ),
+            ... )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        r8
+                        r8.
+                        r4
+                        r16
+                        r8
+                        r16
+                        r8
+                        r4
+                        r16
+                        r8
+                        r8.
+                        c'8
                     }
                 >>
 

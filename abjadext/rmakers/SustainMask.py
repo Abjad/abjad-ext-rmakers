@@ -148,22 +148,65 @@ class SustainMask(object):
 
     __documentation_section__ = "Masks"
 
-    __slots__ = ("_pattern", "_template")
+    __slots__ = ("_pattern", "_selector", "_template")
 
     _publish_storage_format = True
 
     ### INITIALIZER ###
 
     def __init__(
-        self, pattern: abjad.Pattern = None, *, template: str = None
+        self, pattern: abjad.Pattern = None, *,
+        selector: abjad.SelectorTyping = None,
+        template: str = None
     ) -> None:
         if pattern is None:
             pattern = abjad.index_all()
         assert isinstance(pattern, abjad.Pattern), repr(pattern)
         self._pattern = pattern
+        if isinstance(selector, str):
+            selector = eval(selector)
+            assert isinstance(selector, abjad.Expression)
+        self._selector = selector
         self._template = template
 
     ### SPECIAL METHODS ###
+
+    def __call__(self, selections, divisions):
+        if self.selector is None:
+            raise Exception("call silence mask with selector.")
+        # wrap every selection in a temporary container;
+        # this allows the call to abjad.mutate().replace() to work
+        containers = []
+        for selection in selections:
+            container = abjad.Container(selection)
+            abjad.attach(abjad.const.TEMPORARY_CONTAINER, container)
+            containers.append(container)
+        temporary_container = abjad.Container(containers)
+        components = self.selector(selections)
+        # will need to restore for statal rhythm-makers:
+        # logical_ties = abjad.select(selections).logical_ties()
+        # logical_ties = list(logical_ties)
+        # total_logical_ties = len(logical_ties)
+        # previous_logical_ties_produced = self._previous_logical_ties_produced()
+        # if self._previous_incomplete_last_note():
+        #    previous_logical_ties_produced -= 1
+        leaves = abjad.select(components).leaves()
+        for leaf in leaves:
+            note = abjad.Note("C4", leaf.written_duration)
+            if leaf.multiplier is not None:
+                note.multiplier = leaf.multiplier
+            abjad.mutate(leaf).replace([note])
+            ##abjad.detach(abjad.TieIndicator, rest)
+            ##abjad.detach(abjad.RepeatTie, rest)
+        # remove every temporary container and recreate selections
+        temporary_container[:] = []
+        new_selections = []
+        for container in containers:
+            inspector = abjad.inspect(container)
+            assert inspector.indicator(abjad.const.TEMPORARY_CONTAINER)
+            new_selection = abjad.mutate(container).eject_contents()
+            new_selections.append(new_selection)
+        return new_selections
 
     def __format__(self, format_specification="") -> str:
         """
@@ -220,6 +263,13 @@ class SustainMask(object):
         Gets pattern.
         """
         return self._pattern
+
+    @property
+    def selector(self) -> typing.Optional[abjad.Expression]:
+        """
+        Gets selector.
+        """
+        return self._selector
 
     @property
     def template(self) -> typing.Optional[str]:
