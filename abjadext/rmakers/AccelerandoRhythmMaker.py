@@ -3704,6 +3704,19 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
+        ..  container:: example
+
+            REGRESSION. New preserves specifiers.
+
+            >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(selector=selector),
+            ... )
+            >>> rhythm_maker.specifiers
+            [SilenceMask(pattern=abjad.index_all(), selector=abjad.select().logical_ties()[abjad.index([0, -1])])]
+
+            >>> abjad.new(rhythm_maker).specifiers
+            [SilenceMask(pattern=abjad.index_all(), selector=abjad.select().logical_ties()[abjad.index([0, -1])])]
+
         """
         return super().specifiers
 

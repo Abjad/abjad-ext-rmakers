@@ -67,7 +67,6 @@ class InterpolationSpecifier(object):
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 
-
     ### PUBLIC METHODS ###
 
     def reverse(self) -> "InterpolationSpecifier":

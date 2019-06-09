@@ -8,6 +8,7 @@ from .SilenceMask import SilenceMask
 from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from abjad.top.new import new
 
 
 class RhythmMaker(object):
@@ -31,6 +32,8 @@ class RhythmMaker(object):
         "_tie_specifier",
         "_tuplet_specifier",
     )
+
+    _private_attributes_to_copy = ("_specifiers",)
 
     _publish_storage_format = True
 
@@ -253,9 +256,10 @@ class RhythmMaker(object):
         return selections
 
     def _apply_specifier_stack(self, selections, divisions):
+        if self.specifiers == []:
+            return selections
         if not self.specifiers:
             return selections
-        #print(self.specifiers, "FOO")
         for specifier in self.specifiers:
             selections = specifier(selections, divisions)
         return selections
