@@ -155,9 +155,11 @@ class SustainMask(object):
     ### INITIALIZER ###
 
     def __init__(
-        self, pattern: abjad.Pattern = None, *,
+        self,
+        pattern: abjad.Pattern = None,
+        *,
         selector: abjad.SelectorTyping = None,
-        template: str = None
+        template: str = None,
     ) -> None:
         if pattern is None:
             pattern = abjad.index_all()
@@ -192,6 +194,8 @@ class SustainMask(object):
         #    previous_logical_ties_produced -= 1
         leaves = abjad.select(components).leaves()
         for leaf in leaves:
+            if isinstance(leaf, abjad.Note):
+                continue
             note = abjad.Note("C4", leaf.written_duration)
             if leaf.multiplier is not None:
                 note.multiplier = leaf.multiplier
