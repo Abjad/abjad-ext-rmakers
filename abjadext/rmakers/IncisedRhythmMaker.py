@@ -92,7 +92,7 @@ class IncisedRhythmMaker(RhythmMaker):
         division_masks: typings.MasksTyping = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         incise_specifier: InciseSpecifier = None,
-        logical_tie_masks: typings.MasksTyping = None,
+        ###logical_tie_masks: typings.MasksTyping = None,
         replace_rests_with_skips: bool = None,
         tag: str = None,
         tie_specifier: TieSpecifier = None,
@@ -104,7 +104,7 @@ class IncisedRhythmMaker(RhythmMaker):
             beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
-            logical_tie_masks=logical_tie_masks,
+            ###logical_tie_masks=logical_tie_masks,
             tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
@@ -1022,126 +1022,126 @@ class IncisedRhythmMaker(RhythmMaker):
         """
         return self._incise_specifier
 
-    @property
-    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
-        r"""
-        Gets logical tie masks.
-
-        ..  container:: example
-
-            No logical tie masks:
-
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         outer_divisions_only=True,
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         suffix_talea=[-1],
-            ...         suffix_counts=[1],
-            ...         talea_denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        c'4..
-                        c'4.
-                        c'2
-                        c'4
-                        ~
-                        c'16
-                        r16
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every other logical tie:
-
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         outer_divisions_only=True,
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         suffix_talea=[-1],
-            ...         suffix_counts=[1],
-            ...         talea_denominator=16,
-            ...         ),
-            ...     logical_tie_masks=[
-            ...         abjadext.rmakers.silence([1], 2),
-            ...         ],
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        r4..
-                        c'4.
-                        r2
-                        c'4
-                        ~
-                        c'16
-                        r16
-                    }
-                >>
-
-        """
-        return super().logical_tie_masks
+    #    @property
+    #    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
+    #        r"""
+    #        Gets logical tie masks.
+    #
+    #        ..  container:: example
+    #
+    #            No logical tie masks:
+    #
+    #            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+    #            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+    #            ...         beam_each_division=True,
+    #            ...     ),
+    #            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+    #            ...         outer_divisions_only=True,
+    #            ...         prefix_talea=[-1],
+    #            ...         prefix_counts=[1],
+    #            ...         suffix_talea=[-1],
+    #            ...         suffix_counts=[1],
+    #            ...         talea_denominator=16,
+    #            ...         ),
+    #            ...     )
+    #
+    #            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+    #            >>> selections = rhythm_maker(divisions)
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+    #            ...     selections,
+    #            ...     divisions,
+    #            ...     )
+    #            >>> abjad.show(lilypond_file) # doctest: +SKIP
+    #
+    #            ..  docs::
+    #
+    #                >>> abjad.f(lilypond_file[abjad.Score])
+    #                \new Score
+    #                <<
+    #                    \new GlobalContext
+    #                    {
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                    }
+    #                    \new RhythmicStaff
+    #                    {
+    #                        r16
+    #                        c'4..
+    #                        c'4.
+    #                        c'2
+    #                        c'4
+    #                        ~
+    #                        c'16
+    #                        r16
+    #                    }
+    #                >>
+    #
+    #        ..  container:: example
+    #
+    #            Silences every other logical tie:
+    #
+    #            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+    #            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+    #            ...         beam_each_division=True,
+    #            ...     ),
+    #            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+    #            ...         outer_divisions_only=True,
+    #            ...         prefix_talea=[-1],
+    #            ...         prefix_counts=[1],
+    #            ...         suffix_talea=[-1],
+    #            ...         suffix_counts=[1],
+    #            ...         talea_denominator=16,
+    #            ...         ),
+    #            ...     logical_tie_masks=[
+    #            ...         abjadext.rmakers.silence([1], 2),
+    #            ...         ],
+    #            ...     )
+    #
+    #            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+    #            >>> selections = rhythm_maker(divisions)
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+    #            ...     selections,
+    #            ...     divisions,
+    #            ...     )
+    #            >>> abjad.show(lilypond_file) # doctest: +SKIP
+    #
+    #            ..  docs::
+    #
+    #                >>> abjad.f(lilypond_file[abjad.Score])
+    #                \new Score
+    #                <<
+    #                    \new GlobalContext
+    #                    {
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                    }
+    #                    \new RhythmicStaff
+    #                    {
+    #                        r16
+    #                        r4..
+    #                        c'4.
+    #                        r2
+    #                        c'4
+    #                        ~
+    #                        c'16
+    #                        r16
+    #                    }
+    #                >>
+    #
+    #        """
+    #        return super().logical_tie_masks
 
     @property
     def replace_rests_with_skips(self) -> typing.Optional[bool]:

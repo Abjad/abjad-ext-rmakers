@@ -112,7 +112,7 @@ class TaleaRhythmMaker(RhythmMaker):
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: abjad.IntegerSequence = None,
-        logical_tie_masks: typings.MasksTyping = None,
+        ###logical_tie_masks: typings.MasksTyping = None,
         read_talea_once_only: bool = None,
         rest_tied_notes: bool = None,
         tag: str = None,
@@ -126,7 +126,7 @@ class TaleaRhythmMaker(RhythmMaker):
             beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
-            logical_tie_masks=logical_tie_masks,
+            ###logical_tie_masks=logical_tie_masks,
             tag=tag,
             tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
@@ -2563,432 +2563,432 @@ class TaleaRhythmMaker(RhythmMaker):
         else:
             return None
 
-    @property
-    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
-        r"""
-        Gets logical tie masks.
-
-        ..  container:: example
-
-            Silences every third logical tie:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     logical_tie_masks=[
-            ...         abjadext.rmakers.silence([2], 3),
-            ...         ],
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        ]
-                        r8.
-                        c'4
-                        c'16
-                        r16
-                        r16
-                        c'8.
-                        [
-                        c'8
-                        ~
-                        ]
-                        c'8
-                        r16
-                        c'8
-                        [
-                        c'16
-                        ]
-                    }
-                >>
-
-            Silences the first and last logical ties:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     logical_tie_masks=[
-            ...         abjadext.rmakers.silence([0]),
-            ...         abjadext.rmakers.silence([-1]),
-            ...         ],
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ~
-                        ]
-                        c'16
-                        [
-                        c'8.
-                        c'8
-                        ~
-                        ]
-                        c'8
-                        [
-                        c'16
-                        c'8
-                        ]
-                        r16
-                    }
-                >>
-
-        ..  container:: example
-
-            REGRESSION. Nonperiodic logical tie masks respect state.
-
-            Only logical ties 0 and 2 are masked here:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     extra_counts_per_division=[0, 1, 2],
-            ...     logical_tie_masks=[abjadext.rmakers.silence([0, 2, 12])],
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[4],
-            ...         denominator=16,
-            ...         ),
-            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        r4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            r4
-                            c'8.
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                        c'16
-                        c'4
-                        c'8.
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 4),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 8),
-                    ('talea_weight_consumed', 31),
-                    ]
-                )
-
-            Only logical tie 12 is masked here:
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                            ~
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'4
-                        }
-                        r4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                    }
-                >>
-            
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 8),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 16),
-                    ('talea_weight_consumed', 63),
-                    ]
-                )
-
-        ..  container:: example
-
-            REGRESSION. Periodic logical tie masks also respect state.
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     extra_counts_per_division=[0, 1, 2],
-            ...     logical_tie_masks=[
-            ...         abjadext.rmakers.silence([3], period=4),
-            ...     ],
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[4],
-            ...         denominator=16,
-            ...         ),
-            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...         ),
-            ...     )
-
-            Incomplete last note is masked here:
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            r8.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            r16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                        c'16
-                        c'4
-                        r8.
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 4),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 8),
-                    ('talea_weight_consumed', 31),
-                    ]
-                )
-
-            Incomplete first note is masked here:
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            r16
-                            c'4
-                            c'8
-                            ~
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            r4
-                        }
-                        c'4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            r8.
-                        }
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 8),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 16),
-                    ('talea_weight_consumed', 63),
-                    ]
-                )
-
-        """
-        return super().logical_tie_masks
+    #    @property
+    #    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
+    #        r"""
+    #        Gets logical tie masks.
+    #
+    #        ..  container:: example
+    #
+    #            Silences every third logical tie:
+    #
+    #            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+    #            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+    #            ...         beam_each_division=True,
+    #            ...         ),
+    #            ...     logical_tie_masks=[
+    #            ...         abjadext.rmakers.silence([2], 3),
+    #            ...         ],
+    #            ...     talea=abjadext.rmakers.Talea(
+    #            ...         counts=[1, 2, 3, 4],
+    #            ...         denominator=16,
+    #            ...         ),
+    #            ...     )
+    #
+    #            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+    #            >>> selections = rhythm_maker(divisions)
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+    #            ...     selections,
+    #            ...     divisions,
+    #            ...     )
+    #            >>> abjad.show(lilypond_file) # doctest: +SKIP
+    #
+    #            ..  docs::
+    #
+    #                >>> abjad.f(lilypond_file[abjad.Score])
+    #                \new Score
+    #                <<
+    #                    \new GlobalContext
+    #                    {
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                    }
+    #                    \new RhythmicStaff
+    #                    {
+    #                        c'16
+    #                        [
+    #                        c'8
+    #                        ]
+    #                        r8.
+    #                        c'4
+    #                        c'16
+    #                        r16
+    #                        r16
+    #                        c'8.
+    #                        [
+    #                        c'8
+    #                        ~
+    #                        ]
+    #                        c'8
+    #                        r16
+    #                        c'8
+    #                        [
+    #                        c'16
+    #                        ]
+    #                    }
+    #                >>
+    #
+    #            Silences the first and last logical ties:
+    #
+    #            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+    #            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+    #            ...         beam_each_division=True,
+    #            ...         ),
+    #            ...     logical_tie_masks=[
+    #            ...         abjadext.rmakers.silence([0]),
+    #            ...         abjadext.rmakers.silence([-1]),
+    #            ...         ],
+    #            ...     talea=abjadext.rmakers.Talea(
+    #            ...         counts=[1, 2, 3, 4],
+    #            ...         denominator=16,
+    #            ...         ),
+    #            ...     )
+    #
+    #            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+    #            >>> selections = rhythm_maker(divisions)
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+    #            ...     selections,
+    #            ...     divisions,
+    #            ...     )
+    #            >>> abjad.show(lilypond_file) # doctest: +SKIP
+    #
+    #            ..  docs::
+    #
+    #                >>> abjad.f(lilypond_file[abjad.Score])
+    #                \new Score
+    #                <<
+    #                    \new GlobalContext
+    #                    {
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                    }
+    #                    \new RhythmicStaff
+    #                    {
+    #                        r16
+    #                        c'8
+    #                        [
+    #                        c'8.
+    #                        ]
+    #                        c'4
+    #                        c'16
+    #                        [
+    #                        c'16
+    #                        ~
+    #                        ]
+    #                        c'16
+    #                        [
+    #                        c'8.
+    #                        c'8
+    #                        ~
+    #                        ]
+    #                        c'8
+    #                        [
+    #                        c'16
+    #                        c'8
+    #                        ]
+    #                        r16
+    #                    }
+    #                >>
+    #
+    #        ..  container:: example
+    #
+    #            REGRESSION. Nonperiodic logical tie masks respect state.
+    #
+    #            Only logical ties 0 and 2 are masked here:
+    #
+    #            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+    #            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+    #            ...         beam_each_division=True,
+    #            ...         ),
+    #            ...     extra_counts_per_division=[0, 1, 2],
+    #            ...     logical_tie_masks=[abjadext.rmakers.silence([0, 2, 12])],
+    #            ...     talea=abjadext.rmakers.Talea(
+    #            ...         counts=[4],
+    #            ...         denominator=16,
+    #            ...         ),
+    #            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+    #            ...         extract_trivial=True,
+    #            ...         ),
+    #            ...     )
+    #
+    #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+    #            >>> selections = rhythm_maker(divisions)
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+    #            ...     selections,
+    #            ...     divisions,
+    #            ...     )
+    #            >>> abjad.show(lilypond_file) # doctest: +SKIP
+    #
+    #            ..  docs::
+    #
+    #                >>> abjad.f(lilypond_file[abjad.Score])
+    #                \new Score
+    #                <<
+    #                    \new GlobalContext
+    #                    {
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                    }
+    #                    \new RhythmicStaff
+    #                    {
+    #                        r4
+    #                        c'8
+    #                        ~
+    #                        \times 8/9 {
+    #                            c'8
+    #                            r4
+    #                            c'8.
+    #                            ~
+    #                        }
+    #                        \tweak text #tuplet-number::calc-fraction-text
+    #                        \times 3/4 {
+    #                            c'16
+    #                            c'4
+    #                            c'8.
+    #                            ~
+    #                        }
+    #                        c'16
+    #                        c'4
+    #                        c'8.
+    #                    }
+    #                >>
+    #
+    #            >>> state = rhythm_maker.state
+    #            >>> abjad.f(state)
+    #            abjad.OrderedDict(
+    #                [
+    #                    ('divisions_consumed', 4),
+    #                    ('incomplete_last_note', True),
+    #                    ('logical_ties_produced', 8),
+    #                    ('talea_weight_consumed', 31),
+    #                    ]
+    #                )
+    #
+    #            Only logical tie 12 is masked here:
+    #
+    #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+    #            >>> selections = rhythm_maker(divisions, previous_state=state)
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+    #            ...     selections,
+    #            ...     divisions,
+    #            ...     )
+    #            >>> abjad.show(lilypond_file) # doctest: +SKIP
+    #
+    #            ..  docs::
+    #
+    #                >>> abjad.f(lilypond_file[abjad.Score])
+    #                \new Score
+    #                <<
+    #                    \new GlobalContext
+    #                    {
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                    }
+    #                    \new RhythmicStaff
+    #                    {
+    #                        \tweak text #tuplet-number::calc-fraction-text
+    #                        \times 6/7 {
+    #                            c'16
+    #                            c'4
+    #                            c'8
+    #                            ~
+    #                        }
+    #                        \times 4/5 {
+    #                            c'8
+    #                            c'4
+    #                            c'4
+    #                        }
+    #                        r4
+    #                        c'8
+    #                        ~
+    #                        \times 8/9 {
+    #                            c'8
+    #                            c'4
+    #                            c'8.
+    #                        }
+    #                    }
+    #                >>
+    #
+    #            >>> state = rhythm_maker.state
+    #            >>> abjad.f(state)
+    #            abjad.OrderedDict(
+    #                [
+    #                    ('divisions_consumed', 8),
+    #                    ('incomplete_last_note', True),
+    #                    ('logical_ties_produced', 16),
+    #                    ('talea_weight_consumed', 63),
+    #                    ]
+    #                )
+    #
+    #        ..  container:: example
+    #
+    #            REGRESSION. Periodic logical tie masks also respect state.
+    #
+    #            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+    #            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+    #            ...         beam_each_division=True,
+    #            ...         ),
+    #            ...     extra_counts_per_division=[0, 1, 2],
+    #            ...     logical_tie_masks=[
+    #            ...         abjadext.rmakers.silence([3], period=4),
+    #            ...     ],
+    #            ...     talea=abjadext.rmakers.Talea(
+    #            ...         counts=[4],
+    #            ...         denominator=16,
+    #            ...         ),
+    #            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+    #            ...         extract_trivial=True,
+    #            ...         ),
+    #            ...     )
+    #
+    #            Incomplete last note is masked here:
+    #
+    #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+    #            >>> selections = rhythm_maker(divisions)
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+    #            ...     selections,
+    #            ...     divisions,
+    #            ...     )
+    #            >>> abjad.show(lilypond_file) # doctest: +SKIP
+    #
+    #            ..  docs::
+    #
+    #                >>> abjad.f(lilypond_file[abjad.Score])
+    #                \new Score
+    #                <<
+    #                    \new GlobalContext
+    #                    {
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                    }
+    #                    \new RhythmicStaff
+    #                    {
+    #                        c'4
+    #                        c'8
+    #                        ~
+    #                        \times 8/9 {
+    #                            c'8
+    #                            c'4
+    #                            r8.
+    #                        }
+    #                        \tweak text #tuplet-number::calc-fraction-text
+    #                        \times 3/4 {
+    #                            r16
+    #                            c'4
+    #                            c'8.
+    #                            ~
+    #                        }
+    #                        c'16
+    #                        c'4
+    #                        r8.
+    #                    }
+    #                >>
+    #
+    #            >>> state = rhythm_maker.state
+    #            >>> abjad.f(state)
+    #            abjad.OrderedDict(
+    #                [
+    #                    ('divisions_consumed', 4),
+    #                    ('incomplete_last_note', True),
+    #                    ('logical_ties_produced', 8),
+    #                    ('talea_weight_consumed', 31),
+    #                    ]
+    #                )
+    #
+    #            Incomplete first note is masked here:
+    #
+    #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+    #            >>> selections = rhythm_maker(divisions, previous_state=state)
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+    #            ...     selections,
+    #            ...     divisions,
+    #            ...     )
+    #            >>> abjad.show(lilypond_file) # doctest: +SKIP
+    #
+    #            ..  docs::
+    #
+    #                >>> abjad.f(lilypond_file[abjad.Score])
+    #                \new Score
+    #                <<
+    #                    \new GlobalContext
+    #                    {
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                        \time 3/8
+    #                        s1 * 3/8
+    #                        \time 4/8
+    #                        s1 * 1/2
+    #                    }
+    #                    \new RhythmicStaff
+    #                    {
+    #                        \tweak text #tuplet-number::calc-fraction-text
+    #                        \times 6/7 {
+    #                            r16
+    #                            c'4
+    #                            c'8
+    #                            ~
+    #                        }
+    #                        \times 4/5 {
+    #                            c'8
+    #                            c'4
+    #                            r4
+    #                        }
+    #                        c'4
+    #                        c'8
+    #                        ~
+    #                        \times 8/9 {
+    #                            c'8
+    #                            c'4
+    #                            r8.
+    #                        }
+    #                    }
+    #                >>
+    #
+    #            >>> state = rhythm_maker.state
+    #            >>> abjad.f(state)
+    #            abjad.OrderedDict(
+    #                [
+    #                    ('divisions_consumed', 8),
+    #                    ('incomplete_last_note', True),
+    #                    ('logical_ties_produced', 16),
+    #                    ('talea_weight_consumed', 63),
+    #                    ]
+    #                )
+    #
+    #        """
+    #        return super().logical_tie_masks
 
     @property
     def read_talea_once_only(self) -> typing.Optional[bool]:
