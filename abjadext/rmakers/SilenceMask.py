@@ -181,17 +181,23 @@ class SilenceMask(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections, divisions, tag=None):
+    def __call__(self, selections, divisions=None, tag=None):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
-        # wrap every selection in a temporary container;
-        # this allows the call to abjad.mutate().replace() to work
-        containers = []
-        for selection in selections:
-            container = abjad.Container(selection)
-            abjad.attach(abjad.const.TEMPORARY_CONTAINER, container)
-            containers.append(container)
-        temporary_container = abjad.Container(containers)
+        first_component = abjad.select(selections).components()[0]
+        parentage = abjad.inspect(first_component).parentage()
+        orphans = False
+        if parentage.parent is None:
+            orphans = True
+        if orphans:
+            # wrap every selection in a temporary container;
+            # this allows the call to abjad.mutate().replace() to work
+            containers = []
+            for selection in selections:
+                container = abjad.Container(selection)
+                abjad.attach(abjad.const.TEMPORARY_CONTAINER, container)
+                containers.append(container)
+            temporary_container = abjad.Container(containers)
         components = self.selector(selections)
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
@@ -208,6 +214,8 @@ class SilenceMask(object):
             abjad.mutate(leaf).replace([rest])
             abjad.detach(abjad.TieIndicator, rest)
             abjad.detach(abjad.RepeatTie, rest)
+        if not orphans:
+            return selections
         # remove every temporary container and recreate selections
         temporary_container[:] = []
         new_selections = []
