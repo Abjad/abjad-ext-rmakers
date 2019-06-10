@@ -596,227 +596,6 @@ class NoteRhythmMaker(RhythmMaker):
     def division_masks(self) -> typing.Optional[typings.MasksTyping]:
         r"""
         Gets division masks.
-
-        ..  container:: example
-
-            No division masks:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'2
-                        c'4.
-                        c'2
-                        c'4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every other division:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     division_masks=[
-            ...         abjadext.rmakers.SilenceMask(
-            ...             pattern=abjad.index([0], 2),
-            ...             ),
-            ...         ],
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        c'4.
-                        r2
-                        c'4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every output division:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     division_masks=[abjadext.rmakers.silence([0], 1)],
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        r4.
-                        r2
-                        r4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every output division and uses multimeasure rests:
-
-            >>> mask = abjadext.rmakers.SilenceMask(
-            ...     pattern=abjad.index_all(),
-            ...     use_multimeasure_rests=True,
-            ...     )
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     division_masks=[mask],
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        R1 * 1/2
-                        R1 * 3/8
-                        R1 * 1/2
-                        R1 * 3/8
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every other output division except for the first and last:
-
-            >>> pattern_1 = abjad.index([0], 2)
-            >>> pattern_2 = abjad.index([0, -1])
-            >>> pattern = pattern_1 & ~pattern_2
-            >>> mask = abjadext.rmakers.SilenceMask(
-            ...     pattern=pattern,
-            ...     )
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     division_masks=[mask],
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'2
-                        c'4.
-                        r2
-                        c'4.
-                        c'4
-                    }
-                >>
-
         """
         return super().division_masks
 
@@ -1186,6 +965,194 @@ class NoteRhythmMaker(RhythmMaker):
     #
     #        """
     #        return super().logical_tie_masks
+
+    @property
+    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+        r"""
+        Gets specifiers.
+
+        ..  container:: example
+
+            Silences every other division:
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().logical_ties()[abjad.index([0], 2)]
+            ...     )
+            ... )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        c'4.
+                        r2
+                        c'4.
+                    }
+                >>
+
+        ..  container:: example
+
+            Silences every output division:
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...    abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().logical_ties(),
+            ...     )
+            ... )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        r4.
+                        r2
+                        r4.
+                    }
+                >>
+
+        ..  container:: example
+
+            Silences every output division and uses multimeasure rests:
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...    abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().logical_ties(), 
+            ...         use_multimeasure_rests=True,
+            ...     ),
+            ... )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        R1 * 1/2
+                        R1 * 3/8
+                        R1 * 1/2
+                        R1 * 3/8
+                    }
+                >>
+
+        ..  container:: example
+
+            Silences every other output division except for the first and last:
+
+            >>> pattern_1 = abjad.index([0], 2)
+            >>> pattern_2 = abjad.index([0, -1])
+            >>> pattern = pattern_1 & ~pattern_2
+            >>> specifier = abjadext.rmakers.SilenceMask(
+            ...     selector=abjad.select().logical_ties()[pattern]
+            ...     )
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     specifier
+            ...     )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 2/8
+                        s1 * 1/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'2
+                        c'4.
+                        r2
+                        c'4.
+                        c'4
+                    }
+                >>
+
+        """
+        return super().specifiers
 
     @property
     def tag(self):

@@ -208,7 +208,11 @@ class SilenceMask(object):
         #    previous_logical_ties_produced -= 1
         leaves = abjad.select(components).leaves()
         for leaf in leaves:
-            rest = abjad.Rest(leaf.written_duration, tag=tag)
+            if self.use_multimeasure_rests is True:
+                duration = abjad.inspect(leaf).duration()
+                rest = abjad.MultimeasureRest(1, multiplier=duration, tag=tag)
+            else:
+                rest = abjad.Rest(leaf.written_duration, tag=tag)
             if leaf.multiplier is not None:
                 rest.multiplier = leaf.multiplier
             abjad.mutate(leaf).replace([rest])
