@@ -21,6 +21,9 @@ class TaleaRhythmMaker(RhythmMaker):
         Repeats talea of 1/16, 2/16, 3/16, 4/16:
 
         >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+        ...     abjadext.rmakers.TupletSpecifier(
+        ...         extract_trivial=True,
+        ...     ),
         ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
         ...         beam_each_division=True,
         ...     ),
@@ -493,6 +496,8 @@ class TaleaRhythmMaker(RhythmMaker):
             talea_weight_consumed = sum(_.weight() for _ in numeric_map)
             leaf_lists = self._make_leaf_lists(numeric_map, lcd)
             if not counts["extra_counts_per_division"]:
+                ###tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
+                ###result = tuplets
                 result = leaf_lists
             else:
                 tuplets = self._make_tuplets(secondary_divisions, leaf_lists)
@@ -652,6 +657,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams each division:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -731,6 +739,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         beam_divisions_together=True,
@@ -861,6 +872,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams nothing:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=False,
             ...         beam_divisions_together=False,
@@ -933,6 +947,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Does not beam rests:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -1018,6 +1035,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Does beam rests:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         beam_rests=True,
@@ -1098,6 +1118,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams rests with stemlets:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         beam_rests=True,
@@ -1195,12 +1218,11 @@ class TaleaRhythmMaker(RhythmMaker):
             Forces the first leaf and the last two leaves to be rests:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
             ...         ),
             ...     burnish_specifier=abjadext.rmakers.BurnishSpecifier(
             ...         left_classes=[abjad.Rest],
@@ -1208,6 +1230,10 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         right_classes=[abjad.Rest],
             ...         right_counts=[2],
             ...         outer_divisions_only=True,
+            ...         ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
             ...         ),
             ...     )
 
@@ -1265,6 +1291,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Forces the first leaf of every division to be a rest:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -1346,6 +1375,9 @@ class TaleaRhythmMaker(RhythmMaker):
             No division masks:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -1409,6 +1441,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Silences every other output division:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -1466,6 +1501,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Sustains every other output division:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -1788,6 +1826,9 @@ class TaleaRhythmMaker(RhythmMaker):
             durations:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -1851,6 +1892,9 @@ class TaleaRhythmMaker(RhythmMaker):
             durations:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -1913,6 +1957,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Forbids no durations:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -1971,6 +2018,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Forbids durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -2039,6 +2089,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Spells all durations metrically:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -2117,6 +2170,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Spells unassignable durations metrically:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -2185,6 +2241,9 @@ class TaleaRhythmMaker(RhythmMaker):
             Rewrites meter:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
@@ -2265,6 +2324,9 @@ class TaleaRhythmMaker(RhythmMaker):
             No extra counts per division:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),

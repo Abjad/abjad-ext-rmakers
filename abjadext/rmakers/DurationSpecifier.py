@@ -231,6 +231,9 @@ class DurationSpecifier(object):
             Decreases monotically:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -288,6 +291,9 @@ class DurationSpecifier(object):
             Increases monotically:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -367,6 +373,9 @@ class DurationSpecifier(object):
             Forbids note durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -437,6 +446,9 @@ class DurationSpecifier(object):
             Forbids rest durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
