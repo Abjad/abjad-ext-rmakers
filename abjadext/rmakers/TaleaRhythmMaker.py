@@ -185,10 +185,10 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> for selection in selections:
             ...     selection
-            Selection([Note("c'16"), Note("c'8"), Note("c'8.")])
-            Selection([Note("c'4"), Note("c'16"), Note("c'8"), Note("c'16")])
-            Selection([Note("c'8"), Note("c'4")])
-            Selection([Note("c'16"), Note("c'8"), Note("c'8."), Note("c'8")])
+            Selection([Tuplet(Multiplier(1, 1), "c'16 c'8 c'8.")])
+            Selection([Tuplet(Multiplier(1, 1), "c'4 c'16 c'8 c'16")])
+            Selection([Tuplet(Multiplier(1, 1), "c'8 c'4")])
+            Selection([Tuplet(Multiplier(1, 1), "c'16 c'8 c'8. c'8")])
 
         """
         return RhythmMaker.__call__(
@@ -496,9 +496,9 @@ class TaleaRhythmMaker(RhythmMaker):
             talea_weight_consumed = sum(_.weight() for _ in numeric_map)
             leaf_lists = self._make_leaf_lists(numeric_map, lcd)
             if not counts["extra_counts_per_division"]:
-                ###tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
-                ###result = tuplets
-                result = leaf_lists
+                tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
+                result = tuplets
+                ###result = leaf_lists
             else:
                 tuplets = self._make_tuplets(secondary_divisions, leaf_lists)
                 result = tuplets
