@@ -69,6 +69,22 @@ class DurationSpecifier(object):
 
     ### SPECIAL METHODS ###
 
+    def __call__(
+        self,
+        selections: typing.Sequence[abjad.Selection],
+        divisions: typing.Sequence[abjad.NonreducedFraction],
+        *,
+        tag: str = None,
+    ) -> typing.List[abjad.Selection]:
+        """
+        Calls duration specifier.
+        """
+        if self.rewrite_meter is True:
+            selections = DurationSpecifier._rewrite_meter_(
+                selections, divisions
+            )
+        return list(selections)
+
     def __format__(self, format_specification="") -> str:
         """
         Formats duration specifier.
