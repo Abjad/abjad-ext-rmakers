@@ -67,9 +67,13 @@ class TieSpecifier(object):
 
     ### SPECIAL METHODS ###
 
+    # TODO: change first parameter name to "selections"
     def __call__(
-        self, divisions: typing.Sequence[abjad.NonreducedFraction]
-    ) -> None:
+        self,
+        divisions: typing.Sequence[abjad.Selection],
+        foo=None,
+        tag: str = None,
+    ) -> typing.Sequence[abjad.Selection]:
         """
         Calls tie specifier on ``divisions``.
         """
@@ -79,6 +83,7 @@ class TieSpecifier(object):
             self._tie_consecutive_notes_(divisions)
         self._strip_ties_(divisions)
         self._configure_repeat_ties(divisions)
+        return divisions
 
     def __eq__(self, argument) -> bool:
         """

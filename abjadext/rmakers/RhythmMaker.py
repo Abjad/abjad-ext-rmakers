@@ -478,13 +478,6 @@ class RhythmMaker(object):
         """
         return self._duration_specifier
 
-    #    @property
-    #    def logical_tie_masks(self) -> typing.Optional[typings.MasksTyping]:
-    #        """
-    #        Gets logical tie masks.
-    #        """
-    #        return self._logical_tie_masks
-
     @property
     def previous_state(self) -> abjad.OrderedDict:
         """
