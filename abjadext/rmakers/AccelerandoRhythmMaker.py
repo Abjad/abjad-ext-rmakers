@@ -557,7 +557,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
         interpolation_specifiers: typing.Sequence[
             InterpolationSpecifier
         ] = None,
-        ###logical_tie_masks: typings.MasksTyping = None,
         tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
@@ -566,7 +565,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             self,
             *specifiers,
             beam_specifier=beam_specifier,
-            ###logical_tie_masks=logical_tie_masks,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,

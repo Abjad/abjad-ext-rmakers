@@ -24,7 +24,6 @@ class RhythmMaker(object):
         "_beam_specifier",
         "_division_masks",
         "_duration_specifier",
-        ###"_logical_tie_masks",
         "_previous_state",
         "_specifiers",
         "_state",
@@ -45,7 +44,6 @@ class RhythmMaker(object):
         beam_specifier: BeamSpecifier = None,
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
-        ###logical_tie_masks: typings.MasksTyping = None,
         tag: str = None,
         tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
@@ -56,10 +54,6 @@ class RhythmMaker(object):
         if beam_specifier is not None:
             assert isinstance(beam_specifier, BeamSpecifier)
         self._beam_specifier = beam_specifier
-        #        logical_tie_masks = self._prepare_masks(logical_tie_masks)
-        #        if logical_tie_masks is not None:
-        #            assert isinstance(logical_tie_masks, abjad.PatternTuple)
-        #        self._logical_tie_masks = logical_tie_masks
         if duration_specifier is not None:
             assert isinstance(duration_specifier, DurationSpecifier)
         self._duration_specifier = duration_specifier
@@ -204,52 +198,8 @@ class RhythmMaker(object):
             new_selections.append(new_selection)
         return new_selections
 
-    #    def _apply_logical_tie_masks(self, selections):
-    #        if self.logical_tie_masks is None:
-    #            return selections
-    #        # wrap every selection in a temporary container;
-    #        # this allows the call to abjad.mutate().replace() to work
-    #        containers = []
-    #        for selection in selections:
-    #            container = abjad.Container(selection)
-    #            abjad.attach(abjad.const.TEMPORARY_CONTAINER, container)
-    #            containers.append(container)
-    #        temporary_container = abjad.Container(containers)
-    #        logical_ties = abjad.iterate(selections).logical_ties()
-    #        logical_ties = list(logical_ties)
-    #        total_logical_ties = len(logical_ties)
-    #        previous_logical_ties_produced = self._previous_logical_ties_produced()
-    #        if self._previous_incomplete_last_note():
-    #            previous_logical_ties_produced -= 1
-    #        for index, logical_tie in enumerate(logical_ties[:]):
-    #            matching_mask = self.logical_tie_masks.get_matching_pattern(
-    #                index + previous_logical_ties_produced,
-    #                total_logical_ties + previous_logical_ties_produced,
-    #            )
-    #            if not isinstance(matching_mask, SilenceMask):
-    #                continue
-    #            if isinstance(logical_tie.head, abjad.Rest):
-    #                continue
-    #            for leaf in logical_tie:
-    #                rest = abjad.Rest(leaf.written_duration)
-    #                if leaf.multiplier is not None:
-    #                    rest.multiplier = leaf.multiplier
-    #                abjad.mutate(leaf).replace([rest])
-    #                abjad.detach(abjad.TieIndicator, rest)
-    #                abjad.detach(abjad.RepeatTie, rest)
-    #        # remove every temporary container and recreate selections
-    #        temporary_container[:] = []
-    #        new_selections = []
-    #        for container in containers:
-    #            inspector = abjad.inspect(container)
-    #            assert inspector.indicator(abjad.const.TEMPORARY_CONTAINER)
-    #            new_selection = abjad.mutate(container).eject_contents()
-    #            new_selections.append(new_selection)
-    #        return new_selections
-
     def _apply_specifiers(self, selections):
         self._apply_tie_specifier(selections)
-        ###selections = self._apply_logical_tie_masks(selections)
         self._apply_beam_specifier(selections)
         self._validate_selections(selections)
         self._validate_tuplets(selections)
