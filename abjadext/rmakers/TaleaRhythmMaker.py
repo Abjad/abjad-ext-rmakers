@@ -3582,6 +3582,92 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 >>
 
+        ..  container:: example
+
+            REGRESSION. Spells tuplet denominator in terms of duration when
+            denominator is given as a duration:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         denominator=(1, 16),
+            ...     ),
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     extra_counts_per_division=[1, 1, 2, 2],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            c'16
+                            ~
+                            ]
+                        }
+                        \times 8/9 {
+                            c'8.
+                            [
+                            c'16
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/8 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ~
+                            ]
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'16
+                            ]
+                        }
+                    }
+                >>
+
+
         """
         return super().specifiers
 
