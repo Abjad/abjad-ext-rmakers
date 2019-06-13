@@ -1350,10 +1350,11 @@ class NoteRhythmMaker(RhythmMaker):
             Strips all ties:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
-            ...         strip_ties=True,
-            ...         ),
-            ...     )
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         detach_ties=True,
+            ...         selector=abjad.select().notes(),
+            ...     ),
+            ... )
 
             >>> divisions = [(7, 16), (1, 4), (5, 16)]
             >>> selections = rhythm_maker(divisions)
@@ -1391,16 +1392,17 @@ class NoteRhythmMaker(RhythmMaker):
             Spells durations metrically and then strips all ties:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         detach_ties=True,
+            ...         selector=abjad.select().notes(),
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically=True,
-            ...         ),
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
-            ...         strip_ties=True,
-            ...         ),
-            ...     )
+            ...     ),
+            ... )
 
             >>> divisions = [(7, 16), (1, 4), (5, 16)]
             >>> selections = rhythm_maker(divisions)

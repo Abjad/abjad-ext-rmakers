@@ -1574,6 +1574,10 @@ class IncisedRhythmMaker(RhythmMaker):
             Strips all ties:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         detach_ties=True,
+            ...         selector=abjad.select().notes(),
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -1584,11 +1588,8 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_talea=[-1],
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
-            ...         ),
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
-            ...         strip_ties=True,
-            ...         ),
-            ...     )
+            ...     ),
+            ... )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1628,12 +1629,16 @@ class IncisedRhythmMaker(RhythmMaker):
             Spells durations metrically and then strips all ties:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         detach_ties=True,
+            ...         selector=abjad.select().notes(),
+            ...     ),
             ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
             ...         spell_metrically=True,
-            ...         ),
+            ...     ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1641,11 +1646,8 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_talea=[-1],
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
-            ...         ),
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
-            ...         strip_ties=True,
-            ...         ),
-            ...     )
+            ...     ),
+            ... )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
             >>> selections = rhythm_maker(divisions)
