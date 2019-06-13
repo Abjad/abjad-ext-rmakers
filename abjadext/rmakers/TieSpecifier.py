@@ -1232,11 +1232,10 @@ class TieSpecifier(object):
         self
     ) -> typing.Union[bool, abjad.DurationInequality, None]:
         r"""
-        Is true when ties should format all notes in tie with LilyPond
-        ``\repeatTie``.
+        Is true when all notes format with LilyPond ``\repeatTie``.
 
-        Is duration inequality when ties should format with LilyPond
-        ``\repeatTie`` all notes that satisfy duration inequality.
+        Is duration inequality only those notes that satisfy duration
+        inequality formath with LilyPond ``\repeatTie``.
         """
         return self._repeat_ties
 
@@ -1325,7 +1324,7 @@ class TieSpecifier(object):
     @property
     def tie_consecutive_notes(self) -> typing.Optional[bool]:
         r"""
-        Is true when rhythm-maker should tie consecutive notes.
+        Is true when rhythm-maker ties consecutive notes.
 
         ..  container:: example
 

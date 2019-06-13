@@ -1023,7 +1023,7 @@ class IncisedRhythmMaker(RhythmMaker):
     @property
     def replace_rests_with_skips(self) -> typing.Optional[bool]:
         r"""
-        Is true when rhythm-maker should replace rests with skips.
+        Is true when rhythm-maker replaces rests with skips.
 
         ..  container:: example
 

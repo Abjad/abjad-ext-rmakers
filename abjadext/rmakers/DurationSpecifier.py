@@ -239,8 +239,8 @@ class DurationSpecifier(object):
     @property
     def increase_monotonic(self) -> typing.Optional[bool]:
         r"""
-        Is true when all durations should be spelled as a tied series of
-        monotonically increasing values.
+        Is true when all durations spell as a tied series of monotonically
+        increasing values.
 
         ..  container:: example
 
@@ -526,7 +526,7 @@ class DurationSpecifier(object):
     @property
     def rewrite_meter(self) -> typing.Optional[bool]:
         """
-        Is true when all output divisions should rewrite meter.
+        Is true when all output divisions rewrite meter.
 
         ..  container:: example
 
@@ -554,8 +554,8 @@ class DurationSpecifier(object):
     @property
     def spell_metrically(self) -> typing.Union[bool, str, None]:
         """
-        Is true when durations should spell according to approximate common
-        practice understandings of meter.
+        Is true when durations spell according to approximate common practice
+        understandings of meter.
 
         ..  container:: example
 

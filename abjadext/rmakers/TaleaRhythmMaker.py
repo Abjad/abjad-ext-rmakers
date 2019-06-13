@@ -2637,7 +2637,7 @@ class TaleaRhythmMaker(RhythmMaker):
     @property
     def read_talea_once_only(self) -> typing.Optional[bool]:
         r"""
-        Is true when rhythm-maker should read talea once only.
+        Is true when rhythm-maker reads talea once only.
 
         ..  container:: example
 
@@ -2743,8 +2743,8 @@ class TaleaRhythmMaker(RhythmMaker):
     @property
     def rest_tied_notes(self) -> typing.Optional[bool]:
         r"""
-        Is true when rhythm-maker should leave the head of each logical
-        tie but change tied notes to rests and remove ties.
+        Is true when rhythm-maker leaves the head of each logical tie but
+        changes tied notes to rests and removes ties.
 
         ..  container:: example
 
@@ -4344,7 +4344,7 @@ class TaleaRhythmMaker(RhythmMaker):
     @property
     def tie_split_notes(self) -> typing.Optional[bool]:
         r"""
-        Is true when talea rhythm-maker should tie split notes.
+        Is true when talea rhythm-maker ties split notes.
 
         ..  todo:: Add examples.
 

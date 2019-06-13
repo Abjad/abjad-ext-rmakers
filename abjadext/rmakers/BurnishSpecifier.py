@@ -466,10 +466,10 @@ class BurnishSpecifier(object):
     @property
     def outer_divisions_only(self) -> typing.Optional[bool]:
         """
-        Is true when rhythm-maker should burnish only first and last
+        Is true when rhythm-maker burnishes only first and last
         division in output.
 
-        Is false when rhythm-maker should burnish all divisions.
+        Is false when rhythm-maker burnishes all divisions.
         """
         return self._outer_divisions_only
 

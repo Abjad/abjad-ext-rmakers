@@ -28,6 +28,7 @@ class TupletSpecifier(object):
         "_rewrite_dots",
         "_rewrite_rest_filled",
         "_rewrite_sustained",
+        "_selector",
         "_trivialize",
     )
 
@@ -46,6 +47,7 @@ class TupletSpecifier(object):
         rewrite_dots: bool = None,
         rewrite_rest_filled: bool = None,
         rewrite_sustained: bool = None,
+        selector: abjad.SelectorTyping = None,
         trivialize: bool = None,
     ) -> None:
         if isinstance(denominator, tuple):
@@ -72,6 +74,10 @@ class TupletSpecifier(object):
         if rewrite_sustained is not None:
             rewrite_rest_fille = bool(rewrite_sustained)
         self._rewrite_sustained = rewrite_sustained
+        if isinstance(selector, str):
+            selector = eval(selector)
+            assert isinstance(selector, abjad.Expression)
+        self._selector = selector
         if trivialize is not None:
             trivialize = bool(trivialize)
         self._trivialize = trivialize
@@ -94,8 +100,10 @@ class TupletSpecifier(object):
         # rewrite dots must follow trivialize:
         self._rewrite_dots_(selections)
         # rewrites must precede extract trivial:
-        selections = self._rewrite_sustained_(selections, tag=tag)
-        selections = self._rewrite_rest_filled_(selections, tag=tag)
+        ###selections = self._rewrite_sustained_(selections, tag=tag)
+        ###selections = self._rewrite_rest_filled_(selections, tag=tag)
+        self._rewrite_sustained_(selections, tag=tag)
+        self._rewrite_rest_filled_(selections, tag=tag)
         # extract trivial must follow the other operations:
         selections = self._extract_trivial_(selections)
         # toggle prolation must follow rewrite dots and extract trivial:
@@ -137,6 +145,8 @@ class TupletSpecifier(object):
     def _apply_denominator(self, selections, divisions):
         if not self.denominator:
             return
+        if self.selector is not None:
+            selections = self.selector(selections)
         tuplets = list(abjad.iterate(selections).components(abjad.Tuplet))
         if divisions is None:
             divisions = len(tuplets) * [None]
@@ -168,10 +178,17 @@ class TupletSpecifier(object):
     def _extract_trivial_(self, selections):
         if not self.extract_trivial:
             return selections
+        selected_tuplets = abjad.select(selections).tuplets()
+        if self.selector is not None:
+            selections__ = self.selector(selections)
+            selected_tuplets = abjad.select(selections__).tuplets()
         selections_ = []
         for selection in selections:
             selection_ = []
             for component in selection:
+                if component not in selected_tuplets:
+                    selection_.append(component)
+                    continue
                 if not (
                     isinstance(component, abjad.Tuplet) and component.trivial()
                 ):
@@ -188,73 +205,62 @@ class TupletSpecifier(object):
     def _force_fraction_(self, selections):
         if not self.force_fraction:
             return
+        if self.selector is not None:
+            selections = self.selector(selections)
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.force_fraction = True
 
     def _get_format_specification(self):
         return abjad.FormatSpecification(client=self)
 
-    @staticmethod
-    def _is_rest_filled_tuplet(tuplet):
-        if not isinstance(tuplet, abjad.Tuplet):
-            return False
-        return all(isinstance(_, abjad.Rest) for _ in tuplet)
-
     def _rewrite_dots_(self, selections):
         if not self.rewrite_dots:
             return
+        if self.selector is not None:
+            selections = self.selector(selections)
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.rewrite_dots()
 
+    # TODO: pass in duration specifier
     def _rewrite_rest_filled_(self, selections, tag=None):
         if not self.rewrite_rest_filled:
             return selections
-        selections_ = []
+        if self.selector is not None:
+            selections = self.selector(selections)
         maker = abjad.LeafMaker(tag=tag)
-        for selection in selections:
-            selection_ = []
-            for component in selection:
-                if not self._is_rest_filled_tuplet(component):
-                    selection_.append(component)
-                    continue
-                duration = abjad.inspect(component).duration()
-                rests = maker([None], [duration])
-                abjad.mutate(component[:]).replace(rests)
-                component.multiplier = abjad.Multiplier(1)
-                selection_.append(component)
-            selection_ = abjad.select(selection_)
-            selections_.append(selection_)
-        return selections_
+        for tuplet in abjad.select(selections).tuplets():
+            if not self.is_rest_filled_tuplet(tuplet):
+                continue
+            duration = abjad.inspect(tuplet).duration()
+            rests = maker([None], [duration])
+            abjad.mutate(tuplet[:]).replace(rests)
+            tuplet.multiplier = abjad.Multiplier(1)
+        return selections
 
+    # TODO: pass in duration specifier
     def _rewrite_sustained_(self, selections, tag=None):
         if not self.rewrite_sustained:
             return selections
-        selections_ = []
-        for selection in selections:
-            selection_ = []
-            for component in selection:
-                if not self.is_sustained_tuplet(component):
-                    selection_.append(component)
-                    continue
-                tuplet = component
-                duration = abjad.inspect(tuplet).duration()
-                leaves = abjad.select(tuplet).leaves()
-                last_leaf = leaves[-1]
-                if abjad.inspect(last_leaf).has_indicator(abjad.TieIndicator):
-                    last_leaf_has_tie = True
-                else:
-                    last_leaf_has_tie = False
-                for leaf in leaves[1:]:
-                    tuplet.remove(leaf)
-                assert len(tuplet) == 1, repr(tuplet)
-                if not last_leaf_has_tie:
-                    abjad.detach(abjad.TieIndicator, tuplet[-1])
-                tuplet[0]._set_duration(duration)
-                tuplet.multiplier = abjad.Multiplier(1)
-                selection_.append(tuplet)
-            selection_ = abjad.select(selection_)
-            selections_.append(selection_)
-        return selections_
+        if self.selector is not None:
+            selections = self.selector(selections)
+        for tuplet in abjad.select(selections).tuplets():
+            if not self.is_sustained_tuplet(tuplet):
+                continue
+            duration = abjad.inspect(tuplet).duration()
+            leaves = abjad.select(tuplet).leaves()
+            last_leaf = leaves[-1]
+            if abjad.inspect(last_leaf).has_indicator(abjad.TieIndicator):
+                last_leaf_has_tie = True
+            else:
+                last_leaf_has_tie = False
+            for leaf in leaves[1:]:
+                tuplet.remove(leaf)
+            assert len(tuplet) == 1, repr(tuplet)
+            if not last_leaf_has_tie:
+                abjad.detach(abjad.TieIndicator, tuplet[-1])
+            tuplet[0]._set_duration(duration)
+            tuplet.multiplier = abjad.Multiplier(1)
+        return selections
 
     def _toggle_prolation(self, selections):
         if self.diminution is None:
@@ -268,6 +274,8 @@ class TupletSpecifier(object):
     def _trivialize_(self, selections):
         if not self.trivialize:
             return
+        if self.selector is not None:
+            selections = self.selector(selections)
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.trivialize()
 
@@ -855,9 +863,9 @@ class TupletSpecifier(object):
     @property
     def diminution(self) -> typing.Optional[bool]:
         """
-        Is true when tuplet should be spelled as diminution.
+        Is true when tuplet spells as diminution.
 
-        Is false when tuplet should be spelled as augmentation.
+        Is false when tuplet spells as augmentation.
 
         Is none when tuplet spelling does not force prolation.
         """
@@ -866,15 +874,85 @@ class TupletSpecifier(object):
     @property
     def duration_bracket(self) -> typing.Optional[bool]:
         """
-        Is true when tuplet should override tuplet number text with note
+        Is true when tuplet overrides tuplet number text with note
         duration bracket giving tuplet duration.
         """
         return self._duration_bracket
 
     @property
     def extract_trivial(self) -> typing.Optional[bool]:
-        """
-        Is true when rhythm-maker should extract trivial tuplets.
+        r"""
+        Is true when rhythm-maker extracts trivial tuplets.
+
+        ..  container:: example
+
+            With selector:
+
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...         selector=abjad.select().tuplets()[-2:],
+            ...     ),
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ... )
+
+            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/3 {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                >>
+
         """
         return self._extract_trivial
 
@@ -885,7 +963,7 @@ class TupletSpecifier(object):
 
         ..  container:: example
 
-            The ``defaulti.ly`` stylesheet included in all Abjad API examples
+            The ``default.ily`` stylesheet included in all Abjad API examples
             includes the following:
             
             ``\override TupletNumber.text = #tuplet-number::calc-fraction-text``
@@ -1240,6 +1318,77 @@ class TupletSpecifier(object):
                     }
                 >>
 
+            With selector:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=abjad.select().tuplets()[-2:],
+            ...         ),
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     extra_counts_per_division=[2, 1, 1, 1],
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[-1],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/16
+                        s1 * 1/4
+                        \time 4/16
+                        s1 * 1/4
+                        \time 5/16
+                        s1 * 5/16
+                        \time 5/16
+                        s1 * 5/16
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 2/3 {
+                            r16
+                            r16
+                            r16
+                            r16
+                            r16
+                            r16
+                        }
+                        \times 4/5 {
+                            r16
+                            r16
+                            r16
+                            r16
+                            r16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            r4
+                            r16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            r4
+                            r16
+                        }
+                    }
+                >>
+
             Note that nonassignable divisions necessitate multiple rests
             even after rewriting.
 
@@ -1466,21 +1615,113 @@ class TupletSpecifier(object):
                     }
                 >>
 
+        ..  container:: example
+
+            With selector:
+
+            >>> selector = abjad.select().notes()[:-1]
+            >>> selector = abjad.select().tuplets().map(selector)
+            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=selector,
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_sustained=True,
+            ...         selector=abjad.select().tuplets()[-2:],
+            ...     ),
+            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     extra_counts_per_division=[1],
+            ... )
+
+            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 2/3 {
+                            c'8
+                            ~
+                            [
+                            c'8
+                            ~
+                            c'8
+                            ]
+                        }
+                        \times 2/3 {
+                            c'8
+                            ~
+                            [
+                            c'8
+                            ~
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 2/2 {
+                            c'4
+                        }
+                    }
+                >>
+
         """
         return self._rewrite_sustained
 
     @property
+    def selector(self) -> typing.Optional[abjad.Expression]:
+        """
+        Gets selector.
+        """
+        return self._selector
+
+    @property
     def trivialize(self) -> typing.Optional[bool]:
         """
-        Is true when trivializable tuplets should be trivialized.
+        Is true when tuplet specifier trivializes trivializable tuplets.
         """
         return self._trivialize
 
     ### PUBLIC METHODS ###
 
     @staticmethod
+    def is_rest_filled_tuplet(tuplet):
+        """
+        Is true when ``argument`` is rest-filled tuplet.
+        """
+        if not isinstance(tuplet, abjad.Tuplet):
+            return False
+        return all(isinstance(_, abjad.Rest) for _ in tuplet)
+
+    @staticmethod
     def is_sustained_tuplet(argument):
-        r"""
+        """
         Is true when ``argument`` is sustained tuplet.
         """
         if not isinstance(argument, abjad.Tuplet):

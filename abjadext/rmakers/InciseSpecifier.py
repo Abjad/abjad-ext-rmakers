@@ -268,8 +268,7 @@ class InciseSpecifier(object):
     @property
     def fill_with_rests(self) -> typing.Optional[bool]:
         """
-        Is true when rhythm-maker should fill divisions with rests instead of
-        notes.
+        Is true when rhythm-maker fills divisions with rests instead of notes.
 
         ..  todo:: Add examples.
 
@@ -279,8 +278,8 @@ class InciseSpecifier(object):
     @property
     def outer_divisions_only(self) -> typing.Optional[bool]:
         """
-        Is true when rhythm-maker should incise outer divisions only.
-        Is false when rhythm-maker should incise all divisions.
+        Is true when rhythm-maker incises outer divisions only.
+        Is false when rhythm-maker incises all divisions.
 
         ..  todo:: Add examples.
 

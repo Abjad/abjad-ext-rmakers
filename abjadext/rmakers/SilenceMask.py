@@ -303,7 +303,7 @@ class SilenceMask(object):
     @property
     def use_multimeasure_rests(self) -> typing.Optional[bool]:
         """
-        Is true when silence mask should use multimeasure rests.
+        Is true when silence mask uses multimeasure rests.
 
         ..  container:: example
 

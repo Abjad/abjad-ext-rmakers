@@ -212,7 +212,7 @@ class BeamSpecifier(object):
     @property
     def beam_divisions_together(self) -> typing.Optional[bool]:
         r"""
-        Is true when divisions should beam together.
+        Is true when divisions beam together.
 
         ..  container:: example
 
@@ -521,7 +521,7 @@ class BeamSpecifier(object):
     @property
     def beam_rests(self) -> typing.Optional[bool]:
         r"""
-        Is true when beams should include rests.
+        Is true when beams include rests.
 
         ..  container:: example
 
@@ -759,7 +759,7 @@ class BeamSpecifier(object):
     @property
     def use_feather_beams(self) -> typing.Optional[bool]:
         """
-        Is true when multiple beams should feather.
+        Is true when multiple beams feather.
 
         ..  container:: example
 
