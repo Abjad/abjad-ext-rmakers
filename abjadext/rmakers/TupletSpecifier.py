@@ -230,7 +230,6 @@ class TupletSpecifier(object):
         if not self.rewrite_sustained:
             return selections
         selections_ = []
-        maker = abjad.LeafMaker(tag=tag)
         for selection in selections:
             selection_ = []
             for component in selection:
@@ -240,9 +239,16 @@ class TupletSpecifier(object):
                 tuplet = component
                 duration = abjad.inspect(tuplet).duration()
                 leaves = abjad.select(tuplet).leaves()
+                last_leaf = leaves[-1]
+                if abjad.inspect(last_leaf).has_indicator(abjad.TieIndicator):
+                    last_leaf_has_tie = True
+                else:
+                    last_leaf_has_tie = False
                 for leaf in leaves[1:]:
                     tuplet.remove(leaf)
                 assert len(tuplet) == 1, repr(tuplet)
+                if not last_leaf_has_tie:
+                    abjad.detach(abjad.TieIndicator, tuplet[-1])
                 tuplet[0]._set_duration(duration)
                 tuplet.multiplier = abjad.Multiplier(1)
                 selection_.append(tuplet)
