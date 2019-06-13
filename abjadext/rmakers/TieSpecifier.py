@@ -67,23 +67,23 @@ class TieSpecifier(object):
 
     ### SPECIAL METHODS ###
 
-    # TODO: change first parameter name to "selections"
     def __call__(
         self,
-        divisions: typing.Sequence[abjad.Selection],
-        foo=None,
+        selections: typing.Sequence[abjad.Selection],
+        divisions: typing.Sequence[abjad.NonreducedFraction] = None,
         tag: str = None,
     ) -> typing.Sequence[abjad.Selection]:
         """
-        Calls tie specifier on ``divisions``.
+        Calls tie specifier on ``selections``.
         """
-        self._tie_within_divisions_(divisions)
-        self._tie_across_divisions_(divisions)
+        assert all(isinstance(_, abjad.Selection) for _ in selections)
+        self._tie_within_divisions_(selections)
+        self._tie_across_divisions_(selections)
         if self.tie_consecutive_notes:
-            self._tie_consecutive_notes_(divisions)
-        self._strip_ties_(divisions)
-        self._configure_repeat_ties(divisions)
-        return divisions
+            self._tie_consecutive_notes_(selections)
+        self._strip_ties_(selections)
+        self._configure_repeat_ties(selections)
+        return selections
 
     def __eq__(self, argument) -> bool:
         """
@@ -94,13 +94,13 @@ class TieSpecifier(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats Abjad object.
+        Formats tie specifier.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
     def __hash__(self) -> int:
         """
-        Hashes Abjad value object.
+        Hashes tie specifier.
         """
         hash_values = abjad.StorageFormatManager(self).get_hash_values()
         try:
@@ -111,7 +111,7 @@ class TieSpecifier(object):
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation.
+        Gets interpreter representation of tie specifier.
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 
