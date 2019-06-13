@@ -1494,24 +1494,30 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        # TODO: make this work by implementing TieSpecifier.selector
+        # TODO: make this work by teaching rewrite_sustained to refrain from
+        # depositing excess suffix tie
 
 #        ..  container:: example
 #
 #            Sustains every other output division:
 #
 #            >>> pattern = abjad.Pattern([1], period=2)
+#            >>> selector = abjad.select().tuplets()[pattern]
+#            >>> selector = selector.map(abjad.select().notes()[:-1])
 #            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-#            ...     abjadext.rmakers.SustainMask(
+#            ...     abjadext.rmakers.TieSpecifier(
+#            ...         detach_ties=True,
 #            ...         selector=abjad.select().tuplets()[pattern]
 #            ...     ),
 #            ...     abjadext.rmakers.TieSpecifier(
-#            ...         selector=abjad.select().tuplets()[pattern]
-#            ...         tie_consecutive_notes=True,
+#            ...         attach_ties=True,
+#            ...         selector=selector,
 #            ...     ),
-#            ...     abjadext.rmakers.TupletSpecifier(
-#            ...         extract_trivial=True,
+#            ...     rmakers.TupletSpecifier(
 #            ...         rewrite_sustained=True,
+#            ...     ),
+#            ...     rmakers.TupletSpecifier(
+#            ...         extract_trivial=True,
 #            ...     ),
 #            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
 #            ...         beam_each_division=True,
