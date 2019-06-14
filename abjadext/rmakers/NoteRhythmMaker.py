@@ -256,7 +256,7 @@ class NoteRhythmMaker(RhythmMaker):
             Beams each division:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
             ...     )
@@ -301,7 +301,7 @@ class NoteRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=True,
             ...         ),
             ...     )
@@ -352,7 +352,7 @@ class NoteRhythmMaker(RhythmMaker):
             Makes no beams:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=False,
             ...         beam_each_division=False,
             ...         ),
@@ -684,7 +684,7 @@ class NoteRhythmMaker(RhythmMaker):
             Spells all divisions metrically when ``spell_metrically`` is true:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
@@ -742,7 +742,7 @@ class NoteRhythmMaker(RhythmMaker):
             ``spell_metrically`` is ``'unassignable'``:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
@@ -1396,7 +1396,7 @@ class NoteRhythmMaker(RhythmMaker):
             ...         detach_ties=True,
             ...         selector=abjad.select().notes(),
             ...     ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     duration_specifier=abjadext.rmakers.DurationSpecifier(

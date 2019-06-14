@@ -133,6 +133,15 @@ class BeamSpecifier(object):
                     stemlet_length=self.stemlet_length,
                     tag=tag,
                 )
+        if self.use_feather_beams:
+            for selection in selections:
+                first_leaf = abjad.select(selection).leaf(0)
+                if self._is_accelerando(selection):
+                    abjad.override(
+                        first_leaf
+                    ).beam.grow_direction = abjad.Right
+                elif self._is_ritardando(selection):
+                    abjad.override(first_leaf).beam.grow_direction = abjad.Left
         return selections
 
     def __format__(self, format_specification="") -> str:
@@ -206,6 +215,24 @@ class BeamSpecifier(object):
             else:
                 beamable_groups.append(abjad.select([]))
         return beamable_groups
+
+    def _is_accelerando(self, selection):
+        first_leaf = abjad.select(selection).leaf(0)
+        last_leaf = abjad.select(selection).leaf(-1)
+        first_duration = abjad.inspect(first_leaf).duration()
+        last_duration = abjad.inspect(last_leaf).duration()
+        if last_duration < first_duration:
+            return True
+        return False
+
+    def _is_ritardando(self, selection):
+        first_leaf = abjad.select(selection).leaf(0)
+        last_leaf = abjad.select(selection).leaf(-1)
+        first_duration = abjad.inspect(first_leaf).duration()
+        last_duration = abjad.inspect(last_leaf).duration()
+        if first_duration < last_duration:
+            return True
+        return False
 
     ### PUBLIC PROPERTIES ###
 

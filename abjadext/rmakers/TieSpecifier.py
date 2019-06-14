@@ -98,6 +98,7 @@ class TieSpecifier(object):
     def __call__(
         self,
         selections: typing.Sequence[abjad.Selection],
+        *,
         divisions: typing.Sequence[abjad.NonreducedFraction] = None,
         tag: str = None,
     ) -> typing.Sequence[abjad.Selection]:
@@ -310,7 +311,7 @@ class TieSpecifier(object):
             ...         attach_repeat_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
@@ -406,7 +407,7 @@ class TieSpecifier(object):
             ...         attach_repeat_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
@@ -507,7 +508,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=abjad.select().notes()[5:15],
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
@@ -610,7 +611,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
@@ -706,7 +707,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
@@ -801,7 +802,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
@@ -904,7 +905,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
@@ -1014,7 +1015,7 @@ class TieSpecifier(object):
             ...         detach_repeat_ties=True,
             ...         selector=abjad.select().notes()[pattern],
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
@@ -1131,7 +1132,7 @@ class TieSpecifier(object):
             ...         detach_ties=True,
             ...         selector=abjad.select().notes()[pattern],
             ...         ),
-            ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
             ...     extra_counts_per_division=[1],
