@@ -1996,6 +1996,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Silences every other division:
 
+            >>> pattern = abjad.Pattern([1], period=2)
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
             ...         duration_bracket=True,
@@ -2004,16 +2005,22 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         beam_each_division=True,
             ...         use_feather_beams=True,
             ...         ),
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...         ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
             ...         ),
-            ...     division_masks=[
-            ...         abjadext.rmakers.SilenceMask(
-            ...             pattern=abjad.index([1], 2),
-            ...             ),
-            ...         ],
             ...     )
 
             >>> divisions = [(5, 8), (3, 8), (5, 8), (3, 8)]
@@ -4043,9 +4050,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
-            ...         ),
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=False,
             ...         ),
             ...     )
 

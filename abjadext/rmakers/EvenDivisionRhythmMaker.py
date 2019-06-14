@@ -739,9 +739,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
+            ...     denominator=None,
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
-            ...     denominator=None,
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -846,9 +846,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
+            ...     denominator=4,
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
-            ...     denominator=4,
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -948,9 +948,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
+            ...     denominator=8,
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
-            ...     denominator=8,
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1050,9 +1050,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
+            ...     denominator=16,
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
-            ...     denominator=16,
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1154,9 +1154,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
+            ...     denominator='from_counts',
             ...     denominators=[16],
             ...     extra_counts_per_division=[4],
-            ...     denominator='from_counts',
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1588,14 +1588,23 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every other division:
 
+            >>> pattern = abjad.Pattern([0], period=2)
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
-            ...     division_masks=[
-            ...         abjadext.rmakers.silence([0], 2),
-            ...         ],
-            ...     )
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1648,14 +1657,26 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Sustains every other division:
 
+            >>> pattern = abjad.Pattern([0], period=2)
+            >>> selector = abjad.select().tuplets()[pattern]
+            >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=selector.map(nonlast_notes),
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_sustained=True,
+            ...         selector=selector,
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...         selector=selector,
+            ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
-            ...     division_masks=[
-            ...         abjadext.rmakers.sustain([0], 2),
-            ...         ],
-            ...     )
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1709,11 +1730,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every output division:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().leaves(),
             ...     ),
-            ...     division_masks=abjadext.rmakers.silence([0], 1),
-            ...     )
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
