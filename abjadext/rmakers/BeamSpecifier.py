@@ -15,7 +15,7 @@ class BeamSpecifier(object):
         >>> abjad.setting(staff).auto_beaming = False
         >>> selections = [staff[:4], staff[4:]]
         >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-        >>> specifier(selections)
+        >>> selections = specifier(selections)
         >>> abjad.show(staff) # doctest: +SKIP
 
         ..  docs::
@@ -93,13 +93,12 @@ class BeamSpecifier(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections, tag: str = None) -> None:
+    def __call__(self, selections, divisions=None, tag: str = None) -> None:
         """
         Calls beam specifier on ``selections``.
         """
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
-
             durations = []
             for selection in selections:
                 duration = abjad.inspect(selection).duration()
@@ -134,6 +133,7 @@ class BeamSpecifier(object):
                     stemlet_length=self.stemlet_length,
                     tag=tag,
                 )
+        return selections
 
     def __format__(self, format_specification="") -> str:
         """
@@ -223,7 +223,7 @@ class BeamSpecifier(object):
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
             >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -264,7 +264,7 @@ class BeamSpecifier(object):
             ...     beam_divisions_together=True,
             ...     beam_rests=False,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -323,7 +323,7 @@ class BeamSpecifier(object):
             ...     beam_divisions_together=True,
             ...     beam_rests=True,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -394,7 +394,7 @@ class BeamSpecifier(object):
             >>> specifier = abjadext.rmakers.BeamSpecifier(
             ...     beam_each_division=False,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -430,7 +430,7 @@ class BeamSpecifier(object):
             ...     beam_each_division=True,
             ...     beam_rests=False,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -472,7 +472,7 @@ class BeamSpecifier(object):
             ...     beam_each_division=True,
             ...     beam_rests=True,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -532,7 +532,7 @@ class BeamSpecifier(object):
             >>> abjad.setting(staff).auto_beaming = False
             >>> selections = [staff[:4], staff[4:]]
             >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -574,7 +574,7 @@ class BeamSpecifier(object):
             ...     beam_each_division=True,
             ...     beam_rests=True,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -614,7 +614,7 @@ class BeamSpecifier(object):
             ...     beam_each_division=True,
             ...     beam_rests=True,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -670,7 +670,7 @@ class BeamSpecifier(object):
             ...     beam_each_division=True,
             ...     beam_rests=True,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::
@@ -711,7 +711,7 @@ class BeamSpecifier(object):
             ...     beam_rests=True,
             ...     stemlet_length=2,
             ...     )
-            >>> specifier(selections)
+            >>> selections = specifier(selections)
             >>> abjad.show(staff) # doctest: +SKIP
 
             ..  docs::

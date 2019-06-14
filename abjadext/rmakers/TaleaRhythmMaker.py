@@ -24,7 +24,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     abjadext.rmakers.TupletSpecifier(
         ...         extract_trivial=True,
         ...     ),
-        ...     beam_specifier=abjadext.rmakers.BeamSpecifier(
+        ...     abjadext.rmakers.BeamSpecifier(
         ...         beam_each_division=True,
         ...     ),
         ...     talea=abjadext.rmakers.Talea(

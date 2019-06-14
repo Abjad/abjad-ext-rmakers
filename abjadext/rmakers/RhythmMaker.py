@@ -144,8 +144,8 @@ class RhythmMaker(object):
             return False
 
     def _apply_beam_specifier(self, selections):
-        beam_specifier = self._get_beam_specifier()
-        beam_specifier(selections, tag=self.tag)
+        if self.beam_specifier is not None:
+            self.beam_specifier(selections, divisions=None, tag=self.tag)
 
     def _apply_division_masks(self, selections):
         if not self.division_masks:
