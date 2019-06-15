@@ -66,7 +66,6 @@ class NoteRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *specifiers: typings.SpecifierTyping,
-        beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
@@ -77,7 +76,6 @@ class NoteRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *specifiers,
-            beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
@@ -245,152 +243,6 @@ class NoteRhythmMaker(RhythmMaker):
         return selections
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def beam_specifier(self) -> typing.Optional[BeamSpecifier]:
-        r"""
-        Gets beam specifier.
-
-        ..  container:: example
-
-            Beams each division:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 32), (5, 32)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/32
-                        s1 * 5/32
-                        \time 5/32
-                        s1 * 5/32
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'8
-                        ~
-                        [
-                        c'32
-                        ]
-                        c'8
-                        ~
-                        [
-                        c'32
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams divisions together:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=True,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 32), (5, 32)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/32
-                        s1 * 5/32
-                        \time 5/32
-                        s1 * 5/32
-                    }
-                    \new RhythmicStaff
-                    {
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8
-                        ~
-                        [
-                        \set stemLeftBeamCount = 3
-                        \set stemRightBeamCount = 1
-                        c'32
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                        ~
-                        \set stemLeftBeamCount = 3
-                        \set stemRightBeamCount = 0
-                        c'32
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Makes no beams:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=False,
-            ...         beam_each_division=False,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 32), (5, 32)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/32
-                        s1 * 5/32
-                        \time 5/32
-                        s1 * 5/32
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'8
-                        ~
-                        c'32
-                        c'8
-                        ~
-                        c'32
-                    }
-                >>
-
-        """
-        return super().beam_specifier
 
     @property
     def burnish_specifier(self) -> typing.Optional[BurnishSpecifier]:
@@ -1103,6 +955,144 @@ class NoteRhythmMaker(RhythmMaker):
                         r2
                         c'4.
                         c'4
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams each division:
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 32), (5, 32)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/32
+                        s1 * 5/32
+                        \time 5/32
+                        s1 * 5/32
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'8
+                        ~
+                        [
+                        c'32
+                        ]
+                        c'8
+                        ~
+                        [
+                        c'32
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams divisions together:
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_divisions_together=True,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 32), (5, 32)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/32
+                        s1 * 5/32
+                        \time 5/32
+                        s1 * 5/32
+                    }
+                    \new RhythmicStaff
+                    {
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8
+                        ~
+                        [
+                        \set stemLeftBeamCount = 3
+                        \set stemRightBeamCount = 1
+                        c'32
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 1
+                        c'8
+                        ~
+                        \set stemLeftBeamCount = 3
+                        \set stemRightBeamCount = 0
+                        c'32
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Makes no beams:
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_divisions_together=False,
+            ...         beam_each_division=False,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 32), (5, 32)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/32
+                        s1 * 5/32
+                        \time 5/32
+                        s1 * 5/32
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'8
+                        ~
+                        c'32
+                        c'8
+                        ~
+                        c'32
                     }
                 >>
 

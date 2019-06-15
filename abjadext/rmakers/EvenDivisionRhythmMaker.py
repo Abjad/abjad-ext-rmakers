@@ -35,7 +35,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *specifiers: typings.SpecifierTyping,
-        beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
@@ -49,7 +48,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *specifiers,
-            beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,

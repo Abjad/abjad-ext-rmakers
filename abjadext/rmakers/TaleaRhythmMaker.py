@@ -109,7 +109,6 @@ class TaleaRhythmMaker(RhythmMaker):
         self,
         *specifiers: typings.SpecifierTyping,
         talea: Talea = None,
-        beam_specifier: BeamSpecifier = None,
         burnish_specifier: BurnishSpecifier = None,
         curtail_ties: bool = None,
         division_masks: typings.MasksTyping = None,
@@ -125,7 +124,6 @@ class TaleaRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *specifiers,
-            beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
@@ -644,567 +642,6 @@ class TaleaRhythmMaker(RhythmMaker):
         return talea
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def beam_specifier(self) -> typing.Optional[BeamSpecifier]:
-        r"""
-        Gets beam specifier.
-
-        ..  container:: example
-
-            Beams each division:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams divisions together:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         beam_divisions_together=True,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 2
-                        c'16
-                        [
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 0
-                        c'16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams nothing:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=False,
-            ...         beam_divisions_together=False,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                    }
-                >>
-
-        ..  container:: example
-
-            Does not beam rests:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 1, 1, -1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        ]
-                        c'16
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        ]
-                        c'16
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                    }
-                >>
-
-        ..  container:: example
-
-            Does beam rests:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         beam_rests=True,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 1, 1, -1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams rests with stemlets:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         beam_rests=True,
-            ...         stemlet_length=0.75,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 1, 1, -1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \override Staff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        \revert Staff.Stem.stemlet-length
-                        c'16
-                        ]
-                        \override Staff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        \revert Staff.Stem.stemlet-length
-                        c'16
-                        ]
-                        \override Staff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        \revert Staff.Stem.stemlet-length
-                        r16
-                        ]
-                        \override Staff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        \revert Staff.Stem.stemlet-length
-                        r16
-                        ]
-                    }
-                >>
-
-        """
-        return super().beam_specifier
 
     @property
     def burnish_specifier(self) -> typing.Optional[BurnishSpecifier]:
@@ -3616,6 +3053,559 @@ class TaleaRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams each division:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams divisions together:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         beam_divisions_together=True,
+            ...         ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 2
+                        c'16
+                        [
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 0
+                        c'16
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams nothing:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=False,
+            ...         beam_divisions_together=False,
+            ...         ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                    }
+                >>
+
+        ..  container:: example
+
+            Does not beam rests:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 1, 1, -1],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        ]
+                        c'16
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        ]
+                        c'16
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                    }
+                >>
+
+        ..  container:: example
+
+            Does beam rests:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         beam_rests=True,
+            ...         ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 1, 1, -1],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        ]
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams rests with stemlets:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         beam_rests=True,
+            ...         stemlet_length=0.75,
+            ...         ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[1, 1, 1, -1],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \override Staff.Stem.stemlet-length = 0.75
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        \revert Staff.Stem.stemlet-length
+                        c'16
+                        ]
+                        \override Staff.Stem.stemlet-length = 0.75
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        \revert Staff.Stem.stemlet-length
+                        c'16
+                        ]
+                        \override Staff.Stem.stemlet-length = 0.75
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        \revert Staff.Stem.stemlet-length
+                        r16
+                        ]
+                        \override Staff.Stem.stemlet-length = 0.75
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        \revert Staff.Stem.stemlet-length
+                        r16
+                        ]
                     }
                 >>
 

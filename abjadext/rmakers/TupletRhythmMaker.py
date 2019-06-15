@@ -157,7 +157,6 @@ class TupletRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *specifiers: typings.SpecifierTyping,
-        beam_specifier: BeamSpecifier = None,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
@@ -169,7 +168,6 @@ class TupletRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *specifiers,
-            beam_specifier=beam_specifier,
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
@@ -388,264 +386,6 @@ class TupletRhythmMaker(RhythmMaker):
         return selections
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def beam_specifier(self) -> typing.Optional[BeamSpecifier]:
-        r"""
-        Gets beam specifier.
-
-        ..  container:: example
-
-            Beams each division:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file)  # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 6/8
-                        s1 * 3/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/9 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                            c'4.
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                            c'4
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'4.
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams divisions together:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         beam_divisions_together=True,
-            ...         ),
-            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file)  # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 6/8
-                        s1 * 3/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/9 {
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8.
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8.
-                            ]
-                            c'4.
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8.
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 1
-                            c'8
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 1
-                            c'8
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8
-                            ]
-                            c'4
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'4.
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams nothing:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=False,
-            ...         beam_each_division=False,
-            ...         ),
-            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file)  # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 6/8
-                        s1 * 3/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/9 {
-                            c'8.
-                            c'8.
-                            c'4.
-                            c'8.
-                            c'8.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            c'8
-                            c'8
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            c'8
-                            c'4
-                            c'8
-                            c'8
-                        }
-                        \times 4/5 {
-                            c'4.
-                            c'8
-                            c'8
-                        }
-                    }
-                >>
-
-        Ignores ``beam_each_division`` when ``beam_division_together`` is true.
-        """
-        return super().beam_specifier
 
     @property
     def denominator(
@@ -1298,6 +1038,264 @@ class TupletRhythmMaker(RhythmMaker):
 
         """
         return super().division_masks
+
+    @property
+    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+        r"""
+        Gets specifiers.
+
+        ..  container:: example
+
+            Beams each division:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
+            ...     )
+
+            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file)  # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 6/8
+                        s1 * 3/4
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/9 {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                            c'4.
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            [
+                            c'8
+                            ]
+                            c'4
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'4.
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams divisions together:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         beam_divisions_together=True,
+            ...         ),
+            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
+            ...     )
+
+            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file)  # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 6/8
+                        s1 * 3/4
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/9 {
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8.
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8.
+                            ]
+                            c'4.
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8.
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8
+                            ]
+                            c'4
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'4.
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8
+                            ]
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams nothing:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_divisions_together=False,
+            ...         beam_each_division=False,
+            ...         ),
+            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
+            ...     )
+
+            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file)  # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 6/8
+                        s1 * 3/4
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/9 {
+                            c'8.
+                            c'8.
+                            c'4.
+                            c'8.
+                            c'8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            c'8
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8
+                            c'8
+                            c'4
+                            c'8
+                            c'8
+                        }
+                        \times 4/5 {
+                            c'4.
+                            c'8
+                            c'8
+                        }
+                    }
+                >>
+
+        Ignores ``beam_each_division`` when ``beam_division_together`` is true.
+        """
+        return super().specifiers
 
     @property
     def tag(self) -> typing.Optional[str]:
