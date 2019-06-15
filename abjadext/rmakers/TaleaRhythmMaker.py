@@ -1565,6 +1565,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
+            ..  todo:: Make abjad.select().with_previous_leaf() work.
+
             REGRESSION. Nonperiodic division masks respect state.
 
             Only divisions 0 and 2 are masked here:
