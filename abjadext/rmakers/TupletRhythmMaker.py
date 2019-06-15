@@ -1242,16 +1242,20 @@ class TupletRhythmMaker(RhythmMaker):
 
             Masks every other output division:
 
+            >>> pattern = abjad.Pattern([1], period=2)
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=False,
-            ...         beam_each_division=False,
-            ...         ),
-            ...     division_masks=[
-            ...         abjadext.rmakers.silence([1], 2),
-            ...         ],
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().tuplets()[pattern],
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=abjad.select().tuplets()[pattern],
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
             ...     tuplet_ratios=[(4, 1)],
-            ...     )
+            ... )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selections = rhythm_maker(divisions)

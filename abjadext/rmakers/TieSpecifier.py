@@ -1265,10 +1265,10 @@ class TieSpecifier(object):
         ..  container:: example
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     tuplet_ratios=[(5, 2)],
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...     abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         ),
+            ...     tuplet_ratios=[(5, 2)],
             ...     )
 
             >>> divisions = [(4, 8), (4, 8), (4, 8)]
@@ -1330,10 +1330,10 @@ class TieSpecifier(object):
         ..  container:: example
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     tuplet_ratios=[(5, 2)],
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...     abjadext.rmakers.TieSpecifier(
             ...         tie_consecutive_notes=True,
             ...         ),
+            ...     tuplet_ratios=[(5, 2)],
             ...     )
 
             >>> divisions = [(4, 8), (4, 8), (4, 8)]
@@ -1399,10 +1399,10 @@ class TieSpecifier(object):
             Ties within divisions:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     tuplet_ratios=[(5, 2)],
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...     abjadext.rmakers.TieSpecifier(
             ...         tie_within_divisions=True,
             ...         ),
+            ...     tuplet_ratios=[(5, 2)],
             ...     )
 
             >>> divisions = [(4, 8), (4, 8), (4, 8)]

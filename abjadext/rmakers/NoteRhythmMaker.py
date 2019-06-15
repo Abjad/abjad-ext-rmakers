@@ -977,7 +977,7 @@ class NoteRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...    abjadext.rmakers.SilenceMask(
             ...         selector=abjad.select().logical_ties(),
-            ...     )
+            ...     ),
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1064,12 +1064,11 @@ class NoteRhythmMaker(RhythmMaker):
             >>> pattern_1 = abjad.index([0], 2)
             >>> pattern_2 = abjad.index([0, -1])
             >>> pattern = pattern_1 & ~pattern_2
-            >>> specifier = abjadext.rmakers.SilenceMask(
-            ...     selector=abjad.select().logical_ties()[pattern]
-            ...     )
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     specifier
-            ...     )
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().logical_ties()[pattern]
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1161,10 +1160,10 @@ class NoteRhythmMaker(RhythmMaker):
             Does not tie across divisions:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...     abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=False,
-            ...         ),
-            ...     )
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1204,10 +1203,10 @@ class NoteRhythmMaker(RhythmMaker):
             Ties across divisions:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...     abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
-            ...         ),
-            ...     )
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1249,15 +1248,12 @@ class NoteRhythmMaker(RhythmMaker):
 
             Patterns ties across divisions:
 
-            >>> pattern = abjad.Pattern(
-            ...     indices=[0],
-            ...     period=2,
-            ...     )
+            >>> pattern = abjad.Pattern([0], period=2)
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...     abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=pattern,
-            ...         ),
-            ...     )
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1299,11 +1295,11 @@ class NoteRhythmMaker(RhythmMaker):
             Uses repeat ties:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     tie_specifier=abjadext.rmakers.TieSpecifier(
+            ...     abjadext.rmakers.TieSpecifier(
             ...         tie_across_divisions=True,
             ...         repeat_ties=True,
-            ...         ),
-            ...     )
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (9, 16), (5, 16)]
             >>> selections = rhythm_maker(divisions)
@@ -1497,10 +1493,10 @@ class NoteRhythmMaker(RhythmMaker):
             Spells tuplets as augmentations:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     tuplet_specifier=abjadext.rmakers.TupletSpecifier(
+            ...     abjadext.rmakers.TupletSpecifier(
             ...         diminution=False,
-            ...         ),
-            ...     )
+            ...     ),
+            ... )
 
             >>> divisions = [(5, 14), (3, 7)]
             >>> selections = rhythm_maker(divisions)

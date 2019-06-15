@@ -491,19 +491,21 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Masks every other output division:
 
+            >>> pattern = abjad.Pattern([0], period=2)
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
-            ...     division_masks=[
-            ...         abjad.Pattern(
-            ...             indices=[0],
-            ...             period=2,
-            ...             ),
-            ...         ],
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -625,6 +627,9 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
+            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...         forbidden_note_duration=(1, 2),
+            ...         ),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -632,9 +637,6 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_talea=[-1],
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         forbidden_note_duration=(1, 2),
             ...         ),
             ...     )
 

@@ -26,26 +26,14 @@ class SustainMask(object):
         >>> pattern_2 = abjad.index_first(1)
         >>> pattern_3 = abjad.index_last(1)
         >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
-        >>> mask = abjadext.rmakers.SustainMask(pattern=pattern)
-
-        >>> abjad.f(mask)
-        abjadext.rmakers.SustainMask(
-            pattern=abjad.Pattern(
-                operator='xor',
-                patterns=(
-                    abjad.index_all(),
-                    abjad.index_first(1),
-                    abjad.index_last(1),
-                    ),
-                ),
-            )
-
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     division_masks=[
-        ...         abjadext.rmakers.silence([0], 1),
-        ...         mask,
-        ...         ],
-        ...     )
+        ...     abjadext.rmakers.SilenceMask(
+        ...         selector=abjad.select().leaves(),
+        ...     ),
+        ...     abjadext.rmakers.SustainMask(
+        ...         selector=abjad.select().logical_ties()[pattern]
+        ...     ),
+        ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = rhythm_maker(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
@@ -88,27 +76,14 @@ class SustainMask(object):
         >>> pattern_3 = abjad.index_last(1)
         >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
         >>> pattern = ~pattern
-        >>> mask = abjadext.rmakers.SustainMask(pattern=pattern)
-
-        >>> abjad.f(mask)
-        abjadext.rmakers.SustainMask(
-            pattern=abjad.Pattern(
-                inverted=True,
-                operator='xor',
-                patterns=(
-                    abjad.index_all(),
-                    abjad.index_first(1),
-                    abjad.index_last(1),
-                    ),
-                ),
-            )
-
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     division_masks=[
-        ...         abjadext.rmakers.silence([0], 1),
-        ...         mask,
-        ...         ],
-        ...     )
+        ...     abjadext.rmakers.SilenceMask(
+        ...         selector=abjad.select().leaves(),
+        ...     ),
+        ...     abjadext.rmakers.SustainMask(
+        ...         selector=abjad.select().logical_ties()[pattern]
+        ...     ),
+        ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = rhythm_maker(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
@@ -303,17 +278,14 @@ class SustainMask(object):
 
             Sustains divisions 1 and 2:
 
-            >>> mask = abjadext.rmakers.sustain([1, 2])
-
-            >>> mask
-            abjadext.rmakers.sustain([1, 2])
-
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     division_masks=[
-            ...         abjadext.rmakers.silence([0], 1),
-            ...         mask,
-            ...         ],
-            ...     )
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().leaves(),
+            ...     ),
+            ...     abjadext.rmakers.SustainMask(
+            ...         selector=abjad.select().logical_ties()[1:3],
+            ...     ),
+            ... )
             >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
@@ -351,17 +323,14 @@ class SustainMask(object):
 
             Sustains divisions -1 and -2:
 
-            >>> mask = abjadext.rmakers.sustain([-1, -2])
-
-            >>> mask
-            abjadext.rmakers.sustain([-1, -2])
-
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     division_masks=[
-            ...         abjadext.rmakers.silence([0], 1),
-            ...         mask,
-            ...         ],
-            ...     )
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().leaves(),
+            ...     ),
+            ...     abjadext.rmakers.SustainMask(
+            ...         selector=abjad.select().logical_ties()[-2:],
+            ...     ),
+            ... )
             >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
