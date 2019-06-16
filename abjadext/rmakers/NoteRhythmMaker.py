@@ -70,7 +70,6 @@ class NoteRhythmMaker(RhythmMaker):
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
-        tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         RhythmMaker.__init__(
@@ -79,7 +78,6 @@ class NoteRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
-            tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
         )
         if burnish_specifier is not None:
@@ -212,12 +210,10 @@ class NoteRhythmMaker(RhythmMaker):
     def _make_music(self, divisions):
         selections = []
         duration_specifier = self._get_duration_specifier()
-        ###tie_specifier = self._get_tie_specifier()
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=duration_specifier.increase_monotonic,
             forbidden_note_duration=duration_specifier.forbidden_note_duration,
             forbidden_rest_duration=duration_specifier.forbidden_rest_duration,
-            ###repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,
         )
         for division in divisions:
@@ -237,7 +233,6 @@ class NoteRhythmMaker(RhythmMaker):
                 1 < len(selection)
                 and abjad.inspect(selection[0]).logical_tie().is_trivial
             ):
-                ###abjad.tie(selection[:], repeat=tie_specifier.repeat_ties)
                 abjad.tie(selection[:])
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
@@ -1097,55 +1092,6 @@ class NoteRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        """
-        return super().specifiers
-
-    @property
-    def tag(self):
-        r"""
-        Gets tag.
-
-        ..  container:: example
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     tag='NOTE_RHYTHM_MAKER',
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            >>> abjad.f(lilypond_file[abjad.Score])
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    c'2 %! NOTE_RHYTHM_MAKER
-                    ~
-                    c'8 %! NOTE_RHYTHM_MAKER
-                    c'4. %! NOTE_RHYTHM_MAKER
-                }
-            >>
-
-        """
-        return super().tag
-
-    @property
-    def tie_specifier(self) -> typing.Optional[TieSpecifier]:
-        r"""
-        Gets tie specifier.
-
         ..  container:: example
 
             Does not tie across divisions:
@@ -1429,7 +1375,48 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().tie_specifier
+        return super().specifiers
+
+    @property
+    def tag(self):
+        r"""
+        Gets tag.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tag='NOTE_RHYTHM_MAKER',
+            ...     )
+
+            >>> divisions = [(5, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 5/8
+                    s1 * 5/8
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'2 %! NOTE_RHYTHM_MAKER
+                    ~
+                    c'8 %! NOTE_RHYTHM_MAKER
+                    c'4. %! NOTE_RHYTHM_MAKER
+                }
+            >>
+
+        """
+        return super().tag
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:

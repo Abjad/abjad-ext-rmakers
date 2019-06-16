@@ -27,7 +27,6 @@ class RhythmMaker(object):
         "_specifiers",
         "_state",
         "_tag",
-        "_tie_specifier",
         "_tuplet_specifier",
     )
 
@@ -43,7 +42,6 @@ class RhythmMaker(object):
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
-        tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         specifiers = specifiers or ()
@@ -61,9 +59,6 @@ class RhythmMaker(object):
         if tag is not None:
             assert isinstance(tag, str), repr(tag)
         self._tag = tag
-        if tie_specifier is not None:
-            assert isinstance(tie_specifier, TieSpecifier)
-        self._tie_specifier = tie_specifier
         if tuplet_specifier is not None:
             assert isinstance(tuplet_specifier, TupletSpecifier)
         self._tuplet_specifier = tuplet_specifier
@@ -146,14 +141,12 @@ class RhythmMaker(object):
         increase_monotonic = duration_specifier.increase_monotonic
         forbidden_note_duration = duration_specifier.forbidden_note_duration
         forbidden_rest_duration = duration_specifier.forbidden_rest_duration
-        ###tie_specifier = self._get_tie_specifier()
         total_divisions = len(selections)
         division_masks = self.division_masks
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=increase_monotonic,
             forbidden_note_duration=forbidden_note_duration,
             forbidden_rest_duration=forbidden_rest_duration,
-            ###repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,
         )
         previous_divisions_consumed = self._previous_divisions_consumed()
@@ -207,10 +200,6 @@ class RhythmMaker(object):
             )
         return selections
 
-    #    def _apply_tie_specifier(self, selections):
-    #        tie_specifier = self._get_tie_specifier()
-    #        tie_specifier(selections)
-
     def _apply_tuplet_specifier(self, selections, divisions=None):
         tuplet_specifier = self._get_tuplet_specifier()
         selections = tuplet_specifier(selections, divisions)
@@ -262,11 +251,6 @@ class RhythmMaker(object):
 
     def _get_format_specification(self):
         return abjad.FormatSpecification(client=self)
-
-    #    def _get_tie_specifier(self):
-    #        if self.tie_specifier is not None:
-    #            return self.tie_specifier
-    #        return TieSpecifier()
 
     def _get_tuplet_specifier(self):
         if self.tuplet_specifier is not None:
@@ -337,10 +321,6 @@ class RhythmMaker(object):
     def _rewrite_meter(self, selections, divisions):
         duration_specifier = self._get_duration_specifier()
         if duration_specifier.rewrite_meter:
-            #            tie_specifier = self._get_tie_specifier()
-            #            selections = duration_specifier._rewrite_meter_(
-            #                selections, divisions, repeat_ties=tie_specifier.repeat_ties
-            #            )
             selections = duration_specifier._rewrite_meter_(
                 selections, divisions
             )
@@ -439,13 +419,6 @@ class RhythmMaker(object):
         Gets tag.
         """
         return self._tag
-
-    @property
-    def tie_specifier(self) -> typing.Optional[TieSpecifier]:
-        """
-        Gets tie specifier.
-        """
-        return self._tie_specifier
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:

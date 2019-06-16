@@ -117,7 +117,6 @@ class TaleaRhythmMaker(RhythmMaker):
         read_talea_once_only: bool = None,
         rest_tied_notes: bool = None,
         tag: str = None,
-        tie_specifier: TieSpecifier = None,
         tie_split_notes: bool = True,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
@@ -127,7 +126,6 @@ class TaleaRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
-            tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
         )
         if talea is not None:
@@ -3609,6 +3607,356 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 >>
 
+        ..  container:: example
+
+            Does not tie across divisions:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5, 3, 3, 3],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Ties across divisions:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         tie_across_divisions=True,
+            ...         ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5, 3, 3, 3],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Patterns ties across divisions:
+
+            >>> pattern = abjad.Pattern([0], period=2)
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         tie_across_divisions=pattern,
+            ...         ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5, 3, 3, 3],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Uses repeat ties:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         tie_across_divisions=True,
+            ...         repeat_ties=True,
+            ...         ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5, 3, 3, 3],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        c'16
+                        \repeatTie
+                        [
+                        c'8.
+                        ]
+                        c'8.
+                        \repeatTie
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        \repeatTie
+                        c'16
+                        \repeatTie
+                        [
+                        c'8.
+                        ]
+                        c'8.
+                        \repeatTie
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Ties consecutive notes:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         tie_consecutive_notes=True,
+            ...         ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5, -3, 3, 3],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        r8.
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ~
+                        ]
+                        c'4
+                        ~
+                        c'16
+                        r8.
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ]
+                    }
+                >>
 
         """
         return super().specifiers
@@ -3973,365 +4321,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         """
         return self._talea
-
-    @property
-    def tie_specifier(self) -> typing.Optional[TieSpecifier]:
-        r"""
-        Gets tie specifier.
-
-        ..  container:: example
-
-            Does not tie across divisions:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[5, 3, 3, 3],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Ties across divisions:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[5, 3, 3, 3],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Patterns ties across divisions:
-
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=pattern,
-            ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[5, 3, 3, 3],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Uses repeat ties:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         repeat_ties=True,
-            ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[5, 3, 3, 3],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        c'16
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        \repeatTie
-                        c'16
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Ties consecutive notes:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_consecutive_notes=True,
-            ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[5, -3, 3, 3],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        r8.
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'4
-                        ~
-                        c'16
-                        r8.
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        """
-        return super().tie_specifier
 
     @property
     def tie_split_notes(self) -> typing.Optional[bool]:

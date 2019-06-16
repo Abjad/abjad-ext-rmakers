@@ -42,7 +42,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         tag: str = None,
-        tie_specifier: TieSpecifier = None,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         RhythmMaker.__init__(
@@ -51,7 +50,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
-            tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
         )
         assert abjad.mathtools.all_are_nonnegative_integer_powers_of_two(

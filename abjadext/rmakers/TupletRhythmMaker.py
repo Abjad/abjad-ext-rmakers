@@ -161,7 +161,6 @@ class TupletRhythmMaker(RhythmMaker):
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
-        tie_specifier: TieSpecifier = None,
         tuplet_ratios: abjad.RatioSequenceTyping = None,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
@@ -171,7 +170,6 @@ class TupletRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
-            tie_specifier=tie_specifier,
             tuplet_specifier=tuplet_specifier,
         )
         if denominator is not None:
@@ -1294,81 +1292,6 @@ class TupletRhythmMaker(RhythmMaker):
                 >>
 
         Ignores ``beam_each_division`` when ``beam_division_together`` is true.
-        """
-        return super().specifiers
-
-    @property
-    def tag(self) -> typing.Optional[str]:
-        r"""
-        Gets tag.
-
-        ..  container:: example
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     tag='TUPLET_RHYTHM_MAKER',
-            ...     tuplet_ratios=[(3, 2)],
-            ...     )
-
-            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 1/2
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
-                \new RhythmicStaff
-                {
-                    \times 4/5 {          %! TUPLET_RHYTHM_MAKER
-                        c'4.              %! TUPLET_RHYTHM_MAKER
-                        c'4               %! TUPLET_RHYTHM_MAKER
-                    }                     %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 3/5 {          %! TUPLET_RHYTHM_MAKER
-                        c'4.              %! TUPLET_RHYTHM_MAKER
-                        c'4               %! TUPLET_RHYTHM_MAKER
-                    }                     %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
-                        c'8.              %! TUPLET_RHYTHM_MAKER
-                        [                 %! TUPLET_RHYTHM_MAKER
-                        c'8               %! TUPLET_RHYTHM_MAKER
-                        ]                 %! TUPLET_RHYTHM_MAKER
-                    }                     %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
-                        c'8.              %! TUPLET_RHYTHM_MAKER
-                        [                 %! TUPLET_RHYTHM_MAKER
-                        c'8               %! TUPLET_RHYTHM_MAKER
-                        ]                 %! TUPLET_RHYTHM_MAKER
-                    }                     %! TUPLET_RHYTHM_MAKER
-                }
-            >>
-
-        """
-        return super().tag
-
-    @property
-    def tie_specifier(self) -> typing.Optional[TieSpecifier]:
-        r"""
-        Gets tie specifier.
 
         ..  container:: example
 
@@ -1558,7 +1481,75 @@ class TupletRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().tie_specifier
+        return super().specifiers
+
+    @property
+    def tag(self) -> typing.Optional[str]:
+        r"""
+        Gets tag.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     tag='TUPLET_RHYTHM_MAKER',
+            ...     tuplet_ratios=[(3, 2)],
+            ...     )
+
+            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 1/2
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {          %! TUPLET_RHYTHM_MAKER
+                        c'4.              %! TUPLET_RHYTHM_MAKER
+                        c'4               %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 3/5 {          %! TUPLET_RHYTHM_MAKER
+                        c'4.              %! TUPLET_RHYTHM_MAKER
+                        c'4               %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                        c'8.              %! TUPLET_RHYTHM_MAKER
+                        [                 %! TUPLET_RHYTHM_MAKER
+                        c'8               %! TUPLET_RHYTHM_MAKER
+                        ]                 %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                        c'8.              %! TUPLET_RHYTHM_MAKER
+                        [                 %! TUPLET_RHYTHM_MAKER
+                        c'8               %! TUPLET_RHYTHM_MAKER
+                        ]                 %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                }
+            >>
+
+        """
+        return super().tag
 
     @property
     def tuplet_ratios(self) -> typing.Optional[typing.List[abjad.Ratio]]:
