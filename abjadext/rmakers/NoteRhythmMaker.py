@@ -212,12 +212,12 @@ class NoteRhythmMaker(RhythmMaker):
     def _make_music(self, divisions):
         selections = []
         duration_specifier = self._get_duration_specifier()
-        tie_specifier = self._get_tie_specifier()
+        ###tie_specifier = self._get_tie_specifier()
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=duration_specifier.increase_monotonic,
             forbidden_note_duration=duration_specifier.forbidden_note_duration,
             forbidden_rest_duration=duration_specifier.forbidden_rest_duration,
-            repeat_ties=tie_specifier.repeat_ties,
+            ###repeat_ties=tie_specifier.repeat_ties,
             tag=self.tag,
         )
         for division in divisions:
@@ -237,7 +237,8 @@ class NoteRhythmMaker(RhythmMaker):
                 1 < len(selection)
                 and abjad.inspect(selection[0]).logical_tie().is_trivial
             ):
-                abjad.tie(selection[:], repeat=tie_specifier.repeat_ties)
+                ###abjad.tie(selection[:], repeat=tie_specifier.repeat_ties)
+                abjad.tie(selection[:])
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
         return selections

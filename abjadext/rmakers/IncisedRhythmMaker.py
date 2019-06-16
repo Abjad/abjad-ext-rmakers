@@ -359,7 +359,7 @@ class IncisedRhythmMaker(RhythmMaker):
     def _numeric_map_to_leaf_selections(self, numeric_map, lcd):
         selections = []
         specifier = self._get_duration_specifier()
-        tie_specifier = self._get_tie_specifier()
+        ###tie_specifier = self._get_tie_specifier()
         class_ = TaleaRhythmMaker
         for numeric_map_part in numeric_map:
             numeric_map_part = [
@@ -372,7 +372,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 forbidden_rest_duration=specifier.forbidden_rest_duration,
                 increase_monotonic=specifier.increase_monotonic,
                 spell_metrically=specifier.spell_metrically,
-                repeat_ties=tie_specifier.repeat_ties,
+                ###repeat_ties=tie_specifier.repeat_ties,
                 tag=self.tag,
             )
             if self.replace_rests_with_skips:
