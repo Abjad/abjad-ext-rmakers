@@ -21,7 +21,6 @@ class RhythmMaker(object):
     __documentation_section__ = "Rhythm-makers"
 
     __slots__ = (
-        "_beam_specifier",
         "_division_masks",
         "_duration_specifier",
         "_previous_state",
@@ -41,7 +40,6 @@ class RhythmMaker(object):
     def __init__(
         self,
         *specifiers: typings.SpecifierTyping,
-        beam_specifier: BeamSpecifier = None,
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
@@ -51,9 +49,6 @@ class RhythmMaker(object):
         specifiers = specifiers or ()
         specifiers_ = list(specifiers)
         self._specifiers = specifiers_
-        if beam_specifier is not None:
-            assert isinstance(beam_specifier, BeamSpecifier)
-        self._beam_specifier = beam_specifier
         if duration_specifier is not None:
             assert isinstance(duration_specifier, DurationSpecifier)
         self._duration_specifier = duration_specifier
@@ -143,10 +138,6 @@ class RhythmMaker(object):
         else:
             return False
 
-    def _apply_beam_specifier(self, selections):
-        if self.beam_specifier is not None:
-            self.beam_specifier(selections, divisions=None, tag=self.tag)
-
     def _apply_division_masks(self, selections):
         if not self.division_masks:
             return selections
@@ -200,7 +191,7 @@ class RhythmMaker(object):
 
     def _apply_specifiers(self, selections):
         self._apply_tie_specifier(selections)
-        self._apply_beam_specifier(selections)
+        ###self._apply_beam_specifier(selections)
         self._validate_selections(selections)
         self._validate_tuplets(selections)
         return selections
@@ -263,11 +254,6 @@ class RhythmMaker(object):
             value = getattr(self, key)
             state_[key] = value
         return state_
-
-    def _get_beam_specifier(self):
-        if self.beam_specifier is not None:
-            return self.beam_specifier
-        return BeamSpecifier()
 
     def _get_duration_specifier(self):
         if self.duration_specifier is not None:
@@ -408,13 +394,6 @@ class RhythmMaker(object):
             assert len(tuplet), repr(tuplet)
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def beam_specifier(self) -> typing.Optional[BeamSpecifier]:
-        """
-        Gets beam specifier.
-        """
-        return self._beam_specifier
 
     @property
     def division_masks(self) -> typing.Optional[typings.MasksTyping]:
