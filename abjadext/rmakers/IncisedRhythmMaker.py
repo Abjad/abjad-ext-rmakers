@@ -366,7 +366,6 @@ class IncisedRhythmMaker(RhythmMaker):
                 forbidden_note_duration=specifier.forbidden_note_duration,
                 forbidden_rest_duration=specifier.forbidden_rest_duration,
                 increase_monotonic=specifier.increase_monotonic,
-                spell_metrically=specifier.spell_metrically,
                 tag=self.tag,
             )
             if self.replace_rests_with_skips:
@@ -670,127 +669,6 @@ class IncisedRhythmMaker(RhythmMaker):
                         c'4
                         ~
                         c'8
-                        r8
-                    }
-                >>
-
-        ..  container:: example
-
-            Spells all divisions metrically when ``spell_metrically`` is true:
-
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically=True,
-            ...         ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         outer_divisions_only=True,
-            ...         suffix_talea=[-1],
-            ...         suffix_counts=[1],
-            ...         talea_denominator=8,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 8/8
-                        s1 * 1
-                        \time 4/8
-                        s1 * 1/2
-                        \time 6/8
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        r8
-                        c'4.
-                        ~
-                        c'4
-                        ~
-                        c'4
-                        c'2
-                        c'4.
-                        ~
-                        c'4
-                        r8
-                    }
-                >>
-
-        ..  container:: example
-
-            Spells only unassignable durations metrically when
-            ``spell_metrically`` is ``'unassignable'``:
-
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically='unassignable',
-            ...         ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         outer_divisions_only=True,
-            ...         suffix_talea=[-1],
-            ...         suffix_counts=[1],
-            ...         talea_denominator=8,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 8/8
-                        s1 * 1
-                        \time 4/8
-                        s1 * 1/2
-                        \time 6/8
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        r8
-                        c'2..
-                        c'2
-                        c'4.
-                        ~
-                        c'4
                         r8
                     }
                 >>
@@ -1594,69 +1472,6 @@ class IncisedRhythmMaker(RhythmMaker):
                         c'2
                         c'2
                         c'8
-                        r8
-                    }
-                >>
-
-        ..  container:: example
-
-            Spells durations metrically and then strips all ties:
-
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         detach_ties=True,
-            ...         selector=abjad.select().notes(),
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically=True,
-            ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         outer_divisions_only=True,
-            ...         suffix_talea=[-1],
-            ...         suffix_counts=[1],
-            ...         talea_denominator=8,
-            ...     ),
-            ... )
-
-            >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 8/8
-                        s1 * 1
-                        \time 4/8
-                        s1 * 1/2
-                        \time 6/8
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        r8
-                        c'4.
-                        c'4
-                        c'4
-                        c'2
-                        c'4.
-                        c'4
                         r8
                     }
                 >>

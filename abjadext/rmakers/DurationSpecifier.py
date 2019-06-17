@@ -20,7 +20,6 @@ class DurationSpecifier(object):
         "_increase_monotonic",
         "_rewrite_meter",
         "_rewrite_rest_filled",
-        "_spell_metrically",
     )
 
     _publish_storage_format = True
@@ -36,7 +35,6 @@ class DurationSpecifier(object):
         increase_monotonic: bool = None,
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
-        spell_metrically: typing.Union[bool, str] = None,
     ) -> None:
         if forbid_meter_rewriting is not None:
             forbid_meter_rewriting = bool(forbid_meter_rewriting)
@@ -60,12 +58,6 @@ class DurationSpecifier(object):
         if rewrite_rest_filled is not None:
             rewrite_rest_filled = bool(rewrite_rest_filled)
         self._rewrite_rest_filled = rewrite_rest_filled
-        assert (
-            spell_metrically is None
-            or isinstance(spell_metrically, bool)
-            or spell_metrically == "unassignable"
-        )
-        self._spell_metrically = spell_metrically
 
     ### SPECIAL METHODS ###
 
@@ -550,20 +542,3 @@ class DurationSpecifier(object):
 
         """
         return self._rewrite_rest_filled
-
-    @property
-    def spell_metrically(self) -> typing.Union[bool, str, None]:
-        """
-        Is true when durations spell according to approximate common practice
-        understandings of meter.
-
-        ..  container:: example
-
-            >>> specifier = abjadext.rmakers.DurationSpecifier()
-            >>> specifier.spell_metrically is None
-            True
-
-        Spells unassignable durations like ``5/16`` and ``9/4`` metrically when
-        set to ``'unassignable'``. Leaves other durations unchanged.
-        """
-        return self._spell_metrically

@@ -92,8 +92,9 @@ class RhythmMaker(object):
             logical_ties_produced -= 1
         selections = self._rewrite_meter(selections, divisions)
         self._cache_state(selections, divisions, logical_ties_produced)
-        selections = self._apply_specifier_stack(selections, divisions)
-        selections = self._apply_specifiers(selections)
+        selections = self._apply_specifiers(selections, divisions)
+        self._validate_selections(selections)
+        self._validate_tuplets(selections)
         # self._check_wellformedness(selections)
         return selections
 
@@ -187,19 +188,8 @@ class RhythmMaker(object):
             new_selections.append(new_selection)
         return new_selections
 
-    def _apply_specifiers(self, selections):
-        ###self._apply_tie_specifier(selections)
-        ###self._apply_beam_specifier(selections)
-        self._validate_selections(selections)
-        self._validate_tuplets(selections)
-        return selections
-
-    def _apply_specifier_stack(self, selections, divisions):
-        if self.specifiers == []:
-            return selections
-        if not self.specifiers:
-            return selections
-        for specifier in self.specifiers:
+    def _apply_specifiers(self, selections, divisions):
+        for specifier in self.specifiers or []:
             selections = specifier(
                 selections, divisions=divisions, tag=self.tag
             )

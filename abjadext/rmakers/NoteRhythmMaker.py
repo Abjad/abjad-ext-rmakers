@@ -215,17 +215,7 @@ class NoteRhythmMaker(RhythmMaker):
             tag=self.tag,
         )
         for division in divisions:
-            if duration_specifier.spell_metrically is True or (
-                duration_specifier.spell_metrically == "unassignable"
-                and not abjad.mathtools.is_assignable_integer(
-                    division.numerator
-                )
-            ):
-                meter = abjad.Meter(division)
-                rhythm_tree_container = meter.root_node
-                durations = [_.duration for _ in rhythm_tree_container]
-            else:
-                durations = [division]
+            durations = [division]
             selection = leaf_maker(pitches=0, durations=durations)
             if (
                 1 < len(selection)
@@ -524,117 +514,6 @@ class NoteRhythmMaker(RhythmMaker):
                         c'4.
                     }
                 >>
-
-        ..  container:: example
-
-            Spells all divisions metrically when ``spell_metrically`` is true:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically=True,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 4), (6, 16), (9, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 9/16
-                        s1 * 9/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'4
-                        ~
-                        c'4
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Spells only unassignable durations metrically when
-            ``spell_metrically`` is ``'unassignable'``:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically='unassignable',
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 4), (6, 16), (9, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 9/16
-                        s1 * 9/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'2.
-                        c'4.
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        c'8.
-                        ]
-                    }
-                >>
-
-            ``9/16`` is spelled metrically because it is unassignable.
-            The other durations are spelled with the fewest number of symbols
-            possible.
 
         ..  container:: example
 
@@ -1315,60 +1194,6 @@ class NoteRhythmMaker(RhythmMaker):
                         c'4
                         c'4
                         c'16
-                    }
-                >>
-
-        ..  container:: example
-
-            Spells durations metrically and then strips all ties:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         detach_ties=True,
-            ...         selector=abjad.select().notes(),
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically=True,
-            ...     ),
-            ... )
-
-            >>> divisions = [(7, 16), (1, 4), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 7/16
-                        s1 * 7/16
-                        \time 1/4
-                        s1 * 1/4
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'8.
-                        [
-                        c'8
-                        c'8
-                        ]
-                        c'4
-                        c'8.
-                        [
-                        c'8
-                        ]
                     }
                 >>
 

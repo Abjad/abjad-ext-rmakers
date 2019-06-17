@@ -401,7 +401,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 increase_monotonic=specifier.increase_monotonic,
                 forbidden_note_duration=specifier.forbidden_note_duration,
                 forbidden_rest_duration=specifier.forbidden_rest_duration,
-                spell_metrically=specifier.spell_metrically,
                 tag=self.tag,
             )
             leaf_lists.append(leaf_list)
@@ -414,7 +413,6 @@ class TaleaRhythmMaker(RhythmMaker):
         increase_monotonic=None,
         forbidden_note_duration=None,
         forbidden_rest_duration=None,
-        spell_metrically=None,
         repeat_ties=False,
         tag: str = None,
     ):
@@ -434,17 +432,7 @@ class TaleaRhythmMaker(RhythmMaker):
             else:
                 pitches = [None]
             division = abjad.Duration(abs(note_value), talea_denominator)
-            if spell_metrically is True or (
-                spell_metrically == "unassignable"
-                and not abjad.mathtools.is_assignable_integer(
-                    division.numerator
-                )
-            ):
-                meter = abjad.Meter(division)
-                rhythm_tree_container = meter.root_node
-                durations = [_.duration for _ in rhythm_tree_container]
-            else:
-                durations = [division]
+            durations = [division]
             leaves = leaf_maker(pitches, durations)
             if (
                 1 < len(leaves)
@@ -1541,158 +1529,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
             Rewrites forbidden durations with smaller durations tied together.
-
-        ..  container:: example
-
-            Spells all durations metrically:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically=True,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[5, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 4), (3, 4), (3, 4)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        ]
-                        c'4
-                        c'16
-                        ~
-                        [
-                        c'16
-                        ~
-                        c'16
-                        ~
-                        ]
-                        c'8
-                        c'4
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                        c'16
-                        ~
-                        [
-                        c'16
-                        ~
-                        c'16
-                        c'8.
-                        ~
-                        c'8
-                        ]
-                        c'4
-                    }
-                >>
-
-        ..  container:: example
-
-            Spells unassignable durations metrically:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
-            ...         spell_metrically='unassignable',
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[5, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 4), (3, 4), (3, 4)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        ]
-                        c'4
-                        c'8.
-                        ~
-                        c'8
-                        c'4
-                        c'8.
-                        ~
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ~
-                        c'8
-                        ]
-                        c'4
-                    }
-                >>
 
         ..  container:: example
 
