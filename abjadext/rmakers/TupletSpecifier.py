@@ -155,25 +155,31 @@ class TupletSpecifier(object):
                 if not isinstance(division, abjad.NonreducedFraction):
                     raise Exception(f"must be division (not {division!r}).")
         assert len(selections) == len(divisions)
-        assert len(tuplets) == len(divisions)
         denominator = self.denominator
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
-        for tuplet, division in zip(tuplets, divisions):
-            if denominator == "divisions":
+        if denominator == "divisions":
+            assert len(tuplets) == len(divisions)
+            for tuplet, division in zip(tuplets, divisions):
                 tuplet.denominator = division.numerator
-            elif isinstance(denominator, abjad.Duration):
-                unit_duration = denominator
-                assert unit_duration.numerator == 1
-                duration = abjad.inspect(tuplet).duration()
-                denominator_ = unit_duration.denominator
-                nonreduced_fraction = duration.with_denominator(denominator_)
-                tuplet.denominator = nonreduced_fraction.numerator
-            elif abjad.mathtools.is_positive_integer(denominator):
-                tuplet.denominator = denominator
-            else:
-                message = f"invalid preferred denominator: {denominator!r}."
-                raise Exception(message)
+        else:
+            for tuplet in tuplets:
+                if isinstance(denominator, abjad.Duration):
+                    unit_duration = denominator
+                    assert unit_duration.numerator == 1
+                    duration = abjad.inspect(tuplet).duration()
+                    denominator_ = unit_duration.denominator
+                    nonreduced_fraction = duration.with_denominator(
+                        denominator_
+                    )
+                    tuplet.denominator = nonreduced_fraction.numerator
+                elif abjad.mathtools.is_positive_integer(denominator):
+                    tuplet.denominator = denominator
+                else:
+                    message = (
+                        f"invalid preferred denominator: {denominator!r}."
+                    )
+                    raise Exception(message)
 
     def _extract_trivial_(self, selections):
         if not self.extract_trivial:

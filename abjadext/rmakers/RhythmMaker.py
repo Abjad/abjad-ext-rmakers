@@ -36,7 +36,6 @@ class RhythmMaker(object):
         "_specifiers",
         "_state",
         "_tag",
-        "_tuplet_specifier",
     )
 
     _positional_arguments_name = "specifiers"
@@ -51,7 +50,6 @@ class RhythmMaker(object):
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
-        tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         specifiers = specifiers or ()
         for specifier in specifiers:
@@ -70,9 +68,6 @@ class RhythmMaker(object):
         if tag is not None:
             assert isinstance(tag, str), repr(tag)
         self._tag = tag
-        if tuplet_specifier is not None:
-            assert isinstance(tuplet_specifier, TupletSpecifier)
-        self._tuplet_specifier = tuplet_specifier
 
     ### SPECIAL METHODS ###
 
@@ -87,7 +82,6 @@ class RhythmMaker(object):
         self._previous_state = abjad.OrderedDict(previous_state)
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
-        selections = self._apply_tuplet_specifier(selections, divisions)
         selections = self._apply_division_masks(selections)
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         temporary_container = abjad.Container(selections)
@@ -211,11 +205,6 @@ class RhythmMaker(object):
             )
         return selections
 
-    def _apply_tuplet_specifier(self, selections, divisions=None):
-        tuplet_specifier = self._get_tuplet_specifier()
-        selections = tuplet_specifier(selections, divisions)
-        return selections
-
     def _cache_state(self, selections, divisions, logical_ties_produced):
         string = "divisions_consumed"
         self.state[string] = self.previous_state.get(string, 0)
@@ -265,11 +254,6 @@ class RhythmMaker(object):
         return abjad.FormatSpecification(
             self, storage_format_args_values=specifiers
         )
-
-    def _get_tuplet_specifier(self):
-        if self.tuplet_specifier is not None:
-            return self.tuplet_specifier
-        return TupletSpecifier()
 
     @staticmethod
     def _is_sign_tuple(argument):
@@ -433,10 +417,3 @@ class RhythmMaker(object):
         Gets tag.
         """
         return self._tag
-
-    @property
-    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
-        """
-        Gets tuplet specifier.
-        """
-        return self._tuplet_specifier

@@ -162,7 +162,6 @@ class TupletRhythmMaker(RhythmMaker):
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
         tuplet_ratios: abjad.RatioSequenceTyping = None,
-        tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
@@ -170,7 +169,6 @@ class TupletRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
-            tuplet_specifier=tuplet_specifier,
         )
         if denominator is not None:
             if isinstance(denominator, tuple):
@@ -1480,218 +1478,6 @@ class TupletRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        """
-        return super().specifiers
-
-    @property
-    def tag(self) -> typing.Optional[str]:
-        r"""
-        Gets tag.
-
-        ..  container:: example
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     tag='TUPLET_RHYTHM_MAKER',
-            ...     tuplet_ratios=[(3, 2)],
-            ...     )
-
-            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 1/2
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
-                \new RhythmicStaff
-                {
-                    \times 4/5 {          %! TUPLET_RHYTHM_MAKER
-                        c'4.              %! TUPLET_RHYTHM_MAKER
-                        c'4               %! TUPLET_RHYTHM_MAKER
-                    }                     %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 3/5 {          %! TUPLET_RHYTHM_MAKER
-                        c'4.              %! TUPLET_RHYTHM_MAKER
-                        c'4               %! TUPLET_RHYTHM_MAKER
-                    }                     %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
-                        c'8.              %! TUPLET_RHYTHM_MAKER
-                        [                 %! TUPLET_RHYTHM_MAKER
-                        c'8               %! TUPLET_RHYTHM_MAKER
-                        ]                 %! TUPLET_RHYTHM_MAKER
-                    }                     %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
-                        c'8.              %! TUPLET_RHYTHM_MAKER
-                        [                 %! TUPLET_RHYTHM_MAKER
-                        c'8               %! TUPLET_RHYTHM_MAKER
-                        ]                 %! TUPLET_RHYTHM_MAKER
-                    }                     %! TUPLET_RHYTHM_MAKER
-                }
-            >>
-
-        """
-        return super().tag
-
-    @property
-    def tuplet_ratios(self) -> typing.Optional[typing.List[abjad.Ratio]]:
-        r"""
-        Gets tuplet ratios.
-
-        ..  container:: example
-
-            Makes tuplets with ``3:2`` ratios:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     tuplet_ratios=[(3, 2)],
-            ...     )
-
-            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 1/2
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'4.
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     tuplet_ratios=[(1, -1), (3, 1)],
-            ...     )
-
-            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 1/2
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            r4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'4.
-                            c'8
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6 {
-                            c'8.
-                            r8.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/4 {
-                            c'8.
-                            [
-                            c'16
-                            ]
-                        }
-                    }
-                >>
-
-        """
-        if self._tuplet_ratios:
-            return list(self._tuplet_ratios)
-        else:
-            return None
-
-    @property
-    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
-        r"""
-        Gets tuplet specifier.
-
         ..  container:: example
 
             Makes diminished tuplets:
@@ -2472,4 +2258,208 @@ class TupletRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().tuplet_specifier
+        return super().specifiers
+
+    @property
+    def tag(self) -> typing.Optional[str]:
+        r"""
+        Gets tag.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     tag='TUPLET_RHYTHM_MAKER',
+            ...     tuplet_ratios=[(3, 2)],
+            ...     )
+
+            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 1/2
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {          %! TUPLET_RHYTHM_MAKER
+                        c'4.              %! TUPLET_RHYTHM_MAKER
+                        c'4               %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 3/5 {          %! TUPLET_RHYTHM_MAKER
+                        c'4.              %! TUPLET_RHYTHM_MAKER
+                        c'4               %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                        c'8.              %! TUPLET_RHYTHM_MAKER
+                        [                 %! TUPLET_RHYTHM_MAKER
+                        c'8               %! TUPLET_RHYTHM_MAKER
+                        ]                 %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
+                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                        c'8.              %! TUPLET_RHYTHM_MAKER
+                        [                 %! TUPLET_RHYTHM_MAKER
+                        c'8               %! TUPLET_RHYTHM_MAKER
+                        ]                 %! TUPLET_RHYTHM_MAKER
+                    }                     %! TUPLET_RHYTHM_MAKER
+                }
+            >>
+
+        """
+        return super().tag
+
+    @property
+    def tuplet_ratios(self) -> typing.Optional[typing.List[abjad.Ratio]]:
+        r"""
+        Gets tuplet ratios.
+
+        ..  container:: example
+
+            Makes tuplets with ``3:2`` ratios:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     tuplet_ratios=[(3, 2)],
+            ...     )
+
+            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/2
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 5/16
+                        s1 * 5/16
+                        \time 5/16
+                        s1 * 5/16
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...         ),
+            ...     tuplet_ratios=[(1, -1), (3, 1)],
+            ...     )
+
+            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/2
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 5/16
+                        s1 * 5/16
+                        \time 5/16
+                        s1 * 5/16
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'4.
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            c'8.
+                            r8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4 {
+                            c'8.
+                            [
+                            c'16
+                            ]
+                        }
+                    }
+                >>
+
+        """
+        if self._tuplet_ratios:
+            return list(self._tuplet_ratios)
+        else:
+            return None

@@ -96,7 +96,6 @@ class IncisedRhythmMaker(RhythmMaker):
         incise_specifier: InciseSpecifier = None,
         replace_rests_with_skips: bool = None,
         tag: str = None,
-        tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
@@ -104,7 +103,6 @@ class IncisedRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
-            tuplet_specifier=tuplet_specifier,
         )
         prototype = (InciseSpecifier, type(None))
         assert isinstance(incise_specifier, prototype)
@@ -1663,6 +1661,71 @@ class IncisedRhythmMaker(RhythmMaker):
                     }
                 >>
 
+        ..  container:: example
+
+            Makes augmentations:
+
+            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         diminution=False,
+            ...         ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     extra_counts_per_division=[1],
+            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...         prefix_talea=[-1],
+            ...         prefix_counts=[1],
+            ...         outer_divisions_only=True,
+            ...         suffix_talea=[-1],
+            ...         suffix_counts=[1],
+            ...         talea_denominator=8,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(8, 8), (4, 8), (6, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 8/8
+                        s1 * 1
+                        \time 4/8
+                        s1 * 1/2
+                        \time 6/8
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 16/9 {
+                            r16
+                            c'2
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/5 {
+                            c'4
+                            ~
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/7 {
+                            c'4.
+                            r16
+                        }
+                    }
+                >>
+
         """
         return super().specifiers
 
@@ -1737,76 +1800,3 @@ class IncisedRhythmMaker(RhythmMaker):
 
         """
         return super().tag
-
-    @property
-    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
-        r"""
-        Gets tuplet specifier.
-
-        ..  container:: example
-
-            Makes augmentations:
-
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         diminution=False,
-            ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     extra_counts_per_division=[1],
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         outer_divisions_only=True,
-            ...         suffix_talea=[-1],
-            ...         suffix_counts=[1],
-            ...         talea_denominator=8,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 8/8
-                        s1 * 1
-                        \time 4/8
-                        s1 * 1/2
-                        \time 6/8
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 16/9 {
-                            r16
-                            c'2
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/5 {
-                            c'4
-                            ~
-                            c'16
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/7 {
-                            c'4.
-                            r16
-                        }
-                    }
-                >>
-
-        """
-        return super().tuplet_specifier

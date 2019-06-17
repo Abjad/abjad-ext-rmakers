@@ -70,7 +70,6 @@ class NoteRhythmMaker(RhythmMaker):
         division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
-        tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
@@ -78,7 +77,6 @@ class NoteRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             division_masks=division_masks,
             tag=tag,
-            tuplet_specifier=tuplet_specifier,
         )
         if burnish_specifier is not None:
             assert isinstance(burnish_specifier, BurnishSpecifier)
@@ -1374,55 +1372,6 @@ class NoteRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        """
-        return super().specifiers
-
-    @property
-    def tag(self):
-        r"""
-        Gets tag.
-
-        ..  container:: example
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     tag='NOTE_RHYTHM_MAKER',
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            >>> abjad.f(lilypond_file[abjad.Score])
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    c'2 %! NOTE_RHYTHM_MAKER
-                    ~
-                    c'8 %! NOTE_RHYTHM_MAKER
-                    c'4. %! NOTE_RHYTHM_MAKER
-                }
-            >>
-
-        """
-        return super().tag
-
-    @property
-    def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:
-        r"""
-        Gets tuplet specifier.
-
         ..  container:: example
 
             Spells tuplets as diminutions:
@@ -1516,4 +1465,45 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().tuplet_specifier
+        return super().specifiers
+
+    @property
+    def tag(self):
+        r"""
+        Gets tag.
+
+        ..  container:: example
+
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     tag='NOTE_RHYTHM_MAKER',
+            ...     )
+
+            >>> divisions = [(5, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 5/8
+                    s1 * 5/8
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'2 %! NOTE_RHYTHM_MAKER
+                    ~
+                    c'8 %! NOTE_RHYTHM_MAKER
+                    c'4. %! NOTE_RHYTHM_MAKER
+                }
+            >>
+
+        """
+        return super().tag
