@@ -100,7 +100,6 @@ class TaleaRhythmMaker(RhythmMaker):
         "_read_talea_once_only",
         "_rest_tied_notes",
         "_talea",
-        "_tie_split_notes",
     )
 
     ### INITIALIZER ###
@@ -117,7 +116,6 @@ class TaleaRhythmMaker(RhythmMaker):
         rest_tied_notes: bool = None,
         tag: str = None,
         talea: Talea = None,
-        tie_split_notes: bool = True,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         RhythmMaker.__init__(
@@ -148,9 +146,6 @@ class TaleaRhythmMaker(RhythmMaker):
         if rest_tied_notes is not None:
             rest_tied_notes = bool(rest_tied_notes)
         self._rest_tied_notes = rest_tied_notes
-        if tie_split_notes is not None:
-            tie_split_notes = bool(tie_split_notes)
-        self._tie_split_notes = tie_split_notes
 
     ### SPECIAL METHODS ###
 
@@ -231,6 +226,36 @@ class TaleaRhythmMaker(RhythmMaker):
                     ),
                 )
 
+        ..  container:: example
+
+            REGRESSION. Specifiers appear in storage format:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         tie_consecutive_notes=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5, -3, 3, 3],
+            ...         denominator=16,
+            ...     ),
+            ... )
+            >>> abjad.f(rhythm_maker)
+            abjadext.rmakers.TaleaRhythmMaker(
+                TupletSpecifier(extract_trivial=True),
+                TieSpecifier(tie_consecutive_notes=True),
+                BeamSpecifier(beam_each_division=True),
+                talea=abjadext.rmakers.Talea(
+                    counts=[5, -3, 3, 3],
+                    denominator=16,
+                    ),
+                )
+
         """
         return super().__format__(format_specification=format_specification)
 
@@ -260,8 +285,6 @@ class TaleaRhythmMaker(RhythmMaker):
     def _apply_ties_to_split_notes(
         self, result, unscaled_end_counts, unscaled_preamble, unscaled_talea
     ):
-        if not self.tie_split_notes:
-            return
         leaves = abjad.select(result).leaves()
         written_durations = [leaf.written_duration for leaf in leaves]
         written_durations = abjad.sequence(written_durations)
@@ -336,15 +359,6 @@ class TaleaRhythmMaker(RhythmMaker):
         if self.burnish_specifier is not None:
             return self.burnish_specifier
         return BurnishSpecifier()
-
-    def _get_format_specification(self):
-        agent = abjad.StorageFormatManager(self)
-        names = list(agent.signature_keyword_names)
-        if self.tie_split_notes:
-            names.remove("tie_split_notes")
-        return abjad.FormatSpecification(
-            self, storage_format_kwargs_names=names
-        )
 
     def _get_talea(self):
         if self.talea is not None:
@@ -3958,6 +3972,64 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 >>
 
+        ..  container:: example
+
+            REGRESSION. Specifiers survive new:
+
+            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     talea=abjadext.rmakers.Talea(
+            ...         counts=[5, -3, 3, 3],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+            >>> new_rhythm_maker = abjad.new(rhythm_maker)
+            >>> abjad.f(new_rhythm_maker)
+            abjadext.rmakers.TaleaRhythmMaker(
+                TupletSpecifier(extract_trivial=True),
+                talea=abjadext.rmakers.Talea(
+                    counts=[5, -3, 3, 3],
+                    denominator=16,
+                    ),
+                )
+
+            >>> rhythm_maker == new_rhythm_maker
+            True
+
+            REGRESSION. None eliminates specifiers when passed to new:
+
+            >>> new_rhythm_maker = abjad.new(rhythm_maker, None)
+            >>> abjad.f(new_rhythm_maker)
+            abjadext.rmakers.TaleaRhythmMaker(
+                talea=abjadext.rmakers.Talea(
+                    counts=[5, -3, 3, 3],
+                    denominator=16,
+                    ),
+                )
+
+            >>> new_rhythm_maker.specifiers
+            []
+
+            REGRESSION. New allows additional specifiers:
+
+            >>> specifiers = rhythm_maker.specifiers[:]
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
+            ...     beam_each_division=True
+            ... )
+            >>> specifiers.append(specifier)
+            >>> new_rhythm_maker = abjad.new(rhythm_maker, *specifiers)
+            >>> abjad.f(new_rhythm_maker)
+            abjadext.rmakers.TaleaRhythmMaker(
+                TupletSpecifier(extract_trivial=True),
+                BeamSpecifier(beam_each_division=True),
+                talea=abjadext.rmakers.Talea(
+                    counts=[5, -3, 3, 3],
+                    denominator=16,
+                    ),
+                )
+
         """
         return super().specifiers
 
@@ -4321,16 +4393,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         """
         return self._talea
-
-    @property
-    def tie_split_notes(self) -> typing.Optional[bool]:
-        r"""
-        Is true when talea rhythm-maker ties split notes.
-
-        ..  todo:: Add examples.
-
-        """
-        return self._tie_split_notes
 
     @property
     def tuplet_specifier(self) -> typing.Optional[TupletSpecifier]:

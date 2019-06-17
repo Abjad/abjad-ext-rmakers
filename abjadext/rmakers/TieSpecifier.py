@@ -204,9 +204,6 @@ class TieSpecifier(object):
             abjad.attach(repeat_tie, leaf)
         temporary_container[:] = []
 
-    def _get_format_specification(self):
-        return abjad.FormatSpecification(client=self)
-
     def _strip_ties_(self, selections):
         if not self.strip_ties:
             return

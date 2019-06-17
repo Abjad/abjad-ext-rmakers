@@ -349,16 +349,6 @@ class BurnishSpecifier(object):
         assert tuple(burnished_weights) == tuple(unburnished_weights)
         return burnished_divisions
 
-    def _get_format_specification(self):
-        agent = abjad.StorageFormatManager(self)
-        names = list(agent.signature_keyword_names)
-        for name in names[:]:
-            if not getattr(self, name):
-                names.remove(name)
-        return abjad.FormatSpecification(
-            client=self, storage_format_kwargs_names=names
-        )
-
     @staticmethod
     def _is_length_tuple(argument):
         if argument is None:

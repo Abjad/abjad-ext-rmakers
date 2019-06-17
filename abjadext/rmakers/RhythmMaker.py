@@ -10,6 +10,15 @@ from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
 from abjad.top.new import new
 
+SpecifierClasses = (
+    BeamSpecifier,
+    DurationSpecifier,
+    SilenceMask,
+    SustainMask,
+    TieSpecifier,
+    TupletSpecifier,
+)
+
 
 class RhythmMaker(object):
     """
@@ -30,7 +39,7 @@ class RhythmMaker(object):
         "_tuplet_specifier",
     )
 
-    _private_attributes_to_copy = ("_specifiers",)
+    _positional_arguments_name = "specifiers"
 
     _publish_storage_format = True
 
@@ -45,7 +54,9 @@ class RhythmMaker(object):
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:
         specifiers = specifiers or ()
-        specifiers_ = list(specifiers)
+        for specifier in specifiers:
+            assert isinstance(specifier, SpecifierClasses), repr(specifier)
+        specifiers_ = tuple(specifiers)
         self._specifiers = specifiers_
         if duration_specifier is not None:
             assert isinstance(duration_specifier, DurationSpecifier)
@@ -250,7 +261,10 @@ class RhythmMaker(object):
         return DurationSpecifier()
 
     def _get_format_specification(self):
-        return abjad.FormatSpecification(client=self)
+        specifiers = self.specifiers or []
+        return abjad.FormatSpecification(
+            self, storage_format_args_values=specifiers
+        )
 
     def _get_tuplet_specifier(self):
         if self.tuplet_specifier is not None:
@@ -404,7 +418,7 @@ class RhythmMaker(object):
         """
         Gets specifiers.
         """
-        return self._specifiers
+        return list(self._specifiers)
 
     @property
     def state(self) -> abjad.OrderedDict:

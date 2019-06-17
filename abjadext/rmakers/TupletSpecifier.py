@@ -210,9 +210,6 @@ class TupletSpecifier(object):
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             tuplet.force_fraction = True
 
-    def _get_format_specification(self):
-        return abjad.FormatSpecification(client=self)
-
     def _rewrite_dots_(self, selections):
         if not self.rewrite_dots:
             return
