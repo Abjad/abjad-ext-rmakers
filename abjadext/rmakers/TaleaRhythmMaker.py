@@ -108,7 +108,6 @@ class TaleaRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *specifiers: typings.SpecifierTyping,
-        talea: Talea = None,
         burnish_specifier: BurnishSpecifier = None,
         curtail_ties: bool = None,
         division_masks: typings.MasksTyping = None,
@@ -117,6 +116,7 @@ class TaleaRhythmMaker(RhythmMaker):
         read_talea_once_only: bool = None,
         rest_tied_notes: bool = None,
         tag: str = None,
+        talea: Talea = None,
         tie_split_notes: bool = True,
         tuplet_specifier: TupletSpecifier = None,
     ) -> None:

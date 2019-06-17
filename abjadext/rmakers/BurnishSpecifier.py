@@ -108,11 +108,11 @@ class BurnishSpecifier(object):
         self,
         *,
         left_classes: typing.Sequence[class_typing] = None,
-        middle_classes: typing.Sequence[class_typing] = None,
-        right_classes: typing.Sequence[class_typing] = None,
         left_counts: typing.Sequence[int] = None,
-        right_counts: typing.Sequence[int] = None,
+        middle_classes: typing.Sequence[class_typing] = None,
         outer_divisions_only: bool = None,
+        right_classes: typing.Sequence[class_typing] = None,
+        right_counts: typing.Sequence[int] = None,
     ) -> None:
         if outer_divisions_only is not None:
             outer_divisions_only = bool(outer_divisions_only)
