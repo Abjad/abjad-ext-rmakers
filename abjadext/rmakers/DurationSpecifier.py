@@ -18,7 +18,6 @@ class DurationSpecifier(object):
         "_forbidden_rest_duration",
         "_increase_monotonic",
         "_rewrite_meter",
-        "_rewrite_rest_filled",
     )
 
     _publish_storage_format = True
@@ -32,7 +31,6 @@ class DurationSpecifier(object):
         forbidden_rest_duration: abjad.DurationTyping = None,
         increase_monotonic: bool = None,
         rewrite_meter: bool = None,
-        rewrite_rest_filled: bool = None,
     ) -> None:
         if forbidden_note_duration is None:
             forbidden_note_duration_ = None
@@ -50,9 +48,6 @@ class DurationSpecifier(object):
         if rewrite_meter is not None:
             rewrite_meter = bool(rewrite_meter)
         self._rewrite_meter = rewrite_meter
-        if rewrite_rest_filled is not None:
-            rewrite_rest_filled = bool(rewrite_rest_filled)
-        self._rewrite_rest_filled = rewrite_rest_filled
 
     ### SPECIAL METHODS ###
 
@@ -156,7 +151,7 @@ class DurationSpecifier(object):
                 abjad.beam(
                     beamable_group,
                     beam_rests=False,
-                    tag="Duration_Specifier__rewrite_meter_",
+                    tag="rmakers.DurationSpecifier._rewrite_meter_",
                 )
         selections = []
         for container in staff:
@@ -167,29 +162,6 @@ class DurationSpecifier(object):
                 abjad.detach(abjad.TimeSignature, leaf)
             selections.append(selection)
         return selections
-
-    @staticmethod
-    def _rewrite_rest_filled_(
-        selections,
-        multimeasure_rests=None,
-        tag="rmakers_DurationSpecifier__rewrite_rest_filled_",
-    ):
-        selections_ = []
-        maker = abjad.LeafMaker(tag=tag)
-        prototype = (abjad.MultimeasureRest, abjad.Rest)
-        for selection in selections:
-            if not all(isinstance(_, prototype) for _ in selection):
-                selections_.append(selection)
-            else:
-                duration = abjad.inspect(selection).duration()
-                if multimeasure_rests:
-                    rest = abjad.MultimeasureRest(1, tag=tag)
-                    rest.multiplier = duration
-                    rests = abjad.select(rest)
-                else:
-                    rests = maker([None], [duration])
-                selections_.append(rests)
-        return selections_
 
     @staticmethod
     def _split_at_measure_boundaries(selections, meters, repeat_ties=False):
@@ -509,17 +481,3 @@ class DurationSpecifier(object):
 
         """
         return self._rewrite_meter
-
-    @property
-    def rewrite_rest_filled(self) -> typing.Optional[bool]:
-        """
-        Is true when rhythm-maker rewrites rest-filled divisions.
-
-        ..  container:: example
-
-            >>> specifier = abjadext.rmakers.DurationSpecifier()
-            >>> specifier.rewrite_rest_filled is None
-            True
-
-        """
-        return self._rewrite_rest_filled
