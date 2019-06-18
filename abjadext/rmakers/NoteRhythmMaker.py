@@ -520,7 +520,7 @@ class NoteRhythmMaker(RhythmMaker):
             Rewrites meter:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...     abjadext.rmakers.DurationSpecifier(
             ...         rewrite_meter=True,
             ...         ),
             ...     )

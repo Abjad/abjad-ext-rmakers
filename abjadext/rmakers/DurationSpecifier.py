@@ -14,7 +14,6 @@ class DurationSpecifier(object):
     __documentation_section__ = "Specifiers"
 
     __slots__ = (
-        "_forbid_meter_rewriting",
         "_forbidden_note_duration",
         "_forbidden_rest_duration",
         "_increase_monotonic",
@@ -29,16 +28,12 @@ class DurationSpecifier(object):
     def __init__(
         self,
         *,
-        forbid_meter_rewriting: bool = None,
         forbidden_note_duration: abjad.DurationTyping = None,
         forbidden_rest_duration: abjad.DurationTyping = None,
         increase_monotonic: bool = None,
         rewrite_meter: bool = None,
         rewrite_rest_filled: bool = None,
     ) -> None:
-        if forbid_meter_rewriting is not None:
-            forbid_meter_rewriting = bool(forbid_meter_rewriting)
-        self._forbid_meter_rewriting = forbid_meter_rewriting
         if forbidden_note_duration is None:
             forbidden_note_duration_ = None
         else:
@@ -356,20 +351,6 @@ class DurationSpecifier(object):
 
         """
         return self._increase_monotonic
-
-    @property
-    def forbid_meter_rewriting(self) -> typing.Optional[bool]:
-        """
-        Is true when meter rewriting is forbidden.
-
-        ..  container:: example
-
-            >>> specifier = abjadext.rmakers.DurationSpecifier()
-            >>> specifier.forbid_meter_rewriting is None
-            True
-
-        """
-        return self._forbid_meter_rewriting
 
     @property
     def forbidden_note_duration(self) -> typing.Optional[abjad.Duration]:
