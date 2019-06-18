@@ -520,9 +520,7 @@ class NoteRhythmMaker(RhythmMaker):
             Rewrites meter:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.DurationSpecifier(
-            ...         rewrite_meter=True,
-            ...         ),
+            ...     abjadext.rmakers.RewriteMeterCommand(),
             ...     )
 
             >>> divisions = [(3, 4), (6, 16), (9, 16)]

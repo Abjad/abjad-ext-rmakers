@@ -11,7 +11,9 @@ from .InciseSpecifier import InciseSpecifier
 from .IncisedRhythmMaker import IncisedRhythmMaker
 from .InterpolationSpecifier import InterpolationSpecifier
 from .NoteRhythmMaker import NoteRhythmMaker
+from .RewriteMeterCommand import RewriteMeterCommand
 from .SilenceMask import SilenceMask
+from .SplitCommand import SplitCommand
 from .SustainMask import SustainMask
 from .Talea import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker

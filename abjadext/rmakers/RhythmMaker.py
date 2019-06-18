@@ -4,7 +4,9 @@ import typing
 from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
+from .RewriteMeterCommand import RewriteMeterCommand
 from .SilenceMask import SilenceMask
+from .SplitCommand import SplitCommand
 from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
@@ -13,7 +15,9 @@ from abjad.top.new import new
 SpecifierClasses = (
     BeamSpecifier,
     DurationSpecifier,
+    RewriteMeterCommand,
     SilenceMask,
+    SplitCommand,
     SustainMask,
     TieSpecifier,
     TupletSpecifier,
@@ -90,7 +94,7 @@ class RhythmMaker(object):
         logical_ties_produced += previous_logical_ties_produced
         if self._previous_incomplete_last_note():
             logical_ties_produced -= 1
-        selections = self._rewrite_meter(selections, divisions)
+        ###selections = self._rewrite_meter(selections, divisions)
         self._cache_state(selections, divisions, logical_ties_produced)
         selections = self._apply_specifiers(selections, divisions)
         self._validate_selections(selections)
@@ -305,14 +309,6 @@ class RhythmMaker(object):
     def _reverse_tuple(argument):
         if argument is not None:
             return tuple(reversed(argument))
-
-    def _rewrite_meter(self, selections, divisions):
-        duration_specifier = self._get_duration_specifier()
-        if duration_specifier.rewrite_meter:
-            selections = duration_specifier._rewrite_meter_(
-                selections, divisions
-            )
-        return selections
 
     def _scale_counts(self, divisions, talea_denominator, counts):
         talea_denominator = talea_denominator or 1

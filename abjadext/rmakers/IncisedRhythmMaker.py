@@ -681,9 +681,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.DurationSpecifier(
-            ...         rewrite_meter=True,
-            ...         ),
+            ...     abjadext.rmakers.RewriteMeterCommand(),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
