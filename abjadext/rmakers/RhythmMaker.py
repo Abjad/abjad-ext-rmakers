@@ -87,16 +87,12 @@ class RhythmMaker(object):
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
         selections = self._apply_division_masks(selections)
-        previous_logical_ties_produced = self._previous_logical_ties_produced()
+        self._cache_state(selections, divisions)
+
         temporary_container = abjad.Container(selections)
-        logical_ties_produced = len(abjad.select(selections).logical_ties())
-        temporary_container[:] = []
-        logical_ties_produced += previous_logical_ties_produced
-        if self._previous_incomplete_last_note():
-            logical_ties_produced -= 1
-        ###selections = self._rewrite_meter(selections, divisions)
-        self._cache_state(selections, divisions, logical_ties_produced)
         selections = self._apply_specifiers(selections, divisions)
+        temporary_container[:] = []
+
         self._validate_selections(selections)
         self._validate_tuplets(selections)
         # self._check_wellformedness(selections)
@@ -199,7 +195,14 @@ class RhythmMaker(object):
             )
         return selections
 
-    def _cache_state(self, selections, divisions, logical_ties_produced):
+    def _cache_state(self, selections, divisions):
+        previous_logical_ties_produced = self._previous_logical_ties_produced()
+        temporary_container = abjad.Container(selections)
+        logical_ties_produced = len(abjad.select(selections).logical_ties())
+        temporary_container[:] = []
+        logical_ties_produced += previous_logical_ties_produced
+        if self._previous_incomplete_last_note():
+            logical_ties_produced -= 1
         string = "divisions_consumed"
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += len(divisions)
@@ -211,24 +214,18 @@ class RhythmMaker(object):
     #    def _check_wellformedness(self, selections):
     #        for component in abjad.iterate(selections).components():
     #            inspector = abjad.inspect(component)
-    #            if not inspector.is_well_formed():
+    #            if not inspector.wellformed():
     #                report = inspector.tabulate_wellformedness()
-    #                report = repr(component) + '\n' + report
+    #                report = repr(component) + "\n" + report
     #                raise Exception(report)
 
     @staticmethod
-    def _coerce_divisions(divisions):
+    def _coerce_divisions(divisions) -> typing.List[abjad.NonreducedFraction]:
         divisions_ = []
         for division in divisions:
-            if isinstance(division, abjad.NonreducedFraction):
-                divisions_.append(division)
-            else:
-                division = abjad.NonreducedFraction(division)
-                divisions_.append(division)
-        divisions = divisions_
-        prototype = abjad.NonreducedFraction
-        assert all(isinstance(_, prototype) for _ in divisions)
-        return divisions
+            division = abjad.NonreducedFraction(division)
+            divisions_.append(division)
+        return divisions_
 
     def _collect_state(self, state):
         state_ = abjad.OrderedDict()

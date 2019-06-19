@@ -40,7 +40,6 @@ class RewriteMeterCommand(object):
             selections=selections,
             meters=divisions,
             reference_meters=self.reference_meters,
-            ###rewrite_tuplets=False,
             repeat_ties=self.repeat_ties,
         )
         return list(selections)
@@ -72,25 +71,21 @@ class RewriteMeterCommand(object):
 
     ### PRIVATE METHODS ###
 
-    # TODO: maybe rewrite_tuplets can be removed because always false
     def _rewrite_meter_(
-        self,
-        selections,
-        meters,
-        *,
-        reference_meters=None,
-        ###rewrite_tuplets=False,
-        repeat_ties=False,
+        self, selections, meters, *, reference_meters=None, repeat_ties=False
     ):
+        first_leaf = abjad.select(selections).leaf(0)
+        temporary_container = abjad.inspect(first_leaf).parentage().root
         meters = [abjad.Meter(_) for _ in meters]
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = reference_meters or ()
         command = SplitCommand(repeat_ties=self.repeat_ties)
         selections = command(selections, meters)
-        lengths = [len(_) for _ in selections]
-        staff = abjad.Staff(selections)
-        assert sum(durations) == abjad.inspect(staff).duration()
-        selections = staff[:].partition_by_durations(durations)
+        first_leaf = abjad.select(selections).leaf(0)
+        temporary_container = abjad.inspect(first_leaf).parentage().root
+        assert isinstance(temporary_container, abjad.Container)
+        assert sum(durations) == abjad.inspect(temporary_container).duration()
+        selections = temporary_container[:].partition_by_durations(durations)
         for meter, selection in zip(meters, selections):
             time_signature = abjad.TimeSignature(meter)
             leaf = abjad.inspect(selection).leaf(0)
@@ -107,10 +102,6 @@ class RewriteMeterCommand(object):
                 if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
             BeamSpecifier._detach_all_beams(nontupletted_leaves)
-
-            #            abjad.mutate(container[:]).rewrite_meter(
-            #                meter, rewrite_tuplets=rewrite_tuplets, repeat_ties=repeat_ties
-            #            )
             abjad.mutate(container[:]).rewrite_meter(
                 meter, rewrite_tuplets=False, repeat_ties=repeat_ties
             )
@@ -134,10 +125,10 @@ class RewriteMeterCommand(object):
                     tag="rmakers.RewriteMeterCommand.__call__",
                 )
         selections = []
-        for container in staff:
+        # making sure to copy first with [:] to avoid iterate-while-change:
+        for container in temporary_container[:]:
             selection = container[:]
-            for component in selection:
-                component._parent = None
+            abjad.mutate(container).extract()
             for leaf in abjad.iterate(selection).leaves():
                 abjad.detach(abjad.TimeSignature, leaf)
             selections.append(selection)

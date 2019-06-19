@@ -201,9 +201,10 @@ class TupletSpecifier(object):
                     selection_.append(component)
                     continue
                 tuplet = component
-                contents = abjad.mutate(tuplet).eject_contents()
+                contents = tuplet[:]
                 assert isinstance(contents, abjad.Selection)
                 selection_.extend(contents)
+                abjad.mutate(tuplet).extract()
             selection_ = abjad.select(selection_)
             selections_.append(selection_)
         return selections_

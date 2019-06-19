@@ -151,20 +151,12 @@ class SustainMask(object):
     def __call__(self, selections, divisions=None, tag=None):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
-        first_component = abjad.select(selections).components()[0]
-        parentage = abjad.inspect(first_component).parentage()
-        orphans = False
-        if parentage.parent is None:
-            orphans = True
-        if orphans:
-            # wrap every selection in a temporary container;
-            # this allows the call to abjad.mutate().replace() to work
-            containers = []
-            for selection in selections:
-                container = abjad.Container(selection)
-                abjad.attach(abjad.const.TEMPORARY_CONTAINER, container)
-                containers.append(container)
-            temporary_container = abjad.Container(containers)
+        containers = []
+        for selection in selections:
+            wrapper = abjad.Container()
+            abjad.attach(abjad.const.TEMPORARY_CONTAINER, wrapper)
+            abjad.mutate(selection).wrap(wrapper)
+            containers.append(wrapper)
         components = self.selector(selections)
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
@@ -181,15 +173,12 @@ class SustainMask(object):
             if leaf.multiplier is not None:
                 note.multiplier = leaf.multiplier
             abjad.mutate(leaf).replace([note])
-        if not orphans:
-            return selections
-        # remove every temporary container and recreate selections
-        temporary_container[:] = []
         new_selections = []
         for container in containers:
             inspector = abjad.inspect(container)
             assert inspector.indicator(abjad.const.TEMPORARY_CONTAINER)
-            new_selection = abjad.mutate(container).eject_contents()
+            new_selection = container[:]
+            abjad.mutate(container).extract()
             new_selections.append(new_selection)
         return new_selections
 

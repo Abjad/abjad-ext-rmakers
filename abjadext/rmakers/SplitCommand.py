@@ -80,13 +80,17 @@ class SplitCommand(object):
             message += f"\ndurations: {durations}."
             message += f"\nselections: {selections}."
             raise Exception(message)
-        voice = abjad.Voice(selections)
-        abjad.mutate(voice[:]).split(
+        first_leaf = abjad.select(selections).leaf(0)
+        temporary_container = abjad.inspect(first_leaf).parentage().root
+        assert isinstance(temporary_container, abjad.Container), repr(
+            temporary_container
+        )
+        abjad.mutate(temporary_container[:]).split(
             durations=durations,
             tie_split_notes=True,
             repeat_ties=self.repeat_ties,
         )
-        components = abjad.mutate(voice).eject_contents()
+        components = temporary_container[:]
         component_durations = [abjad.inspect(_).duration() for _ in components]
         parts = abjad.sequence(component_durations)
         parts = parts.partition_by_weights(

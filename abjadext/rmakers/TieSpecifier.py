@@ -191,7 +191,6 @@ class TieSpecifier(object):
     def _configure_repeat_ties(self, selections):
         if not self.repeat_ties:
             return
-        temporary_container = abjad.Container(selections)
         add_repeat_ties = []
         for leaf in abjad.iterate(selections).leaves():
             if abjad.inspect(leaf).has_indicator(abjad.TieIndicator):
@@ -202,7 +201,6 @@ class TieSpecifier(object):
         for leaf in add_repeat_ties:
             repeat_tie = abjad.RepeatTie()
             abjad.attach(repeat_tie, leaf)
-        temporary_container[:] = []
 
     def _strip_ties_(self, selections):
         if not self.strip_ties:
@@ -228,7 +226,6 @@ class TieSpecifier(object):
             )
         pairs = abjad.sequence(selections).nwise()
         rest_prototype = (abjad.Rest, abjad.MultimeasureRest)
-        temporary_container = abjad.Container(selections)
         for i, pair in enumerate(pairs):
             if not tie_across_divisions.matches_index(i, length):
                 continue
@@ -255,7 +252,6 @@ class TieSpecifier(object):
                 abjad.detach(abjad.TieIndicator, leaf)
                 abjad.detach(abjad.RepeatTie, leaf)
             abjad.tie(combined_logical_tie, repeat=self.repeat_ties)
-        temporary_container[:] = []
 
     def _tie_consecutive_notes_(self, selections):
         leaves = list(abjad.iterate(selections).leaves())
