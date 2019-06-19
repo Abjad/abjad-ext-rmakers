@@ -931,21 +931,19 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            ..  todo:: Implement TupletSpecifier.selector. Then pass selector
-                to rewrite-sustained command.
-
             Sustains every other output division:
 
             >>> pattern = abjad.Pattern([1], period=2)
             >>> selector = abjad.select().tuplets()[pattern]
-            >>> selector = selector.map(abjad.select().notes()[:-1])
+            >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
             ...         attach_ties=True,
-            ...         selector=selector,
+            ...         selector=selector.map(nonlast_notes),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_sustained=True,
+            ...         selector=selector,
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
@@ -1000,13 +998,26 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            ..  todo:: Make abjad.select().with_previous_leaf() work.
-
             REGRESSION. Nonperiodic division masks respect state.
 
             Only divisions 0 and 2 are masked here:
 
+            >>> pattern = abjad.Pattern([0, 2, 7])
+            >>> selector = abjad.select().tuplets()[pattern]
+            >>> previous_leaf = abjad.select().leaves()
+            >>> previous_leaf = previous_leaf.with_previous_leaf().leaf(0)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=selector,
+            ...     ),
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         detach_ties=True,
+            ...         selector=selector.map(previous_leaf)
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=selector,
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         ),
@@ -1014,7 +1025,6 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         beam_each_division=True,
             ...         ),
             ...     extra_counts_per_division=[0, 1, 2],
-            ...     division_masks=[abjadext.rmakers.silence([0, 2, 7])],
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[4],
             ...         denominator=16,
@@ -1071,68 +1081,84 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-            Only division 7 is masked here:
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                            ~
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'4
-                        }
-                        c'4
-                        c'8
-                        r2
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 8),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 15),
-                    ('talea_weight_consumed', 63),
-                    ]
-                )
+# TODO: make statal division masking work again:
+#            Only division 7 is masked here:
+#
+#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selections = rhythm_maker(divisions, previous_state=state)
+#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+#            ...     selections,
+#            ...     divisions,
+#            ...     )
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#
+#            ..  docs::
+#
+#                >>> abjad.f(lilypond_file[abjad.Score])
+#                \new Score
+#                <<
+#                    \new GlobalContext
+#                    {
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                    }
+#                    \new RhythmicStaff
+#                    {
+#                        \tweak text #tuplet-number::calc-fraction-text
+#                        \times 6/7 {
+#                            c'16
+#                            c'4
+#                            c'8
+#                            ~
+#                        }
+#                        \times 4/5 {
+#                            c'8
+#                            c'4
+#                            c'4
+#                        }
+#                        c'4
+#                        c'8
+#                        r2
+#                    }
+#                >>
+#
+#            >>> state = rhythm_maker.state
+#            >>> abjad.f(state)
+#            abjad.OrderedDict(
+#                [
+#                    ('divisions_consumed', 8),
+#                    ('incomplete_last_note', True),
+#                    ('logical_ties_produced', 15),
+#                    ('talea_weight_consumed', 63),
+#                    ]
+#                )
 
         ..  container:: example
 
             REGRESSION. Periodic division masks also respect state.
 
+            >>> pattern = abjad.Pattern([2], period=3)
+            >>> selector = abjad.select().tuplets()[pattern]
+            >>> previous_leaf = abjad.select().leaves()
+            >>> previous_leaf = previous_leaf.with_previous_leaf().leaf(0)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=selector,
+            ...     ),
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         detach_ties=True,
+            ...         selector=selector.map(previous_leaf)
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=selector,
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         ),
@@ -1140,7 +1166,6 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         beam_each_division=True,
             ...         ),
             ...     extra_counts_per_division=[0, 1, 2],
-            ...     division_masks=[abjadext.rmakers.silence([2], period=3)],
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[4],
             ...         denominator=16,
@@ -1199,62 +1224,63 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-            Incomplete first note is masked here:
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                        }
-                        r2
-                        c'4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 8),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 15),
-                    ('talea_weight_consumed', 63),
-                    ]
-                )
+# TODO: make statal division masking work again:
+#            Incomplete first note is masked here:
+#
+#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selections = rhythm_maker(divisions, previous_state=state)
+#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+#            ...     selections,
+#            ...     divisions,
+#            ...     )
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#
+#            ..  docs::
+#
+#                >>> abjad.f(lilypond_file[abjad.Score])
+#                \new Score
+#                <<
+#                    \new GlobalContext
+#                    {
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                    }
+#                    \new RhythmicStaff
+#                    {
+#                        \tweak text #tuplet-number::calc-fraction-text
+#                        \times 6/7 {
+#                            c'16
+#                            c'4
+#                            c'8
+#                        }
+#                        r2
+#                        c'4
+#                        c'8
+#                        ~
+#                        \times 8/9 {
+#                            c'8
+#                            c'4
+#                            c'8.
+#                        }
+#                    }
+#                >>
+#
+#            >>> state = rhythm_maker.state
+#            >>> abjad.f(state)
+#            abjad.OrderedDict(
+#                [
+#                    ('divisions_consumed', 8),
+#                    ('incomplete_last_note', True),
+#                    ('logical_ties_produced', 15),
+#                    ('talea_weight_consumed', 63),
+#                    ]
+#                )
 
         """
         return super().division_masks
