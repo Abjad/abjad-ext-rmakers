@@ -178,9 +178,15 @@ class SilenceMask(object):
                 rest = abjad.Rest(leaf.written_duration, tag=tag)
             if leaf.multiplier is not None:
                 rest.multiplier = leaf.multiplier
+            previous_leaf = abjad.inspect(leaf).leaf(-1)
+            next_leaf = abjad.inspect(leaf).leaf(1)
             abjad.mutate(leaf).replace([rest])
+            if previous_leaf is not None:
+                abjad.detach(abjad.TieIndicator, previous_leaf)
             abjad.detach(abjad.TieIndicator, rest)
             abjad.detach(abjad.RepeatTie, rest)
+            if next_leaf is not None:
+                abjad.detach(abjad.RepeatTie, next_leaf)
         new_selections = []
         for container in containers:
             inspector = abjad.inspect(container)

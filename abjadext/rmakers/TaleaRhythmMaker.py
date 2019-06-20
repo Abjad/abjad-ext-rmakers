@@ -4400,15 +4400,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> pattern = abjad.Pattern([0, 2, 7])
             >>> selector = abjad.select().tuplets()[pattern]
-            >>> previous_leaf = abjad.select().leaves()
-            >>> previous_leaf = previous_leaf.with_previous_leaf().leaf(0)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
             ...         selector=selector,
-            ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         detach_ties=True,
-            ...         selector=selector.map(previous_leaf)
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
@@ -4541,15 +4535,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> pattern = abjad.Pattern([2], period=3)
             >>> selector = abjad.select().tuplets()[pattern]
-            >>> previous_leaf = abjad.select().leaves()
-            >>> previous_leaf = previous_leaf.with_previous_leaf().leaf(0)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
             ...         selector=selector,
-            ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         detach_ties=True,
-            ...         selector=selector.map(previous_leaf)
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
