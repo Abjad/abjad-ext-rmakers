@@ -2145,69 +2145,69 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-#            TODO: restore statal logical tie masks:
-#
-#            Only logical tie 12 is masked here:
-#
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = rhythm_maker(divisions, previous_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-#            ...     selections,
-#            ...     divisions,
-#            ...     )
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
-#
-#            ..  docs::
-#
-#                >>> abjad.f(lilypond_file[abjad.Score])
-#                \new Score
-#                <<
-#                    \new GlobalContext
-#                    {
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                    }
-#                    \new RhythmicStaff
-#                    {
-#                        \tweak text #tuplet-number::calc-fraction-text
-#                        \times 6/7 {
-#                            c'16
-#                            c'4
-#                            c'8
-#                            ~
-#                        }
-#                        \times 4/5 {
-#                            c'8
-#                            c'4
-#                            c'4
-#                        }
-#                        r4
-#                        c'8
-#                        ~
-#                        \times 8/9 {
-#                            c'8
-#                            c'4
-#                            c'8.
-#                        }
-#                    }
-#                >>
-#
-#            >>> state = rhythm_maker.state
-#            >>> abjad.f(state)
-#            abjad.OrderedDict(
-#                [
-#                    ('divisions_consumed', 8),
-#                    ('incomplete_last_note', True),
-#                    ('logical_ties_produced', 16),
-#                    ('talea_weight_consumed', 63),
-#                    ]
-#                )
+            TODO: restore statal logical tie masks:
+
+            Only logical tie 12 is masked here:
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions, previous_state=state)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'4
+                        }
+                        r4
+                        c'8
+                        ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                        }
+                    }
+                >>
+
+            >>> state = rhythm_maker.state
+            >>> abjad.f(state)
+            abjad.OrderedDict(
+                [
+                    ('divisions_consumed', 8),
+                    ('incomplete_last_note', True),
+                    ('logical_ties_produced', 16),
+                    ('talea_weight_consumed', 63),
+                    ]
+                )
 
 #        ..  container:: example
 #

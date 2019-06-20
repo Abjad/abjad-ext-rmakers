@@ -190,18 +190,15 @@ class RhythmMaker(object):
         return new_selections
 
     def _apply_specifiers(self, selections, divisions):
+        previous_logical_ties_produced = self._previous_logical_ties_produced()
+        if self._previous_incomplete_last_note():
+            previous_logical_ties_produced -= 1
         for specifier in self.specifiers or []:
-            previous_logical_ties_produced = (
-                self._previous_logical_ties_produced()
-            )
-            if self._previous_incomplete_last_note():
-                previous_logical_ties_produced -= 1
             try:
                 selections = specifier(
                     selections,
                     divisions=divisions,
                     previous_logical_ties_produced=previous_logical_ties_produced,
-                    previous_state=self.previous_state,
                     tag=self.tag,
                 )
             except TypeError:

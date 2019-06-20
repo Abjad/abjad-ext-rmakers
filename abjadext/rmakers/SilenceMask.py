@@ -169,7 +169,9 @@ class SilenceMask(object):
             abjad.mutate(selection).wrap(wrapper)
             containers.append(wrapper)
 
-        components = self.selector(selections)
+        components = self.selector(
+            selections, previous=previous_logical_ties_produced
+        )
 
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
