@@ -492,7 +492,6 @@ class TaleaRhythmMaker(RhythmMaker):
             if not counts["extra_counts_per_division"]:
                 tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
                 result = tuplets
-                ###result = leaf_lists
             else:
                 tuplets = self._make_tuplets(secondary_divisions, leaf_lists)
                 result = tuplets
@@ -2146,8 +2145,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-        # TODO: restore statal logical tie masks:
-
+#            TODO: restore statal logical tie masks:
+#
 #            Only logical tie 12 is masked here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -2209,7 +2208,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #                    ('talea_weight_consumed', 63),
 #                    ]
 #                )
-#
+
 #        ..  container:: example
 #
 #            REGRESSION. Periodic logical tie masks also respect state.

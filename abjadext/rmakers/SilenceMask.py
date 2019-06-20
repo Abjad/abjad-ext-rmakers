@@ -152,7 +152,14 @@ class SilenceMask(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections, divisions=None, tag=None):
+    def __call__(
+        self,
+        selections,
+        divisions=None,
+        *,
+        previous_logical_ties_produced=None,
+        tag=None,
+    ):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
         containers = []
@@ -161,7 +168,9 @@ class SilenceMask(object):
             abjad.attach(abjad.const.TEMPORARY_CONTAINER, wrapper)
             abjad.mutate(selection).wrap(wrapper)
             containers.append(wrapper)
+
         components = self.selector(selections)
+
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
         # logical_ties = list(logical_ties)
@@ -169,6 +178,7 @@ class SilenceMask(object):
         # previous_logical_ties_produced = self._previous_logical_ties_produced()
         # if self._previous_incomplete_last_note():
         #    previous_logical_ties_produced -= 1
+
         leaves = abjad.select(components).leaves()
         for leaf in leaves:
             if self.use_multimeasure_rests is True:

@@ -92,6 +92,7 @@ class RhythmMaker(object):
         temporary_container = abjad.Container(selections)
         selections = self._apply_specifiers(selections, divisions)
         temporary_container[:] = []
+        ###self._cache_state(selections, divisions)
 
         self._validate_selections(selections)
         self._validate_tuplets(selections)
@@ -190,9 +191,23 @@ class RhythmMaker(object):
 
     def _apply_specifiers(self, selections, divisions):
         for specifier in self.specifiers or []:
-            selections = specifier(
-                selections, divisions=divisions, tag=self.tag
+            previous_logical_ties_produced = (
+                self._previous_logical_ties_produced()
             )
+            if self._previous_incomplete_last_note():
+                previous_logical_ties_produced -= 1
+            try:
+                selections = specifier(
+                    selections,
+                    divisions=divisions,
+                    previous_logical_ties_produced=previous_logical_ties_produced,
+                    previous_state=self.previous_state,
+                    tag=self.tag,
+                )
+            except TypeError:
+                selections = specifier(
+                    selections, divisions=divisions, tag=self.tag
+                )
         return selections
 
     def _cache_state(self, selections, divisions):
