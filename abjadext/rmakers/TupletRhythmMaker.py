@@ -914,128 +914,6 @@ class TupletRhythmMaker(RhythmMaker):
         return self._denominator
 
     @property
-    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
-        r"""
-        Gets division masks.
-
-        ..  container:: example
-
-            No division masks:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=False,
-            ...         ),
-            ...     tuplet_ratios=[(4, 1)],
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'4.
-                            c'16.
-                        }
-                        \times 4/5 {
-                            c'2
-                            c'8
-                        }
-                        \times 4/5 {
-                            c'4.
-                            c'16.
-                        }
-                        \times 4/5 {
-                            c'2
-                            c'8
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Masks every other output division:
-
-            >>> pattern = abjad.Pattern([1], period=2)
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets()[pattern],
-            ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         rewrite_rest_filled=True,
-            ...         selector=abjad.select().tuplets()[pattern],
-            ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     tuplet_ratios=[(4, 1)],
-            ... )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'4.
-                            c'16.
-                        }
-                        r2
-                        \times 4/5 {
-                            c'4.
-                            c'16.
-                        }
-                        r2
-                    }
-                >>
-
-        """
-        return super().division_masks
-
-    @property
     def specifiers(self) -> typing.List[typings.SpecifierTyping]:
         r"""
         Gets specifiers.
@@ -2254,6 +2132,120 @@ class TupletRhythmMaker(RhythmMaker):
                         [
                         c'8
                         ]
+                    }
+                >>
+
+        ..  container:: example
+
+            No division masks:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_divisions_together=False,
+            ...         ),
+            ...     tuplet_ratios=[(4, 1)],
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4.
+                            c'16.
+                        }
+                        \times 4/5 {
+                            c'2
+                            c'8
+                        }
+                        \times 4/5 {
+                            c'4.
+                            c'16.
+                        }
+                        \times 4/5 {
+                            c'2
+                            c'8
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Masks every other output division:
+
+            >>> pattern = abjad.Pattern([1], period=2)
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().tuplets()[pattern],
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=abjad.select().tuplets()[pattern],
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     tuplet_ratios=[(4, 1)],
+            ... )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'4.
+                            c'16.
+                        }
+                        r2
+                        \times 4/5 {
+                            c'4.
+                            c'16.
+                        }
+                        r2
                     }
                 >>
 

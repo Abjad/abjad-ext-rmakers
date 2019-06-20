@@ -415,138 +415,6 @@ class IncisedRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
-        r"""
-        Gets division masks.
-
-        ..  container:: example
-
-            No division masks:
-
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         talea_denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        c'4..
-                        r16
-                        c'4
-                        ~
-                        c'16
-                        r16
-                        c'4..
-                        r16
-                        c'4
-                        ~
-                        c'16
-                    }
-                >>
-
-        ..  container:: example
-
-            Masks every other output division:
-
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets()[pattern]
-            ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         rewrite_rest_filled=True,
-            ...         selector=abjad.select().tuplets()[pattern]
-            ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[1],
-            ...         talea_denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        r16
-                        c'4
-                        ~
-                        c'16
-                        r2
-                        r16
-                        c'4
-                        ~
-                        c'16
-                    }
-                >>
-
-        """
-        return super().division_masks
-
-    @property
     def duration_specifier(self) -> typing.Optional[DurationSpecifier]:
         r"""
         Gets duration specifier.
@@ -1536,6 +1404,130 @@ class IncisedRhythmMaker(RhythmMaker):
                             c'4.
                             r16
                         }
+                    }
+                >>
+
+        ..  container:: example
+
+            No division masks:
+
+            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...         prefix_talea=[-1],
+            ...         prefix_counts=[1],
+            ...         talea_denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'4..
+                        r16
+                        c'4
+                        ~
+                        c'16
+                        r16
+                        c'4..
+                        r16
+                        c'4
+                        ~
+                        c'16
+                    }
+                >>
+
+        ..  container:: example
+
+            Masks every other output division:
+
+            >>> pattern = abjad.Pattern([0], period=2)
+            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.SilenceMask(
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         rewrite_rest_filled=True,
+            ...         selector=abjad.select().tuplets()[pattern]
+            ...     ),
+            ...     abjadext.rmakers.TupletSpecifier(
+            ...         extract_trivial=True,
+            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_each_division=True,
+            ...     ),
+            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...         prefix_talea=[-1],
+            ...         prefix_counts=[1],
+            ...         talea_denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        r16
+                        c'4
+                        ~
+                        c'16
+                        r2
+                        r16
+                        c'4
+                        ~
+                        c'16
                     }
                 >>
 

@@ -427,13 +427,6 @@ class NoteRhythmMaker(RhythmMaker):
         return self._burnish_specifier
 
     @property
-    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
-        r"""
-        Gets division masks.
-        """
-        return super().division_masks
-
-    @property
     def duration_specifier(self) -> typing.Optional[DurationSpecifier]:
         r"""
         Gets duration specifier.
