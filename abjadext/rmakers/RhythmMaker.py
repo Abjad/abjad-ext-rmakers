@@ -3,6 +3,7 @@ import collections
 import typing
 from . import typings
 from .BeamSpecifier import BeamSpecifier
+from .CacheState import CacheState
 from .DurationSpecifier import DurationSpecifier
 from .RewriteMeterCommand import RewriteMeterCommand
 from .SilenceMask import SilenceMask
@@ -14,6 +15,7 @@ from abjad.top.new import new
 
 SpecifierClasses = (
     BeamSpecifier,
+    CacheState,
     DurationSpecifier,
     RewriteMeterCommand,
     SilenceMask,
@@ -34,6 +36,7 @@ class RhythmMaker(object):
     __documentation_section__ = "Rhythm-makers"
 
     __slots__ = (
+        "_already_cached_state",
         "_division_masks",
         "_duration_specifier",
         "_previous_state",
@@ -67,6 +70,7 @@ class RhythmMaker(object):
         if division_masks is not None:
             assert isinstance(division_masks, abjad.PatternTuple)
         self._division_masks = division_masks
+        self._already_cached_state = None
         self._previous_state = abjad.OrderedDict()
         self._state = abjad.OrderedDict()
         if tag is not None:
@@ -87,12 +91,13 @@ class RhythmMaker(object):
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
         selections = self._apply_division_masks(selections)
-        self._cache_state(selections, divisions)
+        ###self._cache_state(selections, divisions)
 
         temporary_container = abjad.Container(selections)
         selections = self._apply_specifiers(selections, divisions)
+        if self._already_cached_state is not True:
+            self._cache_state(selections, divisions)
         temporary_container[:] = []
-        ###self._cache_state(selections, divisions)
 
         self._validate_selections(selections)
         self._validate_tuplets(selections)
@@ -194,6 +199,10 @@ class RhythmMaker(object):
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
         for specifier in self.specifiers or []:
+            if isinstance(specifier, CacheState):
+                self._cache_state(selections, divisions)
+                self._already_cached_state = True
+                continue
             try:
                 selections = specifier(
                     selections,
@@ -209,9 +218,9 @@ class RhythmMaker(object):
 
     def _cache_state(self, selections, divisions):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
-        temporary_container = abjad.Container(selections)
+        ###temporary_container = abjad.Container(selections)
         logical_ties_produced = len(abjad.select(selections).logical_ties())
-        temporary_container[:] = []
+        ###temporary_container[:] = []
         logical_ties_produced += previous_logical_ties_produced
         if self._previous_incomplete_last_note():
             logical_ties_produced -= 1

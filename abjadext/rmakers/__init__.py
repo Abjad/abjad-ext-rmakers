@@ -5,6 +5,7 @@ from .RhythmMaker import RhythmMaker
 from .AccelerandoRhythmMaker import AccelerandoRhythmMaker
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
+from .CacheState import CacheState
 from .DurationSpecifier import DurationSpecifier
 from .EvenDivisionRhythmMaker import EvenDivisionRhythmMaker
 from .InciseSpecifier import InciseSpecifier
