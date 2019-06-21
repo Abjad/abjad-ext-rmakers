@@ -24,7 +24,6 @@ class TieSpecifier(object):
         "_strip_ties",
         "_tie_across_divisions",
         "_tie_consecutive_notes",
-        "_tie_within_divisions",
     )
 
     _publish_storage_format = True
@@ -45,7 +44,6 @@ class TieSpecifier(object):
         strip_ties: bool = None,
         tie_across_divisions: typing.Union[bool, abjad.IntegerSequence] = None,
         tie_consecutive_notes: bool = None,
-        tie_within_divisions: bool = None,
     ) -> None:
         if attach_repeat_ties is not None:
             attach_repeat_ties = bool(attach_repeat_ties)
@@ -89,9 +87,6 @@ class TieSpecifier(object):
         if self.tie_consecutive_notes and self.strip_ties:
             message = "can not tie leaves and strip ties at same time."
             raise Exception(message)
-        if tie_within_divisions is not None:
-            tie_within_divisions = bool(tie_within_divisions)
-        self._tie_within_divisions = tie_within_divisions
 
     ### SPECIAL METHODS ###
 
@@ -110,8 +105,7 @@ class TieSpecifier(object):
         self._attach_ties_(selections)
         self._detach_ties_(selections)
         self._detach_repeat_ties_(selections)
-        self._tie_within_divisions_(selections)
-        self._tie_across_divisions_(selections)
+        self._tie_across_divisions_(selections, divisions)
         if self.tie_consecutive_notes:
             self._tie_consecutive_notes_(selections)
         self._strip_ties_(selections)
@@ -209,7 +203,7 @@ class TieSpecifier(object):
             abjad.detach(abjad.TieIndicator, leaf)
             abjad.detach(abjad.RepeatTie, leaf)
 
-    def _tie_across_divisions_(self, selections):
+    def _tie_across_divisions_(self, selections, divisions):
         if not self.tie_across_divisions:
             return
         if self.strip_ties:
@@ -278,12 +272,6 @@ class TieSpecifier(object):
                 if len(subgroup) == 1:
                     continue
                 abjad.tie(subgroup)
-
-    def _tie_within_divisions_(self, selections):
-        if not self.tie_within_divisions:
-            return
-        for selection in selections:
-            self._tie_consecutive_notes_(selection)
 
     ### PUBLIC PROPERTIES ###
 
@@ -789,8 +777,13 @@ class TieSpecifier(object):
             TIE-WITHIN-DIVISIONS RECIPE:
 
             >>> selector = abjad.select().tuplets()
-            >>> selector = selector.map(abjad.select().notes()[:-1])
+            >>> nonlast_notes = abjad.select().notes()[:-1]
+            >>> selector = selector.map(nonlast_notes)
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         detach_ties=True,
+            ...         selector=selector,
+            ...         ),
             ...     abjadext.rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=selector,
@@ -1381,70 +1374,3 @@ class TieSpecifier(object):
 
         """
         return self._tie_consecutive_notes
-
-    @property
-    def tie_within_divisions(self) -> typing.Optional[bool]:
-        r"""
-        Is true when rhythm-maker ties within divisions.
-
-        ..  container:: example
-
-            Ties within divisions:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_within_divisions=True,
-            ...         ),
-            ...     tuplet_ratios=[(5, 2)],
-            ...     )
-
-            >>> divisions = [(4, 8), (4, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 4/8
-                        s1 * 1/2
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                        }
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                        }
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                        }
-                    }
-                >>
-
-        """
-        return self._tie_within_divisions
