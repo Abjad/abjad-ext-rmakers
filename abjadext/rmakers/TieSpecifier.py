@@ -21,7 +21,6 @@ class TieSpecifier(object):
         "_detach_ties",
         "_repeat_ties",
         "_selector",
-        "_strip_ties",
         "_tie_across_divisions",
         "_tie_consecutive_notes",
     )
@@ -41,7 +40,6 @@ class TieSpecifier(object):
             bool, abjad.IntegerPair, abjad.DurationInequality
         ] = None,
         selector: abjad.SelectorTyping = None,
-        strip_ties: bool = None,
         tie_across_divisions: typing.Union[bool, abjad.IntegerSequence] = None,
         tie_consecutive_notes: bool = None,
     ) -> None:
@@ -69,9 +67,6 @@ class TieSpecifier(object):
             selector = eval(selector)
             assert isinstance(selector, abjad.Expression)
         self._selector = selector
-        if strip_ties is not None:
-            strip_ties = bool(strip_ties)
-        self._strip_ties = strip_ties
         prototype = (
             type(None),
             bool,
@@ -84,9 +79,6 @@ class TieSpecifier(object):
         if tie_consecutive_notes is not None:
             tie_consecutive_notes = bool(tie_consecutive_notes)
         self._tie_consecutive_notes = tie_consecutive_notes
-        if self.tie_consecutive_notes and self.strip_ties:
-            message = "can not tie leaves and strip ties at same time."
-            raise Exception(message)
 
     ### SPECIAL METHODS ###
 
@@ -108,7 +100,6 @@ class TieSpecifier(object):
         self._tie_across_divisions_(selections, divisions)
         if self.tie_consecutive_notes:
             self._tie_consecutive_notes_(selections)
-        self._strip_ties_(selections)
         self._configure_repeat_ties(selections)
         return selections
 
@@ -196,17 +187,8 @@ class TieSpecifier(object):
             repeat_tie = abjad.RepeatTie()
             abjad.attach(repeat_tie, leaf)
 
-    def _strip_ties_(self, selections):
-        if not self.strip_ties:
-            return
-        for leaf in abjad.select(selections).leaves():
-            abjad.detach(abjad.TieIndicator, leaf)
-            abjad.detach(abjad.RepeatTie, leaf)
-
     def _tie_across_divisions_(self, selections, divisions):
         if not self.tie_across_divisions:
-            return
-        if self.strip_ties:
             return
         if self.tie_consecutive_notes:
             return
@@ -1232,14 +1214,6 @@ class TieSpecifier(object):
         Gets selector.
         """
         return self._selector
-
-    @property
-    def strip_ties(self) -> typing.Optional[bool]:
-        r"""
-        ..  note:: DEPRECATED. Use ``detach_ties``, ``detach_repeat_ties``
-            instead.
-        """
-        return self._strip_ties
 
     @property
     def tie_across_divisions(
