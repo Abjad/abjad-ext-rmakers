@@ -91,17 +91,14 @@ class RhythmMaker(object):
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
         selections = self._apply_division_masks(selections)
-        ###self._cache_state(selections, divisions)
-
         temporary_container = abjad.Container(selections)
         selections = self._apply_specifiers(selections, divisions)
         if self._already_cached_state is not True:
             self._cache_state(selections, divisions)
+        # self._check_wellformedness(selections)
         temporary_container[:] = []
-
         self._validate_selections(selections)
         self._validate_tuplets(selections)
-        # self._check_wellformedness(selections)
         return selections
 
     def __eq__(self, argument) -> bool:
