@@ -215,9 +215,7 @@ class RhythmMaker(object):
 
     def _cache_state(self, selections, divisions):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
-        ###temporary_container = abjad.Container(selections)
         logical_ties_produced = len(abjad.select(selections).logical_ties())
-        ###temporary_container[:] = []
         logical_ties_produced += previous_logical_ties_produced
         if self._previous_incomplete_last_note():
             logical_ties_produced -= 1

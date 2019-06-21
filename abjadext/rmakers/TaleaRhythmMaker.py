@@ -98,7 +98,6 @@ class TaleaRhythmMaker(RhythmMaker):
         "_curtail_ties",
         "_extra_counts_per_division",
         "_read_talea_once_only",
-        "_rest_tied_notes",
         "_talea",
     )
 
@@ -113,7 +112,6 @@ class TaleaRhythmMaker(RhythmMaker):
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
-        rest_tied_notes: bool = None,
         tag: str = None,
         talea: Talea = None,
     ) -> None:
@@ -141,9 +139,6 @@ class TaleaRhythmMaker(RhythmMaker):
         if read_talea_once_only is not None:
             read_talea_once_only = bool(read_talea_once_only)
         self._read_talea_once_only = read_talea_once_only
-        if rest_tied_notes is not None:
-            rest_tied_notes = bool(rest_tied_notes)
-        self._rest_tied_notes = rest_tied_notes
 
     ### SPECIAL METHODS ###
 
@@ -343,7 +338,6 @@ class TaleaRhythmMaker(RhythmMaker):
             else:
                 abjad.tie(part)
         # TODO: this will need to be generalized and better tested:
-        temporary_container = abjad.Container(result)
         if unscaled_end_counts:
             total = len(unscaled_end_counts)
             end_leaves = leaves[-total:]
@@ -351,7 +345,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 previous_leaf = abjad.inspect(leaf).leaf(-1)
                 if previous_leaf is not None:
                     abjad.detach(abjad.TieIndicator, previous_leaf)
-        temporary_container[:] = []
 
     def _get_burnish_specifier(self):
         if self.burnish_specifier is not None:
@@ -362,34 +355,6 @@ class TaleaRhythmMaker(RhythmMaker):
         if self.talea is not None:
             return self.talea
         return Talea()
-
-    def _handle_rest_tied_notes(self, selections):
-        if not self.rest_tied_notes:
-            return selections
-        # wrap every selection in a temporary container;
-        # this allows the call to abjad.mutate().replace() to work
-        containers = []
-        for selection in selections:
-            container = abjad.Container(selection)
-            abjad.attach("temporary container", container)
-            containers.append(container)
-        temporary_container = abjad.Container(containers)
-        for logical_tie in abjad.iterate(selections).logical_ties():
-            if not logical_tie.is_trivial:
-                for note in logical_tie[1:]:
-                    rest = abjad.Rest(note)
-                    abjad.mutate(note).replace(rest)
-                abjad.detach(abjad.TieIndicator, logical_tie.head)
-                abjad.detach(abjad.RepeatTie, logical_tie.head)
-        # remove every temporary container and recreate selections
-        temporary_container[:] = []
-        new_selections = []
-        for container in containers:
-            inspection = abjad.inspect(container)
-            assert inspection.indicator(str) == "temporary container"
-            new_selection = abjad.mutate(container).eject_contents()
-            new_selections.append(new_selection)
-        return new_selections
 
     def _make_leaf_lists(self, numeric_map, talea_denominator):
         leaf_lists = []
@@ -510,7 +475,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 unscaled_preamble,
                 unscaled_talea,
             )
-        selections = self._handle_rest_tied_notes(selections)
         if talea and talea_weight_consumed not in advanced_talea:
             last_leaf = abjad.inspect(selections).leaf(-1)
             if isinstance(last_leaf, abjad.Note):
@@ -1560,152 +1524,6 @@ class TaleaRhythmMaker(RhythmMaker):
         interpolating from short durations to long durations.
         """
         return self._read_talea_once_only
-
-    @property
-    def rest_tied_notes(self) -> typing.Optional[bool]:
-        r"""
-        Is true when rhythm-maker leaves the head of each logical tie but
-        changes tied notes to rests and removes ties.
-
-        ..  container:: example
-
-            Does not rest tied notes:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ~
-                        ]
-                        c'16
-                        [
-                        c'8.
-                        c'8
-                        ~
-                        ]
-                        c'8
-                        [
-                        c'16
-                        c'8
-                        c'16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Rests tied notes:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     rest_tied_notes=True,
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ]
-                        r16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                        r8
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                    }
-                >>
-
-        """
-        return self._rest_tied_notes
 
     @property
     def state(self) -> abjad.OrderedDict:
