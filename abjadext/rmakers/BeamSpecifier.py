@@ -111,8 +111,9 @@ class BeamSpecifier(object):
                     components.append(selection)
                 else:
                     raise TypeError(selection)
-            # TODO: possibly do_not_iterate_grace_containers=True instead?
-            leaves = abjad.select(components).leaves(grace_notes=False)
+            leaves = abjad.select(components).leaves(
+                do_not_iterate_grace_containers=True
+            )
             abjad.beam(
                 leaves,
                 beam_lone_notes=self.beam_lone_notes,
@@ -124,8 +125,9 @@ class BeamSpecifier(object):
             )
         elif self.beam_each_division:
             for selection in selections:
-                # TODO: possibly do_not_iterate_grace_containers=True instead?
-                leaves = abjad.select(selection).leaves(grace_notes=False)
+                leaves = abjad.select(selection).leaves(
+                    do_not_iterate_grace_containers=True
+                )
                 abjad.beam(
                     leaves,
                     beam_lone_notes=self.beam_lone_notes,
@@ -173,10 +175,12 @@ class BeamSpecifier(object):
 
     ### PRIVATE METHODS ###
 
-    # TODO: possibly do_not_iterate_grace_containers=True instead?
     @staticmethod
-    def _detach_all_beams(divisions, grace_notes=False):
-        for leaf in abjad.iterate(divisions).leaves(grace_notes=grace_notes):
+    def _detach_all_beams(divisions):
+        leaves = abjad.select(divisions).leaves(
+            do_not_iterate_grace_containers=True
+        )
+        for leaf in leaves:
             abjad.detach(abjad.BeamCount, leaf)
             abjad.detach(abjad.StartBeam, leaf)
             abjad.detach(abjad.StopBeam, leaf)
