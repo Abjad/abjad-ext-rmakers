@@ -227,9 +227,6 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_consecutive_notes=True,
-            ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -241,7 +238,6 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> abjad.f(rhythm_maker)
             abjadext.rmakers.TaleaRhythmMaker(
                 TupletSpecifier(extract_trivial=True),
-                TieSpecifier(tie_consecutive_notes=True),
                 BeamSpecifier(beam_each_division=True),
                 talea=abjadext.rmakers.Talea(
                     counts=[5, -3, 3, 3],
@@ -3094,14 +3090,22 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Ties consecutive notes:
+            TIE-CONSECUTIVE-NOTES RECIPE:
 
+            >>> nonlast_notes = abjad.select().notes()[:-1]
+            >>> selector = abjad.select().runs()
+            >>> selector = selector.map(nonlast_notes)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_consecutive_notes=True,
+            ...         detach_ties=True,
+            ...         selector=selector,
+            ...         ),
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=selector,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -3797,8 +3801,8 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         trivialize=True,
             ...         ),
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         tie_consecutive_notes=True,
+            ...         attach_ties=True,
+            ...         selector=abjad.select().notes()[:-1],
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,

@@ -2072,8 +2072,8 @@ class TupletRhythmMaker(RhythmMaker):
             ...         extract_trivial=True,
             ...         ),
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         tie_consecutive_notes=True,
+            ...         attach_ties=True,
+            ...         selector=abjad.select().notes()[:-1],
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
