@@ -23,7 +23,6 @@ class TieSpecifier(object):
         "_repeat_ties",
         "_selector",
         "_tie_across_divisions",
-        "_tie_consecutive_notes",
     )
 
     _publish_storage_format = True
@@ -42,7 +41,6 @@ class TieSpecifier(object):
         ] = None,
         selector: abjad.SelectorTyping = None,
         tie_across_divisions: typing.Union[bool, abjad.IntegerSequence] = None,
-        tie_consecutive_notes: bool = None,
     ) -> None:
         if attach_repeat_ties is not None:
             attach_repeat_ties = bool(attach_repeat_ties)
@@ -77,9 +75,6 @@ class TieSpecifier(object):
         )
         assert isinstance(tie_across_divisions, prototype)
         self._tie_across_divisions = tie_across_divisions
-        if tie_consecutive_notes is not None:
-            tie_consecutive_notes = bool(tie_consecutive_notes)
-        self._tie_consecutive_notes = tie_consecutive_notes
 
     ### SPECIAL METHODS ###
 
@@ -99,8 +94,6 @@ class TieSpecifier(object):
         self._detach_ties_(selections)
         self._detach_repeat_ties_(selections)
         self._tie_across_divisions_(selections, divisions)
-        if self.tie_consecutive_notes:
-            self._tie_consecutive_notes_(selections)
         self._configure_repeat_ties(selections)
         return selections
 
@@ -191,8 +184,6 @@ class TieSpecifier(object):
     def _tie_across_divisions_(self, selections, divisions):
         if not self.tie_across_divisions:
             return
-        if self.tie_consecutive_notes:
-            return
         length = len(selections)
         tie_across_divisions = self.tie_across_divisions
         if isinstance(tie_across_divisions, bool):
@@ -229,13 +220,6 @@ class TieSpecifier(object):
                 abjad.detach(abjad.TieIndicator, leaf)
                 abjad.detach(abjad.RepeatTie, leaf)
             abjad.tie(combined_logical_tie, repeat=self.repeat_ties)
-
-    def _tie_consecutive_notes_(self, selections):
-        leaves = list(abjad.iterate(selections).leaves())
-        for leaf in leaves:
-            abjad.detach(abjad.TieIndicator, leaf)
-            abjad.detach(abjad.RepeatTie, leaf)
-        pairs = itertools.groupby(leaves, lambda _: _.__class__)
 
         def _get_pitches(component):
             if isinstance(component, abjad.Note):
@@ -1282,70 +1266,3 @@ class TieSpecifier(object):
         Set to true, false or to a boolean vector.
         """
         return self._tie_across_divisions
-
-    @property
-    def tie_consecutive_notes(self) -> typing.Optional[bool]:
-        r"""
-        Is true when rhythm-maker ties consecutive notes.
-
-        ..  container:: example
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_consecutive_notes=True,
-            ...         ),
-            ...     tuplet_ratios=[(5, 2)],
-            ...     )
-
-            >>> divisions = [(4, 8), (4, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 4/8
-                        s1 * 1/2
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                            ~
-                        }
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                            ~
-                        }
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            ~
-                            c'4
-                        }
-                    }
-                >>
-
-        """
-        return self._tie_consecutive_notes
