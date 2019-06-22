@@ -250,16 +250,9 @@ class IncisedRhythmMaker(RhythmMaker):
             )
         result = []
         selections = self._numeric_map_to_leaf_selections(numeric_map, lcd)
-        #        if not self.extra_counts_per_division:
-        #            ###result.extend(selections)
-        #        else:
-        #            tuplets = self._make_tuplets(secondary_divisions, selections)
-        #            result.extend(tuplets)
         tuplets = self._make_tuplets(secondary_divisions, selections)
+        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets)
         result.extend(tuplets)
-        if not self._all_are_tuplets_or_all_are_leaf_selections(result):
-            message = f"should be tuplets or leaf selections: {result!r}."
-            raise Exception(message)
         selections = [abjad.select(_) for _ in result]
         return selections
 

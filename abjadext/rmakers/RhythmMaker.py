@@ -90,8 +90,8 @@ class RhythmMaker(object):
         self._previous_state = abjad.OrderedDict(previous_state)
         divisions = self._coerce_divisions(divisions)
         selections = self._make_music(divisions)
-        selections = self._apply_division_masks(selections)
         temporary_container = abjad.Container(selections)
+        selections = self._apply_division_masks(selections)
         selections = self._apply_specifiers(selections, divisions)
         if self._already_cached_state is not True:
             self._cache_state(selections, divisions)
@@ -132,15 +132,6 @@ class RhythmMaker(object):
         return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
-
-    @staticmethod
-    def _all_are_tuplets_or_all_are_leaf_selections(argument):
-        if all(isinstance(_, abjad.Tuplet) for _ in argument):
-            return True
-        elif all(_.are_leaves() for _ in argument):
-            return True
-        else:
-            return False
 
     def _apply_division_masks(self, selections):
         if not self.division_masks:
@@ -243,14 +234,6 @@ class RhythmMaker(object):
             divisions_.append(division)
         return divisions_
 
-    def _collect_state(self, state):
-        state_ = abjad.OrderedDict()
-        for key, value_ in state.items():
-            assert hasattr(self, key)
-            value = getattr(self, key)
-            state_[key] = value
-        return state_
-
     def _get_duration_specifier(self):
         if self.duration_specifier is not None:
             return self.duration_specifier
@@ -261,21 +244,6 @@ class RhythmMaker(object):
         return abjad.FormatSpecification(
             self, storage_format_args_values=specifiers
         )
-
-    @staticmethod
-    def _is_sign_tuple(argument):
-        if isinstance(argument, tuple):
-            prototype = (-1, 0, 1)
-            return all(_ in prototype for _ in argument)
-        return False
-
-    @staticmethod
-    def _make_cyclic_tuple_generator(iterable):
-        cyclic_tuple = abjad.CyclicTuple(iterable)
-        i = 0
-        while True:
-            yield cyclic_tuple[i]
-            i += 1
 
     def _make_music(self, divisions):
         return []
@@ -318,11 +286,6 @@ class RhythmMaker(object):
             return 0
         return self.previous_state.get("logical_ties_produced", 0)
 
-    @staticmethod
-    def _reverse_tuple(argument):
-        if argument is not None:
-            return tuple(reversed(argument))
-
     def _scale_counts(self, divisions, talea_denominator, counts):
         talea_denominator = talea_denominator or 1
         scaled_divisions = divisions[:]
@@ -350,17 +313,6 @@ class RhythmMaker(object):
                 "counts": scaled_counts,
             }
         )
-
-    def _sequence_to_ellipsized_string(self, sequence):
-        if not sequence:
-            return "[]"
-        if len(sequence) <= 4:
-            result = ", ".join([str(x) for x in sequence])
-        else:
-            result = ", ".join([str(x) for x in sequence[:4]])
-            result += ", ..."
-        result = "[${}$]".format(result)
-        return result
 
     def _validate_selections(self, selections):
         assert isinstance(selections, collections.Sequence), repr(selections)
