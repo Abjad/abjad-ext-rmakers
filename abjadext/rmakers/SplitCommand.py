@@ -81,16 +81,14 @@ class SplitCommand(object):
             message += f"\nselections: {selections}."
             raise Exception(message)
         first_leaf = abjad.select(selections).leaf(0)
-        temporary_container = abjad.inspect(first_leaf).parentage().root
-        assert isinstance(temporary_container, abjad.Container), repr(
-            temporary_container
-        )
-        abjad.mutate(temporary_container[:]).split(
+        staff = abjad.inspect(first_leaf).parentage().root
+        music_voice = staff["MusicVoice"]
+        abjad.mutate(music_voice[:]).split(
             durations=durations,
             tie_split_notes=True,
             repeat_ties=self.repeat_ties,
         )
-        components = temporary_container[:]
+        components = music_voice[:]
         component_durations = [abjad.inspect(_).duration() for _ in components]
         parts = abjad.sequence(component_durations)
         parts = parts.partition_by_weights(

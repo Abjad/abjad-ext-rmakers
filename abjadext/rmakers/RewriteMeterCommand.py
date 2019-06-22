@@ -75,17 +75,19 @@ class RewriteMeterCommand(object):
         self, selections, meters, *, reference_meters=None, repeat_ties=False
     ):
         first_leaf = abjad.select(selections).leaf(0)
-        temporary_container = abjad.inspect(first_leaf).parentage().root
+        staff = abjad.inspect(first_leaf).parentage().root
+        assert isinstance(staff, abjad.Staff), repr(staff)
+        music_voice = staff["MusicVoice"]
         meters = [abjad.Meter(_) for _ in meters]
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = reference_meters or ()
         command = SplitCommand(repeat_ties=self.repeat_ties)
         selections = command(selections, meters)
         first_leaf = abjad.select(selections).leaf(0)
-        temporary_container = abjad.inspect(first_leaf).parentage().root
-        assert isinstance(temporary_container, abjad.Container)
-        assert sum(durations) == abjad.inspect(temporary_container).duration()
-        selections = temporary_container[:].partition_by_durations(durations)
+        staff = abjad.inspect(first_leaf).parentage().root
+        music_voice = staff["MusicVoice"]
+        assert sum(durations) == abjad.inspect(music_voice).duration()
+        selections = music_voice[:].partition_by_durations(durations)
         for meter, selection in zip(meters, selections):
             time_signature = abjad.TimeSignature(meter)
             leaf = abjad.inspect(selection).leaf(0)
@@ -126,7 +128,7 @@ class RewriteMeterCommand(object):
                 )
         selections = []
         # making sure to copy first with [:] to avoid iterate-while-change:
-        for container in temporary_container[:]:
+        for container in music_voice[:]:
             selection = container[:]
             abjad.mutate(container).extract()
             for leaf in abjad.iterate(selection).leaves():

@@ -88,15 +88,31 @@ class RhythmMaker(object):
         Calls rhythm-maker.
         """
         self._previous_state = abjad.OrderedDict(previous_state)
+        time_signatures = [abjad.TimeSignature(_) for _ in divisions]
         divisions = self._coerce_divisions(divisions)
+        music_voice = abjad.Voice(name="MusicVoice")
+        time_signature_voice = abjad.Voice(name="TimeSignatureVoice")
+        #        staff = abjad.Staff(
+        #            [time_signature_voice, music_voice], is_simultaneous=True
+        #        )
+        staff = abjad.Staff([music_voice], is_simultaneous=True)
+        for time_signature in time_signatures:
+            duration = time_signature.pair
+            skip = abjad.Skip(1, multiplier=duration)
+            time_signature_voice.append(skip)
+            ###abjad.attach(time_signature, skip, context="Staff")
         selections = self._make_music(divisions)
-        temporary_container = abjad.Container(selections)
-        selections = self._apply_division_masks(selections)
-        selections = self._apply_specifiers(selections, divisions)
+        ###music_voice.extend(selections)
+        selections = self._apply_division_masks(
+            music_voice, divisions, selections
+        )
+        music_voice.extend(selections)
+        selections = self._apply_specifiers(music_voice, divisions, selections)
         if self._already_cached_state is not True:
-            self._cache_state(selections, divisions)
+            self._cache_state(music_voice, divisions, selections)
         # self._check_wellformedness(selections)
-        temporary_container[:] = []
+        assert music_voice.name == "MusicVoice"
+        music_voice[:] = []
         self._validate_selections(selections)
         self._validate_tuplets(selections)
         return selections
@@ -133,7 +149,7 @@ class RhythmMaker(object):
 
     ### PRIVATE METHODS ###
 
-    def _apply_division_masks(self, selections):
+    def _apply_division_masks(self, music_voice, divisions, selections):
         if not self.division_masks:
             return selections
         new_selections = []
@@ -182,13 +198,13 @@ class RhythmMaker(object):
             new_selections.append(new_selection)
         return new_selections
 
-    def _apply_specifiers(self, selections, divisions):
+    def _apply_specifiers(self, music_voice, divisions, selections):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
         for specifier in self.specifiers or []:
             if isinstance(specifier, CacheState):
-                self._cache_state(selections, divisions)
+                self._cache_state(music_voice, divisions, selections)
                 self._already_cached_state = True
                 continue
             try:
@@ -204,7 +220,7 @@ class RhythmMaker(object):
                 )
         return selections
 
-    def _cache_state(self, selections, divisions):
+    def _cache_state(self, music_voice, divisions, selections):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         logical_ties_produced = len(abjad.select(selections).logical_ties())
         logical_ties_produced += previous_logical_ties_produced
