@@ -1420,9 +1420,11 @@ class TupletSpecifier(object):
             Sustained tuplets generalize a class of rhythms composers are
             likely to rewrite:
 
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=abjad.index([1, 2]),
+            ...         attach_ties=True,
+            ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -1505,12 +1507,14 @@ class TupletSpecifier(object):
 
             Rewrite sustained tuplets like this:
 
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_sustained=True,
             ...         ),
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=abjad.index([1, 2]),
+            ...         attach_ties=True,
+            ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -1574,13 +1578,15 @@ class TupletSpecifier(object):
             Rewrite sustained tuplets -- and then extract the trivial tuplets
             that result -- like this:
 
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         rewrite_sustained=True,
-            ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=abjad.index([1, 2]),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,

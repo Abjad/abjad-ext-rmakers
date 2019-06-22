@@ -964,11 +964,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             Does not tie across divisions:
 
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=False,
-            ...     ),
-            ... )
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker()
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selections = rhythm_maker(divisions)
@@ -1007,9 +1003,12 @@ class NoteRhythmMaker(RhythmMaker):
 
             Ties across divisions:
 
+            >>> nonlast_lts = abjad.select().logical_ties()[:-1]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
+            ...         attach_ties=True,
+            ...         selector=nonlast_lts.map(last_leaf),
             ...     ),
             ... )
 
@@ -1054,9 +1053,12 @@ class NoteRhythmMaker(RhythmMaker):
             Patterns ties across divisions:
 
             >>> pattern = abjad.Pattern([0], period=2)
+            >>> lts = abjad.select().logical_ties()[pattern]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=pattern,
+            ...         attach_ties=True,
+            ...         selector=lts.map(last_leaf),
             ...     ),
             ... )
 
@@ -1092,57 +1094,6 @@ class NoteRhythmMaker(RhythmMaker):
                         c'2
                         ~
                         c'4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Uses repeat ties:
-
-            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         repeat_ties=True,
-            ...     ),
-            ... )
-
-            >>> divisions = [(4, 8), (3, 8), (9, 16), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 9/16
-                        s1 * 9/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'2
-                        c'4.
-                        \repeatTie
-                        c'2
-                        \repeatTie
-                        c'16
-                        \repeatTie
-                        c'4
-                        \repeatTie
-                        c'16
-                        \repeatTie
                     }
                 >>
 

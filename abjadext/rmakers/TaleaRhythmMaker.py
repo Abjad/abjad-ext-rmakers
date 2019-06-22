@@ -2875,13 +2875,16 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Ties across divisions:
 
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -2948,13 +2951,16 @@ class TaleaRhythmMaker(RhythmMaker):
             Patterns ties across divisions:
 
             >>> pattern = abjad.Pattern([0], period=2)
+            >>> tuplets = abjad.select().tuplets()[pattern]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=tuplets.map(last_leaf),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=pattern,
-            ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -3009,79 +3015,6 @@ class TaleaRhythmMaker(RhythmMaker):
                         ~
                         ]
                         c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Uses repeat ties:
-
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         repeat_ties=True,
-            ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
-            ...     talea=abjadext.rmakers.Talea(
-            ...         counts=[5, 3, 3, 3],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        c'16
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        \repeatTie
-                        c'16
-                        \repeatTie
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        \repeatTie
                         [
                         c'8.
                         ]
@@ -3720,12 +3653,15 @@ class TaleaRhythmMaker(RhythmMaker):
             REGRESSION #907a. Rewrites trivializable tuplets even when
             tuplets contain multiple ties:
 
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
             ...         trivialize=True,
             ...         ),
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,

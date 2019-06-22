@@ -2946,12 +2946,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Ties across divisions:
 
+            >>> last_leaf = abjad.select().leaf(-1)
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -3210,16 +3213,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Patterns ties across divisions:
 
-            >>> pattern = abjad.Pattern(
-            ...      indices=[0],
-            ...      period=2,
-            ...  )
+            >>> pattern = abjad.Pattern([0], period=2)
+            >>> tuplets = abjad.select().tuplets()[pattern]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=pattern,
+            ...         attach_ties=True,
+            ...         selector=tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -3481,9 +3484,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=False,
-            ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         use_feather_beams=True,
@@ -3741,9 +3741,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
             ...         duration_bracket=False,
-            ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=False,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,

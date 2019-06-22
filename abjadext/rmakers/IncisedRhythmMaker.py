@@ -1104,13 +1104,16 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Ties across divisions:
 
+            >>> last_leaf = abjad.select().leaf(-1)
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -1164,17 +1167,17 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Patterns ties across divisions:
 
-            >>> pattern = abjad.Pattern(
-            ...     indices=[0],
-            ...     period=2,
-            ...     )
+            >>> pattern = abjad.Pattern([0], period=2)
+            >>> tuplets = abjad.select().tuplets()[pattern]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=tuplets.map(last_leaf),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=pattern,
-            ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -1227,14 +1230,16 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Uses repeat ties:
 
+            >>> nonfirst_tuplets = abjad.select().tuplets()[1:]
+            >>> first_leaf = abjad.select().leaf(0)
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_repeat_ties=True,
+            ...         selector=nonfirst_tuplets.map(first_leaf),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         repeat_ties=True,
-            ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...     ),
@@ -1278,8 +1283,8 @@ class IncisedRhythmMaker(RhythmMaker):
                         \repeatTie
                         c'2
                         \repeatTie
+                        ~
                         c'8
-                        \repeatTie
                         r8
                     }
                 >>

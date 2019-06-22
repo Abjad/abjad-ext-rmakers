@@ -2507,11 +2507,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            With ties across divisions:
+            TIE-ACROSS-DIVISIONS RECIPE:
 
+            >>> last_leaf = abjad.select().leaf(-1)
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -2587,9 +2590,12 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every fourth logical tie:
 
             >>> pattern = abjad.Pattern([3], period=4)
+            >>> last_leaf = abjad.select().leaf(-1)
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.SilenceMask(
             ...         selector=abjad.select().logical_ties()[pattern]

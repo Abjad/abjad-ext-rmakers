@@ -1228,9 +1228,12 @@ class TupletRhythmMaker(RhythmMaker):
 
             Ties across all divisions:
 
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -1288,13 +1291,13 @@ class TupletRhythmMaker(RhythmMaker):
 
             Ties across every other division:
 
-            >>> pattern = abjad.Pattern(
-            ...     indices=[0],
-            ...     period=2,
-            ...     )
+            >>> pattern = abjad.Pattern([0], period=2)
+            >>> tuplets = abjad.select().tuplets()[pattern]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=pattern,
+            ...         attach_ties=True,
+            ...         selector=tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -1921,12 +1924,15 @@ class TupletRhythmMaker(RhythmMaker):
             Leaves trivial tuplets as-is when ``extract_trivial`` is
             false:
 
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=False,
-            ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
@@ -1996,12 +2002,15 @@ class TupletRhythmMaker(RhythmMaker):
             Measures 2 and 4 in the example below now contain only a flat list
             of notes:
 
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+            >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
-            ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
