@@ -102,11 +102,11 @@ class RhythmMaker(object):
             time_signature_voice.append(skip)
             ###abjad.attach(time_signature, skip, context="Staff")
         selections = self._make_music(divisions)
-        ###music_voice.extend(selections)
+        music_voice.extend(selections)
         selections = self._apply_division_masks(
             music_voice, divisions, selections
         )
-        music_voice.extend(selections)
+        ###music_voice.extend(selections)
         selections = self._apply_specifiers(music_voice, divisions, selections)
         if self._already_cached_state is not True:
             self._cache_state(music_voice, divisions, selections)
@@ -196,6 +196,7 @@ class RhythmMaker(object):
                 previous_leaf = abjad.select(new_selections).leaf(-1)
                 abjad.detach(abjad.TieIndicator, previous_leaf)
             new_selections.append(new_selection)
+            abjad.mutate(selection).replace(new_selection)
         return new_selections
 
     def _apply_specifiers(self, music_voice, divisions, selections):
