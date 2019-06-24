@@ -153,15 +153,19 @@ class SilenceMask(object):
     ### SPECIAL METHODS ###
 
     def __call__(
-        self,
-        selections,
-        divisions=None,
-        *,
-        previous_logical_ties_produced=None,
-        tag=None,
+        self, staff, *, previous_logical_ties_produced=None, tag=None
     ):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
+        if isinstance(staff, abjad.Staff):
+            time_signature_voice = staff["TimeSignatureVoice"]
+            durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
+            music_voice = staff["MusicVoice"]
+            selections = music_voice[:].partition_by_durations(durations)
+            selections = list(selections)
+        else:
+            selections = staff
+
         containers = []
         for selection in selections:
             wrapper = abjad.Container()

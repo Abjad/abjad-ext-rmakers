@@ -85,15 +85,23 @@ class TupletSpecifier(object):
     ### SPECIAL METHODS ###
 
     def __call__(
-        self,
-        selections: typing.Sequence[abjad.Selection],
-        divisions: typing.Sequence[abjad.NonreducedFraction],
-        *,
-        tag: str = None,
+        self, staff, *, tag: str = None
     ) -> typing.List[abjad.Selection]:
         """
         Calls tuplet specifier.
         """
+        time_signature_voice = staff["TimeSignatureVoice"]
+        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
+        divisions = []
+        for skip in time_signature_voice:
+            time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
+            pair = time_signature.pair
+            division = abjad.NonreducedFraction(pair)
+            divisions.append(division)
+        music_voice = staff["MusicVoice"]
+        selections = music_voice[:].partition_by_durations(durations)
+        selections = list(selections)
+
         self._apply_denominator(selections, divisions)
         self._force_fraction_(selections)
         self._trivialize_(selections)

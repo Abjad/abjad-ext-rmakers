@@ -148,9 +148,15 @@ class SustainMask(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections, divisions=None, tag=None):
+    def __call__(self, staff, tag=None):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
+        time_signature_voice = staff["TimeSignatureVoice"]
+        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
+        music_voice = staff["MusicVoice"]
+        selections = music_voice[:].partition_by_durations(durations)
+        selections = list(selections)
+
         containers = []
         for selection in selections:
             wrapper = abjad.Container()

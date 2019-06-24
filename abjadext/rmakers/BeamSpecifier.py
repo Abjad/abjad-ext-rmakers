@@ -5,44 +5,6 @@ import typing
 class BeamSpecifier(object):
     r"""
     Beam specifier.
-
-    ..  container:: example
-
-        Beams each division by default:
-
-        >>> staff = abjad.Staff(name='RhythmicStaff')
-        >>> staff.extend("c'8 c' c'16 c' c' c' c'8 c' c' c'")
-        >>> abjad.setting(staff).auto_beaming = False
-        >>> selections = [staff[:4], staff[4:]]
-        >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-        >>> selections = specifier(selections)
-        >>> abjad.show(staff) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> abjad.f(staff)
-            \context Staff = "RhythmicStaff"
-            \with
-            {
-                autoBeaming = ##f
-            }
-            {
-                c'8
-                [
-                c'8
-                c'16
-                c'16
-                ]
-                c'16
-                [
-                c'16
-                c'8
-                c'8
-                c'8
-                c'8
-                ]
-            }
-
     """
 
     ### CLASS VARIABLES ###
@@ -93,10 +55,21 @@ class BeamSpecifier(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, selections, divisions=None, tag: str = None) -> None:
+    def __call__(self, staff, tag: str = None) -> None:
         """
         Calls beam specifier on ``selections``.
         """
+        if isinstance(staff, abjad.Staff):
+            time_signature_voice = staff["TimeSignatureVoice"]
+            assert isinstance(time_signature_voice, abjad.Voice)
+            durations = [
+                abjad.inspect(_).duration() for _ in time_signature_voice
+            ]
+            music_voice = staff["MusicVoice"]
+            selections = music_voice[:].partition_by_durations(durations)
+            selections = list(selections)
+        else:
+            selections = staff
         self._detach_all_beams(selections)
         if self.beam_divisions_together:
             durations = []
@@ -244,168 +217,6 @@ class BeamSpecifier(object):
     def beam_divisions_together(self) -> typing.Optional[bool]:
         r"""
         Is true when divisions beam together.
-
-        ..  container:: example
-
-            Does not beam divisions together:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 c' c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    [
-                    c'8
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8
-                    c'8
-                    c'8
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Beams divisions together (but excludes rests):
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=True,
-            ...     beam_divisions_together=True,
-            ...     beam_rests=False,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    \set stemLeftBeamCount = 0
-                    \set stemRightBeamCount = 1
-                    c'8
-                    [
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 1
-                    c'8
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 0
-                    c'8
-                    ]
-                    r8
-                    \set stemLeftBeamCount = 0
-                    \set stemRightBeamCount = 1
-                    c'8
-                    [
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 0
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Beams divisions together (and includes rests):
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=True,
-            ...     beam_divisions_together=True,
-            ...     beam_rests=True,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    \set stemLeftBeamCount = 0
-                    \set stemRightBeamCount = 1
-                    c'8
-                    [
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 1
-                    c'8
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 1
-                    c'8
-                    r8
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 1
-                    c'8
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 0
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Defaults to none:
-
-            >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> specifier.beam_divisions_together is None
-            True
-
         """
         return self._beam_divisions_together
 
@@ -413,132 +224,6 @@ class BeamSpecifier(object):
     def beam_each_division(self) -> typing.Optional[bool]:
         r"""
         Is true when specifier beams each division.
-
-        ..  container:: example
-
-            Beams nothing:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 c' c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=False,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    c'8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    c'8
-                    c'8
-                    c'8
-                }
-
-        ..  container:: example
-
-            Beams each division (but excludes rests):
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=True,
-            ...     beam_rests=False,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    [
-                    c'8
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8
-                    ]
-                    r8
-                    c'8
-                    [
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Beams each division (and includes rests):
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=True,
-            ...     beam_rests=True,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    [
-                    c'8
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8
-                    r8
-                    c'8
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Defaults to true:
-
-            >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> specifier.beam_each_division
-            True
-
         """
         return self._beam_each_division
 
@@ -553,134 +238,6 @@ class BeamSpecifier(object):
     def beam_rests(self) -> typing.Optional[bool]:
         r"""
         Is true when beams include rests.
-
-        ..  container:: example
-
-            Does not beam rests:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    [
-                    c'8
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8
-                    ]
-                    r8
-                    c'8
-                    [
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Beams rests:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=True,
-            ...     beam_rests=True,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    [
-                    c'8
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8
-                    r8
-                    c'8
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Beams skips:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 s c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=True,
-            ...     beam_rests=True,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    [
-                    c'8
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8
-                    s8
-                    c'8
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Defaults to none:
-
-            >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> specifier.beam_rests is None
-            True
-
         """
         return self._beam_rests
 
@@ -688,102 +245,6 @@ class BeamSpecifier(object):
     def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
         r"""
         Gets stemlet length.
-
-        ..  container:: example
-
-            Beams rests without stemlets:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=True,
-            ...     beam_rests=True,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    c'8
-                    [
-                    c'8
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8
-                    r8
-                    c'8
-                    c'8
-                    ]
-                }
-
-        ..  container:: example
-
-            Beams rests with stemlets:
-
-            >>> staff = abjad.Staff(name='RhythmicStaff')
-            >>> staff.extend("c'8 c' c'16 c' c' c' c'8 r c' c'")
-            >>> abjad.setting(staff).auto_beaming = False
-            >>> selections = [staff[:4], staff[4:]]
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
-            ...     beam_each_division=True,
-            ...     beam_rests=True,
-            ...     stemlet_length=2,
-            ...     )
-            >>> selections = specifier(selections)
-            >>> abjad.show(staff) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(staff)
-                \context Staff = "RhythmicStaff"
-                \with
-                {
-                    autoBeaming = ##f
-                }
-                {
-                    \override Staff.Stem.stemlet-length = 2
-                    c'8
-                    [
-                    c'8
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    c'16
-                    ]
-                    \override Staff.Stem.stemlet-length = 2
-                    c'16
-                    [
-                    c'16
-                    c'8
-                    r8
-                    c'8
-                    \revert Staff.Stem.stemlet-length
-                    c'8
-                    ]
-                }
-
-        Stemlets appear only when ``beam_rests`` is set to true.
-
-        ..  container:: example
-
-            Defaults to none:
-
-            >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> specifier.stemlet_length is None
-            True
-
         """
         return self._stemlet_length
 
@@ -791,12 +252,5 @@ class BeamSpecifier(object):
     def use_feather_beams(self) -> typing.Optional[bool]:
         """
         Is true when multiple beams feather.
-
-        ..  container:: example
-
-            >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            >>> specifier.use_feather_beams is None
-            True
-
         """
         return self._use_feather_beams

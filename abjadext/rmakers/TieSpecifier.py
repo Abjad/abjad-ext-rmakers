@@ -79,21 +79,21 @@ class TieSpecifier(object):
     ### SPECIAL METHODS ###
 
     def __call__(
-        self,
-        selections: typing.Sequence[abjad.Selection],
-        *,
-        divisions: typing.Sequence[abjad.NonreducedFraction] = None,
-        tag: str = None,
+        self, staff, *, tag: str = None
     ) -> typing.Sequence[abjad.Selection]:
         """
         Calls tie specifier on ``selections``.
         """
-        assert all(isinstance(_, abjad.Selection) for _ in selections)
+        time_signature_voice = staff["TimeSignatureVoice"]
+        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
+        music_voice = staff["MusicVoice"]
+        selections = music_voice[:].partition_by_durations(durations)
+        selections = list(selections)
         self._attach_repeat_ties_(selections)
         self._attach_ties_(selections)
         self._detach_ties_(selections)
         self._detach_repeat_ties_(selections)
-        self._tie_across_divisions_(selections, divisions)
+        self._tie_across_divisions_(selections, durations)
         self._configure_repeat_ties(selections)
         return selections
 

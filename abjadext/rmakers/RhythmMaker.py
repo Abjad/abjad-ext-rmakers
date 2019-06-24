@@ -103,9 +103,9 @@ class RhythmMaker(object):
         selections = self._make_music(divisions)
         music_voice.extend(selections)
         selections = self._apply_division_masks(staff)
-        selections = self._apply_specifiers(music_voice, divisions, selections)
+        selections = self._apply_specifiers(staff, divisions, selections)
         if self._already_cached_state is not True:
-            self._cache_state(music_voice, divisions, selections)
+            self._cache_state(staff)
         # self._check_wellformedness(selections)
         assert music_voice.name == "MusicVoice"
         music_voice[:] = []
@@ -200,37 +200,43 @@ class RhythmMaker(object):
             abjad.mutate(selection).replace(new_selection)
         return new_selections
 
-    def _apply_specifiers(self, music_voice, divisions, selections):
+    def _apply_specifiers(self, staff, divisions, selections):
+        music_voice = staff["MusicVoice"]
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
         for specifier in self.specifiers or []:
             if isinstance(specifier, CacheState):
-                self._cache_state(music_voice, divisions, selections)
+                self._cache_state(staff)
                 self._already_cached_state = True
                 continue
             try:
                 selections = specifier(
-                    selections,
-                    divisions=divisions,
+                    staff,
                     previous_logical_ties_produced=previous_logical_ties_produced,
                     tag=self.tag,
                 )
             except TypeError:
-                selections = specifier(
-                    selections, divisions=divisions, tag=self.tag
-                )
+                try:
+                    selections = specifier(staff, tag=self.tag)
+                except TypeError:
+                    raise Exception("AAA", specifier)
         return selections
 
-    def _cache_state(self, music_voice, divisions, selections):
+    # def _cache_state(self, music_voice, divisions, selections):
+    def _cache_state(self, staff):
+        music_voice = staff["MusicVoice"]
+        time_signature_voice = staff["TimeSignatureVoice"]
         previous_logical_ties_produced = self._previous_logical_ties_produced()
-        logical_ties_produced = len(abjad.select(selections).logical_ties())
+        # logical_ties_produced = len(abjad.select(selections).logical_ties())
+        logical_ties_produced = len(abjad.select(music_voice).logical_ties())
         logical_ties_produced += previous_logical_ties_produced
         if self._previous_incomplete_last_note():
             logical_ties_produced -= 1
         string = "divisions_consumed"
         self.state[string] = self.previous_state.get(string, 0)
-        self.state[string] += len(divisions)
+        # self.state[string] += len(divisions)
+        self.state[string] += len(time_signature_voice)
         self.state["logical_ties_produced"] = logical_ties_produced
         items = self.state.items()
         state = abjad.OrderedDict(sorted(items))
