@@ -92,21 +92,19 @@ class RhythmMaker(object):
         divisions = self._coerce_divisions(divisions)
         music_voice = abjad.Voice(name="MusicVoice")
         time_signature_voice = abjad.Voice(name="TimeSignatureVoice")
-        #        staff = abjad.Staff(
-        #            [time_signature_voice, music_voice], is_simultaneous=True
-        #        )
-        staff = abjad.Staff([music_voice], is_simultaneous=True)
+        staff = abjad.Staff(
+            [time_signature_voice, music_voice], is_simultaneous=True
+        )
         for time_signature in time_signatures:
             duration = time_signature.pair
             skip = abjad.Skip(1, multiplier=duration)
             time_signature_voice.append(skip)
-            ###abjad.attach(time_signature, skip, context="Staff")
+            abjad.attach(time_signature, skip, context="Staff")
         selections = self._make_music(divisions)
         music_voice.extend(selections)
         selections = self._apply_division_masks(
             music_voice, divisions, selections
         )
-        ###music_voice.extend(selections)
         selections = self._apply_specifiers(music_voice, divisions, selections)
         if self._already_cached_state is not True:
             self._cache_state(music_voice, divisions, selections)
