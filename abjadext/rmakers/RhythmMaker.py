@@ -102,9 +102,7 @@ class RhythmMaker(object):
             abjad.attach(time_signature, skip, context="Staff")
         selections = self._make_music(divisions)
         music_voice.extend(selections)
-        selections = self._apply_division_masks(
-            music_voice, divisions, selections
-        )
+        selections = self._apply_division_masks(staff)
         selections = self._apply_specifiers(music_voice, divisions, selections)
         if self._already_cached_state is not True:
             self._cache_state(music_voice, divisions, selections)
@@ -147,7 +145,12 @@ class RhythmMaker(object):
 
     ### PRIVATE METHODS ###
 
-    def _apply_division_masks(self, music_voice, divisions, selections):
+    def _apply_division_masks(self, staff):
+        time_signature_voice = staff["TimeSignatureVoice"]
+        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
+        music_voice = staff["MusicVoice"]
+        selections = music_voice[:].partition_by_durations(durations)
+        selections = list(selections)
         if not self.division_masks:
             return selections
         new_selections = []
