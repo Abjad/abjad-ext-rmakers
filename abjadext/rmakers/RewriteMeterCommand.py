@@ -36,15 +36,17 @@ class RewriteMeterCommand(object):
             time_signature_voice = staff["TimeSignatureVoice"]
             meters = []
             for skip in time_signature_voice:
-                time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
+                time_signature = abjad.inspect(skip).indicator(
+                    abjad.TimeSignature
+                )
                 meter = abjad.Meter(time_signature)
                 meters.append(meter)
         else:
             meters = [abjad.Meter(_.pair) for _ in time_signatures]
 
-#        music_voice = staff["MusicVoice"]
-#        selections = music_voice[:].partition_by_durations(durations)
-#        selections = list(selections)
+        #        music_voice = staff["MusicVoice"]
+        #        selections = music_voice[:].partition_by_durations(durations)
+        #        selections = list(selections)
 
         selections = self._rewrite_meter_(
             # selections=selections,
@@ -83,34 +85,29 @@ class RewriteMeterCommand(object):
     ### PRIVATE METHODS ###
 
     def _rewrite_meter_(
-        self,
-        staff,
-        meters,
-        *,
-        reference_meters=None,
-        repeat_ties=False,
+        self, staff, meters, *, reference_meters=None, repeat_ties=False
     ):
         meters = [abjad.Meter(_) for _ in meters]
         durations = [abjad.Duration(_) for _ in meters]
 
-#        time_signature_voice = staff["TimeSignatureVoice"]
-#        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
-#        meters = []
-#        for skip in time_signature_voice:
-#            time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
-#            meter = abjad.Meter(time_signature)
-#            meters.append(meter)
+        #        time_signature_voice = staff["TimeSignatureVoice"]
+        #        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
+        #        meters = []
+        #        for skip in time_signature_voice:
+        #            time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
+        #            meter = abjad.Meter(time_signature)
+        #            meters.append(meter)
 
-#        music_voice = staff["MusicVoice"]
-#        selections = music_voice[:].partition_by_durations(durations)
-#        selections = list(selections)
+        #        music_voice = staff["MusicVoice"]
+        #        selections = music_voice[:].partition_by_durations(durations)
+        #        selections = list(selections)
 
         reference_meters = reference_meters or ()
         command = SplitCommand(repeat_ties=self.repeat_ties)
         # selections = command(selections, meters)
         selections = command(staff, time_signatures=meters)
-#        first_leaf = abjad.select(selections).leaf(0)
-#        staff = abjad.inspect(first_leaf).parentage().root
+        #        first_leaf = abjad.select(selections).leaf(0)
+        #        staff = abjad.inspect(first_leaf).parentage().root
         music_voice = staff["MusicVoice"]
         assert sum(durations) == abjad.inspect(music_voice).duration()
         selections = music_voice[:].partition_by_durations(durations)

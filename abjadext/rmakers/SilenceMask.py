@@ -159,7 +159,9 @@ class SilenceMask(object):
             raise Exception("call silence mask with selector.")
         if isinstance(staff, abjad.Staff):
             time_signature_voice = staff["TimeSignatureVoice"]
-            durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
+            durations = [
+                abjad.inspect(_).duration() for _ in time_signature_voice
+            ]
             music_voice = staff["MusicVoice"]
             selections = music_voice[:].partition_by_durations(durations)
             selections = list(selections)
