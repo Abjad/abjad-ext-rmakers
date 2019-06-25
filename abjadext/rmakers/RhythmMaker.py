@@ -272,6 +272,7 @@ class RhythmMaker(object):
 
     @staticmethod
     def _make_staff(time_signatures):
+        assert time_signatures, repr(time_signatures)
         staff = abjad.Staff(is_simultaneous=True)
         time_signature_voice = abjad.Voice(name="TimeSignatureVoice")
         for time_signature in time_signatures:

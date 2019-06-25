@@ -43,19 +43,62 @@ class RewriteMeterCommand(object):
                 meters.append(meter)
         else:
             meters = [abjad.Meter(_.pair) for _ in time_signatures]
+        meters = [abjad.Meter(_) for _ in meters]
+        durations = [abjad.Duration(_) for _ in meters]
+        reference_meters = self.reference_meters or ()
+        command = SplitCommand(repeat_ties=self.repeat_ties)
+        selections = command(staff, time_signatures=meters)
+        music_voice = staff["MusicVoice"]
+        assert sum(durations) == abjad.inspect(music_voice).duration()
+        selections = music_voice[:].partition_by_durations(durations)
+        for meter, selection in zip(meters, selections):
+            time_signature = abjad.TimeSignature(meter.pair)
+            leaf = abjad.inspect(selection).leaf(0)
+            abjad.attach(time_signature, leaf)
+            container = abjad.Container()
+            abjad.mutate(selection).wrap(container)
+            for reference_meter in reference_meters:
+                if str(reference_meter) == str(meter):
+                    meter = reference_meter
+                    break
 
-        #        music_voice = staff["MusicVoice"]
-        #        selections = music_voice[:].partition_by_durations(durations)
-        #        selections = list(selections)
-
-        selections = self._rewrite_meter_(
-            # selections=selections,
-            staff,
-            meters,
-            reference_meters=self.reference_meters,
-            repeat_ties=self.repeat_ties,
-        )
-        return list(selections)
+            nontupletted_leaves = []
+            for leaf in abjad.iterate(container).leaves():
+                if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
+                    nontupletted_leaves.append(leaf)
+            BeamSpecifier._detach_all_beams(nontupletted_leaves)
+            abjad.mutate(container[:]).rewrite_meter(
+                meter, rewrite_tuplets=False, repeat_ties=self.repeat_ties
+            )
+            leaves = abjad.select(container).leaves(
+                do_not_iterate_grace_containers=True
+            )
+            beat_durations = []
+            beat_offsets = meter.depthwise_offset_inventory[1]
+            for start, stop in abjad.sequence(beat_offsets).nwise():
+                beat_duration = stop - start
+                beat_durations.append(beat_duration)
+            beamable_groups = BeamSpecifier._make_beamable_groups(
+                leaves, beat_durations
+            )
+            for beamable_group in beamable_groups:
+                if not beamable_group:
+                    continue
+                abjad.beam(
+                    beamable_group,
+                    beam_rests=False,
+                    tag="rmakers.RewriteMeterCommand.__call__",
+                )
+        selections_: typing.List[abjad.Selection] = []
+        # making sure to copy first with [:] to avoid iterate-while-change:
+        for container in music_voice[:]:
+            selection_ = container[:]
+            assert isinstance(selection_, abjad.Selection)
+            abjad.mutate(container).extract()
+            for leaf in abjad.iterate(selection_).leaves():
+                abjad.detach(abjad.TimeSignature, leaf)
+            selections_.append(selection_)
+        return selections_
 
     def __format__(self, format_specification="") -> str:
         """
@@ -81,83 +124,6 @@ class RewriteMeterCommand(object):
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()
-
-    ### PRIVATE METHODS ###
-
-    def _rewrite_meter_(
-        self, staff, meters, *, reference_meters=None, repeat_ties=False
-    ):
-        meters = [abjad.Meter(_) for _ in meters]
-        durations = [abjad.Duration(_) for _ in meters]
-
-        #        time_signature_voice = staff["TimeSignatureVoice"]
-        #        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
-        #        meters = []
-        #        for skip in time_signature_voice:
-        #            time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
-        #            meter = abjad.Meter(time_signature)
-        #            meters.append(meter)
-
-        #        music_voice = staff["MusicVoice"]
-        #        selections = music_voice[:].partition_by_durations(durations)
-        #        selections = list(selections)
-
-        reference_meters = reference_meters or ()
-        command = SplitCommand(repeat_ties=self.repeat_ties)
-        # selections = command(selections, meters)
-        selections = command(staff, time_signatures=meters)
-        #        first_leaf = abjad.select(selections).leaf(0)
-        #        staff = abjad.inspect(first_leaf).parentage().root
-        music_voice = staff["MusicVoice"]
-        assert sum(durations) == abjad.inspect(music_voice).duration()
-        selections = music_voice[:].partition_by_durations(durations)
-        for meter, selection in zip(meters, selections):
-            time_signature = abjad.TimeSignature(meter)
-            leaf = abjad.inspect(selection).leaf(0)
-            abjad.attach(time_signature, leaf)
-            container = abjad.Container()
-            abjad.mutate(selection).wrap(container)
-            for reference_meter in reference_meters:
-                if str(reference_meter) == str(meter):
-                    meter = reference_meter
-                    break
-
-            nontupletted_leaves = []
-            for leaf in abjad.iterate(container).leaves():
-                if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
-                    nontupletted_leaves.append(leaf)
-            BeamSpecifier._detach_all_beams(nontupletted_leaves)
-            abjad.mutate(container[:]).rewrite_meter(
-                meter, rewrite_tuplets=False, repeat_ties=repeat_ties
-            )
-            leaves = abjad.select(container).leaves(
-                do_not_iterate_grace_containers=True
-            )
-            beat_durations = []
-            beat_offsets = meter.depthwise_offset_inventory[1]
-            for start, stop in abjad.sequence(beat_offsets).nwise():
-                beat_duration = stop - start
-                beat_durations.append(beat_duration)
-            beamable_groups = BeamSpecifier._make_beamable_groups(
-                leaves, beat_durations
-            )
-            for beamable_group in beamable_groups:
-                if not beamable_group:
-                    continue
-                abjad.beam(
-                    beamable_group,
-                    beam_rests=False,
-                    tag="rmakers.RewriteMeterCommand.__call__",
-                )
-        selections = []
-        # making sure to copy first with [:] to avoid iterate-while-change:
-        for container in music_voice[:]:
-            selection = container[:]
-            abjad.mutate(container).extract()
-            for leaf in abjad.iterate(selection).leaves():
-                abjad.detach(abjad.TimeSignature, leaf)
-            selections.append(selection)
-        return selections
 
     ### PUBLIC PROPERTIES ###
 

@@ -36,14 +36,31 @@ class SplitCommand(object):
             ]
         else:
             durations = [abjad.Duration(_.pair) for _ in time_signatures]
-
-        selections = self._call(
-            # selections=selections, durations=durations, tag=tag
-            music_voice,
+        total_duration = sum(durations)
+        music_duration = abjad.inspect(music_voice).duration()
+        if total_duration != music_duration:
+            message = f"Total duration of splits is {total_duration!s}"
+            message += f" but duration of music is {music_duration!s}:"
+            message += f"\ndurations: {durations}."
+            message += f"\nmusic voice: {music_voice[:]}."
+            raise Exception(message)
+        abjad.mutate(music_voice[:]).split(
             durations=durations,
-            tag=tag,
+            tie_split_notes=True,
+            repeat_ties=self.repeat_ties,
         )
-        return list(selections)
+        components = music_voice[:]
+        component_durations = [abjad.inspect(_).duration() for _ in components]
+        parts = abjad.sequence(component_durations)
+        parts = parts.partition_by_weights(
+            weights=durations, allow_part_weights=abjad.Exact
+        )
+        part_lengths = [len(_) for _ in parts]
+        parts = abjad.sequence(components).partition_by_counts(
+            counts=part_lengths, overhang=abjad.Exact
+        )
+        selections = [abjad.select(_) for _ in parts]
+        return selections
 
     def __format__(self, format_specification="") -> str:
         """
@@ -75,12 +92,7 @@ class SplitCommand(object):
     # TODO: activate tag
     def _call(self, music_voice, durations, *, tag=None):
         durations = [abjad.Duration(_) for _ in durations]
-        # selections = abjad.sequence(selections).flatten(depth=-1)
-        # selections = abjad.sequence(music_voice[:]).flatten(depth=-1)
         total_duration = sum(durations)
-        #        selection_duration = sum(
-        #            abjad.inspect(_).duration() for _ in selections
-        #        )
         music_duration = abjad.inspect(music_voice).duration()
         if total_duration != music_duration:
             message = f"Total duration of splits is {total_duration!s}"
@@ -88,9 +100,6 @@ class SplitCommand(object):
             message += f"\ndurations: {durations}."
             message += f"\nmusic voice: {music_voice[:]}."
             raise Exception(message)
-        #        first_leaf = abjad.select(selections).leaf(0)
-        #        staff = abjad.inspect(first_leaf).parentage().root
-        #        music_voice = staff["MusicVoice"]
         abjad.mutate(music_voice[:]).split(
             durations=durations,
             tie_split_notes=True,
