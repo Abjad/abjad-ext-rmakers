@@ -117,7 +117,6 @@ class BeamSpecifier(object):
                     ).beam.grow_direction = abjad.Right
                 elif self._is_ritardando(selection):
                     abjad.override(first_leaf).beam.grow_direction = abjad.Left
-        return selections
 
     def __format__(self, format_specification="") -> str:
         """

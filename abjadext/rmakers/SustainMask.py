@@ -156,7 +156,6 @@ class SustainMask(object):
         music_voice = staff["MusicVoice"]
         selections = music_voice[:].partition_by_durations(durations)
         selections = list(selections)
-
         containers = []
         for selection in selections:
             wrapper = abjad.Container()

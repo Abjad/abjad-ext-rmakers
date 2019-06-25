@@ -90,25 +90,16 @@ class RhythmMaker(object):
         self._previous_state = abjad.OrderedDict(previous_state)
         time_signatures = [abjad.TimeSignature(_) for _ in divisions]
         divisions = self._coerce_divisions(divisions)
-        music_voice = abjad.Voice(name="MusicVoice")
-        time_signature_voice = abjad.Voice(name="TimeSignatureVoice")
-        staff = abjad.Staff(
-            [time_signature_voice, music_voice], is_simultaneous=True
-        )
-        for time_signature in time_signatures:
-            duration = time_signature.pair
-            skip = abjad.Skip(1, multiplier=duration)
-            time_signature_voice.append(skip)
-            abjad.attach(time_signature, skip, context="Staff")
+        staff = self._make_staff(time_signatures)
         selections = self._make_music(divisions)
-        music_voice.extend(selections)
-        selections = self._apply_division_masks(staff)
-        selections = self._apply_specifiers(staff, divisions, selections)
+        staff["MusicVoice"].extend(selections)
+        self._apply_division_masks(staff)
+        self._apply_specifiers(staff)
         if self._already_cached_state is not True:
             self._cache_state(staff)
-        # self._check_wellformedness(selections)
-        assert music_voice.name == "MusicVoice"
-        music_voice[:] = []
+        # self._check_wellformedness(staff)
+        selections = self._select_by_measure(staff)
+        staff["MusicVoice"][:] = []
         self._validate_selections(selections)
         self._validate_tuplets(selections)
         return selections
@@ -200,8 +191,7 @@ class RhythmMaker(object):
             abjad.mutate(selection).replace(new_selection)
         return new_selections
 
-    def _apply_specifiers(self, staff, divisions, selections):
-        music_voice = staff["MusicVoice"]
+    def _apply_specifiers(self, staff):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
@@ -210,40 +200,36 @@ class RhythmMaker(object):
                 self._cache_state(staff)
                 self._already_cached_state = True
                 continue
-            try:
-                selections = specifier(
+            elif isinstance(specifier, SilenceMask):
+                specifier(
                     staff,
                     previous_logical_ties_produced=previous_logical_ties_produced,
                     tag=self.tag,
                 )
-            except TypeError:
+            else:
                 try:
-                    selections = specifier(staff, tag=self.tag)
+                    specifier(staff, tag=self.tag)
                 except TypeError:
                     raise Exception("AAA", specifier)
-        return selections
 
-    # def _cache_state(self, music_voice, divisions, selections):
     def _cache_state(self, staff):
         music_voice = staff["MusicVoice"]
         time_signature_voice = staff["TimeSignatureVoice"]
         previous_logical_ties_produced = self._previous_logical_ties_produced()
-        # logical_ties_produced = len(abjad.select(selections).logical_ties())
         logical_ties_produced = len(abjad.select(music_voice).logical_ties())
         logical_ties_produced += previous_logical_ties_produced
         if self._previous_incomplete_last_note():
             logical_ties_produced -= 1
         string = "divisions_consumed"
         self.state[string] = self.previous_state.get(string, 0)
-        # self.state[string] += len(divisions)
         self.state[string] += len(time_signature_voice)
         self.state["logical_ties_produced"] = logical_ties_produced
         items = self.state.items()
         state = abjad.OrderedDict(sorted(items))
         self._state = state
 
-    #    def _check_wellformedness(self, selections):
-    #        for component in abjad.iterate(selections).components():
+    #    def _check_wellformedness(self, stafff):
+    #        for component in abjad.iterate(staff).components():
     #            inspector = abjad.inspect(component)
     #            if not inspector.wellformed():
     #                report = inspector.tabulate_wellformedness()
@@ -269,8 +255,33 @@ class RhythmMaker(object):
             self, storage_format_args_values=specifiers
         )
 
+    @staticmethod
+    def _select_by_measure(staff):
+        selection = staff["MusicVoice"][:]
+        assert isinstance(selection, abjad.Selection)
+        time_signatures = [
+            abjad.inspect(_).indicator(abjad.TimeSignature)
+            for _ in staff["TimeSignatureVoice"]
+        ]
+        selections = selection.partition_by_durations(time_signatures)
+        selections = list(selections)
+        return selections
+
     def _make_music(self, divisions):
         return []
+
+    @staticmethod
+    def _make_staff(time_signatures):
+        staff = abjad.Staff(is_simultaneous=True)
+        time_signature_voice = abjad.Voice(name="TimeSignatureVoice")
+        for time_signature in time_signatures:
+            duration = time_signature.pair
+            skip = abjad.Skip(1, multiplier=duration)
+            time_signature_voice.append(skip)
+            abjad.attach(time_signature, skip, context="Staff")
+        staff.append(time_signature_voice)
+        staff.append(abjad.Voice(name="MusicVoice"))
+        return staff
 
     def _make_tuplets(self, divisions, leaf_lists):
         assert len(divisions) == len(leaf_lists)
