@@ -28,7 +28,7 @@ class RewriteMeterCommand(object):
 
     def __call__(
         self, staff, *, time_signatures=None, tag: str = None
-    ) -> typing.List[abjad.Selection]:
+    ) -> None:
         """
         Calls rewrite meter command.
         """
@@ -47,7 +47,7 @@ class RewriteMeterCommand(object):
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = self.reference_meters or ()
         command = SplitCommand(repeat_ties=self.repeat_ties)
-        selections = command(staff, time_signatures=meters)
+        command(staff, time_signatures=meters)
         music_voice = staff["MusicVoice"]
         assert sum(durations) == abjad.inspect(music_voice).duration()
         selections = music_voice[:].partition_by_durations(durations)
@@ -98,7 +98,6 @@ class RewriteMeterCommand(object):
             for leaf in abjad.iterate(selection_).leaves():
                 abjad.detach(abjad.TimeSignature, leaf)
             selections_.append(selection_)
-        return selections_
 
     def __format__(self, format_specification="") -> str:
         """

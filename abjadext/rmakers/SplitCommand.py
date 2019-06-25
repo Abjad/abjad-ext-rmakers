@@ -24,7 +24,7 @@ class SplitCommand(object):
 
     def __call__(
         self, staff, *, time_signatures=None, tag: str = None
-    ) -> typing.List[abjad.Selection]:
+    ) -> None:
         """
         Calls split command.
         """
@@ -49,18 +49,6 @@ class SplitCommand(object):
             tie_split_notes=True,
             repeat_ties=self.repeat_ties,
         )
-        components = music_voice[:]
-        component_durations = [abjad.inspect(_).duration() for _ in components]
-        parts = abjad.sequence(component_durations)
-        parts = parts.partition_by_weights(
-            weights=durations, allow_part_weights=abjad.Exact
-        )
-        part_lengths = [len(_) for _ in parts]
-        parts = abjad.sequence(components).partition_by_counts(
-            counts=part_lengths, overhang=abjad.Exact
-        )
-        selections = [abjad.select(_) for _ in parts]
-        return selections
 
     def __format__(self, format_specification="") -> str:
         """
