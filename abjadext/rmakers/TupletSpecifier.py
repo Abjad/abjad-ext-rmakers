@@ -148,10 +148,9 @@ class TupletSpecifier(object):
     def _apply_denominator(self, staff):
         if not self.denominator:
             return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection = self.selector(staff)
-        else:
-            selection = abjad.select(staff)
+            selection = self.selector(selection)
         denominator = self.denominator
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
@@ -172,10 +171,9 @@ class TupletSpecifier(object):
     def _extract_trivial_(self, staff):
         if not self.extract_trivial:
             return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection = self.selector(staff)
-        else:
-            selection = abjad.select(staff)
+            selection = self.selector(selection)
         tuplets = abjad.select(selection).tuplets()
         for tuplet in tuplets:
             if tuplet.trivial():
@@ -184,10 +182,9 @@ class TupletSpecifier(object):
     def _force_fraction_(self, staff):
         if not self.force_fraction:
             return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection = self.selector(staff)
-        else:
-            selection = abjad.select(staff)
+            selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
             tuplet.force_fraction = True
 
@@ -205,10 +202,9 @@ class TupletSpecifier(object):
     def _rewrite_rest_filled_(self, staff, tag=None):
         if not self.rewrite_rest_filled:
             return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection = self.selector(staff)
-        else:
-            selection = abjad.select(staff)
+            selection = self.selector(selection)
         maker = abjad.LeafMaker(tag=tag)
         for tuplet in abjad.select(selection).tuplets():
             if not self.is_rest_filled_tuplet(tuplet):
@@ -254,10 +250,9 @@ class TupletSpecifier(object):
     def _rewrite_sustained_(self, staff, tag=None):
         if not self.rewrite_sustained:
             return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection = self.selector(staff)
-        else:
-            selection = abjad.select(staff)
+            selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
             if not self.is_sustained_tuplet(tuplet):
                 continue
@@ -279,10 +274,9 @@ class TupletSpecifier(object):
     def _set_duration_bracket(self, staff):
         if not self.duration_bracket:
             return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection = self.selector(staff)
-        else:
-            selection = abjad.select(staff)
+            selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
             duration_ = abjad.inspect(tuplet).duration()
             markup = duration_.to_score_markup()
@@ -292,10 +286,9 @@ class TupletSpecifier(object):
     def _toggle_prolation(self, staff):
         if self.diminution is None:
             return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection = self.selector(staff)
-        else:
-            selection = abjad.select(staff)
+            selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
             if (self.diminution is True and not tuplet.diminution()) or (
                 self.diminution is False and not tuplet.augmentation()
@@ -305,10 +298,9 @@ class TupletSpecifier(object):
     def _trivialize_(self, staff):
         if not self.trivialize:
             return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection = self.selector(staff)
-        else:
-            selection = abjad.select(staff)
+            selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
             tuplet.trivialize()
 

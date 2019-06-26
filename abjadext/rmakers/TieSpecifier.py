@@ -80,14 +80,9 @@ class TieSpecifier(object):
 
     def __call__(self, staff, *, tag: str = None) -> None:
         """
-        Calls tie specifier on ``selections``.
+        Calls tie specifier on ``staff``.
         """
         assert isinstance(staff, abjad.Staff), repr(staff)
-        #        time_signature_voice = staff["TimeSignatureVoice"]
-        #        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
-        #        music_voice = staff["MusicVoice"]
-        #        selections = music_voice[:].partition_by_durations(durations)
-        #        selections = list(selections)
         self._attach_repeat_ties_(staff)
         self._attach_ties_(staff)
         self._detach_ties_(staff)
@@ -128,63 +123,51 @@ class TieSpecifier(object):
     ### PRIVATE METHODS ###
 
     def _attach_repeat_ties_(self, staff, tag: str = None):
-        from .RhythmMaker import RhythmMaker
-
         if not self.attach_repeat_ties:
-            return
-        selections = RhythmMaker._select_by_measure(staff)
-        selection_ = selections
+            return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection_ = self.selector(selections)
-        for note in abjad.select(selection_).notes():
+            selection = self.selector(selection)
+        for note in abjad.select(selection).notes():
             tie = abjad.RepeatTie()
             abjad.attach(tie, note, tag=tag)
 
     def _attach_ties_(self, staff, tag: str = None):
-        from .RhythmMaker import RhythmMaker
-
         if not self.attach_ties:
-            return
-        selections = RhythmMaker._select_by_measure(staff)
-        selection_ = selections
+            return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection_ = self.selector(selections)
-        for note in abjad.select(selection_).notes():
+            selection = self.selector(selection)
+        for note in abjad.select(selection).notes():
             tie = abjad.TieIndicator()
             abjad.attach(tie, note, tag=tag)
 
     def _detach_repeat_ties_(self, staff, tag: str = None):
-        from .RhythmMaker import RhythmMaker
-
         if not self.detach_repeat_ties:
-            return
-        selections = RhythmMaker._select_by_measure(staff)
-        selection_ = selections
+            return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection_ = self.selector(selections)
-        for note in abjad.select(selection_).notes():
+            selection = self.selector(selection)
+        for note in abjad.select(selection).notes():
             abjad.detach(abjad.RepeatTie, note)
 
     def _detach_ties_(self, staff, tag: str = None):
-        from .RhythmMaker import RhythmMaker
-
         if not self.detach_ties:
-            return
-        selections = RhythmMaker._select_by_measure(staff)
-        selection_ = selections
+            return None
+        selection = staff["MusicVoice"]
         if self.selector is not None:
-            selection_ = self.selector(selections)
-        for note in abjad.select(selection_).notes():
+            selection = self.selector(selection)
+        for note in abjad.select(selection).notes():
             abjad.detach(abjad.TieIndicator, note)
 
     def _configure_repeat_ties(self, staff):
-        from .RhythmMaker import RhythmMaker
-
         if not self.repeat_ties:
-            return
-        selections = RhythmMaker._select_by_measure(staff)
+            return None
+        selection = staff["MusicVoice"]
+        if self.selector is not None:
+            selection = self.selector(selection)
         add_repeat_ties = []
-        for leaf in abjad.iterate(selections).leaves():
+        for leaf in abjad.iterate(selection).leaves():
             if abjad.inspect(leaf).has_indicator(abjad.TieIndicator):
                 next_leaf = abjad.inspect(leaf).leaf(1)
                 if next_leaf is not None:
@@ -198,7 +181,7 @@ class TieSpecifier(object):
         from .RhythmMaker import RhythmMaker
 
         if not self.tie_across_divisions:
-            return
+            return None
         selections = RhythmMaker._select_by_measure(staff)
         length = len(selections)
         tie_across_divisions = self.tie_across_divisions
