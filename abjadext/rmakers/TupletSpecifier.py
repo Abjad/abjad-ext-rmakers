@@ -92,44 +92,26 @@ class TupletSpecifier(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(
-        self, staff, *, tag: str = None
-    ) -> typing.List[abjad.Selection]:
+    def __call__(self, staff, *, tag: str = None) -> None:
         """
         Calls tuplet specifier.
         """
-        from .RhythmMaker import RhythmMaker
-
-        time_signature_voice = staff["TimeSignatureVoice"]
-        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
-        divisions = []
-        for skip in time_signature_voice:
-            time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
-            pair = time_signature.pair
-            division = abjad.NonreducedFraction(pair)
-            divisions.append(division)
-        music_voice = staff["MusicVoice"]
-        selections = music_voice[:].partition_by_durations(durations)
-        selections = list(selections)
-
-        self._apply_denominator(selections)
-        self._force_fraction_(selections)
-        self._trivialize_(selections)
+        self._apply_denominator(staff)
+        self._force_fraction_(staff)
+        self._trivialize_(staff)
         # rewrite dots must follow trivialize:
-        self._rewrite_dots_(selections)
+        self._rewrite_dots_(staff)
         # rewrites must precede extract trivial:
-        self._rewrite_sustained_(selections, tag=tag)
-        # self._rewrite_sustained_(staff, tag=tag)
-        # selections = RhythmMaker._select_by_measure(staff)
+        self._rewrite_sustained_(staff, tag=tag)
 
-        self._rewrite_rest_filled_(selections, tag=tag)
+        self._rewrite_rest_filled_(staff, tag=tag)
         # extract trivial must follow the other operations:
-        selections = self._extract_trivial_(selections)
+        self._extract_trivial_(staff)
+
         # tentatively inserting duration bracket here:
-        self._set_duration_bracket(selections)
+        self._set_duration_bracket(staff)
         # toggle prolation must follow rewrite dots and extract trivial:
-        self._toggle_prolation(selections)
-        return list(selections)
+        self._toggle_prolation(staff)
 
     def __eq__(self, argument) -> bool:
         """
@@ -163,27 +145,17 @@ class TupletSpecifier(object):
 
     ### PRIVATE METHODS ###
 
-    # def _apply_denominator(self, selections, divisions):
-    def _apply_denominator(self, selections):
+    def _apply_denominator(self, staff):
         if not self.denominator:
-            return
+            return None
         if self.selector is not None:
-            selections = self.selector(selections)
-        tuplets = list(abjad.iterate(selections).components(abjad.Tuplet))
-
-        #        if divisions is None:
-        #            divisions = len(tuplets) * [None]
-        #        else:
-        #            for division in divisions:
-        #                if not isinstance(division, abjad.NonreducedFraction):
-        #                    raise Exception(f"must be division (not {division!r}).")
-        #        assert len(selections) == len(divisions)
-
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
         denominator = self.denominator
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
-
-        for tuplet in tuplets:
+        for tuplet in abjad.select(selection).tuplets():
             if isinstance(denominator, abjad.Duration):
                 unit_duration = denominator
                 assert unit_duration.numerator == 1
@@ -197,58 +169,48 @@ class TupletSpecifier(object):
                 message = f"invalid preferred denominator: {denominator!r}."
                 raise Exception(message)
 
-    def _extract_trivial_(self, selections):
+    def _extract_trivial_(self, staff):
         if not self.extract_trivial:
-            return selections
-        selected_tuplets = abjad.select(selections).tuplets()
+            return None
         if self.selector is not None:
-            selections__ = self.selector(selections)
-            selected_tuplets = abjad.select(selections__).tuplets()
-        selections_ = []
-        for selection in selections:
-            selection_ = []
-            for component in selection:
-                if component not in selected_tuplets:
-                    selection_.append(component)
-                    continue
-                if not (
-                    isinstance(component, abjad.Tuplet) and component.trivial()
-                ):
-                    selection_.append(component)
-                    continue
-                tuplet = component
-                contents = tuplet[:]
-                assert isinstance(contents, abjad.Selection)
-                selection_.extend(contents)
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
+        tuplets = abjad.select(selection).tuplets()
+        for tuplet in tuplets:
+            if tuplet.trivial():
                 abjad.mutate(tuplet).extract()
-            selection_ = abjad.select(selection_)
-            selections_.append(selection_)
-        return selections_
 
-    def _force_fraction_(self, selections):
+    def _force_fraction_(self, staff):
         if not self.force_fraction:
             return None
         if self.selector is not None:
-            selections = self.selector(selections)
-        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
+        for tuplet in abjad.select(selection).tuplets():
             tuplet.force_fraction = True
 
-    def _rewrite_dots_(self, selections):
+    def _rewrite_dots_(self, staff):
         if not self.rewrite_dots:
             return None
         if self.selector is not None:
-            selections = self.selector(selections)
-        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
+        for tuplet in abjad.select(selection).tuplets():
             tuplet.rewrite_dots()
 
     # TODO: pass in duration specifier
-    def _rewrite_rest_filled_(self, selections, tag=None):
+    def _rewrite_rest_filled_(self, staff, tag=None):
         if not self.rewrite_rest_filled:
             return None
         if self.selector is not None:
-            selections = self.selector(selections)
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
         maker = abjad.LeafMaker(tag=tag)
-        for tuplet in abjad.select(selections).tuplets():
+        for tuplet in abjad.select(selection).tuplets():
             if not self.is_rest_filled_tuplet(tuplet):
                 continue
             duration = abjad.inspect(tuplet).duration()
@@ -289,12 +251,14 @@ class TupletSpecifier(object):
     #            if last_leaf_has_tie:
     #                abjad.attach(abjad.TieIndicator(), tuplet[-1])
 
-    def _rewrite_sustained_(self, selections, tag=None):
+    def _rewrite_sustained_(self, staff, tag=None):
         if not self.rewrite_sustained:
-            return selections
+            return None
         if self.selector is not None:
-            selections = self.selector(selections)
-        for tuplet in abjad.select(selections).tuplets():
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
+        for tuplet in abjad.select(selection).tuplets():
             if not self.is_sustained_tuplet(tuplet):
                 continue
             duration = abjad.inspect(tuplet).duration()
@@ -311,34 +275,41 @@ class TupletSpecifier(object):
                 abjad.detach(abjad.TieIndicator, tuplet[-1])
             tuplet[0]._set_duration(duration)
             tuplet.multiplier = abjad.Multiplier(1)
-        return selections
 
-    def _set_duration_bracket(self, selections):
+    def _set_duration_bracket(self, staff):
         if not self.duration_bracket:
             return None
         if self.selector is not None:
-            selections = self.selector(selections)
-        for tuplet in abjad.select(selections).tuplets():
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
+        for tuplet in abjad.select(selection).tuplets():
             duration_ = abjad.inspect(tuplet).duration()
             markup = duration_.to_score_markup()
             markup = markup.scale((0.75, 0.75))
             abjad.override(tuplet).tuplet_number.text = markup
 
-    def _toggle_prolation(self, selections):
+    def _toggle_prolation(self, staff):
         if self.diminution is None:
             return None
-        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+        if self.selector is not None:
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
+        for tuplet in abjad.select(selection).tuplets():
             if (self.diminution is True and not tuplet.diminution()) or (
                 self.diminution is False and not tuplet.augmentation()
             ):
                 tuplet.toggle_prolation()
 
-    def _trivialize_(self, selections):
+    def _trivialize_(self, staff):
         if not self.trivialize:
             return None
         if self.selector is not None:
-            selections = self.selector(selections)
-        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+            selection = self.selector(staff)
+        else:
+            selection = abjad.select(staff)
+        for tuplet in abjad.select(selection).tuplets():
             tuplet.trivialize()
 
     ### PUBLIC PROPERTIES ###
@@ -1468,7 +1439,7 @@ class TupletSpecifier(object):
             The first three tuplets in the example above qualify as sustained:
 
                 >>> staff = lilypond_file[abjad.Score]
-                >>> for tuplet in abjad.iterate(staff).components(abjad.Tuplet):
+                >>> for tuplet in abjad.select(staff).tuplets():
                 ...     abjadext.rmakers.TupletSpecifier.is_sustained_tuplet(tuplet)
                 ...
                 True
