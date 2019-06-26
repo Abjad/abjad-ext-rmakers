@@ -137,14 +137,9 @@ class RhythmMaker(object):
     ### PRIVATE METHODS ###
 
     def _apply_division_masks(self, staff):
-        time_signature_voice = staff["TimeSignatureVoice"]
-        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
-        music_voice = staff["MusicVoice"]
-        selections = music_voice[:].partition_by_durations(durations)
-        selections = list(selections)
         if not self.division_masks:
-            return selections
-        new_selections = []
+            return None
+        selections = self._select_by_measure(staff)
         duration_specifier = self._get_duration_specifier()
         increase_monotonic = duration_specifier.increase_monotonic
         forbidden_note_duration = duration_specifier.forbidden_note_duration
@@ -165,9 +160,9 @@ class RhythmMaker(object):
                 rotation=self.previous_state.get("rotation"),
             )
             if not matching_division_mask:
-                new_selections.append(selection)
                 continue
             duration = abjad.inspect(selection).duration()
+            assert len(selection) != 0, repr(selection)
             if isinstance(matching_division_mask, SustainMask):
                 leaf_maker = abjad.new(
                     leaf_maker, use_multimeasure_rests=False
@@ -181,15 +176,15 @@ class RhythmMaker(object):
                     leaf_maker, use_multimeasure_rests=use_multimeasure_rests
                 )
                 new_selection = leaf_maker([None], [duration])
-            for component in abjad.iterate(selection).components():
-                abjad.detach(abjad.TieIndicator, component)
-                abjad.detach(abjad.RepeatTie, component)
-            if new_selections:
-                previous_leaf = abjad.select(new_selections).leaf(-1)
-                abjad.detach(abjad.TieIndicator, previous_leaf)
-            new_selections.append(new_selection)
+                first_leaf = abjad.inspect(selection).leaf(0)
+                previous_leaf = abjad.inspect(first_leaf).leaf(-1)
+                if previous_leaf is not None:
+                    abjad.detach(abjad.TieIndicator, previous_leaf)
+                final_leaf = abjad.inspect(selection).leaf(-1)
+                next_leaf = abjad.inspect(final_leaf).leaf(1)
+                if next_leaf is not None:
+                    abjad.detach(abjad.RepeatTie, next_leaf)
             abjad.mutate(selection).replace(new_selection)
-        return new_selections
 
     def _apply_specifiers(self, staff):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
