@@ -457,73 +457,6 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            The preferred denominator of each tuplet is set to the numerator of
-            the division that generates the tuplet when ``denominator``
-            is set to the string ``'divisions'``. This means that the tuplet
-            numerator and denominator are not necessarily relatively prime.
-            This also means that ratios like ``6:4`` and ``10:8`` may arise:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         rewrite_dots=True,
-            ...         denominator='divisions',
-            ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 8/10 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
             The preferred denominator of each tuplet is set in terms of a unit
             duration when ``denominator`` is set to a duration. The
             setting does not affect the first tuplet:
@@ -909,7 +842,7 @@ class TupletRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Set to ``'divisions'``, duration, positive integer or none.
+        Set to duration, positive integer or none.
         """
         return self._denominator
 

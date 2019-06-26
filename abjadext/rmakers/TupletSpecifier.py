@@ -25,6 +25,7 @@ class TupletSpecifier(object):
         "_duration_bracket",
         "_extract_trivial",
         "_force_fraction",
+        "_repeat_ties",
         "_rewrite_dots",
         "_rewrite_rest_filled",
         "_rewrite_sustained",
@@ -39,11 +40,12 @@ class TupletSpecifier(object):
     def __init__(
         self,
         *,
-        denominator: typing.Union[int, str, abjad.DurationTyping] = None,
+        denominator: typing.Union[int, abjad.DurationTyping] = None,
         diminution: bool = None,
         duration_bracket: bool = None,
         extract_trivial: bool = None,
         force_fraction: bool = None,
+        repeat_ties: bool = None,
         rewrite_dots: bool = None,
         rewrite_rest_filled: bool = None,
         rewrite_sustained: bool = None,
@@ -52,6 +54,9 @@ class TupletSpecifier(object):
     ) -> None:
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
+        if denominator is not None:
+            prototype = (int, abjad.Duration)
+            assert isinstance(denominator, prototype), repr(denominator)
         self._denominator = denominator
         if diminution is not None:
             diminution = bool(diminution)
@@ -65,6 +70,9 @@ class TupletSpecifier(object):
         if force_fraction is not None:
             force_fraction = bool(force_fraction)
         self._force_fraction = force_fraction
+        if repeat_ties is not None:
+            repeat_ties = bool(repeat_ties)
+        self._repeat_ties = repeat_ties
         if rewrite_dots is not None:
             rewrite_dots = bool(rewrite_dots)
         self._rewrite_dots = rewrite_dots
@@ -90,6 +98,8 @@ class TupletSpecifier(object):
         """
         Calls tuplet specifier.
         """
+        from .RhythmMaker import RhythmMaker
+
         time_signature_voice = staff["TimeSignatureVoice"]
         durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
         divisions = []
@@ -102,13 +112,16 @@ class TupletSpecifier(object):
         selections = music_voice[:].partition_by_durations(durations)
         selections = list(selections)
 
-        self._apply_denominator(selections, divisions)
+        self._apply_denominator(selections)
         self._force_fraction_(selections)
         self._trivialize_(selections)
         # rewrite dots must follow trivialize:
         self._rewrite_dots_(selections)
         # rewrites must precede extract trivial:
         self._rewrite_sustained_(selections, tag=tag)
+        # self._rewrite_sustained_(staff, tag=tag)
+        # selections = RhythmMaker._select_by_measure(staff)
+
         self._rewrite_rest_filled_(selections, tag=tag)
         # extract trivial must follow the other operations:
         selections = self._extract_trivial_(selections)
@@ -150,44 +163,39 @@ class TupletSpecifier(object):
 
     ### PRIVATE METHODS ###
 
-    def _apply_denominator(self, selections, divisions):
+    # def _apply_denominator(self, selections, divisions):
+    def _apply_denominator(self, selections):
         if not self.denominator:
             return
         if self.selector is not None:
             selections = self.selector(selections)
         tuplets = list(abjad.iterate(selections).components(abjad.Tuplet))
-        if divisions is None:
-            divisions = len(tuplets) * [None]
-        else:
-            for division in divisions:
-                if not isinstance(division, abjad.NonreducedFraction):
-                    raise Exception(f"must be division (not {division!r}).")
-        assert len(selections) == len(divisions)
+
+        #        if divisions is None:
+        #            divisions = len(tuplets) * [None]
+        #        else:
+        #            for division in divisions:
+        #                if not isinstance(division, abjad.NonreducedFraction):
+        #                    raise Exception(f"must be division (not {division!r}).")
+        #        assert len(selections) == len(divisions)
+
         denominator = self.denominator
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
-        if denominator == "divisions":
-            assert len(tuplets) == len(divisions)
-            for tuplet, division in zip(tuplets, divisions):
-                tuplet.denominator = division.numerator
-        else:
-            for tuplet in tuplets:
-                if isinstance(denominator, abjad.Duration):
-                    unit_duration = denominator
-                    assert unit_duration.numerator == 1
-                    duration = abjad.inspect(tuplet).duration()
-                    denominator_ = unit_duration.denominator
-                    nonreduced_fraction = duration.with_denominator(
-                        denominator_
-                    )
-                    tuplet.denominator = nonreduced_fraction.numerator
-                elif abjad.mathtools.is_positive_integer(denominator):
-                    tuplet.denominator = denominator
-                else:
-                    message = (
-                        f"invalid preferred denominator: {denominator!r}."
-                    )
-                    raise Exception(message)
+
+        for tuplet in tuplets:
+            if isinstance(denominator, abjad.Duration):
+                unit_duration = denominator
+                assert unit_duration.numerator == 1
+                duration = abjad.inspect(tuplet).duration()
+                denominator_ = unit_duration.denominator
+                nonreduced_fraction = duration.with_denominator(denominator_)
+                tuplet.denominator = nonreduced_fraction.numerator
+            elif abjad.mathtools.is_positive_integer(denominator):
+                tuplet.denominator = denominator
+            else:
+                message = f"invalid preferred denominator: {denominator!r}."
+                raise Exception(message)
 
     def _extract_trivial_(self, selections):
         if not self.extract_trivial:
@@ -219,7 +227,7 @@ class TupletSpecifier(object):
 
     def _force_fraction_(self, selections):
         if not self.force_fraction:
-            return
+            return None
         if self.selector is not None:
             selections = self.selector(selections)
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
@@ -227,7 +235,7 @@ class TupletSpecifier(object):
 
     def _rewrite_dots_(self, selections):
         if not self.rewrite_dots:
-            return
+            return None
         if self.selector is not None:
             selections = self.selector(selections)
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
@@ -236,7 +244,7 @@ class TupletSpecifier(object):
     # TODO: pass in duration specifier
     def _rewrite_rest_filled_(self, selections, tag=None):
         if not self.rewrite_rest_filled:
-            return selections
+            return None
         if self.selector is not None:
             selections = self.selector(selections)
         maker = abjad.LeafMaker(tag=tag)
@@ -247,9 +255,40 @@ class TupletSpecifier(object):
             rests = maker([None], [duration])
             abjad.mutate(tuplet[:]).replace(rests)
             tuplet.multiplier = abjad.Multiplier(1)
-        return selections
 
-    # TODO: pass in duration specifier
+    # TODO: use this rewrite:
+    #    # TODO: pass in duration specifier
+    #    # TODO: pass in tie specifier
+    #    def _rewrite_sustained_(self, staff, tag=None):
+    #        if not self.rewrite_sustained:
+    #            return None
+    #        selection = staff["MusicVoice"][:]
+    #        if self.selector is not None:
+    #            selection = self.selector(selection)
+    #        maker = abjad.LeafMaker(repeat_ties=self.repeat_ties, tag=tag)
+    #        for tuplet in abjad.select(selection).tuplets():
+    #            if not self.is_sustained_tuplet(tuplet):
+    #                continue
+    #            duration = abjad.inspect(tuplet).duration()
+    #            leaves = abjad.select(tuplet).leaves()
+    #            first_leaf = leaves[0]
+    #            if abjad.inspect(first_leaf).has_indicator(abjad.RepeatTie):
+    #                first_leaf_has_repeat_tie = True
+    #            else:
+    #                first_leaf_has_repeat_tie = False
+    #            last_leaf = leaves[-1]
+    #            if abjad.inspect(last_leaf).has_indicator(abjad.TieIndicator):
+    #                last_leaf_has_tie = True
+    #            else:
+    #                last_leaf_has_tie = False
+    #            notes = maker([0], [duration])
+    #            abjad.mutate(tuplet[:]).replace(notes)
+    #            tuplet.multiplier = abjad.Multiplier(1)
+    #            if first_leaf_has_repeat_tie:
+    #                abjad.attach(abjad.RepeatTie(), tuplet[0])
+    #            if last_leaf_has_tie:
+    #                abjad.attach(abjad.TieIndicator(), tuplet[-1])
+
     def _rewrite_sustained_(self, selections, tag=None):
         if not self.rewrite_sustained:
             return selections
@@ -276,7 +315,7 @@ class TupletSpecifier(object):
 
     def _set_duration_bracket(self, selections):
         if not self.duration_bracket:
-            return selections
+            return None
         if self.selector is not None:
             selections = self.selector(selections)
         for tuplet in abjad.select(selections).tuplets():
@@ -287,7 +326,7 @@ class TupletSpecifier(object):
 
     def _toggle_prolation(self, selections):
         if self.diminution is None:
-            return
+            return None
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
             if (self.diminution is True and not tuplet.diminution()) or (
                 self.diminution is False and not tuplet.augmentation()
@@ -296,7 +335,7 @@ class TupletSpecifier(object):
 
     def _trivialize_(self, selections):
         if not self.trivialize:
-            return
+            return None
         if self.selector is not None:
             selections = self.selector(selections)
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
@@ -305,7 +344,7 @@ class TupletSpecifier(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def denominator(self) -> typing.Union[int, str, abjad.Duration, None]:
+    def denominator(self) -> typing.Union[int, abjad.Duration, None]:
         r"""
         Gets preferred denominator.
 
@@ -374,79 +413,6 @@ class TupletSpecifier(object):
                             c'4
                         }
                         \times 4/5 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            The preferred denominator of each tuplet is set to the numerator of
-            the division that generates the tuplet when ``denominator``
-            is set to the string ``"divisions"``. This means that the tuplet
-            numerator and denominator are not necessarily relatively prime.
-            This also means that ratios like ``6:4`` and ``10:8`` may arise:
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
-            ...         rewrite_dots=True,
-            ...         denominator="divisions",
-            ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...         ),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> score = lilypond_file[abjad.Score]
-            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletBracket.staff-padding = #4.5
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 8/10 {
                             c'8
                             c'2
                         }
@@ -879,7 +845,7 @@ class TupletSpecifier(object):
                     }
                 >>
 
-        Set to ``"divisions"``, duration, positive integer or none.
+        Set to duration, positive integer or none.
         """
         return self._denominator
 
@@ -1186,6 +1152,13 @@ class TupletSpecifier(object):
 
         """
         return self._force_fraction
+
+    @property
+    def repeat_ties(self) -> typing.Optional[bool]:
+        """
+        Is true when rewrite-sustained uses repeat ties.
+        """
+        return self._repeat_ties
 
     @property
     def rewrite_dots(self) -> typing.Optional[bool]:

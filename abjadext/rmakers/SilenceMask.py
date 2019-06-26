@@ -212,7 +212,7 @@ class SilenceMask(object):
             new_selection = container[:]
             abjad.mutate(container).extract()
             new_selections.append(new_selection)
-        return new_selections
+        ###return new_selections
 
     def __format__(self, format_specification="") -> str:
         """
