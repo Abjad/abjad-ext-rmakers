@@ -197,26 +197,18 @@ class TieSpecifier(object):
             if not tie_across_divisions.matches_index(i, length):
                 continue
             division_one, division_two = pair
-            leaf_one = next(abjad.iterate(division_one).leaves(reverse=True))
-            leaf_two = next(abjad.iterate(division_two).leaves())
-            leaves = [leaf_one, leaf_two]
-            if isinstance(leaf_one, rest_prototype):
+            leaf_one = abjad.inspect(division_one).leaf(-1)
+            if not isinstance(leaf_one, abjad.Note):
                 continue
-            if isinstance(leaf_two, rest_prototype):
+            leaf_two = abjad.inspect(division_two).leaf(0)
+            if not isinstance(leaf_two, abjad.Note):
                 continue
-            pitched_prototype = (abjad.Note, abjad.Chord)
-            if not all(isinstance(_, pitched_prototype) for _ in leaves):
-                continue
-            logical_tie_one = abjad.inspect(leaf_one).logical_tie()
-            logical_tie_two = abjad.inspect(leaf_two).logical_tie()
-            if logical_tie_one == logical_tie_two:
-                continue
-            combined_logical_tie = logical_tie_one + logical_tie_two
-            pitch_set = abjad.PitchSet(combined_logical_tie)
-            for leaf in combined_logical_tie:
-                abjad.detach(abjad.TieIndicator, leaf)
-                abjad.detach(abjad.RepeatTie, leaf)
-            abjad.tie(combined_logical_tie, repeat=self.repeat_ties)
+            abjad.detach(abjad.TieIndicator, leaf_one)
+            abjad.detach(abjad.RepeatTie, leaf_two)
+            if self.repeat_ties:
+                abjad.attach(abjad.RepeatTie(), leaf_two)
+            else:
+                abjad.attach(abjad.TieIndicator(), leaf_one)
 
     ### PUBLIC PROPERTIES ###
 
