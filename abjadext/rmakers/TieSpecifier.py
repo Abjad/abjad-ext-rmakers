@@ -213,31 +213,10 @@ class TieSpecifier(object):
                 continue
             combined_logical_tie = logical_tie_one + logical_tie_two
             pitch_set = abjad.PitchSet(combined_logical_tie)
-            if 1 < len(pitch_set):
-                continue
             for leaf in combined_logical_tie:
                 abjad.detach(abjad.TieIndicator, leaf)
                 abjad.detach(abjad.RepeatTie, leaf)
             abjad.tie(combined_logical_tie, repeat=self.repeat_ties)
-
-        def _get_pitches(component):
-            if isinstance(component, abjad.Note):
-                return component.written_pitch
-            elif isinstance(component, abjad.Chord):
-                return component.written_pitches
-            else:
-                raise TypeError(component)
-
-        for class_, group in pairs:
-            group = list(group)
-            if not isinstance(group[0], (abjad.Note, abjad.Chord)):
-                continue
-            subpairs = itertools.groupby(group, lambda _: _get_pitches(_))
-            for pitches, subgroup in subpairs:
-                subgroup = list(subgroup)
-                if len(subgroup) == 1:
-                    continue
-                abjad.tie(subgroup)
 
     ### PUBLIC PROPERTIES ###
 
