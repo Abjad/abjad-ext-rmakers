@@ -157,26 +157,14 @@ class SilenceMask(object):
     ):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
+
         if isinstance(staff, abjad.Staff):
-            time_signature_voice = staff["TimeSignatureVoice"]
-            durations = [
-                abjad.inspect(_).duration() for _ in time_signature_voice
-            ]
-            music_voice = staff["MusicVoice"]
-            selections = music_voice[:].partition_by_durations(durations)
-            selections = list(selections)
+            selection = staff["MusicVoice"]
         else:
-            selections = staff
+            selection = staff
 
-        containers = []
-        for selection in selections:
-            wrapper = abjad.Container()
-            abjad.attach(abjad.const.TEMPORARY_CONTAINER, wrapper)
-            abjad.mutate(selection).wrap(wrapper)
-            containers.append(wrapper)
-
-        components = self.selector(
-            selections, previous=previous_logical_ties_produced
+        selection = self.selector(
+            selection, previous=previous_logical_ties_produced
         )
 
         # will need to restore for statal rhythm-makers:
@@ -187,7 +175,7 @@ class SilenceMask(object):
         # if self._previous_incomplete_last_note():
         #    previous_logical_ties_produced -= 1
 
-        leaves = abjad.select(components).leaves()
+        leaves = abjad.select(selection).leaves()
         for leaf in leaves:
             if self.use_multimeasure_rests is True:
                 duration = abjad.inspect(leaf).duration()
@@ -205,14 +193,6 @@ class SilenceMask(object):
             abjad.detach(abjad.RepeatTie, rest)
             if next_leaf is not None:
                 abjad.detach(abjad.RepeatTie, next_leaf)
-        new_selections = []
-        for container in containers:
-            inspector = abjad.inspect(container)
-            assert inspector.indicator(abjad.const.TEMPORARY_CONTAINER)
-            new_selection = container[:]
-            abjad.mutate(container).extract()
-            new_selections.append(new_selection)
-        ###return new_selections
 
     def __format__(self, format_specification="") -> str:
         """

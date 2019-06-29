@@ -151,18 +151,13 @@ class SustainMask(object):
     def __call__(self, staff, tag=None):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
-        time_signature_voice = staff["TimeSignatureVoice"]
-        durations = [abjad.inspect(_).duration() for _ in time_signature_voice]
-        music_voice = staff["MusicVoice"]
-        selections = music_voice[:].partition_by_durations(durations)
-        selections = list(selections)
-        containers = []
-        for selection in selections:
-            wrapper = abjad.Container()
-            abjad.attach(abjad.const.TEMPORARY_CONTAINER, wrapper)
-            abjad.mutate(selection).wrap(wrapper)
-            containers.append(wrapper)
-        components = self.selector(selections)
+
+        if isinstance(staff, abjad.Staff):
+            selection = staff["MusicVoice"]
+        else:
+            selection = staff
+        selection = self.selector(selection)
+
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
         # logical_ties = list(logical_ties)
@@ -170,7 +165,8 @@ class SustainMask(object):
         # previous_logical_ties_produced = self._previous_logical_ties_produced()
         # if self._previous_incomplete_last_note():
         #    previous_logical_ties_produced -= 1
-        leaves = abjad.select(components).leaves()
+
+        leaves = abjad.select(selection).leaves()
         for leaf in leaves:
             if isinstance(leaf, abjad.Note):
                 continue
@@ -178,14 +174,6 @@ class SustainMask(object):
             if leaf.multiplier is not None:
                 note.multiplier = leaf.multiplier
             abjad.mutate(leaf).replace([note])
-        new_selections = []
-        for container in containers:
-            inspector = abjad.inspect(container)
-            assert inspector.indicator(abjad.const.TEMPORARY_CONTAINER)
-            new_selection = container[:]
-            abjad.mutate(container).extract()
-            new_selections.append(new_selection)
-        ###return new_selections
 
     def __format__(self, format_specification="") -> str:
         """
