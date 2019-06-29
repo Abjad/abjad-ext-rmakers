@@ -68,14 +68,16 @@ class NoteRhythmMaker(RhythmMaker):
         *specifiers: typings.SpecifierTyping,
         burnish_specifier: BurnishSpecifier = None,
         division_masks: typings.MasksTyping = None,
+        divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
             *specifiers,
-            duration_specifier=duration_specifier,
             division_masks=division_masks,
+            divisions=divisions,
+            duration_specifier=duration_specifier,
             tag=tag,
         )
         if burnish_specifier is not None:
@@ -101,8 +103,7 @@ class NoteRhythmMaker(RhythmMaker):
             >>> result = rhythm_maker(divisions)
             >>> for x in result:
             ...     x
-            Selection([Note("c'2"), Note("c'8")])
-            Selection([Note("c'4.")])
+            Selection([Note("c'2"), Note("c'8"), Note("c'4.")])
 
         """
         return RhythmMaker.__call__(
@@ -425,6 +426,57 @@ class NoteRhythmMaker(RhythmMaker):
 
         """
         return self._burnish_specifier
+
+    @property
+    def divisions(self) -> typing.Optional[abjad.Expression]:
+        r"""
+        Gets division expressions.
+
+        ..  container:: example
+
+            >>> weights = [abjad.NonreducedFraction(3, 8)]
+            >>> divisions = abjad.sequence().join()
+            >>> divisions = divisions.split(
+            ...     weights, cyclic=True, overhang=True,
+            ...     )
+            >>> divisions = divisions.flatten(depth=-1)
+            >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+            ...     divisions=divisions,
+            ... )
+
+            >>> divisions = [(4, 4), (4, 4)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/4
+                        s1 * 1
+                        \time 4/4
+                        s1 * 1
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4.
+                        c'4.
+                        c'4.
+                        c'4.
+                        c'4.
+                        c'8
+                    }
+                >>
+
+        """
+        return super().divisions
 
     @property
     def duration_specifier(self) -> typing.Optional[DurationSpecifier]:

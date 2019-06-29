@@ -167,10 +167,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> for selection in selections:
             ...     selection
-            Selection([Tuplet(Multiplier(1, 1), "c'16 c'8 c'8.")])
-            Selection([Tuplet(Multiplier(1, 1), "c'4 c'16 c'8 c'16")])
-            Selection([Tuplet(Multiplier(1, 1), "c'8 c'4")])
-            Selection([Tuplet(Multiplier(1, 1), "c'16 c'8 c'8. c'8")])
+            Selection([Tuplet(Multiplier(1, 1), "c'16 c'8 c'8."), Tuplet(Multiplier(1, 1), "c'4 c'16 c'8 c'16"), Tuplet(Multiplier(1, 1), "c'8 c'4"), Tuplet(Multiplier(1, 1), "c'16 c'8 c'8. c'8")])
 
         """
         return RhythmMaker.__call__(

@@ -38,6 +38,7 @@ class RhythmMaker(object):
     __slots__ = (
         "_already_cached_state",
         "_division_masks",
+        "_divisions",
         "_duration_specifier",
         "_previous_state",
         "_specifiers",
@@ -55,6 +56,7 @@ class RhythmMaker(object):
         self,
         *specifiers: typings.SpecifierTyping,
         division_masks: typings.MasksTyping = None,
+        divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
     ) -> None:
@@ -63,13 +65,16 @@ class RhythmMaker(object):
             assert isinstance(specifier, SpecifierClasses), repr(specifier)
         specifiers_ = tuple(specifiers)
         self._specifiers = specifiers_
-        if duration_specifier is not None:
-            assert isinstance(duration_specifier, DurationSpecifier)
-        self._duration_specifier = duration_specifier
         division_masks = self._prepare_masks(division_masks)
         if division_masks is not None:
             assert isinstance(division_masks, abjad.PatternTuple)
         self._division_masks = division_masks
+        if divisions is not None:
+            assert isinstance(divisions, abjad.Expression)
+        self._divisions = divisions
+        if duration_specifier is not None:
+            assert isinstance(duration_specifier, DurationSpecifier)
+        self._duration_specifier = duration_specifier
         self._already_cached_state = None
         self._previous_state = abjad.OrderedDict()
         self._state = abjad.OrderedDict()
@@ -91,6 +96,9 @@ class RhythmMaker(object):
         time_signatures = [abjad.TimeSignature(_) for _ in divisions]
         divisions = self._coerce_divisions(divisions)
         staff = self._make_staff(time_signatures)
+        if self.divisions is not None:
+            divisions = self.divisions(divisions)
+            divisions = list(divisions)
         selections = self._make_music(divisions)
         staff["MusicVoice"].extend(selections)
         self._apply_division_masks(staff)
@@ -98,9 +106,10 @@ class RhythmMaker(object):
         if self._already_cached_state is not True:
             self._cache_state(staff)
         # self._check_wellformedness(staff)
-        selections = self._select_by_measure(staff)
+        # selections = self._select_by_measure(staff)
+        selections = [staff["MusicVoice"][:]]
         staff["MusicVoice"][:] = []
-        self._validate_selections(selections)
+        ###self._validate_selections(selections)
         self._validate_tuplets(selections)
         return selections
 
@@ -357,6 +366,13 @@ class RhythmMaker(object):
             assert len(tuplet), repr(tuplet)
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def divisions(self) -> typing.Optional[abjad.Expression]:
+        r"""
+        Gets division expression.
+        """
+        return self._divisions
 
     @property
     def division_masks(self) -> typing.Optional[typings.MasksTyping]:
