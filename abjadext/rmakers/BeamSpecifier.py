@@ -85,49 +85,49 @@ class BeamSpecifier(object):
                     stemlet_length=self.stemlet_length,
                     tag=tag,
                 )
-            return None
-        if isinstance(staff, abjad.Staff):
-            selections = RhythmMaker._select_by_measure(staff)
         else:
-            selections = staff
-        self._detach_all_beams(selections)
-        if self.beam_divisions_together:
-            durations = []
-            for selection in selections:
-                duration = abjad.inspect(selection).duration()
-                durations.append(duration)
-            components: typing.List[abjad.Component] = []
-            for selection in selections:
-                if isinstance(selection, abjad.Selection):
-                    components.extend(selection)
-                elif isinstance(selection, abjad.Tuplet):
-                    components.append(selection)
-                else:
-                    raise TypeError(selection)
-            leaves = abjad.select(components).leaves(
-                do_not_iterate_grace_containers=True
-            )
-            abjad.beam(
-                leaves,
-                beam_lone_notes=self.beam_lone_notes,
-                beam_rests=self.beam_rests,
-                durations=durations,
-                span_beam_count=1,
-                stemlet_length=self.stemlet_length,
-                tag=tag,
-            )
-        elif self.beam_each_division:
-            for selection in selections:
-                leaves = abjad.select(selection).leaves(
+            if isinstance(staff, abjad.Staff):
+                selections = RhythmMaker._select_by_measure(staff)
+            else:
+                selections = staff
+            self._detach_all_beams(selections)
+            if self.beam_divisions_together:
+                durations = []
+                for selection in selections:
+                    duration = abjad.inspect(selection).duration()
+                    durations.append(duration)
+                components: typing.List[abjad.Component] = []
+                for selection in selections:
+                    if isinstance(selection, abjad.Selection):
+                        components.extend(selection)
+                    elif isinstance(selection, abjad.Tuplet):
+                        components.append(selection)
+                    else:
+                        raise TypeError(selection)
+                leaves = abjad.select(components).leaves(
                     do_not_iterate_grace_containers=True
                 )
                 abjad.beam(
                     leaves,
                     beam_lone_notes=self.beam_lone_notes,
                     beam_rests=self.beam_rests,
+                    durations=durations,
+                    span_beam_count=1,
                     stemlet_length=self.stemlet_length,
                     tag=tag,
                 )
+            elif self.beam_each_division:
+                for selection in selections:
+                    leaves = abjad.select(selection).leaves(
+                        do_not_iterate_grace_containers=True
+                    )
+                    abjad.beam(
+                        leaves,
+                        beam_lone_notes=self.beam_lone_notes,
+                        beam_rests=self.beam_rests,
+                        stemlet_length=self.stemlet_length,
+                        tag=tag,
+                    )
         if self.use_feather_beams:
             for selection in selections:
                 first_leaf = abjad.select(selection).leaf(0)
