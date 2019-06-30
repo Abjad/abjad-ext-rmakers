@@ -859,7 +859,7 @@ class TupletRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_each_division=True,
             ...         ),
-            ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
+            ...     tuplet_ratios=[(1, 1, 1, 1)],
             ...     )
 
             >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
@@ -889,23 +889,30 @@ class TupletRhythmMaker(RhythmMaker):
                     \new RhythmicStaff
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/9 {
+                        \times 5/6 {
                             c'8.
                             [
                             c'8.
-                            ]
-                            c'4.
                             c'8.
-                            [
                             c'8.
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            c'8
+                        \times 1/1 {
+                            c'16.
                             [
-                            c'8
+                            c'16.
+                            c'16.
+                            c'16.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            c'8.
+                            c'8.
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
@@ -913,17 +920,83 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             [
                             c'8
-                            ]
-                            c'4
                             c'8
-                            [
                             c'8
                             ]
                         }
-                        \times 4/5 {
-                            c'4.
+                    }
+                >>
+
+        ..  container:: example
+
+            Beams each division:
+
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         selector=abjad.select().tuplets(),
+            ...         ),
+            ...     tuplet_ratios=[(1, 1, 1, 1)],
+            ...     )
+
+            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file)  # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 6/8
+                        s1 * 3/4
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6 {
+                            c'8.
+                            [
+                            c'8.
+                            c'8.
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16.
+                            [
+                            c'16.
+                            c'16.
+                            c'16.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            c'8.
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
                             c'8
                             [
+                            c'8
+                            c'8
                             c'8
                             ]
                         }

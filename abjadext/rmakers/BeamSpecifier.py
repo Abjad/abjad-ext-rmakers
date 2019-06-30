@@ -3,7 +3,7 @@ import typing
 
 
 class BeamSpecifier(object):
-    r"""
+    """
     Beam specifier.
     """
 
@@ -16,6 +16,7 @@ class BeamSpecifier(object):
         "_beam_each_division",
         "_beam_lone_notes",
         "_beam_rests",
+        "_selector",
         "_stemlet_length",
         "_use_feather_beams",
     )
@@ -31,6 +32,7 @@ class BeamSpecifier(object):
         beam_divisions_together: bool = None,
         beam_lone_notes: bool = None,
         beam_rests: bool = None,
+        selector: abjad.SelectorTyping = None,
         stemlet_length: typing.Union[int, float] = None,
         use_feather_beams: bool = None,
     ) -> None:
@@ -46,6 +48,13 @@ class BeamSpecifier(object):
         if beam_rests is not None:
             beam_rests = bool(beam_rests)
         self._beam_rests = beam_rests
+        if selector is not None:
+            assert not beam_each_division, repr(beam_each_division)
+            assert not beam_divisions_together, repr(beam_divisions_together)
+        if isinstance(selector, str):
+            selector = eval(selector)
+            assert isinstance(selector, abjad.Expression)
+        self._selector = selector
         if stemlet_length is not None:
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
@@ -59,15 +68,26 @@ class BeamSpecifier(object):
         """
         Calls beam specifier on ``selections``.
         """
+        from .RhythmMaker import RhythmMaker
+
+        if self.selector is not None:
+            selection = staff["MusicVoice"]
+            selections = self.selector(selection)
+            for selection in selections:
+                self._detach_all_beams(selection)
+                leaves = abjad.select(selection).leaves(
+                    do_not_iterate_grace_containers=True
+                )
+                abjad.beam(
+                    leaves,
+                    beam_lone_notes=self.beam_lone_notes,
+                    beam_rests=self.beam_rests,
+                    stemlet_length=self.stemlet_length,
+                    tag=tag,
+                )
+            return None
         if isinstance(staff, abjad.Staff):
-            time_signature_voice = staff["TimeSignatureVoice"]
-            assert isinstance(time_signature_voice, abjad.Voice)
-            durations = [
-                abjad.inspect(_).duration() for _ in time_signature_voice
-            ]
-            music_voice = staff["MusicVoice"]
-            selections = music_voice[:].partition_by_durations(durations)
-            selections = list(selections)
+            selections = RhythmMaker._select_by_measure(staff)
         else:
             selections = staff
         self._detach_all_beams(selections)
@@ -239,6 +259,13 @@ class BeamSpecifier(object):
         Is true when beams include rests.
         """
         return self._beam_rests
+
+    @property
+    def selector(self) -> typing.Optional[abjad.Expression]:
+        """
+        Gets selector.
+        """
+        return self._selector
 
     @property
     def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
