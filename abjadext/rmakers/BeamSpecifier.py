@@ -71,7 +71,10 @@ class BeamSpecifier(object):
         from .RhythmMaker import RhythmMaker
 
         if self.selector is not None:
-            selection = staff["MusicVoice"]
+            if isinstance(staff, abjad.Staff):
+                selection = staff["MusicVoice"]
+            else:
+                selection = staff
             selections = self.selector(selection)
             for selection in selections:
                 self._detach_all_beams(selection)
