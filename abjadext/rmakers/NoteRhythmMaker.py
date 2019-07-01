@@ -880,7 +880,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().logical_ties(pitched=True),
             ...         ),
             ...     )
 
@@ -975,10 +975,7 @@ class NoteRhythmMaker(RhythmMaker):
             Makes no beams:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=False,
-            ...         beam_each_division=False,
-            ...         ),
+            ...     abjadext.rmakers.BeamSpecifier(),
             ...     )
 
             >>> divisions = [(5, 32), (5, 32)]

@@ -36,7 +36,7 @@ class BeamSpecifier(object):
         stemlet_length: typing.Union[int, float] = None,
         use_feather_beams: bool = None,
     ) -> None:
-        if beam_each_division is None:
+        if beam_each_division is not None:
             beam_each_division = bool(beam_each_division)
         self._beam_each_division = beam_each_division
         if beam_divisions_together is not None:
@@ -147,10 +147,12 @@ class BeamSpecifier(object):
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.BeamSpecifier(beam_each_division=True)
+            >>> specifier = abjadext.rmakers.BeamSpecifier(
+            ...     selector=abjad.select().tuplets(),
+            ...     )
             >>> abjad.f(specifier)
             abjadext.rmakers.BeamSpecifier(
-                beam_each_division=True,
+                selector=abjad.select().tuplets(),
                 )
 
         """

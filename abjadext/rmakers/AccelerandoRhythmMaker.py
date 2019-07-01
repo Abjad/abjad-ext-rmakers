@@ -23,7 +23,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...         duration_bracket=True,
         ...         ),
         ...     abjadext.rmakers.BeamSpecifier(
-        ...         beam_each_division=True,
+        ...         selector=abjad.select().tuplets(),
         ...         use_feather_beams=True,
         ...         ),
         ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -281,7 +281,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...         duration_bracket=True,
         ...         ),
         ...     abjadext.rmakers.BeamSpecifier(
-        ...         beam_each_division=True,
+        ...         selector=abjad.select().tuplets(),
         ...         use_feather_beams=True,
         ...         ),
         ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -902,7 +902,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -1160,7 +1160,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=[
@@ -1429,7 +1429,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         selector=abjad.select().tuplets().filter_length(">", 1)
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -1595,8 +1595,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
             ...         beam_rests=True,
+            ...         selector=abjad.select().tuplets(),
             ...         stemlet_length=0.75,
             ...         use_feather_beams=True,
             ...         ),
@@ -1885,7 +1885,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -2143,7 +2143,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
             ...         beam_divisions_together=True,
             ...         use_feather_beams=False,
             ...         ),
@@ -2446,10 +2445,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=False,
-            ...         beam_each_division=False,
-            ...         ),
+            ...     abjadext.rmakers.BeamSpecifier(),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
@@ -2693,7 +2689,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -2957,7 +2953,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -3225,7 +3221,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         selector=tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -3485,7 +3481,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -3743,7 +3739,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=False,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -3841,7 +3837,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
@@ -4100,7 +4096,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     abjadext.rmakers.SilenceMask(
@@ -4279,7 +4275,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=[
@@ -4883,7 +4879,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
+            ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(

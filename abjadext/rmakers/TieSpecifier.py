@@ -229,9 +229,7 @@ class TieSpecifier(object):
             ...         attach_repeat_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -325,9 +323,7 @@ class TieSpecifier(object):
             ...         attach_repeat_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -426,9 +422,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=abjad.select().notes()[5:15],
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -529,9 +523,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -625,9 +617,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -725,9 +715,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -828,9 +816,7 @@ class TieSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -938,9 +924,7 @@ class TieSpecifier(object):
             ...         detach_repeat_ties=True,
             ...         selector=abjad.select().notes()[pattern],
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1055,9 +1039,7 @@ class TieSpecifier(object):
             ...         detach_ties=True,
             ...         selector=abjad.select().notes()[pattern],
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
-            ...     ),
+            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
