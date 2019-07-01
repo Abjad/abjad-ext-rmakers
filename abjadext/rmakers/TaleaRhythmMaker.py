@@ -1032,11 +1032,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ..  todo:: Make this work with beam specifier selector.
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         selector=abjad.select().tuplets(),
+            ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
             ...     abjadext.rmakers.RewriteMeterCommand(),
-            ...     abjadext.rmakers.BeamSpecifier(beam_each_division=True),
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[5, 4],
             ...         denominator=16,
@@ -1070,29 +1072,35 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'4
                         ~
                         c'16
-                        [
+                        [ %! rmakers.RewriteMeterCommand.__call__
                         c'8.
                         ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
                         c'16
+                        [ %! rmakers.RewriteMeterCommand.__call__
                         c'8.
                         ~
-                        ]
+                        ] %! rmakers.RewriteMeterCommand.__call__
                         c'8
-                        [
-                        c'8
-                        ~
-                        c'8
+                        [ %! rmakers.RewriteMeterCommand.__call__
                         c'8
                         ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
+                        c'8
+                        [ %! rmakers.RewriteMeterCommand.__call__
+                        c'8
+                        ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
                         c'8.
+                        [ %! rmakers.RewriteMeterCommand.__call__
                         c'16
                         ~
-                        ]
+                        ] %! rmakers.RewriteMeterCommand.__call__
                         c'8.
-                        [
+                        [ %! rmakers.RewriteMeterCommand.__call__
                         c'16
                         ~
-                        ]
+                        ] %! rmakers.RewriteMeterCommand.__call__
                         c'4
                         c'4
                     }
