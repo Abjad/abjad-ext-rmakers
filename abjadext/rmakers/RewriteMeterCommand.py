@@ -32,29 +32,21 @@ class RewriteMeterCommand(object):
         """
         Calls rewrite meter command.
         """
-        if time_signatures is None:
-            time_signature_voice = staff["TimeSignatureVoice"]
-            meters = []
-            for skip in time_signature_voice:
-                time_signature = abjad.inspect(skip).indicator(
-                    abjad.TimeSignature
-                )
-                meter = abjad.Meter(time_signature)
-                meters.append(meter)
-        else:
-            meters = [abjad.Meter(_.pair) for _ in time_signatures]
-        meters = [abjad.Meter(_) for _ in meters]
+        from .RhythmMaker import RhythmMaker
+
+        assert time_signatures is None, repr(time_signatures)
+        time_signature_voice = staff["TimeSignatureVoice"]
+        meters = []
+        for skip in time_signature_voice:
+            time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
+            meter = abjad.Meter(time_signature)
+            meters.append(meter)
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = self.reference_meters or ()
         command = SplitCommand(repeat_ties=self.repeat_ties)
         command(staff, time_signatures=meters)
-        music_voice = staff["MusicVoice"]
-        assert sum(durations) == abjad.inspect(music_voice).duration()
-        selections = music_voice[:].partition_by_durations(durations)
+        selections = RhythmMaker._select_by_measure(staff)
         for meter, selection in zip(meters, selections):
-            time_signature = abjad.TimeSignature(meter.pair)
-            leaf = abjad.inspect(selection).leaf(0)
-            abjad.attach(time_signature, leaf)
             container = abjad.Container()
             abjad.mutate(selection).wrap(container)
             for reference_meter in reference_meters:
@@ -89,15 +81,11 @@ class RewriteMeterCommand(object):
                     beam_rests=False,
                     tag="rmakers.RewriteMeterCommand.__call__",
                 )
-        selections_: typing.List[abjad.Selection] = []
         # making sure to copy first with [:] to avoid iterate-while-change:
-        for container in music_voice[:]:
-            selection_ = container[:]
-            assert isinstance(selection_, abjad.Selection)
-            abjad.mutate(container).extract()
-            for leaf in abjad.iterate(selection_).leaves():
+        for container in staff["MusicVoice"][:]:
+            for leaf in abjad.select(container).leaves():
                 abjad.detach(abjad.TimeSignature, leaf)
-            selections_.append(selection_)
+            abjad.mutate(container).extract()
 
     def __format__(self, format_specification="") -> str:
         """
