@@ -13,7 +13,6 @@ class BeamSpecifier(object):
 
     __slots__ = (
         "_beam_divisions_together",
-        "_beam_each_division",
         "_beam_lone_notes",
         "_beam_rests",
         "_selector",
@@ -28,7 +27,6 @@ class BeamSpecifier(object):
     def __init__(
         self,
         *,
-        beam_each_division: bool = None,
         beam_divisions_together: bool = None,
         beam_lone_notes: bool = None,
         beam_rests: bool = None,
@@ -36,9 +34,6 @@ class BeamSpecifier(object):
         stemlet_length: typing.Union[int, float] = None,
         use_feather_beams: bool = None,
     ) -> None:
-        if beam_each_division is not None:
-            beam_each_division = bool(beam_each_division)
-        self._beam_each_division = beam_each_division
         if beam_divisions_together is not None:
             beam_divisions_together = bool(beam_divisions_together)
         self._beam_divisions_together = beam_divisions_together
@@ -49,7 +44,6 @@ class BeamSpecifier(object):
             beam_rests = bool(beam_rests)
         self._beam_rests = beam_rests
         if selector is not None:
-            assert not beam_each_division, repr(beam_each_division)
             assert not beam_divisions_together, repr(beam_divisions_together)
         if isinstance(selector, str):
             selector = eval(selector)
@@ -119,18 +113,6 @@ class BeamSpecifier(object):
                     stemlet_length=self.stemlet_length,
                     tag=tag,
                 )
-            elif self.beam_each_division:
-                for selection in selections:
-                    leaves = abjad.select(selection).leaves(
-                        do_not_iterate_grace_containers=True
-                    )
-                    abjad.beam(
-                        leaves,
-                        beam_lone_notes=self.beam_lone_notes,
-                        beam_rests=self.beam_rests,
-                        stemlet_length=self.stemlet_length,
-                        tag=tag,
-                    )
         if self.use_feather_beams:
             for selection in selections:
                 first_leaf = abjad.select(selection).leaf(0)
@@ -243,13 +225,6 @@ class BeamSpecifier(object):
         Is true when divisions beam together.
         """
         return self._beam_divisions_together
-
-    @property
-    def beam_each_division(self) -> typing.Optional[bool]:
-        r"""
-        Is true when specifier beams each division.
-        """
-        return self._beam_each_division
 
     @property
     def beam_lone_notes(self) -> typing.Optional[bool]:
