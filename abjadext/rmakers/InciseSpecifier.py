@@ -205,11 +205,11 @@ class InciseSpecifier(object):
             ...     body_ratio=abjad.Ratio((1, 1)),
             ...     )
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         selector=abjad.select().tuplets(),
+            ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
-            ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_each_division=True,
             ...     ),
             ...     incise_specifier=specifier,
             ...     )

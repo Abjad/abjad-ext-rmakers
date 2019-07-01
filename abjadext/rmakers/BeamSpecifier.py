@@ -164,8 +164,8 @@ class BeamSpecifier(object):
 
         ..  container:: example
 
-            >>> abjadext.rmakers.BeamSpecifier(beam_each_division=True)
-            BeamSpecifier(beam_each_division=True)
+            >>> abjadext.rmakers.BeamSpecifier()
+            BeamSpecifier()
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()
