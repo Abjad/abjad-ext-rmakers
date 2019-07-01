@@ -166,7 +166,13 @@ class BeamSpecifier(object):
 
     @staticmethod
     def _make_beamable_groups(components, durations):
-        assert abjad.inspect(components).duration() == sum(durations)
+        music_duration = abjad.inspect(components).duration()
+        if music_duration != sum(durations):
+            message = f"music duration {music_duration} does not equal"
+            message += f" total duration {sum(durations)}:\n"
+            message += f"   {components}\n"
+            message += f"   {durations}"
+            raise Exception(message)
         component_to_timespan = []
         start_offset = abjad.Offset(0)
         for component in components:

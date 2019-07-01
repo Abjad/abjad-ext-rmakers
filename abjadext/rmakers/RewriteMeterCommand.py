@@ -47,22 +47,22 @@ class RewriteMeterCommand(object):
         command(staff, time_signatures=meters)
         selections = RhythmMaker._select_by_measure(staff)
         for meter, selection in zip(meters, selections):
-            container = abjad.Container()
-            abjad.mutate(selection).wrap(container)
             for reference_meter in reference_meters:
                 if str(reference_meter) == str(meter):
                     meter = reference_meter
                     break
 
             nontupletted_leaves = []
-            for leaf in abjad.iterate(container).leaves():
+            for leaf in abjad.iterate(selection).leaves():
                 if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
             BeamSpecifier._detach_all_beams(nontupletted_leaves)
-            abjad.mutate(container[:]).rewrite_meter(
+            abjad.mutate(selection).rewrite_meter(
                 meter, rewrite_tuplets=False, repeat_ties=self.repeat_ties
             )
-            leaves = abjad.select(container).leaves(
+        selections = RhythmMaker._select_by_measure(staff)
+        for meter, selection in zip(meters, selections):
+            leaves = abjad.select(selection).leaves(
                 do_not_iterate_grace_containers=True
             )
             beat_durations = []
@@ -81,11 +81,6 @@ class RewriteMeterCommand(object):
                     beam_rests=False,
                     tag="rmakers.RewriteMeterCommand.__call__",
                 )
-        # making sure to copy first with [:] to avoid iterate-while-change:
-        for container in staff["MusicVoice"][:]:
-            for leaf in abjad.select(container).leaves():
-                abjad.detach(abjad.TimeSignature, leaf)
-            abjad.mutate(container).extract()
 
     def __format__(self, format_specification="") -> str:
         """
