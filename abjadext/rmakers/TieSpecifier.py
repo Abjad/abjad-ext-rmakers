@@ -167,10 +167,12 @@ class TieSpecifier(object):
         if self.selector is not None:
             selection = self.selector(selection)
         add_repeat_ties = []
-        for leaf in abjad.iterate(selection).leaves():
+        for leaf in abjad.select(selection).leaves():
             if abjad.inspect(leaf).has_indicator(abjad.TieIndicator):
                 next_leaf = abjad.inspect(leaf).leaf(1)
                 if next_leaf is not None:
+                    if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
+                        continue
                     add_repeat_ties.append(next_leaf)
                 abjad.detach(abjad.TieIndicator, leaf)
         for leaf in add_repeat_ties:
@@ -701,6 +703,67 @@ class TieSpecifier(object):
 
         ..  container:: example
 
+            TIE-ACROSS-DIVISIONS RECIPE:
+
+            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+            >>> last_leaf = abjad.select().leaf(-1)
+            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
+            ...     abjadext.rmakers.TieSpecifier(
+            ...         attach_ties=True,
+            ...         selector=nonlast_tuplets.map(last_leaf),
+            ...         ),
+            ...     tuplet_ratios=[(5, 2)],
+            ...     )
+
+            >>> divisions = [(4, 8), (4, 8), (4, 8)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/8
+                        s1 * 1/2
+                        \time 4/8
+                        s1 * 1/2
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                            ~
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                            ~
+                        }
+                        \times 4/7 {
+                            c'2
+                            ~
+                            c'8
+                            c'4
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
             TIE-WITHIN-DIVISIONS RECIPE:
 
             >>> selector = abjad.select().tuplets()
@@ -1158,63 +1221,5 @@ class TieSpecifier(object):
     ) -> typing.Union[bool, abjad.IntegerSequence, None]:
         r"""
         Is true when rhythm-maker ties across divisons.
-
-        ..  container:: example
-
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
-            ...         tie_across_divisions=True,
-            ...         ),
-            ...     tuplet_ratios=[(5, 2)],
-            ...     )
-
-            >>> divisions = [(4, 8), (4, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 4/8
-                        s1 * 1/2
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                            ~
-                        }
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                            ~
-                        }
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                        }
-                    }
-                >>
-
-        Set to true, false or to a boolean vector.
         """
         return self._tie_across_divisions
