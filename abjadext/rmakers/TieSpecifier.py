@@ -22,7 +22,6 @@ class TieSpecifier(object):
         "_detach_ties",
         "_repeat_ties",
         "_selector",
-        "_tie_across_divisions",
     )
 
     _publish_storage_format = True
@@ -40,7 +39,6 @@ class TieSpecifier(object):
             bool, abjad.IntegerPair, abjad.DurationInequality
         ] = None,
         selector: abjad.SelectorTyping = None,
-        tie_across_divisions: typing.Union[bool, abjad.IntegerSequence] = None,
     ) -> None:
         if attach_repeat_ties is not None:
             attach_repeat_ties = bool(attach_repeat_ties)
@@ -73,8 +71,6 @@ class TieSpecifier(object):
             abjad.Pattern,
             abjad.PatternTuple,
         )
-        assert isinstance(tie_across_divisions, prototype)
-        self._tie_across_divisions = tie_across_divisions
 
     ### SPECIAL METHODS ###
 
@@ -87,7 +83,6 @@ class TieSpecifier(object):
         self._attach_ties_(staff)
         self._detach_ties_(staff)
         self._detach_repeat_ties_(staff)
-        self._tie_across_divisions_(staff)
         self._configure_repeat_ties(staff)
 
     def __eq__(self, argument) -> bool:
@@ -181,39 +176,6 @@ class TieSpecifier(object):
         for leaf in add_repeat_ties:
             repeat_tie = abjad.RepeatTie()
             abjad.attach(repeat_tie, leaf)
-
-    def _tie_across_divisions_(self, staff):
-        from .RhythmMaker import RhythmMaker
-
-        if not self.tie_across_divisions:
-            return None
-        selections = RhythmMaker._select_by_measure(staff)
-        length = len(selections)
-        tie_across_divisions = self.tie_across_divisions
-        if isinstance(tie_across_divisions, bool):
-            tie_across_divisions = [tie_across_divisions]
-        if not isinstance(tie_across_divisions, abjad.Pattern):
-            tie_across_divisions = abjad.Pattern.from_vector(
-                tie_across_divisions
-            )
-        pairs = abjad.sequence(selections).nwise()
-        rest_prototype = (abjad.Rest, abjad.MultimeasureRest)
-        for i, pair in enumerate(pairs):
-            if not tie_across_divisions.matches_index(i, length):
-                continue
-            division_one, division_two = pair
-            leaf_one = abjad.inspect(division_one).leaf(-1)
-            if not isinstance(leaf_one, abjad.Note):
-                continue
-            leaf_two = abjad.inspect(division_two).leaf(0)
-            if not isinstance(leaf_two, abjad.Note):
-                continue
-            abjad.detach(abjad.TieIndicator, leaf_one)
-            abjad.detach(abjad.RepeatTie, leaf_two)
-            if self.repeat_ties:
-                abjad.attach(abjad.RepeatTie(), leaf_two)
-            else:
-                abjad.attach(abjad.TieIndicator(), leaf_one)
 
     ### PUBLIC PROPERTIES ###
 
@@ -1217,12 +1179,3 @@ class TieSpecifier(object):
         Gets selector.
         """
         return self._selector
-
-    @property
-    def tie_across_divisions(
-        self
-    ) -> typing.Union[bool, abjad.IntegerSequence, None]:
-        r"""
-        Is true when rhythm-maker ties across divisons.
-        """
-        return self._tie_across_divisions
