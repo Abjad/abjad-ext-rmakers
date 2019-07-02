@@ -45,9 +45,7 @@ class SplitCommand(object):
             message += f"\nmusic voice: {music_voice[:]}."
             raise Exception(message)
         abjad.mutate(music_voice[:]).split(
-            durations=durations,
-            tie_split_notes=True,
-            repeat_ties=self.repeat_ties,
+            durations=durations, repeat_ties=self.repeat_ties
         )
 
     def __format__(self, format_specification="") -> str:
@@ -89,9 +87,7 @@ class SplitCommand(object):
             message += f"\nmusic voice: {music_voice[:]}."
             raise Exception(message)
         abjad.mutate(music_voice[:]).split(
-            durations=durations,
-            tie_split_notes=True,
-            repeat_ties=self.repeat_ties,
+            durations=durations, repeat_ties=self.repeat_ties
         )
         components = music_voice[:]
         component_durations = [abjad.inspect(_).duration() for _ in components]
