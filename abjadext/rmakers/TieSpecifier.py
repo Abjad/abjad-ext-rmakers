@@ -170,10 +170,13 @@ class TieSpecifier(object):
         for leaf in abjad.select(selection).leaves():
             if abjad.inspect(leaf).has_indicator(abjad.TieIndicator):
                 next_leaf = abjad.inspect(leaf).leaf(1)
-                if next_leaf is not None:
-                    if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
-                        continue
-                    add_repeat_ties.append(next_leaf)
+                if next_leaf is None:
+                    continue
+                if not isinstance(next_leaf, (abjad.Chord, abjad.Note)):
+                    continue
+                if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
+                    continue
+                add_repeat_ties.append(next_leaf)
                 abjad.detach(abjad.TieIndicator, leaf)
         for leaf in add_repeat_ties:
             repeat_tie = abjad.RepeatTie()
