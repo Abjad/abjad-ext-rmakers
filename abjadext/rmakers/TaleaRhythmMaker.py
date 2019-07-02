@@ -1029,8 +1029,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            ..  todo:: Make this work with beam specifier selector.
-
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
