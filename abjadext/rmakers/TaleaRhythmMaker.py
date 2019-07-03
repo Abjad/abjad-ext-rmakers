@@ -2342,12 +2342,13 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
+            ...     abjadext.rmakers.BeamSpecifier(
+            ...         beam_divisions_together=True,
+            ...         selector=abjad.select().tuplets(),
+            ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=True,
-            ...         ),
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[1],
             ...         denominator=16,

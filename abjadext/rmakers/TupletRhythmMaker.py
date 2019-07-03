@@ -988,6 +988,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=True,
+            ...         selector=abjad.select().tuplets(),
             ...         ),
             ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     )
@@ -2097,9 +2098,6 @@ class TupletRhythmMaker(RhythmMaker):
             No division masks:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
-            ...         beam_divisions_together=False,
-            ...         ),
             ...     tuplet_ratios=[(4, 1)],
             ...     )
 

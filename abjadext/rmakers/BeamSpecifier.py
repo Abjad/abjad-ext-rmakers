@@ -36,6 +36,8 @@ class BeamSpecifier(object):
     ) -> None:
         if beam_divisions_together is not None:
             beam_divisions_together = bool(beam_divisions_together)
+        # if beam_divisions_together is True:
+        #    assert selector is not None
         self._beam_divisions_together = beam_divisions_together
         if beam_lone_notes is not None:
             beam_lone_notes = bool(beam_lone_notes)
@@ -43,8 +45,6 @@ class BeamSpecifier(object):
         if beam_rests is not None:
             beam_rests = bool(beam_rests)
         self._beam_rests = beam_rests
-        if selector is not None:
-            assert not beam_divisions_together, repr(beam_divisions_together)
         if isinstance(selector, str):
             selector = eval(selector)
             assert isinstance(selector, abjad.Expression)
@@ -64,24 +64,54 @@ class BeamSpecifier(object):
         """
         from .RhythmMaker import RhythmMaker
 
+        components: typing.List[abjad.Component] = []
         if self.selector is not None:
             if isinstance(staff, abjad.Staff):
                 selection = staff["MusicVoice"]
             else:
                 selection = staff
             selections = self.selector(selection)
-            for selection in selections:
-                self._detach_all_beams(selection)
-                leaves = abjad.select(selection).leaves(
+            #            print()
+            #            for selection in selections:
+            #                print("SSS", selection)
+            if self.beam_divisions_together:
+                self._detach_all_beams(selections)
+                durations = []
+                for selection in selections:
+                    duration = abjad.inspect(selection).duration()
+                    durations.append(duration)
+                for selection in selections:
+                    if isinstance(selection, abjad.Selection):
+                        components.extend(selection)
+                    elif isinstance(selection, abjad.Tuplet):
+                        components.append(selection)
+                    else:
+                        raise TypeError(selection)
+                leaves = abjad.select(components).leaves(
                     do_not_iterate_grace_containers=True
                 )
                 abjad.beam(
                     leaves,
                     beam_lone_notes=self.beam_lone_notes,
                     beam_rests=self.beam_rests,
+                    durations=durations,
+                    span_beam_count=1,
                     stemlet_length=self.stemlet_length,
                     tag=tag,
                 )
+            else:
+                for selection in selections:
+                    self._detach_all_beams(selection)
+                    leaves = abjad.select(selection).leaves(
+                        do_not_iterate_grace_containers=True
+                    )
+                    abjad.beam(
+                        leaves,
+                        beam_lone_notes=self.beam_lone_notes,
+                        beam_rests=self.beam_rests,
+                        stemlet_length=self.stemlet_length,
+                        tag=tag,
+                    )
         else:
             if isinstance(staff, abjad.Staff):
                 selections = RhythmMaker._select_by_measure(staff)
@@ -93,7 +123,6 @@ class BeamSpecifier(object):
                 for selection in selections:
                     duration = abjad.inspect(selection).duration()
                     durations.append(duration)
-                components: typing.List[abjad.Component] = []
                 for selection in selections:
                     if isinstance(selection, abjad.Selection):
                         components.extend(selection)

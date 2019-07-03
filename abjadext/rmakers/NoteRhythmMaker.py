@@ -926,6 +926,7 @@ class NoteRhythmMaker(RhythmMaker):
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=True,
+            ...         selector=abjad.select().logical_ties(),
             ...         ),
             ...     )
 

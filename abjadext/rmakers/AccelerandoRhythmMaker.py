@@ -2144,7 +2144,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         beam_divisions_together=True,
-            ...         use_feather_beams=False,
+            ...         selector=abjad.select().tuplets(),
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
