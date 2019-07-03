@@ -109,6 +109,7 @@ class TaleaRhythmMaker(RhythmMaker):
         burnish_specifier: BurnishSpecifier = None,
         curtail_ties: bool = None,
         division_masks: typings.MasksTyping = None,
+        divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
@@ -118,8 +119,9 @@ class TaleaRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *specifiers,
-            duration_specifier=duration_specifier,
             division_masks=division_masks,
+            divisions=divisions,
+            duration_specifier=duration_specifier,
             tag=tag,
         )
         if talea is not None:

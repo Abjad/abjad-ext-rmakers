@@ -106,10 +106,8 @@ class RhythmMaker(object):
         if self._already_cached_state is not True:
             self._cache_state(staff)
         # self._check_wellformedness(staff)
-        # selections = self._select_by_measure(staff)
         selections = [staff["MusicVoice"][:]]
         staff["MusicVoice"][:] = []
-        ###self._validate_selections(selections)
         self._validate_tuplets(selections)
         return selections
 
@@ -353,12 +351,6 @@ class RhythmMaker(object):
                 "counts": scaled_counts,
             }
         )
-
-    def _validate_selections(self, selections):
-        assert isinstance(selections, collections.Sequence), repr(selections)
-        assert len(selections), repr(selections)
-        for selection in selections:
-            assert isinstance(selection, abjad.Selection), selection
 
     def _validate_tuplets(self, selections):
         for tuplet in abjad.iterate(selections).components(abjad.Tuplet):

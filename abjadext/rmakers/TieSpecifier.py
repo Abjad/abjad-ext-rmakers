@@ -8,7 +8,6 @@ from . import typings
 class TieSpecifier(object):
     """
     Tie specifier.
-
     """
 
     ### CLASS VARIABLES ###
