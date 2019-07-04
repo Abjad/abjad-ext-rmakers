@@ -206,8 +206,7 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 raise Exception("must incise divisions or output.")
 
-    def _make_music(self, divisions):
-        input_divisions = divisions[:]
+    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
         input_ = self._prepare_input()
         prefix_talea = input_[0]
         prefix_counts = input_[1]
@@ -227,11 +226,10 @@ class IncisedRhythmMaker(RhythmMaker):
         divisions = result["divisions"]
         lcd = result["lcd"]
         counts = result["counts"]
-        secondary_divisions = divisions
         incise_specifier = self._get_incise_specifier()
         if not incise_specifier.outer_divisions_only:
             numeric_map = self._make_division_incised_numeric_map(
-                secondary_divisions,
+                divisions,
                 counts["prefix_talea"],
                 prefix_counts,
                 counts["suffix_talea"],
@@ -241,20 +239,17 @@ class IncisedRhythmMaker(RhythmMaker):
         else:
             assert incise_specifier.outer_divisions_only
             numeric_map = self._make_output_incised_numeric_map(
-                secondary_divisions,
+                divisions,
                 counts["prefix_talea"],
                 prefix_counts,
                 counts["suffix_talea"],
                 suffix_counts,
                 counts["extra_counts_per_division"],
             )
-        result = []
         selections = self._numeric_map_to_leaf_selections(numeric_map, lcd)
-        tuplets = self._make_tuplets(secondary_divisions, selections)
+        tuplets = self._make_tuplets(divisions, selections)
         assert all(isinstance(_, abjad.Tuplet) for _ in tuplets)
-        result.extend(tuplets)
-        selections = [abjad.select(_) for _ in result]
-        return selections
+        return tuplets
 
     def _make_numeric_map_part(
         self, numerator, prefix, suffix, is_note_filled=True

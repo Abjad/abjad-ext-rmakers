@@ -358,20 +358,16 @@ class TupletRhythmMaker(RhythmMaker):
 
     ### PRIVATE METHODS ###
 
-    def _make_music(self, divisions):
+    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
         tuplets = []
-        prototype = abjad.NonreducedFraction
-        assert all(isinstance(_, prototype) for _ in divisions)
         tuplet_ratios = abjad.CyclicTuple(self.tuplet_ratios)
-        for duration_index, division in enumerate(divisions):
-            ratio = tuplet_ratios[duration_index]
-            duration = abjad.Duration(division)
+        for i, division in enumerate(divisions):
+            ratio = tuplet_ratios[i]
             tuplet = abjad.Tuplet.from_duration_and_ratio(
-                duration, ratio, tag=self.tag
+                division, ratio, tag=self.tag
             )
             tuplets.append(tuplet)
-        selections = [abjad.select(_) for _ in tuplets]
-        return selections
+        return tuplets
 
     ### PUBLIC PROPERTIES ###
 

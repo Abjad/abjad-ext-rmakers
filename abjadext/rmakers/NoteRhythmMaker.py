@@ -204,7 +204,7 @@ class NoteRhythmMaker(RhythmMaker):
         new_selection = abjad.select(new_selection)
         return new_selection
 
-    def _make_music(self, divisions):
+    def _make_music(self, divisions) -> typing.List[abjad.Selection]:
         selections = []
         duration_specifier = self._get_duration_specifier()
         leaf_maker = abjad.LeafMaker(
@@ -214,13 +214,7 @@ class NoteRhythmMaker(RhythmMaker):
             tag=self.tag,
         )
         for division in divisions:
-            durations = [division]
-            selection = leaf_maker(pitches=0, durations=durations)
-            if (
-                1 < len(selection)
-                and abjad.inspect(selection[0]).logical_tie().is_trivial
-            ):
-                abjad.tie(selection[:])
+            selection = leaf_maker(pitches=0, durations=[division])
             selections.append(selection)
         selections = self._apply_burnish_specifier(selections)
         return selections

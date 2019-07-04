@@ -813,7 +813,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         index,
         *,
         tag: str = None,
-    ) -> abjad.Selection:
+    ) -> abjad.Tuplet:
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
 
@@ -857,18 +857,17 @@ class AccelerandoRhythmMaker(RhythmMaker):
         )
         pair = (abjad.inspect(selection).duration(), total_duration)
         tuplet = abjad.Tuplet((1, 1), selection, tag=tag)
-        selection = abjad.select([tuplet])
-        return selection
+        return tuplet
 
-    def _make_music(self, divisions):
-        selections = []
+    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
+        tuplets = []
         interpolation_specifiers = self._get_interpolation_specifiers()
-        for index, division in enumerate(divisions):
-            accelerando = self._make_accelerando(
-                division, interpolation_specifiers, index, tag=self.tag
+        for i, division in enumerate(divisions):
+            tuplet = self._make_accelerando(
+                division, interpolation_specifiers, i, tag=self.tag
             )
-            selections.append(accelerando)
-        return selections
+            tuplets.append(tuplet)
+        return tuplets
 
     @staticmethod
     def _round_durations(durations, denominator):

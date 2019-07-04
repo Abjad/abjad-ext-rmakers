@@ -93,8 +93,12 @@ class RhythmMaker(object):
         if self.divisions is not None:
             divisions = self.divisions(divisions)
             divisions = list(divisions)
-        selections = self._make_music(divisions)
-        staff["MusicVoice"].extend(selections)
+        music = self._make_music(divisions)
+        assert isinstance(music, list), repr(music)
+        prototype = (abjad.Tuplet, abjad.Selection)
+        for item in music:
+            assert isinstance(item, prototype), repr(item)
+        staff["MusicVoice"].extend(music)
         self._apply_specifiers(staff)
         if self._already_cached_state is not True:
             self._cache_state(staff)

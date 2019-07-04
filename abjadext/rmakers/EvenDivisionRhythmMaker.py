@@ -271,43 +271,49 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     ### PRIVATE METHODS ###
 
-    def _apply_burnish_specifier(self, selections):
+    def _apply_burnish_specifier(self, tuplets) -> None:
         if self.burnish_specifier is None:
-            return selections
+            return None
+        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
         left_classes = self.burnish_specifier.left_classes
         middle_classes = self.burnish_specifier.middle_classes
         right_classes = self.burnish_specifier.right_classes
         left_counts = self.burnish_specifier.left_counts
         right_counts = self.burnish_specifier.right_counts
-        left_classes = left_classes or ()
+        left_classes = left_classes or []
         left_classes = abjad.sequence(left_classes)
-        left_classes = abjad.CyclicTuple(left_classes)
+        left_classes_ = abjad.CyclicTuple(left_classes)
         if middle_classes == () or middle_classes is None:
-            middle_classes = (0,)
+            middle_classes = [0]
         middle_classes = abjad.sequence(middle_classes)
-        middle_classes = abjad.CyclicTuple(middle_classes)
-        right_classes = right_classes or ()
+        middle_classes_ = abjad.CyclicTuple(middle_classes)
+        right_classes = right_classes or []
         right_classes = abjad.sequence(right_classes)
-        right_classes = abjad.CyclicTuple(right_classes)
-        left_counts = left_counts or (0,)
+        right_classes_ = abjad.CyclicTuple(right_classes)
+        left_counts = left_counts or [0]
         left_counts = abjad.sequence(left_counts)
-        left_counts = abjad.CyclicTuple(left_counts)
-        right_counts = right_counts or (0,)
+        left_counts_ = abjad.CyclicTuple(left_counts)
+        right_counts = right_counts or [0]
         right_counts = abjad.sequence(right_counts)
-        right_counts = abjad.CyclicTuple(right_counts)
+        right_counts_ = abjad.CyclicTuple(right_counts)
         if self.burnish_specifier.outer_divisions_only:
-            procedure = self._burnish_outer_selections
+            self._burnish_outer_tuplets(
+                tuplets,
+                left_classes_,
+                middle_classes_,
+                right_classes_,
+                left_counts_,
+                right_counts_,
+            )
         else:
-            procedure = self._burnish_each_selection
-        selections = procedure(
-            selections,
-            left_classes,
-            middle_classes,
-            right_classes,
-            left_counts,
-            right_counts,
-        )
-        return selections
+            self._burnish_each_tuplet(
+                tuplets,
+                left_classes_,
+                middle_classes_,
+                right_classes_,
+                left_counts_,
+                right_counts_,
+            )
 
     def _burnish_division_part(self, division_part, token):
         assert len(division_part) == len(token)
@@ -326,25 +332,25 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         new_division_part = type(division_part)(new_division_part)
         return new_division_part
 
-    def _burnish_each_selection(
+    def _burnish_each_tuplet(
         self,
-        selections,
+        tuplets,
         left_classes,
         middle_classes,
         right_classes,
         left_counts,
         right_counts,
-    ):
+    ) -> None:
+        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
         lefts_index, rights_index = 0, 0
-        for selection_index, selection in enumerate(selections):
-            tuplet = selection[0]
+        for i, tuplet in enumerate(tuplets):
             original_duration = abjad.inspect(tuplet).duration()
             leaves = tuplet[:]
             leaf_count = len(leaves)
-            left_length = left_counts[selection_index]
+            left_length = left_counts[i]
             left = left_classes[lefts_index : lefts_index + left_length]
             lefts_index += left_length
-            right_length = right_counts[selection_index]
+            right_length = right_counts[i]
             right = right_classes[rights_index : rights_index + right_length]
             rights_index += right_length
             available_left_length = leaf_count
@@ -353,7 +359,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             right_length = min([right_length, available_right_length])
             middle_length = leaf_count - left_length - right_length
             left = left[:left_length]
-            middle = middle_length * [middle_classes[selection_index]]
+            middle = middle_length * [middle_classes[i]]
             right = right[:right_length]
             result = abjad.sequence(leaves).partition_by_counts(
                 [left_length, middle_length, right_length],
@@ -367,27 +373,28 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             burnished_leaves = left_part + middle_part + right_part
             tuplet[:] = burnished_leaves
             assert abjad.inspect(tuplet).duration() == original_duration
-        return selections
 
-    def _burnish_outer_selections(
+    def _burnish_outer_tuplets(
         self,
-        selections,
+        tuplets,
         left_classes,
         middle_classes,
         right_classes,
         left_counts,
         right_counts,
-    ):
-        if len(selections) == 1:
-            self._burnish_each_selection(
-                selections,
+    ) -> None:
+        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
+        # only tuplet
+        if len(tuplets) == 1:
+            self._burnish_each_tuplet(
+                tuplets,
                 left_classes,
                 middle_classes,
                 right_classes,
                 left_counts,
                 right_counts,
             )
-            return selections
+            return None
         left_length = 0
         if left_counts:
             left_length = left_counts[0]
@@ -396,9 +403,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         if right_counts:
             right_length = right_counts[0]
         right = right_classes[:right_length]
-
-        # first selection
-        tuplet = selections[0][0]
+        # first tuplet
+        tuplet = tuplets[0]
         original_duration = abjad.inspect(tuplet).duration()
         leaves = tuplet[:]
         available_left_length = len(leaves)
@@ -417,19 +423,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         burnished_leaves = left_part + middle_part
         tuplet[:] = burnished_leaves
         assert abjad.inspect(tuplet).duration() == original_duration
-
-        # middle selections
-        for selection in selections[1:-1]:
-            tuplet = selection[0]
+        # middle tuplets
+        for tuplet in tuplets[1:-1]:
             original_duration = abjad.inspect(tuplet).duration()
             leaves = tuplet[:]
             middle = len(leaves) * [middle_classes[0]]
             burnished_leaves = self._burnish_division_part(leaves, middle)
             tuplet[:] = burnished_leaves
             assert abjad.inspect(tuplet).duration() == original_duration
-
-        # last selection
-        tuplet = selections[-1][0]
+        # last tuplet
+        tuplet = tuplets[-1]
         original_duration = abjad.inspect(tuplet).duration()
         leaves = tuplet[:]
         available_right_length = len(leaves)
@@ -445,17 +448,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         burnished_leaves = middle_part + right_part
         tuplet[:] = burnished_leaves
         assert abjad.inspect(tuplet).duration() == original_duration
-        return selections
 
-    def _make_music(self, divisions):
-        selections = []
+    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
+        tuplets = []
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         denominators = abjad.sequence(self.denominators)
         denominators = denominators.rotate(-divisions_consumed)
         denominators = abjad.CyclicTuple(denominators)
-        extra_counts_per_division = self.extra_counts_per_division or (0,)
-        extra_counts_per_division = abjad.sequence(extra_counts_per_division)
+        extra_counts_per_division_ = self.extra_counts_per_division or [0]
+        extra_counts_per_division = abjad.sequence(extra_counts_per_division_)
         extra_counts_per_division = extra_counts_per_division.rotate(
             -divisions_consumed
         )
@@ -466,8 +468,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             if not abjad.mathtools.is_positive_integer_power_of_two(
                 division.denominator
             ):
-                message = "non-power-of-two divisions not implemented: {!r}."
-                message = message.format(division)
+                message = "non-power-of-two divisions not implemented:"
+                message += f" {division}."
                 raise Exception(message)
             denominator_ = denominators[i]
             extra_count = extra_counts_per_division[i]
@@ -506,10 +508,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 tuplet.denominator = denominator
             elif isinstance(self.denominator, int):
                 tuplet.denominator = self.denominator
-            selection = abjad.Selection(tuplet)
-            selections.append(selection)
-        selections = self._apply_burnish_specifier(selections)
-        return selections
+            tuplets.append(tuplet)
+        self._apply_burnish_specifier(tuplets)
+        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
+        return tuplets
 
     ### PUBLIC PROPERTIES ###
 

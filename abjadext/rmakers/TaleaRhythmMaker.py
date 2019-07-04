@@ -113,7 +113,7 @@ class TaleaRhythmMaker(RhythmMaker):
         extra_counts_per_division: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
         tag: str = None,
-        talea: Talea = None,
+        talea: Talea = Talea(counts=[1], denominator=16),
     ) -> None:
         RhythmMaker.__init__(
             self,
@@ -269,9 +269,9 @@ class TaleaRhythmMaker(RhythmMaker):
         return burnish_specifier(divisions)
 
     def _apply_ties_to_split_notes(
-        self, result, unscaled_end_counts, unscaled_preamble, unscaled_talea
+        self, tuplets, unscaled_end_counts, unscaled_preamble, unscaled_talea
     ):
-        leaves = abjad.select(result).leaves()
+        leaves = abjad.select(tuplets).leaves()
         written_durations = [leaf.written_duration for leaf in leaves]
         written_durations = abjad.sequence(written_durations)
         total_duration = written_durations.weight()
@@ -402,21 +402,18 @@ class TaleaRhythmMaker(RhythmMaker):
         result = abjad.select(result)
         return result
 
-    def _make_music(self, divisions):
+    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
         input_divisions = divisions[:]
         input_ = self._prepare_input()
         end_counts = input_["end_counts"]
         preamble = input_["preamble"]
         talea = input_["talea"]
-        if talea:
-            advanced_talea = Talea(
-                counts=talea,
-                denominator=self.talea.denominator,
-                end_counts=end_counts,
-                preamble=preamble,
-            )
-        else:
-            advanced_talea = None
+        advanced_talea = Talea(
+            counts=talea,
+            denominator=self.talea.denominator,
+            end_counts=end_counts,
+            preamble=preamble,
+        )
         extra_counts_per_division = input_["extra_counts_per_division"]
         unscaled_end_counts = tuple(end_counts)
         unscaled_preamble = tuple(preamble)
@@ -427,19 +424,17 @@ class TaleaRhythmMaker(RhythmMaker):
             "preamble": preamble,
             "talea": talea,
         }
+        talea_denominator = None
         if self.talea is not None:
             talea_denominator = self.talea.denominator
-        else:
-            talea_denominator = None
         result = self._scale_counts(divisions, talea_denominator, counts)
         divisions = result["divisions"]
         lcd = result["lcd"]
         counts = result["counts"]
         preamble = counts["preamble"]
-        secondary_divisions = divisions
         if counts["talea"]:
             numeric_map = self._make_numeric_map(
-                secondary_divisions,
+                divisions,
                 counts["preamble"],
                 counts["talea"],
                 counts["extra_counts_per_division"],
@@ -449,33 +444,28 @@ class TaleaRhythmMaker(RhythmMaker):
             leaf_lists = self._make_leaf_lists(numeric_map, lcd)
             if not counts["extra_counts_per_division"]:
                 tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
-                result = tuplets
             else:
-                tuplets = self._make_tuplets(secondary_divisions, leaf_lists)
-                result = tuplets
-            selections = [abjad.select(_) for _ in result]
+                tuplets = self._make_tuplets(divisions, leaf_lists)
         else:
             talea_weight_consumed = 0
             leaf_maker = abjad.LeafMaker(tag=self.tag)
             selections = []
-            for division in secondary_divisions:
+            for division in divisions:
                 selection = leaf_maker([0], [division])
                 selections.append(selection)
+            tuplets = self._make_tuplets(divisions, selections)
         if counts["talea"]:
             self._apply_ties_to_split_notes(
-                selections,
-                unscaled_end_counts,
-                unscaled_preamble,
-                unscaled_talea,
+                tuplets, unscaled_end_counts, unscaled_preamble, unscaled_talea
             )
-        if talea and talea_weight_consumed not in advanced_talea:
-            last_leaf = abjad.inspect(selections).leaf(-1)
+        if talea_weight_consumed not in advanced_talea:
+            last_leaf = abjad.inspect(tuplets).leaf(-1)
             if isinstance(last_leaf, abjad.Note):
                 self.state["incomplete_last_note"] = True
         string = "talea_weight_consumed"
         self.state[string] = self.previous_state.get(string, 0)
         self.state[string] += talea_weight_consumed
-        return selections
+        return tuplets
 
     def _make_numeric_map(
         self, divisions, preamble, talea, extra_counts_per_division, end_counts
@@ -4506,13 +4496,13 @@ class TaleaRhythmMaker(RhythmMaker):
         return super().tag
 
     @property
-    def talea(self) -> typing.Optional[Talea]:
+    def talea(self) -> Talea:
         r"""
         Gets talea.
 
         ..  container:: example
 
-            No talea:
+            Default talea:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
@@ -4546,10 +4536,50 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \new RhythmicStaff
                     {
-                        c'4.
-                        c'4.
-                        c'4.
-                        c'4.
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
                     }
                 >>
 
