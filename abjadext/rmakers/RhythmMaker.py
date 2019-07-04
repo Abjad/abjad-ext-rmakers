@@ -92,6 +92,8 @@ class RhythmMaker(object):
         staff = self._make_staff(time_signatures)
         if self.divisions is not None:
             divisions = self.divisions(divisions)
+            assert isinstance(divisions, abjad.Sequence), repr(divisions)
+            divisions = divisions.flatten(depth=-1)
             divisions = list(divisions)
         music = self._make_music(divisions)
         assert isinstance(music, list), repr(music)
