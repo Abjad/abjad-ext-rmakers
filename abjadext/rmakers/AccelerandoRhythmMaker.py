@@ -551,7 +551,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *specifiers: typings.SpecifierTyping,
-        division_masks: typings.MasksTyping = None,
         duration_specifier: DurationSpecifier = None,
         interpolation_specifiers: typing.Sequence[
             InterpolationSpecifier
@@ -559,11 +558,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
-            self,
-            *specifiers,
-            duration_specifier=duration_specifier,
-            division_masks=division_masks,
-            tag=tag,
+            self, *specifiers, duration_specifier=duration_specifier, tag=tag
         )
         self._interpolation_specifiers = interpolation_specifiers
 

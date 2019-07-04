@@ -90,7 +90,6 @@ class IncisedRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *specifiers: typings.SpecifierTyping,
-        division_masks: typings.MasksTyping = None,
         divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
@@ -101,7 +100,6 @@ class IncisedRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *specifiers,
-            division_masks=division_masks,
             divisions=divisions,
             duration_specifier=duration_specifier,
             tag=tag,

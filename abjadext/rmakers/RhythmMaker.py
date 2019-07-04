@@ -37,7 +37,6 @@ class RhythmMaker(object):
 
     __slots__ = (
         "_already_cached_state",
-        "_division_masks",
         "_divisions",
         "_duration_specifier",
         "_previous_state",
@@ -55,7 +54,6 @@ class RhythmMaker(object):
     def __init__(
         self,
         *specifiers: typings.SpecifierTyping,
-        division_masks: typings.MasksTyping = None,
         divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
@@ -65,10 +63,6 @@ class RhythmMaker(object):
             assert isinstance(specifier, SpecifierClasses), repr(specifier)
         specifiers_ = tuple(specifiers)
         self._specifiers = specifiers_
-        division_masks = self._prepare_masks(division_masks)
-        if division_masks is not None:
-            assert isinstance(division_masks, abjad.PatternTuple)
-        self._division_masks = division_masks
         if divisions is not None:
             assert isinstance(divisions, abjad.Expression)
         self._divisions = divisions
@@ -101,7 +95,6 @@ class RhythmMaker(object):
             divisions = list(divisions)
         selections = self._make_music(divisions)
         staff["MusicVoice"].extend(selections)
-        self._apply_division_masks(staff)
         self._apply_specifiers(staff)
         if self._already_cached_state is not True:
             self._cache_state(staff)
@@ -142,56 +135,6 @@ class RhythmMaker(object):
         return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
-
-    def _apply_division_masks(self, staff):
-        if not self.division_masks:
-            return None
-        selections = self._select_by_measure(staff)
-        duration_specifier = self._get_duration_specifier()
-        increase_monotonic = duration_specifier.increase_monotonic
-        forbidden_note_duration = duration_specifier.forbidden_note_duration
-        forbidden_rest_duration = duration_specifier.forbidden_rest_duration
-        total_divisions = len(selections)
-        division_masks = self.division_masks
-        leaf_maker = abjad.LeafMaker(
-            increase_monotonic=increase_monotonic,
-            forbidden_note_duration=forbidden_note_duration,
-            forbidden_rest_duration=forbidden_rest_duration,
-            tag=self.tag,
-        )
-        previous_divisions_consumed = self._previous_divisions_consumed()
-        for i, selection in enumerate(selections):
-            matching_division_mask = division_masks.get_matching_pattern(
-                i + previous_divisions_consumed,
-                total_divisions + previous_divisions_consumed,
-                rotation=self.previous_state.get("rotation"),
-            )
-            if not matching_division_mask:
-                continue
-            duration = abjad.inspect(selection).duration()
-            assert len(selection) != 0, repr(selection)
-            if isinstance(matching_division_mask, SustainMask):
-                leaf_maker = abjad.new(
-                    leaf_maker, use_multimeasure_rests=False
-                )
-                new_selection = leaf_maker([0], [duration])
-            else:
-                use_multimeasure_rests = getattr(
-                    matching_division_mask, "use_multimeasure_rests", False
-                )
-                leaf_maker = abjad.new(
-                    leaf_maker, use_multimeasure_rests=use_multimeasure_rests
-                )
-                new_selection = leaf_maker([None], [duration])
-                first_leaf = abjad.inspect(selection).leaf(0)
-                previous_leaf = abjad.inspect(first_leaf).leaf(-1)
-                if previous_leaf is not None:
-                    abjad.detach(abjad.TieIndicator, previous_leaf)
-                final_leaf = abjad.inspect(selection).leaf(-1)
-                next_leaf = abjad.inspect(final_leaf).leaf(1)
-                if next_leaf is not None:
-                    abjad.detach(abjad.RepeatTie, next_leaf)
-            abjad.mutate(selection).replace(new_selection)
 
     def _apply_specifiers(self, staff):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
@@ -365,13 +308,6 @@ class RhythmMaker(object):
         Gets division expression.
         """
         return self._divisions
-
-    @property
-    def division_masks(self) -> typing.Optional[typings.MasksTyping]:
-        """
-        Gets division masks.
-        """
-        return self._division_masks
 
     @property
     def duration_specifier(self) -> typing.Optional[DurationSpecifier]:

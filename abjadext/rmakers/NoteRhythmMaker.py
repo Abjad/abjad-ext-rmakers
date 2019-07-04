@@ -67,7 +67,6 @@ class NoteRhythmMaker(RhythmMaker):
         self,
         *specifiers: typings.SpecifierTyping,
         burnish_specifier: BurnishSpecifier = None,
-        division_masks: typings.MasksTyping = None,
         divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
@@ -75,7 +74,6 @@ class NoteRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *specifiers,
-            division_masks=division_masks,
             divisions=divisions,
             duration_specifier=duration_specifier,
             tag=tag,

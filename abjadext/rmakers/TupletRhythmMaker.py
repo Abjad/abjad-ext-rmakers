@@ -154,7 +154,6 @@ class TupletRhythmMaker(RhythmMaker):
         self,
         *specifiers: typings.SpecifierTyping,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
-        division_masks: typings.MasksTyping = None,
         divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
@@ -164,7 +163,6 @@ class TupletRhythmMaker(RhythmMaker):
             self,
             *specifiers,
             duration_specifier=duration_specifier,
-            division_masks=division_masks,
             divisions=divisions,
             tag=tag,
         )
