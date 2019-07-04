@@ -157,16 +157,14 @@ class SilenceMask(object):
     ):
         if self.selector is None:
             raise Exception("call silence mask with selector.")
-
         if isinstance(staff, abjad.Staff):
             selection = staff["MusicVoice"]
         else:
             selection = staff
 
-        selection = self.selector(
+        selections = self.selector(
             selection, previous=previous_logical_ties_produced
         )
-
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
         # logical_ties = list(logical_ties)
@@ -174,25 +172,27 @@ class SilenceMask(object):
         # previous_logical_ties_produced = self._previous_logical_ties_produced()
         # if self._previous_incomplete_last_note():
         #    previous_logical_ties_produced -= 1
-
-        leaves = abjad.select(selection).leaves()
-        for leaf in leaves:
-            if self.use_multimeasure_rests is True:
-                duration = abjad.inspect(leaf).duration()
-                rest = abjad.MultimeasureRest(1, multiplier=duration, tag=tag)
-            else:
+        if self.use_multimeasure_rests is True:
+            leaf_maker = abjad.LeafMaker(tag=tag, use_multimeasure_rests=True)
+            for selection in selections:
+                duration = abjad.inspect(selection).duration()
+                new_selection = leaf_maker([None], [duration])
+                abjad.mutate(selection).replace(new_selection)
+        else:
+            leaves = abjad.select(selections).leaves()
+            for leaf in leaves:
                 rest = abjad.Rest(leaf.written_duration, tag=tag)
-            if leaf.multiplier is not None:
-                rest.multiplier = leaf.multiplier
-            previous_leaf = abjad.inspect(leaf).leaf(-1)
-            next_leaf = abjad.inspect(leaf).leaf(1)
-            abjad.mutate(leaf).replace([rest])
-            if previous_leaf is not None:
-                abjad.detach(abjad.TieIndicator, previous_leaf)
-            abjad.detach(abjad.TieIndicator, rest)
-            abjad.detach(abjad.RepeatTie, rest)
-            if next_leaf is not None:
-                abjad.detach(abjad.RepeatTie, next_leaf)
+                if leaf.multiplier is not None:
+                    rest.multiplier = leaf.multiplier
+                previous_leaf = abjad.inspect(leaf).leaf(-1)
+                next_leaf = abjad.inspect(leaf).leaf(1)
+                abjad.mutate(leaf).replace([rest])
+                if previous_leaf is not None:
+                    abjad.detach(abjad.TieIndicator, previous_leaf)
+                abjad.detach(abjad.TieIndicator, rest)
+                abjad.detach(abjad.RepeatTie, rest)
+                if next_leaf is not None:
+                    abjad.detach(abjad.RepeatTie, next_leaf)
 
     def __format__(self, format_specification="") -> str:
         """

@@ -792,7 +792,7 @@ class NoteRhythmMaker(RhythmMaker):
             ...     ),
             ... )
 
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+            >>> divisions = [(4, 8), (3, 8), (4, 8), (5, 8)]
             >>> selections = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
@@ -813,15 +813,15 @@ class NoteRhythmMaker(RhythmMaker):
                         s1 * 3/8
                         \time 4/8
                         s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
+                        \time 5/8
+                        s1 * 5/8
                     }
                     \new RhythmicStaff
                     {
                         R1 * 1/2
                         R1 * 3/8
                         R1 * 1/2
-                        R1 * 3/8
+                        R1 * 5/8
                     }
                 >>
 
