@@ -88,7 +88,7 @@ class RhythmMaker(object):
         """
         self._previous_state = abjad.OrderedDict(previous_state)
         time_signatures = [abjad.TimeSignature(_) for _ in divisions]
-        divisions = self._coerce_divisions(divisions)
+        divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         staff = self._make_staff(time_signatures)
         if self.divisions is not None:
             divisions = self.divisions(divisions)
@@ -101,9 +101,10 @@ class RhythmMaker(object):
         for item in music:
             assert isinstance(item, prototype), repr(item)
         staff["MusicVoice"].extend(music)
-        self._apply_specifiers(staff)
+        divisions_consumed = len(divisions)
+        self._apply_specifiers(staff, divisions_consumed)
         if self._already_cached_state is not True:
-            self._cache_state(staff)
+            self._cache_state(staff, divisions_consumed)
         # self._check_wellformedness(staff)
         selections = [staff["MusicVoice"][:]]
         staff["MusicVoice"][:] = []
@@ -142,13 +143,13 @@ class RhythmMaker(object):
 
     ### PRIVATE METHODS ###
 
-    def _apply_specifiers(self, staff):
+    def _apply_specifiers(self, staff, divisions_consumed):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
         for specifier in self.specifiers or []:
             if isinstance(specifier, CacheState):
-                self._cache_state(staff)
+                self._cache_state(staff, divisions_consumed)
                 self._already_cached_state = True
                 continue
             elif isinstance(specifier, SilenceMask):
@@ -158,12 +159,9 @@ class RhythmMaker(object):
                     tag=self.tag,
                 )
             else:
-                try:
-                    specifier(staff, tag=self.tag)
-                except TypeError:
-                    raise Exception("AAA", specifier)
+                specifier(staff, tag=self.tag)
 
-    def _cache_state(self, staff):
+    def _cache_state(self, staff, divisions_consumed):
         music_voice = staff["MusicVoice"]
         time_signature_voice = staff["TimeSignatureVoice"]
         previous_logical_ties_produced = self._previous_logical_ties_produced()
@@ -171,9 +169,10 @@ class RhythmMaker(object):
         logical_ties_produced += previous_logical_ties_produced
         if self._previous_incomplete_last_note():
             logical_ties_produced -= 1
-        string = "divisions_consumed"
-        self.state[string] = self.previous_state.get(string, 0)
-        self.state[string] += len(time_signature_voice)
+        self.state["divisions_consumed"] = self.previous_state.get(
+            "divisions_consumed", 0
+        )
+        self.state["divisions_consumed"] += divisions_consumed
         self.state["logical_ties_produced"] = logical_ties_produced
         items = self.state.items()
         state = abjad.OrderedDict(sorted(items))
@@ -186,14 +185,6 @@ class RhythmMaker(object):
     #                report = inspector.tabulate_wellformedness()
     #                report = repr(component) + "\n" + report
     #                raise Exception(report)
-
-    @staticmethod
-    def _coerce_divisions(divisions) -> typing.List[abjad.NonreducedFraction]:
-        divisions_ = []
-        for division in divisions:
-            division = abjad.NonreducedFraction(division)
-            divisions_.append(division)
-        return divisions_
 
     def _get_duration_specifier(self):
         if self.duration_specifier is not None:
