@@ -82,7 +82,7 @@ class RhythmMaker(object):
         self,
         divisions: typing.Sequence[abjad.IntegerPair],
         previous_state: abjad.OrderedDict = None,
-    ) -> typing.List[abjad.Selection]:
+    ) -> abjad.Selection:
         """
         Calls rhythm-maker.
         """
@@ -106,10 +106,10 @@ class RhythmMaker(object):
         if self._already_cached_state is not True:
             self._cache_state(staff, divisions_consumed)
         # self._check_wellformedness(staff)
-        selections = [staff["MusicVoice"][:]]
+        self._validate_tuplets(staff)
+        selection = staff["MusicVoice"][:]
         staff["MusicVoice"][:] = []
-        self._validate_tuplets(selections)
-        return selections
+        return selection
 
     def __eq__(self, argument) -> bool:
         """
