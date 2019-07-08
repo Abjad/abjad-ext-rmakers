@@ -1740,9 +1740,10 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Silences first and last logical ties:
 
+            >>> pattern = abjad.index([0, -1])
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[abjad.index([0, -1])],
+            ...         selector=abjad.select().logical_ties()[pattern]
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -1810,12 +1811,13 @@ class TaleaRhythmMaker(RhythmMaker):
             Silences all logical ties. Then sustains first and last logical
             ties:
 
+            >>> pattern = abjad.index([0, -1])
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
             ...         selector=abjad.select().logical_ties()
             ...     ),
             ...     abjadext.rmakers.SustainMask(
-            ...         selector=abjad.select().logical_ties()[abjad.index([0, -1])],
+            ...         selector=abjad.select().logical_ties()[pattern]
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -1953,8 +1955,6 @@ class TaleaRhythmMaker(RhythmMaker):
                     ('talea_weight_consumed', 31),
                     ]
                 )
-
-            TODO: restore statal logical tie masks:
 
             Only logical tie 12 is masked here:
 
