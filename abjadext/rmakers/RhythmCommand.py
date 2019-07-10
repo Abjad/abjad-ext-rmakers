@@ -25,7 +25,9 @@ class DivisionAssignment(object):
     def __init__(
         self,
         pattern: typing.Union[abjad.DurationInequality, abjad.Pattern],
-        rhythm_maker: typing.Union[RhythmMaker, "RhythmCommand"],
+        # TODO: eventually restore typecheck:
+        ###rhythm_maker: typing.Union[RhythmMaker, "RhythmCommand"],
+        rhythm_maker,
         *,
         remember_state_across_gaps: bool = None,
     ) -> None:
@@ -69,8 +71,10 @@ class DivisionAssignment(object):
         """
         return self._remember_state_across_gaps
 
+    # TODO: eventually restore typecheck
     @property
-    def rhythm_maker(self) -> typing.Union[RhythmMaker, "RhythmCommand"]:
+    ###def rhythm_maker(self) -> typing.Union[RhythmMaker, "RhythmCommand"]:
+    def rhythm_maker(self):
         """
         Gets rhythm-maker.
         """
