@@ -11,7 +11,7 @@ RhythmMakerTyping = typing.Union[
 
 class MakerAssignment(object):
     """
-    Division assignment.
+    Maker assignment.
     """
 
     ### CLASS VARIABLES ###
@@ -83,7 +83,7 @@ class MakerAssignment(object):
 
 class MakerAssignments(object):
     """
-    Division assignments.
+    Maker assignments.
     """
 
     ### CLASS VARIABLES ###
@@ -137,7 +137,7 @@ class MakerAssignments(object):
 
 class MakerMatch(object):
     """
-    Division match.
+    Maker match.
     """
 
     ### CLASS VARIABLES ###
@@ -149,7 +149,8 @@ class MakerMatch(object):
     def __init__(
         self, division: abjad.NonreducedFraction, assignment: MakerAssignment
     ) -> None:
-        assert isinstance(division, abjad.NonreducedFraction), repr(division)
+        prototype = (abjad.NonreducedFraction, abjad.TimeSignature)
+        assert isinstance(division, prototype), repr(division)
         self._division = division
         assert isinstance(assignment, MakerAssignment), repr(assignment)
         self._assignment = assignment
@@ -188,16 +189,78 @@ class MakerMatch(object):
 class RhythmCommand(object):
     r"""
     Rhythm command.
+
+    ..  container:: example
+
+        >>> even_divisions = abjadext.rmakers.EvenDivisionRhythmMaker(
+        ...     denominator=16,
+        ...     extra_counts_per_division=[1],
+        ... )
+        >>> notes = abjadext.rmakers.NoteRhythmMaker()
+
+        >>> command = abjadext.rmakers.RhythmCommand(
+        ...     abjadext.rmakers.MakerAssignments(
+        ...         abjadext.rmakers.MakerAssignment(
+        ...             abjad.index([1], 2),
+        ...             even_divisions,
+        ...         ),
+        ...         abjadext.rmakers.MakerAssignment(
+        ...             abjad.index([0], 1),
+        ...             notes,
+        ...         ),
+        ...     ),
+        ... )
+
+        >>> divisions = [(4, 8), (4, 8), (3, 8), (3, 8)]
+        >>> selection = command(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/8
+                    s1 * 1/2
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'2
+                    \times 16/20 {
+                        c'8
+                        c'8
+                        c'8
+                        c'8
+                        c'8
+                    }
+                    c'4.
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
+                        c'8
+                        c'8
+                        c'8
+                        c'8
+                    }
+                }
+            >>
+
     """
 
     ### CLASS ATTRIBUTES ###
 
-    __slots__ = (
-        "_divisions",
-        "_do_not_check_total_duration",
-        "_rhythm_maker",
-        "_state",
-    )
+    __slots__ = ("_divisions", "_rhythm_maker", "_runtime", "_state")
 
     _publish_storage_format = True
 
@@ -205,7 +268,7 @@ class RhythmCommand(object):
 
     def __init__(
         self,
-        # TODO: change name to "maker_assignments"
+        # TODO: change to "*assignments"
         rhythm_maker: RhythmMakerTyping,
         *,
         divisions: abjad.Expression = None,
@@ -219,51 +282,16 @@ class RhythmCommand(object):
 
     ### SPECIAL METHODS ###
 
-    def _make_selection(
+    def __call__(
         self,
+        time_signatures: typing.Iterable[abjad.TimeSignature],
         runtime: abjad.OrderedDict = None,
-        time_signatures: typing.Iterable[abjad.TimeSignature] = None,
     ) -> abjad.Selection:
         """
-        Calls ``RhythmCommand`` on ``start_offset`` and ``time_signatures``.
+        Calls ``RhythmCommand`` on ``time_signatures``.
         """
         # runtime apparently needed for previous_segment_stop_state
         self._runtime = runtime or abjad.OrderedDict()
-        selection = self._make_rhythm(time_signatures)
-        assert isinstance(selection, abjad.Selection), repr(selection)
-        return selection
-
-    ### PRIVATE METHODS ###
-
-    def _apply_division_expression(self, divisions) -> abjad.Sequence:
-        if self.divisions is not None:
-            result = self.divisions(divisions)
-            if not isinstance(result, abjad.Sequence):
-                message = "division expression must return sequence:\n"
-                message += f"  Input divisions:\n"
-                message += f"    {divisions}\n"
-                message += f"  Division expression:\n"
-                message += f"    {self.divisions}\n"
-                message += f"  Result:\n"
-                message += f"    {result}"
-                raise Exception(message)
-            divisions = result
-        divisions = abjad.sequence(divisions)
-        divisions = divisions.flatten(depth=-1)
-        return divisions
-
-    def _check_rhythm_maker_input(self, rhythm_maker):
-        prototype = (MakerAssignment, MakerAssignments, RhythmMaker)
-        if isinstance(rhythm_maker, prototype):
-            return
-        message = '\n  Input parameter "rhythm_maker" accepts:'
-        message += "\n    division assignment(s)"
-        message += "\n    rhythm-maker"
-        message += '\n  Input parameter "rhythm_maker" received:'
-        message += f"\n    {format(rhythm_maker)}"
-        raise Exception(message)
-
-    def _make_rhythm(self, time_signatures) -> abjad.Selection:
         rhythm_maker = self.rhythm_maker
         if isinstance(rhythm_maker, abjad.Selection):
             selection = rhythm_maker
@@ -277,7 +305,8 @@ class RhythmCommand(object):
                 message += f" equal total duration ({total_duration})."
                 raise Exception(message)
             return selection
-        assert all(isinstance(_, abjad.TimeSignature) for _ in time_signatures)
+        # assert all(isinstance(_, abjad.TimeSignature) for _ in time_signatures)
+        time_signatures = [abjad.TimeSignature(_) for _ in time_signatures]
         original_duration = sum(_.duration for _ in time_signatures)
         divisions = self._apply_division_expression(time_signatures)
         transformed_duration = sum(_.duration for _ in divisions)
@@ -351,7 +380,38 @@ class RhythmCommand(object):
         assert isinstance(rhythm_maker, RhythmMaker)
         self._state = rhythm_maker.state
         selection = abjad.select(components)
+        assert isinstance(selection, abjad.Selection), repr(selection)
         return selection
+
+    ### PRIVATE METHODS ###
+
+    def _apply_division_expression(self, divisions) -> abjad.Sequence:
+        if self.divisions is not None:
+            result = self.divisions(divisions)
+            if not isinstance(result, abjad.Sequence):
+                message = "division expression must return sequence:\n"
+                message += f"  Input divisions:\n"
+                message += f"    {divisions}\n"
+                message += f"  Division expression:\n"
+                message += f"    {self.divisions}\n"
+                message += f"  Result:\n"
+                message += f"    {result}"
+                raise Exception(message)
+            divisions = result
+        divisions = abjad.sequence(divisions)
+        divisions = divisions.flatten(depth=-1)
+        return divisions
+
+    def _check_rhythm_maker_input(self, rhythm_maker):
+        prototype = (MakerAssignment, MakerAssignments, RhythmMaker)
+        if isinstance(rhythm_maker, prototype):
+            return
+        message = '\n  Input parameter "rhythm_maker" accepts:'
+        message += "\n    maker assignment(s)"
+        message += "\n    rhythm-maker"
+        message += '\n  Input parameter "rhythm_maker" received:'
+        message += f"\n    {format(rhythm_maker)}"
+        raise Exception(message)
 
     def _previous_segment_stop_state(self):
         previous_segment_stop_state = None
@@ -390,13 +450,20 @@ class RhythmCommand(object):
                 ...
             Exception:
               Input parameter "rhythm_maker" accepts:
-                division assignment(s)
+                maker assignment(s)
                 rhythm-maker
               Input parameter "rhythm_maker" received:
                 text
 
         """
         return self._rhythm_maker
+
+    @property
+    def runtime(self) -> abjad.OrderedDict:
+        """
+        Gets segment-maker runtime dictionary.
+        """
+        return self._runtime
 
     @property
     def state(self) -> abjad.OrderedDict:
