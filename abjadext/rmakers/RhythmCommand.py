@@ -260,7 +260,8 @@ class RhythmCommand(object):
 
     ### CLASS ATTRIBUTES ###
 
-    __slots__ = ("_divisions", "_rhythm_maker", "_runtime", "_state")
+    ###__slots__ = ("_divisions", "_rhythm_maker", "_runtime", "_state")
+    __slots__ = ("_divisions", "_rhythm_maker", "_state")
 
     _publish_storage_format = True
 
@@ -285,27 +286,12 @@ class RhythmCommand(object):
     def __call__(
         self,
         time_signatures: typing.Iterable[abjad.TimeSignature],
-        runtime: abjad.OrderedDict = None,
+        previous_segment_stop_state: abjad.OrderedDict = None,
     ) -> abjad.Selection:
         """
         Calls ``RhythmCommand`` on ``time_signatures``.
         """
-        # runtime apparently needed for previous_segment_stop_state
-        self._runtime = runtime or abjad.OrderedDict()
         rhythm_maker = self.rhythm_maker
-        if isinstance(rhythm_maker, abjad.Selection):
-            selection = rhythm_maker
-            total_duration = sum([_.duration for _ in time_signatures])
-            selection_duration = abjad.inspect(selection).duration()
-            if (
-                not self.do_not_check_total_duration
-                and selection_duration != total_duration
-            ):
-                message = f"selection duration ({selection_duration}) does not"
-                message += f" equal total duration ({total_duration})."
-                raise Exception(message)
-            return selection
-        # assert all(isinstance(_, abjad.TimeSignature) for _ in time_signatures)
         time_signatures = [abjad.TimeSignature(_) for _ in time_signatures]
         original_duration = sum(_.duration for _ in time_signatures)
         divisions = self._apply_division_expression(time_signatures)
@@ -355,7 +341,7 @@ class RhythmCommand(object):
             lambda match: match.assignment.rhythm_maker
         )
         components: typing.List[abjad.Component] = []
-        previous_segment_stop_state = self._previous_segment_stop_state()
+        ###previous_segment_stop_state = self._previous_segment_stop_state()
         maker_to_previous_state = abjad.OrderedDict()
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
@@ -413,18 +399,6 @@ class RhythmCommand(object):
         message += f"\n    {format(rhythm_maker)}"
         raise Exception(message)
 
-    def _previous_segment_stop_state(self):
-        previous_segment_stop_state = None
-        dictionary = self.runtime.get("previous_segment_voice_metadata")
-        if dictionary:
-            previous_segment_stop_state = dictionary.get(const.RHYTHM)
-            if (
-                previous_segment_stop_state is not None
-                and previous_segment_stop_state.get("name") != self.persist
-            ):
-                previous_segment_stop_state = None
-        return previous_segment_stop_state
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -457,13 +431,6 @@ class RhythmCommand(object):
 
         """
         return self._rhythm_maker
-
-    @property
-    def runtime(self) -> abjad.OrderedDict:
-        """
-        Gets segment-maker runtime dictionary.
-        """
-        return self._runtime
 
     @property
     def state(self) -> abjad.OrderedDict:
