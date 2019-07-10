@@ -5,11 +5,11 @@ from .RhythmMaker import RhythmMaker
 
 
 RhythmMakerTyping = typing.Union[
-    RhythmMaker, "DivisionAssignment", "DivisionAssignments"
+    RhythmMaker, "MakerAssignment", "MakerAssignments"
 ]
 
 
-class DivisionAssignment(object):
+class MakerAssignment(object):
     """
     Division assignment.
     """
@@ -81,7 +81,7 @@ class DivisionAssignment(object):
         return self._rhythm_maker
 
 
-class DivisionAssignments(object):
+class MakerAssignments(object):
     """
     Division assignments.
     """
@@ -96,10 +96,10 @@ class DivisionAssignments(object):
 
     ### INITIALIZER ###
 
-    def __init__(self, *assignments: DivisionAssignment) -> None:
+    def __init__(self, *assignments: MakerAssignment) -> None:
         assignments = assignments or ()
         for assignment in assignments:
-            assert isinstance(assignment, DivisionAssignment), repr(assignment)
+            assert isinstance(assignment, MakerAssignment), repr(assignment)
         assignments_ = tuple(assignments)
         self._assignments = assignments_
 
@@ -128,14 +128,14 @@ class DivisionAssignments(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def assignments(self) -> typing.List[DivisionAssignment]:
+    def assignments(self) -> typing.List[MakerAssignment]:
         """
         Gets specifiers.
         """
         return list(self._assignments)
 
 
-class DivisionMatch(object):
+class MakerMatch(object):
     """
     Division match.
     """
@@ -147,13 +147,11 @@ class DivisionMatch(object):
     ### INITIALIZER ###
 
     def __init__(
-        self,
-        division: abjad.NonreducedFraction,
-        assignment: DivisionAssignment,
+        self, division: abjad.NonreducedFraction, assignment: MakerAssignment
     ) -> None:
         assert isinstance(division, abjad.NonreducedFraction), repr(division)
         self._division = division
-        assert isinstance(assignment, DivisionAssignment), repr(assignment)
+        assert isinstance(assignment, MakerAssignment), repr(assignment)
         self._assignment = assignment
 
     ### SPECIAL METHODS ###
@@ -173,7 +171,7 @@ class DivisionMatch(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def assignment(self) -> DivisionAssignment:
+    def assignment(self) -> MakerAssignment:
         """
         Gets assignment.
         """
@@ -255,7 +253,7 @@ class RhythmCommand(object):
         return divisions
 
     def _check_rhythm_maker_input(self, rhythm_maker):
-        prototype = (DivisionAssignment, DivisionAssignments, RhythmMaker)
+        prototype = (MakerAssignment, MakerAssignments, RhythmMaker)
         if isinstance(rhythm_maker, prototype):
             return
         message = '\n  Input parameter "rhythm_maker" accepts:'
@@ -291,34 +289,34 @@ class RhythmCommand(object):
             message += "... transformed duration."
             raise Exception(message)
         division_count = len(divisions)
-        assignments: typing.List[DivisionAssignment] = []
+        assignments: typing.List[MakerAssignment] = []
         if isinstance(rhythm_maker, RhythmMaker):
-            assignment = DivisionAssignment(abjad.index([0], 1), rhythm_maker)
+            assignment = MakerAssignment(abjad.index([0], 1), rhythm_maker)
             assignments.append(assignment)
-        elif isinstance(rhythm_maker, DivisionAssignment):
+        elif isinstance(rhythm_maker, MakerAssignment):
             assignments.append(rhythm_maker)
-        elif isinstance(rhythm_maker, DivisionAssignments):
+        elif isinstance(rhythm_maker, MakerAssignments):
             for item in rhythm_maker.assignments:
-                assert isinstance(item, DivisionAssignment)
+                assert isinstance(item, MakerAssignment)
                 assignments.append(item)
         else:
             message = "must be rhythm-maker or division assignment(s)"
             message += f" (not {rhythm_maker})."
             raise TypeError(message)
-        assert all(isinstance(_, DivisionAssignment) for _ in assignments)
+        assert all(isinstance(_, MakerAssignment) for _ in assignments)
         matches = []
         for i, division in enumerate(divisions):
             for assignment in assignments:
                 if isinstance(
                     assignment.pattern, abjad.Pattern
                 ) and assignment.pattern.matches_index(i, division_count):
-                    match = DivisionMatch(division, assignment)
+                    match = MakerMatch(division, assignment)
                     matches.append(match)
                     break
                 elif isinstance(
                     assignment.pattern, abjad.DurationInequality
                 ) and assignment.pattern(division):
-                    match = DivisionMatch(division, assignment)
+                    match = MakerMatch(division, assignment)
                     matches.append(match)
                     break
             else:

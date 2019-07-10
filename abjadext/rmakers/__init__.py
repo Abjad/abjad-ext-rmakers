@@ -22,9 +22,9 @@ from .TieSpecifier import TieSpecifier
 from .TupletRhythmMaker import TupletRhythmMaker
 from .TupletSpecifier import TupletSpecifier
 from .RhythmCommand import RhythmCommand
-from .RhythmCommand import DivisionAssignment
-from .RhythmCommand import DivisionAssignments
-from .RhythmCommand import DivisionMatch
+from .RhythmCommand import MakerAssignment
+from .RhythmCommand import MakerAssignments
+from .RhythmCommand import MakerMatch
 from .typings import *
 
 silence = SilenceMask.silence
