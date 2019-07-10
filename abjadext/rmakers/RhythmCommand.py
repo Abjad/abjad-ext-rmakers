@@ -1,12 +1,33 @@
 import abjad
 import typing
 from . import typings
+from .BeamSpecifier import BeamSpecifier
+from .CacheState import CacheState
+from .DurationSpecifier import DurationSpecifier
+from .RewriteMeterCommand import RewriteMeterCommand
 from .RhythmMaker import RhythmMaker
+from .SilenceMask import SilenceMask
+from .SplitCommand import SplitCommand
+from .SustainMask import SustainMask
+from .TieSpecifier import TieSpecifier
+from .TupletSpecifier import TupletSpecifier
 
 
 RhythmMakerTyping = typing.Union[
     RhythmMaker, "MakerAssignment", "MakerAssignments"
 ]
+
+SpecifierClasses = (
+    BeamSpecifier,
+    CacheState,
+    DurationSpecifier,
+    RewriteMeterCommand,
+    SilenceMask,
+    SplitCommand,
+    SustainMask,
+    TieSpecifier,
+    TupletSpecifier,
+)
 
 
 class MakerAssignment(object):
@@ -260,8 +281,13 @@ class RhythmCommand(object):
 
     ### CLASS ATTRIBUTES ###
 
-    ###__slots__ = ("_divisions", "_rhythm_maker", "_runtime", "_state")
-    __slots__ = ("_divisions", "_rhythm_maker", "_state")
+    __slots__ = (
+        "_divisions",
+        "_rhythm_maker",
+        "_specifiers",
+        "_state",
+        "_tag",
+    )
 
     _publish_storage_format = True
 
@@ -271,15 +297,24 @@ class RhythmCommand(object):
         self,
         # TODO: change to "*assignments"
         rhythm_maker: RhythmMakerTyping,
-        *,
+        *specifiers: typings.SpecifierTyping,
         divisions: abjad.Expression = None,
+        tag: str = None,
     ) -> None:
         if divisions is not None:
             assert isinstance(divisions, abjad.Expression)
         self._divisions = divisions
         self._check_rhythm_maker_input(rhythm_maker)
         self._rhythm_maker = rhythm_maker
+        specifiers = specifiers or ()
+        for specifier in specifiers:
+            assert isinstance(specifier, SpecifierClasses), repr(specifier)
+        specifiers_ = tuple(specifiers)
+        self._specifiers = specifiers_
         self._state = abjad.OrderedDict()
+        if tag is not None:
+            assert isinstance(tag, str), repr(tag)
+        self._tag = tag
 
     ### SPECIAL METHODS ###
 
@@ -367,6 +402,19 @@ class RhythmCommand(object):
         self._state = rhythm_maker.state
         selection = abjad.select(components)
         assert isinstance(selection, abjad.Selection), repr(selection)
+        ###self._apply_specifiers(selection)
+
+        staff = RhythmMaker._make_staff(time_signatures)
+        staff["MusicVoice"].extend(selection)
+        ###divisions_consumed = len(divisions)
+        divisions_consumed = division_count
+        self._apply_specifiers(staff, divisions_consumed)
+        #        if self._already_cached_state is not True:
+        #            self._cache_state(staff, divisions_consumed)
+        #        # self._check_wellformedness(staff)
+        self._validate_tuplets(staff)
+        selection = staff["MusicVoice"][:]
+        staff["MusicVoice"][:] = []
         return selection
 
     ### PRIVATE METHODS ###
@@ -388,6 +436,27 @@ class RhythmCommand(object):
         divisions = divisions.flatten(depth=-1)
         return divisions
 
+    def _apply_specifiers(self, staff, divisions_consumed):
+        # TODO: will need to restore:
+        #        previous_logical_ties_produced = self._previous_logical_ties_produced()
+        #        if self._previous_incomplete_last_note():
+        #            previous_logical_ties_produced -= 1
+        for specifier in self.specifiers or []:
+            if isinstance(specifier, CacheState):
+                # TODO: restore:
+                #                self._cache_state(staff, divisions_consumed)
+                #                self._already_cached_state = True
+                continue
+            elif isinstance(specifier, SilenceMask):
+                specifier(
+                    staff,
+                    # TODO: restore
+                    ###previous_logical_ties_produced=previous_logical_ties_produced,
+                    tag=self.tag,
+                )
+            else:
+                specifier(staff, tag=self.tag)
+
     def _check_rhythm_maker_input(self, rhythm_maker):
         prototype = (MakerAssignment, MakerAssignments, RhythmMaker)
         if isinstance(rhythm_maker, prototype):
@@ -398,6 +467,26 @@ class RhythmCommand(object):
         message += '\n  Input parameter "rhythm_maker" received:'
         message += f"\n    {format(rhythm_maker)}"
         raise Exception(message)
+
+    def _previous_divisions_consumed(self):
+        if not self.previous_state:
+            return 0
+        return self.previous_state.get("divisions_consumed", 0)
+
+    def _previous_incomplete_last_note(self):
+        if not self.previous_state:
+            return False
+        return self.previous_state.get("incomplete_last_note", False)
+
+    def _previous_logical_ties_produced(self):
+        if not self.previous_state:
+            return 0
+        return self.previous_state.get("logical_ties_produced", 0)
+
+    def _validate_tuplets(self, selections):
+        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+            assert tuplet.multiplier.normalized(), repr(tuplet)
+            assert len(tuplet), repr(tuplet)
 
     ### PUBLIC PROPERTIES ###
 
@@ -433,8 +522,22 @@ class RhythmCommand(object):
         return self._rhythm_maker
 
     @property
+    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+        """
+        Gets specifiers.
+        """
+        return list(self._specifiers)
+
+    @property
     def state(self) -> abjad.OrderedDict:
         """
         Gets postcall state of rhythm command.
         """
         return self._state
+
+    @property
+    def tag(self) -> typing.Optional[str]:
+        """
+        Gets tag.
+        """
+        return self._tag
