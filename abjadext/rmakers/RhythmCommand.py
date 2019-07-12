@@ -382,6 +382,8 @@ class RhythmCommand(object):
             rhythm_maker = group[0].assignment.rhythm_maker
             if isinstance(rhythm_maker, type(self)):
                 rhythm_maker = rhythm_maker.rhythm_maker
+            if self.tag is not None:
+                rhythm_maker = abjad.new(rhythm_maker, tag=self.tag)
             assert isinstance(rhythm_maker, RhythmMaker), repr(rhythm_maker)
             divisions_ = [match.division for match in group]
             # TODO: eventually allow previous segment stop state
