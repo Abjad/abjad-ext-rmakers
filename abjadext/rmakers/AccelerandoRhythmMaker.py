@@ -1865,13 +1865,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
             REGRESSION. New preserves specifiers.
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(selector=selector),
+            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True)
             ... )
             >>> rhythm_maker.specifiers
-            [SilenceMask(pattern=abjad.index_all(), selector=abjad.select().logical_ties()[abjad.index([0, -1])])]
+            [TupletSpecifier(force_fraction=True)]
 
             >>> abjad.new(rhythm_maker).specifiers
-            [SilenceMask(pattern=abjad.index_all(), selector=abjad.select().logical_ties()[abjad.index([0, -1])])]
+            [TupletSpecifier(force_fraction=True)]
 
         ..  container:: example
 
