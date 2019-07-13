@@ -45,8 +45,9 @@ before_install:
 
     # install uqbar:
     - pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-    - pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-    - export MYPYPATH=$MYPYPATH:/tmp/typehints
+    # no longer necessary because mypy runs with --ignore-missing-imports?
+    ###- pip install --no-deps --target /tmp/typehints https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
+    ###- export MYPYPATH=$MYPYPATH:/tmp/typehints
 
     # log setup:
     - echo $MYPYPATH

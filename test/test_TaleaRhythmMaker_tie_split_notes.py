@@ -29,22 +29,28 @@ def test_TaleaRhythmMaker_tie_split_notes_01():
             }
             \new RhythmicStaff
             {
-                c'4
-                ~
-                c'16
-                [
-                c'8.
-                ~
-                ]
-                c'8
-                [
-                c'8
-                ~
-                ]
-                c'8.
-                [
-                c'16
-                ]
+                \tweak text #tuplet-number::calc-fraction-text
+                \times 1/1 {
+                    c'4
+                    ~
+                }
+                \tweak text #tuplet-number::calc-fraction-text
+                \times 1/1 {
+                    c'16
+                    c'8.
+                    ~
+                }
+                \tweak text #tuplet-number::calc-fraction-text
+                \times 1/1 {
+                    c'8
+                    c'8
+                    ~
+                }
+                \tweak text #tuplet-number::calc-fraction-text
+                \times 1/1 {
+                    c'8.
+                    c'16
+                }
             }
         >>
         """
@@ -80,26 +86,34 @@ def test_TaleaRhythmMaker_tie_split_notes_02():
             }
             \new RhythmicStaff
             {
-                c'8.
-                ~
-                c'8
-                c'4
-                ~
-                c'16
-                [
-                c'8.
-                ~
-                ]
-                c'8
-                c'4
-                ~
-                c'16
-                [
-                c'16
-                ~
-                ]
-                c'4
-                c'8.
+                \tweak text #tuplet-number::calc-fraction-text
+                \times 1/1 {
+                    c'8.
+                    ~
+                }
+                \tweak text #tuplet-number::calc-fraction-text
+                \times 1/1 {
+                    c'8
+                    c'4
+                    ~
+                    c'16
+                    c'8.
+                    ~
+                }
+                \tweak text #tuplet-number::calc-fraction-text
+                \times 1/1 {
+                    c'8
+                    c'4
+                    ~
+                    c'16
+                    c'16
+                    ~
+                }
+                \tweak text #tuplet-number::calc-fraction-text
+                \times 1/1 {
+                    c'4
+                    c'8.
+                }
             }
         >>
         """

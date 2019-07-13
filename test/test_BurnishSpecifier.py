@@ -14,6 +14,7 @@ def test_BurnishSpecifier_01():
     talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
+        rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
         talea=talea,
         burnish_specifier=burnish_specifier,
         extra_counts_per_division=[0],
@@ -78,6 +79,7 @@ def test_BurnishSpecifier_02():
     talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
+        rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
         talea=talea,
         extra_counts_per_division=[0],
         burnish_specifier=burnish_specifier,
@@ -142,6 +144,7 @@ def test_BurnishSpecifier_03():
     talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
+        rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
         talea=talea,
         extra_counts_per_division=[3],
         burnish_specifier=burnish_specifier,
@@ -209,6 +212,7 @@ def test_BurnishSpecifier_04():
     talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
+        rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
         talea=talea,
         extra_counts_per_division=[0, 3],
         burnish_specifier=burnish_specifier,
@@ -250,73 +254,6 @@ def test_BurnishSpecifier_04():
                     c'32
                     c'32
                     c'16
-                    c'8
-                    ]
-                    r32
-                }
-            }
-        >>
-        """
-    ), print(format(score))
-
-
-def test_BurnishSpecifier_05():
-
-    burnish_specifier = rmakers.BurnishSpecifier(
-        left_classes=[abjad.Rest],
-        right_classes=[abjad.Rest],
-        left_counts=[1],
-        right_counts=[1],
-    )
-
-    talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
-
-    rhythm_maker = rmakers.TaleaRhythmMaker(
-        talea=talea,
-        extra_counts_per_division=[0, 3],
-        burnish_specifier=burnish_specifier,
-        split_divisions_by_counts=[14],
-    )
-
-    divisions = [(5, 16), (6, 16)]
-    selections = rhythm_maker(divisions)
-    lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-
-    score = lilypond_file[abjad.Score]
-    assert format(score) == abjad.String.normalize(
-        r"""
-        \new Score
-        <<
-            \new GlobalContext
-            {
-                \time 5/16
-                s1 * 5/16
-                \time 6/16
-                s1 * 3/8
-            }
-            \new RhythmicStaff
-            {
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 1/1 {
-                    r32
-                    c'32
-                    [
-                    c'16
-                    c'8
-                    c'32
-                    ]
-                    r32
-                }
-                \times 4/7 {
-                    r16
-                    c'8
-                    r32
-                }
-                \tweak text #tuplet-number::calc-fraction-text
-                \times 1/1 {
-                    r32
-                    c'16
-                    [
                     c'8
                     ]
                     r32

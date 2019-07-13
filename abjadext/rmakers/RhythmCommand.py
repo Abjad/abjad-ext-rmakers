@@ -429,16 +429,16 @@ class RhythmCommand(object):
 
         ..  container:: example
 
-            >>> command_1 = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletSpecifier(force_fraction=True),
+            >>> command_1 = abjadext.rmakers.RhythmCommand(
+            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
             ... )
-            >>> command_2 = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletSpecifier(force_fraction=True),
+            >>> command_2 = abjadext.rmakers.RhythmCommand(
+            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
             ... )
-            >>> command_3 = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            >>> command_3 = abjadext.rmakers.RhythmCommand(
+            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
             ... )
 
             >>> command_1 == command_1
@@ -484,9 +484,9 @@ class RhythmCommand(object):
 
             REGRESSION. Specifiers appear in format:
 
-            >>> command = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletSpecifier(force_fraction=True),
+            >>> command = abjadext.rmakers.RhythmCommand(
+            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
             ... )
             >>> abjad.f(command)
             abjadext.rmakers.RhythmCommand(
@@ -507,9 +507,9 @@ class RhythmCommand(object):
 
         ..  container:: example
 
-            >>> rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletSpecifier(force_fraction=True),
+            >>> abjadext.rmakers.RhythmCommand(
+            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
             ... )
             RhythmCommand(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), TupletSpecifier(force_fraction=True))
 
@@ -635,9 +635,9 @@ class RhythmCommand(object):
 
             REGRESSION. ``abjad.new()`` copies specifiers:
 
-            >>> command_1 = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletSpecifier(force_fraction=True),
+            >>> command_1 = abjadext.rmakers.RhythmCommand(
+            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
             ... )
             >>> command_2 = abjad.new(command_1)
 
