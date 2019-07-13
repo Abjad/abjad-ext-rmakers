@@ -1,5 +1,5 @@
 """
-Tools for making rhythm.
+Tools for rhythm construction.
 """
 from .RhythmMaker import RhythmMaker
 from .AccelerandoRhythmMaker import AccelerandoRhythmMaker
@@ -26,6 +26,3 @@ from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
 from .typings import *
-
-silence = SilenceMask.silence
-sustain = SustainMask.sustain
