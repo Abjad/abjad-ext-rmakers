@@ -115,14 +115,14 @@ class TupletSpecifier(object):
 
     def __eq__(self, argument) -> bool:
         """
-        Is true when all initialization values of Abjad value object equal
-        the initialization values of ``argument``.
+        Is true when initialization values of tuplet specifier equal
+        initialization values of ``argument``.
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 
     def __hash__(self) -> int:
         """
-        Hashes Abjad value object.
+        Hashes tuplet specifier.
         """
         hash_values = abjad.StorageFormatManager(self).get_hash_values()
         try:
@@ -133,7 +133,7 @@ class TupletSpecifier(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats Abjad object.
+        Formats tuplet specifier.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 

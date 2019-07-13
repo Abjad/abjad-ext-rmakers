@@ -196,7 +196,7 @@ class SilenceMask(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats Abjad object.
+        Formats silence mask.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 

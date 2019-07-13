@@ -86,8 +86,8 @@ class TieSpecifier(object):
 
     def __eq__(self, argument) -> bool:
         """
-        Is true when all initialization values of Abjad value object equal
-        the initialization values of ``argument``.
+        Is true when initialization values of tie specifier equal
+        initialization values of ``argument``.
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 

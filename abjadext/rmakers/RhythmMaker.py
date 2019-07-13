@@ -45,6 +45,7 @@ class RhythmMaker(object):
         "_tag",
     )
 
+    # to make sure abjad.new() copies specifiers
     _positional_arguments_name = "specifiers"
 
     _publish_storage_format = True
@@ -113,14 +114,14 @@ class RhythmMaker(object):
 
     def __eq__(self, argument) -> bool:
         """
-        Is true when all initialization values of Abjad value object equal
-        the initialization values of ``argument``.
+        Is true when all initialization values of rhythm-maker equal
+        initialization values of ``argument``.
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 
     def __hash__(self) -> int:
         """
-        Hashes Abjad value object.
+        Hashes rhythm-maker.
         """
         hash_values = abjad.StorageFormatManager(self).get_hash_values()
         try:
@@ -131,7 +132,7 @@ class RhythmMaker(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats Abjad object.
+        Formats rhythm-maker.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 

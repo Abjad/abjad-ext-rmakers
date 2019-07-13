@@ -177,7 +177,7 @@ class SustainMask(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats Abjad object.
+        Formats sustain mask.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
