@@ -8,8 +8,8 @@ from .RhythmMaker import RhythmMaker
 from .Talea import Talea
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .commands import SilenceMask
-from .commands import SustainMask
+from .commands import RestCommand
+from .commands import NoteCommand
 
 
 class TaleaRhythmMaker(RhythmMaker):
@@ -1741,8 +1741,8 @@ class TaleaRhythmMaker(RhythmMaker):
             Silences first and last logical ties:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties().get([0, -1]),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties().get([0, -1]),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -1811,11 +1811,9 @@ class TaleaRhythmMaker(RhythmMaker):
             ties:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()
-            ...     ),
-            ...     abjadext.rmakers.SustainMask(
-            ...         selector=abjad.select().logical_ties().get([0, -1]),
+            ...     abjadext.rmakers.rest(abjad.select().logical_ties()),
+            ...     abjadext.rmakers.note(
+            ...         abjad.select().logical_ties().get([0, -1]),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -1873,13 +1871,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            REGRESSION. Nonperiodic logical tie masks respect state.
+            REGRESSION. Nonperiodic rest commands respect state.
 
-            Only logical ties 0 and 2 are masked here:
+            Only logical ties 0 and 2 are rested here:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties().get([0, 2, 12]),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties().get([0, 2, 12]),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -1953,7 +1951,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-            Only logical tie 12 is masked here:
+            Only logical tie 12 is rested here:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = rhythm_maker(divisions, previous_state=state)
@@ -2017,11 +2015,11 @@ class TaleaRhythmMaker(RhythmMaker):
 
 #        ..  container:: example
 #
-#            REGRESSION. Periodic logical tie masks also respect state.
+#            REGRESSION. Periodic rest commands also respect state.
 #
 #            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-#            ...     abjadext.rmakers.SilenceMask(
-#            ...         selector=abjad.select().logical_ties().get([3], 4),
+#            ...     abjadext.rmakers.rest(
+#            ...         abjad.select().logical_ties().get([3], 4),
 #            ...     ),
 #            ...     abjadext.rmakers.BeamSpecifier(
 #            ...         selector=abjad.select().tuplets(),
@@ -2036,7 +2034,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #            ...         ),
 #            ...     )
 #
-#            Incomplete last note is masked here:
+#            Incomplete last note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selection = rhythm_maker(divisions)
@@ -2096,7 +2094,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #                    ]
 #                )
 #
-#            Incomplete first note is masked here:
+#            Incomplete first note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selection = rhythm_maker(divisions, previous_state=state)
@@ -3945,7 +3943,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            No division masks:
+            No rest commands:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
@@ -4014,8 +4012,8 @@ class TaleaRhythmMaker(RhythmMaker):
             Silences every other output division:
 
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets().get([1], 2),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets()
@@ -4136,15 +4134,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            REGRESSION. Nonperiodic division masks respect state.
+            REGRESSION. Nonperiodic rest commands respect state.
 
-            Only divisions 0 and 2 are masked here:
+            Only divisions 0 and 2 are rested here:
 
             >>> selector = abjad.select().tuplets().get([0, 2, 7])
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=selector,
-            ...     ),
+            ...     abjadext.rmakers.rest(selector),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
             ...         selector=selector,
@@ -4212,8 +4208,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-# TODO: make statal division masking work again:
-#            Only division 7 is masked here:
+# TODO: make statal division resting work again:
+#            Only division 7 is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selection = rhythm_maker(divisions, previous_state=state)
@@ -4272,13 +4268,11 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            REGRESSION. Periodic division masks also respect state.
+            REGRESSION. Periodic rest commands also respect state.
 
             >>> selector = abjad.select().tuplets().get([2], 3)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=selector,
-            ...     ),
+            ...     abjadext.rmakers.rest(selector),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
             ...         selector=selector,
@@ -4348,8 +4342,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-# TODO: make statal division masking work again:
-#            Incomplete first note is masked here:
+# TODO: make statal division resting work again.
+#            Incomplete first note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selection = rhythm_maker(divisions, previous_state=state)

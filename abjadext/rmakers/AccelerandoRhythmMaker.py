@@ -1586,7 +1586,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> selector = abjad.select().logical_ties().get([0, -1])
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(selector=selector),
+            ...     abjadext.rmakers.rest(selector),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
@@ -3825,7 +3825,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            No division masks:
+            No rest commands:
 
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
@@ -4093,8 +4093,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets().get([1], 2),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,

@@ -9,8 +9,8 @@ from .RewriteMeterCommand import RewriteMeterCommand
 from .SplitCommand import SplitCommand
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .commands import SilenceMask
-from .commands import SustainMask
+from .commands import RestCommand
+from .commands import NoteCommand
 from abjad.top.new import new
 
 
@@ -19,9 +19,9 @@ SpecifierClasses = (
     CacheState,
     DurationSpecifier,
     RewriteMeterCommand,
-    SilenceMask,
+    RestCommand,
     SplitCommand,
-    SustainMask,
+    NoteCommand,
     TieSpecifier,
     TupletSpecifier,
 )
@@ -154,7 +154,7 @@ class RhythmMaker(object):
                 self._cache_state(staff, divisions_consumed)
                 self._already_cached_state = True
                 continue
-            elif isinstance(specifier, SilenceMask):
+            elif isinstance(specifier, RestCommand):
                 specifier(
                     staff,
                     previous_logical_ties_produced=previous_logical_ties_produced,
@@ -238,18 +238,6 @@ class RhythmMaker(object):
             )
             tuplets.append(tuplet)
         return tuplets
-
-    @staticmethod
-    def _prepare_masks(masks):
-        prototype = (SilenceMask, SustainMask)
-        if masks is None:
-            return
-        if isinstance(masks, abjad.Pattern):
-            masks = (masks,)
-        if isinstance(masks, prototype):
-            masks = (masks,)
-        masks = abjad.PatternTuple(items=masks)
-        return masks
 
     def _previous_divisions_consumed(self):
         if not self.previous_state:

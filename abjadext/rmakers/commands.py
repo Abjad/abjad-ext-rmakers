@@ -5,18 +5,16 @@ import typing
 ### CLASSES ###
 
 
-class SilenceMask(object):
+class RestCommand(object):
     r"""
-    Silence mask.
+    Rest command.
 
     ..  container:: example
 
         Changes logical ties 1 and 2 to rests:
 
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.SilenceMask(
-        ...         selector=abjad.select().logical_ties()[1:3],
-        ...     ),
+        ...     abjadext.rmakers.rest(abjad.select().logical_ties()[1:3]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -56,9 +54,7 @@ class SilenceMask(object):
         Changes logical ties -1 and -2 to rests:
 
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.SilenceMask(
-        ...         selector=abjad.select().logical_ties()[-2:]
-        ...     ),
+        ...     abjadext.rmakers.rest(abjad.select().logical_ties()[-2:]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -98,9 +94,7 @@ class SilenceMask(object):
         Changes patterned selection of logical ties to rests:
 
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.SilenceMask(
-        ...         abjad.select().logical_ties()[1:-1],
-        ...     ),
+        ...     abjadext.rmakers.rest(abjad.select().logical_ties()[1:-1]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -141,7 +135,7 @@ class SilenceMask(object):
         inverted composite pattern:
 
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.SilenceMask(
+        ...     abjadext.rmakers.rest(
         ...         abjad.select().logical_ties().get([0, -1]),
         ...     ),
         ... )
@@ -246,13 +240,13 @@ class SilenceMask(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats silence mask.
+        Formats rest command.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation.
+        Gets interpreter representation of rest command.
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 
@@ -266,26 +260,22 @@ class SilenceMask(object):
     @property
     def use_multimeasure_rests(self) -> typing.Optional[bool]:
         """
-        Is true when silence mask uses multimeasure rests.
+        Is true when rest command uses multimeasure rests.
         """
         return self._use_multimeasure_rests
 
 
-class SustainMask(object):
+class NoteCommand(object):
     r"""
-    Sustain mask.
+    Note command.
 
     ..  container:: example
 
         Changes logical ties 1 and 2 to notes:
 
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.SilenceMask(
-        ...         selector=abjad.select().leaves(),
-        ...     ),
-        ...     abjadext.rmakers.SustainMask(
-        ...         selector=abjad.select().logical_ties()[1:3],
-        ...     ),
+        ...     abjadext.rmakers.rest(abjad.select().leaves()),
+        ...     abjadext.rmakers.note(abjad.select().logical_ties()[1:3]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -325,12 +315,8 @@ class SustainMask(object):
         Sustains logical ties -1 and -2 to notes:
 
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.SilenceMask(
-        ...         selector=abjad.select().leaves(),
-        ...     ),
-        ...     abjadext.rmakers.SustainMask(
-        ...         selector=abjad.select().logical_ties()[-2:],
-        ...     ),
+        ...     abjadext.rmakers.rest(abjad.select().leaves()),
+        ...     abjadext.rmakers.note(abjad.select().logical_ties()[-2:]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -370,12 +356,8 @@ class SustainMask(object):
         Changes patterned selection of leaves to notes:
 
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.SilenceMask(
-        ...         selector=abjad.select().leaves(),
-        ...     ),
-        ...     abjadext.rmakers.SustainMask(
-        ...         selector=abjad.select().logical_ties()[1:-1],
-        ...     ),
+        ...     abjadext.rmakers.rest(abjad.select().leaves()),
+        ...     abjadext.rmakers.note(abjad.select().logical_ties()[1:-1]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -416,11 +398,9 @@ class SustainMask(object):
         pattern:
 
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.SilenceMask(
-        ...         selector=abjad.select().leaves(),
-        ...     ),
-        ...     abjadext.rmakers.SustainMask(
-        ...         selector=abjad.select().logical_ties().get([0, -1]),
+        ...     abjadext.rmakers.rest(abjad.select().leaves()),
+        ...     abjadext.rmakers.note(
+        ...         abjad.select().logical_ties().get([0, -1]),
         ...     ),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
@@ -500,13 +480,13 @@ class SustainMask(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats sustain mask.
+        Formats note command.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation.
+        Gets interpreter representation of note command.
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 
@@ -521,3 +501,19 @@ class SustainMask(object):
 
 
 ### FACTORY FUNCTIONS ###
+
+
+def note(selector: abjad.SelectorTyping,) -> NoteCommand:
+    """
+    Makes rest command.
+    """
+    return NoteCommand(selector)
+
+
+def rest(
+    selector: abjad.SelectorTyping, *, use_multimeasure_rests: bool = None
+) -> RestCommand:
+    """
+    Makes rest command.
+    """
+    return RestCommand(selector, use_multimeasure_rests=use_multimeasure_rests)

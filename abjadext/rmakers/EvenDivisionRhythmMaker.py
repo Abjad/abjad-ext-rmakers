@@ -2285,7 +2285,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            No logical tie masks:
+            No rest commands:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
@@ -2361,8 +2361,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every third logical tie:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties().get([0], 3),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties().get([0], 3),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -2435,8 +2435,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every logical tie except the first two and last two:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[2:-2],
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties()[2:-2],
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -2593,8 +2593,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...         attach_ties=True,
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties().get([3], 4),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties().get([3], 4),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -2923,7 +2923,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            No division masks:
+            No rest commands:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
@@ -2999,8 +2999,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every other division:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets().get([0], 2),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().tuplets().get([0], 2),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
@@ -3138,8 +3138,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every output division:
 
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().leaves(),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().leaves(),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,

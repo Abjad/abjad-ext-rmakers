@@ -2088,7 +2088,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            No division masks:
+            No rest commands:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     tuplet_ratios=[(4, 1)],
@@ -2144,8 +2144,8 @@ class TupletRhythmMaker(RhythmMaker):
             Masks every other output division:
 
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets().get([1], 2),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,

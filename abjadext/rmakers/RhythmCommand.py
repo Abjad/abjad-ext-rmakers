@@ -9,8 +9,8 @@ from .RhythmMaker import RhythmMaker
 from .SplitCommand import SplitCommand
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .commands import SilenceMask
-from .commands import SustainMask
+from .commands import RestCommand
+from .commands import NoteCommand
 
 
 RhythmMakerTyping = typing.Union[
@@ -22,9 +22,9 @@ SpecifierClasses = (
     CacheState,
     DurationSpecifier,
     RewriteMeterCommand,
-    SilenceMask,
+    RestCommand,
     SplitCommand,
-    SustainMask,
+    NoteCommand,
     TieSpecifier,
     TupletSpecifier,
 )
@@ -546,7 +546,7 @@ class RhythmCommand(object):
                 #                self._cache_state(staff, divisions_consumed)
                 #                self._already_cached_state = True
                 continue
-            elif isinstance(specifier, SilenceMask):
+            elif isinstance(specifier, RestCommand):
                 specifier(
                     staff,
                     # TODO: restore

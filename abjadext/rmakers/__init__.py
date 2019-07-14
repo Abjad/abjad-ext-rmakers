@@ -23,6 +23,8 @@ from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
-from .commands import SilenceMask
-from .commands import SustainMask
+from .commands import NoteCommand
+from .commands import RestCommand
+from .commands import note
+from .commands import rest
 from .typings import *

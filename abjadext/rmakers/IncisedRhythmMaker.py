@@ -8,8 +8,7 @@ from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .commands import SilenceMask
-from .commands import SustainMask
+from .commands import RestCommand
 
 
 class IncisedRhythmMaker(RhythmMaker):
@@ -915,7 +914,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            No logical tie masks:
+            No rest commands:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
@@ -976,8 +975,8 @@ class IncisedRhythmMaker(RhythmMaker):
             Silences every other logical tie:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties().get([1], 2),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties().get([1], 2),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -1400,7 +1399,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            No division masks:
+            No rest commands:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
@@ -1459,11 +1458,11 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Masks every other output division:
+            Rests every other tuplet:
 
             >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets().get([0], 2),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().tuplets().get([0], 2),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,

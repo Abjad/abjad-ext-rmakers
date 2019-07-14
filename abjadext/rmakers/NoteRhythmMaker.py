@@ -7,8 +7,7 @@ from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .commands import SilenceMask
-from .commands import SustainMask
+from .commands import RestCommand
 
 
 class NoteRhythmMaker(RhythmMaker):
@@ -603,8 +602,8 @@ class NoteRhythmMaker(RhythmMaker):
             Silences every other logical tie:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties().get([0], 2),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties().get([0], 2),
             ...     ),
             ... )
 
@@ -646,9 +645,7 @@ class NoteRhythmMaker(RhythmMaker):
             Silences all leaves:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select(),
-            ...     ),
+            ...     abjadext.rmakers.rest(abjad.select()),
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -689,8 +686,8 @@ class NoteRhythmMaker(RhythmMaker):
             Silences every other division:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties().get([0], 2),
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties().get([0], 2),
             ...     )
             ... )
 
@@ -732,9 +729,7 @@ class NoteRhythmMaker(RhythmMaker):
             Silences every output division:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...    abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties(),
-            ...     ),
+            ...    abjadext.rmakers.rest(abjad.select().logical_ties()),
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -775,8 +770,8 @@ class NoteRhythmMaker(RhythmMaker):
             Silences every output division and uses multimeasure rests:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...    abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties(), 
+            ...    abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties(), 
             ...         use_multimeasure_rests=True,
             ...     ),
             ... )
@@ -819,8 +814,8 @@ class NoteRhythmMaker(RhythmMaker):
             Silences every other output division except for the first and last:
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-            ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties().get([0], 2)[1:-1],
+            ...     abjadext.rmakers.rest(
+            ...         abjad.select().logical_ties().get([0], 2)[1:-1],
             ...     ),
             ... )
 
