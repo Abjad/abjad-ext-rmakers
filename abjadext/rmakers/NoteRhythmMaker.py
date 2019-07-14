@@ -602,10 +602,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences every other logical tie:
 
-            >>> pattern = abjad.Pattern([0], period=2)
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[pattern]
+            ...         selector=abjad.select().logical_ties().get([0], 2),
             ...     ),
             ... )
 
@@ -691,7 +690,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[abjad.index([0], 2)]
+            ...         selector=abjad.select().logical_ties().get([0], 2),
             ...     )
             ... )
 
@@ -819,12 +818,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences every other output division except for the first and last:
 
-            >>> pattern_1 = abjad.index([0], 2)
-            >>> pattern_2 = abjad.index([0, -1])
-            >>> pattern = pattern_1 & ~pattern_2
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[pattern]
+            ...         selector=abjad.select().logical_ties().get([0], 2)[1:-1],
             ...     ),
             ... )
 
@@ -1090,10 +1086,9 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Patterns ties across divisions:
+            Ties across every other logical tie:
 
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> lts = abjad.select().logical_ties()[pattern]
+            >>> lts = abjad.select().logical_ties().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(

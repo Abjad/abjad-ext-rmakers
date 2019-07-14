@@ -94,13 +94,9 @@ class SilenceMask(object):
 
         Changes patterned selection of logical ties to rests:
 
-        >>> pattern_1 = abjad.index_all()
-        >>> pattern_2 = abjad.index_first(1)
-        >>> pattern_3 = abjad.index_last(1)
-        >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
         ...     abjadext.rmakers.SilenceMask(
-        ...         selector=abjad.select().logical_ties()[pattern],
+        ...         abjad.select().logical_ties()[1:-1],
         ...     ),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
@@ -141,14 +137,9 @@ class SilenceMask(object):
         Changes patterned selection of logical ties to rests. Works with
         inverted composite pattern:
 
-        >>> pattern_1 = abjad.index_all()
-        >>> pattern_2 = abjad.index_first(1)
-        >>> pattern_3 = abjad.index_last(1)
-        >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
-        >>> pattern = ~pattern
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
         ...     abjadext.rmakers.SilenceMask(
-        ...         selector=abjad.select().logical_ties()[pattern],
+        ...         abjad.select().logical_ties().get([0, -1]),
         ...     ),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]

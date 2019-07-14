@@ -1584,8 +1584,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Silences first and last logical tie:
 
-            >>> selector = abjad.select().logical_ties()
-            >>> selector = selector[abjad.index([0, -1])]
+            >>> selector = abjad.select().logical_ties().get([0, -1])
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(selector=selector),
             ...     abjadext.rmakers.TupletSpecifier(
@@ -3204,10 +3203,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Patterns ties across divisions:
+            Every other tuplet:
 
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> tuplets = abjad.select().tuplets()[pattern]
+            >>> tuplets = abjad.select().tuplets().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
@@ -4087,7 +4085,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Silences every other division:
 
-            >>> pattern = abjad.Pattern([1], period=2)
             >>> rhythm_maker = abjadext.rmakers.AccelerandoRhythmMaker(
             ...     abjadext.rmakers.TupletSpecifier(
             ...         duration_bracket=True,
@@ -4097,15 +4094,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         use_feather_beams=True,
             ...         ),
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets()[pattern]
+            ...         selector=abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
-            ...         selector=abjad.select().tuplets()[pattern]
+            ...         selector=abjad.select().tuplets().get([1], 2),
             ...         ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
-            ...         selector=abjad.select().tuplets()[pattern]
+            ...         selector=abjad.select().tuplets().get([1], 2),
             ...         ),
             ...     interpolation_specifiers=abjadext.rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),

@@ -2360,10 +2360,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every third logical tie:
 
-            >>> pattern = abjad.Pattern([0], period=3)
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[pattern]
+            ...         selector=abjad.select().logical_ties().get([0], 3),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -2435,13 +2434,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every logical tie except the first two and last two:
 
-            >>> pattern_1 = abjad.index_all()
-            >>> pattern_2 = abjad.index_first(2)
-            >>> pattern_3 = abjad.index_last(2)
-            >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[pattern]
+            ...         selector=abjad.select().logical_ties()[2:-2],
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -2591,7 +2586,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every fourth logical tie:
 
-            >>> pattern = abjad.Pattern([3], period=4)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
@@ -2600,7 +2594,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[pattern]
+            ...         selector=abjad.select().logical_ties().get([3], 4),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -3004,21 +2998,20 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every other division:
 
-            >>> pattern = abjad.Pattern([0], period=2)
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets()[pattern]
+            ...         selector=abjad.select().tuplets().get([0], 2),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
-            ...         selector=abjad.select().tuplets()[pattern]
+            ...         selector=abjad.select().tuplets().get([0], 2)
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
-            ...         selector=abjad.select().tuplets()[pattern]
+            ...         selector=abjad.select().tuplets().get([0], 2),
             ...     ),
             ... )
 
@@ -3073,8 +3066,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Sustains every other division:
 
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> selector = abjad.select().tuplets()[pattern]
+            >>> selector = abjad.select().tuplets().get([0], 2)
             >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(

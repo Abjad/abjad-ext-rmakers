@@ -1260,8 +1260,7 @@ class TupletRhythmMaker(RhythmMaker):
 
             Ties across every other division:
 
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> tuplets = abjad.select().tuplets()[pattern]
+            >>> tuplets = abjad.select().tuplets().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
@@ -2144,14 +2143,13 @@ class TupletRhythmMaker(RhythmMaker):
 
             Masks every other output division:
 
-            >>> pattern = abjad.Pattern([1], period=2)
             >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets()[pattern],
+            ...         selector=abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
-            ...         selector=abjad.select().tuplets()[pattern],
+            ...         selector=abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,

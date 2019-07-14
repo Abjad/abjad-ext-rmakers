@@ -281,8 +281,7 @@ class TieSpecifier(object):
 
             With pattern:
 
-            >>> pattern = abjad.Pattern([1], period=2)
-            >>> selector = abjad.select().tuplets()[pattern]
+            >>> selector = abjad.select().tuplets().get([1], 2)
             >>> selector = selector.map(abjad.select().note(0))
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
@@ -575,8 +574,7 @@ class TieSpecifier(object):
 
             With pattern:
 
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> selector = abjad.select().tuplets()[pattern]
+            >>> selector = abjad.select().tuplets().get([0], 2)
             >>> selector = selector.map(abjad.select().note(-1))
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
@@ -835,8 +833,7 @@ class TieSpecifier(object):
 
             With pattern:
 
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> selector = abjad.select().tuplets()[pattern]
+            >>> selector = abjad.select().tuplets().get([0], 2)
             >>> selector = selector.map(abjad.select().notes()[:-1])
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
@@ -941,7 +938,6 @@ class TieSpecifier(object):
             Attaches repeat-ties to nonfirst notes; then detaches ties from
             select notes:
 
-            >>> pattern = abjad.Pattern([0], period=4)
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
             ...         attach_repeat_ties=True,
@@ -949,7 +945,7 @@ class TieSpecifier(object):
             ...         ),
             ...     abjadext.rmakers.TieSpecifier(
             ...         detach_repeat_ties=True,
-            ...         selector=abjad.select().notes()[pattern],
+            ...         selector=abjad.select().notes().get([0], 4),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
@@ -1056,7 +1052,6 @@ class TieSpecifier(object):
             Attaches ties to nonlast notes; then detaches ties from select
             notes:
 
-            >>> pattern = abjad.Pattern([0], period=4)
             >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
             ...         attach_ties=True,
@@ -1064,7 +1059,7 @@ class TieSpecifier(object):
             ...         ),
             ...     abjadext.rmakers.TieSpecifier(
             ...         detach_ties=True,
-            ...         selector=abjad.select().notes()[pattern],
+            ...         selector=abjad.select().notes().get([0], 4),
             ...         ),
             ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],

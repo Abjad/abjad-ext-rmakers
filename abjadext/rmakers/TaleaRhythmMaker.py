@@ -1740,10 +1740,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Silences first and last logical ties:
 
-            >>> pattern = abjad.index([0, -1])
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[pattern]
+            ...         selector=abjad.select().logical_ties().get([0, -1]),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -1811,13 +1810,12 @@ class TaleaRhythmMaker(RhythmMaker):
             Silences all logical ties. Then sustains first and last logical
             ties:
 
-            >>> pattern = abjad.index([0, -1])
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
             ...         selector=abjad.select().logical_ties()
             ...     ),
             ...     abjadext.rmakers.SustainMask(
-            ...         selector=abjad.select().logical_ties()[pattern]
+            ...         selector=abjad.select().logical_ties().get([0, -1]),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -1879,10 +1877,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Only logical ties 0 and 2 are masked here:
 
-            >>> pattern = abjad.Pattern([0, 2, 12])
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().logical_ties()[pattern]
+            ...         selector=abjad.select().logical_ties().get([0, 2, 12]),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
@@ -2022,10 +2019,9 @@ class TaleaRhythmMaker(RhythmMaker):
 #
 #            REGRESSION. Periodic logical tie masks also respect state.
 #
-#            >>> pattern = abjad.Pattern([3], period=4)
 #            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
 #            ...     abjadext.rmakers.SilenceMask(
-#            ...         selector=abjad.select().logical_ties()[pattern]
+#            ...         selector=abjad.select().logical_ties().get([3], 4),
 #            ...     ),
 #            ...     abjadext.rmakers.BeamSpecifier(
 #            ...         selector=abjad.select().tuplets(),
@@ -2940,10 +2936,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Patterns ties across divisions:
+            Ties across every other tuplet:
 
-            >>> pattern = abjad.Pattern([0], period=2)
-            >>> tuplets = abjad.select().tuplets()[pattern]
+            >>> tuplets = abjad.select().tuplets().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
@@ -4018,10 +4013,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Silences every other output division:
 
-            >>> pattern = abjad.Pattern([1], period=2)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
-            ...         selector=abjad.select().tuplets()[pattern]
+            ...         selector=abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets()
@@ -4078,8 +4072,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Sustains every other output division:
 
-            >>> pattern = abjad.Pattern([1], period=2)
-            >>> selector = abjad.select().tuplets()[pattern]
+            >>> selector = abjad.select().tuplets().get([1], 2)
             >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.TieSpecifier(
@@ -4147,8 +4140,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Only divisions 0 and 2 are masked here:
 
-            >>> pattern = abjad.Pattern([0, 2, 7])
-            >>> selector = abjad.select().tuplets()[pattern]
+            >>> selector = abjad.select().tuplets().get([0, 2, 7])
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
             ...         selector=selector,
@@ -4282,8 +4274,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             REGRESSION. Periodic division masks also respect state.
 
-            >>> pattern = abjad.Pattern([2], period=3)
-            >>> selector = abjad.select().tuplets()[pattern]
+            >>> selector = abjad.select().tuplets().get([2], 3)
             >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.SilenceMask(
             ...         selector=selector,

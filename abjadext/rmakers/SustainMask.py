@@ -100,16 +100,12 @@ class SustainMask(object):
 
         Changes patterned selection of leaves to notes:
 
-        >>> pattern_1 = abjad.index_all()
-        >>> pattern_2 = abjad.index_first(1)
-        >>> pattern_3 = abjad.index_last(1)
-        >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
         ...     abjadext.rmakers.SilenceMask(
         ...         selector=abjad.select().leaves(),
         ...     ),
         ...     abjadext.rmakers.SustainMask(
-        ...         selector=abjad.select().logical_ties()[pattern]
+        ...         selector=abjad.select().logical_ties()[1:-1],
         ...     ),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
@@ -150,17 +146,12 @@ class SustainMask(object):
         Changes patterned selection of leave to notes. Works inverted composite
         pattern:
 
-        >>> pattern_1 = abjad.index_all()
-        >>> pattern_2 = abjad.index_first(1)
-        >>> pattern_3 = abjad.index_last(1)
-        >>> pattern = pattern_1 ^ pattern_2 ^ pattern_3
-        >>> pattern = ~pattern
         >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
         ...     abjadext.rmakers.SilenceMask(
         ...         selector=abjad.select().leaves(),
         ...     ),
         ...     abjadext.rmakers.SustainMask(
-        ...         selector=abjad.select().logical_ties()[pattern]
+        ...         selector=abjad.select().logical_ties().get([0, -1]),
         ...     ),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
