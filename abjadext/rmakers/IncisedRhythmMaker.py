@@ -5,11 +5,11 @@ from .BeamSpecifier import BeamSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .InciseSpecifier import InciseSpecifier
 from .RhythmMaker import RhythmMaker
-from .SilenceMask import SilenceMask
-from .SustainMask import SustainMask
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .commands import SilenceMask
+from .commands import SustainMask
 
 
 class IncisedRhythmMaker(RhythmMaker):

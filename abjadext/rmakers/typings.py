@@ -2,11 +2,11 @@ import typing
 from .BeamSpecifier import BeamSpecifier
 from .CacheState import CacheState
 from .RewriteMeterCommand import RewriteMeterCommand
-from .SilenceMask import SilenceMask
 from .SplitCommand import SplitCommand
-from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .commands import SilenceMask
+from .commands import SustainMask
 
 
 MaskTyping = typing.Union[SilenceMask, SustainMask]

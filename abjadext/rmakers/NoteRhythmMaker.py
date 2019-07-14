@@ -5,10 +5,10 @@ from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .SilenceMask import SilenceMask
-from .SustainMask import SustainMask
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .commands import SilenceMask
+from .commands import SustainMask
 
 
 class NoteRhythmMaker(RhythmMaker):

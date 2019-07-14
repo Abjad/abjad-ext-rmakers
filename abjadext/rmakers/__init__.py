@@ -13,9 +13,7 @@ from .IncisedRhythmMaker import IncisedRhythmMaker
 from .InterpolationSpecifier import InterpolationSpecifier
 from .NoteRhythmMaker import NoteRhythmMaker
 from .RewriteMeterCommand import RewriteMeterCommand
-from .SilenceMask import SilenceMask
 from .SplitCommand import SplitCommand
-from .SustainMask import SustainMask
 from .Talea import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TieSpecifier import TieSpecifier
@@ -25,4 +23,6 @@ from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
+from .commands import SilenceMask
+from .commands import SustainMask
 from .typings import *
