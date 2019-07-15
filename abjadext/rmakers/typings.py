@@ -1,6 +1,6 @@
 import typing
-from .BeamSpecifier import BeamSpecifier
-from .TieSpecifier import TieSpecifier
+from .BeamCommand import BeamCommand
+from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
 from .commands import CacheStateCommand
 from .commands import NoteCommand
@@ -14,12 +14,12 @@ MaskTyping = typing.Union[RestCommand, NoteCommand]
 MasksTyping = typing.Union[MaskTyping, typing.Sequence[MaskTyping]]
 
 SpecifierTyping = typing.Union[
-    BeamSpecifier,
+    BeamCommand,
     CacheStateCommand,
     RewriteMeterCommand,
     RestCommand,
     SplitCommand,
     NoteCommand,
-    TieSpecifier,
+    TieCommand,
     TupletSpecifier,
 ]

@@ -2,9 +2,9 @@ import abjad
 import collections
 import typing
 from . import typings
-from .BeamSpecifier import BeamSpecifier
+from .BeamCommand import BeamCommand
 from .DurationSpecifier import DurationSpecifier
-from .TieSpecifier import TieSpecifier
+from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
 from .commands import CacheStateCommand
 from .commands import NoteCommand
@@ -15,14 +15,14 @@ from abjad.top.new import new
 
 
 SpecifierClasses = (
-    BeamSpecifier,
+    BeamCommand,
     CacheStateCommand,
     DurationSpecifier,
     RewriteMeterCommand,
     RestCommand,
     SplitCommand,
     NoteCommand,
-    TieSpecifier,
+    TieCommand,
     TupletSpecifier,
 )
 

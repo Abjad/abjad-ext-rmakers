@@ -2,11 +2,11 @@ import abjad
 import math
 import typing
 from . import typings
-from .BeamSpecifier import BeamSpecifier
+from .BeamCommand import BeamCommand
 from .DurationSpecifier import DurationSpecifier
 from .InterpolationSpecifier import InterpolationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TieSpecifier import TieSpecifier
+from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
 
 
@@ -22,7 +22,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.TupletSpecifier(
         ...         duration_bracket=True,
         ...         ),
-        ...     rmakers.BeamSpecifier(
+        ...     rmakers.BeamCommand(
         ...         selector=abjad.select().tuplets(),
         ...         use_feather_beams=True,
         ...         ),
@@ -280,7 +280,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.TupletSpecifier(
         ...         duration_bracket=True,
         ...         ),
-        ...     rmakers.BeamSpecifier(
+        ...     rmakers.BeamCommand(
         ...         selector=abjad.select().tuplets(),
         ...         use_feather_beams=True,
         ...         ),
@@ -898,7 +898,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -1156,7 +1156,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -1425,7 +1425,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         duration_bracket=True,
             ...         selector=abjad.select().tuplets().filter_length(">", 1)
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -1590,7 +1590,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         beam_rests=True,
             ...         selector=abjad.select().tuplets(),
             ...         stemlet_length=0.75,
@@ -1880,7 +1880,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -2138,7 +2138,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         beam_divisions_together=True,
             ...         selector=abjad.select().tuplets(),
             ...         ),
@@ -2441,7 +2441,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(),
+            ...     rmakers.BeamCommand(),
             ...     interpolation_specifiers=rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
@@ -2684,7 +2684,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -2944,11 +2944,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -3211,11 +3211,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=tuplets.map(last_leaf),
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -3475,7 +3475,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -3733,7 +3733,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=False,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -3831,7 +3831,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -4089,7 +4089,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -4268,7 +4268,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),
@@ -4872,7 +4872,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         duration_bracket=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...         use_feather_beams=True,
             ...         ),

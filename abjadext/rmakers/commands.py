@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import typings
-from .BeamSpecifier import BeamSpecifier
+from .BeamCommand import BeamCommand
 
 
 ### CLASSES ###
@@ -592,7 +592,7 @@ class RewriteMeterCommand(object):
             for leaf in abjad.iterate(selection).leaves():
                 if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
-            BeamSpecifier._detach_all_beams(nontupletted_leaves)
+            BeamCommand._detach_all_beams(nontupletted_leaves)
             abjad.mutate(selection).rewrite_meter(
                 meter, rewrite_tuplets=False, repeat_ties=self.repeat_ties
             )
@@ -606,7 +606,7 @@ class RewriteMeterCommand(object):
             for start, stop in abjad.sequence(beat_offsets).nwise():
                 beat_duration = stop - start
                 beat_durations.append(beat_duration)
-            beamable_groups = BeamSpecifier._make_beamable_groups(
+            beamable_groups = BeamCommand._make_beamable_groups(
                 leaves, beat_durations
             )
             for beamable_group in beamable_groups:

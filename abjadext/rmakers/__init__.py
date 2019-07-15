@@ -3,7 +3,7 @@ Tools for rhythm construction.
 """
 from .RhythmMaker import RhythmMaker
 from .AccelerandoRhythmMaker import AccelerandoRhythmMaker
-from .BeamSpecifier import BeamSpecifier
+from .BeamCommand import BeamCommand
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .EvenDivisionRhythmMaker import EvenDivisionRhythmMaker
@@ -13,7 +13,7 @@ from .InterpolationSpecifier import InterpolationSpecifier
 from .NoteRhythmMaker import NoteRhythmMaker
 from .Talea import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker
-from .TieSpecifier import TieSpecifier
+from .TieCommand import TieCommand
 from .TupletRhythmMaker import TupletRhythmMaker
 from .TupletSpecifier import TupletSpecifier
 from .RhythmCommand import RhythmCommand

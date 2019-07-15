@@ -1,12 +1,12 @@
 import abjad
 import typing
 from . import typings
-from .BeamSpecifier import BeamSpecifier
+from .BeamCommand import BeamCommand
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
 from .Talea import Talea
-from .TieSpecifier import TieSpecifier
+from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
 from .commands import RestCommand
 from .commands import NoteCommand
@@ -21,7 +21,7 @@ class TaleaRhythmMaker(RhythmMaker):
         Repeats talea of 1/16, 2/16, 3/16, 4/16:
 
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-        ...     rmakers.BeamSpecifier(
+        ...     rmakers.BeamCommand(
         ...         selector=abjad.select().tuplets(),
         ...     ),
         ...     rmakers.TupletSpecifier(
@@ -153,7 +153,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ..  container:: example
 
                 >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-                ...     rmakers.BeamSpecifier(
+                ...     rmakers.BeamCommand(
                 ...         selector=abjad.select().tuplets(),
                 ...     ),
                 ...     talea=rmakers.Talea(
@@ -223,7 +223,7 @@ class TaleaRhythmMaker(RhythmMaker):
             REGRESSION. Specifiers appear in storage format:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -236,7 +236,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.f(rhythm_maker)
             abjadext.rmakers.TaleaRhythmMaker(
-                BeamSpecifier(selector=abjad.select().tuplets()),
+                BeamCommand(selector=abjad.select().tuplets()),
                 TupletSpecifier(extract_trivial=True),
                 talea=abjadext.rmakers.Talea(
                     counts=[5, -3, 3, 3],
@@ -599,7 +599,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Forces the first leaf and the last two leaves to be rests:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -672,7 +672,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Forces the first leaf of every division to be a rest:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     abjadext.rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -759,7 +759,7 @@ class TaleaRhythmMaker(RhythmMaker):
             durations:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -825,7 +825,7 @@ class TaleaRhythmMaker(RhythmMaker):
             durations:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -890,7 +890,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Forbids no durations:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -951,7 +951,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Forbids durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -1022,7 +1022,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Rewrites meter:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -1109,7 +1109,7 @@ class TaleaRhythmMaker(RhythmMaker):
             No extra counts per division:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -1175,7 +1175,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Adds one extra count to every other division:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     extra_counts_per_division=[0, 1],
@@ -1249,7 +1249,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Adds two extra counts to every other division:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     extra_counts_per_division=[0, 2],
@@ -1332,7 +1332,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Removes one count from every other division:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     extra_counts_per_division=[0, -1],
@@ -1420,7 +1420,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Reads talea cyclically:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -1489,7 +1489,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Reads talea once only:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     read_talea_once_only=True,
@@ -1526,7 +1526,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Consumes 4 divisions and 31 counts:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -1744,7 +1744,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().logical_ties().get([0, -1]),
             ...     ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -1815,7 +1815,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.note(
             ...         abjad.select().logical_ties().get([0, -1]),
             ...     ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -1879,7 +1879,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().logical_ties().get([0, 2, 12]),
             ...     ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -2021,7 +2021,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #            ...     rmakers.rest(
 #            ...         abjad.select().logical_ties().get([3], 4),
 #            ...     ),
-#            ...     rmakers.BeamSpecifier(
+#            ...     rmakers.BeamCommand(
 #            ...         selector=abjad.select().tuplets(),
 #            ...     ),
 #            ...     rmakers.TupletSpecifier(
@@ -2165,7 +2165,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         denominator=(1, 16),
             ...     ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     extra_counts_per_division=[1, 1, 2, 2],
@@ -2246,7 +2246,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams each division:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -2328,7 +2328,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         beam_divisions_together=True,
             ...         selector=abjad.select().tuplets(),
             ...         ),
@@ -2464,7 +2464,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     rmakers.BeamSpecifier(),
+            ...     rmakers.BeamCommand(),
             ...     talea=rmakers.Talea(
             ...         counts=[1],
             ...         denominator=16,
@@ -2533,7 +2533,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Does not beam rests:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -2621,7 +2621,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Does beam rests:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         beam_rests=True,
             ...         selector=abjad.select().tuplets(),
             ...         ),
@@ -2704,7 +2704,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams rests with stemlets:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         beam_rests=True,
             ...         selector=abjad.select().tuplets(),
             ...         stemlet_length=0.75,
@@ -2796,7 +2796,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Does not tie across divisions:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -2864,11 +2864,11 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -2939,11 +2939,11 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> tuplets = abjad.select().tuplets().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=tuplets.map(last_leaf),
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -3014,15 +3014,15 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> selector = abjad.select().runs()
             >>> selector = selector.map(nonlast_notes)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         detach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -3125,14 +3125,14 @@ class TaleaRhythmMaker(RhythmMaker):
             REGRESSION. New allows additional specifiers:
 
             >>> specifiers = rhythm_maker.specifiers[:]
-            >>> specifier = rmakers.BeamSpecifier(
+            >>> specifier = rmakers.BeamCommand(
             ...     selector=abjad.select().tuplets(),
             ...     )
             >>> specifiers.insert(0, specifier)
             >>> new_rhythm_maker = abjad.new(rhythm_maker, *specifiers)
             >>> abjad.f(new_rhythm_maker)
             abjadext.rmakers.TaleaRhythmMaker(
-                BeamSpecifier(selector=abjad.select().tuplets()),
+                BeamCommand(selector=abjad.select().tuplets()),
                 TupletSpecifier(extract_trivial=True),
                 talea=abjadext.rmakers.Talea(
                     counts=[5, -3, 3, 3],
@@ -3148,7 +3148,7 @@ class TaleaRhythmMaker(RhythmMaker):
             specifier is given:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     extra_counts_per_division=[1, 1, 2, 2],
@@ -3231,7 +3231,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         denominator=(1, 16),
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     extra_counts_per_division=[1, 1, 2, 2],
@@ -3315,7 +3315,7 @@ class TaleaRhythmMaker(RhythmMaker):
             tuplet specifier is given):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -3406,7 +3406,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Makes augmented tuplets when ``diminution`` is set to false:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -3504,7 +3504,7 @@ class TaleaRhythmMaker(RhythmMaker):
             tuplets, but they are not:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     extra_counts_per_division=[0, 4],
@@ -3572,7 +3572,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         trivialize=True,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     extra_counts_per_division=[0, 4],
@@ -3644,11 +3644,11 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         trivialize=True,
             ...         ),
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     extra_counts_per_division=[0, 4],
@@ -3721,11 +3721,11 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.TupletSpecifier(
             ...         trivialize=True,
             ...         ),
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=abjad.select().notes()[:-1],
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     extra_counts_per_division=[0, 4],
@@ -3803,7 +3803,7 @@ class TaleaRhythmMaker(RhythmMaker):
             when no tuplet specifier is given):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     extra_counts_per_division=[1, 0],
@@ -3873,7 +3873,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Rewrites rest-filled tuplets when ``rewrite_rest_filled`` is true:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -3946,7 +3946,7 @@ class TaleaRhythmMaker(RhythmMaker):
             No rest commands:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -4015,7 +4015,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().tuplets().get([1], 2),
             ...     ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -4073,7 +4073,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> selector = abjad.select().tuplets().get([1], 2)
             >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=selector.map(nonlast_notes),
             ...     ),
@@ -4081,7 +4081,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         rewrite_sustained=True,
             ...         selector=selector,
             ...     ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -4145,7 +4145,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         rewrite_rest_filled=True,
             ...         selector=selector,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -4277,7 +4277,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         rewrite_rest_filled=True,
             ...         selector=selector,
             ...         ),
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -4411,7 +4411,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ..  container:: example
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     extra_counts_per_division=[0, 1],
@@ -4492,7 +4492,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Default talea:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ... )
@@ -4577,7 +4577,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Preamble less than total duration:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -4640,7 +4640,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Preamble more than total duration; ignores counts:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -4695,7 +4695,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Working with ``end_counts``.
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -4756,7 +4756,7 @@ class TaleaRhythmMaker(RhythmMaker):
             REGRESSION. End counts leave 5-durated tie in tact:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets()
             ...     ),
             ...     rmakers.TupletSpecifier(

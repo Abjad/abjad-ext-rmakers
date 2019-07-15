@@ -14,7 +14,7 @@ def test_BurnishSpecifier_01():
     talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
-        rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+        rmakers.BeamCommand(selector=abjad.select().tuplets()),
         talea=talea,
         burnish_specifier=burnish_specifier,
         extra_counts_per_division=[0],
@@ -79,7 +79,7 @@ def test_BurnishSpecifier_02():
     talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
-        rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+        rmakers.BeamCommand(selector=abjad.select().tuplets()),
         talea=talea,
         extra_counts_per_division=[0],
         burnish_specifier=burnish_specifier,
@@ -144,7 +144,7 @@ def test_BurnishSpecifier_03():
     talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
-        rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+        rmakers.BeamCommand(selector=abjad.select().tuplets()),
         talea=talea,
         extra_counts_per_division=[3],
         burnish_specifier=burnish_specifier,
@@ -212,7 +212,7 @@ def test_BurnishSpecifier_04():
     talea = rmakers.Talea(counts=[1, 1, 2, 4], denominator=32)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
-        rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+        rmakers.BeamCommand(selector=abjad.select().tuplets()),
         talea=talea,
         extra_counts_per_division=[0, 3],
         burnish_specifier=burnish_specifier,

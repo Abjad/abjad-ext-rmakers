@@ -1,10 +1,10 @@
 import abjad
 import typing
 from . import typings
-from .BeamSpecifier import BeamSpecifier
+from .BeamCommand import BeamCommand
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TieSpecifier import TieSpecifier
+from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
 from .commands import CacheStateCommand
 from .commands import NoteCommand
@@ -18,14 +18,14 @@ RhythmMakerTyping = typing.Union[
 ]
 
 SpecifierClasses = (
-    BeamSpecifier,
+    BeamCommand,
     CacheStateCommand,
     DurationSpecifier,
     RewriteMeterCommand,
     RestCommand,
     SplitCommand,
     NoteCommand,
-    TieSpecifier,
+    TieCommand,
     TupletSpecifier,
 )
 

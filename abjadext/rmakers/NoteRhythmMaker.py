@@ -1,11 +1,11 @@
 import abjad
 import typing
 from . import typings
-from .BeamSpecifier import BeamSpecifier
+from .BeamCommand import BeamCommand
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TieSpecifier import TieSpecifier
+from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
 from .commands import RestCommand
 
@@ -860,7 +860,7 @@ class NoteRhythmMaker(RhythmMaker):
             Beams each division:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().logical_ties(pitched=True),
             ...         ),
             ...     )
@@ -905,7 +905,7 @@ class NoteRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         beam_divisions_together=True,
             ...         selector=abjad.select().logical_ties(),
             ...         ),
@@ -957,7 +957,7 @@ class NoteRhythmMaker(RhythmMaker):
             Makes no beams:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.BeamSpecifier(),
+            ...     rmakers.BeamCommand(),
             ...     )
 
             >>> divisions = [(5, 32), (5, 32)]
@@ -1037,7 +1037,7 @@ class NoteRhythmMaker(RhythmMaker):
             >>> nonlast_lts = abjad.select().logical_ties()[:-1]
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=nonlast_lts.map(last_leaf),
             ...     ),
@@ -1086,7 +1086,7 @@ class NoteRhythmMaker(RhythmMaker):
             >>> lts = abjad.select().logical_ties().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=lts.map(last_leaf),
             ...     ),
@@ -1132,7 +1132,7 @@ class NoteRhythmMaker(RhythmMaker):
             Strips all ties:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.TieSpecifier(
+            ...     rmakers.TieCommand(
             ...         detach_ties=True,
             ...         selector=abjad.select().notes(),
             ...     ),

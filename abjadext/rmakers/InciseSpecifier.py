@@ -205,7 +205,7 @@ class InciseSpecifier(object):
             ...     body_ratio=abjad.Ratio((1, 1)),
             ...     )
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(

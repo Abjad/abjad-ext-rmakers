@@ -2,7 +2,7 @@ import abjad
 import typing
 
 
-class BeamSpecifier(object):
+class BeamCommand(object):
     """
     Beam specifier.
     """
@@ -158,11 +158,11 @@ class BeamSpecifier(object):
 
         ..  container:: example
 
-            >>> specifier = rmakers.BeamSpecifier(
+            >>> specifier = rmakers.BeamCommand(
             ...     selector=abjad.select().tuplets(),
             ...     )
             >>> abjad.f(specifier)
-            abjadext.rmakers.BeamSpecifier(
+            abjadext.rmakers.BeamCommand(
                 selector=abjad.select().tuplets(),
                 )
 
@@ -175,8 +175,8 @@ class BeamSpecifier(object):
 
         ..  container:: example
 
-            >>> rmakers.BeamSpecifier()
-            BeamSpecifier()
+            >>> rmakers.BeamCommand()
+            BeamCommand()
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()

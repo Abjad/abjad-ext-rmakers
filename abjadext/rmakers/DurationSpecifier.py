@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import typings
-from .BeamSpecifier import BeamSpecifier
+from .BeamCommand import BeamCommand
 
 
 class DurationSpecifier(object):
@@ -84,7 +84,7 @@ class DurationSpecifier(object):
             Decreases monotically:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -144,7 +144,7 @@ class DurationSpecifier(object):
             Increases monotically:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -212,7 +212,7 @@ class DurationSpecifier(object):
             Forbids note durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
@@ -285,7 +285,7 @@ class DurationSpecifier(object):
             Forbids rest durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamSpecifier(
+            ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     rmakers.TupletSpecifier(
