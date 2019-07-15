@@ -4,13 +4,13 @@ from . import typings
 from .BeamSpecifier import BeamSpecifier
 from .CacheState import CacheState
 from .DurationSpecifier import DurationSpecifier
-from .RewriteMeterCommand import RewriteMeterCommand
 from .RhythmMaker import RhythmMaker
-from .SplitCommand import SplitCommand
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .commands import RestCommand
 from .commands import NoteCommand
+from .commands import RestCommand
+from .commands import RewriteMeterCommand
+from .commands import SplitCommand
 
 
 RhythmMakerTyping = typing.Union[

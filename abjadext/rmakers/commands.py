@@ -1,8 +1,245 @@
 import abjad
 import typing
+from . import typings
+from .BeamSpecifier import BeamSpecifier
 
 
 ### CLASSES ###
+
+
+class NoteCommand(object):
+    r"""
+    Note command.
+
+    ..  container:: example
+
+        Changes logical ties 1 and 2 to notes:
+
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        ...     abjadext.rmakers.rest(abjad.select().leaves()),
+        ...     abjadext.rmakers.note(abjad.select().logical_ties()[1:3]),
+        ... )
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    r4..
+                    c'4.
+                    c'4..
+                    r4.
+                }
+            >>
+
+    ..  container:: example
+
+        Sustains logical ties -1 and -2 to notes:
+
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        ...     abjadext.rmakers.rest(abjad.select().leaves()),
+        ...     abjadext.rmakers.note(abjad.select().logical_ties()[-2:]),
+        ... )
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    r4..
+                    r4.
+                    c'4..
+                    c'4.
+                }
+            >>
+
+    ..  container:: example
+
+        Changes patterned selection of leaves to notes:
+
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        ...     abjadext.rmakers.rest(abjad.select().leaves()),
+        ...     abjadext.rmakers.note(abjad.select().logical_ties()[1:-1]),
+        ... )
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    r4..
+                    c'4.
+                    c'4..
+                    r4.
+                }
+            >>
+
+    ..  container:: example
+
+        Changes patterned selection of leave to notes. Works inverted composite
+        pattern:
+
+        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        ...     abjadext.rmakers.rest(abjad.select().leaves()),
+        ...     abjadext.rmakers.note(
+        ...         abjad.select().logical_ties().get([0, -1]),
+        ...     ),
+        ... )
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'4..
+                    r4.
+                    r4..
+                    c'4.
+                }
+            >>
+
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_selector",)
+
+    _publish_storage_format = True
+
+    ### INITIALIZER ###
+
+    def __init__(self, selector: abjad.SelectorTyping) -> None:
+        if isinstance(selector, str):
+            selector = eval(selector)
+            assert isinstance(selector, abjad.Expression)
+        self._selector = selector
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, tag=None):
+        if isinstance(staff, abjad.Staff):
+            selection = staff["MusicVoice"]
+        else:
+            selection = staff
+        selection = self.selector(selection)
+
+        # will need to restore for statal rhythm-makers:
+        # logical_ties = abjad.select(selections).logical_ties()
+        # logical_ties = list(logical_ties)
+        # total_logical_ties = len(logical_ties)
+        # previous_logical_ties_produced = self._previous_logical_ties_produced()
+        # if self._previous_incomplete_last_note():
+        #    previous_logical_ties_produced -= 1
+
+        leaves = abjad.select(selection).leaves()
+        for leaf in leaves:
+            if isinstance(leaf, abjad.Note):
+                continue
+            note = abjad.Note("C4", leaf.written_duration, tag=tag)
+            if leaf.multiplier is not None:
+                note.multiplier = leaf.multiplier
+            abjad.mutate(leaf).replace([note])
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Formats note command.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation of note command.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def selector(self) -> typing.Optional[abjad.Expression]:
+        """
+        Gets selector.
+        """
+        return self._selector
 
 
 class RestCommand(object):
@@ -265,239 +502,233 @@ class RestCommand(object):
         return self._use_multimeasure_rests
 
 
-class NoteCommand(object):
-    r"""
-    Note command.
-
-    ..  container:: example
-
-        Changes logical ties 1 and 2 to notes:
-
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.rest(abjad.select().leaves()),
-        ...     abjadext.rmakers.note(abjad.select().logical_ties()[1:3]),
-        ... )
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> selections = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections,
-        ...     divisions,
-        ...     )
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> abjad.f(lilypond_file[abjad.Score])
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    r4..
-                    c'4.
-                    c'4..
-                    r4.
-                }
-            >>
-
-    ..  container:: example
-
-        Sustains logical ties -1 and -2 to notes:
-
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.rest(abjad.select().leaves()),
-        ...     abjadext.rmakers.note(abjad.select().logical_ties()[-2:]),
-        ... )
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> selections = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections,
-        ...     divisions,
-        ...     )
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> abjad.f(lilypond_file[abjad.Score])
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    r4..
-                    r4.
-                    c'4..
-                    c'4.
-                }
-            >>
-
-    ..  container:: example
-
-        Changes patterned selection of leaves to notes:
-
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.rest(abjad.select().leaves()),
-        ...     abjadext.rmakers.note(abjad.select().logical_ties()[1:-1]),
-        ... )
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> selections = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections,
-        ...     divisions,
-        ...     )
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> abjad.f(lilypond_file[abjad.Score])
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    r4..
-                    c'4.
-                    c'4..
-                    r4.
-                }
-            >>
-
-    ..  container:: example
-
-        Changes patterned selection of leave to notes. Works inverted composite
-        pattern:
-
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
-        ...     abjadext.rmakers.rest(abjad.select().leaves()),
-        ...     abjadext.rmakers.note(
-        ...         abjad.select().logical_ties().get([0, -1]),
-        ...     ),
-        ... )
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> selections = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections,
-        ...     divisions,
-        ...     )
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> abjad.f(lilypond_file[abjad.Score])
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    c'4..
-                    r4.
-                    r4..
-                    c'4.
-                }
-            >>
-
+class RewriteMeterCommand(object):
+    """
+    Rewrite meter command.
     """
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_selector",)
+    __documentation_section__ = "Specifiers"
+
+    __slots__ = ("_reference_meters", "_repeat_ties")
 
     _publish_storage_format = True
 
     ### INITIALIZER ###
 
-    def __init__(self, selector: abjad.SelectorTyping) -> None:
-        if isinstance(selector, str):
-            selector = eval(selector)
-            assert isinstance(selector, abjad.Expression)
-        self._selector = selector
+    def __init__(self, *, reference_meters=None, repeat_ties=None) -> None:
+        self._reference_meters = reference_meters
+        self._repeat_ties = repeat_ties
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, tag=None):
-        if isinstance(staff, abjad.Staff):
-            selection = staff["MusicVoice"]
-        else:
-            selection = staff
-        selection = self.selector(selection)
+    def __call__(
+        self, staff, *, time_signatures=None, tag: str = None
+    ) -> None:
+        """
+        Calls rewrite meter command.
+        """
+        from .RhythmMaker import RhythmMaker
 
-        # will need to restore for statal rhythm-makers:
-        # logical_ties = abjad.select(selections).logical_ties()
-        # logical_ties = list(logical_ties)
-        # total_logical_ties = len(logical_ties)
-        # previous_logical_ties_produced = self._previous_logical_ties_produced()
-        # if self._previous_incomplete_last_note():
-        #    previous_logical_ties_produced -= 1
+        assert time_signatures is None, repr(time_signatures)
+        time_signature_voice = staff["TimeSignatureVoice"]
+        meters = []
+        for skip in time_signature_voice:
+            time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
+            meter = abjad.Meter(time_signature)
+            meters.append(meter)
+        durations = [abjad.Duration(_) for _ in meters]
+        reference_meters = self.reference_meters or ()
+        command = SplitCommand(repeat_ties=self.repeat_ties)
+        command(staff, time_signatures=meters)
+        selections = RhythmMaker._select_by_measure(staff)
+        for meter, selection in zip(meters, selections):
+            for reference_meter in reference_meters:
+                if str(reference_meter) == str(meter):
+                    meter = reference_meter
+                    break
 
-        leaves = abjad.select(selection).leaves()
-        for leaf in leaves:
-            if isinstance(leaf, abjad.Note):
-                continue
-            note = abjad.Note("C4", leaf.written_duration, tag=tag)
-            if leaf.multiplier is not None:
-                note.multiplier = leaf.multiplier
-            abjad.mutate(leaf).replace([note])
+            nontupletted_leaves = []
+            for leaf in abjad.iterate(selection).leaves():
+                if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
+                    nontupletted_leaves.append(leaf)
+            BeamSpecifier._detach_all_beams(nontupletted_leaves)
+            abjad.mutate(selection).rewrite_meter(
+                meter, rewrite_tuplets=False, repeat_ties=self.repeat_ties
+            )
+        selections = RhythmMaker._select_by_measure(staff)
+        for meter, selection in zip(meters, selections):
+            leaves = abjad.select(selection).leaves(
+                do_not_iterate_grace_containers=True
+            )
+            beat_durations = []
+            beat_offsets = meter.depthwise_offset_inventory[1]
+            for start, stop in abjad.sequence(beat_offsets).nwise():
+                beat_duration = stop - start
+                beat_durations.append(beat_duration)
+            beamable_groups = BeamSpecifier._make_beamable_groups(
+                leaves, beat_durations
+            )
+            for beamable_group in beamable_groups:
+                if not beamable_group:
+                    continue
+                abjad.beam(
+                    beamable_group,
+                    beam_rests=False,
+                    tag="rmakers.RewriteMeterCommand.__call__",
+                )
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats note command.
+        Formats rewrite meter command.
+
+        ..  container:: example
+
+            >>> specifier = abjadext.rmakers.rewrite_meter()
+            >>> abjad.f(specifier)
+            abjadext.commands.RewriteMeterCommand()
+
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation of note command.
+        Gets interpreter representation.
+
+        ..  container:: example
+
+            >>> abjadext.rmakers.rewrite_meter()
+            RewriteMeterCommand()
+
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PUBLIC PROPERTIES ###
 
     @property
-    def selector(self) -> typing.Optional[abjad.Expression]:
+    def reference_meters(self):
         """
-        Gets selector.
+        Gets reference meters.
         """
-        return self._selector
+        return self._reference_meters
+
+    @property
+    def repeat_ties(self):
+        """
+        Gets repeat ties.
+        """
+        return self._repeat_ties
+
+
+class SplitCommand(object):
+    """
+    Split mesures command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __documentation_section__ = "Specifiers"
+
+    __slots__ = "_repeat_ties"
+
+    _publish_storage_format = True
+
+    ### INITIALIZER ###
+
+    def __init__(self, *, repeat_ties=None) -> None:
+        self._repeat_ties = repeat_ties
+
+    ### SPECIAL METHODS ###
+
+    def __call__(
+        self, staff, *, time_signatures=None, tag: str = None
+    ) -> None:
+        """
+        Calls split command.
+        """
+        music_voice = staff["MusicVoice"]
+        if time_signatures is None:
+            time_signature_voice = staff["TimeSignatureVoice"]
+            durations = [
+                abjad.inspect(_).duration() for _ in time_signature_voice
+            ]
+        else:
+            durations = [abjad.Duration(_.pair) for _ in time_signatures]
+        total_duration = sum(durations)
+        music_duration = abjad.inspect(music_voice).duration()
+        if total_duration != music_duration:
+            message = f"Total duration of splits is {total_duration!s}"
+            message += f" but duration of music is {music_duration!s}:"
+            message += f"\ndurations: {durations}."
+            message += f"\nmusic voice: {music_voice[:]}."
+            raise Exception(message)
+        abjad.mutate(music_voice[:]).split(
+            durations=durations, repeat_ties=self.repeat_ties
+        )
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Formats command.
+
+        ..  container:: example
+
+            >>> specifier = abjadext.rmakers.split()
+            >>> abjad.f(specifier)
+            abjadext.commands.SplitCommand()
+
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation of command.
+
+        ..  container:: example
+
+            >>> abjadext.rmakers.split()
+            SplitCommand()
+
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+    ### PRIVATE METHODS ###
+
+    # TODO: activate tag
+    def _call(self, music_voice, durations, *, tag=None):
+        durations = [abjad.Duration(_) for _ in durations]
+        total_duration = sum(durations)
+        music_duration = abjad.inspect(music_voice).duration()
+        if total_duration != music_duration:
+            message = f"Total duration of splits is {total_duration!s}"
+            message += f" but duration of music is {music_duration!s}:"
+            message += f"\ndurations: {durations}."
+            message += f"\nmusic voice: {music_voice[:]}."
+            raise Exception(message)
+        abjad.mutate(music_voice[:]).split(
+            durations=durations, repeat_ties=self.repeat_ties
+        )
+        components = music_voice[:]
+        component_durations = [abjad.inspect(_).duration() for _ in components]
+        parts = abjad.sequence(component_durations)
+        parts = parts.partition_by_weights(
+            weights=durations, allow_part_weights=abjad.Exact
+        )
+        part_lengths = [len(_) for _ in parts]
+        parts = abjad.sequence(components).partition_by_counts(
+            counts=part_lengths, overhang=abjad.Exact
+        )
+        selections = [abjad.select(_) for _ in parts]
+        return selections
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def repeat_ties(self):
+        """
+        Is true when command uses repeat ties.
+        """
+        return self._repeat_ties
 
 
 ### FACTORY FUNCTIONS ###
@@ -517,3 +748,21 @@ def rest(
     Makes rest command.
     """
     return RestCommand(selector, use_multimeasure_rests=use_multimeasure_rests)
+
+
+def rewrite_meter(
+    *, reference_meters=None, repeat_ties=None
+) -> RewriteMeterCommand:
+    """
+    Makes rewrite meter command.
+    """
+    return RewriteMeterCommand(
+        reference_meters=reference_meters, repeat_ties=repeat_ties
+    )
+
+
+def split(*, repeat_ties=None) -> SplitCommand:
+    """
+    Makes split command.
+    """
+    return SplitCommand(repeat_ties=repeat_ties)

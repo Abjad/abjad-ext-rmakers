@@ -1028,7 +1028,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.RewriteMeterCommand(),
+            ...     abjadext.rmakers.rewrite_meter(),
             ...     talea=abjadext.rmakers.Talea(
             ...         counts=[5, 4],
             ...         denominator=16,

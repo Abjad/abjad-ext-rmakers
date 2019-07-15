@@ -1,12 +1,12 @@
 import typing
 from .BeamSpecifier import BeamSpecifier
 from .CacheState import CacheState
-from .RewriteMeterCommand import RewriteMeterCommand
-from .SplitCommand import SplitCommand
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
-from .commands import RestCommand
 from .commands import NoteCommand
+from .commands import RestCommand
+from .commands import RewriteMeterCommand
+from .commands import SplitCommand
 
 
 MaskTyping = typing.Union[RestCommand, NoteCommand]

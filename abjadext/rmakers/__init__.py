@@ -12,8 +12,6 @@ from .InciseSpecifier import InciseSpecifier
 from .IncisedRhythmMaker import IncisedRhythmMaker
 from .InterpolationSpecifier import InterpolationSpecifier
 from .NoteRhythmMaker import NoteRhythmMaker
-from .RewriteMeterCommand import RewriteMeterCommand
-from .SplitCommand import SplitCommand
 from .Talea import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TieSpecifier import TieSpecifier
@@ -25,6 +23,10 @@ from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
 from .commands import NoteCommand
 from .commands import RestCommand
+from .commands import RewriteMeterCommand
+from .commands import SplitCommand
 from .commands import note
 from .commands import rest
+from .commands import rewrite_meter
+from .commands import split
 from .typings import *

@@ -539,7 +539,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     abjadext.rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.RewriteMeterCommand(),
+            ...     abjadext.rmakers.rewrite_meter(),
             ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
