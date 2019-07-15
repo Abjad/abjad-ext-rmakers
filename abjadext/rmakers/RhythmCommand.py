@@ -213,19 +213,19 @@ class RhythmCommand(object):
 
     ..  container:: example
 
-        >>> even_divisions = abjadext.rmakers.EvenDivisionRhythmMaker(
+        >>> even_divisions = rmakers.EvenDivisionRhythmMaker(
         ...     denominator=16,
         ...     extra_counts_per_division=[1],
         ... )
-        >>> notes = abjadext.rmakers.NoteRhythmMaker()
+        >>> notes = rmakers.NoteRhythmMaker()
 
-        >>> command = abjadext.rmakers.RhythmCommand(
-        ...     abjadext.rmakers.MakerAssignments(
-        ...         abjadext.rmakers.MakerAssignment(
+        >>> command = rmakers.RhythmCommand(
+        ...     rmakers.MakerAssignments(
+        ...         rmakers.MakerAssignment(
         ...             abjad.index([1], 2),
         ...             even_divisions,
         ...         ),
-        ...         abjadext.rmakers.MakerAssignment(
+        ...         rmakers.MakerAssignment(
         ...             abjad.index([0], 1),
         ...             notes,
         ...         ),
@@ -429,16 +429,16 @@ class RhythmCommand(object):
 
         ..  container:: example
 
-            >>> command_1 = abjadext.rmakers.RhythmCommand(
-            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
+            >>> command_1 = rmakers.RhythmCommand(
+            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     rmakers.TupletSpecifier(force_fraction=True),
             ... )
-            >>> command_2 = abjadext.rmakers.RhythmCommand(
-            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
+            >>> command_2 = rmakers.RhythmCommand(
+            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     rmakers.TupletSpecifier(force_fraction=True),
             ... )
-            >>> command_3 = abjadext.rmakers.RhythmCommand(
-            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            >>> command_3 = rmakers.RhythmCommand(
+            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
             ... )
 
             >>> command_1 == command_1
@@ -484,9 +484,9 @@ class RhythmCommand(object):
 
             REGRESSION. Specifiers appear in format:
 
-            >>> command = abjadext.rmakers.RhythmCommand(
-            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
+            >>> command = rmakers.RhythmCommand(
+            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     rmakers.TupletSpecifier(force_fraction=True),
             ... )
             >>> abjad.f(command)
             abjadext.rmakers.RhythmCommand(
@@ -507,9 +507,9 @@ class RhythmCommand(object):
 
         ..  container:: example
 
-            >>> abjadext.rmakers.RhythmCommand(
-            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
+            >>> rmakers.RhythmCommand(
+            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     rmakers.TupletSpecifier(force_fraction=True),
             ... )
             RhythmCommand(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), TupletSpecifier(force_fraction=True))
 
@@ -611,7 +611,7 @@ class RhythmCommand(object):
 
             Raises exception on invalid input:
 
-            >>> command = abjadext.rmakers.RhythmCommand(
+            >>> command = rmakers.RhythmCommand(
             ...     rhythm_maker='text',
             ...     )
             Traceback (most recent call last):
@@ -635,9 +635,9 @@ class RhythmCommand(object):
 
             REGRESSION. ``abjad.new()`` copies specifiers:
 
-            >>> command_1 = abjadext.rmakers.RhythmCommand(
-            ...     abjadext.rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     abjadext.rmakers.TupletSpecifier(force_fraction=True),
+            >>> command_1 = rmakers.RhythmCommand(
+            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            ...     rmakers.TupletSpecifier(force_fraction=True),
             ... )
             >>> command_2 = abjad.new(command_1)
 

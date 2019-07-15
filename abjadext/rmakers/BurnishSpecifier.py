@@ -12,7 +12,7 @@ class BurnishSpecifier(object):
 
         Forces first leaf of each division to be a rest:
 
-        >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.BurnishSpecifier(
         ...     left_classes=[abjad.Rest],
         ...     left_counts=[1],
         ...     )
@@ -21,7 +21,7 @@ class BurnishSpecifier(object):
 
         Forces the first three leaves of each division to be rests:
 
-        >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.BurnishSpecifier(
         ...     left_classes=[abjad.Rest],
         ...     left_counts=[3],
         ...     )
@@ -30,7 +30,7 @@ class BurnishSpecifier(object):
 
         Forces last leaf of each division to be a rest:
 
-        >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.BurnishSpecifier(
         ...     right_classes=[abjad.Rest],
         ...     right_counts=[1],
         ...     )
@@ -39,7 +39,7 @@ class BurnishSpecifier(object):
 
         Forces the last three leaves of each division to be rests:
 
-        >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.BurnishSpecifier(
         ...     right_classes=[abjad.Rest],
         ...     right_counts=[3],
         ...     )
@@ -49,7 +49,7 @@ class BurnishSpecifier(object):
         Forces the first leaf of every even-numbered division to be a rest;
         forces the first leaf of every odd-numbered division to be a note.
 
-        >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.BurnishSpecifier(
         ...     left_classes=[abjad.Rest, abjad.Note],
         ...     left_counts=[1],
         ...     )
@@ -59,7 +59,7 @@ class BurnishSpecifier(object):
         Forces the last leaf of every even-numbered division to be a rest;
         forces the last leaf of every odd-numbered division to be a note.
 
-        >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.BurnishSpecifier(
         ...     right_classes=[abjad.Rest, abjad.Note],
         ...     right_counts=[1],
         ...     )
@@ -69,7 +69,7 @@ class BurnishSpecifier(object):
         Forces the first leaf of every even-numbered division to be a rest;
         leave the first leaf of every odd-numbered division unchanged.
 
-        >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.BurnishSpecifier(
         ...     left_classes=[abjad.Rest, 0],
         ...     left_counts=[1],
         ...     )
@@ -79,7 +79,7 @@ class BurnishSpecifier(object):
         Forces the last leaf of every even-numbered division to be a rest;
         leave the last leaf of every odd-numbered division unchanged.
 
-        >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.BurnishSpecifier(
         ...     right_classes=[abjad.Rest, 0],
         ...     right_counts=[1],
         ...     )
@@ -158,7 +158,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.BurnishSpecifier(
             ...     left_classes=[abjad.Rest, 0],
             ...     left_counts=[1],
             ...     )
@@ -181,7 +181,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.BurnishSpecifier(
             ...     left_classes=[abjad.Rest, 0],
             ...     left_counts=[1],
             ...     )
@@ -394,7 +394,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.BurnishSpecifier(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -416,7 +416,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.BurnishSpecifier(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -438,7 +438,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.BurnishSpecifier(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -470,7 +470,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.BurnishSpecifier(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -492,7 +492,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = abjadext.rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.BurnishSpecifier(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],

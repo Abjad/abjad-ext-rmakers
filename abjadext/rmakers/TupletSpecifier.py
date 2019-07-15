@@ -9,7 +9,7 @@ class TupletSpecifier(object):
 
     ..  container:: example
 
-        >>> specifier = abjadext.rmakers.TupletSpecifier()
+        >>> specifier = rmakers.TupletSpecifier()
         >>> abjad.f(specifier)
         abjadext.rmakers.TupletSpecifier()
 
@@ -317,12 +317,12 @@ class TupletSpecifier(object):
             relatively prime when ``denominator`` is set to none. This
             means that ratios like ``6:4`` and ``10:8`` do not arise:
 
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
             ...         denominator=None,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -386,12 +386,12 @@ class TupletSpecifier(object):
             duration when ``denominator`` is set to a duration. The
             setting does not affect the first tuplet:
 
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
             ...         denominator=(1, 16),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -454,12 +454,12 @@ class TupletSpecifier(object):
             Sets the preferred denominator of each tuplet in terms 32nd notes.
             The setting affects all tuplets:
 
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
             ...         denominator=(1, 32),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -522,12 +522,12 @@ class TupletSpecifier(object):
             Sets the preferred denominator each tuplet in terms 64th notes. The
             setting affects all tuplets:
 
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
             ...         denominator=(1, 64),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -592,12 +592,12 @@ class TupletSpecifier(object):
             sets the preferred denominator of each tuplet to ``8``. Setting
             does not affect the third tuplet:
 
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
             ...         denominator=8,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -660,12 +660,12 @@ class TupletSpecifier(object):
             Sets the preferred denominator of each tuplet to ``12``. Setting
             affects all tuplets:
 
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
             ...         denominator=12,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -731,12 +731,12 @@ class TupletSpecifier(object):
             Sets the preferred denominator of each tuplet to ``13``. Setting
             does not affect any tuplet:
 
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_dots=True,
             ...         denominator=13,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -826,9 +826,9 @@ class TupletSpecifier(object):
 
             With selector:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         selector=abjad.select().tuplets()[-2:],
             ...     ),
@@ -906,8 +906,8 @@ class TupletSpecifier(object):
 
             This means that even simple tuplets format as explicit fractions:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -962,8 +962,8 @@ class TupletSpecifier(object):
             We can temporarily restore LilyPond's default tuplet numbering like
             this:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1025,11 +1025,11 @@ class TupletSpecifier(object):
             Which then makes it possible to show that the force fraction
             property cancels LilyPond's default tuplet numbering once again:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         force_fraction=True,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1117,10 +1117,10 @@ class TupletSpecifier(object):
 
             Does not rewrite rest-filled tuplets:
 
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[-1],
             ...         denominator=16,
             ...         ),
@@ -1192,13 +1192,13 @@ class TupletSpecifier(object):
 
             Rewrites rest-filled tuplets:
 
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[-1],
             ...         denominator=16,
             ...         ),
@@ -1253,14 +1253,14 @@ class TupletSpecifier(object):
 
             With selector:
 
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
             ...         selector=abjad.select().tuplets()[-2:],
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[-1],
             ...         denominator=16,
             ...         ),
@@ -1337,14 +1337,14 @@ class TupletSpecifier(object):
             likely to rewrite:
 
             >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],
             ...         denominator=16,
             ...         ),
@@ -1402,7 +1402,7 @@ class TupletSpecifier(object):
 
                 >>> staff = lilypond_file[abjad.Score]
                 >>> for tuplet in abjad.select(staff).tuplets():
-                ...     abjadext.rmakers.TupletSpecifier.is_sustained_tuplet(tuplet)
+                ...     rmakers.TupletSpecifier.is_sustained_tuplet(tuplet)
                 ...
                 True
                 True
@@ -1422,17 +1422,17 @@ class TupletSpecifier(object):
             Rewrite sustained tuplets like this:
 
             >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_sustained=True,
             ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],
             ...         denominator=16,
             ...         ),
@@ -1491,18 +1491,18 @@ class TupletSpecifier(object):
             that result -- like this:
 
             >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
             ...         ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         rewrite_sustained=True,
             ...         ),
             ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],
             ...         denominator=16,
             ...         ),
@@ -1552,16 +1552,16 @@ class TupletSpecifier(object):
 
             >>> selector = abjad.select().notes()[:-1]
             >>> selector = abjad.select().tuplets().map(selector)
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=selector,
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_sustained=True,
             ...         selector=abjad.select().tuplets()[-2:],
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ... )
 

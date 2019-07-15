@@ -52,7 +52,7 @@ class DurationSpecifier(object):
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.DurationSpecifier()
+            >>> specifier = rmakers.DurationSpecifier()
             >>> abjad.f(specifier)
             abjadext.rmakers.DurationSpecifier()
 
@@ -65,7 +65,7 @@ class DurationSpecifier(object):
 
         ..  container:: example
 
-            >>> abjadext.rmakers.DurationSpecifier()
+            >>> rmakers.DurationSpecifier()
             DurationSpecifier()
 
         """
@@ -83,17 +83,17 @@ class DurationSpecifier(object):
 
             Decreases monotically:
 
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.DurationSpecifier(
             ...         increase_monotonic=False,
             ...         ),
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[5],
             ...         denominator=16,
             ...         ),
@@ -143,17 +143,17 @@ class DurationSpecifier(object):
 
             Increases monotically:
 
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.DurationSpecifier(
             ...         increase_monotonic=True,
             ...         ),
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[5],
             ...         denominator=16,
             ...         ),
@@ -211,17 +211,17 @@ class DurationSpecifier(object):
 
             Forbids note durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.DurationSpecifier(
             ...         forbidden_note_duration=(1, 4),
             ...         ),
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[1, 1, 1, 1, 4, -4],
             ...         denominator=16,
             ...         ),
@@ -284,17 +284,17 @@ class DurationSpecifier(object):
 
             Forbids rest durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = abjadext.rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.DurationSpecifier(
             ...         forbidden_rest_duration=(1, 4),
             ...         ),
-            ...     talea=abjadext.rmakers.Talea(
+            ...     talea=rmakers.Talea(
             ...         counts=[1, 1, 1, 1, 4, -4],
             ...         denominator=16,
             ...         ),

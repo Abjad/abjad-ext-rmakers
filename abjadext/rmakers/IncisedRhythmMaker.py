@@ -17,14 +17,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-        ...     abjadext.rmakers.BeamSpecifier(
+        >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+        ...     rmakers.BeamSpecifier(
         ...         selector=abjad.select().tuplets(),
         ...     ),
-        ...     abjadext.rmakers.TupletSpecifier(
+        ...     rmakers.TupletSpecifier(
         ...         extract_trivial=True,
         ...     ),
-        ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+        ...     incise_specifier=rmakers.InciseSpecifier(
         ...         prefix_talea=[-1],
         ...         prefix_counts=[0, 1],
         ...         suffix_talea=[-1],
@@ -410,14 +410,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Spells durations with the fewest number of glyphs:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -466,17 +466,17 @@ class IncisedRhythmMaker(RhythmMaker):
             Forbids notes with written duration greater than or equal to
             ``1/2``:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     duration_specifier=abjadext.rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.DurationSpecifier(
             ...         forbidden_note_duration=(1, 2),
             ...         ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -532,15 +532,15 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.rewrite_meter(),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     rmakers.rewrite_meter(),
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -605,11 +605,11 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Doesn't incise:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
             ... )
@@ -654,14 +654,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Fills divisions with notes. Incises outer divisions only:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-8, -7],
             ...         prefix_counts=[2],
             ...         suffix_talea=[-3],
@@ -717,14 +717,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Fills divisions with rests. Incises outer divisions only:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[7, 8],
             ...         prefix_counts=[2],
             ...         suffix_talea=[3],
@@ -787,14 +787,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Does not replace rests with skips:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         fill_with_rests=True,
             ...         prefix_talea=[1],
             ...         prefix_counts=[1],
@@ -846,14 +846,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Does replace rests with skips:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         fill_with_rests=True,
             ...         prefix_talea=[1],
             ...         prefix_counts=[1],
@@ -916,14 +916,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
             No rest commands:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         outer_divisions_only=True,
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -974,17 +974,17 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Silences every other logical tie:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.rest(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.rest(
             ...         abjad.select().logical_ties().get([1], 2),
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         outer_divisions_only=True,
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1035,14 +1035,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Does not tie across divisions:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1092,18 +1092,18 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> last_leaf = abjad.select().leaf(-1)
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1155,18 +1155,18 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> tuplets = abjad.select().tuplets().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=tuplets.map(last_leaf),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1217,18 +1217,18 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> nonfirst_tuplets = abjad.select().tuplets()[1:]
             >>> first_leaf = abjad.select().leaf(0)
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_repeat_ties=True,
             ...         selector=nonfirst_tuplets.map(first_leaf),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1278,18 +1278,18 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Strips all ties:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     abjadext.rmakers.TieSpecifier(
+            ...     rmakers.TieSpecifier(
             ...         detach_ties=True,
             ...         selector=abjad.select().notes(),
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1336,15 +1336,15 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Makes augmentations:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         diminution=False,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     extra_counts_per_division=[1],
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1401,14 +1401,14 @@ class IncisedRhythmMaker(RhythmMaker):
 
             No rest commands:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         talea_denominator=16,
@@ -1460,21 +1460,21 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Rests every other tuplet:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.rest(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.rest(
             ...         abjad.select().tuplets().get([0], 2),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
             ...         selector=abjad.select().tuplets().get([0], 2),
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         talea_denominator=16,
@@ -1532,15 +1532,15 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Makes augmentations:
 
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         diminution=False,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     extra_counts_per_division=[1],
-            ...     incise_specifier=abjadext.rmakers.InciseSpecifier(
+            ...     incise_specifier=rmakers.InciseSpecifier(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,

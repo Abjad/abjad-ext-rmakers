@@ -11,7 +11,7 @@ class InciseSpecifier(object):
         Specifies one sixteenth rest cut out of the beginning of every
         division:
 
-        >>> specifier = abjadext.rmakers.InciseSpecifier(
+        >>> specifier = rmakers.InciseSpecifier(
         ...     prefix_talea=[-1],
         ...     prefix_counts=[1],
         ...     talea_denominator=16,
@@ -22,7 +22,7 @@ class InciseSpecifier(object):
         Specifies sixteenth rests cut out of the beginning and end of each
         division:
 
-        >>> specifier = abjadext.rmakers.InciseSpecifier(
+        >>> specifier = rmakers.InciseSpecifier(
         ...     prefix_talea=[-1],
         ...     prefix_counts=[1],
         ...     suffix_talea=[-1],
@@ -120,7 +120,7 @@ class InciseSpecifier(object):
 
             Formats incise specifier:
 
-            >>> specifier = abjadext.rmakers.InciseSpecifier(
+            >>> specifier = rmakers.InciseSpecifier(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[1],
             ...     talea_denominator=16,
@@ -139,7 +139,7 @@ class InciseSpecifier(object):
 
             Formats incise specifier:
 
-            >>> specifier = abjadext.rmakers.InciseSpecifier(
+            >>> specifier = rmakers.InciseSpecifier(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[0, 1],
             ...     suffix_talea=[-1],
@@ -196,7 +196,7 @@ class InciseSpecifier(object):
 
             Divides middle part of every division ``1:1``:
 
-            >>> specifier = abjadext.rmakers.InciseSpecifier(
+            >>> specifier = rmakers.InciseSpecifier(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[0, 1],
             ...     suffix_talea=[-1],
@@ -204,11 +204,11 @@ class InciseSpecifier(object):
             ...     talea_denominator=16,
             ...     body_ratio=abjad.Ratio((1, 1)),
             ...     )
-            >>> rhythm_maker = abjadext.rmakers.IncisedRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
             ...     incise_specifier=specifier,

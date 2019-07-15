@@ -8,7 +8,7 @@ class Talea(object):
 
     ..  container:: example
 
-        >>> talea = abjadext.rmakers.Talea(
+        >>> talea = rmakers.Talea(
         ...     counts=[2, 1, 3, 2, 4, 1, 1],
         ...     denominator=16,
         ...     preamble=[1, 1, 1, 1],
@@ -68,7 +68,7 @@ class Talea(object):
 
             With preamble:
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[10],
             ...     denominator=16,
             ...     preamble=[1, -1, 1],
@@ -146,7 +146,7 @@ class Talea(object):
 
             Gets item at index:
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[2, 1, 3, 2, 4, 1, 1],
             ...     denominator=16,
             ...     preamble=[1, 1, 1, 1],
@@ -221,7 +221,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[2, 1, 3, 2, 4, 1, 1],
             ...     denominator=16,
             ...     preamble=[1, 1, 1, 1],
@@ -256,7 +256,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[2, 1, 3, 2, 4, 1, 1],
             ...     denominator=16,
             ...     )
@@ -288,7 +288,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[2, 1, 3, 2, 4, 1, 1],
             ...     denominator=16,
             ...     )
@@ -309,7 +309,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[2, 1, 3, 2, 4, 1, 1],
             ...     denominator=16,
             ...     )
@@ -330,7 +330,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[3, 4],
             ...     denominator=16,
             ...     end_counts=[1, 1],
@@ -354,7 +354,7 @@ class Talea(object):
 
             Equal to weight of counts:
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[1, 2, 3, 4],
             ...     denominator=16,
             ...     )
@@ -364,7 +364,7 @@ class Talea(object):
 
             Rests make no difference:
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[1, 2, -3, 4],
             ...     denominator=16,
             ...     )
@@ -374,7 +374,7 @@ class Talea(object):
 
             Denominator makes no difference:
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[1, 2, -3, 4],
             ...     denominator=32,
             ...     )
@@ -384,7 +384,7 @@ class Talea(object):
 
             Preamble makes no difference:
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[1, 2, -3, 4],
             ...     denominator=32,
             ...     preamble=[1, 1, 1],
@@ -403,7 +403,7 @@ class Talea(object):
                     
         ..  container:: example
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[2, 1, 3, 2, 4, 1, 1],
             ...     denominator=16,
             ...     preamble=[1, 1, 1, 1], 
@@ -414,7 +414,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[16, -4, 16],
             ...     denominator=16,
             ...     preamble=[1],
@@ -442,7 +442,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[2, 1, 3, 2, 4, 1, 1],
             ...     denominator=16,
             ...     preamble=[1, 1, 1, 1],
@@ -514,7 +514,7 @@ class Talea(object):
 
             REGRESSION. Works when talea advances by period of talea:
 
-            >>> talea = abjadext.rmakers.Talea(
+            >>> talea = rmakers.Talea(
             ...     counts=[1, 2, 3, 4],
             ...     denominator=16,
             ...     )

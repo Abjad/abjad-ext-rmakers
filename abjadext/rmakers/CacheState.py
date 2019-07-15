@@ -21,7 +21,7 @@ class CacheState(object):
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.CacheState()
+            >>> specifier = rmakers.CacheState()
             >>> abjad.f(specifier)
             abjadext.rmakers.CacheState()
 
@@ -34,7 +34,7 @@ class CacheState(object):
 
         ..  container:: example
 
-            >>> abjadext.rmakers.CacheState()
+            >>> rmakers.CacheState()
             CacheState()
 
         """

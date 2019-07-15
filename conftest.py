@@ -1,6 +1,6 @@
 import abjad
+import abjadext
 import pytest
-import abjadext.rmakers
 
 
 @pytest.fixture(autouse=True)
@@ -11,3 +11,4 @@ def add_libraries(doctest_namespace):
     doctest_namespace["f"] = abjad.f
     doctest_namespace["Infinity"] = abjad.mathtools.Infinity()
     doctest_namespace["NegativeInfinity"] = abjad.mathtools.NegativeInfinity()
+    doctest_namespace["rmakers"] = abjadext.rmakers

@@ -158,7 +158,7 @@ class BeamSpecifier(object):
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.BeamSpecifier(
+            >>> specifier = rmakers.BeamSpecifier(
             ...     selector=abjad.select().tuplets(),
             ...     )
             >>> abjad.f(specifier)
@@ -175,7 +175,7 @@ class BeamSpecifier(object):
 
         ..  container:: example
 
-            >>> abjadext.rmakers.BeamSpecifier()
+            >>> rmakers.BeamSpecifier()
             BeamSpecifier()
 
         """

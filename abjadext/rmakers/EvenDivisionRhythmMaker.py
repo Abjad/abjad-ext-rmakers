@@ -84,8 +84,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with alternating eighth and sixteenth notes:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[8, 16],
@@ -173,8 +173,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Adds extra counts per division according to a pattern of three
             elements:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -529,11 +529,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Forces the first leaf and the last two leaves to be rests:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     burnish_specifier=abjadext.rmakers.BurnishSpecifier(
+            ...     burnish_specifier=rmakers.BurnishSpecifier(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         right_classes=[abjad.Rest],
@@ -646,11 +646,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Forces the first leaf of every division to be a rest:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     burnish_specifier=abjadext.rmakers.BurnishSpecifier(
+            ...     burnish_specifier=rmakers.BurnishSpecifier(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         ),
@@ -731,8 +731,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             No preferred denominator:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominator=None,
@@ -838,8 +838,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Preferred denominator equal to 4:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominator=4,
@@ -940,7 +940,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Preferred denominator equal to 8:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     abjadext.rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
@@ -1042,8 +1042,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Preferred denominator equal to 16:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominator=16,
@@ -1146,8 +1146,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Preferred denominator taken from count of elements in tuplet:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominator='from_counts',
@@ -1258,8 +1258,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with alternating 16th / 8th notes:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16, 8],
@@ -1329,8 +1329,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with 8th notes:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[8],
@@ -1393,8 +1393,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with quarter notes:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[4],
@@ -1448,8 +1448,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with half notes:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[2],
@@ -1538,8 +1538,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Four missing counts per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -1618,8 +1618,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Three missing counts per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -1697,8 +1697,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Two missing counts per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -1776,8 +1776,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             One missing count per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -1854,8 +1854,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Neither missing nor extra counts per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -1935,8 +1935,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             One extra count per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -2018,8 +2018,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Two extra counts per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -2104,8 +2104,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Three extra counts per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -2191,8 +2191,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Four extra counts per division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16],
@@ -2287,8 +2287,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             No rest commands:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ... )
@@ -2360,11 +2360,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every third logical tie:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.rest(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.rest(
             ...         abjad.select().logical_ties().get([0], 3),
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ... )
@@ -2434,11 +2434,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every logical tie except the first two and last two:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.rest(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.rest(
             ...         abjad.select().logical_ties()[2:-2],
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ... )
@@ -2508,12 +2508,12 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> last_leaf = abjad.select().leaf(-1)
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ... )
@@ -2588,15 +2588,15 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> last_leaf = abjad.select().leaf(-1)
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
-            ...     abjadext.rmakers.rest(
+            ...     rmakers.rest(
             ...         abjad.select().logical_ties().get([3], 4),
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ... )
@@ -2673,8 +2673,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             No tuplet specifier:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[8],
@@ -2736,11 +2736,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Extracts trivial tuplets:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         ),
             ...     denominators=[8],
@@ -2799,14 +2799,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Extracts trivial tuplets and spells tuplets as diminutions:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TupletSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TupletSpecifier(
             ...         diminution=True,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         ),
             ...     denominators=[8],
@@ -2861,11 +2861,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Extracts trivial tuplets and spells tuplets as augmentations:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         diminution=False,
             ...         extract_trivial=True,
             ...         ),
@@ -2925,8 +2925,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             No rest commands:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...  )
@@ -2998,18 +2998,18 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every other division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.rest(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.rest(
             ...         abjad.select().tuplets().get([0], 2),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
             ...         selector=abjad.select().tuplets().get([0], 2)
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         selector=abjad.select().tuplets().get([0], 2),
             ...     ),
@@ -3068,19 +3068,19 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> selector = abjad.select().tuplets().get([0], 2)
             >>> nonlast_notes = abjad.select().notes()[:-1]
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=selector.map(nonlast_notes),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_sustained=True,
             ...         selector=selector,
             ...     ),
-            ...     abjadext.rmakers.BeamSpecifier(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...         selector=selector,
             ...     ),
@@ -3137,14 +3137,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Silences every output division:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.rest(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.rest(
             ...         abjad.select().leaves(),
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         rewrite_rest_filled=True,
             ...     ),
-            ...     abjadext.rmakers.TupletSpecifier(
+            ...     rmakers.TupletSpecifier(
             ...         extract_trivial=True,
             ...     ),
             ... )
@@ -3194,8 +3194,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             Fills divisions with 16th, 8th, quarter notes. Consumes 5:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.BeamSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.BeamSpecifier(
             ...         selector=abjad.select().tuplets(),
             ...     ),
             ...     denominators=[16, 8, 4],

@@ -190,12 +190,12 @@ class TieSpecifier(object):
 
             >>> selector = abjad.select().tuplets()[1:]
             >>> selector = selector.map(abjad.select().note(0))
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_repeat_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -283,12 +283,12 @@ class TieSpecifier(object):
 
             >>> selector = abjad.select().tuplets().get([1], 2)
             >>> selector = selector.map(abjad.select().note(0))
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_repeat_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -382,12 +382,12 @@ class TieSpecifier(object):
 
             TIE-CONSECUTIVE-NOTES RECIPE. Attaches ties notes in selection:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=abjad.select().notes()[5:15],
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -483,12 +483,12 @@ class TieSpecifier(object):
 
             >>> selector = abjad.select().tuplets()[:-1]
             >>> selector = selector.map(abjad.select().note(-1))
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -576,12 +576,12 @@ class TieSpecifier(object):
 
             >>> selector = abjad.select().tuplets().get([0], 2)
             >>> selector = selector.map(abjad.select().note(-1))
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -669,8 +669,8 @@ class TieSpecifier(object):
 
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = abjadext.rmakers.TupletRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
@@ -731,16 +731,16 @@ class TieSpecifier(object):
             >>> selector = abjad.select().tuplets()
             >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> selector = selector.map(nonlast_notes)
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         detach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -835,12 +835,12 @@ class TieSpecifier(object):
 
             >>> selector = abjad.select().tuplets().get([0], 2)
             >>> selector = selector.map(abjad.select().notes()[:-1])
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=selector,
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -938,16 +938,16 @@ class TieSpecifier(object):
             Attaches repeat-ties to nonfirst notes; then detaches ties from
             select notes:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_repeat_ties=True,
             ...         selector=abjad.select().notes()[1:],
             ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
+            ...     rmakers.TieSpecifier(
             ...         detach_repeat_ties=True,
             ...         selector=abjad.select().notes().get([0], 4),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1052,16 +1052,16 @@ class TieSpecifier(object):
             Attaches ties to nonlast notes; then detaches ties from select
             notes:
 
-            >>> rhythm_maker = abjadext.rmakers.EvenDivisionRhythmMaker(
-            ...     abjadext.rmakers.TieSpecifier(
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.TieSpecifier(
             ...         attach_ties=True,
             ...         selector=abjad.select().notes()[:-1],
             ...         ),
-            ...     abjadext.rmakers.TieSpecifier(
+            ...     rmakers.TieSpecifier(
             ...         detach_ties=True,
             ...         selector=abjad.select().notes().get([0], 4),
             ...         ),
-            ...     abjadext.rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
+            ...     rmakers.BeamSpecifier(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 

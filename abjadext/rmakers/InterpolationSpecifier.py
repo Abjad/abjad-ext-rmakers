@@ -36,7 +36,7 @@ class InterpolationSpecifier(object):
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.InterpolationSpecifier(
+            >>> specifier = rmakers.InterpolationSpecifier(
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
@@ -57,7 +57,7 @@ class InterpolationSpecifier(object):
 
         ..  container:: example
 
-            >>> abjadext.rmakers.InterpolationSpecifier(
+            >>> rmakers.InterpolationSpecifier(
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
@@ -77,7 +77,7 @@ class InterpolationSpecifier(object):
 
             Changes accelerando specifier to ritardando specifier:
 
-            >>> specifier = abjadext.rmakers.InterpolationSpecifier(
+            >>> specifier = rmakers.InterpolationSpecifier(
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
@@ -94,7 +94,7 @@ class InterpolationSpecifier(object):
 
             Changes ritardando specifier to accelerando specifier:
 
-            >>> specifier = abjadext.rmakers.InterpolationSpecifier(
+            >>> specifier = rmakers.InterpolationSpecifier(
             ...     start_duration=(1, 16),
             ...     stop_duration=(1, 4),
             ...     written_duration=(1, 16),
