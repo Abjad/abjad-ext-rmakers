@@ -2098,7 +2098,7 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().tuplets().get([1], 2),
             ...     ),
-            ...     rmakers.rewrite_rest_filled_tuplet(
+            ...     rmakers.rewrite_rest_filled(
             ...         abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     rmakers.extract_trivial(),

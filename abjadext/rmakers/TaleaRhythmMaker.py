@@ -3711,7 +3711,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
-            ...     rmakers.rewrite_rest_filled_tuplet(),
+            ...     rmakers.rewrite_rest_filled(),
             ...     extra_counts_per_division=[1, 0],
             ...     talea=rmakers.Talea(
             ...         counts=[3, 3, -6, -6],
@@ -3845,7 +3845,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...         abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     rmakers.beam(),
-            ...     rmakers.rewrite_rest_filled_tuplet(),
+            ...     rmakers.rewrite_rest_filled(),
             ...     rmakers.extract_trivial(),
             ...     talea=rmakers.Talea(
             ...         counts=[1, 2, 3, 4],
@@ -3899,7 +3899,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.tie(selector.map(nonlast_notes)),
-            ...     rmakers.rewrite_sustained_tuplet(selector),
+            ...     rmakers.rewrite_sustained(selector),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     talea=abjadext.rmakers.Talea(
@@ -3956,7 +3956,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> selector = abjad.select().tuplets().get([0, 2, 7])
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.rest(selector),
-            ...     rmakers.rewrite_rest_filled_tuplet(selector),
+            ...     rmakers.rewrite_rest_filled(selector),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     extra_counts_per_division=[0, 1, 2],
@@ -4081,7 +4081,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> selector = abjad.select().tuplets().get([2], 3)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.rest(selector),
-            ...     rmakers.rewrite_rest_filled_tuplet(selector),
+            ...     rmakers.rewrite_rest_filled(selector),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     extra_counts_per_division=[0, 1, 2],

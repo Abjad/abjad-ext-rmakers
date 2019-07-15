@@ -3366,7 +3366,7 @@ class TupletCommand(object):
             Rewrites rest-filled tuplets:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rewrite_rest_filled_tuplet(),
+            ...     rmakers.rewrite_rest_filled(),
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
@@ -3425,7 +3425,7 @@ class TupletCommand(object):
             With selector:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rewrite_rest_filled_tuplet(
+            ...     rmakers.rewrite_rest_filled(
             ...         abjad.select().tuplets()[-2:],
             ...         ),
             ...     rmakers.beam(abjad.select().tuplets()),
@@ -3590,7 +3590,7 @@ class TupletCommand(object):
 
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rewrite_sustained_tuplet(),
+            ...     rmakers.rewrite_sustained(),
             ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
@@ -3656,7 +3656,7 @@ class TupletCommand(object):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
-            ...     rmakers.rewrite_sustained_tuplet(),
+            ...     rmakers.rewrite_sustained(),
             ...     rmakers.extract_trivial(),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
@@ -3711,7 +3711,7 @@ class TupletCommand(object):
             >>> selector = abjad.select().tuplets().map(selector)
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.tie(selector),
-            ...     rmakers.rewrite_sustained_tuplet(
+            ...     rmakers.rewrite_sustained(
             ...         abjad.select().tuplets()[-2:],
             ...     ),
             ...     rmakers.beam(abjad.select().tuplets()),
@@ -3828,6 +3828,7 @@ class TupletCommand(object):
 def beam(
     selector: abjad.SelectorTyping = abjad.select().tuplets(),
     *,
+    beam_lone_notes: bool = None,
     beam_rests: bool = None,
     stemlet_length=None,
 ) -> BeamCommand:
@@ -3835,7 +3836,10 @@ def beam(
     Makes beam command.
     """
     return BeamCommand(
-        selector=selector, beam_rests=beam_rests, stemlet_length=stemlet_length
+        selector=selector,
+        beam_lone_notes=beam_lone_notes,
+        beam_rests=beam_rests,
+        stemlet_length=stemlet_length,
     )
 
 
@@ -3933,7 +3937,7 @@ def rewrite_meter(
     )
 
 
-def rewrite_rest_filled_tuplet(
+def rewrite_rest_filled(
     selector: abjad.SelectorTyping = abjad.select().tuplets()
 ) -> TupletCommand:
     """
@@ -3942,7 +3946,7 @@ def rewrite_rest_filled_tuplet(
     return TupletCommand(rewrite_rest_filled=True, selector=selector)
 
 
-def rewrite_sustained_tuplet(
+def rewrite_sustained(
     selector: abjad.SelectorTyping = abjad.select().tuplets()
 ) -> TupletCommand:
     """
@@ -3983,11 +3987,13 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
     return TieCommand(attach_ties=True, selector=selector)
 
 
-def to_repeat_tie(selector: abjad.SelectorTyping = None) -> TieCommand:
+def to_repeat_tie(
+    threshold=True, selector: abjad.SelectorTyping = None
+) -> TieCommand:
     """
     Makes tie command.
     """
-    return TieCommand(repeat_ties=True, selector=selector)
+    return TieCommand(repeat_ties=threshold, selector=selector)
 
 
 def trivialize(

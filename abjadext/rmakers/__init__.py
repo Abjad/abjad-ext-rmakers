@@ -36,8 +36,8 @@ from .commands import note
 from .commands import repeat_tie
 from .commands import rest
 from .commands import rewrite_meter
-from .commands import rewrite_rest_filled_tuplet
-from .commands import rewrite_sustained_tuplet
+from .commands import rewrite_rest_filled
+from .commands import rewrite_sustained
 from .commands import rewrite_tuplet_dots
 from .commands import set_duration_bracket
 from .commands import split_measures

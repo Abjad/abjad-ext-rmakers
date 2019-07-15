@@ -2924,7 +2924,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().tuplets().get([0], 2),
             ...     ),
-            ...     rmakers.rewrite_rest_filled_tuplet(
+            ...     rmakers.rewrite_rest_filled(
             ...         abjad.select().tuplets().get([0], 2)
             ...     ),
             ...     rmakers.beam(),
@@ -2988,7 +2988,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.tie(selector.map(nonlast_notes)),
-            ...     rmakers.rewrite_sustained_tuplet(selector),
+            ...     rmakers.rewrite_sustained(selector),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(selector),
             ... )
@@ -3048,7 +3048,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().leaves(),
             ...     ),
-            ...     rmakers.rewrite_rest_filled_tuplet(),
+            ...     rmakers.rewrite_rest_filled(),
             ...     rmakers.extract_trivial(),
             ... )
 

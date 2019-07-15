@@ -1380,7 +1380,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().tuplets().get([0], 2),
             ...     ),
-            ...     rmakers.rewrite_rest_filled_tuplet(
+            ...     rmakers.rewrite_rest_filled(
             ...         abjad.select().tuplets().get([0], 2),
             ...     ),
             ...     rmakers.beam(),
