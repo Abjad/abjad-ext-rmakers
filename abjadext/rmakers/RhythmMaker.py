@@ -9,7 +9,7 @@ from .commands import CacheStateCommand
 from .commands import NoteCommand
 from .commands import RestCommand
 from .commands import RewriteMeterCommand
-from .commands import SplitCommand
+from .commands import SplitMeasuresCommand
 from .commands import TieCommand
 from abjad.top.new import new
 
@@ -20,7 +20,7 @@ SpecifierClasses = (
     DurationSpecifier,
     RewriteMeterCommand,
     RestCommand,
-    SplitCommand,
+    SplitMeasuresCommand,
     NoteCommand,
     TieCommand,
     TupletSpecifier,

@@ -23,11 +23,11 @@ from .commands import CacheStateCommand
 from .commands import NoteCommand
 from .commands import RestCommand
 from .commands import RewriteMeterCommand
-from .commands import SplitCommand
+from .commands import SplitMeasuresCommand
 from .commands import TieCommand
 from .commands import cache_state
 from .commands import note
 from .commands import rest
 from .commands import rewrite_meter
-from .commands import split
+from .commands import split_measures
 from .typings import *

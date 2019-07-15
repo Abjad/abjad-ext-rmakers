@@ -868,7 +868,7 @@ class RewriteMeterCommand(object):
             meters.append(meter)
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = self.reference_meters or ()
-        command = SplitCommand(repeat_ties=self.repeat_ties)
+        command = SplitMeasuresCommand(repeat_ties=self.repeat_ties)
         command(staff, time_signatures=meters)
         selections = RhythmMaker._select_by_measure(staff)
         for meter, selection in zip(meters, selections):
@@ -949,9 +949,9 @@ class RewriteMeterCommand(object):
         return self._repeat_ties
 
 
-class SplitCommand(object):
+class SplitMeasuresCommand(object):
     """
-    Split mesures command.
+    Split measures command.
     """
 
     ### CLASS VARIABLES ###
@@ -999,9 +999,9 @@ class SplitCommand(object):
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.split()
+            >>> specifier = abjadext.rmakers.split_measures()
             >>> abjad.f(specifier)
-            abjadext.commands.SplitCommand()
+            abjadext.commands.SplitMeasuresCommand()
 
         """
         return abjad.StorageFormatManager(self).get_storage_format()
@@ -1012,8 +1012,8 @@ class SplitCommand(object):
 
         ..  container:: example
 
-            >>> abjadext.rmakers.split()
-            SplitCommand()
+            >>> abjadext.rmakers.split_measures()
+            SplitMeasuresCommand()
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()
@@ -2262,8 +2262,8 @@ def rewrite_meter(
     )
 
 
-def split(*, repeat_ties=None) -> SplitCommand:
+def split_measures(*, repeat_ties=None) -> SplitMeasuresCommand:
     """
-    Makes split command.
+    Makes split measures command.
     """
-    return SplitCommand(repeat_ties=repeat_ties)
+    return SplitMeasuresCommand(repeat_ties=repeat_ties)
