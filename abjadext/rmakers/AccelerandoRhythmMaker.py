@@ -2,12 +2,12 @@ import abjad
 import math
 import typing
 from . import typings
-from .BeamCommand import BeamCommand
 from .DurationSpecifier import DurationSpecifier
 from .InterpolationSpecifier import InterpolationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
+from .commands import BeamCommand
+from .commands import TieCommand
 
 
 class AccelerandoRhythmMaker(RhythmMaker):

@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import typings
-from .BeamCommand import BeamCommand
+from .commands import BeamCommand
 
 
 class DurationSpecifier(object):

@@ -1,16 +1,16 @@
 import abjad
 import typing
 from . import typings
-from .BeamCommand import BeamCommand
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
+from .commands import BeamCommand
 from .commands import CacheStateCommand
 from .commands import NoteCommand
 from .commands import RestCommand
 from .commands import RewriteMeterCommand
 from .commands import SplitCommand
+from .commands import TieCommand
 
 
 RhythmMakerTyping = typing.Union[

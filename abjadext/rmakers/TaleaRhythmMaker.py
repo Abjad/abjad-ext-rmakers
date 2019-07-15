@@ -1,15 +1,15 @@
 import abjad
 import typing
 from . import typings
-from .BeamCommand import BeamCommand
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
 from .Talea import Talea
-from .TieCommand import TieCommand
 from .TupletSpecifier import TupletSpecifier
+from .commands import BeamCommand
 from .commands import RestCommand
 from .commands import NoteCommand
+from .commands import TieCommand
 
 
 class TaleaRhythmMaker(RhythmMaker):
