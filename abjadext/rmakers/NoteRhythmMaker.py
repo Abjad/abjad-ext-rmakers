@@ -1217,9 +1217,7 @@ class NoteRhythmMaker(RhythmMaker):
             Spells tuplets as augmentations:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         diminution=False,
-            ...     ),
+            ...     rmakers.force_augmentation(),
             ... )
 
             >>> divisions = [(5, 14), (3, 7)]

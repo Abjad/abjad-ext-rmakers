@@ -431,11 +431,11 @@ class RhythmCommand(object):
 
             >>> command_1 = rmakers.RhythmCommand(
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletCommand(force_fraction=True),
+            ...     rmakers.force_fraction(),
             ... )
             >>> command_2 = rmakers.RhythmCommand(
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletCommand(force_fraction=True),
+            ...     rmakers.force_fraction(),
             ... )
             >>> command_3 = rmakers.RhythmCommand(
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
@@ -486,7 +486,7 @@ class RhythmCommand(object):
 
             >>> command = rmakers.RhythmCommand(
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletCommand(force_fraction=True),
+            ...     rmakers.force_fraction(),
             ... )
             >>> abjad.f(command)
             abjadext.rmakers.RhythmCommand(
@@ -495,7 +495,7 @@ class RhythmCommand(object):
                         abjad.Ratio((1, 2)),
                         ],
                     ),
-                TupletCommand(force_fraction=True)
+                TupletCommand(force_fraction=True, selector=abjad.select().tuplets())
                 )
 
         """
@@ -509,9 +509,9 @@ class RhythmCommand(object):
 
             >>> rmakers.RhythmCommand(
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletCommand(force_fraction=True),
+            ...     rmakers.force_fraction(),
             ... )
-            RhythmCommand(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), TupletCommand(force_fraction=True))
+            RhythmCommand(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), TupletCommand(force_fraction=True, selector=abjad.select().tuplets()))
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()
@@ -637,7 +637,7 @@ class RhythmCommand(object):
 
             >>> command_1 = rmakers.RhythmCommand(
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
-            ...     rmakers.TupletCommand(force_fraction=True),
+            ...     rmakers.force_fraction(),
             ... )
             >>> command_2 = abjad.new(command_1)
 
@@ -648,7 +648,7 @@ class RhythmCommand(object):
                         abjad.Ratio((1, 2)),
                         ],
                     ),
-                TupletCommand(force_fraction=True)
+                TupletCommand(force_fraction=True, selector=abjad.select().tuplets())
                 )
 
             >>> abjad.f(command_2)
@@ -658,7 +658,7 @@ class RhythmCommand(object):
                         abjad.Ratio((1, 2)),
                         ],
                     ),
-                TupletCommand(force_fraction=True)
+                TupletCommand(force_fraction=True, selector=abjad.select().tuplets())
                 )
 
             >>> command_1 == command_2

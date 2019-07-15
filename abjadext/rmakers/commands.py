@@ -2538,10 +2538,7 @@ class TupletCommand(object):
             means that ratios like ``6:4`` and ``10:8`` do not arise:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
-            ...         denominator=None,
-            ...         ),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
@@ -2607,8 +2604,8 @@ class TupletCommand(object):
             setting does not affect the first tuplet:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=(1, 16),
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
@@ -2675,8 +2672,8 @@ class TupletCommand(object):
             The setting affects all tuplets:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=(1, 32),
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
@@ -2743,8 +2740,8 @@ class TupletCommand(object):
             setting affects all tuplets:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=(1, 64),
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
@@ -2813,8 +2810,8 @@ class TupletCommand(object):
             does not affect the third tuplet:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=8,
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
@@ -2881,8 +2878,8 @@ class TupletCommand(object):
             affects all tuplets:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=12,
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
@@ -2952,8 +2949,8 @@ class TupletCommand(object):
             does not affect any tuplet:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=13,
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
@@ -3048,10 +3045,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...         selector=abjad.select().tuplets()[-2:],
-            ...     ),
+            ...     rmakers.extract_trivial(abjad.select().tuplets()[-2:]),
             ... )
 
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
@@ -3246,9 +3240,7 @@ class TupletCommand(object):
             property cancels LilyPond's default tuplet numbering once again:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         force_fraction=True,
-            ...         ),
+            ...     rmakers.force_fraction(),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
@@ -3413,9 +3405,7 @@ class TupletCommand(object):
             Rewrites rest-filled tuplets:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         rewrite_rest_filled=True,
-            ...         ),
+            ...     rmakers.rewrite_rest_filled_tuplet(),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
@@ -3474,9 +3464,8 @@ class TupletCommand(object):
             With selector:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         rewrite_rest_filled=True,
-            ...         selector=abjad.select().tuplets()[-2:],
+            ...     rmakers.rewrite_rest_filled_tuplet(
+            ...         abjad.select().tuplets()[-2:],
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
@@ -3643,9 +3632,7 @@ class TupletCommand(object):
 
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         rewrite_sustained=True,
-            ...         ),
+            ...     rmakers.rewrite_sustained_tuplet(),
             ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
@@ -3717,10 +3704,8 @@ class TupletCommand(object):
             ...         attach_ties=True,
             ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
             ...         ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...         rewrite_sustained=True,
-            ...         ),
+            ...     rmakers.rewrite_sustained_tuplet(),
+            ...     rmakers.extract_trivial(),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],
@@ -3777,9 +3762,8 @@ class TupletCommand(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_sustained=True,
-            ...         selector=abjad.select().tuplets()[-2:],
+            ...     rmakers.rewrite_sustained_tuplet(
+            ...         abjad.select().tuplets()[-2:],
             ...     ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
@@ -3899,6 +3883,42 @@ def cache_state() -> CacheStateCommand:
     return CacheStateCommand()
 
 
+def extract_trivial(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(extract_trivial=True, selector=selector)
+
+
+def force_augmentation(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(diminution=False, selector=selector)
+
+
+def force_diminution(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(diminution=True, selector=selector)
+
+
+def force_fraction(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(force_fraction=True, selector=selector)
+
+
 def note(selector: abjad.SelectorTyping,) -> NoteCommand:
     """
     Makes rest command.
@@ -3926,8 +3946,53 @@ def rewrite_meter(
     )
 
 
+def rewrite_rest_filled_tuplet(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(rewrite_rest_filled=True, selector=selector)
+
+
+def rewrite_sustained_tuplet(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(rewrite_sustained=True, selector=selector)
+
+
+def rewrite_tuplet_dots(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(rewrite_dots=True, selector=selector)
+
+
+def set_duration_bracket(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(selector=selector, duration_bracket=True)
+
+
 def split_measures(*, repeat_ties=None) -> SplitMeasuresCommand:
     """
     Makes split measures command.
     """
     return SplitMeasuresCommand(repeat_ties=repeat_ties)
+
+
+def trivialize(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(selector=selector, trivialize=True)

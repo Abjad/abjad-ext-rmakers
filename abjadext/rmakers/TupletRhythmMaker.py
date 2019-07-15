@@ -386,10 +386,7 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
-            ...         denominator=None,
-            ...         ),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -449,8 +446,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=(1, 16),
             ...         ),
             ...     tuplet_ratios=[(1, 4)],
@@ -511,8 +508,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=(1, 32),
             ...         ),
             ...     tuplet_ratios=[(1, 4)],
@@ -573,8 +570,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=(1, 64),
             ...         ),
             ...     tuplet_ratios=[(1, 4)],
@@ -637,8 +634,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=8,
             ...         ),
             ...     tuplet_ratios=[(1, 4)],
@@ -699,8 +696,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=12,
             ...         ),
             ...     tuplet_ratios=[(1, 4)],
@@ -761,8 +758,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
             ...         denominator=13,
             ...         ),
             ...     tuplet_ratios=[(1, 4)],
@@ -1330,9 +1327,7 @@ class TupletRhythmMaker(RhythmMaker):
             Makes diminished tuplets:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         diminution=True,
-            ...         ),
+            ...     rmakers.force_diminution(),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(2, 1)],
             ...     )
@@ -1381,9 +1376,7 @@ class TupletRhythmMaker(RhythmMaker):
             Makes augmented tuplets:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         diminution=False,
-            ...         ),
+            ...     rmakers.force_augmentation(),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(2, 1)],
             ...     )
@@ -1440,10 +1433,7 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_dots=False,
-            ...         diminution=True,
-            ...         ),
+            ...     rmakers.force_diminution(),
             ...     tuplet_ratios=[(1, 1)],
             ...     )
 
@@ -1500,10 +1490,8 @@ class TupletRhythmMaker(RhythmMaker):
             Makes diminished tuplets and rewrites dots:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
-            ...         diminution=True,
-            ...         ),
+            ...     rmakers.rewrite_tuplet_dots(),
+            ...     rmakers.force_diminution(),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 1)],
             ...     )
@@ -1558,10 +1546,7 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_dots=False,
-            ...         diminution=False,
-            ...         ),
+            ...     rmakers.force_augmentation(),
             ...     tuplet_ratios=[(1, 1)],
             ...     )
 
@@ -1619,10 +1604,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
-            ...         diminution=False,
-            ...         ),
+            ...     rmakers.rewrite_tuplet_dots(),
+            ...     rmakers.force_augmentation(),
             ...     tuplet_ratios=[(1, 1)],
             ...     )
 
@@ -1680,10 +1663,7 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
-            ...         trivialize=False,
-            ...         ),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     )
 
@@ -1746,9 +1726,7 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         trivialize=True,
-            ...         ),
+            ...     rmakers.trivialize(),
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     )
 
@@ -1810,10 +1788,8 @@ class TupletRhythmMaker(RhythmMaker):
             
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_dots=True,
-            ...         trivialize=True,
-            ...         ),
+            ...     rmakers.trivialize(),
+            ...     rmakers.rewrite_tuplet_dots(),
             ...     tuplet_ratios=[(3, -2), (1,), (-2, 3), (1, 1)],
             ...     )
 
@@ -1880,9 +1856,6 @@ class TupletRhythmMaker(RhythmMaker):
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=False,
-            ...         ),
             ...     tuplet_ratios=[(2, 3), (1, 1)],
             ...     )
 
@@ -1956,9 +1929,7 @@ class TupletRhythmMaker(RhythmMaker):
             ...         selector=nonlast_tuplets.map(last_leaf),
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...         ),
+            ...     rmakers.extract_trivial(),
             ...     tuplet_ratios=[(2, 3), (1, 1)],
             ...     )
 
@@ -2022,9 +1993,7 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...         ),
+            ...     rmakers.extract_trivial(),
             ...     rmakers.TieCommand(
             ...         attach_ties=True,
             ...         selector=abjad.select().notes()[:-1],
@@ -2147,13 +2116,10 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().tuplets().get([1], 2),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_rest_filled=True,
-            ...         selector=abjad.select().tuplets().get([1], 2),
+            ...     rmakers.rewrite_rest_filled_tuplet(
+            ...         abjad.select().tuplets().get([1], 2),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...     ),
+            ...     rmakers.extract_trivial(),
             ...     tuplet_ratios=[(4, 1)],
             ... )
 

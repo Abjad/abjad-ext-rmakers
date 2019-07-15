@@ -2740,9 +2740,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...         ),
+            ...     rmakers.extract_trivial(),
             ...     denominators=[8],
             ...     extra_counts_per_division=[0, 0, 1],
             ...     )
@@ -2800,15 +2798,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Extracts trivial tuplets and spells tuplets as diminutions:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         diminution=True,
-            ...         ),
+            ...     rmakers.force_diminution(),
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...         ),
+            ...     rmakers.extract_trivial(),
             ...     denominators=[8],
             ...     extra_counts_per_division=[0, 0, 1],
             ...     )
@@ -2865,10 +2859,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         diminution=False,
-            ...         extract_trivial=True,
-            ...         ),
+            ...     rmakers.force_augmentation(),
+            ...     rmakers.extract_trivial(),
             ...     denominators=[8],
             ...     extra_counts_per_division=[0, 0, 1],
             ...     )
@@ -3002,16 +2994,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().tuplets().get([0], 2),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_rest_filled=True,
-            ...         selector=abjad.select().tuplets().get([0], 2)
+            ...     rmakers.rewrite_rest_filled_tuplet(
+            ...         abjad.select().tuplets().get([0], 2)
             ...     ),
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...         selector=abjad.select().tuplets().get([0], 2),
+            ...     rmakers.extract_trivial(
+            ...         abjad.select().tuplets().get([0], 2),
             ...     ),
             ... )
 
@@ -3073,17 +3063,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...         attach_ties=True,
             ...         selector=selector.map(nonlast_notes),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_sustained=True,
-            ...         selector=selector,
-            ...     ),
+            ...     rmakers.rewrite_sustained_tuplet(selector),
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...         selector=selector,
-            ...     ),
+            ...     rmakers.extract_trivial(selector),
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -3141,12 +3125,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().leaves(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         rewrite_rest_filled=True,
-            ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...     ),
+            ...     rmakers.rewrite_rest_filled_tuplet(),
+            ...     rmakers.extract_trivial(),
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]

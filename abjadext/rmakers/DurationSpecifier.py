@@ -87,9 +87,7 @@ class DurationSpecifier(object):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...     ),
+            ...     rmakers.extract_trivial(),
             ...     duration_specifier=rmakers.DurationSpecifier(
             ...         increase_monotonic=False,
             ...         ),
@@ -147,9 +145,7 @@ class DurationSpecifier(object):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...     ),
+            ...     rmakers.extract_trivial(),
             ...     duration_specifier=rmakers.DurationSpecifier(
             ...         increase_monotonic=True,
             ...         ),
@@ -215,9 +211,7 @@ class DurationSpecifier(object):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...     ),
+            ...     rmakers.extract_trivial(),
             ...     duration_specifier=rmakers.DurationSpecifier(
             ...         forbidden_note_duration=(1, 4),
             ...         ),
@@ -288,9 +282,7 @@ class DurationSpecifier(object):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletCommand(
-            ...         extract_trivial=True,
-            ...     ),
+            ...     rmakers.extract_trivial(),
             ...     duration_specifier=rmakers.DurationSpecifier(
             ...         forbidden_rest_duration=(1, 4),
             ...         ),
