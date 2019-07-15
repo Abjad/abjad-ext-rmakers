@@ -25,12 +25,15 @@ from .commands import RewriteMeterCommand
 from .commands import SplitMeasuresCommand
 from .commands import TieCommand
 from .commands import TupletCommand
+from .commands import beam
 from .commands import cache_state
 from .commands import extract_trivial
+from .commands import feather_beam
 from .commands import force_augmentation
 from .commands import force_diminution
 from .commands import force_fraction
 from .commands import note
+from .commands import repeat_tie
 from .commands import rest
 from .commands import rewrite_meter
 from .commands import rewrite_rest_filled_tuplet
@@ -38,5 +41,8 @@ from .commands import rewrite_sustained_tuplet
 from .commands import rewrite_tuplet_dots
 from .commands import set_duration_bracket
 from .commands import split_measures
+from .commands import tie
+from .commands import to_repeat_tie
 from .commands import trivialize
+from .commands import untie
 from .typings import *

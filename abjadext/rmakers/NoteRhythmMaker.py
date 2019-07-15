@@ -860,9 +860,7 @@ class NoteRhythmMaker(RhythmMaker):
             Beams each division:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.BeamCommand(
-            ...         selector=abjad.select().logical_ties(pitched=True),
-            ...         ),
+            ...     rmakers.beam(abjad.select().logical_ties(pitched=True)),
             ...     )
 
             >>> divisions = [(5, 32), (5, 32)]
@@ -956,9 +954,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             Makes no beams:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.BeamCommand(),
-            ...     )
+            >>> rhythm_maker = rmakers.NoteRhythmMaker()
 
             >>> divisions = [(5, 32), (5, 32)]
             >>> selection = rhythm_maker(divisions)
@@ -1037,10 +1033,7 @@ class NoteRhythmMaker(RhythmMaker):
             >>> nonlast_lts = abjad.select().logical_ties()[:-1]
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=nonlast_lts.map(last_leaf),
-            ...     ),
+            ...     rmakers.tie(nonlast_lts.map(last_leaf)),
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1086,10 +1079,7 @@ class NoteRhythmMaker(RhythmMaker):
             >>> lts = abjad.select().logical_ties().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=lts.map(last_leaf),
-            ...     ),
+            ...     rmakers.tie(lts.map(last_leaf)),
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1132,10 +1122,7 @@ class NoteRhythmMaker(RhythmMaker):
             Strips all ties:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         detach_ties=True,
-            ...         selector=abjad.select().notes(),
-            ...     ),
+            ...     rmakers.untie(),
             ... )
 
             >>> divisions = [(7, 16), (1, 4), (5, 16)]

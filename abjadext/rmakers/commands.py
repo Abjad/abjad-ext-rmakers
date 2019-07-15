@@ -1241,11 +1241,8 @@ class TieCommand(object):
             >>> selector = abjad.select().tuplets()[1:]
             >>> selector = selector.map(abjad.select().note(0))
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_repeat_ties=True,
-            ...         selector=selector,
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.repeat_tie(selector),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1334,11 +1331,8 @@ class TieCommand(object):
             >>> selector = abjad.select().tuplets().get([1], 2)
             >>> selector = selector.map(abjad.select().note(0))
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_repeat_ties=True,
-            ...         selector=selector,
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.repeat_tie(selector),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1433,11 +1427,8 @@ class TieCommand(object):
             TIE-CONSECUTIVE-NOTES RECIPE. Attaches ties notes in selection:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=abjad.select().notes()[5:15],
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.tie(abjad.select().notes()[5:15]),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1534,11 +1525,8 @@ class TieCommand(object):
             >>> selector = abjad.select().tuplets()[:-1]
             >>> selector = selector.map(abjad.select().note(-1))
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=selector,
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.tie(selector),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1627,11 +1615,8 @@ class TieCommand(object):
             >>> selector = abjad.select().tuplets().get([0], 2)
             >>> selector = selector.map(abjad.select().note(-1))
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=selector,
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.tie(selector),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1720,10 +1705,7 @@ class TieCommand(object):
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=nonlast_tuplets.map(last_leaf),
-            ...         ),
+            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
             ...     tuplet_ratios=[(5, 2)],
             ...     )
 
@@ -1782,15 +1764,9 @@ class TieCommand(object):
             >>> nonlast_notes = abjad.select().notes()[:-1]
             >>> selector = selector.map(nonlast_notes)
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         detach_ties=True,
-            ...         selector=selector,
-            ...         ),
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=selector,
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.untie(selector),
+            ...     rmakers.tie(selector),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1886,11 +1862,8 @@ class TieCommand(object):
             >>> selector = abjad.select().tuplets().get([0], 2)
             >>> selector = selector.map(abjad.select().notes()[:-1])
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=selector,
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.tie(selector),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -1989,15 +1962,9 @@ class TieCommand(object):
             select notes:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_repeat_ties=True,
-            ...         selector=abjad.select().notes()[1:],
-            ...         ),
-            ...     rmakers.TieCommand(
-            ...         detach_repeat_ties=True,
-            ...         selector=abjad.select().notes().get([0], 4),
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.repeat_tie(abjad.select().notes()[1:]),
+            ...     rmakers.untie(abjad.select().notes().get([0], 4)),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -2103,15 +2070,9 @@ class TieCommand(object):
             notes:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=abjad.select().notes()[:-1],
-            ...         ),
-            ...     rmakers.TieCommand(
-            ...         detach_ties=True,
-            ...         selector=abjad.select().notes().get([0], 4),
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.tie(abjad.select().notes()[:-1]),
+            ...     rmakers.untie(abjad.select().notes().get([0], 4)),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -2539,7 +2500,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -2608,7 +2569,7 @@ class TupletCommand(object):
             ...     rmakers.TupletCommand(
             ...         denominator=(1, 16),
             ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -2676,7 +2637,7 @@ class TupletCommand(object):
             ...     rmakers.TupletCommand(
             ...         denominator=(1, 32),
             ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -2744,7 +2705,7 @@ class TupletCommand(object):
             ...     rmakers.TupletCommand(
             ...         denominator=(1, 64),
             ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -2814,7 +2775,7 @@ class TupletCommand(object):
             ...     rmakers.TupletCommand(
             ...         denominator=8,
             ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -2882,7 +2843,7 @@ class TupletCommand(object):
             ...     rmakers.TupletCommand(
             ...         denominator=12,
             ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -2953,7 +2914,7 @@ class TupletCommand(object):
             ...     rmakers.TupletCommand(
             ...         denominator=13,
             ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -3044,7 +3005,7 @@ class TupletCommand(object):
             With selector:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     rmakers.extract_trivial(abjad.select().tuplets()[-2:]),
             ... )
 
@@ -3121,7 +3082,7 @@ class TupletCommand(object):
             This means that even simple tuplets format as explicit fractions:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -3177,7 +3138,7 @@ class TupletCommand(object):
             this:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -3241,7 +3202,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.force_fraction(),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ...     )
 
@@ -3330,7 +3291,7 @@ class TupletCommand(object):
             Does not rewrite rest-filled tuplets:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
             ...         counts=[-1],
@@ -3406,7 +3367,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.rewrite_rest_filled_tuplet(),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
             ...         counts=[-1],
@@ -3467,7 +3428,7 @@ class TupletCommand(object):
             ...     rmakers.rewrite_rest_filled_tuplet(
             ...         abjad.select().tuplets()[-2:],
             ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
             ...         counts=[-1],
@@ -3547,11 +3508,8 @@ class TupletCommand(object):
 
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],
@@ -3633,11 +3591,8 @@ class TupletCommand(object):
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.rewrite_sustained_tuplet(),
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
-            ...         ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[2, 1, 1, 1],
             ...     talea=rmakers.Talea(
             ...         counts=[6, 5, 5, 4, 1],
@@ -3699,11 +3654,8 @@ class TupletCommand(object):
 
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
-            ...         ),
+            ...     rmakers.beam(abjad.select().tuplets()),
+            ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
             ...     rmakers.rewrite_sustained_tuplet(),
             ...     rmakers.extract_trivial(),
             ...     extra_counts_per_division=[2, 1, 1, 1],
@@ -3758,14 +3710,11 @@ class TupletCommand(object):
             >>> selector = abjad.select().notes()[:-1]
             >>> selector = abjad.select().tuplets().map(selector)
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TieCommand(
-            ...         attach_ties=True,
-            ...         selector=selector,
-            ...     ),
+            ...     rmakers.tie(selector),
             ...     rmakers.rewrite_sustained_tuplet(
             ...         abjad.select().tuplets()[-2:],
             ...     ),
-            ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
+            ...     rmakers.beam(abjad.select().tuplets()),
             ...     extra_counts_per_division=[1],
             ... )
 
@@ -3876,6 +3825,20 @@ class TupletCommand(object):
 ### FACTORY FUNCTIONS ###
 
 
+def beam(
+    selector: abjad.SelectorTyping = abjad.select().tuplets(),
+    *,
+    beam_rests: bool = None,
+    stemlet_length=None,
+) -> BeamCommand:
+    """
+    Makes beam command.
+    """
+    return BeamCommand(
+        selector=selector, beam_rests=beam_rests, stemlet_length=stemlet_length
+    )
+
+
 def cache_state() -> CacheStateCommand:
     """
     Makes cache state command.
@@ -3890,6 +3853,23 @@ def extract_trivial(
     Makes tuplet command.
     """
     return TupletCommand(extract_trivial=True, selector=selector)
+
+
+def feather_beam(
+    selector: abjad.SelectorTyping = abjad.select().tuplets(),
+    *,
+    beam_rests: bool = None,
+    stemlet_length: int = None,
+) -> BeamCommand:
+    """
+    Makes tuplet command.
+    """
+    return BeamCommand(
+        selector=selector,
+        beam_rests=beam_rests,
+        stemlet_length=stemlet_length,
+        use_feather_beams=True,
+    )
 
 
 def force_augmentation(
@@ -3924,6 +3904,13 @@ def note(selector: abjad.SelectorTyping,) -> NoteCommand:
     Makes rest command.
     """
     return NoteCommand(selector)
+
+
+def repeat_tie(selector: abjad.SelectorTyping = None) -> TieCommand:
+    """
+    Makes tie command.
+    """
+    return TieCommand(attach_repeat_ties=True, selector=selector)
 
 
 def rest(
@@ -3989,6 +3976,20 @@ def split_measures(*, repeat_ties=None) -> SplitMeasuresCommand:
     return SplitMeasuresCommand(repeat_ties=repeat_ties)
 
 
+def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
+    """
+    Makes tie command.
+    """
+    return TieCommand(attach_ties=True, selector=selector)
+
+
+def to_repeat_tie(selector: abjad.SelectorTyping = None) -> TieCommand:
+    """
+    Makes tie command.
+    """
+    return TieCommand(repeat_ties=True, selector=selector)
+
+
 def trivialize(
     selector: abjad.SelectorTyping = abjad.select().tuplets()
 ) -> TupletCommand:
@@ -3996,3 +3997,12 @@ def trivialize(
     Makes tuplet command.
     """
     return TupletCommand(selector=selector, trivialize=True)
+
+
+def untie(selector: abjad.SelectorTyping = None) -> TieCommand:
+    """
+    Makes tie command.
+    """
+    return TieCommand(
+        detach_ties=True, detach_repeat_ties=True, selector=selector
+    )
