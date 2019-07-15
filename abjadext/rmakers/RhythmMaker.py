@@ -3,10 +3,10 @@ import collections
 import typing
 from . import typings
 from .BeamSpecifier import BeamSpecifier
-from .CacheState import CacheState
 from .DurationSpecifier import DurationSpecifier
 from .TieSpecifier import TieSpecifier
 from .TupletSpecifier import TupletSpecifier
+from .commands import CacheStateCommand
 from .commands import NoteCommand
 from .commands import RestCommand
 from .commands import RewriteMeterCommand
@@ -16,7 +16,7 @@ from abjad.top.new import new
 
 SpecifierClasses = (
     BeamSpecifier,
-    CacheState,
+    CacheStateCommand,
     DurationSpecifier,
     RewriteMeterCommand,
     RestCommand,
@@ -150,7 +150,7 @@ class RhythmMaker(object):
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
         for specifier in self.specifiers or []:
-            if isinstance(specifier, CacheState):
+            if isinstance(specifier, CacheStateCommand):
                 self._cache_state(staff, divisions_consumed)
                 self._already_cached_state = True
                 continue

@@ -7,6 +7,45 @@ from .BeamSpecifier import BeamSpecifier
 ### CLASSES ###
 
 
+class CacheStateCommand(object):
+    """
+    Cache state command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __documentation_section__ = "Specifiers"
+
+    _publish_storage_format = True
+
+    ### SPECIAL METHODS ###
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Formats directive.
+
+        ..  container:: example
+
+            >>> specifier = rmakers.cache_state()
+            >>> abjad.f(specifier)
+            abjadext.commands.CacheStateCommand()
+
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation of directive.
+
+        ..  container:: example
+
+            >>> rmakers.cache_state()
+            CacheStateCommand()
+
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+
 class NoteCommand(object):
     r"""
     Note command.
@@ -732,6 +771,13 @@ class SplitCommand(object):
 
 
 ### FACTORY FUNCTIONS ###
+
+
+def cache_state() -> CacheStateCommand:
+    """
+    Makes cache state command.
+    """
+    return CacheStateCommand()
 
 
 def note(selector: abjad.SelectorTyping,) -> NoteCommand:

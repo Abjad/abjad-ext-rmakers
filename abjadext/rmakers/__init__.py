@@ -5,7 +5,6 @@ from .RhythmMaker import RhythmMaker
 from .AccelerandoRhythmMaker import AccelerandoRhythmMaker
 from .BeamSpecifier import BeamSpecifier
 from .BurnishSpecifier import BurnishSpecifier
-from .CacheState import CacheState
 from .DurationSpecifier import DurationSpecifier
 from .EvenDivisionRhythmMaker import EvenDivisionRhythmMaker
 from .InciseSpecifier import InciseSpecifier
@@ -21,10 +20,12 @@ from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
+from .commands import CacheStateCommand
 from .commands import NoteCommand
 from .commands import RestCommand
 from .commands import RewriteMeterCommand
 from .commands import SplitCommand
+from .commands import cache_state
 from .commands import note
 from .commands import rest
 from .commands import rewrite_meter
