@@ -63,7 +63,7 @@ class BeamCommand(object):
 
     def __call__(self, staff, tag: str = None) -> None:
         """
-        Calls beam specifier on ``selections``.
+        Calls beam command on ``selections``.
         """
         from .RhythmMaker import RhythmMaker
 
@@ -157,14 +157,14 @@ class BeamCommand(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats beam specifier.
+        Formats beam command.
 
         ..  container:: example
 
-            >>> specifier = rmakers.BeamCommand(
+            >>> command = rmakers.BeamCommand(
             ...     selector=abjad.select().tuplets(),
             ...     )
-            >>> abjad.f(specifier)
+            >>> abjad.f(command)
             abjadext.commands.BeamCommand(
                 selector=abjad.select().tuplets(),
                 )
@@ -174,7 +174,7 @@ class BeamCommand(object):
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation of beam specifier.
+        Gets interpreter representation of beam command.
 
         ..  container:: example
 
@@ -267,7 +267,7 @@ class BeamCommand(object):
     @property
     def beam_lone_notes(self) -> typing.Optional[bool]:
         """
-        Is true when specifier beams lone notes.
+        Is true when command beams lone notes.
         """
         return self._beam_lone_notes
 
@@ -317,8 +317,8 @@ class CacheStateCommand(object):
 
         ..  container:: example
 
-            >>> specifier = rmakers.cache_state()
-            >>> abjad.f(specifier)
+            >>> command = rmakers.cache_state()
+            >>> abjad.f(command)
             abjadext.commands.CacheStateCommand()
 
         """
@@ -913,8 +913,8 @@ class RewriteMeterCommand(object):
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.rewrite_meter()
-            >>> abjad.f(specifier)
+            >>> command = abjadext.rmakers.rewrite_meter()
+            >>> abjad.f(command)
             abjadext.commands.RewriteMeterCommand()
 
         """
@@ -999,8 +999,8 @@ class SplitMeasuresCommand(object):
 
         ..  container:: example
 
-            >>> specifier = abjadext.rmakers.split_measures()
-            >>> abjad.f(specifier)
+            >>> command = abjadext.rmakers.split_measures()
+            >>> abjad.f(command)
             abjadext.commands.SplitMeasuresCommand()
 
         """
@@ -1125,7 +1125,7 @@ class TieCommand(object):
 
     def __call__(self, staff, *, tag: str = None) -> None:
         """
-        Calls tie specifier on ``staff``.
+        Calls tie command on ``staff``.
         """
         assert isinstance(staff, abjad.Staff), repr(staff)
         self._attach_repeat_ties_(staff)
@@ -1136,20 +1136,20 @@ class TieCommand(object):
 
     def __eq__(self, argument) -> bool:
         """
-        Is true when initialization values of tie specifier equal
+        Is true when initialization values of tie command equal
         initialization values of ``argument``.
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats tie specifier.
+        Formats tie command.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
     def __hash__(self) -> int:
         """
-        Hashes tie specifier.
+        Hashes tie command.
         """
         hash_values = abjad.StorageFormatManager(self).get_hash_values()
         try:
@@ -1160,7 +1160,7 @@ class TieCommand(object):
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation of tie specifier.
+        Gets interpreter representation of tie command.
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 

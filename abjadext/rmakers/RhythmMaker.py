@@ -3,7 +3,7 @@ import collections
 import typing
 from . import typings
 from .DurationSpecifier import DurationSpecifier
-from .TupletSpecifier import TupletSpecifier
+from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import CacheStateCommand
 from .commands import NoteCommand
@@ -23,7 +23,7 @@ SpecifierClasses = (
     SplitMeasuresCommand,
     NoteCommand,
     TieCommand,
-    TupletSpecifier,
+    TupletCommand,
 )
 
 

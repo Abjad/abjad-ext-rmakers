@@ -208,7 +208,7 @@ class InciseSpecifier(object):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...     ),
             ...     incise_specifier=specifier,

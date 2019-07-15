@@ -5,7 +5,7 @@ from . import typings
 from .DurationSpecifier import DurationSpecifier
 from .InterpolationSpecifier import InterpolationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TupletSpecifier import TupletSpecifier
+from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import TieCommand
 
@@ -19,7 +19,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         Makes accelerando for each input division:
 
         >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-        ...     rmakers.TupletSpecifier(
+        ...     rmakers.TupletCommand(
         ...         duration_bracket=True,
         ...         ),
         ...     rmakers.BeamCommand(
@@ -277,7 +277,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         Makes ritardando for each input division:
 
         >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-        ...     rmakers.TupletSpecifier(
+        ...     rmakers.TupletCommand(
         ...         duration_bracket=True,
         ...         ),
         ...     rmakers.BeamCommand(
@@ -895,7 +895,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Makes accelerando for each input division:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -1153,7 +1153,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Makes accelerandi and ritardandi on alternate divisions:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -1421,7 +1421,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             long for a given division:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         selector=abjad.select().tuplets().filter_length(">", 1)
             ...         ),
@@ -1587,7 +1587,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> selector = abjad.select().logical_ties().get([0, -1])
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.rest(selector),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -1864,20 +1864,20 @@ class AccelerandoRhythmMaker(RhythmMaker):
             REGRESSION. New preserves specifiers.
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(force_fraction=True)
+            ...     rmakers.TupletCommand(force_fraction=True)
             ... )
             >>> rhythm_maker.specifiers
-            [TupletSpecifier(force_fraction=True)]
+            [TupletCommand(force_fraction=True)]
 
             >>> abjad.new(rhythm_maker).specifiers
-            [TupletSpecifier(force_fraction=True)]
+            [TupletCommand(force_fraction=True)]
 
         ..  container:: example
 
             Feather beams each division:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -2135,7 +2135,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Beams divisions together (without feathering):
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -2438,7 +2438,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Makes no beams:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(),
@@ -2681,7 +2681,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Does not tie across divisions:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -2941,7 +2941,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> last_leaf = abjad.select().leaf(-1)
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.TieCommand(
@@ -3208,7 +3208,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> tuplets = abjad.select().tuplets().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.TieCommand(
@@ -3472,7 +3472,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Tuplets use note duration bracket:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -3730,7 +3730,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Tuplets do not use note duration bracket:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=False,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -3828,7 +3828,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             No rest commands:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -4086,7 +4086,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Silences every other division:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -4096,11 +4096,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().tuplets().get([1], 2),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_rest_filled=True,
             ...         selector=abjad.select().tuplets().get([1], 2),
             ...         ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...         selector=abjad.select().tuplets().get([1], 2),
             ...         ),
@@ -4265,7 +4265,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Consumes 3 divisions:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(
@@ -4869,7 +4869,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Makes accelerando for each input division:
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         duration_bracket=True,
             ...         ),
             ...     rmakers.BeamCommand(

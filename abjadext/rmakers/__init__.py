@@ -13,7 +13,7 @@ from .NoteRhythmMaker import NoteRhythmMaker
 from .Talea import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TupletRhythmMaker import TupletRhythmMaker
-from .TupletSpecifier import TupletSpecifier
+from .TupletCommand import TupletCommand
 from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments

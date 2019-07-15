@@ -1,5 +1,5 @@
 import typing
-from .TupletSpecifier import TupletSpecifier
+from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import CacheStateCommand
 from .commands import NoteCommand
@@ -21,5 +21,5 @@ SpecifierTyping = typing.Union[
     SplitMeasuresCommand,
     NoteCommand,
     TieCommand,
-    TupletSpecifier,
+    TupletCommand,
 ]

@@ -5,7 +5,7 @@ from . import typings
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TupletSpecifier import TupletSpecifier
+from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import TieCommand
 
@@ -2740,7 +2740,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...         ),
             ...     denominators=[8],
@@ -2800,13 +2800,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Extracts trivial tuplets and spells tuplets as diminutions:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         diminution=True,
             ...         ),
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...         ),
             ...     denominators=[8],
@@ -2865,7 +2865,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         diminution=False,
             ...         extract_trivial=True,
             ...         ),
@@ -3002,14 +3002,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().tuplets().get([0], 2),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_rest_filled=True,
             ...         selector=abjad.select().tuplets().get([0], 2)
             ...     ),
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...         selector=abjad.select().tuplets().get([0], 2),
             ...     ),
@@ -3073,14 +3073,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...         attach_ties=True,
             ...         selector=selector.map(nonlast_notes),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_sustained=True,
             ...         selector=selector,
             ...     ),
             ...     rmakers.BeamCommand(
             ...         selector=abjad.select().tuplets(),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...         selector=selector,
             ...     ),
@@ -3141,10 +3141,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.rest(
             ...         abjad.select().leaves(),
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_rest_filled=True,
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...     ),
             ... )

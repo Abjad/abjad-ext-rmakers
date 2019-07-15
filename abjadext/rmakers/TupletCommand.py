@@ -3,15 +3,15 @@ import copy
 import typing
 
 
-class TupletSpecifier(object):
+class TupletCommand(object):
     """
-    Tuplet specifier.
+    Tuplet command.
 
     ..  container:: example
 
-        >>> specifier = rmakers.TupletSpecifier()
-        >>> abjad.f(specifier)
-        abjadext.rmakers.TupletSpecifier()
+        >>> command = rmakers.TupletCommand()
+        >>> abjad.f(command)
+        abjadext.rmakers.TupletCommand()
 
     """
 
@@ -94,7 +94,7 @@ class TupletSpecifier(object):
 
     def __call__(self, staff, *, tag: str = None) -> None:
         """
-        Calls tuplet specifier.
+        Calls tuplet command.
         """
         self._apply_denominator(staff)
         self._force_fraction_(staff)
@@ -115,14 +115,14 @@ class TupletSpecifier(object):
 
     def __eq__(self, argument) -> bool:
         """
-        Is true when initialization values of tuplet specifier equal
+        Is true when initialization values of tuplet command equal
         initialization values of ``argument``.
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 
     def __hash__(self) -> int:
         """
-        Hashes tuplet specifier.
+        Hashes tuplet command.
         """
         hash_values = abjad.StorageFormatManager(self).get_hash_values()
         try:
@@ -133,7 +133,7 @@ class TupletSpecifier(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats tuplet specifier.
+        Formats tuplet command.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
@@ -318,7 +318,7 @@ class TupletSpecifier(object):
             means that ratios like ``6:4`` and ``10:8`` do not arise:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_dots=True,
             ...         denominator=None,
             ...         ),
@@ -387,7 +387,7 @@ class TupletSpecifier(object):
             setting does not affect the first tuplet:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_dots=True,
             ...         denominator=(1, 16),
             ...         ),
@@ -455,7 +455,7 @@ class TupletSpecifier(object):
             The setting affects all tuplets:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_dots=True,
             ...         denominator=(1, 32),
             ...         ),
@@ -523,7 +523,7 @@ class TupletSpecifier(object):
             setting affects all tuplets:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_dots=True,
             ...         denominator=(1, 64),
             ...         ),
@@ -593,7 +593,7 @@ class TupletSpecifier(object):
             does not affect the third tuplet:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_dots=True,
             ...         denominator=8,
             ...         ),
@@ -661,7 +661,7 @@ class TupletSpecifier(object):
             affects all tuplets:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_dots=True,
             ...         denominator=12,
             ...         ),
@@ -732,7 +732,7 @@ class TupletSpecifier(object):
             does not affect any tuplet:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_dots=True,
             ...         denominator=13,
             ...         ),
@@ -828,7 +828,7 @@ class TupletSpecifier(object):
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...         selector=abjad.select().tuplets()[-2:],
             ...     ),
@@ -1026,7 +1026,7 @@ class TupletSpecifier(object):
             property cancels LilyPond's default tuplet numbering once again:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         force_fraction=True,
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
@@ -1193,7 +1193,7 @@ class TupletSpecifier(object):
             Rewrites rest-filled tuplets:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_rest_filled=True,
             ...         ),
             ...     rmakers.BeamCommand(selector=abjad.select().tuplets()),
@@ -1254,7 +1254,7 @@ class TupletSpecifier(object):
             With selector:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_rest_filled=True,
             ...         selector=abjad.select().tuplets()[-2:],
             ...         ),
@@ -1402,7 +1402,7 @@ class TupletSpecifier(object):
 
                 >>> staff = lilypond_file[abjad.Score]
                 >>> for tuplet in abjad.select(staff).tuplets():
-                ...     rmakers.TupletSpecifier.is_sustained_tuplet(tuplet)
+                ...     rmakers.TupletCommand.is_sustained_tuplet(tuplet)
                 ...
                 True
                 True
@@ -1423,7 +1423,7 @@ class TupletSpecifier(object):
 
             >>> last_leaf = abjad.select().leaf(-1)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_sustained=True,
             ...         ),
             ...     rmakers.TieCommand(
@@ -1497,7 +1497,7 @@ class TupletSpecifier(object):
             ...         attach_ties=True,
             ...         selector=abjad.select().tuplets()[1:3].map(last_leaf),
             ...         ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         extract_trivial=True,
             ...         rewrite_sustained=True,
             ...         ),
@@ -1557,7 +1557,7 @@ class TupletSpecifier(object):
             ...         attach_ties=True,
             ...         selector=selector,
             ...     ),
-            ...     rmakers.TupletSpecifier(
+            ...     rmakers.TupletCommand(
             ...         rewrite_sustained=True,
             ...         selector=abjad.select().tuplets()[-2:],
             ...     ),
@@ -1633,7 +1633,7 @@ class TupletSpecifier(object):
     @property
     def trivialize(self) -> typing.Optional[bool]:
         """
-        Is true when tuplet specifier trivializes trivializable tuplets.
+        Is true when tuplet command trivializes trivializable tuplets.
         """
         return self._trivialize
 
