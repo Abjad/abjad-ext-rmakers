@@ -5,11 +5,11 @@ from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
 from .Talea import Talea
-from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import RestCommand
 from .commands import NoteCommand
 from .commands import TieCommand
+from .commands import TupletCommand
 
 
 class TaleaRhythmMaker(RhythmMaker):

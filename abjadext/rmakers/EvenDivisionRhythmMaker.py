@@ -5,9 +5,9 @@ from . import typings
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import TieCommand
+from .commands import TupletCommand
 
 
 class EvenDivisionRhythmMaker(RhythmMaker):

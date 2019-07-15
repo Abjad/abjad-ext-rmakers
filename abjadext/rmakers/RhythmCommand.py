@@ -3,7 +3,6 @@ import typing
 from . import typings
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import CacheStateCommand
 from .commands import NoteCommand
@@ -11,6 +10,7 @@ from .commands import RestCommand
 from .commands import RewriteMeterCommand
 from .commands import SplitMeasuresCommand
 from .commands import TieCommand
+from .commands import TupletCommand
 
 
 RhythmMakerTyping = typing.Union[

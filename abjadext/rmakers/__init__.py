@@ -13,7 +13,6 @@ from .NoteRhythmMaker import NoteRhythmMaker
 from .Talea import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TupletRhythmMaker import TupletRhythmMaker
-from .TupletCommand import TupletCommand
 from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
@@ -25,6 +24,7 @@ from .commands import RestCommand
 from .commands import RewriteMeterCommand
 from .commands import SplitMeasuresCommand
 from .commands import TieCommand
+from .commands import TupletCommand
 from .commands import cache_state
 from .commands import note
 from .commands import rest

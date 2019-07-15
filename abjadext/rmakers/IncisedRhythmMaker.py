@@ -5,10 +5,10 @@ from .DurationSpecifier import DurationSpecifier
 from .InciseSpecifier import InciseSpecifier
 from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
-from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import RestCommand
 from .commands import TieCommand
+from .commands import TupletCommand
 
 
 class IncisedRhythmMaker(RhythmMaker):

@@ -1,5 +1,4 @@
 import typing
-from .TupletCommand import TupletCommand
 from .commands import BeamCommand
 from .commands import CacheStateCommand
 from .commands import NoteCommand
@@ -7,6 +6,7 @@ from .commands import RestCommand
 from .commands import RewriteMeterCommand
 from .commands import SplitMeasuresCommand
 from .commands import TieCommand
+from .commands import TupletCommand
 
 
 MaskTyping = typing.Union[RestCommand, NoteCommand]
