@@ -44,6 +44,6 @@ from .commands import rewrite_tuplet_dots
 from .commands import duration_bracket
 from .commands import split_measures
 from .commands import tie
-from .commands import to_repeat_tie
+from .commands import force_repeat_ties
 from .commands import trivialize
 from .commands import untie

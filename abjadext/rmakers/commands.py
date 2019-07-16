@@ -342,6 +342,72 @@ class CacheStateCommand(Command):
         pass
 
 
+class ForceRepeatTiesCommand(Command):
+    """
+    Force repeat-ties command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = "_threshold"
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        selector: abjad.SelectorTyping = None,
+        *,
+        threshold: typing.Union[
+            bool, abjad.IntegerPair, abjad.DurationInequality
+        ] = None,
+    ) -> None:
+        super().__init__(selector)
+        threshold_ = threshold
+        if isinstance(threshold, tuple) and len(threshold) == 2:
+            threshold_ = abjad.DurationInequality(
+                operator_string=">=", duration=threshold
+            )
+        if threshold_ is not None:
+            assert isinstance(threshold_, (bool, abjad.DurationInequality))
+        self._threshold = threshold_
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, *, tag: str = None) -> None:
+        """
+        Calls tie command on ``staff``.
+        """
+        assert isinstance(staff, abjad.Staff), repr(staff)
+        selection = staff["MusicVoice"]
+        if self.selector is not None:
+            selection = self.selector(selection)
+        add_repeat_ties = []
+        for leaf in abjad.select(selection).leaves():
+            if abjad.inspect(leaf).has_indicator(abjad.TieIndicator):
+                next_leaf = abjad.inspect(leaf).leaf(1)
+                if next_leaf is None:
+                    continue
+                if not isinstance(next_leaf, (abjad.Chord, abjad.Note)):
+                    continue
+                if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
+                    continue
+                add_repeat_ties.append(next_leaf)
+                abjad.detach(abjad.TieIndicator, leaf)
+        for leaf in add_repeat_ties:
+            repeat_tie = abjad.RepeatTie()
+            abjad.attach(repeat_tie, leaf)
+
+    ### PUBLIC PROPERTIES ###
+
+    # TODO: activate threshold
+    @property
+    def threshold(self) -> typing.Union[bool, abjad.DurationInequality, None]:
+        """
+        Gets threshold.
+        """
+        return self._threshold
+
+
 class NoteCommand(Command):
     r"""
     Note command.
@@ -544,6 +610,30 @@ class NoteCommand(Command):
             if leaf.multiplier is not None:
                 note.multiplier = leaf.multiplier
             abjad.mutate(leaf).replace([note])
+
+
+class RepeatTieCommand(Command):
+    """
+    Repeat-tie command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ()
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, *, tag: str = None) -> None:
+        """
+        Calls tie command on ``staff``.
+        """
+        assert isinstance(staff, abjad.Staff), repr(staff)
+        selection = staff["MusicVoice"]
+        if self.selector is not None:
+            selection = self.selector(selection)
+        for note in abjad.select(selection).notes():
+            tie = abjad.RepeatTie()
+            abjad.attach(tie, note, tag=tag)
 
 
 class RestCommand(Command):
@@ -935,50 +1025,7 @@ class TieCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = (
-        "_attach_repeat_ties",
-        "_attach_ties",
-        "_detach_repeat_ties",
-        "_detach_ties",
-        "_repeat_ties",
-        "_selector",
-    )
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        *,
-        attach_repeat_ties: bool = None,
-        attach_ties: bool = None,
-        detach_repeat_ties: bool = None,
-        detach_ties: bool = None,
-        repeat_ties: typing.Union[
-            bool, abjad.IntegerPair, abjad.DurationInequality
-        ] = None,
-        selector: abjad.SelectorTyping = None,
-    ) -> None:
-        super().__init__(selector)
-        if attach_repeat_ties is not None:
-            attach_repeat_ties = bool(attach_repeat_ties)
-        self._attach_repeat_ties = attach_repeat_ties
-        if attach_ties is not None:
-            attach_ties = bool(attach_ties)
-        self._attach_ties = attach_ties
-        if detach_repeat_ties is not None:
-            detach_repeat_ties = bool(detach_repeat_ties)
-        self._detach_repeat_ties = detach_repeat_ties
-        if detach_ties is not None:
-            detach_ties = bool(detach_ties)
-        self._detach_ties = detach_ties
-        repeat_ties_ = repeat_ties
-        if isinstance(repeat_ties, tuple) and len(repeat_ties) == 2:
-            repeat_ties_ = abjad.DurationInequality(
-                operator_string=">=", duration=repeat_ties
-            )
-        if repeat_ties_ is not None:
-            assert isinstance(repeat_ties_, (bool, abjad.DurationInequality))
-        self._repeat_ties = repeat_ties_
+    __slots__ = ()
 
     ### SPECIAL METHODS ###
 
@@ -987,824 +1034,12 @@ class TieCommand(Command):
         Calls tie command on ``staff``.
         """
         assert isinstance(staff, abjad.Staff), repr(staff)
-        self._attach_repeat_ties_(staff)
-        self._attach_ties_(staff)
-        self._detach_ties_(staff)
-        self._detach_repeat_ties_(staff)
-        self._configure_repeat_ties(staff)
-
-    ### PRIVATE METHODS ###
-
-    def _attach_repeat_ties_(self, staff, tag: str = None):
-        if not self.attach_repeat_ties:
-            return None
-        selection = staff["MusicVoice"]
-        if self.selector is not None:
-            selection = self.selector(selection)
-        for note in abjad.select(selection).notes():
-            tie = abjad.RepeatTie()
-            abjad.attach(tie, note, tag=tag)
-
-    def _attach_ties_(self, staff, tag: str = None):
-        if not self.attach_ties:
-            return None
         selection = staff["MusicVoice"]
         if self.selector is not None:
             selection = self.selector(selection)
         for note in abjad.select(selection).notes():
             tie = abjad.TieIndicator()
             abjad.attach(tie, note, tag=tag)
-
-    def _detach_repeat_ties_(self, staff, tag: str = None):
-        if not self.detach_repeat_ties:
-            return None
-        selection = staff["MusicVoice"]
-        if self.selector is not None:
-            selection = self.selector(selection)
-        for note in abjad.select(selection).notes():
-            abjad.detach(abjad.RepeatTie, note)
-
-    def _detach_ties_(self, staff, tag: str = None):
-        if not self.detach_ties:
-            return None
-        selection = staff["MusicVoice"]
-        if self.selector is not None:
-            selection = self.selector(selection)
-        for note in abjad.select(selection).notes():
-            abjad.detach(abjad.TieIndicator, note)
-
-    def _configure_repeat_ties(self, staff):
-        if not self.repeat_ties:
-            return None
-        selection = staff["MusicVoice"]
-        if self.selector is not None:
-            selection = self.selector(selection)
-        add_repeat_ties = []
-        for leaf in abjad.select(selection).leaves():
-            if abjad.inspect(leaf).has_indicator(abjad.TieIndicator):
-                next_leaf = abjad.inspect(leaf).leaf(1)
-                if next_leaf is None:
-                    continue
-                if not isinstance(next_leaf, (abjad.Chord, abjad.Note)):
-                    continue
-                if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
-                    continue
-                add_repeat_ties.append(next_leaf)
-                abjad.detach(abjad.TieIndicator, leaf)
-        for leaf in add_repeat_ties:
-            repeat_tie = abjad.RepeatTie()
-            abjad.attach(repeat_tie, leaf)
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def attach_repeat_ties(self) -> typing.Optional[bool]:
-        r"""
-        Is true when rhythm-maker attaches repeat-ties to notes in selection.
-
-        ..  container:: example
-
-            TIE-ACROSS-DIVISIONS RECIPE. Attaches repeat-ties to first note in
-            nonfirst tuplets:
-
-            >>> selector = abjad.select().tuplets()[1:]
-            >>> selector = selector.map(abjad.select().note(0))
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.repeat_tie(selector),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-            With pattern:
-
-            >>> selector = abjad.select().tuplets().get([1], 2)
-            >>> selector = selector.map(abjad.select().note(0))
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.repeat_tie(selector),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        """
-        return self._attach_repeat_ties
-
-    @property
-    def attach_ties(self) -> typing.Optional[bool]:
-        r"""
-        Is true when rhythm-maker attaches ties to notes in selection.
-
-        ..  container:: example
-
-            TIE-CONSECUTIVE-NOTES RECIPE. Attaches ties notes in selection:
-
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.tie(abjad.select().notes()[5:15]),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            TIE-ACROSS-DIVISIONS RECIPE. Attaches ties to last note in nonlast
-            tuplets:
-
-            >>> selector = abjad.select().tuplets()[:-1]
-            >>> selector = selector.map(abjad.select().note(-1))
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.tie(selector),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-            With pattern:
-
-            >>> selector = abjad.select().tuplets().get([0], 2)
-            >>> selector = selector.map(abjad.select().note(-1))
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.tie(selector),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            TIE-ACROSS-DIVISIONS RECIPE:
-
-            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
-            ...     tuplet_ratios=[(5, 2)],
-            ...     )
-
-            >>> divisions = [(4, 8), (4, 8), (4, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 4/8
-                        s1 * 1/2
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                            ~
-                        }
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                            ~
-                        }
-                        \times 4/7 {
-                            c'2
-                            ~
-                            c'8
-                            c'4
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            TIE-WITHIN-DIVISIONS RECIPE:
-
-            >>> selector = abjad.select().tuplets()
-            >>> nonlast_notes = abjad.select().notes()[:-1]
-            >>> selector = selector.map(nonlast_notes)
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.untie(selector),
-            ...     rmakers.tie(selector),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-            With pattern:
-
-            >>> selector = abjad.select().tuplets().get([0], 2)
-            >>> selector = selector.map(abjad.select().notes()[:-1])
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.tie(selector),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        """
-        return self._attach_ties
-
-    @property
-    def detach_repeat_ties(self) -> typing.Optional[bool]:
-        r"""
-        Is true when rhythm-maker detaches repeat ties.
-        """
-        return self._detach_repeat_ties
-
-    @property
-    def detach_ties(self) -> typing.Optional[bool]:
-        r"""
-        Is true when rhythm-maker detaches ties.
-        """
-        return self._detach_ties
-
-    @property
-    def repeat_ties(
-        self
-    ) -> typing.Union[bool, abjad.DurationInequality, None]:
-        r"""
-        Is true when all notes format with LilyPond ``\repeatTie``.
-
-        Is duration inequality only those notes that satisfy duration
-        inequality formath with LilyPond ``\repeatTie``.
-        """
-        return self._repeat_ties
 
 
 class TupletCommand(Command):
@@ -3036,6 +2271,15 @@ def force_fraction(
     return TupletCommand(force_fraction=True, selector=selector)
 
 
+def force_repeat_ties(
+    threshold=True, selector: abjad.SelectorTyping = None
+) -> ForceRepeatTiesCommand:
+    """
+    Makes force repeat-ties command.
+    """
+    return ForceRepeatTiesCommand(selector, threshold=threshold)
+
+
 def note(selector: abjad.SelectorTyping,) -> NoteCommand:
     """
     Makes rest command.
@@ -3043,11 +2287,193 @@ def note(selector: abjad.SelectorTyping,) -> NoteCommand:
     return NoteCommand(selector)
 
 
-def repeat_tie(selector: abjad.SelectorTyping = None) -> TieCommand:
+def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
+    r"""
+    Makes repeat-tie command.
+
+    ..  container:: example
+
+        TIE-ACROSS-DIVISIONS RECIPE. Attaches repeat-ties to first note in
+        nonfirst tuplets:
+
+        >>> selector = abjad.select().tuplets()[1:]
+        >>> selector = selector.map(abjad.select().note(0))
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.repeat_tie(selector),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        With pattern:
+
+        >>> selector = abjad.select().tuplets().get([1], 2)
+        >>> selector = selector.map(abjad.select().note(0))
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.repeat_tie(selector),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
     """
-    Makes tie command.
-    """
-    return TieCommand(attach_repeat_ties=True, selector=selector)
+    return RepeatTieCommand(selector)
 
 
 def rest(
@@ -3586,19 +3012,537 @@ def split_measures(*, repeat_ties=None) -> SplitMeasuresCommand:
 
 
 def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
-    """
+    r"""
     Makes tie command.
-    """
-    return TieCommand(attach_ties=True, selector=selector)
 
+    ..  container:: example
 
-def to_repeat_tie(
-    threshold=True, selector: abjad.SelectorTyping = None
-) -> TieCommand:
+        TIE-CONSECUTIVE-NOTES RECIPE. Attaches ties notes in selection:
+
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.tie(abjad.select().notes()[5:15]),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        TIE-ACROSS-DIVISIONS RECIPE. Attaches ties to last note in nonlast
+        tuplets:
+
+        >>> selector = abjad.select().tuplets()[:-1]
+        >>> selector = selector.map(abjad.select().note(-1))
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.tie(selector),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        With pattern:
+
+        >>> selector = abjad.select().tuplets().get([0], 2)
+        >>> selector = selector.map(abjad.select().note(-1))
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.tie(selector),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        TIE-ACROSS-DIVISIONS RECIPE:
+
+        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.TupletRhythmMaker(
+        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     tuplet_ratios=[(5, 2)],
+        ...     )
+
+        >>> divisions = [(4, 8), (4, 8), (4, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/8
+                    s1 * 1/2
+                    \time 4/8
+                    s1 * 1/2
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/7 {
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                        ~
+                    }
+                    \times 4/7 {
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                        ~
+                    }
+                    \times 4/7 {
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        TIE-WITHIN-DIVISIONS RECIPE:
+
+        >>> selector = abjad.select().tuplets()
+        >>> nonlast_notes = abjad.select().notes()[:-1]
+        >>> selector = selector.map(nonlast_notes)
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.untie(selector),
+        ...     rmakers.tie(selector),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        With pattern:
+
+        >>> selector = abjad.select().tuplets().get([0], 2)
+        >>> selector = selector.map(abjad.select().notes()[:-1])
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.tie(selector),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
     """
-    Makes tie command.
-    """
-    return TieCommand(repeat_ties=threshold, selector=selector)
+    return TieCommand(selector=selector)
 
 
 def trivialize(
