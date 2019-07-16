@@ -115,10 +115,6 @@ class BeamCommand(Command):
         if beam_rests is not None:
             beam_rests = bool(beam_rests)
         self._beam_rests = beam_rests
-        #        if isinstance(selector, str):
-        #            selector = eval(selector)
-        #            assert isinstance(selector, abjad.Expression)
-        #        self._selector = selector
         if stemlet_length is not None:
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
@@ -222,35 +218,6 @@ class BeamCommand(Command):
                 elif self._is_ritardando(selection):
                     abjad.override(first_leaf).beam.grow_direction = abjad.Left
 
-    #    def __format__(self, format_specification="") -> str:
-    #        """
-    #        Formats beam command.
-    #
-    #        ..  container:: example
-    #
-    #            >>> command = rmakers.BeamCommand(
-    #            ...     selector=abjad.select().tuplets(),
-    #            ...     )
-    #            >>> abjad.f(command)
-    #            abjadext.commands.BeamCommand(
-    #                selector=abjad.select().tuplets(),
-    #                )
-    #
-    #        """
-    #        return abjad.StorageFormatManager(self).get_storage_format()
-    #
-    #    def __repr__(self) -> str:
-    #        """
-    #        Gets interpreter representation of beam command.
-    #
-    #        ..  container:: example
-    #
-    #            >>> rmakers.BeamCommand()
-    #            BeamCommand()
-    #
-    #        """
-    #        return abjad.StorageFormatManager(self).get_repr_format()
-
     ### PRIVATE METHODS ###
 
     @staticmethod
@@ -345,13 +312,6 @@ class BeamCommand(Command):
         """
         return self._beam_rests
 
-    #    @property
-    #    def selector(self) -> typing.Optional[abjad.Expression]:
-    #        """
-    #        Gets selector.
-    #        """
-    #        return self._selector
-
     @property
     def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
         r"""
@@ -372,42 +332,14 @@ class CacheStateCommand(Command):
     Cache state command.
     """
 
-    #    ### CLASS VARIABLES ###
-    #
-    #    _publish_storage_format = True
+    ### CLASS VARIABLES ###
 
-    ## INITIALIZER ###
+    __slots__ = ()
+
+    ### INITIALIZER ###
 
     def __init__(self) -> None:
         pass
-
-
-#    ### SPECIAL METHODS ###
-#
-#    def __format__(self, format_specification="") -> str:
-#        """
-#        Formats directive.
-#
-#        ..  container:: example
-#
-#            >>> command = rmakers.cache_state()
-#            >>> abjad.f(command)
-#            abjadext.commands.CacheStateCommand()
-#
-#        """
-#        return abjad.StorageFormatManager(self).get_storage_format()
-#
-#    def __repr__(self) -> str:
-#        """
-#        Gets interpreter representation of directive.
-#
-#        ..  container:: example
-#
-#            >>> rmakers.cache_state()
-#            CacheStateCommand()
-#
-#        """
-#        return abjad.StorageFormatManager(self).get_repr_format()
 
 
 class NoteCommand(Command):
@@ -585,19 +517,7 @@ class NoteCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    #    __slots__ = ("_selector",)
-    #
-    #    _publish_storage_format = True
-
     __slots__ = ()
-
-    #    ### INITIALIZER ###
-    #
-    #    def __init__(self, selector: abjad.SelectorTyping) -> None:
-    #        if isinstance(selector, str):
-    #            selector = eval(selector)
-    #            assert isinstance(selector, abjad.Expression)
-    #        self._selector = selector
 
     ### SPECIAL METHODS ###
 
@@ -624,28 +544,6 @@ class NoteCommand(Command):
             if leaf.multiplier is not None:
                 note.multiplier = leaf.multiplier
             abjad.mutate(leaf).replace([note])
-
-
-#    def __format__(self, format_specification="") -> str:
-#        """
-#        Formats note command.
-#        """
-#        return abjad.StorageFormatManager(self).get_storage_format()
-#
-#    def __repr__(self) -> str:
-#        """
-#        Gets interpreter representation of note command.
-#        """
-#        return abjad.StorageFormatManager(self).get_repr_format()
-
-#    ### PUBLIC PROPERTIES ###
-#
-#    @property
-#    def selector(self) -> typing.Optional[abjad.Expression]:
-#        """
-#        Gets selector.
-#        """
-#        return self._selector
 
 
 class RestCommand(Command):
@@ -832,10 +730,6 @@ class RestCommand(Command):
         use_multimeasure_rests: bool = None,
     ) -> None:
         super().__init__(selector)
-        #        if isinstance(selector, str):
-        #            selector = eval(selector)
-        #            assert isinstance(selector, abjad.Expression)
-        #        self._selector = selector
         if use_multimeasure_rests is not None:
             assert isinstance(use_multimeasure_rests, type(True))
         self._use_multimeasure_rests = use_multimeasure_rests
@@ -882,25 +776,6 @@ class RestCommand(Command):
                 if next_leaf is not None:
                     abjad.detach(abjad.RepeatTie, next_leaf)
 
-    #    def __format__(self, format_specification="") -> str:
-    #        """
-    #        Formats rest command.
-    #        """
-    #        return abjad.StorageFormatManager(self).get_storage_format()
-    #
-    #    def __repr__(self) -> str:
-    #        """
-    #        Gets interpreter representation of rest command.
-    #        """
-    #        return abjad.StorageFormatManager(self).get_repr_format()
-    #
-    #    @property
-    #    def selector(self) -> typing.Optional[abjad.Expression]:
-    #        """
-    #        Gets selector.
-    #        """
-    #        return self._selector
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -919,8 +794,6 @@ class RewriteMeterCommand(Command):
     ### CLASS VARIABLES ###
 
     __slots__ = ("_reference_meters", "_repeat_ties")
-
-    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -986,31 +859,6 @@ class RewriteMeterCommand(Command):
                     tag="rmakers.RewriteMeterCommand.__call__",
                 )
 
-    #    def __format__(self, format_specification="") -> str:
-    #        """
-    #        Formats rewrite meter command.
-    #
-    #        ..  container:: example
-    #
-    #            >>> command = abjadext.rmakers.rewrite_meter()
-    #            >>> abjad.f(command)
-    #            abjadext.commands.RewriteMeterCommand()
-    #
-    #        """
-    #        return abjad.StorageFormatManager(self).get_storage_format()
-    #
-    #    def __repr__(self) -> str:
-    #        """
-    #        Gets interpreter representation.
-    #
-    #        ..  container:: example
-    #
-    #            >>> abjadext.rmakers.rewrite_meter()
-    #            RewriteMeterCommand()
-    #
-    #        """
-    #        return abjad.StorageFormatManager(self).get_repr_format()
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -1036,8 +884,6 @@ class SplitMeasuresCommand(Command):
     ### CLASS VARIABLES ###
 
     __slots__ = "_repeat_ties"
-
-    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -1072,60 +918,6 @@ class SplitMeasuresCommand(Command):
             durations=durations, repeat_ties=self.repeat_ties
         )
 
-    #    def __format__(self, format_specification="") -> str:
-    #        """
-    #        Formats command.
-    #
-    #        ..  container:: example
-    #
-    #            >>> command = abjadext.rmakers.split_measures()
-    #            >>> abjad.f(command)
-    #            abjadext.commands.SplitMeasuresCommand()
-    #
-    #        """
-    #        return abjad.StorageFormatManager(self).get_storage_format()
-    #
-    #    def __repr__(self) -> str:
-    #        """
-    #        Gets interpreter representation of command.
-    #
-    #        ..  container:: example
-    #
-    #            >>> abjadext.rmakers.split_measures()
-    #            SplitMeasuresCommand()
-    #
-    #        """
-    #        return abjad.StorageFormatManager(self).get_repr_format()
-
-    #    ### PRIVATE METHODS ###
-    #
-    #    # TODO: activate tag
-    #    def _call(self, music_voice, durations, *, tag=None):
-    #        durations = [abjad.Duration(_) for _ in durations]
-    #        total_duration = sum(durations)
-    #        music_duration = abjad.inspect(music_voice).duration()
-    #        if total_duration != music_duration:
-    #            message = f"Total duration of splits is {total_duration!s}"
-    #            message += f" but duration of music is {music_duration!s}:"
-    #            message += f"\ndurations: {durations}."
-    #            message += f"\nmusic voice: {music_voice[:]}."
-    #            raise Exception(message)
-    #        abjad.mutate(music_voice[:]).split(
-    #            durations=durations, repeat_ties=self.repeat_ties
-    #        )
-    #        components = music_voice[:]
-    #        component_durations = [abjad.inspect(_).duration() for _ in components]
-    #        parts = abjad.sequence(component_durations)
-    #        parts = parts.partition_by_weights(
-    #            weights=durations, allow_part_weights=abjad.Exact
-    #        )
-    #        part_lengths = [len(_) for _ in parts]
-    #        parts = abjad.sequence(components).partition_by_counts(
-    #            counts=part_lengths, overhang=abjad.Exact
-    #        )
-    #        selections = [abjad.select(_) for _ in parts]
-    #        return selections
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -1151,8 +943,6 @@ class TieCommand(Command):
         "_repeat_ties",
         "_selector",
     )
-
-    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -1190,11 +980,6 @@ class TieCommand(Command):
             assert isinstance(repeat_ties_, (bool, abjad.DurationInequality))
         self._repeat_ties = repeat_ties_
 
-    #        if isinstance(selector, str):
-    #            selector = eval(selector)
-    #            assert isinstance(selector, abjad.Expression)
-    #        self._selector = selector
-
     ### SPECIAL METHODS ###
 
     def __call__(self, staff, *, tag: str = None) -> None:
@@ -1207,36 +992,6 @@ class TieCommand(Command):
         self._detach_ties_(staff)
         self._detach_repeat_ties_(staff)
         self._configure_repeat_ties(staff)
-
-    #    def __eq__(self, argument) -> bool:
-    #        """
-    #        Is true when initialization values of tie command equal
-    #        initialization values of ``argument``.
-    #        """
-    #        return abjad.StorageFormatManager.compare_objects(self, argument)
-    #
-    #    def __format__(self, format_specification="") -> str:
-    #        """
-    #        Formats tie command.
-    #        """
-    #        return abjad.StorageFormatManager(self).get_storage_format()
-    #
-    #    def __hash__(self) -> int:
-    #        """
-    #        Hashes tie command.
-    #        """
-    #        hash_values = abjad.StorageFormatManager(self).get_hash_values()
-    #        try:
-    #            result = hash(hash_values)
-    #        except TypeError:
-    #            raise TypeError(f"unhashable type: {self}")
-    #        return result
-    #
-    #    def __repr__(self) -> str:
-    #        """
-    #        Gets interpreter representation of tie command.
-    #        """
-    #        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
 
@@ -2052,14 +1807,6 @@ class TieCommand(Command):
         return self._repeat_ties
 
 
-#    @property
-#    def selector(self) -> typing.Optional[abjad.Expression]:
-#        """
-#        Gets selector.
-#        """
-#        return self._selector
-
-
 class TupletCommand(Command):
     """
     Tuplet command.
@@ -2087,8 +1834,6 @@ class TupletCommand(Command):
         "_selector",
         "_trivialize",
     )
-
-    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -2138,10 +1883,6 @@ class TupletCommand(Command):
         if rewrite_sustained is not None:
             rewrite_rest_fille = bool(rewrite_sustained)
         self._rewrite_sustained = rewrite_sustained
-        #        if isinstance(selector, str):
-        #            selector = eval(selector)
-        #            assert isinstance(selector, abjad.Expression)
-        #        self._selector = selector
         if trivialize is not None:
             trivialize = bool(trivialize)
         self._trivialize = trivialize
@@ -2168,36 +1909,6 @@ class TupletCommand(Command):
         self._set_duration_bracket(staff)
         # toggle prolation must follow rewrite dots and extract trivial:
         self._toggle_prolation(staff)
-
-    #    def __eq__(self, argument) -> bool:
-    #        """
-    #        Is true when initialization values of tuplet command equal
-    #        initialization values of ``argument``.
-    #        """
-    #        return abjad.StorageFormatManager.compare_objects(self, argument)
-    #
-    #    def __hash__(self) -> int:
-    #        """
-    #        Hashes tuplet command.
-    #        """
-    #        hash_values = abjad.StorageFormatManager(self).get_hash_values()
-    #        try:
-    #            result = hash(hash_values)
-    #        except TypeError:
-    #            raise TypeError(f"unhashable type: {self}")
-    #        return result
-    #
-    #    def __format__(self, format_specification="") -> str:
-    #        """
-    #        Formats tuplet command.
-    #        """
-    #        return abjad.StorageFormatManager(self).get_storage_format()
-    #
-    #    def __repr__(self) -> str:
-    #        """
-    #        Gets interpreter representation.
-    #        """
-    #        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
 
@@ -2431,13 +2142,6 @@ class TupletCommand(Command):
         Is true when rhythm-maker rewrites sustained tuplets.
         """
         return self._rewrite_sustained
-
-    #    @property
-    #    def selector(self) -> typing.Optional[abjad.Expression]:
-    #        """
-    #        Gets selector.
-    #        """
-    #        return self._selector
 
     @property
     def trivialize(self) -> typing.Optional[bool]:
@@ -3010,6 +2714,15 @@ def denominator(
 
     """
     return TupletCommand(denominator=denominator, selector=selector)
+
+
+def duration_bracket(
+    selector: abjad.SelectorTyping = abjad.select().tuplets()
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(selector=selector, duration_bracket=True)
 
 
 def extract_trivial(
@@ -3863,15 +3576,6 @@ def rewrite_tuplet_dots(
     Makes tuplet command.
     """
     return TupletCommand(rewrite_dots=True, selector=selector)
-
-
-def duration_bracket(
-    selector: abjad.SelectorTyping = abjad.select().tuplets()
-) -> TupletCommand:
-    """
-    Makes tuplet command.
-    """
-    return TupletCommand(selector=selector, duration_bracket=True)
 
 
 def split_measures(*, repeat_ties=None) -> SplitMeasuresCommand:
