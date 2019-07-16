@@ -1,13 +1,79 @@
 import abjad
 import collections
 import typing
-from . import typings
 
 
 ### CLASSES ###
 
 
-class BeamCommand(object):
+class Command(object):
+    """
+    Command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_selector",)
+
+    _publish_storage_format = True
+
+    ### INITIALIZER ###
+
+    def __init__(self, selector: abjad.SelectorTyping = None) -> None:
+        if isinstance(selector, str):
+            selector = eval(selector)
+            assert isinstance(selector, abjad.Expression)
+        self._selector = selector
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, *, tag: str = None) -> None:
+        """
+        Calls command on ``staff``.
+        """
+        pass
+
+    def __eq__(self, argument) -> bool:
+        """
+        Is true when initialization values of command equal
+        initialization values of ``argument``.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Formats command.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __hash__(self) -> int:
+        """
+        Hashes command.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f"unhashable type: {self}")
+        return result
+
+    def __repr__(self) -> str:
+        """
+        Gets interpreter representation of command.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def selector(self) -> typing.Optional[abjad.Expression]:
+        """
+        Gets selector.
+        """
+        return self._selector
+
+
+class BeamCommand(Command):
     """
     Beam command.
     """
@@ -23,7 +89,7 @@ class BeamCommand(object):
         "_use_feather_beams",
     )
 
-    _publish_storage_format = True
+    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -37,6 +103,7 @@ class BeamCommand(object):
         stemlet_length: abjad.Number = None,
         use_feather_beams: bool = None,
     ) -> None:
+        super().__init__(selector)
         if beam_divisions_together is not None:
             beam_divisions_together = bool(beam_divisions_together)
         # if beam_divisions_together is True:
@@ -48,10 +115,10 @@ class BeamCommand(object):
         if beam_rests is not None:
             beam_rests = bool(beam_rests)
         self._beam_rests = beam_rests
-        if isinstance(selector, str):
-            selector = eval(selector)
-            assert isinstance(selector, abjad.Expression)
-        self._selector = selector
+        #        if isinstance(selector, str):
+        #            selector = eval(selector)
+        #            assert isinstance(selector, abjad.Expression)
+        #        self._selector = selector
         if stemlet_length is not None:
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
@@ -155,34 +222,34 @@ class BeamCommand(object):
                 elif self._is_ritardando(selection):
                     abjad.override(first_leaf).beam.grow_direction = abjad.Left
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats beam command.
-
-        ..  container:: example
-
-            >>> command = rmakers.BeamCommand(
-            ...     selector=abjad.select().tuplets(),
-            ...     )
-            >>> abjad.f(command)
-            abjadext.commands.BeamCommand(
-                selector=abjad.select().tuplets(),
-                )
-
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation of beam command.
-
-        ..  container:: example
-
-            >>> rmakers.BeamCommand()
-            BeamCommand()
-
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
+    #    def __format__(self, format_specification="") -> str:
+    #        """
+    #        Formats beam command.
+    #
+    #        ..  container:: example
+    #
+    #            >>> command = rmakers.BeamCommand(
+    #            ...     selector=abjad.select().tuplets(),
+    #            ...     )
+    #            >>> abjad.f(command)
+    #            abjadext.commands.BeamCommand(
+    #                selector=abjad.select().tuplets(),
+    #                )
+    #
+    #        """
+    #        return abjad.StorageFormatManager(self).get_storage_format()
+    #
+    #    def __repr__(self) -> str:
+    #        """
+    #        Gets interpreter representation of beam command.
+    #
+    #        ..  container:: example
+    #
+    #            >>> rmakers.BeamCommand()
+    #            BeamCommand()
+    #
+    #        """
+    #        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
 
@@ -278,12 +345,12 @@ class BeamCommand(object):
         """
         return self._beam_rests
 
-    @property
-    def selector(self) -> typing.Optional[abjad.Expression]:
-        """
-        Gets selector.
-        """
-        return self._selector
+    #    @property
+    #    def selector(self) -> typing.Optional[abjad.Expression]:
+    #        """
+    #        Gets selector.
+    #        """
+    #        return self._selector
 
     @property
     def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
@@ -300,44 +367,50 @@ class BeamCommand(object):
         return self._use_feather_beams
 
 
-class CacheStateCommand(object):
+class CacheStateCommand(Command):
     """
     Cache state command.
     """
 
-    ### CLASS VARIABLES ###
+    #    ### CLASS VARIABLES ###
+    #
+    #    _publish_storage_format = True
 
-    _publish_storage_format = True
+    ## INITIALIZER ###
 
-    ### SPECIAL METHODS ###
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats directive.
-
-        ..  container:: example
-
-            >>> command = rmakers.cache_state()
-            >>> abjad.f(command)
-            abjadext.commands.CacheStateCommand()
-
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation of directive.
-
-        ..  container:: example
-
-            >>> rmakers.cache_state()
-            CacheStateCommand()
-
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
+    def __init__(self) -> None:
+        pass
 
 
-class NoteCommand(object):
+#    ### SPECIAL METHODS ###
+#
+#    def __format__(self, format_specification="") -> str:
+#        """
+#        Formats directive.
+#
+#        ..  container:: example
+#
+#            >>> command = rmakers.cache_state()
+#            >>> abjad.f(command)
+#            abjadext.commands.CacheStateCommand()
+#
+#        """
+#        return abjad.StorageFormatManager(self).get_storage_format()
+#
+#    def __repr__(self) -> str:
+#        """
+#        Gets interpreter representation of directive.
+#
+#        ..  container:: example
+#
+#            >>> rmakers.cache_state()
+#            CacheStateCommand()
+#
+#        """
+#        return abjad.StorageFormatManager(self).get_repr_format()
+
+
+class NoteCommand(Command):
     r"""
     Note command.
 
@@ -512,17 +585,19 @@ class NoteCommand(object):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_selector",)
+    #    __slots__ = ("_selector",)
+    #
+    #    _publish_storage_format = True
 
-    _publish_storage_format = True
+    __slots__ = ()
 
-    ### INITIALIZER ###
-
-    def __init__(self, selector: abjad.SelectorTyping) -> None:
-        if isinstance(selector, str):
-            selector = eval(selector)
-            assert isinstance(selector, abjad.Expression)
-        self._selector = selector
+    #    ### INITIALIZER ###
+    #
+    #    def __init__(self, selector: abjad.SelectorTyping) -> None:
+    #        if isinstance(selector, str):
+    #            selector = eval(selector)
+    #            assert isinstance(selector, abjad.Expression)
+    #        self._selector = selector
 
     ### SPECIAL METHODS ###
 
@@ -550,29 +625,30 @@ class NoteCommand(object):
                 note.multiplier = leaf.multiplier
             abjad.mutate(leaf).replace([note])
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats note command.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
 
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation of note command.
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
+#    def __format__(self, format_specification="") -> str:
+#        """
+#        Formats note command.
+#        """
+#        return abjad.StorageFormatManager(self).get_storage_format()
+#
+#    def __repr__(self) -> str:
+#        """
+#        Gets interpreter representation of note command.
+#        """
+#        return abjad.StorageFormatManager(self).get_repr_format()
 
-    ### PUBLIC PROPERTIES ###
+#    ### PUBLIC PROPERTIES ###
+#
+#    @property
+#    def selector(self) -> typing.Optional[abjad.Expression]:
+#        """
+#        Gets selector.
+#        """
+#        return self._selector
 
-    @property
-    def selector(self) -> typing.Optional[abjad.Expression]:
-        """
-        Gets selector.
-        """
-        return self._selector
 
-
-class RestCommand(object):
+class RestCommand(Command):
     r"""
     Rest command.
 
@@ -743,9 +819,9 @@ class RestCommand(object):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_selector", "_use_multimeasure_rests")
+    __slots__ = "_use_multimeasure_rests"
 
-    _publish_storage_format = True
+    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -755,10 +831,11 @@ class RestCommand(object):
         *,
         use_multimeasure_rests: bool = None,
     ) -> None:
-        if isinstance(selector, str):
-            selector = eval(selector)
-            assert isinstance(selector, abjad.Expression)
-        self._selector = selector
+        super().__init__(selector)
+        #        if isinstance(selector, str):
+        #            selector = eval(selector)
+        #            assert isinstance(selector, abjad.Expression)
+        #        self._selector = selector
         if use_multimeasure_rests is not None:
             assert isinstance(use_multimeasure_rests, type(True))
         self._use_multimeasure_rests = use_multimeasure_rests
@@ -805,24 +882,26 @@ class RestCommand(object):
                 if next_leaf is not None:
                     abjad.detach(abjad.RepeatTie, next_leaf)
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats rest command.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
+    #    def __format__(self, format_specification="") -> str:
+    #        """
+    #        Formats rest command.
+    #        """
+    #        return abjad.StorageFormatManager(self).get_storage_format()
+    #
+    #    def __repr__(self) -> str:
+    #        """
+    #        Gets interpreter representation of rest command.
+    #        """
+    #        return abjad.StorageFormatManager(self).get_repr_format()
+    #
+    #    @property
+    #    def selector(self) -> typing.Optional[abjad.Expression]:
+    #        """
+    #        Gets selector.
+    #        """
+    #        return self._selector
 
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation of rest command.
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
-
-    @property
-    def selector(self) -> typing.Optional[abjad.Expression]:
-        """
-        Gets selector.
-        """
-        return self._selector
+    ### PUBLIC PROPERTIES ###
 
     @property
     def use_multimeasure_rests(self) -> typing.Optional[bool]:
@@ -832,7 +911,7 @@ class RestCommand(object):
         return self._use_multimeasure_rests
 
 
-class RewriteMeterCommand(object):
+class RewriteMeterCommand(Command):
     """
     Rewrite meter command.
     """
@@ -841,7 +920,7 @@ class RewriteMeterCommand(object):
 
     __slots__ = ("_reference_meters", "_repeat_ties")
 
-    _publish_storage_format = True
+    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -907,30 +986,30 @@ class RewriteMeterCommand(object):
                     tag="rmakers.RewriteMeterCommand.__call__",
                 )
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats rewrite meter command.
-
-        ..  container:: example
-
-            >>> command = abjadext.rmakers.rewrite_meter()
-            >>> abjad.f(command)
-            abjadext.commands.RewriteMeterCommand()
-
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation.
-
-        ..  container:: example
-
-            >>> abjadext.rmakers.rewrite_meter()
-            RewriteMeterCommand()
-
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
+    #    def __format__(self, format_specification="") -> str:
+    #        """
+    #        Formats rewrite meter command.
+    #
+    #        ..  container:: example
+    #
+    #            >>> command = abjadext.rmakers.rewrite_meter()
+    #            >>> abjad.f(command)
+    #            abjadext.commands.RewriteMeterCommand()
+    #
+    #        """
+    #        return abjad.StorageFormatManager(self).get_storage_format()
+    #
+    #    def __repr__(self) -> str:
+    #        """
+    #        Gets interpreter representation.
+    #
+    #        ..  container:: example
+    #
+    #            >>> abjadext.rmakers.rewrite_meter()
+    #            RewriteMeterCommand()
+    #
+    #        """
+    #        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PUBLIC PROPERTIES ###
 
@@ -949,7 +1028,7 @@ class RewriteMeterCommand(object):
         return self._repeat_ties
 
 
-class SplitMeasuresCommand(object):
+class SplitMeasuresCommand(Command):
     """
     Split measures command.
     """
@@ -958,7 +1037,7 @@ class SplitMeasuresCommand(object):
 
     __slots__ = "_repeat_ties"
 
-    _publish_storage_format = True
+    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -993,59 +1072,59 @@ class SplitMeasuresCommand(object):
             durations=durations, repeat_ties=self.repeat_ties
         )
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats command.
+    #    def __format__(self, format_specification="") -> str:
+    #        """
+    #        Formats command.
+    #
+    #        ..  container:: example
+    #
+    #            >>> command = abjadext.rmakers.split_measures()
+    #            >>> abjad.f(command)
+    #            abjadext.commands.SplitMeasuresCommand()
+    #
+    #        """
+    #        return abjad.StorageFormatManager(self).get_storage_format()
+    #
+    #    def __repr__(self) -> str:
+    #        """
+    #        Gets interpreter representation of command.
+    #
+    #        ..  container:: example
+    #
+    #            >>> abjadext.rmakers.split_measures()
+    #            SplitMeasuresCommand()
+    #
+    #        """
+    #        return abjad.StorageFormatManager(self).get_repr_format()
 
-        ..  container:: example
-
-            >>> command = abjadext.rmakers.split_measures()
-            >>> abjad.f(command)
-            abjadext.commands.SplitMeasuresCommand()
-
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation of command.
-
-        ..  container:: example
-
-            >>> abjadext.rmakers.split_measures()
-            SplitMeasuresCommand()
-
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
-
-    ### PRIVATE METHODS ###
-
-    # TODO: activate tag
-    def _call(self, music_voice, durations, *, tag=None):
-        durations = [abjad.Duration(_) for _ in durations]
-        total_duration = sum(durations)
-        music_duration = abjad.inspect(music_voice).duration()
-        if total_duration != music_duration:
-            message = f"Total duration of splits is {total_duration!s}"
-            message += f" but duration of music is {music_duration!s}:"
-            message += f"\ndurations: {durations}."
-            message += f"\nmusic voice: {music_voice[:]}."
-            raise Exception(message)
-        abjad.mutate(music_voice[:]).split(
-            durations=durations, repeat_ties=self.repeat_ties
-        )
-        components = music_voice[:]
-        component_durations = [abjad.inspect(_).duration() for _ in components]
-        parts = abjad.sequence(component_durations)
-        parts = parts.partition_by_weights(
-            weights=durations, allow_part_weights=abjad.Exact
-        )
-        part_lengths = [len(_) for _ in parts]
-        parts = abjad.sequence(components).partition_by_counts(
-            counts=part_lengths, overhang=abjad.Exact
-        )
-        selections = [abjad.select(_) for _ in parts]
-        return selections
+    #    ### PRIVATE METHODS ###
+    #
+    #    # TODO: activate tag
+    #    def _call(self, music_voice, durations, *, tag=None):
+    #        durations = [abjad.Duration(_) for _ in durations]
+    #        total_duration = sum(durations)
+    #        music_duration = abjad.inspect(music_voice).duration()
+    #        if total_duration != music_duration:
+    #            message = f"Total duration of splits is {total_duration!s}"
+    #            message += f" but duration of music is {music_duration!s}:"
+    #            message += f"\ndurations: {durations}."
+    #            message += f"\nmusic voice: {music_voice[:]}."
+    #            raise Exception(message)
+    #        abjad.mutate(music_voice[:]).split(
+    #            durations=durations, repeat_ties=self.repeat_ties
+    #        )
+    #        components = music_voice[:]
+    #        component_durations = [abjad.inspect(_).duration() for _ in components]
+    #        parts = abjad.sequence(component_durations)
+    #        parts = parts.partition_by_weights(
+    #            weights=durations, allow_part_weights=abjad.Exact
+    #        )
+    #        part_lengths = [len(_) for _ in parts]
+    #        parts = abjad.sequence(components).partition_by_counts(
+    #            counts=part_lengths, overhang=abjad.Exact
+    #        )
+    #        selections = [abjad.select(_) for _ in parts]
+    #        return selections
 
     ### PUBLIC PROPERTIES ###
 
@@ -1057,7 +1136,7 @@ class SplitMeasuresCommand(object):
         return self._repeat_ties
 
 
-class TieCommand(object):
+class TieCommand(Command):
     """
     Tie command.
     """
@@ -1073,7 +1152,7 @@ class TieCommand(object):
         "_selector",
     )
 
-    _publish_storage_format = True
+    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -1089,6 +1168,7 @@ class TieCommand(object):
         ] = None,
         selector: abjad.SelectorTyping = None,
     ) -> None:
+        super().__init__(selector)
         if attach_repeat_ties is not None:
             attach_repeat_ties = bool(attach_repeat_ties)
         self._attach_repeat_ties = attach_repeat_ties
@@ -1109,17 +1189,11 @@ class TieCommand(object):
         if repeat_ties_ is not None:
             assert isinstance(repeat_ties_, (bool, abjad.DurationInequality))
         self._repeat_ties = repeat_ties_
-        if isinstance(selector, str):
-            selector = eval(selector)
-            assert isinstance(selector, abjad.Expression)
-        self._selector = selector
-        prototype = (
-            type(None),
-            bool,
-            collections.Sequence,
-            abjad.Pattern,
-            abjad.PatternTuple,
-        )
+
+    #        if isinstance(selector, str):
+    #            selector = eval(selector)
+    #            assert isinstance(selector, abjad.Expression)
+    #        self._selector = selector
 
     ### SPECIAL METHODS ###
 
@@ -1134,35 +1208,35 @@ class TieCommand(object):
         self._detach_repeat_ties_(staff)
         self._configure_repeat_ties(staff)
 
-    def __eq__(self, argument) -> bool:
-        """
-        Is true when initialization values of tie command equal
-        initialization values of ``argument``.
-        """
-        return abjad.StorageFormatManager.compare_objects(self, argument)
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats tie command.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __hash__(self) -> int:
-        """
-        Hashes tie command.
-        """
-        hash_values = abjad.StorageFormatManager(self).get_hash_values()
-        try:
-            result = hash(hash_values)
-        except TypeError:
-            raise TypeError(f"unhashable type: {self}")
-        return result
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation of tie command.
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
+    #    def __eq__(self, argument) -> bool:
+    #        """
+    #        Is true when initialization values of tie command equal
+    #        initialization values of ``argument``.
+    #        """
+    #        return abjad.StorageFormatManager.compare_objects(self, argument)
+    #
+    #    def __format__(self, format_specification="") -> str:
+    #        """
+    #        Formats tie command.
+    #        """
+    #        return abjad.StorageFormatManager(self).get_storage_format()
+    #
+    #    def __hash__(self) -> int:
+    #        """
+    #        Hashes tie command.
+    #        """
+    #        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+    #        try:
+    #            result = hash(hash_values)
+    #        except TypeError:
+    #            raise TypeError(f"unhashable type: {self}")
+    #        return result
+    #
+    #    def __repr__(self) -> str:
+    #        """
+    #        Gets interpreter representation of tie command.
+    #        """
+    #        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
 
@@ -1955,107 +2029,6 @@ class TieCommand(object):
     def detach_repeat_ties(self) -> typing.Optional[bool]:
         r"""
         Is true when rhythm-maker detaches repeat ties.
-
-        ..  container:: example
-
-            Attaches repeat-ties to nonfirst notes; then detaches ties from
-            select notes:
-
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.repeat_tie(abjad.select().notes()[1:]),
-            ...     rmakers.untie(abjad.select().notes().get([0], 4)),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            \repeatTie
-                            c'8
-                            \repeatTie
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            \repeatTie
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            \repeatTie
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            \repeatTie
-                            c'8
-                            \repeatTie
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            \repeatTie
-                            c'8
-                            \repeatTie
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            \repeatTie
-                            [
-                            c'8
-                            c'8
-                            \repeatTie
-                            ]
-                        }
-                    }
-                >>
-
         """
         return self._detach_repeat_ties
 
@@ -2063,106 +2036,6 @@ class TieCommand(object):
     def detach_ties(self) -> typing.Optional[bool]:
         r"""
         Is true when rhythm-maker detaches ties.
-
-        ..  container:: example
-
-            Attaches ties to nonlast notes; then detaches ties from select
-            notes:
-
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.tie(abjad.select().notes()[:-1]),
-            ...     rmakers.untie(abjad.select().notes().get([0], 4)),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ~
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
         """
         return self._detach_ties
 
@@ -2178,15 +2051,16 @@ class TieCommand(object):
         """
         return self._repeat_ties
 
-    @property
-    def selector(self) -> typing.Optional[abjad.Expression]:
-        """
-        Gets selector.
-        """
-        return self._selector
+
+#    @property
+#    def selector(self) -> typing.Optional[abjad.Expression]:
+#        """
+#        Gets selector.
+#        """
+#        return self._selector
 
 
-class TupletCommand(object):
+class TupletCommand(Command):
     """
     Tuplet command.
 
@@ -2214,7 +2088,7 @@ class TupletCommand(object):
         "_trivialize",
     )
 
-    _publish_storage_format = True
+    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -2233,6 +2107,7 @@ class TupletCommand(object):
         selector: abjad.SelectorTyping = None,
         trivialize: bool = None,
     ) -> None:
+        super().__init__(selector)
         if isinstance(denominator, tuple):
             denominator = abjad.Duration(denominator)
         if denominator is not None:
@@ -2263,10 +2138,10 @@ class TupletCommand(object):
         if rewrite_sustained is not None:
             rewrite_rest_fille = bool(rewrite_sustained)
         self._rewrite_sustained = rewrite_sustained
-        if isinstance(selector, str):
-            selector = eval(selector)
-            assert isinstance(selector, abjad.Expression)
-        self._selector = selector
+        #        if isinstance(selector, str):
+        #            selector = eval(selector)
+        #            assert isinstance(selector, abjad.Expression)
+        #        self._selector = selector
         if trivialize is not None:
             trivialize = bool(trivialize)
         self._trivialize = trivialize
@@ -2294,35 +2169,35 @@ class TupletCommand(object):
         # toggle prolation must follow rewrite dots and extract trivial:
         self._toggle_prolation(staff)
 
-    def __eq__(self, argument) -> bool:
-        """
-        Is true when initialization values of tuplet command equal
-        initialization values of ``argument``.
-        """
-        return abjad.StorageFormatManager.compare_objects(self, argument)
-
-    def __hash__(self) -> int:
-        """
-        Hashes tuplet command.
-        """
-        hash_values = abjad.StorageFormatManager(self).get_hash_values()
-        try:
-            result = hash(hash_values)
-        except TypeError:
-            raise TypeError(f"unhashable type: {self}")
-        return result
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats tuplet command.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation.
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
+    #    def __eq__(self, argument) -> bool:
+    #        """
+    #        Is true when initialization values of tuplet command equal
+    #        initialization values of ``argument``.
+    #        """
+    #        return abjad.StorageFormatManager.compare_objects(self, argument)
+    #
+    #    def __hash__(self) -> int:
+    #        """
+    #        Hashes tuplet command.
+    #        """
+    #        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+    #        try:
+    #            result = hash(hash_values)
+    #        except TypeError:
+    #            raise TypeError(f"unhashable type: {self}")
+    #        return result
+    #
+    #    def __format__(self, format_specification="") -> str:
+    #        """
+    #        Formats tuplet command.
+    #        """
+    #        return abjad.StorageFormatManager(self).get_storage_format()
+    #
+    #    def __repr__(self) -> str:
+    #        """
+    #        Gets interpreter representation.
+    #        """
+    #        return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PRIVATE METHODS ###
 
@@ -2492,474 +2367,6 @@ class TupletCommand(object):
         r"""
         Gets preferred denominator.
 
-        ..  container:: example
-
-            Tuplet numerators and denominators are reduced to numbers that are
-            relatively prime when ``denominator`` is set to none. This
-            means that ratios like ``6:4`` and ``10:8`` do not arise:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> score = lilypond_file[abjad.Score]
-            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletBracket.staff-padding = #4.5
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            The preferred denominator of each tuplet is set in terms of a unit
-            duration when ``denominator`` is set to a duration. The
-            setting does not affect the first tuplet:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.denominator((1, 16)),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> score = lilypond_file[abjad.Score]
-            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletBracket.staff-padding = #4.5
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 8/10 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Sets the preferred denominator of each tuplet in terms 32nd notes.
-            The setting affects all tuplets:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.denominator((1, 32)),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> score = lilypond_file[abjad.Score]
-            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletBracket.staff-padding = #4.5
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 8/10 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/10 {
-                            c'16
-                            c'4
-                        }
-                        \times 16/20 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Sets the preferred denominator each tuplet in terms 64th notes. The
-            setting affects all tuplets:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.denominator((1, 64)),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> score = lilypond_file[abjad.Score]
-            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletBracket.staff-padding = #4.5
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 8/10 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 16/20 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 24/20 {
-                            c'16
-                            c'4
-                        }
-                        \times 32/40 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            The preferred denominator of each tuplet is set directly when
-            ``denominator`` is set to a positive integer. This example
-            sets the preferred denominator of each tuplet to ``8``. Setting
-            does not affect the third tuplet:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.denominator(8),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> score = lilypond_file[abjad.Score]
-            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletBracket.staff-padding = #4.5
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 8/10 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 8/10 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 8/10 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Sets the preferred denominator of each tuplet to ``12``. Setting
-            affects all tuplets:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.denominator(12),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> score = lilypond_file[abjad.Score]
-            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-            >>> moment = abjad.SchemeMoment((1, 28))
-            >>> abjad.setting(score).proportional_notation_duration = moment
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletBracket.staff-padding = #4.5
-                    proportionalNotationDuration = #(ly:make-moment 1 28)
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 12/15 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 12/15 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/10 {
-                            c'16
-                            c'4
-                        }
-                        \times 12/15 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Sets the preferred denominator of each tuplet to ``13``. Setting
-            does not affect any tuplet:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.denominator(13),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> score = lilypond_file[abjad.Score]
-            >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletBracket.staff-padding = #4.5
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
         Set to duration, positive integer or none.
         """
         return self._denominator
@@ -2987,71 +2394,6 @@ class TupletCommand(object):
     def extract_trivial(self) -> typing.Optional[bool]:
         r"""
         Is true when rhythm-maker extracts trivial tuplets.
-
-        ..  container:: example
-
-            With selector:
-
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     rmakers.extract_trivial(abjad.select().tuplets()[-2:]),
-            ... )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                >>
-
         """
         return self._extract_trivial
 
@@ -3059,199 +2401,6 @@ class TupletCommand(object):
     def force_fraction(self) -> typing.Optional[bool]:
         r"""
         Is true when tuplet forces tuplet number fraction formatting.
-
-        ..  container:: example
-
-            The ``default.ily`` stylesheet included in all Abjad API examples
-            includes the following:
-            
-            ``\override TupletNumber.text = #tuplet-number::calc-fraction-text``
-
-            This means that even simple tuplets format as explicit fractions:
-
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-            We can temporarily restore LilyPond's default tuplet numbering like
-            this:
-
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> staff = lilypond_file[abjad.Score]
-            >>> string = 'tuplet-number::calc-denominator-text'
-            >>> abjad.override(staff).tuplet_number.text = string
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletNumber.text = #tuplet-number::calc-denominator-text
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-            Which then makes it possible to show that the force fraction
-            property cancels LilyPond's default tuplet numbering once again:
-
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.force_fraction(),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> staff = lilypond_file[abjad.Score]
-            >>> string = 'tuplet-number::calc-denominator-text'
-            >>> abjad.override(staff).tuplet_number.text = string
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                \with
-                {
-                    \override TupletNumber.text = #tuplet-number::calc-denominator-text
-                }
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 2/3 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
         """
         return self._force_fraction
 
@@ -3273,214 +2422,6 @@ class TupletCommand(object):
     def rewrite_rest_filled(self) -> typing.Optional[bool]:
         r"""
         Is true when rhythm-maker rewrites rest-filled tuplets.
-
-        ..  container:: example
-
-            Does not rewrite rest-filled tuplets:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=rmakers.Talea(
-            ...         counts=[-1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                        }
-                        \times 4/5 {
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6 {
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6 {
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Rewrites rest-filled tuplets:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rewrite_rest_filled(),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=rmakers.Talea(
-            ...         counts=[-1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r4
-                            r16
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r4
-                            r16
-                        }
-                    }
-                >>
-
-            With selector:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rewrite_rest_filled(
-            ...         abjad.select().tuplets()[-2:],
-            ...         ),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=rmakers.Talea(
-            ...         counts=[-1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                        }
-                        \times 4/5 {
-                            r16
-                            r16
-                            r16
-                            r16
-                            r16
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r4
-                            r16
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r4
-                            r16
-                        }
-                    }
-                >>
-
-            Note that nonassignable divisions necessitate multiple rests
-            even after rewriting.
-
         """
         return self._rewrite_rest_filled
 
@@ -3488,288 +2429,15 @@ class TupletCommand(object):
     def rewrite_sustained(self) -> typing.Optional[bool]:
         r"""
         Is true when rhythm-maker rewrites sustained tuplets.
-
-        ..  container:: example
-
-            Sustained tuplets generalize a class of rhythms composers are
-            likely to rewrite:
-
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=rmakers.Talea(
-            ...         counts=[6, 5, 5, 4, 1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'4.
-                        }
-                        \times 4/5 {
-                            c'4
-                            ~
-                            c'16
-                            ~
-                        }
-                        \times 4/5 {
-                            c'4
-                            ~
-                            c'16
-                            ~
-                        }
-                        \times 4/5 {
-                            c'4
-                            c'16
-                        }
-                    }
-                >>
-
-            The first three tuplets in the example above qualify as sustained:
-
-                >>> staff = lilypond_file[abjad.Score]
-                >>> for tuplet in abjad.select(staff).tuplets():
-                ...     rmakers.TupletCommand.is_sustained_tuplet(tuplet)
-                ...
-                True
-                True
-                True
-                False
-
-            Tuplets 0 and 1 each contain only a single **tuplet-initial**
-            attack. Tuplet 2 contains no attack at all. All three fill their
-            duration completely.
-
-            Tuplet 3 contains a **nonintial** attack that rearticulates the
-            tuplet's duration midway through the course of the figure. Tuplet 3
-            does not qualify as sustained.
-
-        ..  container:: example
-
-            Rewrite sustained tuplets like this:
-
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rewrite_sustained(),
-            ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=rmakers.Talea(
-            ...         counts=[6, 5, 5, 4, 1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            ~
-                        }
-                        \times 4/5 {
-                            c'4
-                            c'16
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Rewrite sustained tuplets -- and then extract the trivial tuplets
-            that result -- like this:
-
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
-            ...     rmakers.rewrite_sustained(),
-            ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[2, 1, 1, 1],
-            ...     talea=rmakers.Talea(
-            ...         counts=[6, 5, 5, 4, 1],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                        \time 4/16
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        c'4
-                        ~
-                        c'4
-                        ~
-                        \times 4/5 {
-                            c'4
-                            c'16
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            With selector:
-
-            >>> selector = abjad.select().notes()[:-1]
-            >>> selector = abjad.select().tuplets().map(selector)
-            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.tie(selector),
-            ...     rmakers.rewrite_sustained(
-            ...         abjad.select().tuplets()[-2:],
-            ...     ),
-            ...     rmakers.beam(abjad.select().tuplets()),
-            ...     extra_counts_per_division=[1],
-            ... )
-
-            >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \times 2/3 {
-                            c'8
-                            ~
-                            [
-                            c'8
-                            ~
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 2/2 {
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 2/2 {
-                            c'4
-                        }
-                    }
-                >>
-
         """
         return self._rewrite_sustained
 
-    @property
-    def selector(self) -> typing.Optional[abjad.Expression]:
-        """
-        Gets selector.
-        """
-        return self._selector
+    #    @property
+    #    def selector(self) -> typing.Optional[abjad.Expression]:
+    #        """
+    #        Gets selector.
+    #        """
+    #        return self._selector
 
     @property
     def trivialize(self) -> typing.Optional[bool]:
@@ -3780,6 +2448,7 @@ class TupletCommand(object):
 
     ### PUBLIC METHODS ###
 
+    # TODO: move to abjad.Tuplet
     @staticmethod
     def is_rest_filled_tuplet(tuplet):
         """
@@ -3789,6 +2458,7 @@ class TupletCommand(object):
             return False
         return all(isinstance(_, abjad.Rest) for _ in tuplet)
 
+    # TODO: move to abjad.Tuplet
     @staticmethod
     def is_sustained_tuplet(argument):
         """
@@ -3808,6 +2478,30 @@ class TupletCommand(object):
         if lt.head is leaves[0] and lt_head_count == 1:
             return True
         return False
+
+
+class UntieCommand(Command):
+    """
+    Untie command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ()
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, *, tag: str = None) -> None:
+        """
+        Calls untie command on ``staff``.
+        """
+        assert isinstance(staff, abjad.Staff), repr(staff)
+        selection = staff["MusicVoice"]
+        if self.selector is not None:
+            selection = self.selector(selection)
+        for leaf in abjad.select(selection).leaves():
+            abjad.detach(abjad.TieIndicator, leaf)
+            abjad.detach(abjad.RepeatTie, leaf)
 
 
 ### FACTORY FUNCTIONS ###
@@ -3843,8 +2537,477 @@ def denominator(
     *,
     selector: abjad.SelectorTyping = abjad.select().tuplets(),
 ) -> TupletCommand:
-    """
+    r"""
     Makes tuplet command.
+
+    ..  container:: example
+
+        Tuplet numerators and denominators are reduced to numbers that are
+        relatively prime when ``denominator`` is set to none. This
+        means that ratios like ``6:4`` and ``10:8`` do not arise:
+
+        >>> rhythm_maker = rmakers.TupletRhythmMaker(
+        ...     rmakers.rewrite_tuplet_dots(),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     tuplet_ratios=[(1, 4)],
+        ...     )
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> score = lilypond_file[abjad.Score]
+        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletBracket.staff-padding = #4.5
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/16
+                    s1 * 1/8
+                    \time 4/16
+                    s1 * 1/4
+                    \time 6/16
+                    s1 * 3/8
+                    \time 8/16
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 4/5 {
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5 {
+                        c'16
+                        c'4
+                    }
+                    \times 4/5 {
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        The preferred denominator of each tuplet is set in terms of a unit
+        duration when ``denominator`` is set to a duration. The
+        setting does not affect the first tuplet:
+
+        >>> rhythm_maker = rmakers.TupletRhythmMaker(
+        ...     rmakers.rewrite_tuplet_dots(),
+        ...     rmakers.denominator((1, 16)),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     tuplet_ratios=[(1, 4)],
+        ...     )
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> score = lilypond_file[abjad.Score]
+        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletBracket.staff-padding = #4.5
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/16
+                    s1 * 1/8
+                    \time 4/16
+                    s1 * 1/4
+                    \time 6/16
+                    s1 * 3/8
+                    \time 8/16
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 4/5 {
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5 {
+                        c'16
+                        c'4
+                    }
+                    \times 8/10 {
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Sets the preferred denominator of each tuplet in terms 32nd notes.
+        The setting affects all tuplets:
+
+        >>> rhythm_maker = rmakers.TupletRhythmMaker(
+        ...     rmakers.rewrite_tuplet_dots(),
+        ...     rmakers.denominator((1, 32)),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     tuplet_ratios=[(1, 4)],
+        ...     )
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> score = lilypond_file[abjad.Score]
+        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletBracket.staff-padding = #4.5
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/16
+                    s1 * 1/8
+                    \time 4/16
+                    s1 * 1/4
+                    \time 6/16
+                    s1 * 3/8
+                    \time 8/16
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 8/10 {
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 12/10 {
+                        c'16
+                        c'4
+                    }
+                    \times 16/20 {
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Sets the preferred denominator each tuplet in terms 64th notes. The
+        setting affects all tuplets:
+
+        >>> rhythm_maker = rmakers.TupletRhythmMaker(
+        ...     rmakers.rewrite_tuplet_dots(),
+        ...     rmakers.denominator((1, 64)),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     tuplet_ratios=[(1, 4)],
+        ...     )
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> score = lilypond_file[abjad.Score]
+        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletBracket.staff-padding = #4.5
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/16
+                    s1 * 1/8
+                    \time 4/16
+                    s1 * 1/4
+                    \time 6/16
+                    s1 * 3/8
+                    \time 8/16
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 8/10 {
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 16/20 {
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 24/20 {
+                        c'16
+                        c'4
+                    }
+                    \times 32/40 {
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        The preferred denominator of each tuplet is set directly when
+        ``denominator`` is set to a positive integer. This example
+        sets the preferred denominator of each tuplet to ``8``. Setting
+        does not affect the third tuplet:
+
+        >>> rhythm_maker = rmakers.TupletRhythmMaker(
+        ...     rmakers.rewrite_tuplet_dots(),
+        ...     rmakers.denominator(8),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     tuplet_ratios=[(1, 4)],
+        ...     )
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> score = lilypond_file[abjad.Score]
+        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletBracket.staff-padding = #4.5
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/16
+                    s1 * 1/8
+                    \time 4/16
+                    s1 * 1/4
+                    \time 6/16
+                    s1 * 3/8
+                    \time 8/16
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 8/10 {
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 8/10 {
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5 {
+                        c'16
+                        c'4
+                    }
+                    \times 8/10 {
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Sets the preferred denominator of each tuplet to ``12``. Setting
+        affects all tuplets:
+
+        >>> rhythm_maker = rmakers.TupletRhythmMaker(
+        ...     rmakers.rewrite_tuplet_dots(),
+        ...     rmakers.denominator(12),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     tuplet_ratios=[(1, 4)],
+        ...     )
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> score = lilypond_file[abjad.Score]
+        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> moment = abjad.SchemeMoment((1, 28))
+        >>> abjad.setting(score).proportional_notation_duration = moment
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletBracket.staff-padding = #4.5
+                proportionalNotationDuration = #(ly:make-moment 1 28)
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/16
+                    s1 * 1/8
+                    \time 4/16
+                    s1 * 1/4
+                    \time 6/16
+                    s1 * 3/8
+                    \time 8/16
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 12/15 {
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 12/15 {
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 12/10 {
+                        c'16
+                        c'4
+                    }
+                    \times 12/15 {
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Sets the preferred denominator of each tuplet to ``13``. Setting
+        does not affect any tuplet:
+
+        >>> rhythm_maker = rmakers.TupletRhythmMaker(
+        ...     rmakers.rewrite_tuplet_dots(),
+        ...     rmakers.denominator(13),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     tuplet_ratios=[(1, 4)],
+        ...     )
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> score = lilypond_file[abjad.Score]
+        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletBracket.staff-padding = #4.5
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/16
+                    s1 * 1/8
+                    \time 4/16
+                    s1 * 1/4
+                    \time 6/16
+                    s1 * 3/8
+                    \time 8/16
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 4/5 {
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5 {
+                        c'16
+                        c'4
+                    }
+                    \times 4/5 {
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
     """
     return TupletCommand(denominator=denominator, selector=selector)
 
@@ -3852,8 +3015,73 @@ def denominator(
 def extract_trivial(
     selector: abjad.SelectorTyping = abjad.select().tuplets()
 ) -> TupletCommand:
-    """
+    r"""
     Makes tuplet command.
+
+    ..  container:: example
+
+        With selector:
+
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     rmakers.extract_trivial(abjad.select().tuplets()[-2:]),
+        ... )
+
+        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    c'8
+                    [
+                    c'8
+                    c'8
+                    ]
+                    c'8
+                    [
+                    c'8
+                    c'8
+                    ]
+                }
+            >>
+
     """
     return TupletCommand(extract_trivial=True, selector=selector)
 
@@ -3878,8 +3106,201 @@ def feather_beam(
 def force_augmentation(
     selector: abjad.SelectorTyping = abjad.select().tuplets()
 ) -> TupletCommand:
-    """
+    r"""
     Makes tuplet command.
+
+    ..  container:: example
+
+        The ``default.ily`` stylesheet included in all Abjad API examples
+        includes the following:
+        
+        ``\override TupletNumber.text = #tuplet-number::calc-fraction-text``
+
+        This means that even simple tuplets format as explicit fractions:
+
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        We can temporarily restore LilyPond's default tuplet numbering like
+        this:
+
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> staff = lilypond_file[abjad.Score]
+        >>> string = 'tuplet-number::calc-denominator-text'
+        >>> abjad.override(staff).tuplet_number.text = string
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletNumber.text = #tuplet-number::calc-denominator-text
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        Which then makes it possible to show that the force fraction
+        property cancels LilyPond's default tuplet numbering once again:
+
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.force_fraction(),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> staff = lilypond_file[abjad.Score]
+        >>> string = 'tuplet-number::calc-denominator-text'
+        >>> abjad.override(staff).tuplet_number.text = string
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            \with
+            {
+                \override TupletNumber.text = #tuplet-number::calc-denominator-text
+            }
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
     """
     return TupletCommand(diminution=False, selector=selector)
 
@@ -3939,8 +3360,216 @@ def rewrite_meter(
 def rewrite_rest_filled(
     selector: abjad.SelectorTyping = abjad.select().tuplets()
 ) -> TupletCommand:
-    """
+    r"""
     Makes tuplet command.
+
+    ..  container:: example
+
+        Does not rewrite rest-filled tuplets:
+
+        >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     talea=rmakers.Talea(
+        ...         counts=[-1],
+        ...         denominator=16,
+        ...         ),
+        ...     )
+
+        >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                    }
+                    \times 4/5 {
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6 {
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6 {
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Rewrites rest-filled tuplets:
+
+        >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+        ...     rmakers.rewrite_rest_filled(),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     talea=rmakers.Talea(
+        ...         counts=[-1],
+        ...         denominator=16,
+        ...         ),
+        ...     )
+
+        >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        r4
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        r4
+                        r16
+                    }
+                }
+            >>
+
+        With selector:
+
+        >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+        ...     rmakers.rewrite_rest_filled(
+        ...         abjad.select().tuplets()[-2:],
+        ...         ),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     talea=rmakers.Talea(
+        ...         counts=[-1],
+        ...         denominator=16,
+        ...         ),
+        ...     )
+
+        >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                    }
+                    \times 4/5 {
+                        r16
+                        r16
+                        r16
+                        r16
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        r4
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        r4
+                        r16
+                    }
+                }
+            >>
+
+        Note that nonassignable divisions necessitate multiple rests
+        even after rewriting.
+
     """
     return TupletCommand(rewrite_rest_filled=True, selector=selector)
 
@@ -3948,8 +3577,281 @@ def rewrite_rest_filled(
 def rewrite_sustained(
     selector: abjad.SelectorTyping = abjad.select().tuplets()
 ) -> TupletCommand:
-    """
+    r"""
     Makes tuplet command.
+
+    ..  container:: example
+
+        Sustained tuplets generalize a class of rhythms composers are
+        likely to rewrite:
+
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+        ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     talea=rmakers.Talea(
+        ...         counts=[6, 5, 5, 4, 1],
+        ...         denominator=16,
+        ...         ),
+        ...     )
+
+        >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'4.
+                    }
+                    \times 4/5 {
+                        c'4
+                        ~
+                        c'16
+                        ~
+                    }
+                    \times 4/5 {
+                        c'4
+                        ~
+                        c'16
+                        ~
+                    }
+                    \times 4/5 {
+                        c'4
+                        c'16
+                    }
+                }
+            >>
+
+        The first three tuplets in the example above qualify as sustained:
+
+            >>> staff = lilypond_file[abjad.Score]
+            >>> for tuplet in abjad.select(staff).tuplets():
+            ...     rmakers.TupletCommand.is_sustained_tuplet(tuplet)
+            ...
+            True
+            True
+            True
+            False
+
+        Tuplets 0 and 1 each contain only a single **tuplet-initial**
+        attack. Tuplet 2 contains no attack at all. All three fill their
+        duration completely.
+
+        Tuplet 3 contains a **nonintial** attack that rearticulates the
+        tuplet's duration midway through the course of the figure. Tuplet 3
+        does not qualify as sustained.
+
+    ..  container:: example
+
+        Rewrite sustained tuplets like this:
+
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+        ...     rmakers.rewrite_sustained(),
+        ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     talea=rmakers.Talea(
+        ...         counts=[6, 5, 5, 4, 1],
+        ...         denominator=16,
+        ...         ),
+        ...     )
+
+        >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        ~
+                    }
+                    \times 4/5 {
+                        c'4
+                        c'16
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Rewrite sustained tuplets -- and then extract the trivial tuplets
+        that result -- like this:
+
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
+        ...     rmakers.rewrite_sustained(),
+        ...     rmakers.extract_trivial(),
+        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     talea=rmakers.Talea(
+        ...         counts=[6, 5, 5, 4, 1],
+        ...         denominator=16,
+        ...         ),
+        ...     )
+
+        >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    c'4
+                    c'4
+                    ~
+                    c'4
+                    ~
+                    \times 4/5 {
+                        c'4
+                        c'16
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        With selector:
+
+        >>> selector = abjad.select().notes()[:-1]
+        >>> selector = abjad.select().tuplets().map(selector)
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.tie(selector),
+        ...     rmakers.rewrite_sustained(
+        ...         abjad.select().tuplets()[-2:],
+        ...     ),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ... )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 2/2 {
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 2/2 {
+                        c'4
+                    }
+                }
+            >>
+
     """
     return TupletCommand(rewrite_sustained=True, selector=selector)
 
@@ -4004,10 +3906,208 @@ def trivialize(
     return TupletCommand(selector=selector, trivialize=True)
 
 
-def untie(selector: abjad.SelectorTyping = None) -> TieCommand:
+def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
+    r"""
+    Makes untie command.
+
+    ..  container:: example
+
+        Attaches ties to nonlast notes; then detaches ties from select
+        notes:
+
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.tie(abjad.select().notes()[:-1]),
+        ...     rmakers.untie(abjad.select().notes().get([0], 4)),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        ~
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Attaches repeat-ties to nonfirst notes; then detaches ties from
+        select notes:
+
+        >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+        ...     rmakers.repeat_tie(abjad.select().notes()[1:]),
+        ...     rmakers.untie(abjad.select().notes().get([0], 4)),
+        ...     rmakers.beam(abjad.select().tuplets()),
+        ...     extra_counts_per_division=[1],
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        \repeatTie
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        \repeatTie
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        \repeatTie
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        \repeatTie
+                        ]
+                    }
+                    \times 2/3 {
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        \repeatTie
+                        ]
+                    }
+                }
+            >>
+
     """
-    Makes tie command.
-    """
-    return TieCommand(
-        detach_ties=True, detach_repeat_ties=True, selector=selector
-    )
+    return UntieCommand(selector=selector)

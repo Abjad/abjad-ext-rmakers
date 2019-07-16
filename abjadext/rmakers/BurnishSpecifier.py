@@ -1,7 +1,7 @@
 import abjad
 import typing
 
-class_typing = typing.Union[int, type]
+ClassTyping = typing.Union[int, type]
 
 
 class BurnishSpecifier(object):
@@ -107,11 +107,11 @@ class BurnishSpecifier(object):
     def __init__(
         self,
         *,
-        left_classes: typing.Sequence[class_typing] = None,
+        left_classes: typing.Sequence[ClassTyping] = None,
         left_counts: typing.Sequence[int] = None,
-        middle_classes: typing.Sequence[class_typing] = None,
+        middle_classes: typing.Sequence[ClassTyping] = None,
         outer_divisions_only: bool = None,
-        right_classes: typing.Sequence[class_typing] = None,
+        right_classes: typing.Sequence[ClassTyping] = None,
         right_counts: typing.Sequence[int] = None,
     ) -> None:
         if outer_divisions_only is not None:
@@ -388,7 +388,7 @@ class BurnishSpecifier(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def left_classes(self) -> typing.Optional[typing.List[class_typing]]:
+    def left_classes(self) -> typing.Optional[typing.List[ClassTyping]]:
         """
         Gets left classes.
 
@@ -432,7 +432,7 @@ class BurnishSpecifier(object):
         return None
 
     @property
-    def middle_classes(self) -> typing.Optional[typing.List[class_typing]]:
+    def middle_classes(self) -> typing.Optional[typing.List[ClassTyping]]:
         """
         Gets middle_classes.
 
@@ -464,7 +464,7 @@ class BurnishSpecifier(object):
         return self._outer_divisions_only
 
     @property
-    def right_classes(self) -> typing.Optional[typing.List[class_typing]]:
+    def right_classes(self) -> typing.Optional[typing.List[ClassTyping]]:
         """
         Gets right classes.
 

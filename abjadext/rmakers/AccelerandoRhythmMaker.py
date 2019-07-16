@@ -1,13 +1,10 @@
 import abjad
 import math
 import typing
-from . import typings
+from . import commands
 from .DurationSpecifier import DurationSpecifier
 from .InterpolationSpecifier import InterpolationSpecifier
 from .RhythmMaker import RhythmMaker
-from .commands import BeamCommand
-from .commands import TieCommand
-from .commands import TupletCommand
 
 
 class AccelerandoRhythmMaker(RhythmMaker):
@@ -540,7 +537,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: typings.SpecifierTyping,
+        *specifiers: commands.Command,
         divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         interpolation_specifiers: typing.Sequence[
@@ -1552,7 +1549,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return self._interpolation_specifiers
 
     @property
-    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+    def specifiers(self) -> typing.List[commands.Command]:
         r"""
         Gets specifiers.
 

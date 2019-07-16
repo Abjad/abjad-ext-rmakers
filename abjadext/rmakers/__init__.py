@@ -17,6 +17,7 @@ from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
+from .commands import Command
 from .commands import BeamCommand
 from .commands import CacheStateCommand
 from .commands import NoteCommand
@@ -46,4 +47,3 @@ from .commands import tie
 from .commands import to_repeat_tie
 from .commands import trivialize
 from .commands import untie
-from .typings import *

@@ -1,30 +1,9 @@
 import abjad
 import collections
 import typing
-from . import typings
-from .DurationSpecifier import DurationSpecifier
-from .commands import BeamCommand
-from .commands import CacheStateCommand
-from .commands import NoteCommand
-from .commands import RestCommand
-from .commands import RewriteMeterCommand
-from .commands import SplitMeasuresCommand
-from .commands import TieCommand
-from .commands import TupletCommand
 from abjad.top.new import new
-
-
-SpecifierClasses = (
-    BeamCommand,
-    CacheStateCommand,
-    DurationSpecifier,
-    RewriteMeterCommand,
-    RestCommand,
-    SplitMeasuresCommand,
-    NoteCommand,
-    TieCommand,
-    TupletCommand,
-)
+from . import commands
+from .DurationSpecifier import DurationSpecifier
 
 
 class RhythmMaker(object):
@@ -55,14 +34,14 @@ class RhythmMaker(object):
 
     def __init__(
         self,
-        *specifiers: typings.SpecifierTyping,
+        *specifiers: commands.Command,
         divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         tag: str = None,
     ) -> None:
         specifiers = specifiers or ()
         for specifier in specifiers:
-            assert isinstance(specifier, SpecifierClasses), repr(specifier)
+            assert isinstance(specifier, commands.Command), repr(specifier)
         specifiers_ = tuple(specifiers)
         self._specifiers = specifiers_
         if divisions is not None:
@@ -150,11 +129,11 @@ class RhythmMaker(object):
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
         for specifier in self.specifiers or []:
-            if isinstance(specifier, CacheStateCommand):
+            if isinstance(specifier, commands.CacheStateCommand):
                 self._cache_state(staff, divisions_consumed)
                 self._already_cached_state = True
                 continue
-            elif isinstance(specifier, RestCommand):
+            elif isinstance(specifier, commands.RestCommand):
                 specifier(
                     staff,
                     previous_logical_ties_produced=previous_logical_ties_produced,
@@ -311,7 +290,7 @@ class RhythmMaker(object):
         return self._previous_state
 
     @property
-    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+    def specifiers(self) -> typing.List[commands.Command]:
         """
         Gets specifiers.
         """

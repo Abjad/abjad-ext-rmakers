@@ -1,15 +1,10 @@
 import abjad
 import typing
-from . import typings
+from . import commands
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
 from .Talea import Talea
-from .commands import BeamCommand
-from .commands import RestCommand
-from .commands import NoteCommand
-from .commands import TieCommand
-from .commands import TupletCommand
 
 
 class TaleaRhythmMaker(RhythmMaker):
@@ -101,7 +96,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: typings.SpecifierTyping,
+        *specifiers: commands.Command,
         burnish_specifier: BurnishSpecifier = None,
         curtail_ties: bool = None,
         divisions: abjad.Expression = None,
@@ -1674,7 +1669,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return super().state
 
     @property
-    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+    def specifiers(self) -> typing.List[commands.Command]:
         r"""
         Gets specifiers.
 

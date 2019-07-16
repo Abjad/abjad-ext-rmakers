@@ -1,13 +1,10 @@
 import abjad
 import math
 import typing
-from . import typings
+from . import commands
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .commands import BeamCommand
-from .commands import TieCommand
-from .commands import TupletCommand
 
 
 class EvenDivisionRhythmMaker(RhythmMaker):
@@ -34,7 +31,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: typings.SpecifierTyping,
+        *specifiers: commands.Command,
         burnish_specifier: BurnishSpecifier = None,
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
@@ -2235,7 +2232,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+    def specifiers(self) -> typing.List[commands.Command]:
         r"""
         Gets specifiers.
 

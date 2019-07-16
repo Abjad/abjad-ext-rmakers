@@ -1,14 +1,10 @@
 import abjad
 import typing
-from . import typings
+from . import commands
 from .DurationSpecifier import DurationSpecifier
 from .InciseSpecifier import InciseSpecifier
 from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
-from .commands import BeamCommand
-from .commands import RestCommand
-from .commands import TieCommand
-from .commands import TupletCommand
 
 
 class IncisedRhythmMaker(RhythmMaker):
@@ -84,7 +80,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: typings.SpecifierTyping,
+        *specifiers: commands.Command,
         divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
@@ -872,7 +868,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return self._replace_rests_with_skips
 
     @property
-    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+    def specifiers(self) -> typing.List[commands.Command]:
         r"""
         Gets specifiers.
 

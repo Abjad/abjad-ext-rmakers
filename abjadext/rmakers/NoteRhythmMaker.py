@@ -1,13 +1,9 @@
 import abjad
 import typing
-from . import typings
+from . import commands
 from .BurnishSpecifier import BurnishSpecifier
 from .DurationSpecifier import DurationSpecifier
 from .RhythmMaker import RhythmMaker
-from .commands import BeamCommand
-from .commands import RestCommand
-from .commands import TieCommand
-from .commands import TupletCommand
 
 
 class NoteRhythmMaker(RhythmMaker):
@@ -64,7 +60,7 @@ class NoteRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: typings.SpecifierTyping,
+        *specifiers: commands.Command,
         burnish_specifier: BurnishSpecifier = None,
         divisions: abjad.Expression = None,
         duration_specifier: DurationSpecifier = None,
@@ -593,7 +589,7 @@ class NoteRhythmMaker(RhythmMaker):
         return super().duration_specifier
 
     @property
-    def specifiers(self) -> typing.List[typings.SpecifierTyping]:
+    def specifiers(self) -> typing.List[commands.Command]:
         r"""
         Gets specifiers.
 
