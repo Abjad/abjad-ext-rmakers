@@ -2241,10 +2241,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.BeamCommand(
-            ...         beam_divisions_together=True,
-            ...         selector=abjad.select().tuplets(),
-            ...         ),
+            ...     rmakers.beam_divisions_together(),
             ...     rmakers.extract_trivial(),
             ...     talea=rmakers.Talea(
             ...         counts=[1],
@@ -2525,7 +2522,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Does beam rests:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(beam_rests=True),
+            ...     rmakers.simple_beam(beam_rests=True),
             ...     rmakers.extract_trivial(),
             ...     talea=rmakers.Talea(
             ...         counts=[1, 1, 1, -1],
@@ -2603,7 +2600,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams rests with stemlets:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(
+            ...     rmakers.simple_beam(
             ...         beam_rests=True,
             ...         stemlet_length=0.75,
             ...         ),

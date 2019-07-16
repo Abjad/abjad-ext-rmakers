@@ -2101,10 +2101,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
-            ...     rmakers.BeamCommand(
-            ...         beam_divisions_together=True,
-            ...         selector=abjad.select().tuplets(),
-            ...         ),
+            ...     rmakers.beam_divisions_together(),
             ...     interpolation_specifiers=rmakers.InterpolationSpecifier(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
