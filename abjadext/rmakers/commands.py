@@ -86,10 +86,7 @@ class BeamCommand(Command):
         "_beam_rests",
         "_selector",
         "_stemlet_length",
-        "_use_feather_beams",
     )
-
-    #    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -101,13 +98,10 @@ class BeamCommand(Command):
         beam_rests: bool = None,
         selector: abjad.SelectorTyping = None,
         stemlet_length: abjad.Number = None,
-        use_feather_beams: bool = None,
     ) -> None:
         super().__init__(selector)
         if beam_divisions_together is not None:
             beam_divisions_together = bool(beam_divisions_together)
-        # if beam_divisions_together is True:
-        #    assert selector is not None
         self._beam_divisions_together = beam_divisions_together
         if beam_lone_notes is not None:
             beam_lone_notes = bool(beam_lone_notes)
@@ -118,9 +112,6 @@ class BeamCommand(Command):
         if stemlet_length is not None:
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
-        if use_feather_beams is not None:
-            use_feather_beams = bool(use_feather_beams)
-        self._use_feather_beams = use_feather_beams
 
     ### SPECIAL METHODS ###
 
@@ -137,11 +128,8 @@ class BeamCommand(Command):
             else:
                 selection = staff
             selections = self.selector(selection)
-            #            print()
-            #            for selection in selections:
-            #                print("SSS", selection)
             if self.beam_divisions_together:
-                self._detach_all_beams(selections)
+                unbeam()(selections)
                 durations = []
                 for selection in selections:
                     duration = abjad.inspect(selection).duration()
@@ -167,7 +155,7 @@ class BeamCommand(Command):
                 )
             else:
                 for selection in selections:
-                    self._detach_all_beams(selection)
+                    unbeam()(selection)
                     leaves = abjad.select(selection).leaves(
                         do_not_iterate_grace_containers=True
                     )
@@ -183,52 +171,34 @@ class BeamCommand(Command):
                 selections = RhythmMaker._select_by_measure(staff)
             else:
                 selections = staff
-            self._detach_all_beams(selections)
-            if self.beam_divisions_together:
-                durations = []
-                for selection in selections:
-                    duration = abjad.inspect(selection).duration()
-                    durations.append(duration)
-                for selection in selections:
-                    if isinstance(selection, abjad.Selection):
-                        components.extend(selection)
-                    elif isinstance(selection, abjad.Tuplet):
-                        components.append(selection)
-                    else:
-                        raise TypeError(selection)
-                leaves = abjad.select(components).leaves(
-                    do_not_iterate_grace_containers=True
-                )
-                abjad.beam(
-                    leaves,
-                    beam_lone_notes=self.beam_lone_notes,
-                    beam_rests=self.beam_rests,
-                    durations=durations,
-                    span_beam_count=1,
-                    stemlet_length=self.stemlet_length,
-                    tag=tag,
-                )
-        if self.use_feather_beams:
+            unbeam()(selections)
+            if not self.beam_divisions_together:
+                return
+            durations = []
             for selection in selections:
-                first_leaf = abjad.select(selection).leaf(0)
-                if self._is_accelerando(selection):
-                    abjad.override(
-                        first_leaf
-                    ).beam.grow_direction = abjad.Right
-                elif self._is_ritardando(selection):
-                    abjad.override(first_leaf).beam.grow_direction = abjad.Left
+                duration = abjad.inspect(selection).duration()
+                durations.append(duration)
+            for selection in selections:
+                if isinstance(selection, abjad.Selection):
+                    components.extend(selection)
+                elif isinstance(selection, abjad.Tuplet):
+                    components.append(selection)
+                else:
+                    raise TypeError(selection)
+            leaves = abjad.select(components).leaves(
+                do_not_iterate_grace_containers=True
+            )
+            abjad.beam(
+                leaves,
+                beam_lone_notes=self.beam_lone_notes,
+                beam_rests=self.beam_rests,
+                durations=durations,
+                span_beam_count=1,
+                stemlet_length=self.stemlet_length,
+                tag=tag,
+            )
 
     ### PRIVATE METHODS ###
-
-    @staticmethod
-    def _detach_all_beams(divisions):
-        leaves = abjad.select(divisions).leaves(
-            do_not_iterate_grace_containers=True
-        )
-        for leaf in leaves:
-            abjad.detach(abjad.BeamCount, leaf)
-            abjad.detach(abjad.StartBeam, leaf)
-            abjad.detach(abjad.StopBeam, leaf)
 
     @staticmethod
     def _make_beamable_groups(components, durations):
@@ -318,13 +288,6 @@ class BeamCommand(Command):
         Gets stemlet length.
         """
         return self._stemlet_length
-
-    @property
-    def use_feather_beams(self) -> typing.Optional[bool]:
-        """
-        Is true when multiple beams feather.
-        """
-        return self._use_feather_beams
 
 
 class CacheStateCommand(Command):
@@ -449,6 +412,102 @@ class ExtractTrivialCommand(Command):
         for tuplet in tuplets:
             if tuplet.trivial():
                 abjad.mutate(tuplet).extract()
+
+
+class FeatherBeamCommand(Command):
+    """
+    Feather beam command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_beam_rests", "_selector", "_stemlet_length")
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        selector: abjad.SelectorTyping = None,
+        *,
+        beam_rests: bool = None,
+        stemlet_length: abjad.Number = None,
+    ) -> None:
+        super().__init__(selector)
+        if beam_rests is not None:
+            beam_rests = bool(beam_rests)
+        self._beam_rests = beam_rests
+        if stemlet_length is not None:
+            assert isinstance(stemlet_length, (int, float))
+        self._stemlet_length = stemlet_length
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, tag: str = None) -> None:
+        """
+        Calls feather beam command on ``staff``.
+        """
+        components: typing.List[abjad.Component] = []
+        if isinstance(staff, abjad.Staff):
+            selection = staff["MusicVoice"]
+        else:
+            selection = staff
+        if self.selector is not None:
+            selections = self.selector(selection)
+        else:
+            selections = [selection]
+        for selection in selections:
+            unbeam()(selection)
+            leaves = abjad.select(selection).leaves(
+                do_not_iterate_grace_containers=True
+            )
+            abjad.beam(
+                leaves,
+                beam_rests=self.beam_rests,
+                stemlet_length=self.stemlet_length,
+                tag=tag,
+            )
+        for selection in selections:
+            first_leaf = abjad.select(selection).leaf(0)
+            if self._is_accelerando(selection):
+                abjad.override(first_leaf).beam.grow_direction = abjad.Right
+            elif self._is_ritardando(selection):
+                abjad.override(first_leaf).beam.grow_direction = abjad.Left
+
+    ### PRIVATE METHODS ###
+
+    def _is_accelerando(self, selection):
+        first_leaf = abjad.select(selection).leaf(0)
+        last_leaf = abjad.select(selection).leaf(-1)
+        first_duration = abjad.inspect(first_leaf).duration()
+        last_duration = abjad.inspect(last_leaf).duration()
+        if last_duration < first_duration:
+            return True
+        return False
+
+    def _is_ritardando(self, selection):
+        first_leaf = abjad.select(selection).leaf(0)
+        last_leaf = abjad.select(selection).leaf(-1)
+        first_duration = abjad.inspect(first_leaf).duration()
+        last_duration = abjad.inspect(last_leaf).duration()
+        if first_duration < last_duration:
+            return True
+        return False
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def beam_rests(self) -> typing.Optional[bool]:
+        r"""
+        Is true when feather beams include rests.
+        """
+        return self._beam_rests
+
+    @property
+    def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
+        r"""
+        Gets stemlet length.
+        """
+        return self._stemlet_length
 
 
 class ForceAugmentationCommand(Command):
@@ -986,8 +1045,6 @@ class RestCommand(Command):
 
     __slots__ = "_use_multimeasure_rests"
 
-    #    _publish_storage_format = True
-
     ### INITIALIZER ###
 
     def __init__(
@@ -1127,7 +1184,7 @@ class RewriteMeterCommand(Command):
             for leaf in abjad.iterate(selection).leaves():
                 if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
-            BeamCommand._detach_all_beams(nontupletted_leaves)
+            unbeam()(nontupletted_leaves)
             abjad.mutate(selection).rewrite_meter(
                 meter, rewrite_tuplets=False, repeat_ties=self.repeat_ties
             )
@@ -1309,6 +1366,87 @@ class RewriteSustainedCommand(Command):
         return False
 
 
+class SimpleBeamCommand(Command):
+    """
+    Beam command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length")
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        selector: abjad.SelectorTyping = None,
+        *,
+        beam_lone_notes: bool = None,
+        beam_rests: bool = None,
+        stemlet_length: abjad.Number = None,
+    ) -> None:
+        super().__init__(selector)
+        if beam_lone_notes is not None:
+            beam_lone_notes = bool(beam_lone_notes)
+        self._beam_lone_notes = beam_lone_notes
+        if beam_rests is not None:
+            beam_rests = bool(beam_rests)
+        self._beam_rests = beam_rests
+        if stemlet_length is not None:
+            assert isinstance(stemlet_length, (int, float))
+        self._stemlet_length = stemlet_length
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, tag: str = None) -> None:
+        """
+        Calls beam command on ``staff``.
+        """
+        if isinstance(staff, abjad.Staff):
+            selection = staff["MusicVoice"]
+        else:
+            selection = staff
+        if self.selector is not None:
+            selections = self.selector(selection)
+        else:
+            selections = [selection]
+        for selection in selections:
+            unbeam()(selection)
+            leaves = abjad.select(selection).leaves(
+                do_not_iterate_grace_containers=True
+            )
+            abjad.beam(
+                leaves,
+                beam_lone_notes=self.beam_lone_notes,
+                beam_rests=self.beam_rests,
+                stemlet_length=self.stemlet_length,
+                tag=tag,
+            )
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def beam_lone_notes(self) -> typing.Optional[bool]:
+        """
+        Is true when command beams lone notes.
+        """
+        return self._beam_lone_notes
+
+    @property
+    def beam_rests(self) -> typing.Optional[bool]:
+        r"""
+        Is true when beams include rests.
+        """
+        return self._beam_rests
+
+    @property
+    def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
+        r"""
+        Gets stemlet length.
+        """
+        return self._stemlet_length
+
+
 class SplitMeasuresCommand(Command):
     """
     Split measures command.
@@ -1407,6 +1545,39 @@ class TrivializeCommand(Command):
             tuplet.trivialize()
 
 
+class UnbeamCommand(Command):
+    """
+    Unbeam command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ()
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, tag: str = None) -> None:
+        """
+        Calls unbeam command ``staff``.
+        """
+        if isinstance(staff, abjad.Staff):
+            selection = staff["MusicVoice"]
+        else:
+            selection = staff
+        if self.selector is not None:
+            selections = self.selector(selection)
+        else:
+            selections = [selection]
+        for selection in selections:
+            leaves = abjad.select(selection).leaves(
+                do_not_iterate_grace_containers=True
+            )
+            for leaf in leaves:
+                abjad.detach(abjad.BeamCount, leaf)
+                abjad.detach(abjad.StartBeam, leaf)
+                abjad.detach(abjad.StopBeam, leaf)
+
+
 class UntieCommand(Command):
     """
     Untie command.
@@ -1439,7 +1610,7 @@ def beam(
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
-    stemlet_length=None,
+    stemlet_length: abjad.Number = None,
 ) -> BeamCommand:
     """
     Makes beam command.
@@ -2026,15 +2197,12 @@ def feather_beam(
     *,
     beam_rests: bool = None,
     stemlet_length: abjad.Number = None,
-) -> BeamCommand:
+) -> FeatherBeamCommand:
     """
-    Makes tuplet command.
+    Makes feather beam command.
     """
-    return BeamCommand(
-        selector=selector,
-        beam_rests=beam_rests,
-        stemlet_length=stemlet_length,
-        use_feather_beams=True,
+    return FeatherBeamCommand(
+        selector, beam_rests=beam_rests, stemlet_length=stemlet_length
     )
 
 
@@ -2989,6 +3157,24 @@ def rewrite_dots(selector: abjad.SelectorTyping = None) -> RewriteDotsCommand:
     return RewriteDotsCommand(selector)
 
 
+def simple_beam(
+    selector: abjad.SelectorTyping = abjad.select().tuplets(),
+    *,
+    beam_lone_notes: bool = None,
+    beam_rests: bool = None,
+    stemlet_length: abjad.Number = None,
+) -> SimpleBeamCommand:
+    """
+    Makes simple beam command.
+    """
+    return SimpleBeamCommand(
+        selector,
+        beam_rests=beam_rests,
+        beam_lone_notes=beam_lone_notes,
+        stemlet_length=stemlet_length,
+    )
+
+
 def split_measures(*, repeat_ties=None) -> SplitMeasuresCommand:
     """
     Makes split measures command.
@@ -3535,6 +3721,13 @@ def trivialize(selector: abjad.SelectorTyping = None) -> TrivializeCommand:
     Makes trivialize command.
     """
     return TrivializeCommand(selector)
+
+
+def unbeam(selector: abjad.SelectorTyping = None) -> UnbeamCommand:
+    """
+    Makes unbeam command.
+    """
+    return UnbeamCommand(selector)
 
 
 def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
