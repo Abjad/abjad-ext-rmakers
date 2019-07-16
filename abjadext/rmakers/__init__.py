@@ -27,6 +27,7 @@ from .commands import TieCommand
 from .commands import TupletCommand
 from .commands import beam
 from .commands import cache_state
+from .commands import denominator
 from .commands import extract_trivial
 from .commands import feather_beam
 from .commands import force_augmentation

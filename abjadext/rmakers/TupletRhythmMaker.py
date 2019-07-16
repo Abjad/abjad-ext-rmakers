@@ -447,9 +447,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=(1, 16),
-            ...         ),
+            ...     rmakers.denominator((1, 16)),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -509,9 +507,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=(1, 32),
-            ...         ),
+            ...     rmakers.denominator((1, 32)),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -571,9 +567,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=(1, 64),
-            ...         ),
+            ...     rmakers.denominator((1, 64)),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -635,9 +629,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=8,
-            ...         ),
+            ...     rmakers.denominator(8),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -697,9 +689,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=12,
-            ...         ),
+            ...     rmakers.denominator(12),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 
@@ -759,9 +749,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=13,
-            ...         ),
+            ...     rmakers.denominator(13),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
 

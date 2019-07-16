@@ -2566,9 +2566,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=(1, 16),
-            ...         ),
+            ...     rmakers.denominator((1, 16)),
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
@@ -2634,9 +2632,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=(1, 32),
-            ...         ),
+            ...     rmakers.denominator((1, 32)),
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
@@ -2702,9 +2698,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=(1, 64),
-            ...         ),
+            ...     rmakers.denominator((1, 64)),
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
@@ -2772,9 +2766,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=8,
-            ...         ),
+            ...     rmakers.denominator(8),
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
@@ -2840,9 +2832,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=12,
-            ...         ),
+            ...     rmakers.denominator(12),
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
@@ -2911,9 +2901,7 @@ class TupletCommand(object):
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
             ...     rmakers.rewrite_tuplet_dots(),
-            ...     rmakers.TupletCommand(
-            ...         denominator=13,
-            ...         ),
+            ...     rmakers.denominator(13),
             ...     rmakers.beam(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 4)],
             ...     )
@@ -3848,6 +3836,17 @@ def cache_state() -> CacheStateCommand:
     Makes cache state command.
     """
     return CacheStateCommand()
+
+
+def denominator(
+    denominator: typing.Union[int, abjad.DurationTyping],
+    *,
+    selector: abjad.SelectorTyping = abjad.select().tuplets(),
+) -> TupletCommand:
+    """
+    Makes tuplet command.
+    """
+    return TupletCommand(denominator=denominator, selector=selector)
 
 
 def extract_trivial(

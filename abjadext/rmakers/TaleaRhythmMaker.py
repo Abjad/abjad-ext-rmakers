@@ -2088,9 +2088,7 @@ class TaleaRhythmMaker(RhythmMaker):
             denominator is given as a duration:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         denominator=(1, 16),
-            ...     ),
+            ...     rmakers.denominator((1, 16)),
             ...     rmakers.beam(),
             ...     extra_counts_per_division=[1, 1, 2, 2],
             ...     talea=rmakers.Talea(
@@ -3097,9 +3095,7 @@ class TaleaRhythmMaker(RhythmMaker):
             denominator is given as a duration:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.TupletCommand(
-            ...         denominator=(1, 16),
-            ...         ),
+            ...     rmakers.denominator((1, 16)),
             ...     rmakers.beam(),
             ...     extra_counts_per_division=[1, 1, 2, 2],
             ...     talea=rmakers.Talea(

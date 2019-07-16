@@ -133,7 +133,7 @@ def test_BurnishSpecifier_outer_divisions_only_03():
     talea = rmakers.Talea(counts=[1], denominator=8)
 
     rhythm_maker = rmakers.TaleaRhythmMaker(
-        rmakers.BeamCommand(selector=abjad.select().tuplets()),
+        rmakers.beam(),
         talea=talea,
         burnish_specifier=burnish_specifier,
         extra_counts_per_division=[],
