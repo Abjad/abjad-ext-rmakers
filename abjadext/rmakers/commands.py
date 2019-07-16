@@ -1531,7 +1531,7 @@ class UntieCommand(Command):
 
 
 def beam_divisions_together(
-    selector: abjad.SelectorTyping = abjad.select().tuplets(),
+    selector: typing.Optional[abjad.SelectorTyping] = abjad.select().tuplets(),
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
