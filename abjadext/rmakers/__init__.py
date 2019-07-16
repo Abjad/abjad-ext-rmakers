@@ -40,7 +40,7 @@ from .commands import rewrite_meter
 from .commands import rewrite_rest_filled
 from .commands import rewrite_sustained
 from .commands import rewrite_tuplet_dots
-from .commands import set_duration_bracket
+from .commands import duration_bracket
 from .commands import split_measures
 from .commands import tie
 from .commands import to_repeat_tie

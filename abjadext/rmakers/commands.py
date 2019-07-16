@@ -3963,7 +3963,7 @@ def rewrite_tuplet_dots(
     return TupletCommand(rewrite_dots=True, selector=selector)
 
 
-def set_duration_bracket(
+def duration_bracket(
     selector: abjad.SelectorTyping = abjad.select().tuplets()
 ) -> TupletCommand:
     """
