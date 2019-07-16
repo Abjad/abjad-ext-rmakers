@@ -1837,10 +1837,10 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.force_fraction()
             ... )
             >>> rhythm_maker.specifiers
-            [TupletCommand(force_fraction=True, selector=abjad.select().tuplets())]
+            [ForceFractionCommand()]
 
             >>> abjad.new(rhythm_maker).specifiers
-            [TupletCommand(force_fraction=True, selector=abjad.select().tuplets())]
+            [ForceFractionCommand()]
 
         ..  container:: example
 

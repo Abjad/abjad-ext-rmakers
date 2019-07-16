@@ -474,7 +474,7 @@ class RhythmCommand(object):
                         abjad.Ratio((1, 2)),
                         ],
                     ),
-                TupletCommand(force_fraction=True, selector=abjad.select().tuplets())
+                ForceFractionCommand()
                 )
 
         """
@@ -490,7 +490,7 @@ class RhythmCommand(object):
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
-            RhythmCommand(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), TupletCommand(force_fraction=True, selector=abjad.select().tuplets()))
+            RhythmCommand(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), ForceFractionCommand())
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()
@@ -627,7 +627,7 @@ class RhythmCommand(object):
                         abjad.Ratio((1, 2)),
                         ],
                     ),
-                TupletCommand(force_fraction=True, selector=abjad.select().tuplets())
+                ForceFractionCommand()
                 )
 
             >>> abjad.f(command_2)
@@ -637,7 +637,7 @@ class RhythmCommand(object):
                         abjad.Ratio((1, 2)),
                         ],
                     ),
-                TupletCommand(force_fraction=True, selector=abjad.select().tuplets())
+                ForceFractionCommand()
                 )
 
             >>> command_1 == command_2

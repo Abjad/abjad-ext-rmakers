@@ -23,9 +23,9 @@ from .commands import CacheStateCommand
 from .commands import NoteCommand
 from .commands import RestCommand
 from .commands import RewriteMeterCommand
+from .commands import RewriteSustainedCommand
 from .commands import SplitMeasuresCommand
 from .commands import TieCommand
-from .commands import TupletCommand
 from .commands import beam
 from .commands import cache_state
 from .commands import denominator
@@ -40,7 +40,7 @@ from .commands import rest
 from .commands import rewrite_meter
 from .commands import rewrite_rest_filled
 from .commands import rewrite_sustained
-from .commands import rewrite_tuplet_dots
+from .commands import rewrite_dots
 from .commands import duration_bracket
 from .commands import split_measures
 from .commands import tie

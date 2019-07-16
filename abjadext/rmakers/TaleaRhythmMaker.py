@@ -222,7 +222,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> abjad.f(rhythm_maker)
             abjadext.rmakers.TaleaRhythmMaker(
                 BeamCommand(selector=abjad.select().tuplets()),
-                TupletCommand(extract_trivial=True, selector=abjad.select().tuplets()),
+                ExtractTrivialCommand(),
                 talea=abjadext.rmakers.Talea(
                     counts=[5, -3, 3, 3],
                     denominator=16,
@@ -2964,7 +2964,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> new_rhythm_maker = abjad.new(rhythm_maker)
             >>> abjad.f(new_rhythm_maker)
             abjadext.rmakers.TaleaRhythmMaker(
-                TupletCommand(extract_trivial=True, selector=abjad.select().tuplets()),
+                ExtractTrivialCommand(),
                 talea=abjadext.rmakers.Talea(
                     counts=[5, -3, 3, 3],
                     denominator=16,
@@ -2997,7 +2997,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> abjad.f(new_rhythm_maker)
             abjadext.rmakers.TaleaRhythmMaker(
                 BeamCommand(selector=abjad.select().tuplets()),
-                TupletCommand(extract_trivial=True, selector=abjad.select().tuplets()),
+                ExtractTrivialCommand(),
                 talea=abjadext.rmakers.Talea(
                     counts=[5, -3, 3, 3],
                     denominator=16,
