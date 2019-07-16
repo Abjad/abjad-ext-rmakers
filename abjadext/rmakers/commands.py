@@ -34,7 +34,7 @@ class BeamCommand(object):
         beam_lone_notes: bool = None,
         beam_rests: bool = None,
         selector: abjad.SelectorTyping = None,
-        stemlet_length: typing.Union[int, float] = None,
+        stemlet_length: abjad.Number = None,
         use_feather_beams: bool = None,
     ) -> None:
         if beam_divisions_together is not None:
@@ -3863,7 +3863,7 @@ def feather_beam(
     selector: abjad.SelectorTyping = abjad.select().tuplets(),
     *,
     beam_rests: bool = None,
-    stemlet_length: int = None,
+    stemlet_length: abjad.Number = None,
 ) -> BeamCommand:
     """
     Makes tuplet command.
