@@ -2241,7 +2241,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam_divisions_together(),
+            ...     rmakers.beam_groups(),
             ...     rmakers.extract_trivial(),
             ...     talea=rmakers.Talea(
             ...         counts=[1],

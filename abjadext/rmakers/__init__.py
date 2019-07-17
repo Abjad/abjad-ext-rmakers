@@ -20,7 +20,7 @@ from .RhythmCommand import MakerMatch
 from .commands import Command
 
 ###from .commands import BeamCommand
-from .commands import BeamDivisionsTogetherCommand
+from .commands import BeamGroupsCommand
 from .commands import CacheStateCommand
 from .commands import FeatherBeamCommand
 from .commands import NoteCommand
@@ -33,7 +33,7 @@ from .commands import TieCommand
 from .commands import UnbeamCommand
 
 ###from .commands import beam
-from .commands import beam_divisions_together
+from .commands import beam_groups
 from .commands import cache_state
 from .commands import denominator
 from .commands import duration_bracket

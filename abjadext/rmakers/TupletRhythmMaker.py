@@ -960,7 +960,7 @@ class TupletRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam_divisions_together(),
+            ...     rmakers.beam_groups(),
             ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     )
 

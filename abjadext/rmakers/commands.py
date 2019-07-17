@@ -73,7 +73,7 @@ class Command(object):
         return self._selector
 
 
-class BeamDivisionsTogetherCommand(Command):
+class BeamGroupsCommand(Command):
     """
     Beam divisions together command.
     """
@@ -1123,7 +1123,7 @@ class RewriteMeterCommand(Command):
             for start, stop in abjad.sequence(beat_offsets).nwise():
                 beat_duration = stop - start
                 beat_durations.append(beat_duration)
-            beamable_groups = BeamDivisionsTogetherCommand._make_beamable_groups(
+            beamable_groups = BeamGroupsCommand._make_beamable_groups(
                 leaves, beat_durations
             )
             for beamable_group in beamable_groups:
@@ -1530,17 +1530,17 @@ class UntieCommand(Command):
 ### FACTORY FUNCTIONS ###
 
 
-def beam_divisions_together(
+def beam_groups(
     selector: typing.Optional[abjad.SelectorTyping] = abjad.select().tuplets(),
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
     stemlet_length: abjad.Number = None,
-) -> BeamDivisionsTogetherCommand:
+) -> BeamGroupsCommand:
     """
     Makes beam divisions together command.
     """
-    return BeamDivisionsTogetherCommand(
+    return BeamGroupsCommand(
         selector,
         beam_lone_notes=beam_lone_notes,
         beam_rests=beam_rests,
