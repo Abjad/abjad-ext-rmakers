@@ -107,22 +107,15 @@ class BeamGroupsCommand(Command):
 
     def __call__(self, staff, tag: str = None) -> None:
         """
-        Calls beam command on ``selections``.
+        Calls beam groups command on ``staff``.
         """
         components: typing.List[abjad.Component] = []
-        if self.selector is not None:
-            if isinstance(staff, abjad.Staff):
-                selection = staff["MusicVoice"]
-            else:
-                selection = staff
-            selections = self.selector(selection)
+        if not isinstance(staff, abjad.Staff):
+            selections = staff
         else:
-            if isinstance(staff, abjad.Staff):
-                selections = abjad.select(
-                    staff["MusicVoice"]
-                ).group_by_measure()
-            else:
-                selections = staff
+            assert self.selector is not None
+            selection = staff["MusicVoice"]
+            selections = self.selector(selection)
         unbeam()(selections)
         durations = []
         for selection in selections:
@@ -147,49 +140,6 @@ class BeamGroupsCommand(Command):
             stemlet_length=self.stemlet_length,
             tag=tag,
         )
-
-    ### PRIVATE METHODS ###
-
-    @staticmethod
-    def _make_beamable_groups(components, durations):
-        music_duration = abjad.inspect(components).duration()
-        if music_duration != sum(durations):
-            message = f"music duration {music_duration} does not equal"
-            message += f" total duration {sum(durations)}:\n"
-            message += f"   {components}\n"
-            message += f"   {durations}"
-            raise Exception(message)
-        component_to_timespan = []
-        start_offset = abjad.Offset(0)
-        for component in components:
-            duration = abjad.inspect(component).duration()
-            stop_offset = start_offset + duration
-            timespan = abjad.Timespan(start_offset, stop_offset)
-            pair = (component, timespan)
-            component_to_timespan.append(pair)
-            start_offset = stop_offset
-        group_to_target_duration = []
-        start_offset = abjad.Offset(0)
-        for target_duration in durations:
-            stop_offset = start_offset + target_duration
-            group_timespan = abjad.Timespan(start_offset, stop_offset)
-            start_offset = stop_offset
-            group = []
-            for component, component_timespan in component_to_timespan:
-                if component_timespan.happens_during_timespan(group_timespan):
-                    group.append(component)
-            selection = abjad.select(group)
-            pair = (selection, target_duration)
-            group_to_target_duration.append(pair)
-        beamable_groups = []
-        for group, target_duration in group_to_target_duration:
-            group_duration = abjad.inspect(group).duration()
-            assert group_duration <= target_duration
-            if group_duration == target_duration:
-                beamable_groups.append(group)
-            else:
-                beamable_groups.append(abjad.select([]))
-        return beamable_groups
 
     ### PUBLIC PROPERTIES ###
 
@@ -1122,7 +1072,7 @@ class RewriteMeterCommand(Command):
             for start, stop in abjad.sequence(beat_offsets).nwise():
                 beat_duration = stop - start
                 beat_durations.append(beat_duration)
-            beamable_groups = BeamGroupsCommand._make_beamable_groups(
+            beamable_groups = self._make_beamable_groups(
                 leaves, beat_durations
             )
             for beamable_group in beamable_groups:
@@ -1133,6 +1083,49 @@ class RewriteMeterCommand(Command):
                     beam_rests=False,
                     tag="rmakers.RewriteMeterCommand.__call__",
                 )
+
+    ### PRIVATE METHODS ###
+
+    @staticmethod
+    def _make_beamable_groups(components, durations):
+        music_duration = abjad.inspect(components).duration()
+        if music_duration != sum(durations):
+            message = f"music duration {music_duration} does not equal"
+            message += f" total duration {sum(durations)}:\n"
+            message += f"   {components}\n"
+            message += f"   {durations}"
+            raise Exception(message)
+        component_to_timespan = []
+        start_offset = abjad.Offset(0)
+        for component in components:
+            duration = abjad.inspect(component).duration()
+            stop_offset = start_offset + duration
+            timespan = abjad.Timespan(start_offset, stop_offset)
+            pair = (component, timespan)
+            component_to_timespan.append(pair)
+            start_offset = stop_offset
+        group_to_target_duration = []
+        start_offset = abjad.Offset(0)
+        for target_duration in durations:
+            stop_offset = start_offset + target_duration
+            group_timespan = abjad.Timespan(start_offset, stop_offset)
+            start_offset = stop_offset
+            group = []
+            for component, component_timespan in component_to_timespan:
+                if component_timespan.happens_during_timespan(group_timespan):
+                    group.append(component)
+            selection = abjad.select(group)
+            pair = (selection, target_duration)
+            group_to_target_duration.append(pair)
+        beamable_groups = []
+        for group, target_duration in group_to_target_duration:
+            group_duration = abjad.inspect(group).duration()
+            assert group_duration <= target_duration
+            if group_duration == target_duration:
+                beamable_groups.append(group)
+            else:
+                beamable_groups.append(abjad.select([]))
+        return beamable_groups
 
     ### PUBLIC PROPERTIES ###
 
@@ -1530,7 +1523,7 @@ class UntieCommand(Command):
 
 
 def beam_groups(
-    selector: typing.Optional[abjad.SelectorTyping] = abjad.select().tuplets(),
+    selector: typing.Optional[abjad.SelectorTyping] = abjad.select(),
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,

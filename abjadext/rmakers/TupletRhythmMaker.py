@@ -957,10 +957,10 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Beams divisions together:
+            Beams tuplets together:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam_groups(),
+            ...     rmakers.beam_groups(abjad.select().tuplets()),
             ...     tuplet_ratios=[(1, 1, 2, 1, 1), (3, 1, 1)],
             ...     )
 

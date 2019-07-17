@@ -899,9 +899,7 @@ class NoteRhythmMaker(RhythmMaker):
             Beams divisions together:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.beam_groups(
-            ...         abjad.select().logical_ties()
-            ...     ),
+            ...     rmakers.beam_groups(abjad.select().logical_ties()),
             ... )
 
             >>> divisions = [(5, 32), (5, 32)]

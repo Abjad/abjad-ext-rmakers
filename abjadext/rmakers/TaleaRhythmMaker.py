@@ -2238,10 +2238,10 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Beams divisions together:
+            Beams tuplets together:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam_groups(),
+            ...     rmakers.beam_groups(abjad.select().tuplets()),
             ...     rmakers.extract_trivial(),
             ...     talea=rmakers.Talea(
             ...         counts=[1],
