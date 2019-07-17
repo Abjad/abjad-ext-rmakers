@@ -544,7 +544,7 @@ class ForceRepeatTiesCommand(Command):
             selection = self.selector(selection)
         add_repeat_ties = []
         for leaf in abjad.select(selection).leaves():
-            if abjad.inspect(leaf).has_indicator(abjad.TieIndicator):
+            if abjad.inspect(leaf).has_indicator(abjad.Tie):
                 next_leaf = abjad.inspect(leaf).leaf(1)
                 if next_leaf is None:
                     continue
@@ -553,7 +553,7 @@ class ForceRepeatTiesCommand(Command):
                 if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
                     continue
                 add_repeat_ties.append(next_leaf)
-                abjad.detach(abjad.TieIndicator, leaf)
+                abjad.detach(abjad.Tie, leaf)
         for leaf in add_repeat_ties:
             repeat_tie = abjad.RepeatTie()
             abjad.attach(repeat_tie, leaf)
@@ -1019,8 +1019,8 @@ class RestCommand(Command):
                 next_leaf = abjad.inspect(leaf).leaf(1)
                 abjad.mutate(leaf).replace([rest])
                 if previous_leaf is not None:
-                    abjad.detach(abjad.TieIndicator, previous_leaf)
-                abjad.detach(abjad.TieIndicator, rest)
+                    abjad.detach(abjad.Tie, previous_leaf)
+                abjad.detach(abjad.Tie, rest)
                 abjad.detach(abjad.RepeatTie, rest)
                 if next_leaf is not None:
                     abjad.detach(abjad.RepeatTie, next_leaf)
@@ -1203,7 +1203,7 @@ class RewriteRestFilledCommand(Command):
         #            else:
         #                first_leaf_has_repeat_tie = False
         #            last_leaf = leaves[-1]
-        #            if abjad.inspect(last_leaf).has_indicator(abjad.TieIndicator):
+        #            if abjad.inspect(last_leaf).has_indicator(abjad.Tie):
         #                last_leaf_has_tie = True
         #            else:
         #                last_leaf_has_tie = False
@@ -1213,7 +1213,7 @@ class RewriteRestFilledCommand(Command):
         #            if first_leaf_has_repeat_tie:
         #                abjad.attach(abjad.RepeatTie(), tuplet[0])
         #            if last_leaf_has_tie:
-        #                abjad.attach(abjad.TieIndicator(), tuplet[-1])
+        #                abjad.attach(abjad.Tie(), tuplet[-1])
 
     ### PUBLIC METHODS ###
 
@@ -1255,7 +1255,7 @@ class RewriteSustainedCommand(Command):
             duration = abjad.inspect(tuplet).duration()
             leaves = abjad.select(tuplet).leaves()
             last_leaf = leaves[-1]
-            if abjad.inspect(last_leaf).has_indicator(abjad.TieIndicator):
+            if abjad.inspect(last_leaf).has_indicator(abjad.Tie):
                 last_leaf_has_tie = True
             else:
                 last_leaf_has_tie = False
@@ -1263,7 +1263,7 @@ class RewriteSustainedCommand(Command):
                 tuplet.remove(leaf)
             assert len(tuplet) == 1, repr(tuplet)
             if not last_leaf_has_tie:
-                abjad.detach(abjad.TieIndicator, tuplet[-1])
+                abjad.detach(abjad.Tie, tuplet[-1])
             tuplet[0]._set_duration(duration)
             tuplet.multiplier = abjad.Multiplier(1)
 
@@ -1444,7 +1444,7 @@ class TieCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         for note in abjad.select(selection).notes():
-            tie = abjad.TieIndicator()
+            tie = abjad.Tie()
             abjad.attach(tie, note, tag=tag)
 
 
@@ -1523,7 +1523,7 @@ class UntieCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         for leaf in abjad.select(selection).leaves():
-            abjad.detach(abjad.TieIndicator, leaf)
+            abjad.detach(abjad.Tie, leaf)
             abjad.detach(abjad.RepeatTie, leaf)
 
 

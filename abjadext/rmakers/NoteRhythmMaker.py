@@ -191,7 +191,7 @@ class NoteRhythmMaker(RhythmMaker):
         for leaf in selection:
             new_leaf = target_class(leaf, tag=self.tag)
             if not isinstance(new_leaf, (abjad.Chord, abjad.Note)):
-                abjad.detach(abjad.TieIndicator, new_leaf)
+                abjad.detach(abjad.Tie, new_leaf)
                 abjad.detach(abjad.RepeatTie, new_leaf)
             new_selection.append(new_leaf)
         new_selection = abjad.select(new_selection)

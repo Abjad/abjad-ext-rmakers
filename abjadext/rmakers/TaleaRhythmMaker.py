@@ -324,7 +324,7 @@ class TaleaRhythmMaker(RhythmMaker):
             for leaf in reversed(end_leaves):
                 previous_leaf = abjad.inspect(leaf).leaf(-1)
                 if previous_leaf is not None:
-                    abjad.detach(abjad.TieIndicator, previous_leaf)
+                    abjad.detach(abjad.Tie, previous_leaf)
 
     def _get_burnish_specifier(self):
         if self.burnish_specifier is not None:
