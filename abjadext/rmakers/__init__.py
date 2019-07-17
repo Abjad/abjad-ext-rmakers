@@ -18,8 +18,7 @@ from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
 from .commands import Command
-
-###from .commands import BeamCommand
+from .commands import BeamCommand
 from .commands import BeamGroupsCommand
 from .commands import CacheStateCommand
 from .commands import FeatherBeamCommand
@@ -27,12 +26,10 @@ from .commands import NoteCommand
 from .commands import RestCommand
 from .commands import RewriteMeterCommand
 from .commands import RewriteSustainedCommand
-from .commands import SimpleBeamCommand
 from .commands import SplitMeasuresCommand
 from .commands import TieCommand
 from .commands import UnbeamCommand
-
-###from .commands import beam
+from .commands import beam
 from .commands import beam_groups
 from .commands import cache_state
 from .commands import denominator
@@ -50,7 +47,6 @@ from .commands import rewrite_dots
 from .commands import rewrite_meter
 from .commands import rewrite_rest_filled
 from .commands import rewrite_sustained
-from .commands import simple_beam
 from .commands import split_measures
 from .commands import tie
 from .commands import trivialize

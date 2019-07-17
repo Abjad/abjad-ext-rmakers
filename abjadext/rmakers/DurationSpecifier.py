@@ -82,7 +82,7 @@ class DurationSpecifier(object):
             Decreases monotically:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.simple_beam(),
+            ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     duration_specifier=rmakers.DurationSpecifier(
             ...         increase_monotonic=False,
@@ -138,7 +138,7 @@ class DurationSpecifier(object):
             Increases monotically:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.simple_beam(),
+            ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     duration_specifier=rmakers.DurationSpecifier(
             ...         increase_monotonic=True,
@@ -202,7 +202,7 @@ class DurationSpecifier(object):
             Forbids note durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.simple_beam(),
+            ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     duration_specifier=rmakers.DurationSpecifier(
             ...         forbidden_note_duration=(1, 4),
@@ -271,7 +271,7 @@ class DurationSpecifier(object):
             Forbids rest durations equal to ``1/4`` or greater:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.simple_beam(),
+            ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     duration_specifier=rmakers.DurationSpecifier(
             ...         forbidden_rest_duration=(1, 4),

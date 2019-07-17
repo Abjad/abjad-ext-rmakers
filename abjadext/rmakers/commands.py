@@ -1283,7 +1283,7 @@ class RewriteSustainedCommand(Command):
         return False
 
 
-class SimpleBeamCommand(Command):
+class BeamCommand(Command):
     """
     Beam command.
     """
@@ -1562,7 +1562,7 @@ def denominator(
 
         >>> rhythm_maker = rmakers.TupletRhythmMaker(
         ...     rmakers.rewrite_dots(),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     tuplet_ratios=[(1, 4)],
         ...     )
 
@@ -1629,7 +1629,7 @@ def denominator(
         >>> rhythm_maker = rmakers.TupletRhythmMaker(
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator((1, 16)),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     tuplet_ratios=[(1, 4)],
         ...     )
 
@@ -1695,7 +1695,7 @@ def denominator(
         >>> rhythm_maker = rmakers.TupletRhythmMaker(
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator((1, 32)),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     tuplet_ratios=[(1, 4)],
         ...     )
 
@@ -1761,7 +1761,7 @@ def denominator(
         >>> rhythm_maker = rmakers.TupletRhythmMaker(
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator((1, 64)),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     tuplet_ratios=[(1, 4)],
         ...     )
 
@@ -1829,7 +1829,7 @@ def denominator(
         >>> rhythm_maker = rmakers.TupletRhythmMaker(
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator(8),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     tuplet_ratios=[(1, 4)],
         ...     )
 
@@ -1895,7 +1895,7 @@ def denominator(
         >>> rhythm_maker = rmakers.TupletRhythmMaker(
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator(12),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     tuplet_ratios=[(1, 4)],
         ...     )
 
@@ -1964,7 +1964,7 @@ def denominator(
         >>> rhythm_maker = rmakers.TupletRhythmMaker(
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator(13),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     tuplet_ratios=[(1, 4)],
         ...     )
 
@@ -2046,7 +2046,7 @@ def extract_trivial(
         With selector:
 
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     rmakers.extract_trivial(abjad.select().tuplets()[-2:]),
         ... )
 
@@ -2139,7 +2139,7 @@ def force_augmentation(
         This means that even simple tuplets format as explicit fractions:
 
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -2195,7 +2195,7 @@ def force_augmentation(
         this:
 
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -2259,7 +2259,7 @@ def force_augmentation(
 
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.force_fraction(),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -2372,7 +2372,7 @@ def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
         >>> selector = selector.map(abjad.select().note(0))
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.repeat_tie(selector),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -2462,7 +2462,7 @@ def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
         >>> selector = selector.map(abjad.select().note(0))
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.repeat_tie(selector),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -2579,7 +2579,7 @@ def rewrite_rest_filled(
         Does not rewrite rest-filled tuplets:
 
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
@@ -2655,7 +2655,7 @@ def rewrite_rest_filled(
 
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
         ...     rmakers.rewrite_rest_filled(),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
@@ -2716,7 +2716,7 @@ def rewrite_rest_filled(
         ...     rmakers.rewrite_rest_filled(
         ...         abjad.select().tuplets()[-2:],
         ...         ),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
@@ -2799,7 +2799,7 @@ def rewrite_sustained(
         >>> last_leaf = abjad.select().leaf(-1)
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[6, 5, 5, 4, 1],
@@ -2882,7 +2882,7 @@ def rewrite_sustained(
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
         ...     rmakers.rewrite_sustained(),
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[6, 5, 5, 4, 1],
@@ -2944,7 +2944,7 @@ def rewrite_sustained(
 
         >>> last_leaf = abjad.select().leaf(-1)
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
         ...     rmakers.rewrite_sustained(),
         ...     rmakers.extract_trivial(),
@@ -3004,7 +3004,7 @@ def rewrite_sustained(
         ...     rmakers.rewrite_sustained(
         ...         abjad.select().tuplets()[-2:],
         ...     ),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ... )
 
@@ -3074,17 +3074,17 @@ def rewrite_dots(selector: abjad.SelectorTyping = None) -> RewriteDotsCommand:
     return RewriteDotsCommand(selector)
 
 
-def simple_beam(
+def beam(
     selector: abjad.SelectorTyping = abjad.select().tuplets(),
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
     stemlet_length: abjad.Number = None,
-) -> SimpleBeamCommand:
+) -> BeamCommand:
     """
     Makes simple beam command.
     """
-    return SimpleBeamCommand(
+    return BeamCommand(
         selector,
         beam_rests=beam_rests,
         beam_lone_notes=beam_lone_notes,
@@ -3109,7 +3109,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
 
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(abjad.select().notes()[5:15]),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -3207,7 +3207,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> selector = selector.map(abjad.select().note(-1))
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(selector),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -3297,7 +3297,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> selector = selector.map(abjad.select().note(-1))
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(selector),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -3447,7 +3447,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.untie(selector),
         ...     rmakers.tie(selector),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -3544,7 +3544,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> selector = selector.map(abjad.select().notes()[:-1])
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(selector),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -3659,7 +3659,7 @@ def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(abjad.select().notes()[:-1]),
         ...     rmakers.untie(abjad.select().notes().get([0], 4)),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
@@ -3758,7 +3758,7 @@ def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.repeat_tie(abjad.select().notes()[1:]),
         ...     rmakers.untie(abjad.select().notes().get([0], 4)),
-        ...     rmakers.simple_beam(),
+        ...     rmakers.beam(),
         ...     extra_counts_per_division=[1],
         ...     )
 
