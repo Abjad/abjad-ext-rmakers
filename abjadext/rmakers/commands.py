@@ -109,8 +109,6 @@ class BeamGroupsCommand(Command):
         """
         Calls beam command on ``selections``.
         """
-        from .RhythmMaker import RhythmMaker
-
         components: typing.List[abjad.Component] = []
         if self.selector is not None:
             if isinstance(staff, abjad.Staff):
@@ -120,7 +118,9 @@ class BeamGroupsCommand(Command):
             selections = self.selector(selection)
         else:
             if isinstance(staff, abjad.Staff):
-                selections = RhythmMaker._select_by_measure(staff)
+                selections = abjad.select(
+                    staff["MusicVoice"]
+                ).group_by_measure()
             else:
                 selections = staff
         unbeam()(selections)
@@ -1085,8 +1085,6 @@ class RewriteMeterCommand(Command):
         """
         Calls rewrite meter command.
         """
-        from .RhythmMaker import RhythmMaker
-
         assert time_signatures is None, repr(time_signatures)
         time_signature_voice = staff["TimeSignatureVoice"]
         meters = []
@@ -1098,7 +1096,8 @@ class RewriteMeterCommand(Command):
         reference_meters = self.reference_meters or ()
         command = SplitMeasuresCommand(repeat_ties=self.repeat_ties)
         command(staff, time_signatures=meters)
-        selections = RhythmMaker._select_by_measure(staff)
+        music_voice = staff["MusicVoice"]
+        selections = abjad.select(staff["MusicVoice"][:]).group_by_measure()
         for meter, selection in zip(meters, selections):
             for reference_meter in reference_meters:
                 if str(reference_meter) == str(meter):
@@ -1113,7 +1112,7 @@ class RewriteMeterCommand(Command):
             abjad.mutate(selection).rewrite_meter(
                 meter, rewrite_tuplets=False, repeat_ties=self.repeat_ties
             )
-        selections = RhythmMaker._select_by_measure(staff)
+        selections = abjad.select(staff["MusicVoice"][:]).group_by_measure()
         for meter, selection in zip(meters, selections):
             leaves = abjad.select(selection).leaves(
                 do_not_iterate_grace_containers=True

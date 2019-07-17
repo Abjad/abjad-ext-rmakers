@@ -178,18 +178,6 @@ class RhythmMaker(object):
             self, storage_format_args_values=specifiers
         )
 
-    @staticmethod
-    def _select_by_measure(staff):
-        selection = staff["MusicVoice"][:]
-        assert isinstance(selection, abjad.Selection)
-        time_signatures = [
-            abjad.inspect(_).indicator(abjad.TimeSignature)
-            for _ in staff["TimeSignatureVoice"]
-        ]
-        selections = selection.partition_by_durations(time_signatures)
-        selections = list(selections)
-        return selections
-
     def _make_music(self, divisions):
         return []
 
