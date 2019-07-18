@@ -31,11 +31,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *commands: _commands.Command,
-        burnish_specifier: specifiers.BurnishSpecifier = None,
+        burnish_specifier: specifiers.Burnish = None,
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.Duration = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         tag: str = None,
     ) -> None:
@@ -61,7 +61,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             extra_counts_per_division = tuple(extra_counts_per_division)
         self._extra_counts_per_division = extra_counts_per_division
         if burnish_specifier is not None:
-            assert isinstance(burnish_specifier, specifiers.BurnishSpecifier)
+            assert isinstance(burnish_specifier, specifiers.Burnish)
         self._burnish_specifier = burnish_specifier
         extra_counts_per_division = extra_counts_per_division or (0,)
         self._denominator = denominator
@@ -513,9 +513,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def burnish_specifier(
-        self
-    ) -> typing.Optional[specifiers.BurnishSpecifier]:
+    def burnish_specifier(self) -> typing.Optional[specifiers.Burnish]:
         r"""
         Gets burnish specifier.
 
@@ -525,7 +523,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.beam(),
-            ...     burnish_specifier=rmakers.BurnishSpecifier(
+            ...     burnish_specifier=rmakers.Burnish(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         right_classes=[abjad.Rest],
@@ -640,7 +638,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.beam(),
-            ...     burnish_specifier=rmakers.BurnishSpecifier(
+            ...     burnish_specifier=rmakers.Burnish(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         ),
@@ -2313,7 +2311,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every third logical tie:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.rest(
+            ...     rmakers.force_rest(
             ...         abjad.select().logical_ties().get([0], 3),
             ...     ),
             ...     rmakers.beam(),
@@ -2385,9 +2383,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every logical tie except the first two and last two:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.rest(
-            ...         abjad.select().logical_ties()[2:-2],
-            ...     ),
+            ...     rmakers.force_rest(abjad.select().logical_ties()[2:-2]),
             ...     rmakers.beam(),
             ... )
 
@@ -2533,7 +2529,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
-            ...     rmakers.rest(
+            ...     rmakers.force_rest(
             ...         abjad.select().logical_ties().get([3], 4),
             ...     ),
             ...     rmakers.beam(),
@@ -2919,7 +2915,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every other division:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.rest(
+            ...     rmakers.force_rest(
             ...         abjad.select().tuplets().get([0], 2),
             ...     ),
             ...     rmakers.rewrite_rest_filled(
@@ -3043,9 +3039,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Silences every output division:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
-            ...     rmakers.rest(
-            ...         abjad.select().leaves(),
-            ...     ),
+            ...     rmakers.force_rest(abjad.select().leaves()),
             ...     rmakers.rewrite_rest_filled(),
             ...     rmakers.extract_trivial(),
             ... )

@@ -152,7 +152,7 @@ class TupletRhythmMaker(RhythmMaker):
         *commands: _commands.Command,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.Duration = None,
         tag: str = None,
         tuplet_ratios: abjad.RatioSequenceTyping = None,
     ) -> None:
@@ -2077,7 +2077,7 @@ class TupletRhythmMaker(RhythmMaker):
             Masks every other output division:
 
             >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.rest(
+            ...     rmakers.force_rest(
             ...         abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     rmakers.rewrite_rest_filled(

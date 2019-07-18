@@ -7,7 +7,7 @@ ClassTyping = typing.Union[int, type]
 ### CLASSES ###
 
 
-class BurnishSpecifier(object):
+class Burnish(object):
     """
     Burnish specifier.
 
@@ -15,7 +15,7 @@ class BurnishSpecifier(object):
 
         Forces first leaf of each division to be a rest:
 
-        >>> burnish_specifier = rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.Burnish(
         ...     left_classes=[abjad.Rest],
         ...     left_counts=[1],
         ...     )
@@ -24,7 +24,7 @@ class BurnishSpecifier(object):
 
         Forces the first three leaves of each division to be rests:
 
-        >>> burnish_specifier = rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.Burnish(
         ...     left_classes=[abjad.Rest],
         ...     left_counts=[3],
         ...     )
@@ -33,7 +33,7 @@ class BurnishSpecifier(object):
 
         Forces last leaf of each division to be a rest:
 
-        >>> burnish_specifier = rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.Burnish(
         ...     right_classes=[abjad.Rest],
         ...     right_counts=[1],
         ...     )
@@ -42,7 +42,7 @@ class BurnishSpecifier(object):
 
         Forces the last three leaves of each division to be rests:
 
-        >>> burnish_specifier = rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.Burnish(
         ...     right_classes=[abjad.Rest],
         ...     right_counts=[3],
         ...     )
@@ -52,7 +52,7 @@ class BurnishSpecifier(object):
         Forces the first leaf of every even-numbered division to be a rest;
         forces the first leaf of every odd-numbered division to be a note.
 
-        >>> burnish_specifier = rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.Burnish(
         ...     left_classes=[abjad.Rest, abjad.Note],
         ...     left_counts=[1],
         ...     )
@@ -62,7 +62,7 @@ class BurnishSpecifier(object):
         Forces the last leaf of every even-numbered division to be a rest;
         forces the last leaf of every odd-numbered division to be a note.
 
-        >>> burnish_specifier = rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.Burnish(
         ...     right_classes=[abjad.Rest, abjad.Note],
         ...     right_counts=[1],
         ...     )
@@ -72,7 +72,7 @@ class BurnishSpecifier(object):
         Forces the first leaf of every even-numbered division to be a rest;
         leave the first leaf of every odd-numbered division unchanged.
 
-        >>> burnish_specifier = rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.Burnish(
         ...     left_classes=[abjad.Rest, 0],
         ...     left_counts=[1],
         ...     )
@@ -82,7 +82,7 @@ class BurnishSpecifier(object):
         Forces the last leaf of every even-numbered division to be a rest;
         leave the last leaf of every odd-numbered division unchanged.
 
-        >>> burnish_specifier = rmakers.BurnishSpecifier(
+        >>> burnish_specifier = rmakers.Burnish(
         ...     right_classes=[abjad.Rest, 0],
         ...     right_counts=[1],
         ...     )
@@ -161,13 +161,13 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.Burnish(
             ...     left_classes=[abjad.Rest, 0],
             ...     left_counts=[1],
             ...     )
 
             >>> abjad.f(burnish_specifier)
-            abjadext.specifiers.BurnishSpecifier(
+            abjadext.specifiers.Burnish(
                 left_classes=[
                     abjad.Rest,
                     0,
@@ -184,13 +184,13 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.Burnish(
             ...     left_classes=[abjad.Rest, 0],
             ...     left_counts=[1],
             ...     )
 
             >>> burnish_specifier
-            BurnishSpecifier(left_classes=[Rest, 0], left_counts=[1])
+            Burnish(left_classes=[Rest, 0], left_counts=[1])
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()
@@ -397,7 +397,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.Burnish(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -419,7 +419,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.Burnish(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -441,7 +441,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.Burnish(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -473,7 +473,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.Burnish(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -495,7 +495,7 @@ class BurnishSpecifier(object):
 
         ..  container:: example
 
-            >>> burnish_specifier = rmakers.BurnishSpecifier(
+            >>> burnish_specifier = rmakers.Burnish(
             ...     left_classes=[abjad.Rest, 0],
             ...     right_classes=[abjad.Rest, abjad.Rest, 0],
             ...     left_counts=[2],
@@ -511,7 +511,7 @@ class BurnishSpecifier(object):
         return None
 
 
-class DurationSpecifier(object):
+class Duration(object):
     """
     Duration specifier.
     """
@@ -559,9 +559,9 @@ class DurationSpecifier(object):
 
         ..  container:: example
 
-            >>> specifier = rmakers.DurationSpecifier()
+            >>> specifier = rmakers.Duration()
             >>> abjad.f(specifier)
-            abjadext.specifiers.DurationSpecifier()
+            abjadext.specifiers.Duration()
 
         """
         return abjad.StorageFormatManager(self).get_storage_format()
@@ -572,8 +572,8 @@ class DurationSpecifier(object):
 
         ..  container:: example
 
-            >>> rmakers.DurationSpecifier()
-            DurationSpecifier()
+            >>> rmakers.Duration()
+            Duration()
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()
@@ -593,7 +593,7 @@ class DurationSpecifier(object):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.Duration(
             ...         increase_monotonic=False,
             ...         ),
             ...     talea=rmakers.Talea(
@@ -649,7 +649,7 @@ class DurationSpecifier(object):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.Duration(
             ...         increase_monotonic=True,
             ...         ),
             ...     talea=rmakers.Talea(
@@ -713,7 +713,7 @@ class DurationSpecifier(object):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.Duration(
             ...         forbidden_note_duration=(1, 4),
             ...         ),
             ...     talea=rmakers.Talea(
@@ -782,7 +782,7 @@ class DurationSpecifier(object):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.Duration(
             ...         forbidden_rest_duration=(1, 4),
             ...         ),
             ...     talea=rmakers.Talea(
@@ -838,7 +838,7 @@ class DurationSpecifier(object):
         return self._forbidden_rest_duration
 
 
-class InciseSpecifier(object):
+class Incise(object):
     """
     Incise specifier.
 
@@ -847,7 +847,7 @@ class InciseSpecifier(object):
         Specifies one sixteenth rest cut out of the beginning of every
         division:
 
-        >>> specifier = rmakers.InciseSpecifier(
+        >>> specifier = rmakers.Incise(
         ...     prefix_talea=[-1],
         ...     prefix_counts=[1],
         ...     talea_denominator=16,
@@ -858,7 +858,7 @@ class InciseSpecifier(object):
         Specifies sixteenth rests cut out of the beginning and end of each
         division:
 
-        >>> specifier = rmakers.InciseSpecifier(
+        >>> specifier = rmakers.Incise(
         ...     prefix_talea=[-1],
         ...     prefix_counts=[1],
         ...     suffix_talea=[-1],
@@ -956,14 +956,14 @@ class InciseSpecifier(object):
 
             Formats incise specifier:
 
-            >>> specifier = rmakers.InciseSpecifier(
+            >>> specifier = rmakers.Incise(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[1],
             ...     talea_denominator=16,
             ...     )
 
             >>> abjad.f(specifier)
-            abjadext.specifiers.InciseSpecifier(
+            abjadext.specifiers.Incise(
                 prefix_counts=[1],
                 prefix_talea=[-1],
                 suffix_counts=(),
@@ -975,7 +975,7 @@ class InciseSpecifier(object):
 
             Formats incise specifier:
 
-            >>> specifier = rmakers.InciseSpecifier(
+            >>> specifier = rmakers.Incise(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[0, 1],
             ...     suffix_talea=[-1],
@@ -984,7 +984,7 @@ class InciseSpecifier(object):
             ...     )
 
             >>> abjad.f(specifier)
-            abjadext.specifiers.InciseSpecifier(
+            abjadext.specifiers.Incise(
                 prefix_counts=[0, 1],
                 prefix_talea=[-1],
                 suffix_counts=[1],
@@ -1032,7 +1032,7 @@ class InciseSpecifier(object):
 
             Divides middle part of every division ``1:1``:
 
-            >>> specifier = rmakers.InciseSpecifier(
+            >>> specifier = rmakers.Incise(
             ...     prefix_talea=[-1],
             ...     prefix_counts=[0, 1],
             ...     suffix_talea=[-1],
@@ -1180,7 +1180,7 @@ class InciseSpecifier(object):
         return self._talea_denominator
 
 
-class InterpolationSpecifier(object):
+class Interpolation(object):
     """
     Interpolation specifier.
     """
@@ -1214,13 +1214,13 @@ class InterpolationSpecifier(object):
 
         ..  container:: example
 
-            >>> specifier = rmakers.InterpolationSpecifier(
+            >>> specifier = rmakers.Interpolation(
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
             ...     )
             >>> abjad.f(specifier)
-            abjadext.specifiers.InterpolationSpecifier(
+            abjadext.specifiers.Interpolation(
                 start_duration=abjad.Duration(1, 4),
                 stop_duration=abjad.Duration(1, 16),
                 written_duration=abjad.Duration(1, 16),
@@ -1235,19 +1235,19 @@ class InterpolationSpecifier(object):
 
         ..  container:: example
 
-            >>> rmakers.InterpolationSpecifier(
+            >>> rmakers.Interpolation(
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
             ...     )
-            InterpolationSpecifier(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
+            Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
 
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 
     ### PUBLIC METHODS ###
 
-    def reverse(self) -> "InterpolationSpecifier":
+    def reverse(self) -> "Interpolation":
         """
         Swaps start duration and stop duration of interpolation specifier.
 
@@ -1255,14 +1255,14 @@ class InterpolationSpecifier(object):
 
             Changes accelerando specifier to ritardando specifier:
 
-            >>> specifier = rmakers.InterpolationSpecifier(
+            >>> specifier = rmakers.Interpolation(
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
             ...     )
             >>> specifier = specifier.reverse()
             >>> abjad.f(specifier)
-            abjadext.specifiers.InterpolationSpecifier(
+            abjadext.specifiers.Interpolation(
                 start_duration=abjad.Duration(1, 16),
                 stop_duration=abjad.Duration(1, 4),
                 written_duration=abjad.Duration(1, 16),
@@ -1272,14 +1272,14 @@ class InterpolationSpecifier(object):
 
             Changes ritardando specifier to accelerando specifier:
 
-            >>> specifier = rmakers.InterpolationSpecifier(
+            >>> specifier = rmakers.Interpolation(
             ...     start_duration=(1, 16),
             ...     stop_duration=(1, 4),
             ...     written_duration=(1, 16),
             ...     )
             >>> specifier = specifier.reverse()
             >>> abjad.f(specifier)
-            abjadext.specifiers.InterpolationSpecifier(
+            abjadext.specifiers.Interpolation(
                 start_duration=abjad.Duration(1, 4),
                 stop_duration=abjad.Duration(1, 16),
                 written_duration=abjad.Duration(1, 16),

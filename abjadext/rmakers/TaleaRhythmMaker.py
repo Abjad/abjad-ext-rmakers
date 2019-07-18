@@ -95,10 +95,10 @@ class TaleaRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *commands: _commands.Command,
-        burnish_specifier: specifiers.BurnishSpecifier = None,
+        burnish_specifier: specifiers.Burnish = None,
         curtail_ties: bool = None,
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.Duration = None,
         extra_counts_per_division: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
         tag: str = None,
@@ -115,7 +115,7 @@ class TaleaRhythmMaker(RhythmMaker):
             assert isinstance(talea, specifiers.Talea), repr(talea)
         self._talea = talea
         if burnish_specifier is not None:
-            assert isinstance(burnish_specifier, specifiers.BurnishSpecifier)
+            assert isinstance(burnish_specifier, specifiers.Burnish)
         self._burnish_specifier = burnish_specifier
         if curtail_ties is not None:
             curtail_ties = bool(curtail_ties)
@@ -327,7 +327,7 @@ class TaleaRhythmMaker(RhythmMaker):
     def _get_burnish_specifier(self):
         if self.burnish_specifier is not None:
             return self.burnish_specifier
-        return specifiers.BurnishSpecifier()
+        return specifiers.Burnish()
 
     def _get_talea(self):
         if self.talea is not None:
@@ -573,9 +573,7 @@ class TaleaRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def burnish_specifier(
-        self
-    ) -> typing.Optional[specifiers.BurnishSpecifier]:
+    def burnish_specifier(self) -> typing.Optional[specifiers.Burnish]:
         r"""
         Gets burnish specifier.
 
@@ -586,7 +584,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     burnish_specifier=rmakers.BurnishSpecifier(
+            ...     burnish_specifier=rmakers.Burnish(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         right_classes=[abjad.Rest],
@@ -655,7 +653,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     abjadext.rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     burnish_specifier=rmakers.BurnishSpecifier(
+            ...     burnish_specifier=rmakers.Burnish(
             ...         left_classes=[abjad.Rest],
             ...         left_counts=[1],
             ...         ),
@@ -724,9 +722,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return self._curtail_ties
 
     @property
-    def duration_specifier(
-        self
-    ) -> typing.Optional[specifiers.DurationSpecifier]:
+    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
         r"""
         Gets duration specifier.
 
@@ -740,7 +736,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.Duration(
             ...         increase_monotonic=False,
             ...         ),
             ...     talea=rmakers.Talea(
@@ -802,7 +798,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.Duration(
             ...         increase_monotonic=True,
             ...         ),
             ...     talea=rmakers.Talea(
@@ -863,7 +859,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.Duration(
             ...         forbidden_note_duration=None,
             ...         ),
             ...     talea=rmakers.Talea(
@@ -920,7 +916,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.DurationSpecifier(
+            ...     duration_specifier=rmakers.Duration(
             ...         forbidden_note_duration=(1, 4),
             ...         ),
             ...     talea=rmakers.Talea(
@@ -1680,7 +1676,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Silences first and last logical ties:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rest(
+            ...     rmakers.force_rest(
             ...         abjad.select().logical_ties().get([0, -1]),
             ...     ),
             ...     rmakers.beam(),
@@ -1746,8 +1742,8 @@ class TaleaRhythmMaker(RhythmMaker):
             ties:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rest(abjad.select().logical_ties()),
-            ...     rmakers.note(
+            ...     rmakers.force_rest(abjad.select().logical_ties()),
+            ...     rmakers.force_note(
             ...         abjad.select().logical_ties().get([0, -1]),
             ...     ),
             ...     rmakers.beam(),
@@ -1807,7 +1803,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Only logical ties 0 and 2 are rested here:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rest(
+            ...     rmakers.force_rest(
             ...         abjad.select().logical_ties().get([0, 2, 12]),
             ...     ),
             ...     rmakers.beam(),
@@ -1945,7 +1941,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #            REGRESSION. Periodic rest commands also respect state.
 #
 #            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-#            ...     rmakers.rest(
+#            ...     rmakers.force_rest(
 #            ...         abjad.select().logical_ties().get([3], 4),
 #            ...     ),
 #            ...     rmakers.beam(),
@@ -3831,7 +3827,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Silences every other output division:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rest(
+            ...     rmakers.force_rest(
             ...         abjad.select().tuplets().get([1], 2),
             ...     ),
             ...     rmakers.beam(),
@@ -3945,7 +3941,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> selector = abjad.select().tuplets().get([0, 2, 7])
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rest(selector),
+            ...     rmakers.force_rest(selector),
             ...     rmakers.rewrite_rest_filled(selector),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
@@ -4070,7 +4066,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> selector = abjad.select().tuplets().get([2], 3)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.rest(selector),
+            ...     rmakers.force_rest(selector),
             ...     rmakers.rewrite_rest_filled(selector),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),

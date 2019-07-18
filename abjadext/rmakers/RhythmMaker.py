@@ -36,7 +36,7 @@ class RhythmMaker(object):
         self,
         *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.Duration = None,
         tag: str = None,
     ) -> None:
         commands = commands or ()
@@ -48,7 +48,7 @@ class RhythmMaker(object):
             assert isinstance(divisions, abjad.Expression)
         self._divisions = divisions
         if duration_specifier is not None:
-            assert isinstance(duration_specifier, specifiers.DurationSpecifier)
+            assert isinstance(duration_specifier, specifiers.Duration)
         self._duration_specifier = duration_specifier
         self._already_cached_state = None
         self._previous_state = abjad.OrderedDict()
@@ -133,7 +133,7 @@ class RhythmMaker(object):
                 self._cache_state(staff, divisions_consumed)
                 self._already_cached_state = True
                 continue
-            elif isinstance(command, _commands.RestCommand):
+            elif isinstance(command, _commands.ForceRestCommand):
                 command(
                     staff,
                     previous_logical_ties_produced=previous_logical_ties_produced,
@@ -170,7 +170,7 @@ class RhythmMaker(object):
     def _get_duration_specifier(self):
         if self.duration_specifier is not None:
             return self.duration_specifier
-        return specifiers.DurationSpecifier()
+        return specifiers.Duration()
 
     def _get_format_specification(self):
         commands = self.commands or []
@@ -264,9 +264,7 @@ class RhythmMaker(object):
         return self._divisions
 
     @property
-    def duration_specifier(
-        self
-    ) -> typing.Optional[specifiers.DurationSpecifier]:
+    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
         """
         Gets duration specifier.
         """

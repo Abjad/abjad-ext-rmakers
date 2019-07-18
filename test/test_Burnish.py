@@ -2,9 +2,9 @@ import abjad
 from abjadext import rmakers
 
 
-def test_BurnishSpecifier_01():
+def test_Burnish_01():
 
-    burnish_specifier = rmakers.BurnishSpecifier(
+    burnish_specifier = rmakers.Burnish(
         left_classes=[abjad.Rest],
         right_classes=[abjad.Rest],
         left_counts=[2],
@@ -66,9 +66,9 @@ def test_BurnishSpecifier_01():
     ), print(format(score))
 
 
-def test_BurnishSpecifier_02():
+def test_Burnish_02():
 
-    burnish_specifier = rmakers.BurnishSpecifier(
+    burnish_specifier = rmakers.Burnish(
         left_classes=[0],
         middle_classes=[abjad.Rest],
         right_classes=[0],
@@ -131,9 +131,9 @@ def test_BurnishSpecifier_02():
     ), print(format(score))
 
 
-def test_BurnishSpecifier_03():
+def test_Burnish_03():
 
-    burnish_specifier = rmakers.BurnishSpecifier(
+    burnish_specifier = rmakers.Burnish(
         left_classes=[0],
         middle_classes=[abjad.Rest],
         right_classes=[0],
@@ -200,9 +200,9 @@ def test_BurnishSpecifier_03():
     ), print(format(score))
 
 
-def test_BurnishSpecifier_04():
+def test_Burnish_04():
 
-    burnish_specifier = rmakers.BurnishSpecifier(
+    burnish_specifier = rmakers.Burnish(
         left_classes=[abjad.Rest],
         right_classes=[abjad.Rest],
         left_counts=[1],

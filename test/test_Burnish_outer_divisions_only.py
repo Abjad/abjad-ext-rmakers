@@ -4,9 +4,9 @@ import sys
 from abjadext import rmakers
 
 
-def test_BurnishSpecifier_outer_divisions_only_01():
+def test_Burnish_outer_divisions_only_01():
 
-    burnish_specifier = rmakers.BurnishSpecifier(
+    burnish_specifier = rmakers.Burnish(
         left_classes=[0],
         middle_classes=[-1],
         right_classes=[0],
@@ -66,9 +66,9 @@ def test_BurnishSpecifier_outer_divisions_only_01():
     ), print(format(score))
 
 
-def test_BurnishSpecifier_outer_divisions_only_02():
+def test_Burnish_outer_divisions_only_02():
 
-    burnish_specifier = rmakers.BurnishSpecifier(
+    burnish_specifier = rmakers.Burnish(
         left_classes=[-1],
         right_classes=[-1],
         left_counts=[1],
@@ -120,9 +120,9 @@ def test_BurnishSpecifier_outer_divisions_only_02():
     ), print(format(score))
 
 
-def test_BurnishSpecifier_outer_divisions_only_03():
+def test_Burnish_outer_divisions_only_03():
 
-    burnish_specifier = rmakers.BurnishSpecifier(
+    burnish_specifier = rmakers.Burnish(
         left_classes=[-1],
         right_classes=[-1],
         left_counts=[1],

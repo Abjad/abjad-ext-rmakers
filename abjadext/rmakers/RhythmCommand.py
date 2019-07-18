@@ -514,12 +514,12 @@ class RhythmCommand(object):
         #        if self._previous_incomplete_last_note():
         #            previous_logical_ties_produced -= 1
         for command in self.commands or []:
-            if isinstance(command, commands.CacheStateCommand):
+            if isinstance(command, _commands.CacheStateCommand):
                 # TODO: restore:
                 #                self._cache_state(staff, divisions_consumed)
                 #                self._already_cached_state = True
                 continue
-            elif isinstance(command, commands.RestCommand):
+            elif isinstance(command, _commands.ForceRestCommand):
                 command(
                     staff,
                     # TODO: restore
