@@ -8,7 +8,7 @@ from . import specifiers as specifiers
 
 class RhythmMaker(object):
     """
-    Abstract rhythm-maker.
+    Rhythm-maker baseclass.
     """
 
     ### CLASS VARIABLES ###

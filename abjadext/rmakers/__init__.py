@@ -6,7 +6,6 @@ from .AccelerandoRhythmMaker import AccelerandoRhythmMaker
 from .EvenDivisionRhythmMaker import EvenDivisionRhythmMaker
 from .IncisedRhythmMaker import IncisedRhythmMaker
 from .NoteRhythmMaker import NoteRhythmMaker
-from .TaleaRhythmMaker import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TupletRhythmMaker import TupletRhythmMaker
 from .RhythmCommand import RhythmCommand
@@ -17,6 +16,7 @@ from .specifiers import BurnishSpecifier
 from .specifiers import DurationSpecifier
 from .specifiers import InciseSpecifier
 from .specifiers import InterpolationSpecifier
+from .specifiers import Talea
 from .commands import Command
 from .commands import BeamCommand
 from .commands import BeamGroupsCommand

@@ -7,10 +7,12 @@ import typing
 
 class Command(object):
     """
-    Command.
+    Command baseclass.
     """
 
     ### CLASS VARIABLES ###
+
+    __documentation_section__ = "Commands"
 
     __slots__ = ("_selector",)
 
@@ -74,7 +76,7 @@ class Command(object):
 
 class BeamGroupsCommand(Command):
     """
-    Beam divisions together command.
+    Beam groups command.
     """
 
     ### CLASS VARIABLES ###
