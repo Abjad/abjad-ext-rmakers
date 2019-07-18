@@ -553,16 +553,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
         )
         self._interpolation_specifiers = interpolation_specifiers
 
-    ### SPECIAL METHODS ###
-
-    def __call__(self, divisions, previous_state=None) -> abjad.Selection:
-        """
-        Calls interpolated rhythm-maker on ``divisions``.
-        """
-        return RhythmMaker.__call__(
-            self, divisions, previous_state=previous_state
-        )
-
     ### PRIVATE METHODS ###
 
     @staticmethod

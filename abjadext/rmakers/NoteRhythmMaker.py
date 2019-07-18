@@ -11,7 +11,7 @@ class NoteRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        Makes notes equal to the duration of input divisions. Adds ties where
+        Makes notes equal to the durations of divisions. Adds ties where
         necessary:
 
         >>> rhythm_maker = rmakers.NoteRhythmMaker()
@@ -45,8 +45,6 @@ class NoteRhythmMaker(RhythmMaker):
                 }
             >>
 
-    Usage follows the two-step configure-once / call-repeatedly pattern shown
-    here.
     """
 
     ### CLASS VARIABLES ###
@@ -54,55 +52,6 @@ class NoteRhythmMaker(RhythmMaker):
     __documentation_section__ = "Rhythm-makers"
 
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
-
-    def __call__(
-        self,
-        divisions: typing.Sequence[abjad.IntegerPair],
-        previous_state: abjad.OrderedDict = None,
-    ) -> abjad.Selection:
-        """
-        Calls note rhythm-maker on ``divisions``.
-
-        ..  container:: example
-
-            Calls rhythm-maker on divisions:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker()
-            >>> divisions = [(5, 8), (3, 8)]
-            >>> rhythm_maker(divisions)
-            Selection([Note("c'2"), Note("c'8"), Note("c'4.")])
-
-        """
-        return RhythmMaker.__call__(
-            self, divisions, previous_state=previous_state
-        )
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats note rhythm-maker.
-
-        ..  container:: example
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker()
-            >>> abjad.f(rhythm_maker)
-            abjadext.rmakers.NoteRhythmMaker()
-
-        """
-        return super().__format__(format_specification=format_specification)
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation.
-
-        ..  container:: example
-
-            >>> rmakers.NoteRhythmMaker()
-            NoteRhythmMaker()
-
-        """
-        return super().__repr__()
 
     ### PRIVATE METHODS ###
 

@@ -108,20 +108,6 @@ class IncisedRhythmMaker(RhythmMaker):
         self._extra_counts_per_division = extra_counts_per_division
         self._replace_rests_with_skips = replace_rests_with_skips
 
-    ### SPECIAL METHODS ###
-
-    def __call__(
-        self,
-        divisions: typing.Sequence[abjad.IntegerPair],
-        previous_state: abjad.OrderedDict = None,
-    ) -> abjad.Selection:
-        """
-        Calls incised rhythm-maker on ``divisions``.
-        """
-        return RhythmMaker.__call__(
-            self, divisions, previous_state=previous_state
-        )
-
     ### PRIVATE METHODS ###
 
     def _get_incise_specifier(self):

@@ -126,79 +126,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
     ### SPECIAL METHODS ###
 
-    def __call__(
-        self,
-        divisions: typing.Sequence[abjad.IntegerPair],
-        previous_state: abjad.OrderedDict = None,
-    ) -> abjad.Selection:
-        """
-        Calls talea rhythm-maker on ``divisions``.
-
-        ..  container:: example
-
-                >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-                ...     rmakers.beam(),
-                ...     talea=rmakers.Talea(
-                ...         counts=[1, 2, 3, 4],
-                ...         denominator=16,
-                ...         ),
-                ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> for tuplet in selection:
-            ...     tuplet
-            Tuplet(Multiplier(1, 1), "c'16 c'8 c'8.")
-            Tuplet(Multiplier(1, 1), "c'4 c'16 c'8 c'16")
-            Tuplet(Multiplier(1, 1), "c'8 c'4")
-            Tuplet(Multiplier(1, 1), "c'16 c'8 c'8. c'8")
-
-        """
-        return RhythmMaker.__call__(
-            self, divisions, previous_state=previous_state
-        )
-
     def __format__(self, format_specification="") -> str:
         """
         Formats talea rhythm-maker.
-
-        ..  container:: example
-
-            Formats talea rhythm-maker:
-
-                >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-                ...     talea=rmakers.Talea(
-                ...         counts=[1, 2, 3, 4],
-                ...         denominator=16,
-                ...         ),
-                ...     )
-
-            >>> abjad.f(rhythm_maker)
-            abjadext.rmakers.TaleaRhythmMaker(
-                talea=abjadext.specifiers.Talea(
-                    counts=[1, 2, 3, 4],
-                    denominator=16,
-                    ),
-                )
-
-        ..  container:: example
-
-            Storage formats talea rhythm-maker:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> abjad.f(rhythm_maker)
-            abjadext.rmakers.TaleaRhythmMaker(
-                talea=abjadext.specifiers.Talea(
-                    counts=[1, 2, 3, 4],
-                    denominator=16,
-                    ),
-                )
 
         ..  container:: example
 
@@ -224,23 +154,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         """
         return super().__format__(format_specification=format_specification)
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation.
-
-        ..  container:: example
-
-            >>> rmakers.TaleaRhythmMaker(
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-            TaleaRhythmMaker(talea=Talea(counts=[1, 2, 3, 4], denominator=16))
-
-        """
-        return super().__repr__()
 
     ### PRIVATE METHODS ###
 
