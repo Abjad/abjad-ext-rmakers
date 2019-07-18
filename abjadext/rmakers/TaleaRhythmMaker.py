@@ -71,11 +71,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-    Follows the configure-once / call-repeatedly pattern shown here.
-
-    Object model of a partially evaluated function. Function accepts a list of
-    divisions as input. Function returns a list of selections as output. Length
-    of input equals length of output.
     """
 
     ### CLASS VARIABLES ###

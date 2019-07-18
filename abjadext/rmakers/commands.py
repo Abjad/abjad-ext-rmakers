@@ -351,7 +351,8 @@ class FeatherBeamCommand(Command):
 
     ### PRIVATE METHODS ###
 
-    def _is_accelerando(self, selection):
+    @staticmethod
+    def _is_accelerando(selection):
         first_leaf = abjad.select(selection).leaf(0)
         last_leaf = abjad.select(selection).leaf(-1)
         first_duration = abjad.inspect(first_leaf).duration()
@@ -360,7 +361,8 @@ class FeatherBeamCommand(Command):
             return True
         return False
 
-    def _is_ritardando(self, selection):
+    @staticmethod
+    def _is_ritardando(selection):
         first_leaf = abjad.select(selection).leaf(0)
         last_leaf = abjad.select(selection).leaf(-1)
         first_duration = abjad.inspect(first_leaf).duration()

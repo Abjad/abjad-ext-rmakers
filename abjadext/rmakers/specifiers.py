@@ -693,7 +693,6 @@ class Interpolation(object):
 
     def __init__(
         self,
-        *,
         start_duration: typing.Tuple[int, int] = (1, 8),
         stop_duration: typing.Tuple[int, int] = (1, 16),
         written_duration: typing.Tuple[int, int] = (1, 16),
