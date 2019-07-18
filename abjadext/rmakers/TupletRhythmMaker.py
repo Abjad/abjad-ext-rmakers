@@ -1,6 +1,6 @@
 import abjad
 import typing
-from . import commands
+from . import commands as _commands
 from . import specifiers
 from .RhythmMaker import RhythmMaker
 
@@ -149,7 +149,7 @@ class TupletRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: commands.Command,
+        *commands: _commands.Command,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
         divisions: abjad.Expression = None,
         duration_specifier: specifiers.DurationSpecifier = None,
@@ -158,7 +158,7 @@ class TupletRhythmMaker(RhythmMaker):
     ) -> None:
         RhythmMaker.__init__(
             self,
-            *specifiers,
+            *commands,
             duration_specifier=duration_specifier,
             divisions=divisions,
             tag=tag,
@@ -803,9 +803,9 @@ class TupletRhythmMaker(RhythmMaker):
         return self._denominator
 
     @property
-    def specifiers(self) -> typing.List[commands.Command]:
+    def commands(self) -> typing.List[_commands.Command]:
         r"""
-        Gets specifiers.
+        Gets commands.
 
         ..  container:: example
 
@@ -2127,7 +2127,7 @@ class TupletRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().specifiers
+        return super().commands
 
     @property
     def tag(self) -> typing.Optional[str]:

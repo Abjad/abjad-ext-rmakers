@@ -1,6 +1,6 @@
 import abjad
 import typing
-from . import commands
+from . import commands as _commands
 from . import specifiers
 from .RhythmMaker import RhythmMaker
 
@@ -130,7 +130,7 @@ class MakerAssignments(object):
     @property
     def assignments(self) -> typing.List[MakerAssignment]:
         """
-        Gets specifiers.
+        Gets assignments.
         """
         return list(self._assignments)
 
@@ -260,16 +260,10 @@ class RhythmCommand(object):
 
     ### CLASS ATTRIBUTES ###
 
-    __slots__ = (
-        "_divisions",
-        "_rhythm_maker",
-        "_specifiers",
-        "_state",
-        "_tag",
-    )
+    __slots__ = ("_divisions", "_rhythm_maker", "_commands", "_state", "_tag")
 
-    # to make sure abjad.new() copies specifiers
-    _positional_arguments_name = "specifiers"
+    # to make sure abjad.new() copies commands
+    _positional_arguments_name = "commands"
 
     _publish_storage_format = True
 
@@ -279,7 +273,7 @@ class RhythmCommand(object):
         self,
         # TODO: change to "*assignments"
         rhythm_maker: RhythmMakerTyping,
-        *specifiers: commands.Command,
+        *commands: _commands.Command,
         divisions: abjad.Expression = None,
         tag: str = None,
     ) -> None:
@@ -288,11 +282,11 @@ class RhythmCommand(object):
         self._divisions = divisions
         self._check_rhythm_maker_input(rhythm_maker)
         self._rhythm_maker = rhythm_maker
-        specifiers = specifiers or ()
-        for specifier in specifiers:
-            assert isinstance(specifier, commands.Command), repr(specifier)
-        specifiers_ = tuple(specifiers)
-        self._specifiers = specifiers_
+        commands = commands or ()
+        for command in commands:
+            assert isinstance(command, _commands.Command), repr(command)
+        commands_ = tuple(commands)
+        self._commands = commands_
         self._state = abjad.OrderedDict()
         if tag is not None:
             assert isinstance(tag, str), repr(tag)
@@ -441,7 +435,7 @@ class RhythmCommand(object):
 
         """
         if abjad.StorageFormatManager.compare_objects(self, argument):
-            return self.specifiers == argument.specifiers
+            return self.commands == argument.commands
         return False
 
     def __hash__(self) -> int:
@@ -461,7 +455,7 @@ class RhythmCommand(object):
 
         ..  container:: example
 
-            REGRESSION. Specifiers appear in format:
+            REGRESSION. Commands appear in format:
 
             >>> command = rmakers.RhythmCommand(
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
@@ -519,21 +513,21 @@ class RhythmCommand(object):
         #        previous_logical_ties_produced = self._previous_logical_ties_produced()
         #        if self._previous_incomplete_last_note():
         #            previous_logical_ties_produced -= 1
-        for specifier in self.specifiers or []:
-            if isinstance(specifier, commands.CacheStateCommand):
+        for command in self.commands or []:
+            if isinstance(command, commands.CacheStateCommand):
                 # TODO: restore:
                 #                self._cache_state(staff, divisions_consumed)
                 #                self._already_cached_state = True
                 continue
-            elif isinstance(specifier, commands.RestCommand):
-                specifier(
+            elif isinstance(command, commands.RestCommand):
+                command(
                     staff,
                     # TODO: restore
                     ###previous_logical_ties_produced=previous_logical_ties_produced,
                     tag=self.tag,
                 )
             else:
-                specifier(staff, tag=self.tag)
+                command(staff, tag=self.tag)
 
     def _check_rhythm_maker_input(self, rhythm_maker):
         prototype = (MakerAssignment, MakerAssignments, RhythmMaker)
@@ -547,7 +541,7 @@ class RhythmCommand(object):
         raise Exception(message)
 
     def _get_format_specification(self):
-        values = [self.rhythm_maker] + self.specifiers
+        values = [self.rhythm_maker] + self.commands
         return abjad.FormatSpecification(
             self, storage_format_args_values=values
         )
@@ -606,13 +600,13 @@ class RhythmCommand(object):
         return self._rhythm_maker
 
     @property
-    def specifiers(self) -> typing.List[commands.Command]:
+    def commands(self) -> typing.List[_commands.Command]:
         """
-        Gets specifiers.
+        Gets commands.
 
         ..  container:: example
 
-            REGRESSION. ``abjad.new()`` copies specifiers:
+            REGRESSION. ``abjad.new()`` copies commands:
 
             >>> command_1 = rmakers.RhythmCommand(
             ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
@@ -644,7 +638,7 @@ class RhythmCommand(object):
             True
 
         """
-        return list(self._specifiers)
+        return list(self._commands)
 
     @property
     def state(self) -> abjad.OrderedDict:

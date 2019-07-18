@@ -1,7 +1,7 @@
 import abjad
 import typing
-from . import commands
-from . import specifiers as rmakers_specifiers
+from . import commands as _commands
+from . import specifiers as specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -661,11 +661,11 @@ class TaleaRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: commands.Command,
-        burnish_specifier: rmakers_specifiers.BurnishSpecifier = None,
+        *commands: _commands.Command,
+        burnish_specifier: specifiers.BurnishSpecifier = None,
         curtail_ties: bool = None,
         divisions: abjad.Expression = None,
-        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.DurationSpecifier = None,
         extra_counts_per_division: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
         tag: str = None,
@@ -673,7 +673,7 @@ class TaleaRhythmMaker(RhythmMaker):
     ) -> None:
         RhythmMaker.__init__(
             self,
-            *specifiers,
+            *commands,
             divisions=divisions,
             duration_specifier=duration_specifier,
             tag=tag,
@@ -682,9 +682,7 @@ class TaleaRhythmMaker(RhythmMaker):
             assert isinstance(talea, Talea), repr(talea)
         self._talea = talea
         if burnish_specifier is not None:
-            assert isinstance(
-                burnish_specifier, rmakers_specifiers.BurnishSpecifier
-            )
+            assert isinstance(burnish_specifier, specifiers.BurnishSpecifier)
         self._burnish_specifier = burnish_specifier
         if curtail_ties is not None:
             curtail_ties = bool(curtail_ties)
@@ -776,7 +774,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            REGRESSION. Specifiers appear in storage format:
+            REGRESSION. Commands appear in storage format:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
@@ -896,7 +894,7 @@ class TaleaRhythmMaker(RhythmMaker):
     def _get_burnish_specifier(self):
         if self.burnish_specifier is not None:
             return self.burnish_specifier
-        return rmakers_specifiers.BurnishSpecifier()
+        return specifiers.BurnishSpecifier()
 
     def _get_talea(self):
         if self.talea is not None:
@@ -1144,7 +1142,7 @@ class TaleaRhythmMaker(RhythmMaker):
     @property
     def burnish_specifier(
         self
-    ) -> typing.Optional[rmakers_specifiers.BurnishSpecifier]:
+    ) -> typing.Optional[specifiers.BurnishSpecifier]:
         r"""
         Gets burnish specifier.
 
@@ -1295,7 +1293,7 @@ class TaleaRhythmMaker(RhythmMaker):
     @property
     def duration_specifier(
         self
-    ) -> typing.Optional[rmakers_specifiers.DurationSpecifier]:
+    ) -> typing.Optional[specifiers.DurationSpecifier]:
         r"""
         Gets duration specifier.
 
@@ -2240,9 +2238,9 @@ class TaleaRhythmMaker(RhythmMaker):
         return super().state
 
     @property
-    def specifiers(self) -> typing.List[commands.Command]:
+    def commands(self) -> typing.List[_commands.Command]:
         r"""
-        Gets specifiers.
+        Gets commands.
 
         ..  container:: example
 
@@ -3520,7 +3518,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            REGRESSION. Specifiers survive new:
+            REGRESSION. Commands survive new:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.extract_trivial(),
@@ -3542,7 +3540,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker == new_rhythm_maker
             True
 
-            REGRESSION. None eliminates specifiers when passed to new:
+            REGRESSION. None eliminates commands when passed to new:
 
             >>> new_rhythm_maker = abjad.new(rhythm_maker, None)
             >>> abjad.f(new_rhythm_maker)
@@ -3553,15 +3551,15 @@ class TaleaRhythmMaker(RhythmMaker):
                     ),
                 )
 
-            >>> new_rhythm_maker.specifiers
+            >>> new_rhythm_maker.commands
             []
 
-            REGRESSION. New allows additional specifiers:
+            REGRESSION. New allows additional commands:
 
-            >>> specifiers = rhythm_maker.specifiers[:]
-            >>> specifier = rmakers.beam()
-            >>> specifiers.insert(0, specifier)
-            >>> new_rhythm_maker = abjad.new(rhythm_maker, *specifiers)
+            >>> commands = rhythm_maker.commands[:]
+            >>> command = rmakers.beam()
+            >>> commands.insert(0, command)
+            >>> new_rhythm_maker = abjad.new(rhythm_maker, *commands)
             >>> abjad.f(new_rhythm_maker)
             abjadext.rmakers.TaleaRhythmMaker(
                 BeamCommand(selector=abjad.select().tuplets()),
@@ -3577,7 +3575,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Working with ``denominator``.
 
             Reduces terms in tuplet ratio to relative primes when no tuplet
-            specifier is given:
+            command is given:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
@@ -3738,7 +3736,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Working with ``diminution``.
             
             Makes diminished tuplets when ``diminution`` is true (or when no
-            tuplet specifier is given):
+            tuplet command is given):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
@@ -3917,7 +3915,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Working with ``trivialize``.
 
-            Leaves trivializable tuplets as-is when no tuplet specifier is
+            Leaves trivializable tuplets as-is when no tuplet command is
             given. The tuplets in measures 2 and 4 can be written as trivial
             tuplets, but they are not:
 
@@ -4198,7 +4196,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Working with ``rewrite_rest_filled``.
 
             Makes rest-filled tuplets when ``rewrite_rest_filled`` is false (or
-            when no tuplet specifier is given):
+            when no tuplet command is given):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
@@ -4761,7 +4759,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #                )
 
         """
-        return super().specifiers
+        return super().commands
 
     @property
     def tag(self) -> typing.Optional[str]:

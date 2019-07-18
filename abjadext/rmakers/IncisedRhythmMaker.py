@@ -1,7 +1,7 @@
 import abjad
 import typing
-from . import commands
-from . import specifiers as rmakers_specifiers
+from . import commands as _commands
+from . import specifiers as specifiers
 from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
 
@@ -79,22 +79,22 @@ class IncisedRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: commands.Command,
+        *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
-        incise_specifier: rmakers_specifiers.InciseSpecifier = None,
+        incise_specifier: specifiers.InciseSpecifier = None,
         replace_rests_with_skips: bool = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
-            *specifiers,
+            *commands,
             divisions=divisions,
             duration_specifier=duration_specifier,
             tag=tag,
         )
-        prototype = (rmakers_specifiers.InciseSpecifier, type(None))
+        prototype = (specifiers.InciseSpecifier, type(None))
         assert isinstance(incise_specifier, prototype)
         self._incise_specifier = incise_specifier
         if extra_counts_per_division is not None:
@@ -127,7 +127,7 @@ class IncisedRhythmMaker(RhythmMaker):
     def _get_incise_specifier(self):
         if self.incise_specifier is not None:
             return self.incise_specifier
-        return rmakers_specifiers.InciseSpecifier()
+        return specifiers.InciseSpecifier()
 
     def _make_division_incised_numeric_map(
         self,
@@ -395,7 +395,7 @@ class IncisedRhythmMaker(RhythmMaker):
     @property
     def duration_specifier(
         self
-    ) -> typing.Optional[rmakers_specifiers.DurationSpecifier]:
+    ) -> typing.Optional[specifiers.DurationSpecifier]:
         r"""
         Gets duration specifier.
 
@@ -578,9 +578,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def incise_specifier(
-        self
-    ) -> typing.Optional[rmakers_specifiers.InciseSpecifier]:
+    def incise_specifier(self) -> typing.Optional[specifiers.InciseSpecifier]:
         r"""
         Gets incise specifier.
 
@@ -871,9 +869,9 @@ class IncisedRhythmMaker(RhythmMaker):
         return self._replace_rests_with_skips
 
     @property
-    def specifiers(self) -> typing.List[commands.Command]:
+    def commands(self) -> typing.List[_commands.Command]:
         r"""
-        Gets specifiers.
+        Gets commands.
 
         ..  container:: example
 
@@ -1431,7 +1429,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().specifiers
+        return super().commands
 
     @property
     def tag(self) -> typing.Optional[str]:

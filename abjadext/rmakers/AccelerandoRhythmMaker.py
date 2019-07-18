@@ -1,8 +1,8 @@
 import abjad
 import math
 import typing
-from . import commands
-from . import specifiers as rmakers_specifiers
+from . import commands as _commands
+from . import specifiers as specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -536,17 +536,17 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: commands.Command,
+        *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.DurationSpecifier = None,
         interpolation_specifiers: typing.Sequence[
-            rmakers_specifiers.InterpolationSpecifier
+            specifiers.InterpolationSpecifier
         ] = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
-            *specifiers,
+            *commands,
             divisions=divisions,
             duration_specifier=duration_specifier,
             tag=tag,
@@ -580,18 +580,18 @@ class AccelerandoRhythmMaker(RhythmMaker):
             selection[-1].multiplier = multiplier
 
     def _get_interpolation_specifiers(self):
-        specifiers = self.interpolation_specifiers
-        if specifiers is None:
-            specifiers = abjad.CyclicTuple([InterpolationSpecifier()])
-        elif isinstance(specifiers, rmakers_specifiers.InterpolationSpecifier):
-            specifiers = abjad.CyclicTuple([specifiers])
+        specifiers_ = self.interpolation_specifiers
+        if specifiers_ is None:
+            specifiers_ = abjad.CyclicTuple([InterpolationSpecifier()])
+        elif isinstance(specifiers_, specifiers.InterpolationSpecifier):
+            specifiers_ = abjad.CyclicTuple([specifiers_])
         else:
-            specifiers = abjad.CyclicTuple(specifiers)
+            specifiers_ = abjad.CyclicTuple(specifiers_)
         string = "divisions_consumed"
         divisions_consumed = self.previous_state.get(string, 0)
-        specifiers = abjad.sequence(specifiers).rotate(n=-divisions_consumed)
-        specifiers = abjad.CyclicTuple(specifiers)
-        return specifiers
+        specifiers_ = abjad.sequence(specifiers_).rotate(n=-divisions_consumed)
+        specifiers_ = abjad.CyclicTuple(specifiers_)
+        return specifiers_
 
     @staticmethod
     def _interpolate_cosine(y1, y2, mu) -> float:
@@ -872,9 +872,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
     @property
     def interpolation_specifiers(
         self
-    ) -> typing.Optional[
-        typing.Sequence[rmakers_specifiers.InterpolationSpecifier]
-    ]:
+    ) -> typing.Optional[typing.Sequence[specifiers.InterpolationSpecifier]]:
         r"""
         Gets interpolation specifier.
 
@@ -1550,9 +1548,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return self._interpolation_specifiers
 
     @property
-    def specifiers(self) -> typing.List[commands.Command]:
+    def commands(self) -> typing.List[_commands.Command]:
         r"""
-        Gets specifiers.
+        Gets commands.
 
         ..  container:: example
 
@@ -1832,15 +1830,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            REGRESSION. New preserves specifiers.
+            REGRESSION. New preserves commands.
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.force_fraction()
             ... )
-            >>> rhythm_maker.specifiers
+            >>> rhythm_maker.commands
             [ForceFractionCommand()]
 
-            >>> abjad.new(rhythm_maker).specifiers
+            >>> abjad.new(rhythm_maker).commands
             [ForceFractionCommand()]
 
         ..  container:: example
@@ -4167,7 +4165,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().specifiers
+        return super().commands
 
     @property
     def state(self) -> abjad.OrderedDict:

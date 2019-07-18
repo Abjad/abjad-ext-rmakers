@@ -2,8 +2,8 @@ import abjad
 import collections
 import typing
 from abjad.top.new import new
-from . import commands
-from . import specifiers as rmakers_specifiers
+from . import commands as _commands
+from . import specifiers as specifiers
 
 
 class RhythmMaker(object):
@@ -20,13 +20,13 @@ class RhythmMaker(object):
         "_divisions",
         "_duration_specifier",
         "_previous_state",
-        "_specifiers",
+        "_commands",
         "_state",
         "_tag",
     )
 
-    # to make sure abjad.new() copies specifiers
-    _positional_arguments_name = "specifiers"
+    # to make sure abjad.new() copies commands
+    _positional_arguments_name = "commands"
 
     _publish_storage_format = True
 
@@ -34,23 +34,21 @@ class RhythmMaker(object):
 
     def __init__(
         self,
-        *specifiers: commands.Command,
+        *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.DurationSpecifier = None,
         tag: str = None,
     ) -> None:
-        specifiers = specifiers or ()
-        for specifier in specifiers:
-            assert isinstance(specifier, commands.Command), repr(specifier)
-        specifiers_ = tuple(specifiers)
-        self._specifiers = specifiers_
+        commands = commands or ()
+        for command in commands:
+            assert isinstance(command, _commands.Command), repr(command)
+        commands_ = tuple(commands)
+        self._commands = commands_
         if divisions is not None:
             assert isinstance(divisions, abjad.Expression)
         self._divisions = divisions
         if duration_specifier is not None:
-            assert isinstance(
-                duration_specifier, rmakers_specifiers.DurationSpecifier
-            )
+            assert isinstance(duration_specifier, specifiers.DurationSpecifier)
         self._duration_specifier = duration_specifier
         self._already_cached_state = None
         self._previous_state = abjad.OrderedDict()
@@ -130,19 +128,19 @@ class RhythmMaker(object):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
-        for specifier in self.specifiers or []:
-            if isinstance(specifier, commands.CacheStateCommand):
+        for command in self.commands or []:
+            if isinstance(command, _commands.CacheStateCommand):
                 self._cache_state(staff, divisions_consumed)
                 self._already_cached_state = True
                 continue
-            elif isinstance(specifier, commands.RestCommand):
-                specifier(
+            elif isinstance(command, _commands.RestCommand):
+                command(
                     staff,
                     previous_logical_ties_produced=previous_logical_ties_produced,
                     tag=self.tag,
                 )
             else:
-                specifier(staff, tag=self.tag)
+                command(staff, tag=self.tag)
 
     def _cache_state(self, staff, divisions_consumed):
         music_voice = staff["MusicVoice"]
@@ -172,12 +170,12 @@ class RhythmMaker(object):
     def _get_duration_specifier(self):
         if self.duration_specifier is not None:
             return self.duration_specifier
-        return rmakers_specifiers.DurationSpecifier()
+        return specifiers.DurationSpecifier()
 
     def _get_format_specification(self):
-        specifiers = self.specifiers or []
+        commands = self.commands or []
         return abjad.FormatSpecification(
-            self, storage_format_args_values=specifiers
+            self, storage_format_args_values=commands
         )
 
     def _make_music(self, divisions):
@@ -268,7 +266,7 @@ class RhythmMaker(object):
     @property
     def duration_specifier(
         self
-    ) -> typing.Optional[rmakers_specifiers.DurationSpecifier]:
+    ) -> typing.Optional[specifiers.DurationSpecifier]:
         """
         Gets duration specifier.
         """
@@ -282,11 +280,11 @@ class RhythmMaker(object):
         return self._previous_state
 
     @property
-    def specifiers(self) -> typing.List[commands.Command]:
+    def commands(self) -> typing.List[_commands.Command]:
         """
-        Gets specifiers.
+        Gets commands.
         """
-        return list(self._specifiers)
+        return list(self._commands)
 
     @property
     def state(self) -> abjad.OrderedDict:

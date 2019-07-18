@@ -1,8 +1,8 @@
 import abjad
 import math
 import typing
-from . import commands
-from . import specifiers as rmakers_specifiers
+from . import commands as _commands
+from . import specifiers as specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -30,18 +30,18 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: commands.Command,
-        burnish_specifier: rmakers_specifiers.BurnishSpecifier = None,
+        *commands: _commands.Command,
+        burnish_specifier: specifiers.BurnishSpecifier = None,
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         divisions: abjad.Expression = None,
-        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
-            *specifiers,
+            *commands,
             divisions=divisions,
             duration_specifier=duration_specifier,
             tag=tag,
@@ -61,9 +61,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             extra_counts_per_division = tuple(extra_counts_per_division)
         self._extra_counts_per_division = extra_counts_per_division
         if burnish_specifier is not None:
-            assert isinstance(
-                burnish_specifier, rmakers_specifiers.BurnishSpecifier
-            )
+            assert isinstance(burnish_specifier, specifiers.BurnishSpecifier)
         self._burnish_specifier = burnish_specifier
         extra_counts_per_division = extra_counts_per_division or (0,)
         self._denominator = denominator
@@ -517,7 +515,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     @property
     def burnish_specifier(
         self
-    ) -> typing.Optional[rmakers_specifiers.BurnishSpecifier]:
+    ) -> typing.Optional[specifiers.BurnishSpecifier]:
         r"""
         Gets burnish specifier.
 
@@ -2235,9 +2233,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def specifiers(self) -> typing.List[commands.Command]:
+    def commands(self) -> typing.List[_commands.Command]:
         r"""
-        Gets specifiers.
+        Gets commands.
 
         ..  container:: example
 
@@ -3086,7 +3084,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().specifiers
+        return super().commands
 
     @property
     def state(self) -> abjad.OrderedDict:

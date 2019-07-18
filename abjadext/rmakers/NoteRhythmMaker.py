@@ -1,7 +1,7 @@
 import abjad
 import typing
-from . import commands
-from . import specifiers as rmakers_specifiers
+from . import commands as _commands
+from . import specifiers as specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -59,23 +59,21 @@ class NoteRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *specifiers: commands.Command,
-        burnish_specifier: rmakers_specifiers.BurnishSpecifier = None,
+        *commands: _commands.Command,
+        burnish_specifier: specifiers.BurnishSpecifier = None,
         divisions: abjad.Expression = None,
-        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
+        duration_specifier: specifiers.DurationSpecifier = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
-            *specifiers,
+            *commands,
             divisions=divisions,
             duration_specifier=duration_specifier,
             tag=tag,
         )
         if burnish_specifier is not None:
-            assert isinstance(
-                burnish_specifier, rmakers_specifiers.BurnishSpecifier
-            )
+            assert isinstance(burnish_specifier, specifiers.BurnishSpecifier)
         self._burnish_specifier = burnish_specifier
 
     ### SPECIAL METHODS ###
@@ -218,7 +216,7 @@ class NoteRhythmMaker(RhythmMaker):
     @property
     def burnish_specifier(
         self
-    ) -> typing.Optional[rmakers_specifiers.BurnishSpecifier]:
+    ) -> typing.Optional[specifiers.BurnishSpecifier]:
         r"""
         Gets burnish specifier.
 
@@ -469,7 +467,7 @@ class NoteRhythmMaker(RhythmMaker):
     @property
     def duration_specifier(
         self
-    ) -> typing.Optional[rmakers_specifiers.DurationSpecifier]:
+    ) -> typing.Optional[specifiers.DurationSpecifier]:
         r"""
         Gets duration specifier.
 
@@ -594,9 +592,9 @@ class NoteRhythmMaker(RhythmMaker):
         return super().duration_specifier
 
     @property
-    def specifiers(self) -> typing.List[commands.Command]:
+    def commands(self) -> typing.List[_commands.Command]:
         r"""
-        Gets specifiers.
+        Gets commands.
 
         ..  container:: example
 
@@ -1245,7 +1243,7 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().specifiers
+        return super().commands
 
     @property
     def tag(self):
