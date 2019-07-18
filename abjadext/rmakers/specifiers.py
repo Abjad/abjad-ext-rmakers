@@ -1373,3 +1373,17 @@ class Talea(object):
             denominator=self.denominator,
             preamble=preamble_,
         )
+
+
+### FACTORY FUNCTIONS ###
+
+
+def interpolate(
+    start_duration: abjad.DurationTyping,
+    stop_duration: abjad.DurationTyping,
+    written_duration: abjad.DurationTyping,
+) -> Interpolation:
+    """
+    Makes interpolation.
+    """
+    return Interpolation(start_duration, stop_duration, written_duration)

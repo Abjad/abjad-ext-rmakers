@@ -8,6 +8,9 @@ RhythmMakerTyping = typing.Union[
 ]
 
 
+### CLASSES ###
+
+
 class MakerAssignment(object):
     """
     Maker assignment.
@@ -652,3 +655,25 @@ class RhythmCommand(object):
         Gets tag.
         """
         return self._tag
+
+
+### FACTORY FUNCTIONS ###
+
+
+def rhythm(
+    # TODO: change to "*assignments"
+    rhythm_maker: RhythmMakerTyping,
+    *commands: _commands.Command,
+    divisions: abjad.Expression = None,
+    tag: str = None,
+):
+    """
+    Makes rhythm command.
+    """
+    return RhythmCommand(
+        # TODO: change to "*assignments"
+        rhythm_maker,
+        *commands,
+        divisions=divisions,
+        tag=tag,
+    )

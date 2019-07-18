@@ -17,7 +17,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
         ...     rmakers.feather_beam(),
         ...     rmakers.duration_bracket(),
-        ...     interpolations=rmakers.Interpolation((1, 8), (1, 20), (1, 16)),
+        ...     interpolations=rmakers.interpolate((1, 8), (1, 20), (1, 16)),
         ...     )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -258,7 +258,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
         ...     rmakers.feather_beam(),
         ...     rmakers.duration_bracket(),
-        ...     interpolations=rmakers.Interpolation((1, 20), (1, 8), (1, 16)),
+        ...     interpolations=rmakers.interpolate((1, 20), (1, 8), (1, 16)),
         ...     )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -836,7 +836,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
-            ...     interpolations=rmakers.Interpolation(
+            ...     interpolations=rmakers.interpolate(
             ...         (1, 8), (1, 20), (1, 16)
             ...     ),
             ... )
@@ -1068,7 +1068,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.beam_groups(abjad.select().tuplets()),
             ...     rmakers.duration_bracket(),
-            ...     interpolations=rmakers.Interpolation(
+            ...     interpolations=rmakers.interpolate(
             ...         (1, 8), (1, 20), (1, 16)
             ...     ),
             ... )
@@ -1351,12 +1351,10 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.duration_bracket(),
             ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
             ...     rmakers.feather_beam(),
-            ...     interpolations=rmakers.Interpolation(
-            ...         start_duration=(1, 8),
-            ...         stop_duration=(1, 20),
-            ...         written_duration=(1, 16),
-            ...         ),
-            ...     )
+            ...     interpolations=rmakers.interpolate(
+            ...         (1, 8), (1, 20), (1, 16)
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
@@ -1602,12 +1600,10 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.duration_bracket(),
             ...     rmakers.tie(tuplets.map(last_leaf)),
             ...     rmakers.feather_beam(),
-            ...     interpolations=rmakers.Interpolation(
-            ...         start_duration=(1, 8),
-            ...         stop_duration=(1, 20),
-            ...         written_duration=(1, 16),
-            ...         ),
-            ...     )
+            ...     interpolations=rmakers.interpolate(
+            ...         (1, 8), (1, 20), (1, 16)
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
@@ -1854,8 +1850,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         ),
             ...     rmakers.duration_bracket(),
             ...     interpolations=[
-            ...         rmakers.Interpolation((1, 8), (1, 20), (1, 16)),
-            ...         rmakers.Interpolation((1, 20), (1, 8), (1, 16)),
+            ...         rmakers.interpolate((1, 8), (1, 20), (1, 16)),
+            ...         rmakers.interpolate((1, 20), (1, 8), (1, 16)),
             ...         ],
             ...     )
 
@@ -2111,12 +2107,10 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(),
-            ...     interpolations=rmakers.Interpolation(
-            ...         start_duration=(1, 8),
-            ...         stop_duration=(1, 20),
-            ...         written_duration=(1, 16),
-            ...         ),
-            ...     )
+            ...     interpolations=rmakers.interpolate(
+            ...         (1, 8), (1, 20), (1, 16)
+            ...     ),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
@@ -2269,8 +2263,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.feather_beam(),
             ...     rmakers.duration_bracket(),
             ...     interpolations=[
-            ...         rmakers.Interpolation((1, 8), (1, 20), (1, 16)),
-            ...         rmakers.Interpolation((1, 20), (1, 8), (1, 16)),
+            ...         rmakers.interpolate((1, 8), (1, 20), (1, 16)),
+            ...         rmakers.interpolate((1, 20), (1, 8), (1, 16)),
             ...         ],
             ...     )
 
@@ -2515,7 +2509,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.feather_beam(),
             ...     rmakers.duration_bracket(),
             ...     rmakers.extract_trivial(),
-            ...     interpolations=rmakers.Interpolation(
+            ...     interpolations=rmakers.interpolate(
             ...         (1, 8), (1, 20), (1, 16)
             ...     ),
             ... )
@@ -2671,8 +2665,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.feather_beam(),
             ...     rmakers.duration_bracket(),
             ...     interpolations=[
-            ...         rmakers.Interpolation((1, 8), (1, 20), (1, 16)),
-            ...         rmakers.Interpolation((1, 20), (1, 8), (1, 16)),
+            ...         rmakers.interpolate((1, 8), (1, 20), (1, 16)),
+            ...         rmakers.interpolate((1, 20), (1, 8), (1, 16)),
             ...     ],
             ... )
 
@@ -3261,7 +3255,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.feather_beam(),
             ...     rmakers.duration_bracket(),
-            ...     interpolations=rmakers.Interpolation(
+            ...     interpolations=rmakers.interpolate(
             ...         (1, 8), (1, 20), (1, 16)
             ...     ),
             ...     tag='ACCELERANDO_RHYTHM_MAKER',
