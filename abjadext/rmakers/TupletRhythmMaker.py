@@ -2144,6 +2144,60 @@ class TupletRhythmMaker(RhythmMaker):
                     }
                 >>
 
+        ..  container:: example
+
+            Makes length-1 tuplets:
+
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(tuplet_ratios=[(1,)])
+
+            >>> divisions = [(1, 5), (1, 4), (1, 6), (7, 9)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/5
+                        s1 * 1/5
+                        \time 1/4
+                        s1 * 1/4
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/6
+                        s1 * 1/6
+                        #(ly:expect-warning "strange time signature found")
+                        \time 7/9
+                        s1 * 7/9
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 4/5 {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 2/3 {
+                            c'4
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 8/9 {
+                            c'2..
+                        }
+                    }
+                >>
+
         """
         if self._tuplet_ratios:
             return list(self._tuplet_ratios)
