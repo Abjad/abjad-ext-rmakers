@@ -217,197 +217,6 @@ class NoteRhythmMaker(RhythmMaker):
     def burnish_specifier(self) -> typing.Optional[specifiers.Burnish]:
         r"""
         Gets burnish specifier.
-
-        ..  container:: example
-
-            Burnishes nothing:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker()
-
-            >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 5/8
-                        s1 * 5/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                        c'4
-                        c'2
-                        ~
-                        c'8
-                    }
-                >>
-
-        ..  container:: example
-
-            Forces leaves of first division to be rests:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     burnish_specifier=rmakers.Burnish(
-            ...         left_classes=[abjad.Rest],
-            ...         left_counts=[1],
-            ...         outer_divisions_only=True,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 5/8
-                        s1 * 5/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        r8
-                        c'4
-                        c'4
-                        c'2
-                        ~
-                        c'8
-                    }
-                >>
-
-        ..  container:: example
-
-            Forces leaves of first two divisions to be rests:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     burnish_specifier=rmakers.Burnish(
-            ...         left_classes=[abjad.Rest],
-            ...         left_counts=[2],
-            ...         outer_divisions_only=True,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 5/8
-                        s1 * 5/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        r8
-                        r4
-                        c'4
-                        c'2
-                        ~
-                        c'8
-                    }
-                >>
-
-        ..  container:: example
-
-            Forces leaves of first and last divisions to rests:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     burnish_specifier=rmakers.Burnish(
-            ...         left_classes=[abjad.Rest],
-            ...         left_counts=[1],
-            ...         right_classes=[abjad.Rest],
-            ...         right_counts=[1],
-            ...         outer_divisions_only=True,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 5/8
-                        s1 * 5/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        r8
-                        c'4
-                        c'4
-                        r2
-                        r8
-                    }
-                >>
-
-        ..  note:: Currently only works when ``outer_divisions_only`` is true.
-
         """
         return self._burnish_specifier
 
@@ -1059,6 +868,139 @@ class NoteRhythmMaker(RhythmMaker):
                         \times 8/7 {
                             c'4.
                         }
+                    }
+                >>
+
+        ..  container:: example
+
+            Forces rest in logical tie 0:
+
+            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            ...     rmakers.force_rest(abjad.select().logical_ties()[0]),
+            ...     )
+
+            >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        r8
+                        c'4
+                        c'4
+                        c'2
+                        ~
+                        c'8
+                    }
+                >>
+
+        ..  container:: example
+
+            Forces rests in first two logical ties:
+
+            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            ...     rmakers.force_rest(abjad.select().logical_ties()[:2]),
+            ...     )
+
+            >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        r8
+                        r4
+                        c'4
+                        c'2
+                        ~
+                        c'8
+                    }
+                >>
+
+        ..  container:: example
+
+            Forces rests in first and last logical ties:
+
+            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            ...     rmakers.force_rest(
+            ...         abjad.select().logical_ties().get([0, -1])
+            ...     ),
+            ... )
+
+            >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 2/8
+                        s1 * 1/4
+                        \time 2/8
+                        s1 * 1/4
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        r2
+                        r8
+                        c'4
+                        c'4
+                        r2
+                        r8
                     }
                 >>
 

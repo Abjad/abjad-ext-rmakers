@@ -576,141 +576,6 @@ class TaleaRhythmMaker(RhythmMaker):
     def burnish_specifier(self) -> typing.Optional[specifiers.Burnish]:
         r"""
         Gets burnish specifier.
-
-        ..  container:: example
-
-            Forces the first leaf and the last two leaves to be rests:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     burnish_specifier=rmakers.Burnish(
-            ...         left_classes=[abjad.Rest],
-            ...         left_counts=[1],
-            ...         right_classes=[abjad.Rest],
-            ...         right_counts=[2],
-            ...         outer_divisions_only=True,
-            ...         ),
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        ]
-                        r8.
-                        r8
-                    }
-                >>
-
-        ..  container:: example
-
-            Forces the first leaf of every division to be a rest:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     abjadext.rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     burnish_specifier=rmakers.Burnish(
-            ...         left_classes=[abjad.Rest],
-            ...         left_counts=[1],
-            ...         ),
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        r4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                        r8
-                        c'4
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        c'8
-                        ]
-                    }
-                >>
-
         """
         return self._burnish_specifier
 
@@ -3234,6 +3099,135 @@ class TaleaRhythmMaker(RhythmMaker):
 #                    ('talea_weight_consumed', 63),
 #                    ]
 #                )
+
+        ..  container:: example
+
+            Forces the first leaf and the last two leaves to be rests:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.force_rest(
+            ...         abjad.select().leaves().get([0, -2, -1])
+            ...     ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        ]
+                        r8.
+                        r8
+                    }
+                >>
+
+        ..  container:: example
+
+            Forces rest at last leaf of every tuplet:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.force_rest(
+            ...         abjad.select().tuplets().map(abjad.select().leaf(0))
+            ...     ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        r16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                        r4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                        r8
+                        c'4
+                        r16
+                        c'8
+                        [
+                        c'8.
+                        c'8
+                        ]
+                    }
+                >>
 
         """
         return super().commands

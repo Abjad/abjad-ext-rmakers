@@ -528,7 +528,7 @@ class ForceNoteCommand(Command):
 
         Changes logical ties 1 and 2 to notes:
 
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
         ...     rmakers.force_rest(abjad.select().leaves()),
         ...     rmakers.force_note(abjad.select().logical_ties()[1:3]),
         ... )
@@ -569,7 +569,7 @@ class ForceNoteCommand(Command):
 
         Sustains logical ties -1 and -2 to notes:
 
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
         ...     rmakers.force_rest(abjad.select().leaves()),
         ...     rmakers.force_note(abjad.select().logical_ties()[-2:]),
         ... )
@@ -610,7 +610,7 @@ class ForceNoteCommand(Command):
 
         Changes patterned selection of leaves to notes:
 
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
         ...     rmakers.force_rest(abjad.select().leaves()),
         ...     rmakers.force_note(abjad.select().logical_ties()[1:-1]),
         ... )
@@ -652,7 +652,7 @@ class ForceNoteCommand(Command):
         Changes patterned selection of leave to notes. Works inverted composite
         pattern:
 
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
         ...     rmakers.force_rest(abjad.select().leaves()),
         ...     rmakers.force_note(abjad.select().logical_ties().get([0, -1])),
         ... )
@@ -754,7 +754,7 @@ class ForceRestCommand(Command):
 
         Changes logical ties 1 and 2 to rests:
 
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
         ...     rmakers.force_rest(abjad.select().logical_ties()[1:3]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
@@ -794,7 +794,7 @@ class ForceRestCommand(Command):
 
         Changes logical ties -1 and -2 to rests:
 
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
         ...     rmakers.force_rest(abjad.select().logical_ties()[-2:]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
@@ -834,7 +834,7 @@ class ForceRestCommand(Command):
 
         Changes patterned selection of logical ties to rests:
 
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
         ...     rmakers.force_rest(abjad.select().logical_ties()[1:-1]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
@@ -875,7 +875,7 @@ class ForceRestCommand(Command):
         Changes patterned selection of logical ties to rests. Works with
         inverted composite pattern:
 
-        >>> rhythm_maker = abjadext.rmakers.NoteRhythmMaker(
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
         ...     rmakers.force_rest(
         ...         abjad.select().logical_ties().get([0, -1]),
         ...     ),
