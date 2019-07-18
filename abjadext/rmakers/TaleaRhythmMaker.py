@@ -715,958 +715,6 @@ class TaleaRhythmMaker(RhythmMaker):
         return self._burnish_specifier
 
     @property
-    def curtail_ties(self) -> typing.Optional[bool]:
-        """
-        Deprecated: included only for backwards compatibility.
-        """
-        return self._curtail_ties
-
-    @property
-    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
-        r"""
-        Gets duration specifier.
-
-        Several duration specifier configurations are available.
-
-        ..  container:: example
-
-            Spells nonassignable durations with monontonically decreasing
-            durations:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         increase_monotonic=False,
-            ...         ),
-            ...     talea=rmakers.Talea(
-            ...         counts=[5],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                    }
-                >>
-
-        ..  container:: example
-
-            Spells nonassignable durations with monontonically increasing
-            durations:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         increase_monotonic=True,
-            ...         ),
-            ...     talea=rmakers.Talea(
-            ...         counts=[5],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                    }
-                >>
-
-        ..  container:: example
-
-            Forbids no durations:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         forbidden_note_duration=None,
-            ...         ),
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 1, 1, 1, 4, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 4), (3, 4)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'4
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'4
-                        c'4
-                    }
-                >>
-
-        ..  container:: example
-
-            Forbids durations equal to ``1/4`` or greater:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         forbidden_note_duration=(1, 4),
-            ...         ),
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 1, 1, 1, 4, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 4), (3, 4)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'8
-                        ~
-                        c'8
-                        c'8
-                        ~
-                        c'8
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'8
-                        ~
-                        c'8
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }
-                >>
-
-            Rewrites forbidden durations with smaller durations tied together.
-
-        ..  container:: example
-
-            Rewrites meter:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     rmakers.rewrite_meter(),
-            ...     talea=rmakers.Talea(
-            ...         counts=[5, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 4), (3, 4), (3, 4)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        [ %! rmakers.RewriteMeterCommand.__call__
-                        c'8.
-                        ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
-                        c'16
-                        [ %! rmakers.RewriteMeterCommand.__call__
-                        c'8.
-                        ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
-                        c'8
-                        [ %! rmakers.RewriteMeterCommand.__call__
-                        c'8
-                        ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
-                        c'8
-                        [ %! rmakers.RewriteMeterCommand.__call__
-                        c'8
-                        ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
-                        c'8.
-                        [ %! rmakers.RewriteMeterCommand.__call__
-                        c'16
-                        ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
-                        c'8.
-                        [ %! rmakers.RewriteMeterCommand.__call__
-                        c'16
-                        ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
-                        c'4
-                        c'4
-                    }
-                >>
-
-        """
-        return super().duration_specifier
-
-    @property
-    def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
-        r"""
-        Gets extra counts per division.
-
-        ..  container:: example
-
-            No extra counts per division:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'8
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Adds one extra count to every other division:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 1],
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \times 8/9 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'8
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            c'4
-                            c'16
-                        }
-                        \times 8/9 {
-                            c'8
-                            [
-                            c'8.
-                            ]
-                            c'4
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Adds two extra counts to every other division:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 2],
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \times 4/5 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'16
-                            [
-                            c'16
-                            ~
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            [
-                            c'8.
-                            ]
-                            c'4
-                            c'16
-                            [
-                            c'16
-                            ]
-                        }
-                    }
-                >>
-
-            The duration of each added count equals the duration
-            of each count in the rhythm-maker's input talea.
-
-        ..  container:: example
-
-            Removes one count from every other division:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, -1],
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/7 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/7 {
-                            c'16
-                            [
-                            c'16
-                            c'8
-                            c'8.
-                            ]
-                        }
-                    }
-                >>
-
-        """
-        if self._extra_counts_per_division:
-            return list(self._extra_counts_per_division)
-        else:
-            return None
-
-    @property
-    def read_talea_once_only(self) -> typing.Optional[bool]:
-        r"""
-        Is true when rhythm-maker reads talea once only.
-
-        ..  container:: example
-
-            Reads talea cyclically:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ~
-                        ]
-                        c'16
-                        [
-                        c'8.
-                        c'8
-                        ~
-                        ]
-                        c'8
-                        [
-                        c'16
-                        c'8
-                        c'16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Reads talea once only:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     read_talea_once_only=True,
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 2, 3, 4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            Calling rhythm_maker on these divisions raises an exception because talea
-            is too short to read once only:
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> rhythm_maker(divisions)
-            Traceback (most recent call last):
-                ...
-            Exception: () + (1, 2, 3, 4) is too short to read [6, 6, 6, 6] once.
-
-        Set to true to ensure talea is long enough to cover all divisions
-        without repeating.
-
-        Provides way of using talea noncyclically when, for example,
-        interpolating from short durations to long durations.
-        """
-        return self._read_talea_once_only
-
-    @property
-    def state(self) -> abjad.OrderedDict:
-        r"""
-        Gets state dictionary.
-
-        ..  container:: example
-
-            Consumes 4 divisions and 31 counts:
-
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[0, 1, 2],
-            ...     talea=rmakers.Talea(
-            ...         counts=[4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                        c'16
-                        c'4
-                        c'8.
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 4),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 8),
-                    ('talea_weight_consumed', 31),
-                    ]
-                )
-
-            Advances 4 divisions and 31 counts; then consumes another 4
-            divisions and 31 counts:
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                            ~
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'4
-                        }
-                        c'4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 8),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 16),
-                    ('talea_weight_consumed', 63),
-                    ]
-                )
-
-            Advances 8 divisions and 62 counts; then consumes 4 divisions and
-            31 counts:
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                        c'16
-                        c'4
-                        c'8.
-                        ~
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            c'4
-                            c'8
-                            ~
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'4
-                        }
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 12),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 24),
-                    ('talea_weight_consumed', 96),
-                    ]
-                )
-
-
-        """
-        return super().state
-
-    @property
     def commands(self) -> typing.List[_commands.Command]:
         r"""
         Gets commands.
@@ -4189,6 +3237,958 @@ class TaleaRhythmMaker(RhythmMaker):
 
         """
         return super().commands
+
+    @property
+    def curtail_ties(self) -> typing.Optional[bool]:
+        """
+        Deprecated: included only for backwards compatibility.
+        """
+        return self._curtail_ties
+
+    @property
+    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
+        r"""
+        Gets duration specifier.
+
+        Several duration specifier configurations are available.
+
+        ..  container:: example
+
+            Spells nonassignable durations with monontonically decreasing
+            durations:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     duration_specifier=rmakers.Duration(
+            ...         increase_monotonic=False,
+            ...         ),
+            ...     talea=rmakers.Talea(
+            ...         counts=[5],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 8), (5, 8), (5, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                    }
+                >>
+
+        ..  container:: example
+
+            Spells nonassignable durations with monontonically increasing
+            durations:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     duration_specifier=rmakers.Duration(
+            ...         increase_monotonic=True,
+            ...         ),
+            ...     talea=rmakers.Talea(
+            ...         counts=[5],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 8), (5, 8), (5, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                        \time 5/8
+                        s1 * 5/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                    }
+                >>
+
+        ..  container:: example
+
+            Forbids no durations:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     duration_specifier=rmakers.Duration(
+            ...         forbidden_note_duration=None,
+            ...         ),
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 1, 1, 1, 4, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 4), (3, 4)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        c'4
+                    }
+                >>
+
+        ..  container:: example
+
+            Forbids durations equal to ``1/4`` or greater:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     duration_specifier=rmakers.Duration(
+            ...         forbidden_note_duration=(1, 4),
+            ...         ),
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 1, 1, 1, 4, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 4), (3, 4)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                >>
+
+            Rewrites forbidden durations with smaller durations tied together.
+
+        ..  container:: example
+
+            Rewrites meter:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     rmakers.rewrite_meter(),
+            ...     talea=rmakers.Talea(
+            ...         counts=[5, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 4), (3, 4), (3, 4)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                        \time 3/4
+                        s1 * 3/4
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'16
+                        [ %! rmakers.RewriteMeterCommand.__call__
+                        c'8.
+                        ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
+                        c'16
+                        [ %! rmakers.RewriteMeterCommand.__call__
+                        c'8.
+                        ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
+                        c'8
+                        [ %! rmakers.RewriteMeterCommand.__call__
+                        c'8
+                        ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
+                        c'8
+                        [ %! rmakers.RewriteMeterCommand.__call__
+                        c'8
+                        ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
+                        c'8.
+                        [ %! rmakers.RewriteMeterCommand.__call__
+                        c'16
+                        ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
+                        c'8.
+                        [ %! rmakers.RewriteMeterCommand.__call__
+                        c'16
+                        ~
+                        ] %! rmakers.RewriteMeterCommand.__call__
+                        c'4
+                        c'4
+                    }
+                >>
+
+        """
+        return super().duration_specifier
+
+    @property
+    def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
+        r"""
+        Gets extra counts per division.
+
+        ..  container:: example
+
+            No extra counts per division:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'8
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Adds one extra count to every other division:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     extra_counts_per_division=[0, 1],
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \times 8/9 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'8
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            c'4
+                            c'16
+                        }
+                        \times 8/9 {
+                            c'8
+                            [
+                            c'8.
+                            ]
+                            c'4
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Adds two extra counts to every other division:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     extra_counts_per_division=[0, 2],
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \times 4/5 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'4
+                            c'16
+                            [
+                            c'16
+                            ~
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            [
+                            c'8.
+                            ]
+                            c'4
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
+                    }
+                >>
+
+            The duration of each added count equals the duration
+            of each count in the rhythm-maker's input talea.
+
+        ..  container:: example
+
+            Removes one count from every other division:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     extra_counts_per_division=[0, -1],
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/7 {
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1 {
+                            c'8.
+                            [
+                            c'8.
+                            ~
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/7 {
+                            c'16
+                            [
+                            c'16
+                            c'8
+                            c'8.
+                            ]
+                        }
+                    }
+                >>
+
+        """
+        if self._extra_counts_per_division:
+            return list(self._extra_counts_per_division)
+        else:
+            return None
+
+    @property
+    def read_talea_once_only(self) -> typing.Optional[bool]:
+        r"""
+        Is true when rhythm-maker reads talea once only.
+
+        ..  container:: example
+
+            Reads talea cyclically:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        ~
+                        ]
+                        c'16
+                        [
+                        c'8.
+                        c'8
+                        ~
+                        ]
+                        c'8
+                        [
+                        c'16
+                        c'8
+                        c'16
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            Reads talea once only:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     read_talea_once_only=True,
+            ...     talea=rmakers.Talea(
+            ...         counts=[1, 2, 3, 4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            Calling rhythm_maker on these divisions raises an exception because talea
+            is too short to read once only:
+
+            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+            >>> rhythm_maker(divisions)
+            Traceback (most recent call last):
+                ...
+            Exception: () + (1, 2, 3, 4) is too short to read [6, 6, 6, 6] once.
+
+        Set to true to ensure talea is long enough to cover all divisions
+        without repeating.
+
+        Provides way of using talea noncyclically when, for example,
+        interpolating from short durations to long durations.
+        """
+        return self._read_talea_once_only
+
+    @property
+    def state(self) -> abjad.OrderedDict:
+        r"""
+        Gets state dictionary.
+
+        ..  container:: example
+
+            Consumes 4 divisions and 31 counts:
+
+            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     extra_counts_per_division=[0, 1, 2],
+            ...     talea=rmakers.Talea(
+            ...         counts=[4],
+            ...         denominator=16,
+            ...         ),
+            ...     )
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        c'8
+                        ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        c'16
+                        c'4
+                        c'8.
+                    }
+                >>
+
+            >>> state = rhythm_maker.state
+            >>> abjad.f(state)
+            abjad.OrderedDict(
+                [
+                    ('divisions_consumed', 4),
+                    ('incomplete_last_note', True),
+                    ('logical_ties_produced', 8),
+                    ('talea_weight_consumed', 31),
+                    ]
+                )
+
+            Advances 4 divisions and 31 counts; then consumes another 4
+            divisions and 31 counts:
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions, previous_state=state)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'4
+                        }
+                        c'4
+                        c'8
+                        ~
+                        \times 8/9 {
+                            c'8
+                            c'4
+                            c'8.
+                        }
+                    }
+                >>
+
+            >>> state = rhythm_maker.state
+            >>> abjad.f(state)
+            abjad.OrderedDict(
+                [
+                    ('divisions_consumed', 8),
+                    ('incomplete_last_note', True),
+                    ('logical_ties_produced', 16),
+                    ('talea_weight_consumed', 63),
+                    ]
+                )
+
+            Advances 8 divisions and 62 counts; then consumes 4 divisions and
+            31 counts:
+
+            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> selection = rhythm_maker(divisions, previous_state=state)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                        \time 3/8
+                        s1 * 3/8
+                        \time 4/8
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4 {
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        c'16
+                        c'4
+                        c'8.
+                        ~
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'4
+                            c'4
+                        }
+                    }
+                >>
+
+            >>> state = rhythm_maker.state
+            >>> abjad.f(state)
+            abjad.OrderedDict(
+                [
+                    ('divisions_consumed', 12),
+                    ('incomplete_last_note', True),
+                    ('logical_ties_produced', 24),
+                    ('talea_weight_consumed', 96),
+                    ]
+                )
+
+
+        """
+        return super().state
 
     @property
     def tag(self) -> typing.Optional[str]:

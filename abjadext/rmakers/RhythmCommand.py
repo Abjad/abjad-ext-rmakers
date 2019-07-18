@@ -569,37 +569,6 @@ class RhythmCommand(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def divisions(self) -> typing.Optional[abjad.Expression]:
-        r"""
-        Gets division preprocessor expression.
-        """
-        return self._divisions
-
-    @property
-    def rhythm_maker(self) -> RhythmMakerTyping:
-        r"""
-        Gets maker assignments.
-
-        ..  container:: example exception
-
-            Raises exception on invalid input:
-
-            >>> command = rmakers.RhythmCommand(
-            ...     rhythm_maker='text',
-            ...     )
-            Traceback (most recent call last):
-                ...
-            Exception:
-              Input parameter "rhythm_maker" accepts:
-                maker assignment(s)
-                rhythm-maker
-              Input parameter "rhythm_maker" received:
-                text
-
-        """
-        return self._rhythm_maker
-
-    @property
     def commands(self) -> typing.List[_commands.Command]:
         """
         Gets commands.
@@ -639,6 +608,37 @@ class RhythmCommand(object):
 
         """
         return list(self._commands)
+
+    @property
+    def divisions(self) -> typing.Optional[abjad.Expression]:
+        r"""
+        Gets division preprocessor expression.
+        """
+        return self._divisions
+
+    @property
+    def rhythm_maker(self) -> RhythmMakerTyping:
+        r"""
+        Gets maker assignments.
+
+        ..  container:: example exception
+
+            Raises exception on invalid input:
+
+            >>> command = rmakers.RhythmCommand(
+            ...     rhythm_maker='text',
+            ...     )
+            Traceback (most recent call last):
+                ...
+            Exception:
+              Input parameter "rhythm_maker" accepts:
+                maker assignment(s)
+                rhythm-maker
+              Input parameter "rhythm_maker" received:
+                text
+
+        """
+        return self._rhythm_maker
 
     @property
     def state(self) -> abjad.OrderedDict:

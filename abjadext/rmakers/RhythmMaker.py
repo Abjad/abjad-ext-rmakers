@@ -264,6 +264,13 @@ class RhythmMaker(object):
         return self._divisions
 
     @property
+    def commands(self) -> typing.List[_commands.Command]:
+        """
+        Gets commands.
+        """
+        return list(self._commands)
+
+    @property
     def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
         """
         Gets duration specifier.
@@ -276,13 +283,6 @@ class RhythmMaker(object):
         Gets previous state dictionary.
         """
         return self._previous_state
-
-    @property
-    def commands(self) -> typing.List[_commands.Command]:
-        """
-        Gets commands.
-        """
-        return list(self._commands)
 
     @property
     def state(self) -> abjad.OrderedDict:

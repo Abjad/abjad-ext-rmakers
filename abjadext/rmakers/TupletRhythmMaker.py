@@ -369,440 +369,6 @@ class TupletRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def denominator(
-        self
-    ) -> typing.Optional[typing.Union[str, abjad.Duration, int]]:
-        r"""
-        Gets preferred denominator.
-
-        ..  container:: example
-
-            Tuplet numerators and denominators are reduced to numbers that are
-            relatively prime when ``denominator`` is set to none. This
-            means that ratios like ``6:4`` and ``10:8`` do not arise:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            The preferred denominator of each tuplet is set in terms of a unit
-            duration when ``denominator`` is set to a duration. The
-            setting does not affect the first tuplet:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     rmakers.denominator((1, 16)),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 8/10 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Sets the preferred denominator of each tuplet in terms 32nd notes.
-            The setting affects all tuplets:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     rmakers.denominator((1, 32)),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 8/10 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/10 {
-                            c'16
-                            c'4
-                        }
-                        \times 16/20 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Sets the preferred denominator each tuplet in terms 64th notes. The
-            setting affects all tuplets:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     rmakers.denominator((1, 64)),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 8/10 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 16/20 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 24/20 {
-                            c'16
-                            c'4
-                        }
-                        \times 32/40 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            The preferred denominator of each tuplet is set directly when
-            ``denominator`` is set to a positive integer. This example
-            sets the preferred denominator of each tuplet to ``8``. Setting
-            does not affect the third tuplet:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     rmakers.denominator(8),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 8/10 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 8/10 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 8/10 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Sets the preferred denominator of each tuplet to ``12``. Setting
-            affects all tuplets:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     rmakers.denominator(12),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 12/15 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 12/15 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/10 {
-                            c'16
-                            c'4
-                        }
-                        \times 12/15 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Sets the preferred denominator of each tuplet to ``13``. Setting
-            does not affect any tuplet:
-
-            >>> rhythm_maker = rmakers.TupletRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     rmakers.denominator(13),
-            ...     tuplet_ratios=[(1, 4)],
-            ...     )
-
-            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'32
-                            [
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'16
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
-                            c'16
-                            c'4
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'2
-                        }
-                    }
-                >>
-
-        Set to duration, positive integer or none.
-        """
-        return self._denominator
-
-    @property
     def commands(self) -> typing.List[_commands.Command]:
         r"""
         Gets commands.
@@ -2128,6 +1694,440 @@ class TupletRhythmMaker(RhythmMaker):
 
         """
         return super().commands
+
+    @property
+    def denominator(
+        self
+    ) -> typing.Optional[typing.Union[str, abjad.Duration, int]]:
+        r"""
+        Gets preferred denominator.
+
+        ..  container:: example
+
+            Tuplet numerators and denominators are reduced to numbers that are
+            relatively prime when ``denominator`` is set to none. This
+            means that ratios like ``6:4`` and ``10:8`` do not arise:
+
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.rewrite_dots(),
+            ...     tuplet_ratios=[(1, 4)],
+            ...     )
+
+            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/16
+                        s1 * 1/8
+                        \time 4/16
+                        s1 * 1/4
+                        \time 6/16
+                        s1 * 3/8
+                        \time 8/16
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            The preferred denominator of each tuplet is set in terms of a unit
+            duration when ``denominator`` is set to a duration. The
+            setting does not affect the first tuplet:
+
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.rewrite_dots(),
+            ...     rmakers.denominator((1, 16)),
+            ...     tuplet_ratios=[(1, 4)],
+            ...     )
+
+            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/16
+                        s1 * 1/8
+                        \time 4/16
+                        s1 * 1/4
+                        \time 6/16
+                        s1 * 3/8
+                        \time 8/16
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Sets the preferred denominator of each tuplet in terms 32nd notes.
+            The setting affects all tuplets:
+
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.rewrite_dots(),
+            ...     rmakers.denominator((1, 32)),
+            ...     tuplet_ratios=[(1, 4)],
+            ...     )
+
+            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/16
+                        s1 * 1/8
+                        \time 4/16
+                        s1 * 1/4
+                        \time 6/16
+                        s1 * 3/8
+                        \time 8/16
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 8/10 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10 {
+                            c'16
+                            c'4
+                        }
+                        \times 16/20 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Sets the preferred denominator each tuplet in terms 64th notes. The
+            setting affects all tuplets:
+
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.rewrite_dots(),
+            ...     rmakers.denominator((1, 64)),
+            ...     tuplet_ratios=[(1, 4)],
+            ...     )
+
+            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/16
+                        s1 * 1/8
+                        \time 4/16
+                        s1 * 1/4
+                        \time 6/16
+                        s1 * 3/8
+                        \time 8/16
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 8/10 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 16/20 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 24/20 {
+                            c'16
+                            c'4
+                        }
+                        \times 32/40 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            The preferred denominator of each tuplet is set directly when
+            ``denominator`` is set to a positive integer. This example
+            sets the preferred denominator of each tuplet to ``8``. Setting
+            does not affect the third tuplet:
+
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.rewrite_dots(),
+            ...     rmakers.denominator(8),
+            ...     tuplet_ratios=[(1, 4)],
+            ...     )
+
+            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/16
+                        s1 * 1/8
+                        \time 4/16
+                        s1 * 1/4
+                        \time 6/16
+                        s1 * 3/8
+                        \time 8/16
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 8/10 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 8/10 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 8/10 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Sets the preferred denominator of each tuplet to ``12``. Setting
+            affects all tuplets:
+
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.rewrite_dots(),
+            ...     rmakers.denominator(12),
+            ...     tuplet_ratios=[(1, 4)],
+            ...     )
+
+            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/16
+                        s1 * 1/8
+                        \time 4/16
+                        s1 * 1/4
+                        \time 6/16
+                        s1 * 3/8
+                        \time 8/16
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 12/15 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 12/15 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10 {
+                            c'16
+                            c'4
+                        }
+                        \times 12/15 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            Sets the preferred denominator of each tuplet to ``13``. Setting
+            does not affect any tuplet:
+
+            >>> rhythm_maker = rmakers.TupletRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.rewrite_dots(),
+            ...     rmakers.denominator(13),
+            ...     tuplet_ratios=[(1, 4)],
+            ...     )
+
+            >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 2/16
+                        s1 * 1/8
+                        \time 4/16
+                        s1 * 1/4
+                        \time 6/16
+                        s1 * 3/8
+                        \time 8/16
+                        s1 * 1/2
+                    }
+                    \new RhythmicStaff
+                    {
+                        \times 4/5 {
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5 {
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5 {
+                            c'16
+                            c'4
+                        }
+                        \times 4/5 {
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        Set to duration, positive integer or none.
+        """
+        return self._denominator
 
     @property
     def tag(self) -> typing.Optional[str]:

@@ -412,182 +412,6 @@ class NoteRhythmMaker(RhythmMaker):
         return self._burnish_specifier
 
     @property
-    def divisions(self) -> typing.Optional[abjad.Expression]:
-        r"""
-        Gets division expressions.
-
-        ..  container:: example
-
-            >>> weights = [abjad.NonreducedFraction(3, 8)]
-            >>> divisions = abjad.sequence().join()
-            >>> divisions = divisions.split(
-            ...     weights, cyclic=True, overhang=True,
-            ...     )
-            >>> divisions = divisions.flatten(depth=-1)
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     divisions=divisions,
-            ... )
-
-            >>> divisions = [(4, 4), (4, 4)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/4
-                        s1 * 1
-                        \time 4/4
-                        s1 * 1
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4.
-                        c'4.
-                        c'4.
-                        c'4.
-                        c'4.
-                        c'8
-                    }
-                >>
-
-        """
-        return super().divisions
-
-    @property
-    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
-        r"""
-        Gets duration specifier.
-
-        ..  container:: example
-
-            Spells durations with the fewest number of glyphs:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker()
-
-            >>> divisions = [(5, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'2
-                        ~
-                        c'8
-                        c'4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Forbids notes with written duration greater than or equal to
-            ``1/2``:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     duration_specifier=rmakers.Duration(
-            ...         forbidden_note_duration=(1, 2),
-            ...         ),
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'4
-                        ~
-                        c'8
-                        c'4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Rewrites meter:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.rewrite_meter(),
-            ...     )
-
-            >>> divisions = [(3, 4), (6, 16), (9, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 9/16
-                        s1 * 9/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'2.
-                        c'4.
-                        c'4.
-                        ~
-                        c'8.
-                    }
-                >>
-
-        """
-        return super().duration_specifier
-
-    @property
     def commands(self) -> typing.List[_commands.Command]:
         r"""
         Gets commands.
@@ -1240,6 +1064,182 @@ class NoteRhythmMaker(RhythmMaker):
 
         """
         return super().commands
+
+    @property
+    def divisions(self) -> typing.Optional[abjad.Expression]:
+        r"""
+        Gets division expressions.
+
+        ..  container:: example
+
+            >>> weights = [abjad.NonreducedFraction(3, 8)]
+            >>> divisions = abjad.sequence().join()
+            >>> divisions = divisions.split(
+            ...     weights, cyclic=True, overhang=True,
+            ...     )
+            >>> divisions = divisions.flatten(depth=-1)
+            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            ...     divisions=divisions,
+            ... )
+
+            >>> divisions = [(4, 4), (4, 4)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 4/4
+                        s1 * 1
+                        \time 4/4
+                        s1 * 1
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4.
+                        c'4.
+                        c'4.
+                        c'4.
+                        c'4.
+                        c'8
+                    }
+                >>
+
+        """
+        return super().divisions
+
+    @property
+    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
+        r"""
+        Gets duration specifier.
+
+        ..  container:: example
+
+            Spells durations with the fewest number of glyphs:
+
+            >>> rhythm_maker = rmakers.NoteRhythmMaker()
+
+            >>> divisions = [(5, 8), (3, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'2
+                        ~
+                        c'8
+                        c'4.
+                    }
+                >>
+
+        ..  container:: example
+
+            Forbids notes with written duration greater than or equal to
+            ``1/2``:
+
+            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            ...     duration_specifier=rmakers.Duration(
+            ...         forbidden_note_duration=(1, 2),
+            ...         ),
+            ...     )
+
+            >>> divisions = [(5, 8), (3, 8)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 5/8
+                        s1 * 5/8
+                        \time 3/8
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4
+                        ~
+                        c'4
+                        ~
+                        c'8
+                        c'4.
+                    }
+                >>
+
+        ..  container:: example
+
+            Rewrites meter:
+
+            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            ...     rmakers.rewrite_meter(),
+            ...     )
+
+            >>> divisions = [(3, 4), (6, 16), (9, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 3/4
+                        s1 * 3/4
+                        \time 6/16
+                        s1 * 3/8
+                        \time 9/16
+                        s1 * 9/16
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'2.
+                        c'4.
+                        c'4.
+                        ~
+                        c'8.
+                    }
+                >>
+
+        """
+        return super().duration_specifier
 
     @property
     def tag(self):
