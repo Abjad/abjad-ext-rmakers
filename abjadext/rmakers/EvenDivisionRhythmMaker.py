@@ -2,7 +2,7 @@ import abjad
 import math
 import typing
 from . import commands as _commands
-from . import specifiers as specifiers
+from . import specifiers as _specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -29,7 +29,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.Duration = None,
+        duration_specifier: _specifiers.Duration = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         tag: str = None,
     ) -> None:

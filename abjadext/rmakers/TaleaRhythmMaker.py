@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import commands as _commands
-from . import specifiers as specifiers
+from . import specifiers as _specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -96,11 +96,13 @@ class TaleaRhythmMaker(RhythmMaker):
         *commands: _commands.Command,
         curtail_ties: bool = None,
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.Duration = None,
+        duration_specifier: _specifiers.Duration = None,
         extra_counts_per_division: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
         tag: str = None,
-        talea: specifiers.Talea = specifiers.Talea(counts=[1], denominator=16),
+        talea: _specifiers.Talea = _specifiers.Talea(
+            counts=[1], denominator=16
+        ),
     ) -> None:
         RhythmMaker.__init__(
             self,
@@ -110,7 +112,7 @@ class TaleaRhythmMaker(RhythmMaker):
             tag=tag,
         )
         if talea is not None:
-            assert isinstance(talea, specifiers.Talea), repr(talea)
+            assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
         if curtail_ties is not None:
             curtail_ties = bool(curtail_ties)
@@ -292,7 +294,7 @@ class TaleaRhythmMaker(RhythmMaker):
         end_counts = input_["end_counts"]
         preamble = input_["preamble"]
         talea = input_["talea"]
-        advanced_talea = specifiers.Talea(
+        advanced_talea = _specifiers.Talea(
             counts=talea,
             denominator=self.talea.denominator,
             end_counts=end_counts,
@@ -3130,7 +3132,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return self._curtail_ties
 
     @property
-    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
+    def duration_specifier(self) -> typing.Optional[_specifiers.Duration]:
         r"""
         Gets duration specifier.
 
@@ -4152,7 +4154,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return super().tag
 
     @property
-    def talea(self) -> specifiers.Talea:
+    def talea(self) -> _specifiers.Talea:
         r"""
         Gets talea.
 

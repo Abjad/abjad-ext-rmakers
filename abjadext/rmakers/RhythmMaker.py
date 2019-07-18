@@ -3,7 +3,7 @@ import collections
 import typing
 from abjad.top.new import new
 from . import commands as _commands
-from . import specifiers as specifiers
+from . import specifiers as _specifiers
 
 
 class RhythmMaker(object):
@@ -36,7 +36,7 @@ class RhythmMaker(object):
         self,
         *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.Duration = None,
+        duration_specifier: _specifiers.Duration = None,
         tag: str = None,
     ) -> None:
         commands = commands or ()
@@ -48,7 +48,7 @@ class RhythmMaker(object):
             assert isinstance(divisions, abjad.Expression)
         self._divisions = divisions
         if duration_specifier is not None:
-            assert isinstance(duration_specifier, specifiers.Duration)
+            assert isinstance(duration_specifier, _specifiers.Duration)
         self._duration_specifier = duration_specifier
         self._already_cached_state = None
         self._previous_state = abjad.OrderedDict()
@@ -170,7 +170,7 @@ class RhythmMaker(object):
     def _get_duration_specifier(self):
         if self.duration_specifier is not None:
             return self.duration_specifier
-        return specifiers.Duration()
+        return _specifiers.Duration()
 
     def _get_format_specification(self):
         commands = self.commands or []
@@ -271,7 +271,7 @@ class RhythmMaker(object):
         return self._divisions
 
     @property
-    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
+    def duration_specifier(self) -> typing.Optional[_specifiers.Duration]:
         """
         Gets duration specifier.
         """

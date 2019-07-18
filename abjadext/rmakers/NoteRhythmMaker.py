@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import commands as _commands
-from . import specifiers as specifiers
+from . import specifiers as _specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -910,7 +910,7 @@ class NoteRhythmMaker(RhythmMaker):
         return super().divisions
 
     @property
-    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
+    def duration_specifier(self) -> typing.Optional[_specifiers.Duration]:
         r"""
         Gets duration specifier.
 

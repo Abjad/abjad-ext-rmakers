@@ -2,7 +2,7 @@ import abjad
 import math
 import typing
 from . import commands as _commands
-from . import specifiers as specifiers
+from . import specifiers as _specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -17,7 +17,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
         ...     rmakers.duration_bracket(),
         ...     rmakers.feather_beam(),
-        ...     interpolation_specifiers=rmakers.Interpolation(
+        ...     interpolations=rmakers.Interpolation(
         ...         start_duration=(1, 8),
         ...         stop_duration=(1, 20),
         ...         written_duration=(1, 16),
@@ -270,7 +270,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
         ...     rmakers.duration_bracket(),
         ...     rmakers.feather_beam(),
-        ...     interpolation_specifiers=rmakers.Interpolation(
+        ...     interpolations=rmakers.Interpolation(
         ...         start_duration=(1, 20),
         ...         stop_duration=(1, 8),
         ...         written_duration=(1, 16),
@@ -530,7 +530,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = ("_exponent", "_interpolation_specifiers")
+    __slots__ = ("_exponent", "_interpolations")
 
     ### INITIALIZER ###
 
@@ -538,10 +538,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
         self,
         *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.Duration = None,
-        interpolation_specifiers: typing.Sequence[
-            specifiers.Interpolation
-        ] = None,
+        duration_specifier: _specifiers.Duration = None,
+        interpolations: typing.Sequence[_specifiers.Interpolation] = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
@@ -551,29 +549,25 @@ class AccelerandoRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             tag=tag,
         )
-        self._interpolation_specifiers = interpolation_specifiers
+        self._interpolations = interpolations
 
     ### PRIVATE METHODS ###
 
     @staticmethod
-    def _fix_rounding_error(
-        selection, total_duration, interpolation_specifier
-    ):
+    def _fix_rounding_error(selection, total_duration, interpolation):
         selection_duration = abjad.inspect(selection).duration()
         if not selection_duration == total_duration:
             needed_duration = (
                 total_duration - abjad.inspect(selection[:-1]).duration()
             )
-            multiplier = (
-                needed_duration / interpolation_specifier.written_duration
-            )
+            multiplier = needed_duration / interpolation.written_duration
             selection[-1].multiplier = multiplier
 
-    def _get_interpolation_specifiers(self):
-        specifiers_ = self.interpolation_specifiers
+    def _get_interpolations(self):
+        specifiers_ = self.interpolations
         if specifiers_ is None:
             specifiers_ = abjad.CyclicTuple([Interpolation()])
-        elif isinstance(specifiers_, specifiers.Interpolation):
+        elif isinstance(specifiers_, _specifiers.Interpolation):
             specifiers_ = abjad.CyclicTuple([specifiers_])
         else:
             specifiers_ = abjad.CyclicTuple(specifiers_)
@@ -786,12 +780,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @classmethod
     def _make_accelerando(
-        class_,
-        total_duration,
-        interpolation_specifiers,
-        index,
-        *,
-        tag: str = None,
+        class_, total_duration, interpolations, index, *, tag: str = None
     ) -> abjad.Tuplet:
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
@@ -800,7 +789,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         instead.
 
         Selects interpolation specifier at ``index`` in
-        ``interpolation_specifiers``.
+        ``interpolations``.
 
         Computes duration multipliers interpolated from interpolation specifier
         start to stop.
@@ -809,11 +798,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
         multipliers.
         """
         total_duration = abjad.Duration(total_duration)
-        interpolation_specifier = interpolation_specifiers[index]
+        interpolation = interpolations[index]
         durations = AccelerandoRhythmMaker._interpolate_divide(
             total_duration=total_duration,
-            start_duration=interpolation_specifier.start_duration,
-            stop_duration=interpolation_specifier.stop_duration,
+            start_duration=interpolation.start_duration,
+            stop_duration=interpolation.stop_duration,
         )
         if durations == "too small":
             maker = abjad.NoteMaker(tag=tag)
@@ -824,26 +813,24 @@ class AccelerandoRhythmMaker(RhythmMaker):
         durations = class_._round_durations(durations, 2 ** 10)
         notes = []
         for i, duration in enumerate(durations):
-            written_duration = interpolation_specifier.written_duration
+            written_duration = interpolation.written_duration
             multiplier = duration / written_duration
             note = abjad.Note(
                 0, written_duration, multiplier=multiplier, tag=tag
             )
             notes.append(note)
         selection = abjad.select(notes)
-        class_._fix_rounding_error(
-            selection, total_duration, interpolation_specifier
-        )
+        class_._fix_rounding_error(selection, total_duration, interpolation)
         pair = (abjad.inspect(selection).duration(), total_duration)
         tuplet = abjad.Tuplet((1, 1), selection, tag=tag)
         return tuplet
 
     def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
         tuplets = []
-        interpolation_specifiers = self._get_interpolation_specifiers()
+        interpolations = self._get_interpolations()
         for i, division in enumerate(divisions):
             tuplet = self._make_accelerando(
-                division, interpolation_specifiers, i, tag=self.tag
+                division, interpolations, i, tag=self.tag
             )
             tuplets.append(tuplet)
         return tuplets
@@ -877,7 +864,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         beam_rests=True,
             ...         stemlet_length=0.75,
             ...         ),
-            ...     interpolation_specifiers=[
+            ...     interpolations=[
             ...         rmakers.Interpolation(
             ...             start_duration=(1, 8),
             ...             stop_duration=(1, 20),
@@ -1160,7 +1147,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -1413,7 +1400,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.beam_groups(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -1710,7 +1697,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -1951,7 +1938,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -2207,7 +2194,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.duration_bracket(),
             ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -2466,7 +2453,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.duration_bracket(),
             ...     rmakers.tie(tuplets.map(last_leaf)),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -2721,7 +2708,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -2973,7 +2960,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -3066,7 +3053,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -3326,7 +3313,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(
             ...         abjad.select().tuplets().get([1], 2),
             ...         ),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -3478,9 +3465,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return super().commands
 
     @property
-    def interpolation_specifiers(
+    def interpolations(
         self
-    ) -> typing.Optional[typing.Sequence[specifiers.Interpolation]]:
+    ) -> typing.Optional[typing.Sequence[_specifiers.Interpolation]]:
         r"""
         Gets interpolation specifier.
 
@@ -3491,7 +3478,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -3744,7 +3731,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=[
+            ...     interpolations=[
             ...         rmakers.Interpolation(
             ...             start_duration=(1, 8),
             ...             stop_duration=(1, 20),
@@ -4009,7 +3996,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...         abjad.select().tuplets().filter_length(">", 1)
             ...         ),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),
@@ -4153,7 +4140,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return self._interpolation_specifiers
+        return self._interpolations
 
     @property
     def state(self) -> abjad.OrderedDict:
@@ -4167,7 +4154,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=[
+            ...     interpolations=[
             ...         rmakers.Interpolation(
             ...             start_duration=(1, 8),
             ...             stop_duration=(1, 20),
@@ -4766,7 +4753,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.AccelerandoRhythmMaker(
             ...     rmakers.duration_bracket(),
             ...     rmakers.feather_beam(abjad.select().tuplets()),
-            ...     interpolation_specifiers=rmakers.Interpolation(
+            ...     interpolations=rmakers.Interpolation(
             ...         start_duration=(1, 8),
             ...         stop_duration=(1, 20),
             ...         written_duration=(1, 16),

@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import commands as _commands
-from . import specifiers as specifiers
+from . import specifiers as _specifiers
 from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
 
@@ -81,9 +81,9 @@ class IncisedRhythmMaker(RhythmMaker):
         self,
         *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: specifiers.Duration = None,
+        duration_specifier: _specifiers.Duration = None,
         extra_counts_per_division: typing.Sequence[int] = None,
-        incise_specifier: specifiers.Incise = None,
+        incise_specifier: _specifiers.Incise = None,
         replace_rests_with_skips: bool = None,
         tag: str = None,
     ) -> None:
@@ -94,7 +94,7 @@ class IncisedRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             tag=tag,
         )
-        prototype = (specifiers.Incise, type(None))
+        prototype = (_specifiers.Incise, type(None))
         assert isinstance(incise_specifier, prototype)
         self._incise_specifier = incise_specifier
         if extra_counts_per_division is not None:
@@ -113,7 +113,7 @@ class IncisedRhythmMaker(RhythmMaker):
     def _get_incise_specifier(self):
         if self.incise_specifier is not None:
             return self.incise_specifier
-        return specifiers.Incise()
+        return _specifiers.Incise()
 
     def _make_division_incised_numeric_map(
         self,
@@ -942,7 +942,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return super().commands
 
     @property
-    def duration_specifier(self) -> typing.Optional[specifiers.Duration]:
+    def duration_specifier(self) -> typing.Optional[_specifiers.Duration]:
         r"""
         Gets duration specifier.
 
@@ -1125,7 +1125,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def incise_specifier(self) -> typing.Optional[specifiers.Incise]:
+    def incise_specifier(self) -> typing.Optional[_specifiers.Incise]:
         r"""
         Gets incise specifier.
 
