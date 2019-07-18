@@ -257,18 +257,18 @@ class RhythmMaker(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def divisions(self) -> typing.Optional[abjad.Expression]:
-        r"""
-        Gets division expression.
-        """
-        return self._divisions
-
-    @property
     def commands(self) -> typing.List[_commands.Command]:
         """
         Gets commands.
         """
         return list(self._commands)
+
+    @property
+    def divisions(self) -> typing.Optional[abjad.Expression]:
+        r"""
+        Gets division expression.
+        """
+        return self._divisions
 
     @property
     def duration_specifier(self) -> typing.Optional[specifiers.Duration]:

@@ -19,19 +19,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = (
-        "_burnish_specifier",
-        "_denominator",
-        "_denominators",
-        "_extra_counts_per_division",
-    )
+    __slots__ = ("_denominator", "_denominators", "_extra_counts_per_division")
 
     ### INITIALIZER ###
 
     def __init__(
         self,
         *commands: _commands.Command,
-        burnish_specifier: specifiers.Burnish = None,
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         divisions: abjad.Expression = None,
@@ -60,9 +54,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ]
             extra_counts_per_division = tuple(extra_counts_per_division)
         self._extra_counts_per_division = extra_counts_per_division
-        if burnish_specifier is not None:
-            assert isinstance(burnish_specifier, specifiers.Burnish)
-        self._burnish_specifier = burnish_specifier
         extra_counts_per_division = extra_counts_per_division or (0,)
         self._denominator = denominator
 
@@ -268,184 +259,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     ### PRIVATE METHODS ###
 
-    def _apply_burnish_specifier(self, tuplets) -> None:
-        if self.burnish_specifier is None:
-            return None
-        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
-        left_classes = self.burnish_specifier.left_classes
-        middle_classes = self.burnish_specifier.middle_classes
-        right_classes = self.burnish_specifier.right_classes
-        left_counts = self.burnish_specifier.left_counts
-        right_counts = self.burnish_specifier.right_counts
-        left_classes = left_classes or []
-        left_classes = abjad.sequence(left_classes)
-        left_classes_ = abjad.CyclicTuple(left_classes)
-        if middle_classes == () or middle_classes is None:
-            middle_classes = [0]
-        middle_classes = abjad.sequence(middle_classes)
-        middle_classes_ = abjad.CyclicTuple(middle_classes)
-        right_classes = right_classes or []
-        right_classes = abjad.sequence(right_classes)
-        right_classes_ = abjad.CyclicTuple(right_classes)
-        left_counts = left_counts or [0]
-        left_counts = abjad.sequence(left_counts)
-        left_counts_ = abjad.CyclicTuple(left_counts)
-        right_counts = right_counts or [0]
-        right_counts = abjad.sequence(right_counts)
-        right_counts_ = abjad.CyclicTuple(right_counts)
-        if self.burnish_specifier.outer_divisions_only:
-            self._burnish_outer_tuplets(
-                tuplets,
-                left_classes_,
-                middle_classes_,
-                right_classes_,
-                left_counts_,
-                right_counts_,
-            )
-        else:
-            self._burnish_each_tuplet(
-                tuplets,
-                left_classes_,
-                middle_classes_,
-                right_classes_,
-                left_counts_,
-                right_counts_,
-            )
-
-    def _burnish_division_part(self, division_part, token):
-        assert len(division_part) == len(token)
-        new_division_part = []
-        for leaf, burnishing in zip(division_part, token):
-            if burnishing in (-1, abjad.Rest):
-                new_division_part.append(abjad.Rest(leaf))
-            elif burnishing == 0:
-                new_division_part.append(leaf)
-            elif burnishing in (1, abjad.Note):
-                new_division_part.append(abjad.Note(leaf))
-            else:
-                message = "unknown burnishing: {!r}."
-                message = message.format(burnishing)
-                raise ValueError(message)
-        new_division_part = type(division_part)(new_division_part)
-        return new_division_part
-
-    def _burnish_each_tuplet(
-        self,
-        tuplets,
-        left_classes,
-        middle_classes,
-        right_classes,
-        left_counts,
-        right_counts,
-    ) -> None:
-        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
-        lefts_index, rights_index = 0, 0
-        for i, tuplet in enumerate(tuplets):
-            original_duration = abjad.inspect(tuplet).duration()
-            leaves = tuplet[:]
-            leaf_count = len(leaves)
-            left_length = left_counts[i]
-            left = left_classes[lefts_index : lefts_index + left_length]
-            lefts_index += left_length
-            right_length = right_counts[i]
-            right = right_classes[rights_index : rights_index + right_length]
-            rights_index += right_length
-            available_left_length = leaf_count
-            left_length = min([left_length, available_left_length])
-            available_right_length = leaf_count - left_length
-            right_length = min([right_length, available_right_length])
-            middle_length = leaf_count - left_length - right_length
-            left = left[:left_length]
-            middle = middle_length * [middle_classes[i]]
-            right = right[:right_length]
-            result = abjad.sequence(leaves).partition_by_counts(
-                [left_length, middle_length, right_length],
-                cyclic=False,
-                overhang=False,
-            )
-            left_part, middle_part, right_part = result
-            left_part = self._burnish_division_part(left_part, left)
-            middle_part = self._burnish_division_part(middle_part, middle)
-            right_part = self._burnish_division_part(right_part, right)
-            burnished_leaves = left_part + middle_part + right_part
-            tuplet[:] = burnished_leaves
-            assert abjad.inspect(tuplet).duration() == original_duration
-
-    def _burnish_outer_tuplets(
-        self,
-        tuplets,
-        left_classes,
-        middle_classes,
-        right_classes,
-        left_counts,
-        right_counts,
-    ) -> None:
-        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
-        # only tuplet
-        if len(tuplets) == 1:
-            self._burnish_each_tuplet(
-                tuplets,
-                left_classes,
-                middle_classes,
-                right_classes,
-                left_counts,
-                right_counts,
-            )
-            return None
-        left_length = 0
-        if left_counts:
-            left_length = left_counts[0]
-        left = left_classes[:left_length]
-        right_length = 0
-        if right_counts:
-            right_length = right_counts[0]
-        right = right_classes[:right_length]
-        # first tuplet
-        tuplet = tuplets[0]
-        original_duration = abjad.inspect(tuplet).duration()
-        leaves = tuplet[:]
-        available_left_length = len(leaves)
-        left_length = min([left_length, available_left_length])
-        middle_length = len(leaves) - left_length
-        left = left[:left_length]
-        if not middle_classes:
-            middle_classes = [1]
-        middle = [middle_classes[0]]
-        middle = middle_length * middle
-        left_part, middle_part = abjad.sequence(leaves).partition_by_counts(
-            [left_length, middle_length], cyclic=False, overhang=False
-        )
-        left_part = self._burnish_division_part(left_part, left)
-        middle_part = self._burnish_division_part(middle_part, middle)
-        burnished_leaves = left_part + middle_part
-        tuplet[:] = burnished_leaves
-        assert abjad.inspect(tuplet).duration() == original_duration
-        # middle tuplets
-        for tuplet in tuplets[1:-1]:
-            original_duration = abjad.inspect(tuplet).duration()
-            leaves = tuplet[:]
-            middle = len(leaves) * [middle_classes[0]]
-            burnished_leaves = self._burnish_division_part(leaves, middle)
-            tuplet[:] = burnished_leaves
-            assert abjad.inspect(tuplet).duration() == original_duration
-        # last tuplet
-        tuplet = tuplets[-1]
-        original_duration = abjad.inspect(tuplet).duration()
-        leaves = tuplet[:]
-        available_right_length = len(leaves)
-        right_length = min([right_length, available_right_length])
-        middle_length = len(leaves) - right_length
-        right = right[:right_length]
-        middle = middle_length * [middle_classes[0]]
-        middle_part, right_part = abjad.sequence(leaves).partition_by_counts(
-            [middle_length, right_length], cyclic=False, overhang=False
-        )
-        middle_part = self._burnish_division_part(middle_part, middle)
-        right_part = self._burnish_division_part(right_part, right)
-        burnished_leaves = middle_part + right_part
-        tuplet[:] = burnished_leaves
-        assert abjad.inspect(tuplet).duration() == original_duration
-
     def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
         tuplets = []
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
@@ -506,18 +319,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             elif isinstance(self.denominator, int):
                 tuplet.denominator = self.denominator
             tuplets.append(tuplet)
-        self._apply_burnish_specifier(tuplets)
         assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
         return tuplets
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def burnish_specifier(self) -> typing.Optional[specifiers.Burnish]:
-        r"""
-        Gets burnish specifier.
-        """
-        return self._burnish_specifier
 
     @property
     def commands(self) -> typing.List[_commands.Command]:

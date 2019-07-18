@@ -12,7 +12,6 @@ from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
-from .specifiers import Burnish
 from .specifiers import Duration
 from .specifiers import Incise
 from .specifiers import Interpolation

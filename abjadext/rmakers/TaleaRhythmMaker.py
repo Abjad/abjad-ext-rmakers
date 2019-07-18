@@ -83,7 +83,6 @@ class TaleaRhythmMaker(RhythmMaker):
     __documentation_section__ = "Rhythm-makers"
 
     __slots__ = (
-        "_burnish_specifier",
         "_curtail_ties",
         "_extra_counts_per_division",
         "_read_talea_once_only",
@@ -95,7 +94,6 @@ class TaleaRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *commands: _commands.Command,
-        burnish_specifier: specifiers.Burnish = None,
         curtail_ties: bool = None,
         divisions: abjad.Expression = None,
         duration_specifier: specifiers.Duration = None,
@@ -114,9 +112,6 @@ class TaleaRhythmMaker(RhythmMaker):
         if talea is not None:
             assert isinstance(talea, specifiers.Talea), repr(talea)
         self._talea = talea
-        if burnish_specifier is not None:
-            assert isinstance(burnish_specifier, specifiers.Burnish)
-        self._burnish_specifier = burnish_specifier
         if curtail_ties is not None:
             curtail_ties = bool(curtail_ties)
         self._curtail_ties = curtail_ties
@@ -249,10 +244,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
     ### PRIVATE METHODS ###
 
-    def _apply_burnish_specifier(self, divisions):
-        burnish_specifier = self._get_burnish_specifier()
-        return burnish_specifier(divisions)
-
     def _apply_ties_to_split_notes(
         self, tuplets, unscaled_end_counts, unscaled_preamble, unscaled_talea
     ):
@@ -323,11 +314,6 @@ class TaleaRhythmMaker(RhythmMaker):
                 previous_leaf = abjad.inspect(leaf).leaf(-1)
                 if previous_leaf is not None:
                     abjad.detach(abjad.Tie, previous_leaf)
-
-    def _get_burnish_specifier(self):
-        if self.burnish_specifier is not None:
-            return self.burnish_specifier
-        return specifiers.Burnish()
 
     def _get_talea(self):
         if self.talea is not None:
@@ -485,8 +471,6 @@ class TaleaRhythmMaker(RhythmMaker):
             result = counts.partition_by_weights(division_weights)
         for sequence in result:
             assert all(isinstance(_, int) for _ in sequence), repr(sequence)
-        if self.burnish_specifier is not None:
-            result = self._apply_burnish_specifier(result)
         return result
 
     def _make_prolated_divisions(self, divisions, extra_counts_per_division):
@@ -571,13 +555,6 @@ class TaleaRhythmMaker(RhythmMaker):
         return talea
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def burnish_specifier(self) -> typing.Optional[specifiers.Burnish]:
-        r"""
-        Gets burnish specifier.
-        """
-        return self._burnish_specifier
 
     @property
     def commands(self) -> typing.List[_commands.Command]:

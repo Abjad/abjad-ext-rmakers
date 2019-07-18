@@ -53,28 +53,7 @@ class NoteRhythmMaker(RhythmMaker):
 
     __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = ("_burnish_specifier",)
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        *commands: _commands.Command,
-        burnish_specifier: specifiers.Burnish = None,
-        divisions: abjad.Expression = None,
-        duration_specifier: specifiers.Duration = None,
-        tag: str = None,
-    ) -> None:
-        RhythmMaker.__init__(
-            self,
-            *commands,
-            divisions=divisions,
-            duration_specifier=duration_specifier,
-            tag=tag,
-        )
-        if burnish_specifier is not None:
-            assert isinstance(burnish_specifier, specifiers.Burnish)
-        self._burnish_specifier = burnish_specifier
+    __slots__ = ()
 
     ### SPECIAL METHODS ###
 
@@ -127,75 +106,6 @@ class NoteRhythmMaker(RhythmMaker):
 
     ### PRIVATE METHODS ###
 
-    def _apply_burnish_specifier(self, selections):
-        if self.burnish_specifier is None:
-            return selections
-        elif self.burnish_specifier.outer_divisions_only:
-            selections = self._burnish_outer_divisions(selections)
-        else:
-            selections = self._burnish_each_division(selections)
-        return selections
-
-    def _burnish_each_division(self, selections):
-        message = "NoteRhythmMaker does not yet implement"
-        message += " burnishing each division."
-        raise NotImplementedError(message)
-
-    def _burnish_outer_divisions(self, selections):
-        left_classes = self.burnish_specifier.left_classes
-        left_counts = self.burnish_specifier.left_counts
-        right_classes = self.burnish_specifier.right_classes
-        right_counts = self.burnish_specifier.right_counts
-        if left_counts:
-            assert len(left_counts) == 1, repr(left_counts)
-            left_count = left_counts[0]
-        else:
-            left_count = 0
-        if right_counts:
-            assert len(right_counts) == 1, repr(right_counts)
-            right_count = right_counts[0]
-        else:
-            right_count = 0
-        if left_count + right_count <= len(selections):
-            middle_count = len(selections) - (left_count + right_count)
-        elif left_count <= len(selections):
-            right_count = len(selections) - left_count
-            middle_count = 0
-        else:
-            left_count = len(selections)
-            right_count = 0
-            middle_count = 0
-        assert left_count + middle_count + right_count == len(selections)
-        new_selections = []
-        left_classes = abjad.CyclicTuple(left_classes)
-        for i, selection in enumerate(selections[:left_count]):
-            target_class = left_classes[i]
-            new_selection = self._cast_selection(selection, target_class)
-            new_selections.append(new_selection)
-        if right_count:
-            for selection in selections[left_count:-right_count]:
-                new_selections.append(selection)
-            right_classes = abjad.CyclicTuple(right_classes)
-            for i, selection in enumerate(selections[-right_count:]):
-                target_class = right_classes[i]
-                new_selection = self._cast_selection(selection, target_class)
-                new_selections.append(new_selection)
-        else:
-            for selection in selections[left_count:]:
-                new_selections.append(selection)
-        return new_selections
-
-    def _cast_selection(self, selection, target_class):
-        new_selection = []
-        for leaf in selection:
-            new_leaf = target_class(leaf, tag=self.tag)
-            if not isinstance(new_leaf, (abjad.Chord, abjad.Note)):
-                abjad.detach(abjad.Tie, new_leaf)
-                abjad.detach(abjad.RepeatTie, new_leaf)
-            new_selection.append(new_leaf)
-        new_selection = abjad.select(new_selection)
-        return new_selection
-
     def _make_music(self, divisions) -> typing.List[abjad.Selection]:
         selections = []
         duration_specifier = self._get_duration_specifier()
@@ -208,17 +118,9 @@ class NoteRhythmMaker(RhythmMaker):
         for division in divisions:
             selection = leaf_maker(pitches=0, durations=[division])
             selections.append(selection)
-        selections = self._apply_burnish_specifier(selections)
         return selections
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def burnish_specifier(self) -> typing.Optional[specifiers.Burnish]:
-        r"""
-        Gets burnish specifier.
-        """
-        return self._burnish_specifier
 
     @property
     def commands(self) -> typing.List[_commands.Command]:
