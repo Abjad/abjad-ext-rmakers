@@ -1,5 +1,4 @@
 import abjad
-import collections
 import typing
 
 

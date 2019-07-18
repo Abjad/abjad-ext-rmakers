@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import commands
-from .DurationSpecifier import DurationSpecifier
+from . import specifiers
 from .RhythmMaker import RhythmMaker
 
 RhythmMakerTyping = typing.Union[

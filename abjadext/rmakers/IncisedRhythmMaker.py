@@ -1,8 +1,7 @@
 import abjad
 import typing
 from . import commands
-from .DurationSpecifier import DurationSpecifier
-from .InciseSpecifier import InciseSpecifier
+from . import specifiers as rmakers_specifiers
 from .RhythmMaker import RhythmMaker
 from .TaleaRhythmMaker import TaleaRhythmMaker
 
@@ -82,9 +81,9 @@ class IncisedRhythmMaker(RhythmMaker):
         self,
         *specifiers: commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: DurationSpecifier = None,
+        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
-        incise_specifier: InciseSpecifier = None,
+        incise_specifier: rmakers_specifiers.InciseSpecifier = None,
         replace_rests_with_skips: bool = None,
         tag: str = None,
     ) -> None:
@@ -95,7 +94,7 @@ class IncisedRhythmMaker(RhythmMaker):
             duration_specifier=duration_specifier,
             tag=tag,
         )
-        prototype = (InciseSpecifier, type(None))
+        prototype = (rmakers_specifiers.InciseSpecifier, type(None))
         assert isinstance(incise_specifier, prototype)
         self._incise_specifier = incise_specifier
         if extra_counts_per_division is not None:
@@ -128,7 +127,7 @@ class IncisedRhythmMaker(RhythmMaker):
     def _get_incise_specifier(self):
         if self.incise_specifier is not None:
             return self.incise_specifier
-        return InciseSpecifier()
+        return rmakers_specifiers.InciseSpecifier()
 
     def _make_division_incised_numeric_map(
         self,
@@ -394,7 +393,9 @@ class IncisedRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def duration_specifier(self) -> typing.Optional[DurationSpecifier]:
+    def duration_specifier(
+        self
+    ) -> typing.Optional[rmakers_specifiers.DurationSpecifier]:
         r"""
         Gets duration specifier.
 
@@ -577,7 +578,9 @@ class IncisedRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def incise_specifier(self) -> typing.Optional[InciseSpecifier]:
+    def incise_specifier(
+        self
+    ) -> typing.Optional[rmakers_specifiers.InciseSpecifier]:
         r"""
         Gets incise specifier.
 

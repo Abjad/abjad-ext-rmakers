@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import commands
-from .DurationSpecifier import DurationSpecifier
+from . import specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -152,7 +152,7 @@ class TupletRhythmMaker(RhythmMaker):
         *specifiers: commands.Command,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
         divisions: abjad.Expression = None,
-        duration_specifier: DurationSpecifier = None,
+        duration_specifier: specifiers.DurationSpecifier = None,
         tag: str = None,
         tuplet_ratios: abjad.RatioSequenceTyping = None,
     ) -> None:

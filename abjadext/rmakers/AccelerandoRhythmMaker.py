@@ -2,8 +2,7 @@ import abjad
 import math
 import typing
 from . import commands
-from .DurationSpecifier import DurationSpecifier
-from .InterpolationSpecifier import InterpolationSpecifier
+from . import specifiers as rmakers_specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -539,9 +538,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
         self,
         *specifiers: commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: DurationSpecifier = None,
+        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
         interpolation_specifiers: typing.Sequence[
-            InterpolationSpecifier
+            rmakers_specifiers.InterpolationSpecifier
         ] = None,
         tag: str = None,
     ) -> None:
@@ -584,7 +583,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         specifiers = self.interpolation_specifiers
         if specifiers is None:
             specifiers = abjad.CyclicTuple([InterpolationSpecifier()])
-        elif isinstance(specifiers, InterpolationSpecifier):
+        elif isinstance(specifiers, rmakers_specifiers.InterpolationSpecifier):
             specifiers = abjad.CyclicTuple([specifiers])
         else:
             specifiers = abjad.CyclicTuple(specifiers)
@@ -873,7 +872,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
     @property
     def interpolation_specifiers(
         self
-    ) -> typing.Optional[typing.Sequence[InterpolationSpecifier]]:
+    ) -> typing.Optional[
+        typing.Sequence[rmakers_specifiers.InterpolationSpecifier]
+    ]:
         r"""
         Gets interpolation specifier.
 

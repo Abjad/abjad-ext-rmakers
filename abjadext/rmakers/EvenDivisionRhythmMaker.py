@@ -2,8 +2,7 @@ import abjad
 import math
 import typing
 from . import commands
-from .BurnishSpecifier import BurnishSpecifier
-from .DurationSpecifier import DurationSpecifier
+from . import specifiers as rmakers_specifiers
 from .RhythmMaker import RhythmMaker
 
 
@@ -32,11 +31,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *specifiers: commands.Command,
-        burnish_specifier: BurnishSpecifier = None,
+        burnish_specifier: rmakers_specifiers.BurnishSpecifier = None,
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         divisions: abjad.Expression = None,
-        duration_specifier: DurationSpecifier = None,
+        duration_specifier: rmakers_specifiers.DurationSpecifier = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         tag: str = None,
     ) -> None:
@@ -62,7 +61,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             extra_counts_per_division = tuple(extra_counts_per_division)
         self._extra_counts_per_division = extra_counts_per_division
         if burnish_specifier is not None:
-            assert isinstance(burnish_specifier, BurnishSpecifier)
+            assert isinstance(
+                burnish_specifier, rmakers_specifiers.BurnishSpecifier
+            )
         self._burnish_specifier = burnish_specifier
         extra_counts_per_division = extra_counts_per_division or (0,)
         self._denominator = denominator
@@ -514,7 +515,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def burnish_specifier(self) -> typing.Optional[BurnishSpecifier]:
+    def burnish_specifier(
+        self
+    ) -> typing.Optional[rmakers_specifiers.BurnishSpecifier]:
         r"""
         Gets burnish specifier.
 

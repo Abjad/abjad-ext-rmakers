@@ -3,20 +3,20 @@ Tools for rhythm construction.
 """
 from .RhythmMaker import RhythmMaker
 from .AccelerandoRhythmMaker import AccelerandoRhythmMaker
-from .BurnishSpecifier import BurnishSpecifier
-from .DurationSpecifier import DurationSpecifier
 from .EvenDivisionRhythmMaker import EvenDivisionRhythmMaker
-from .InciseSpecifier import InciseSpecifier
 from .IncisedRhythmMaker import IncisedRhythmMaker
-from .InterpolationSpecifier import InterpolationSpecifier
 from .NoteRhythmMaker import NoteRhythmMaker
-from .Talea import Talea
+from .TaleaRhythmMaker import Talea
 from .TaleaRhythmMaker import TaleaRhythmMaker
 from .TupletRhythmMaker import TupletRhythmMaker
 from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
+from .specifiers import BurnishSpecifier
+from .specifiers import DurationSpecifier
+from .specifiers import InciseSpecifier
+from .specifiers import InterpolationSpecifier
 from .commands import Command
 from .commands import BeamCommand
 from .commands import BeamGroupsCommand
