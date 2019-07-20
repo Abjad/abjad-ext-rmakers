@@ -16,10 +16,10 @@ from .TupletRhythmMaker import TupletRhythmMaker
 def accelerando(
     *commands: _commands.Command,
     divisions: abjad.Expression = None,
-    duration_specifier: _specifiers.Duration = None,
     interpolations: typing.Union[
         _specifiers.Interpolation, typing.Sequence[_specifiers.Interpolation]
     ] = None,
+    spelling: _specifiers.Spelling = None,
     tag: str = None,
 ) -> AccelerandoRhythmMaker:
     """
@@ -28,8 +28,8 @@ def accelerando(
     return AccelerandoRhythmMaker(
         *commands,
         divisions=divisions,
-        duration_specifier=duration_specifier,
         interpolations=interpolations,
+        spelling=spelling,
         tag=tag,
     )
 
@@ -39,8 +39,8 @@ def even_division(
     denominator: typing.Union[str, int] = "from_counts",
     denominators: typing.Sequence[int] = [8],
     divisions: abjad.Expression = None,
-    duration_specifier: _specifiers.Duration = None,
     extra_counts_per_division: typing.Sequence[int] = None,
+    spelling: _specifiers.Spelling = None,
     tag: str = None,
 ) -> EvenDivisionRhythmMaker:
     """
@@ -51,8 +51,8 @@ def even_division(
         denominator=denominator,
         denominators=denominators,
         divisions=divisions,
-        duration_specifier=duration_specifier,
         extra_counts_per_division=extra_counts_per_division,
+        spelling=spelling,
         tag=tag,
     )
 
@@ -60,10 +60,10 @@ def even_division(
 def incised(
     *commands: _commands.Command,
     divisions: abjad.Expression = None,
-    duration_specifier: _specifiers.Duration = None,
     extra_counts_per_division: typing.Sequence[int] = None,
     incise_specifier: _specifiers.Incise = None,
     replace_rests_with_skips: bool = None,
+    spelling: _specifiers.Spelling = None,
     tag: str = None,
 ) -> IncisedRhythmMaker:
     """
@@ -72,10 +72,10 @@ def incised(
     return IncisedRhythmMaker(
         *commands,
         divisions=divisions,
-        duration_specifier=duration_specifier,
         extra_counts_per_division=extra_counts_per_division,
         incise_specifier=incise_specifier,
         replace_rests_with_skips=replace_rests_with_skips,
+        spelling=spelling,
         tag=tag,
     )
 
@@ -91,9 +91,9 @@ def talea(
     *commands: _commands.Command,
     curtail_ties: bool = None,
     divisions: abjad.Expression = None,
-    duration_specifier: _specifiers.Duration = None,
     extra_counts_per_division: abjad.IntegerSequence = None,
     read_talea_once_only: bool = None,
+    spelling: _specifiers.Spelling = None,
     tag: str = None,
     talea: _specifiers.Talea = _specifiers.Talea(counts=[1], denominator=16),
 ) -> TaleaRhythmMaker:
@@ -104,9 +104,9 @@ def talea(
         *commands,
         curtail_ties=curtail_ties,
         divisions=divisions,
-        duration_specifier=duration_specifier,
         extra_counts_per_division=extra_counts_per_division,
         read_talea_once_only=read_talea_once_only,
+        spelling=spelling,
         tag=tag,
         talea=talea,
     )
@@ -116,7 +116,7 @@ def tuplet(
     *commands: _commands.Command,
     denominator: typing.Union[int, abjad.DurationTyping] = None,
     divisions: abjad.Expression = None,
-    duration_specifier: _specifiers.Duration = None,
+    spelling: _specifiers.Spelling = None,
     tag: str = None,
     tuplet_ratios: abjad.RatioSequenceTyping = None,
 ) -> TupletRhythmMaker:
@@ -127,7 +127,7 @@ def tuplet(
         *commands,
         denominator=denominator,
         divisions=divisions,
-        duration_specifier=duration_specifier,
+        spelling=spelling,
         tag=tag,
         tuplet_ratios=tuplet_ratios,
     )

@@ -25,16 +25,12 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         divisions: abjad.Expression = None,
-        duration_specifier: _specifiers.Duration = None,
         extra_counts_per_division: typing.Sequence[int] = None,
+        spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
-            self,
-            *commands,
-            divisions=divisions,
-            duration_specifier=duration_specifier,
-            tag=tag,
+            self, *commands, divisions=divisions, spelling=spelling, tag=tag
         )
         assert abjad.mathtools.all_are_nonnegative_integer_powers_of_two(
             denominators

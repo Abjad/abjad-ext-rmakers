@@ -81,18 +81,14 @@ class IncisedRhythmMaker(RhythmMaker):
         self,
         *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: _specifiers.Duration = None,
         extra_counts_per_division: typing.Sequence[int] = None,
         incise_specifier: _specifiers.Incise = None,
         replace_rests_with_skips: bool = None,
+        spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
-            self,
-            *commands,
-            divisions=divisions,
-            duration_specifier=duration_specifier,
-            tag=tag,
+            self, *commands, divisions=divisions, spelling=spelling, tag=tag
         )
         prototype = (_specifiers.Incise, type(None))
         assert isinstance(incise_specifier, prototype)
@@ -318,7 +314,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     def _numeric_map_to_leaf_selections(self, numeric_map, lcd):
         selections = []
-        specifier = self._get_duration_specifier()
+        specifier = self._get_spelling_specifier()
         class_ = TaleaRhythmMaker
         for numeric_map_part in numeric_map:
             numeric_map_part = [
@@ -942,7 +938,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return super().commands
 
     @property
-    def duration_specifier(self) -> typing.Optional[_specifiers.Duration]:
+    def spelling(self) -> typing.Optional[_specifiers.Spelling]:
         r"""
         Gets duration specifier.
 
@@ -1005,9 +1001,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         forbidden_note_duration=(1, 2),
-            ...         ),
+            ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 2)),
             ...     incise_specifier=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1113,7 +1107,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().duration_specifier
+        return super().spelling
 
     @property
     def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:

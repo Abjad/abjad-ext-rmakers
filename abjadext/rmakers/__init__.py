@@ -19,9 +19,9 @@ from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
 from .RhythmCommand import MakerMatch
 from .RhythmCommand import rhythm
-from .specifiers import Duration
 from .specifiers import Incise
 from .specifiers import Interpolation
+from .specifiers import Spelling
 from .specifiers import Talea
 from .specifiers import interpolate
 from .commands import Command

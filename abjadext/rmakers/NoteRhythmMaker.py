@@ -57,11 +57,11 @@ class NoteRhythmMaker(RhythmMaker):
 
     def _make_music(self, divisions) -> typing.List[abjad.Selection]:
         selections = []
-        duration_specifier = self._get_duration_specifier()
+        spelling = self._get_spelling_specifier()
         leaf_maker = abjad.LeafMaker(
-            increase_monotonic=duration_specifier.increase_monotonic,
-            forbidden_note_duration=duration_specifier.forbidden_note_duration,
-            forbidden_rest_duration=duration_specifier.forbidden_rest_duration,
+            increase_monotonic=spelling.increase_monotonic,
+            forbidden_note_duration=spelling.forbidden_note_duration,
+            forbidden_rest_duration=spelling.forbidden_rest_duration,
             tag=self.tag,
         )
         for division in divisions:
@@ -910,7 +910,7 @@ class NoteRhythmMaker(RhythmMaker):
         return super().divisions
 
     @property
-    def duration_specifier(self) -> typing.Optional[_specifiers.Duration]:
+    def spelling(self) -> typing.Optional[_specifiers.Spelling]:
         r"""
         Gets duration specifier.
 
@@ -955,9 +955,7 @@ class NoteRhythmMaker(RhythmMaker):
             ``1/2``:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     duration_specifier=rmakers.Duration(
-            ...         forbidden_note_duration=(1, 2),
-            ...         ),
+            ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 2))
             ...     )
 
             >>> divisions = [(5, 8), (3, 8)]
@@ -1032,7 +1030,7 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().duration_specifier
+        return super().spelling
 
     @property
     def tag(self):

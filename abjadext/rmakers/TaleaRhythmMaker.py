@@ -91,20 +91,16 @@ class TaleaRhythmMaker(RhythmMaker):
         *commands: _commands.Command,
         curtail_ties: bool = None,
         divisions: abjad.Expression = None,
-        duration_specifier: _specifiers.Duration = None,
         extra_counts_per_division: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
+        spelling: _specifiers.Spelling = None,
         tag: str = None,
         talea: _specifiers.Talea = _specifiers.Talea(
             counts=[1], denominator=16
         ),
     ) -> None:
         RhythmMaker.__init__(
-            self,
-            *commands,
-            divisions=divisions,
-            duration_specifier=duration_specifier,
-            tag=tag,
+            self, *commands, divisions=divisions, spelling=spelling, tag=tag
         )
         if talea is not None:
             assert isinstance(talea, _specifiers.Talea), repr(talea)
@@ -232,7 +228,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     def _make_leaf_lists(self, numeric_map, talea_denominator):
         leaf_lists = []
-        specifier = self._get_duration_specifier()
+        specifier = self._get_spelling_specifier()
         for map_division in numeric_map:
             leaf_list = self._make_leaves_from_talea(
                 map_division,
@@ -3127,7 +3123,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return self._curtail_ties
 
     @property
-    def duration_specifier(self) -> typing.Optional[_specifiers.Duration]:
+    def spelling(self) -> typing.Optional[_specifiers.Spelling]:
         r"""
         Gets duration specifier.
 
@@ -3141,9 +3137,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         increase_monotonic=False,
-            ...         ),
+            ...     spelling=rmakers.Spelling(increase_monotonic=False),
             ...     talea=rmakers.Talea(
             ...         counts=[5],
             ...         denominator=16,
@@ -3203,9 +3197,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         increase_monotonic=True,
-            ...         ),
+            ...     spelling=rmakers.Spelling(increase_monotonic=True),
             ...     talea=rmakers.Talea(
             ...         counts=[5],
             ...         denominator=16,
@@ -3264,9 +3256,6 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         forbidden_note_duration=None,
-            ...         ),
             ...     talea=rmakers.Talea(
             ...         counts=[1, 1, 1, 1, 4, 4],
             ...         denominator=16,
@@ -3321,9 +3310,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     duration_specifier=rmakers.Duration(
-            ...         forbidden_note_duration=(1, 4),
-            ...         ),
+            ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 4)),
             ...     talea=rmakers.Talea(
             ...         counts=[1, 1, 1, 1, 4, 4],
             ...         denominator=16,
@@ -3457,7 +3444,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().duration_specifier
+        return super().spelling
 
     @property
     def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:

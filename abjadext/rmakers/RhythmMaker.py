@@ -18,7 +18,7 @@ class RhythmMaker(object):
     __slots__ = (
         "_already_cached_state",
         "_divisions",
-        "_duration_specifier",
+        "_spelling",
         "_previous_state",
         "_commands",
         "_state",
@@ -36,7 +36,7 @@ class RhythmMaker(object):
         self,
         *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        duration_specifier: _specifiers.Duration = None,
+        spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
         commands = commands or ()
@@ -47,9 +47,9 @@ class RhythmMaker(object):
         if divisions is not None:
             assert isinstance(divisions, abjad.Expression)
         self._divisions = divisions
-        if duration_specifier is not None:
-            assert isinstance(duration_specifier, _specifiers.Duration)
-        self._duration_specifier = duration_specifier
+        if spelling is not None:
+            assert isinstance(spelling, _specifiers.Spelling)
+        self._spelling = spelling
         self._already_cached_state = None
         self._previous_state = abjad.OrderedDict()
         self._state = abjad.OrderedDict()
@@ -167,10 +167,10 @@ class RhythmMaker(object):
     #                report = repr(component) + "\n" + report
     #                raise Exception(report)
 
-    def _get_duration_specifier(self):
-        if self.duration_specifier is not None:
-            return self.duration_specifier
-        return _specifiers.Duration()
+    def _get_spelling_specifier(self):
+        if self.spelling is not None:
+            return self.spelling
+        return _specifiers.Spelling()
 
     def _get_format_specification(self):
         commands = self.commands or []
@@ -271,11 +271,11 @@ class RhythmMaker(object):
         return self._divisions
 
     @property
-    def duration_specifier(self) -> typing.Optional[_specifiers.Duration]:
+    def spelling(self) -> typing.Optional[_specifiers.Spelling]:
         """
         Gets duration specifier.
         """
-        return self._duration_specifier
+        return self._spelling
 
     @property
     def previous_state(self) -> abjad.OrderedDict:
