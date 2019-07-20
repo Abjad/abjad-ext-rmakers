@@ -144,13 +144,17 @@ class TupletRhythmMaker(RhythmMaker):
         self,
         *commands: _commands.Command,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
-        divisions: abjad.Expression = None,
+        preprocessor: abjad.Expression = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
         tuplet_ratios: abjad.RatioSequenceTyping = None,
     ) -> None:
         RhythmMaker.__init__(
-            self, *commands, divisions=divisions, spelling=spelling, tag=tag
+            self,
+            *commands,
+            preprocessor=preprocessor,
+            spelling=spelling,
+            tag=tag,
         )
         if denominator is not None:
             if isinstance(denominator, tuple):

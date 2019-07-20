@@ -262,7 +262,13 @@ class RhythmCommand(object):
 
     ### CLASS ATTRIBUTES ###
 
-    __slots__ = ("_divisions", "_rhythm_maker", "_commands", "_state", "_tag")
+    __slots__ = (
+        "_commands",
+        "_preprocessor",
+        "_rhythm_maker",
+        "_state",
+        "_tag",
+    )
 
     # to make sure abjad.new() copies commands
     _positional_arguments_name = "commands"
@@ -276,12 +282,12 @@ class RhythmCommand(object):
         # TODO: change to "*assignments"
         rhythm_maker: RhythmMakerTyping,
         *commands: _commands.Command,
-        divisions: abjad.Expression = None,
+        preprocessor: abjad.Expression = None,
         tag: str = None,
     ) -> None:
-        if divisions is not None:
-            assert isinstance(divisions, abjad.Expression)
-        self._divisions = divisions
+        if preprocessor is not None:
+            assert isinstance(preprocessor, abjad.Expression)
+        self._preprocessor = preprocessor
         self._check_rhythm_maker_input(rhythm_maker)
         self._rhythm_maker = rhythm_maker
         commands = commands or ()
@@ -494,14 +500,14 @@ class RhythmCommand(object):
     ### PRIVATE METHODS ###
 
     def _apply_division_expression(self, divisions) -> abjad.Sequence:
-        if self.divisions is not None:
-            result = self.divisions(divisions)
+        if self.preprocessor is not None:
+            result = self.preprocessor(divisions)
             if not isinstance(result, abjad.Sequence):
-                message = "division expression must return sequence:\n"
+                message = "division preprocessor must return sequence:\n"
                 message += f"  Input divisions:\n"
                 message += f"    {divisions}\n"
-                message += f"  Division expression:\n"
-                message += f"    {self.divisions}\n"
+                message += f"  Division preprocessor:\n"
+                message += f"    {self.preprocessor}\n"
                 message += f"  Result:\n"
                 message += f"    {result}"
                 raise Exception(message)
@@ -612,11 +618,11 @@ class RhythmCommand(object):
         return list(self._commands)
 
     @property
-    def divisions(self) -> typing.Optional[abjad.Expression]:
+    def preprocessor(self) -> typing.Optional[abjad.Expression]:
         r"""
-        Gets division preprocessor expression.
+        Gets division preprocessor.
         """
-        return self._divisions
+        return self._preprocessor
 
     @property
     def rhythm_maker(self) -> RhythmMakerTyping:
@@ -664,7 +670,7 @@ def rhythm(
     # TODO: change to "*assignments"
     rhythm_maker: RhythmMakerTyping,
     *commands: _commands.Command,
-    divisions: abjad.Expression = None,
+    preprocessor: abjad.Expression = None,
     tag: str = None,
 ):
     """
@@ -674,6 +680,6 @@ def rhythm(
         # TODO: change to "*assignments"
         rhythm_maker,
         *commands,
-        divisions=divisions,
+        preprocessor=preprocessor,
         tag=tag,
     )

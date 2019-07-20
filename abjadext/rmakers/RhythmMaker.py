@@ -17,10 +17,10 @@ class RhythmMaker(object):
 
     __slots__ = (
         "_already_cached_state",
-        "_divisions",
-        "_spelling",
-        "_previous_state",
         "_commands",
+        "_previous_state",
+        "_preprocessor",
+        "_spelling",
         "_state",
         "_tag",
     )
@@ -35,7 +35,7 @@ class RhythmMaker(object):
     def __init__(
         self,
         *commands: _commands.Command,
-        divisions: abjad.Expression = None,
+        preprocessor: abjad.Expression = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
@@ -44,9 +44,9 @@ class RhythmMaker(object):
             assert isinstance(command, _commands.Command), repr(command)
         commands_ = tuple(commands)
         self._commands = commands_
-        if divisions is not None:
-            assert isinstance(divisions, abjad.Expression)
-        self._divisions = divisions
+        if preprocessor is not None:
+            assert isinstance(preprocessor, abjad.Expression)
+        self._preprocessor = preprocessor
         if spelling is not None:
             assert isinstance(spelling, _specifiers.Spelling)
         self._spelling = spelling
@@ -71,8 +71,8 @@ class RhythmMaker(object):
         time_signatures = [abjad.TimeSignature(_) for _ in divisions]
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         staff = self._make_staff(time_signatures)
-        if self.divisions is not None:
-            divisions = self.divisions(divisions)
+        if self.preprocessor is not None:
+            divisions = self.preprocessor(divisions)
             assert isinstance(divisions, abjad.Sequence), repr(divisions)
             divisions = divisions.flatten(depth=-1)
             divisions = list(divisions)
@@ -264,18 +264,11 @@ class RhythmMaker(object):
         return list(self._commands)
 
     @property
-    def divisions(self) -> typing.Optional[abjad.Expression]:
+    def preprocessor(self) -> typing.Optional[abjad.Expression]:
         r"""
-        Gets division expression.
+        Gets division preprocessor.
         """
-        return self._divisions
-
-    @property
-    def spelling(self) -> typing.Optional[_specifiers.Spelling]:
-        """
-        Gets duration specifier.
-        """
-        return self._spelling
+        return self._preprocessor
 
     @property
     def previous_state(self) -> abjad.OrderedDict:
@@ -283,6 +276,13 @@ class RhythmMaker(object):
         Gets previous state dictionary.
         """
         return self._previous_state
+
+    @property
+    def spelling(self) -> typing.Optional[_specifiers.Spelling]:
+        """
+        Gets duration specifier.
+        """
+        return self._spelling
 
     @property
     def state(self) -> abjad.OrderedDict:

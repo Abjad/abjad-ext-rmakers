@@ -859,9 +859,9 @@ class NoteRhythmMaker(RhythmMaker):
         return super().commands
 
     @property
-    def divisions(self) -> typing.Optional[abjad.Expression]:
+    def preprocessor(self) -> typing.Optional[abjad.Expression]:
         r"""
-        Gets division expressions.
+        Gets division preprocessor.
 
         ..  container:: example
 
@@ -871,9 +871,7 @@ class NoteRhythmMaker(RhythmMaker):
             ...     weights, cyclic=True, overhang=True,
             ...     )
             >>> divisions = divisions.flatten(depth=-1)
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     divisions=divisions,
-            ... )
+            >>> rhythm_maker = rmakers.NoteRhythmMaker(preprocessor=divisions)
 
             >>> divisions = [(4, 4), (4, 4)]
             >>> selection = rhythm_maker(divisions)
@@ -907,7 +905,7 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().divisions
+        return super().preprocessor
 
     @property
     def spelling(self) -> typing.Optional[_specifiers.Spelling]:

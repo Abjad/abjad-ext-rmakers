@@ -15,10 +15,10 @@ from .TupletRhythmMaker import TupletRhythmMaker
 
 def accelerando(
     *commands: _commands.Command,
-    divisions: abjad.Expression = None,
     interpolations: typing.Union[
         _specifiers.Interpolation, typing.Sequence[_specifiers.Interpolation]
     ] = None,
+    preprocessor: abjad.Expression = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
 ) -> AccelerandoRhythmMaker:
@@ -27,7 +27,7 @@ def accelerando(
     """
     return AccelerandoRhythmMaker(
         *commands,
-        divisions=divisions,
+        preprocessor=preprocessor,
         interpolations=interpolations,
         spelling=spelling,
         tag=tag,
@@ -38,8 +38,8 @@ def even_division(
     *commands: _commands.Command,
     denominator: typing.Union[str, int] = "from_counts",
     denominators: typing.Sequence[int] = [8],
-    divisions: abjad.Expression = None,
     extra_counts: typing.Sequence[int] = None,
+    preprocessor: abjad.Expression = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
 ) -> EvenDivisionRhythmMaker:
@@ -50,7 +50,7 @@ def even_division(
         *commands,
         denominator=denominator,
         denominators=denominators,
-        divisions=divisions,
+        preprocessor=preprocessor,
         extra_counts=extra_counts,
         spelling=spelling,
         tag=tag,
@@ -59,9 +59,9 @@ def even_division(
 
 def incised(
     *commands: _commands.Command,
-    divisions: abjad.Expression = None,
     extra_counts: typing.Sequence[int] = None,
     incise: _specifiers.Incise = None,
+    preprocessor: abjad.Expression = None,
     replace_rests_with_skips: bool = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
@@ -71,7 +71,7 @@ def incised(
     """
     return IncisedRhythmMaker(
         *commands,
-        divisions=divisions,
+        preprocessor=preprocessor,
         extra_counts=extra_counts,
         incise=incise,
         replace_rests_with_skips=replace_rests_with_skips,
@@ -80,7 +80,7 @@ def incised(
     )
 
 
-def note() -> NoteRhythmMaker:
+def note(preprocessor: abjad.Expression = None,) -> NoteRhythmMaker:
     """
     Makes note rhythm-maker.
     """
@@ -90,8 +90,8 @@ def note() -> NoteRhythmMaker:
 def talea(
     *commands: _commands.Command,
     curtail_ties: bool = None,
-    divisions: abjad.Expression = None,
     extra_counts: abjad.IntegerSequence = None,
+    preprocessor: abjad.Expression = None,
     read_talea_once_only: bool = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
@@ -103,7 +103,7 @@ def talea(
     return TaleaRhythmMaker(
         *commands,
         curtail_ties=curtail_ties,
-        divisions=divisions,
+        preprocessor=preprocessor,
         extra_counts=extra_counts,
         read_talea_once_only=read_talea_once_only,
         spelling=spelling,
@@ -115,7 +115,7 @@ def talea(
 def tuplet(
     *commands: _commands.Command,
     denominator: typing.Union[int, abjad.DurationTyping] = None,
-    divisions: abjad.Expression = None,
+    preprocessor: abjad.Expression = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
     tuplet_ratios: abjad.RatioSequenceTyping = None,
@@ -126,7 +126,7 @@ def tuplet(
     return TupletRhythmMaker(
         *commands,
         denominator=denominator,
-        divisions=divisions,
+        preprocessor=preprocessor,
         spelling=spelling,
         tag=tag,
         tuplet_ratios=tuplet_ratios,

@@ -522,16 +522,20 @@ class AccelerandoRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *commands: _commands.Command,
-        divisions: abjad.Expression = None,
         interpolations: typing.Union[
             _specifiers.Interpolation,
             typing.Sequence[_specifiers.Interpolation],
         ] = None,
+        preprocessor: abjad.Expression = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
-            self, *commands, divisions=divisions, spelling=spelling, tag=tag
+            self,
+            *commands,
+            preprocessor=preprocessor,
+            spelling=spelling,
+            tag=tag,
         )
         if isinstance(interpolations, _specifiers.Interpolation):
             interpolations = (interpolations,)

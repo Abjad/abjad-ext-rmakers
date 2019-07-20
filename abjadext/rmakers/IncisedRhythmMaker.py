@@ -76,15 +76,19 @@ class IncisedRhythmMaker(RhythmMaker):
     def __init__(
         self,
         *commands: _commands.Command,
-        divisions: abjad.Expression = None,
         extra_counts: typing.Sequence[int] = None,
         incise: _specifiers.Incise = None,
+        preprocessor: abjad.Expression = None,
         replace_rests_with_skips: bool = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
-            self, *commands, divisions=divisions, spelling=spelling, tag=tag
+            self,
+            *commands,
+            preprocessor=preprocessor,
+            spelling=spelling,
+            tag=tag,
         )
         prototype = (_specifiers.Incise, type(None))
         assert isinstance(incise, prototype)
