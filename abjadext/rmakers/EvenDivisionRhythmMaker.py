@@ -1413,6 +1413,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ...     denominators=[16],
             ...     extra_counts_per_division=[0, 1, 2],
             ...     )
@@ -1445,17 +1446,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                     \new RhythmicStaff
                     {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/6 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7 {
                             c'16
@@ -1481,17 +1479,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/6 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7 {
                             c'16
@@ -1507,64 +1502,298 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                 >>
 
-        Treats overly large and overly small values of
-        ``extra_counts_per_division`` modularly. Denote by
-        ``unprolated_note_count`` the number of unprolated notes included in
-        any tuplet (as though ``extra_counts_per_division`` were set to zero).
-        Then the number of extra counts included per tuplet is given by two
-        formulas:
-
-        * The number of extra counts per tuplet equals
-          ``extra_counts_per_division % unprolated_note_count``
-          when ``extra_counts_per_division`` is positive.
-
         ..  container:: example
 
-            **Handling of overly small negative values.** Denote by
+            **Modular handling of positive values.** Denote by
             ``unprolated_note_count`` the number counts included in a tuplet
-            when ``extra_counts_per_division`` is set to zero. Then the number
-            of extra counts per tuplet equals ``extra_counts_per_division %
-            ceiling(unprolated_note_count / 2)`` when
-            ``extra_counts_per_division`` is negative.
+            when ``extra_counts_per_division`` is set to zero. Then extra
+            counts equals ``extra_counts_per_division %
+            unprolated_note_count`` when ``extra_counts_per_division`` is
+            positive.
 
-            The modulus of transformation of a tuplet with six notes is three:
+            This is likely to be intuitive; compare with the handling of
+            negative values, below.
+
+            For positive extra counts, the modulus of transformation of a
+            tuplet with six notes is six:
 
             >>> import math
             >>> unprolated_note_count = 6
-            >>> modulus = math.ceil(unprolated_note_count / 2)
-            >>> modulus
-            3
-
-            Which produces the following pattern for negative values:
-
-            >>> extra_counts_per_division = [0, -1, -2, -3, -4, -5, -6, -7, -8]
-            >>> modular_counts = []
+            >>> modulus = unprolated_note_count
+            >>> extra_counts_per_division = list(range(12))
             >>> labels = []
             >>> for count in extra_counts_per_division:
-            ...     modular_count = -(abs(count) % modulus)
-            ...     modular_counts.append(modular_count)
+            ...     modular_count = count % modulus
             ...     label = f"{count:3} becomes {modular_count:2}"
             ...     labels.append(label)
-            ...     print(label)
-             0 becomes  0
-            -1 becomes -1
-            -2 becomes -2
-            -3 becomes  0
-            -4 becomes -1
-            -5 becomes -2
-            -6 becomes  0
-            -7 becomes -1
-            -8 becomes -2
 
-            Which notate like this:
+            Which produces the following pattern of changes:
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     denominators=[16],
-            ...     extra_counts_per_division=[
-            ...         0, -1, -2, -3, -4, -5, -6, -7, -8,
-            ...     ]
+            ...     extra_counts_per_division=extra_counts_per_division,
+            ... )
+
+            >>> divisions = 12 * [(6, 16)]
+            >>> selection = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selection,
+            ...     divisions,
+            ...     )
+
+            >>> staff = lilypond_file[abjad.Staff]
+            >>> abjad.override(staff).text_script.staff_padding = 7
+            >>> groups = abjad.select(staff).leaves().group_by_measure()
+            >>> for group, label in zip(groups, labels):
+            ...     markup = abjad.Markup(label, direction=abjad.Up)
+            ...     abjad.attach(markup, group[0])
+            ...
+
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                        \time 6/16
+                        s1 * 3/8
+                    }
+                    \new RhythmicStaff
+                    \with
+                    {
+                        \override TextScript.staff-padding = #7
+                    }
+                    {
+                        c'16
+                        ^ \markup { "0 becomes 0" }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            ^ \markup { "1 becomes 1" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/8 {
+                            c'16
+                            ^ \markup { "2 becomes 2" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 6/9 {
+                            c'16
+                            ^ \markup { "3 becomes 3" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/10 {
+                            c'16
+                            ^ \markup { "4 becomes 4" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/11 {
+                            c'16
+                            ^ \markup { "5 becomes 5" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        c'16
+                        ^ \markup { "6 becomes 0" }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7 {
+                            c'16
+                            ^ \markup { "7 becomes 1" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/8 {
+                            c'16
+                            ^ \markup { "8 becomes 2" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \times 6/9 {
+                            c'16
+                            ^ \markup { "9 becomes 3" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/10 {
+                            c'16
+                            ^ \markup { "10 becomes 4" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/11 {
+                            c'16
+                            ^ \markup { "11 becomes 5" }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                    }
+                >>
+
+            This modular formula ensures that rhythm-maker ``denominators`` are
+            always respected: a very large number of extra counts never causes
+            a ``16``-denominated tuplet to result in 32nd- or 64th-note
+            rhythms.
+
+        ..  container:: example
+
+            **Modular handling of negative values.** Denote by
+            ``unprolated_note_count`` the number of counts included in a tuplet
+            when ``extra_counts_per_division`` is set to zero. Further, let
+            ``modulus = ceiling(unprolated_note_count / 2)``. Then extra counts
+            equals ``-(abs(extra_counts_per_division) % modulus)`` when
+            ``extra_counts_per_division`` is negative.
+
+            For negative extra counts, the modulus of transformation of a
+            tuplet with six notes is three:
+
+            >>> import math
+            >>> unprolated_note_count = 6
+            >>> modulus = math.ceil(unprolated_note_count / 2)
+            >>> extra_counts_per_division = [0, -1, -2, -3, -4, -5, -6, -7, -8]
+            >>> labels = []
+            >>> for count in extra_counts_per_division:
+            ...     modular_count = -(abs(count) % modulus)
+            ...     label = f"{count:3} becomes {modular_count:2}"
+            ...     labels.append(label)
+
+            Which produces the following pattern of changes:
+
+            >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     denominators=[16],
+            ...     extra_counts_per_division=extra_counts_per_division,
             ... )
 
             >>> divisions = 9 * [(6, 16)]
@@ -1709,11 +1938,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                 >>
 
-          This modular formula ensures that the values given as the
-          rhythm-maker's ``denominators`` are always respected. A very large
-          value of ``extra_counts_per_division``, for example, never causes a
-          ``16``-denominated tuplet to result in 32nd or 64th note rhythms;
-          ``16``-denominated tuplets always produce 16th note rhythms.
+            This modular formula ensures that rhythm-maker ``denominators`` are
+            always respected: a very small number of extra counts never causes
+            a ``16``-denominated tuplet to result in 8th- or quarter-note
+            rhythms.
 
         """
         if self._extra_counts_per_division:
@@ -1731,6 +1959,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
             ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ...     denominators=[16, 8, 4],
             ...     extra_counts_per_division=[0, 1],
             ...     )
@@ -1763,15 +1992,12 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                     \new RhythmicStaff
                     {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/4 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
                         \times 2/3 {
                             c'8
                             [
@@ -1779,10 +2005,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                        }
+                        c'4
                         \times 4/5 {
                             c'16
                             [
@@ -1792,13 +2015,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 2/2 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
+                        c'8
+                        [
+                        c'8
+                        ]
                     }
                 >>
 
@@ -1841,19 +2061,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                     \new RhythmicStaff
                     {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/4 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
+                        c'4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
                         \times 2/3 {
                             c'8
                             [
@@ -1861,10 +2075,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                        }
+                        c'4
                         \times 4/5 {
                             c'16
                             [
