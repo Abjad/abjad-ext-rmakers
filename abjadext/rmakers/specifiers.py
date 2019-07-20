@@ -212,7 +212,7 @@ class Incise(object):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=specifier,
+            ...     incise=specifier,
             ...     )
 
             >>> divisions = 4 * [(5, 16)]

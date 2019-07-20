@@ -15,7 +15,7 @@ class IncisedRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.IncisedRhythmMaker(
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
-        ...     incise_specifier=rmakers.Incise(
+        ...     incise=rmakers.Incise(
         ...         prefix_talea=[-1],
         ...         prefix_counts=[0, 1],
         ...         suffix_talea=[-1],
@@ -71,7 +71,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     __slots__ = (
         "_extra_counts_per_division",
-        "_incise_specifier",
+        "_incise",
         "_replace_rests_with_skips",
     )
 
@@ -82,7 +82,7 @@ class IncisedRhythmMaker(RhythmMaker):
         *commands: _commands.Command,
         divisions: abjad.Expression = None,
         extra_counts_per_division: typing.Sequence[int] = None,
-        incise_specifier: _specifiers.Incise = None,
+        incise: _specifiers.Incise = None,
         replace_rests_with_skips: bool = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
@@ -91,8 +91,8 @@ class IncisedRhythmMaker(RhythmMaker):
             self, *commands, divisions=divisions, spelling=spelling, tag=tag
         )
         prototype = (_specifiers.Incise, type(None))
-        assert isinstance(incise_specifier, prototype)
-        self._incise_specifier = incise_specifier
+        assert isinstance(incise, prototype)
+        self._incise = incise
         if extra_counts_per_division is not None:
             extra_counts_per_division = tuple(extra_counts_per_division)
         assert (
@@ -107,8 +107,8 @@ class IncisedRhythmMaker(RhythmMaker):
     ### PRIVATE METHODS ###
 
     def _get_incise_specifier(self):
-        if self.incise_specifier is not None:
-            return self.incise_specifier
+        if self.incise is not None:
+            return self.incise
         return _specifiers.Incise()
 
     def _make_division_incised_numeric_map(
@@ -146,18 +146,18 @@ class IncisedRhythmMaker(RhythmMaker):
         return numeric_map
 
     def _make_middle_of_numeric_map_part(self, middle):
-        incise_specifier = self._get_incise_specifier()
-        if not (incise_specifier.fill_with_rests):
-            if not incise_specifier.outer_divisions_only:
+        incise = self._get_incise_specifier()
+        if not (incise.fill_with_rests):
+            if not incise.outer_divisions_only:
                 if 0 < middle:
-                    if incise_specifier.body_ratio is not None:
-                        shards = middle / incise_specifier.body_ratio
+                    if incise.body_ratio is not None:
+                        shards = middle / incise.body_ratio
                         return tuple(shards)
                     else:
                         return (middle,)
                 else:
                     return ()
-            elif incise_specifier.outer_divisions_only:
+            elif incise.outer_divisions_only:
                 if 0 < middle:
                     return (middle,)
                 else:
@@ -165,12 +165,12 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 raise Exception("must incise divisions or output.")
         else:
-            if not incise_specifier.outer_divisions_only:
+            if not incise.outer_divisions_only:
                 if 0 < middle:
                     return (-abs(middle),)
                 else:
                     return ()
-            elif incise_specifier.outer_divisions_only:
+            elif incise.outer_divisions_only:
                 if 0 < middle:
                     return (-abs(middle),)
                 else:
@@ -190,16 +190,16 @@ class IncisedRhythmMaker(RhythmMaker):
             "suffix_talea": suffix_talea,
             "extra_counts_per_division": extra_counts_per_division,
         }
-        if self.incise_specifier is not None:
-            talea_denominator = self.incise_specifier.talea_denominator
+        if self.incise is not None:
+            talea_denominator = self.incise.talea_denominator
         else:
             talea_denominator = None
         result = self._scale_counts(divisions, talea_denominator, counts)
         divisions = result["divisions"]
         lcd = result["lcd"]
         counts = result["counts"]
-        incise_specifier = self._get_incise_specifier()
-        if not incise_specifier.outer_divisions_only:
+        incise = self._get_incise_specifier()
+        if not incise.outer_divisions_only:
             numeric_map = self._make_division_incised_numeric_map(
                 divisions,
                 counts["prefix_talea"],
@@ -209,7 +209,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 counts["extra_counts_per_division"],
             )
         else:
-            assert incise_specifier.outer_divisions_only
+            assert incise.outer_divisions_only
             numeric_map = self._make_output_incised_numeric_map(
                 divisions,
                 counts["prefix_talea"],
@@ -343,17 +343,17 @@ class IncisedRhythmMaker(RhythmMaker):
 
     def _prepare_input(self):
         #
-        incise_specifier = self._get_incise_specifier()
-        prefix_talea = incise_specifier.prefix_talea or ()
+        incise = self._get_incise_specifier()
+        prefix_talea = incise.prefix_talea or ()
         prefix_talea = abjad.CyclicTuple(prefix_talea)
         #
-        prefix_counts = incise_specifier.prefix_counts or (0,)
+        prefix_counts = incise.prefix_counts or (0,)
         prefix_counts = abjad.CyclicTuple(prefix_counts)
         #
-        suffix_talea = incise_specifier.suffix_talea or ()
+        suffix_talea = incise.suffix_talea or ()
         suffix_talea = abjad.CyclicTuple(suffix_talea)
         #
-        suffix_counts = incise_specifier.suffix_counts or (0,)
+        suffix_counts = incise.suffix_counts or (0,)
         suffix_counts = abjad.CyclicTuple(suffix_counts)
         #
         extra_counts_per_division = self.extra_counts_per_division or ()
@@ -386,7 +386,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         outer_divisions_only=True,
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -443,7 +443,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         outer_divisions_only=True,
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -497,7 +497,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -551,7 +551,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -607,7 +607,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.tie(tuplets.map(last_leaf)),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -662,7 +662,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.repeat_tie(nonfirst_tuplets.map(first_leaf)),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -716,7 +716,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     rmakers.untie(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -767,7 +767,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.force_augmentation(),
             ...     rmakers.beam(),
             ...     extra_counts_per_division=[1],
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -827,7 +827,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         talea_denominator=16,
@@ -888,7 +888,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         talea_denominator=16,
@@ -949,7 +949,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1002,7 +1002,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 2)),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1062,7 +1062,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     rmakers.rewrite_meter(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -1119,7 +1119,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def incise_specifier(self) -> typing.Optional[_specifiers.Incise]:
+    def incise(self) -> typing.Optional[_specifiers.Incise]:
         r"""
         Gets incise specifier.
 
@@ -1175,7 +1175,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-8, -7],
             ...         prefix_counts=[2],
             ...         suffix_talea=[-3],
@@ -1234,7 +1234,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[7, 8],
             ...         prefix_counts=[2],
             ...         suffix_talea=[3],
@@ -1286,7 +1286,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return self._incise_specifier
+        return self._incise
 
     @property
     def replace_rests_with_skips(self) -> typing.Optional[bool]:
@@ -1300,7 +1300,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         fill_with_rests=True,
             ...         prefix_talea=[1],
             ...         prefix_counts=[1],
@@ -1355,7 +1355,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         fill_with_rests=True,
             ...         prefix_talea=[1],
             ...         prefix_counts=[1],
@@ -1422,7 +1422,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.force_augmentation(),
             ...     rmakers.beam(),
             ...     extra_counts_per_division=[1],
-            ...     incise_specifier=rmakers.Incise(
+            ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
