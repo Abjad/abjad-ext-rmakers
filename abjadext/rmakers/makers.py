@@ -39,7 +39,7 @@ def even_division(
     denominator: typing.Union[str, int] = "from_counts",
     denominators: typing.Sequence[int] = [8],
     divisions: abjad.Expression = None,
-    extra_counts_per_division: typing.Sequence[int] = None,
+    extra_counts: typing.Sequence[int] = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
 ) -> EvenDivisionRhythmMaker:
@@ -51,7 +51,7 @@ def even_division(
         denominator=denominator,
         denominators=denominators,
         divisions=divisions,
-        extra_counts_per_division=extra_counts_per_division,
+        extra_counts=extra_counts,
         spelling=spelling,
         tag=tag,
     )
@@ -60,7 +60,7 @@ def even_division(
 def incised(
     *commands: _commands.Command,
     divisions: abjad.Expression = None,
-    extra_counts_per_division: typing.Sequence[int] = None,
+    extra_counts: typing.Sequence[int] = None,
     incise: _specifiers.Incise = None,
     replace_rests_with_skips: bool = None,
     spelling: _specifiers.Spelling = None,
@@ -72,7 +72,7 @@ def incised(
     return IncisedRhythmMaker(
         *commands,
         divisions=divisions,
-        extra_counts_per_division=extra_counts_per_division,
+        extra_counts=extra_counts,
         incise=incise,
         replace_rests_with_skips=replace_rests_with_skips,
         spelling=spelling,
@@ -91,7 +91,7 @@ def talea(
     *commands: _commands.Command,
     curtail_ties: bool = None,
     divisions: abjad.Expression = None,
-    extra_counts_per_division: abjad.IntegerSequence = None,
+    extra_counts: abjad.IntegerSequence = None,
     read_talea_once_only: bool = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
@@ -104,7 +104,7 @@ def talea(
         *commands,
         curtail_ties=curtail_ties,
         divisions=divisions,
-        extra_counts_per_division=extra_counts_per_division,
+        extra_counts=extra_counts,
         read_talea_once_only=read_talea_once_only,
         spelling=spelling,
         tag=tag,

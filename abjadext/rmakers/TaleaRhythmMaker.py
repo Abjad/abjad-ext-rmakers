@@ -79,7 +79,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     __slots__ = (
         "_curtail_ties",
-        "_extra_counts_per_division",
+        "_extra_counts",
         "_read_talea_once_only",
         "_talea",
     )
@@ -91,7 +91,7 @@ class TaleaRhythmMaker(RhythmMaker):
         *commands: _commands.Command,
         curtail_ties: bool = None,
         divisions: abjad.Expression = None,
-        extra_counts_per_division: abjad.IntegerSequence = None,
+        extra_counts: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
@@ -108,11 +108,11 @@ class TaleaRhythmMaker(RhythmMaker):
         if curtail_ties is not None:
             curtail_ties = bool(curtail_ties)
         self._curtail_ties = curtail_ties
-        if extra_counts_per_division is not None:
+        if extra_counts is not None:
             assert abjad.mathtools.all_are_integer_equivalent_numbers(
-                extra_counts_per_division
+                extra_counts
             )
-        self._extra_counts_per_division = extra_counts_per_division
+        self._extra_counts = extra_counts
         if read_talea_once_only is not None:
             read_talea_once_only = bool(read_talea_once_only)
         self._read_talea_once_only = read_talea_once_only
@@ -291,13 +291,13 @@ class TaleaRhythmMaker(RhythmMaker):
             end_counts=end_counts,
             preamble=preamble,
         )
-        extra_counts_per_division = input_["extra_counts_per_division"]
+        extra_counts = input_["extra_counts"]
         unscaled_end_counts = tuple(end_counts)
         unscaled_preamble = tuple(preamble)
         unscaled_talea = tuple(talea)
         counts = {
             "end_counts": end_counts,
-            "extra_counts_per_division": extra_counts_per_division,
+            "extra_counts": extra_counts,
             "preamble": preamble,
             "talea": talea,
         }
@@ -314,12 +314,12 @@ class TaleaRhythmMaker(RhythmMaker):
                 divisions,
                 counts["preamble"],
                 counts["talea"],
-                counts["extra_counts_per_division"],
+                counts["extra_counts"],
                 counts["end_counts"],
             )
             talea_weight_consumed = sum(_.weight() for _ in numeric_map)
             leaf_lists = self._make_leaf_lists(numeric_map, lcd)
-            if not counts["extra_counts_per_division"]:
+            if not counts["extra_counts"]:
                 tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
             else:
                 tuplets = self._make_tuplets(divisions, leaf_lists)
@@ -345,13 +345,13 @@ class TaleaRhythmMaker(RhythmMaker):
         return tuplets
 
     def _make_numeric_map(
-        self, divisions, preamble, talea, extra_counts_per_division, end_counts
+        self, divisions, preamble, talea, extra_counts, end_counts
     ):
         assert all(isinstance(_, int) for _ in end_counts), repr(end_counts)
         assert all(isinstance(_, int) for _ in preamble), repr(preamble)
         assert all(isinstance(_, int) for _ in talea), repr(talea)
         prolated_divisions = self._make_prolated_divisions(
-            divisions, extra_counts_per_division
+            divisions, extra_counts
         )
         prolated_divisions = [
             abjad.NonreducedFraction(_) for _ in prolated_divisions
@@ -379,13 +379,13 @@ class TaleaRhythmMaker(RhythmMaker):
             assert all(isinstance(_, int) for _ in sequence), repr(sequence)
         return result
 
-    def _make_prolated_divisions(self, divisions, extra_counts_per_division):
+    def _make_prolated_divisions(self, divisions, extra_counts):
         prolated_divisions = []
         for i, division in enumerate(divisions):
-            if not extra_counts_per_division:
+            if not extra_counts:
                 prolated_divisions.append(division)
                 continue
-            prolation_addendum = extra_counts_per_division[i]
+            prolation_addendum = extra_counts[i]
             try:
                 numerator = division.numerator
             except AttributeError:
@@ -422,18 +422,14 @@ class TaleaRhythmMaker(RhythmMaker):
             preamble = talea.preamble or ()
             talea = talea.counts or ()
         talea = abjad.CyclicTuple(talea)
-        extra_counts_per_division = self.extra_counts_per_division or ()
-        extra_counts_per_division = abjad.sequence(extra_counts_per_division)
+        extra_counts = self.extra_counts or ()
+        extra_counts = abjad.sequence(extra_counts)
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
-        extra_counts_per_division = extra_counts_per_division.rotate(
-            -divisions_consumed
-        )
-        extra_counts_per_division = abjad.CyclicTuple(
-            extra_counts_per_division
-        )
+        extra_counts = extra_counts.rotate(-divisions_consumed)
+        extra_counts = abjad.CyclicTuple(extra_counts)
         return {
             "end_counts": end_counts,
-            "extra_counts_per_division": extra_counts_per_division,
+            "extra_counts": extra_counts,
             "preamble": preamble,
             "talea": talea,
         }
@@ -604,7 +600,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[0, 1, 2],
+            ...     extra_counts=[0, 1, 2],
             ...     talea=rmakers.Talea(
             ...         counts=[4],
             ...         denominator=16,
@@ -742,7 +738,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #            ...     ),
 #            ...     rmakers.beam(),
 #            ...     rmakers.extract_trivial(),
-#            ...     extra_counts_per_division=[0, 1, 2],
+#            ...     extra_counts=[0, 1, 2],
 #            ...     talea=rmakers.Talea(
 #            ...         counts=[4],
 #            ...         denominator=16,
@@ -879,7 +875,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.denominator((1, 16)),
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[1, 1, 2, 2],
+            ...     extra_counts=[1, 1, 2, 2],
             ...     talea=rmakers.Talea(
             ...         counts=[1, 2, 3, 4],
             ...         denominator=16,
@@ -1804,7 +1800,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[1, 1, 2, 2],
+            ...     extra_counts=[1, 1, 2, 2],
             ...     talea=rmakers.Talea(
             ...         counts=[1, 2, 3, 4],
             ...         denominator=16,
@@ -1883,7 +1879,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.denominator((1, 16)),
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[1, 1, 2, 2],
+            ...     extra_counts=[1, 1, 2, 2],
             ...     talea=rmakers.Talea(
             ...         counts=[1, 2, 3, 4],
             ...         denominator=16,
@@ -1966,7 +1962,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[0, -1],
+            ...     extra_counts=[0, -1],
             ...     talea=rmakers.Talea(
             ...         counts=[1],
             ...         denominator=16,
@@ -2054,7 +2050,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.force_augmentation(),
             ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[0, -1],
+            ...     extra_counts=[0, -1],
             ...     talea=rmakers.Talea(
             ...         counts=[1],
             ...         denominator=16,
@@ -2146,7 +2142,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 4],
+            ...     extra_counts=[0, 4],
             ...     talea=rmakers.Talea(
             ...         counts=[3, 3, 6, 6],
             ...         denominator=16,
@@ -2210,7 +2206,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.trivialize(),
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 4],
+            ...     extra_counts=[0, 4],
             ...     talea=rmakers.Talea(
             ...         counts=[3, 3, 6, 6],
             ...         denominator=16,
@@ -2279,7 +2275,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.trivialize(),
             ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 4],
+            ...     extra_counts=[0, 4],
             ...     talea=rmakers.Talea(
             ...         counts=[3, 3, 6, 6],
             ...         denominator=16,
@@ -2349,7 +2345,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.trivialize(),
             ...     rmakers.tie(abjad.select().notes()[:-1]),
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 4],
+            ...     extra_counts=[0, 4],
             ...     talea=rmakers.Talea(
             ...         counts=[3, 3, 6, 6],
             ...         denominator=16,
@@ -2425,7 +2421,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[1, 0],
+            ...     extra_counts=[1, 0],
             ...     talea=rmakers.Talea(
             ...         counts=[3, 3, -6, -6],
             ...         denominator=16,
@@ -2494,7 +2490,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.rewrite_rest_filled(),
-            ...     extra_counts_per_division=[1, 0],
+            ...     extra_counts=[1, 0],
             ...     talea=rmakers.Talea(
             ...         counts=[3, 3, -6, -6],
             ...         denominator=16,
@@ -2741,7 +2737,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.rewrite_rest_filled(selector),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[0, 1, 2],
+            ...     extra_counts=[0, 1, 2],
             ...     talea=rmakers.Talea(
             ...         counts=[4],
             ...         denominator=16,
@@ -2866,7 +2862,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.rewrite_rest_filled(selector),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[0, 1, 2],
+            ...     extra_counts=[0, 1, 2],
             ...     talea=rmakers.Talea(
             ...         counts=[4],
             ...         denominator=16,
@@ -3447,13 +3443,13 @@ class TaleaRhythmMaker(RhythmMaker):
         return super().spelling
 
     @property
-    def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
+    def extra_counts(self) -> typing.Optional[typing.List[int]]:
         r"""
-        Gets extra counts per division.
+        Gets extra counts.
 
         ..  container:: example
 
-            No extra counts per division:
+            No extra counts:
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
@@ -3519,7 +3515,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 1],
+            ...     extra_counts=[0, 1],
             ...     talea=rmakers.Talea(
             ...         counts=[1, 2, 3, 4],
             ...         denominator=16,
@@ -3591,7 +3587,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 2],
+            ...     extra_counts=[0, 2],
             ...     talea=rmakers.Talea(
             ...         counts=[1, 2, 3, 4],
             ...         denominator=16,
@@ -3672,7 +3668,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, -1],
+            ...     extra_counts=[0, -1],
             ...     talea=rmakers.Talea(
             ...         counts=[1, 2, 3, 4],
             ...         denominator=16,
@@ -3742,8 +3738,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
         """
-        if self._extra_counts_per_division:
-            return list(self._extra_counts_per_division)
+        if self._extra_counts:
+            return list(self._extra_counts)
         else:
             return None
 
@@ -3859,7 +3855,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[0, 1, 2],
+            ...     extra_counts=[0, 1, 2],
             ...     talea=rmakers.Talea(
             ...         counts=[4],
             ...         denominator=16,
@@ -4067,7 +4063,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[0, 1],
+            ...     extra_counts=[0, 1],
             ...     tag='TALEA_RHYTHM_MAKER',
             ...     talea=rmakers.Talea(
             ...         counts=[1, 2, 3, 4],

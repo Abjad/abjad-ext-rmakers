@@ -196,7 +196,7 @@ class RhythmCommand(object):
 
         >>> even_divisions = rmakers.EvenDivisionRhythmMaker(
         ...     denominator=16,
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ... )
         >>> notes = rmakers.NoteRhythmMaker()
 

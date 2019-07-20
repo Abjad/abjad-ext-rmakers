@@ -69,11 +69,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = (
-        "_extra_counts_per_division",
-        "_incise",
-        "_replace_rests_with_skips",
-    )
+    __slots__ = ("_extra_counts", "_incise", "_replace_rests_with_skips")
 
     ### INITIALIZER ###
 
@@ -81,7 +77,7 @@ class IncisedRhythmMaker(RhythmMaker):
         self,
         *commands: _commands.Command,
         divisions: abjad.Expression = None,
-        extra_counts_per_division: typing.Sequence[int] = None,
+        extra_counts: typing.Sequence[int] = None,
         incise: _specifiers.Incise = None,
         replace_rests_with_skips: bool = None,
         spelling: _specifiers.Spelling = None,
@@ -93,15 +89,15 @@ class IncisedRhythmMaker(RhythmMaker):
         prototype = (_specifiers.Incise, type(None))
         assert isinstance(incise, prototype)
         self._incise = incise
-        if extra_counts_per_division is not None:
-            extra_counts_per_division = tuple(extra_counts_per_division)
+        if extra_counts is not None:
+            extra_counts = tuple(extra_counts)
         assert (
-            extra_counts_per_division is None
+            extra_counts is None
             or abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(
-                extra_counts_per_division
+                extra_counts
             )
-        ), extra_counts_per_division
-        self._extra_counts_per_division = extra_counts_per_division
+        ), extra_counts
+        self._extra_counts = extra_counts
         self._replace_rests_with_skips = replace_rests_with_skips
 
     ### PRIVATE METHODS ###
@@ -118,7 +114,7 @@ class IncisedRhythmMaker(RhythmMaker):
         prefix_counts=None,
         suffix_talea=None,
         suffix_counts=None,
-        extra_counts_per_division=None,
+        extra_counts=None,
     ):
         numeric_map, prefix_talea_index, suffix_talea_index = [], 0, 0
         for pair_index, division in enumerate(divisions):
@@ -132,7 +128,7 @@ class IncisedRhythmMaker(RhythmMaker):
             suffix = suffix_talea[start:stop]
             prefix_talea_index += prefix_length
             suffix_talea_index += suffix_length
-            prolation_addendum = extra_counts_per_division[pair_index]
+            prolation_addendum = extra_counts[pair_index]
             if isinstance(division, tuple):
                 numerator = division[0] + (prolation_addendum % division[0])
             else:
@@ -184,11 +180,11 @@ class IncisedRhythmMaker(RhythmMaker):
         prefix_counts = input_[1]
         suffix_talea = input_[2]
         suffix_counts = input_[3]
-        extra_counts_per_division = input_[4]
+        extra_counts = input_[4]
         counts = {
             "prefix_talea": prefix_talea,
             "suffix_talea": suffix_talea,
-            "extra_counts_per_division": extra_counts_per_division,
+            "extra_counts": extra_counts,
         }
         if self.incise is not None:
             talea_denominator = self.incise.talea_denominator
@@ -206,7 +202,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 prefix_counts,
                 counts["suffix_talea"],
                 suffix_counts,
-                counts["extra_counts_per_division"],
+                counts["extra_counts"],
             )
         else:
             assert incise.outer_divisions_only
@@ -216,7 +212,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 prefix_counts,
                 counts["suffix_talea"],
                 suffix_counts,
-                counts["extra_counts_per_division"],
+                counts["extra_counts"],
             )
         selections = self._numeric_map_to_leaf_selections(numeric_map, lcd)
         tuplets = self._make_tuplets(divisions, selections)
@@ -251,7 +247,7 @@ class IncisedRhythmMaker(RhythmMaker):
         prefix_counts,
         suffix_talea,
         suffix_counts,
-        extra_counts_per_division,
+        extra_counts,
     ):
         numeric_map, prefix_talea_index, suffix_talea_index = [], 0, 0
         prefix_length, suffix_length = prefix_counts[0], suffix_counts[0]
@@ -262,7 +258,7 @@ class IncisedRhythmMaker(RhythmMaker):
         stop = suffix_talea_index + suffix_length
         suffix = suffix_talea[start:stop]
         if len(divisions) == 1:
-            prolation_addendum = extra_counts_per_division[0]
+            prolation_addendum = extra_counts[0]
             if isinstance(divisions[0], abjad.NonreducedFraction):
                 numerator = divisions[0].numerator
             else:
@@ -273,7 +269,7 @@ class IncisedRhythmMaker(RhythmMaker):
             )
             numeric_map.append(numeric_map_part)
         else:
-            prolation_addendum = extra_counts_per_division[0]
+            prolation_addendum = extra_counts[0]
             if isinstance(divisions[0], tuple):
                 numerator = divisions[0][0]
             else:
@@ -285,7 +281,7 @@ class IncisedRhythmMaker(RhythmMaker):
             numeric_map.append(numeric_map_part)
             for i, division in enumerate(divisions[1:-1]):
                 index = i + 1
-                prolation_addendum = extra_counts_per_division[index]
+                prolation_addendum = extra_counts[index]
                 if isinstance(division, tuple):
                     numerator = division[0]
                 else:
@@ -297,10 +293,10 @@ class IncisedRhythmMaker(RhythmMaker):
                 numeric_map.append(numeric_map_part)
             try:
                 index = i + 2
-                prolation_addendum = extra_counts_per_division[index]
+                prolation_addendum = extra_counts[index]
             except UnboundLocalError:
                 index = 1 + 2
-                prolation_addendum = extra_counts_per_division[index]
+                prolation_addendum = extra_counts[index]
             if isinstance(divisions[-1], tuple):
                 numerator = divisions[-1][0]
             else:
@@ -356,20 +352,18 @@ class IncisedRhythmMaker(RhythmMaker):
         suffix_counts = incise.suffix_counts or (0,)
         suffix_counts = abjad.CyclicTuple(suffix_counts)
         #
-        extra_counts_per_division = self.extra_counts_per_division or ()
-        if extra_counts_per_division:
-            extra_counts_per_division = abjad.CyclicTuple(
-                extra_counts_per_division
-            )
+        extra_counts = self.extra_counts or ()
+        if extra_counts:
+            extra_counts = abjad.CyclicTuple(extra_counts)
         else:
-            extra_counts_per_division = abjad.CyclicTuple([0])
+            extra_counts = abjad.CyclicTuple([0])
         #
         return (
             prefix_talea,
             prefix_counts,
             suffix_talea,
             suffix_counts,
-            extra_counts_per_division,
+            extra_counts,
         )
 
     ### PUBLIC PROPERTIES ###
@@ -766,7 +760,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.force_augmentation(),
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[1],
+            ...     extra_counts=[1],
             ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -1110,12 +1104,12 @@ class IncisedRhythmMaker(RhythmMaker):
         return super().spelling
 
     @property
-    def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
+    def extra_counts(self) -> typing.Optional[typing.List[int]]:
         """
-        Gets extra counts per division.
+        Gets extra counts.
         """
-        if self._extra_counts_per_division:
-            return list(self._extra_counts_per_division)
+        if self._extra_counts:
+            return list(self._extra_counts)
         return None
 
     @property
@@ -1421,7 +1415,7 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.IncisedRhythmMaker(
             ...     rmakers.force_augmentation(),
             ...     rmakers.beam(),
-            ...     extra_counts_per_division=[1],
+            ...     extra_counts=[1],
             ...     incise=rmakers.Incise(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],

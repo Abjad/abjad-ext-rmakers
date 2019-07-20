@@ -15,7 +15,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
     __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = ("_denominator", "_denominators", "_extra_counts_per_division")
+    __slots__ = ("_denominator", "_denominators", "_extra_counts")
 
     ### INITIALIZER ###
 
@@ -25,7 +25,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         divisions: abjad.Expression = None,
-        extra_counts_per_division: typing.Sequence[int] = None,
+        extra_counts: typing.Sequence[int] = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
@@ -37,16 +37,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ), repr(denominators)
         denominators = tuple(denominators)
         self._denominators: typing.Tuple[int, ...] = denominators
-        if extra_counts_per_division is not None:
+        if extra_counts is not None:
             assert abjad.mathtools.all_are_integer_equivalent(
-                extra_counts_per_division
-            ), repr(extra_counts_per_division)
-            extra_counts_per_division = [
-                int(_) for _ in extra_counts_per_division
-            ]
-            extra_counts_per_division = tuple(extra_counts_per_division)
-        self._extra_counts_per_division = extra_counts_per_division
-        extra_counts_per_division = extra_counts_per_division or (0,)
+                extra_counts
+            ), repr(extra_counts)
+            extra_counts = [int(_) for _ in extra_counts]
+            extra_counts = tuple(extra_counts)
+        self._extra_counts = extra_counts
+        extra_counts = extra_counts or (0,)
         self._denominator = denominator
 
     ### PRIVATE METHODS ###
@@ -58,14 +56,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         denominators = abjad.sequence(self.denominators)
         denominators = denominators.rotate(-divisions_consumed)
         denominators = abjad.CyclicTuple(denominators)
-        extra_counts_per_division_ = self.extra_counts_per_division or [0]
-        extra_counts_per_division = abjad.sequence(extra_counts_per_division_)
-        extra_counts_per_division = extra_counts_per_division.rotate(
-            -divisions_consumed
-        )
-        extra_counts_per_division = abjad.CyclicTuple(
-            extra_counts_per_division
-        )
+        extra_counts_ = self.extra_counts or [0]
+        extra_counts = abjad.sequence(extra_counts_)
+        extra_counts = extra_counts.rotate(-divisions_consumed)
+        extra_counts = abjad.CyclicTuple(extra_counts)
         for i, division in enumerate(divisions):
             if not abjad.mathtools.is_positive_integer_power_of_two(
                 division.denominator
@@ -74,7 +68,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 message += f" {division}."
                 raise Exception(message)
             denominator_ = denominators[i]
-            extra_count = extra_counts_per_division[i]
+            extra_count = extra_counts[i]
             basic_duration = abjad.Duration(1, denominator_)
             unprolated_note_count = None
             maker = abjad.NoteMaker(tag=self.tag)
@@ -130,7 +124,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     denominators=[8],
-            ...     extra_counts_per_division=[0, 0, 1],
+            ...     extra_counts=[0, 0, 1],
             ...     )
 
             >>> divisions = [(5, 16), (6, 16), (6, 16)]
@@ -186,7 +180,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ...     rmakers.force_augmentation(),
             ...     denominators=[8],
-            ...     extra_counts_per_division=[0, 0, 1],
+            ...     extra_counts=[0, 0, 1],
             ...     )
 
             >>> divisions = [(5, 16), (6, 16), (6, 16)]
@@ -552,7 +546,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.rewrite_rest_filled(),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[1],
+            ...     extra_counts=[1],
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -618,7 +612,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.rewrite_sustained(),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     extra_counts_per_division=[1],
+            ...     extra_counts=[1],
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -688,7 +682,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     denominator=None,
             ...     denominators=[16],
-            ...     extra_counts_per_division=[4],
+            ...     extra_counts=[4],
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -793,7 +787,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     denominator=4,
             ...     denominators=[16],
-            ...     extra_counts_per_division=[4],
+            ...     extra_counts=[4],
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -893,7 +887,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     denominator=8,
             ...     denominators=[16],
-            ...     extra_counts_per_division=[4],
+            ...     extra_counts=[4],
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -993,7 +987,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     denominator=16,
             ...     denominators=[16],
-            ...     extra_counts_per_division=[4],
+            ...     extra_counts=[4],
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1095,7 +1089,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     denominator='from_counts',
             ...     denominators=[16],
-            ...     extra_counts_per_division=[4],
+            ...     extra_counts=[4],
             ...     )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1402,9 +1396,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return None
 
     @property
-    def extra_counts_per_division(self) -> typing.Optional[typing.List[int]]:
+    def extra_counts(self) -> typing.Optional[typing.List[int]]:
         r"""
-        Gets extra counts per division.
+        Gets extra counts.
 
         ..  container:: example
 
@@ -1415,7 +1409,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     denominators=[16],
-            ...     extra_counts_per_division=[0, 1, 2],
+            ...     extra_counts=[0, 1, 2],
             ...     )
 
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8), (3, 8)]
@@ -1506,9 +1500,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             **Modular handling of positive values.** Denote by
             ``unprolated_note_count`` the number counts included in a tuplet
-            when ``extra_counts_per_division`` is set to zero. Then extra
-            counts equals ``extra_counts_per_division %
-            unprolated_note_count`` when ``extra_counts_per_division`` is
+            when ``extra_counts`` is set to zero. Then extra
+            counts equals ``extra_counts %
+            unprolated_note_count`` when ``extra_counts`` is
             positive.
 
             This is likely to be intuitive; compare with the handling of
@@ -1520,9 +1514,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> import math
             >>> unprolated_note_count = 6
             >>> modulus = unprolated_note_count
-            >>> extra_counts_per_division = list(range(12))
+            >>> extra_counts = list(range(12))
             >>> labels = []
-            >>> for count in extra_counts_per_division:
+            >>> for count in extra_counts:
             ...     modular_count = count % modulus
             ...     label = f"{count:3} becomes {modular_count:2}"
             ...     labels.append(label)
@@ -1533,7 +1527,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     denominators=[16],
-            ...     extra_counts_per_division=extra_counts_per_division,
+            ...     extra_counts=extra_counts,
             ... )
 
             >>> divisions = 12 * [(6, 16)]
@@ -1769,10 +1763,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             **Modular handling of negative values.** Denote by
             ``unprolated_note_count`` the number of counts included in a tuplet
-            when ``extra_counts_per_division`` is set to zero. Further, let
+            when ``extra_counts`` is set to zero. Further, let
             ``modulus = ceiling(unprolated_note_count / 2)``. Then extra counts
-            equals ``-(abs(extra_counts_per_division) % modulus)`` when
-            ``extra_counts_per_division`` is negative.
+            equals ``-(abs(extra_counts) % modulus)`` when
+            ``extra_counts`` is negative.
 
             For negative extra counts, the modulus of transformation of a
             tuplet with six notes is three:
@@ -1780,9 +1774,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> import math
             >>> unprolated_note_count = 6
             >>> modulus = math.ceil(unprolated_note_count / 2)
-            >>> extra_counts_per_division = [0, -1, -2, -3, -4, -5, -6, -7, -8]
+            >>> extra_counts = [0, -1, -2, -3, -4, -5, -6, -7, -8]
             >>> labels = []
-            >>> for count in extra_counts_per_division:
+            >>> for count in extra_counts:
             ...     modular_count = -(abs(count) % modulus)
             ...     label = f"{count:3} becomes {modular_count:2}"
             ...     labels.append(label)
@@ -1793,7 +1787,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     denominators=[16],
-            ...     extra_counts_per_division=extra_counts_per_division,
+            ...     extra_counts=extra_counts,
             ... )
 
             >>> divisions = 9 * [(6, 16)]
@@ -1944,8 +1938,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             rhythms.
 
         """
-        if self._extra_counts_per_division:
-            return list(self._extra_counts_per_division)
+        if self._extra_counts:
+            return list(self._extra_counts)
         return None
 
     @property
@@ -1961,7 +1955,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     denominators=[16, 8, 4],
-            ...     extra_counts_per_division=[0, 1],
+            ...     extra_counts=[0, 1],
             ...     )
 
             >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]

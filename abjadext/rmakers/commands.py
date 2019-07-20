@@ -2141,7 +2141,7 @@ def force_augmentation(
 
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
@@ -2197,7 +2197,7 @@ def force_augmentation(
 
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
@@ -2261,7 +2261,7 @@ def force_augmentation(
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.force_fraction(),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
@@ -2374,7 +2374,7 @@ def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.repeat_tie(selector),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -2464,7 +2464,7 @@ def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.repeat_tie(selector),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -2583,7 +2583,7 @@ def rewrite_rest_filled(
 
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     extra_counts=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
         ...         denominator=16,
@@ -2659,7 +2659,7 @@ def rewrite_rest_filled(
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
         ...     rmakers.rewrite_rest_filled(),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     extra_counts=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
         ...         denominator=16,
@@ -2720,7 +2720,7 @@ def rewrite_rest_filled(
         ...         abjad.select().tuplets()[-2:],
         ...         ),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     extra_counts=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
         ...         denominator=16,
@@ -2803,7 +2803,7 @@ def rewrite_sustained(
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     extra_counts=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[6, 5, 5, 4, 1],
         ...         denominator=16,
@@ -2886,7 +2886,7 @@ def rewrite_sustained(
         ...     rmakers.rewrite_sustained(),
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     extra_counts=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[6, 5, 5, 4, 1],
         ...         denominator=16,
@@ -2951,7 +2951,7 @@ def rewrite_sustained(
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
         ...     rmakers.rewrite_sustained(),
         ...     rmakers.extract_trivial(),
-        ...     extra_counts_per_division=[2, 1, 1, 1],
+        ...     extra_counts=[2, 1, 1, 1],
         ...     talea=rmakers.Talea(
         ...         counts=[6, 5, 5, 4, 1],
         ...         denominator=16,
@@ -3008,7 +3008,7 @@ def rewrite_sustained(
         ...         abjad.select().tuplets()[-2:],
         ...     ),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ... )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
@@ -3113,7 +3113,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(abjad.select().notes()[5:15]),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -3211,7 +3211,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(selector),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -3301,7 +3301,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(selector),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -3451,7 +3451,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         ...     rmakers.untie(selector),
         ...     rmakers.tie(selector),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -3548,7 +3548,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> rhythm_maker = rmakers.EvenDivisionRhythmMaker(
         ...     rmakers.tie(selector),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -3663,7 +3663,7 @@ def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
         ...     rmakers.tie(abjad.select().notes()[:-1]),
         ...     rmakers.untie(abjad.select().notes().get([0], 4)),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -3762,7 +3762,7 @@ def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
         ...     rmakers.repeat_tie(abjad.select().notes()[1:]),
         ...     rmakers.untie(abjad.select().notes().get([0], 4)),
         ...     rmakers.beam(),
-        ...     extra_counts_per_division=[1],
+        ...     extra_counts=[1],
         ...     )
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
