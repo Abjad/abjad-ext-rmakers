@@ -80,11 +80,18 @@ def incised(
     )
 
 
-def note(preprocessor: abjad.Expression = None,) -> NoteRhythmMaker:
+def note(
+    *commands: _commands.Command,
+    preprocessor: abjad.Expression = None,
+    spelling: _specifiers.Spelling = None,
+    tag: str = None,
+) -> NoteRhythmMaker:
     """
     Makes note rhythm-maker.
     """
-    return NoteRhythmMaker()
+    return NoteRhythmMaker(
+        *commands, preprocessor=preprocessor, spelling=spelling, tag=tag
+    )
 
 
 def talea(
