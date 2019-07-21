@@ -74,6 +74,87 @@ class Command(object):
         return self._selector
 
 
+class BeamCommand(Command):
+    """
+    Beam command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length")
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        selector: abjad.SelectorTyping = None,
+        *,
+        beam_lone_notes: bool = None,
+        beam_rests: bool = None,
+        stemlet_length: abjad.Number = None,
+    ) -> None:
+        super().__init__(selector)
+        if beam_lone_notes is not None:
+            beam_lone_notes = bool(beam_lone_notes)
+        self._beam_lone_notes = beam_lone_notes
+        if beam_rests is not None:
+            beam_rests = bool(beam_rests)
+        self._beam_rests = beam_rests
+        if stemlet_length is not None:
+            assert isinstance(stemlet_length, (int, float))
+        self._stemlet_length = stemlet_length
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, tag: str = None) -> None:
+        """
+        Calls beam command on ``staff``.
+        """
+        if isinstance(staff, abjad.Staff):
+            selection = staff["MusicVoice"]
+        else:
+            selection = staff
+        if self.selector is not None:
+            selections = self.selector(selection)
+        else:
+            selections = [selection]
+        for selection in selections:
+            unbeam()(selection)
+            leaves = abjad.select(selection).leaves(
+                do_not_iterate_grace_containers=True
+            )
+            abjad.beam(
+                leaves,
+                beam_lone_notes=self.beam_lone_notes,
+                beam_rests=self.beam_rests,
+                stemlet_length=self.stemlet_length,
+                tag=tag,
+            )
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def beam_lone_notes(self) -> typing.Optional[bool]:
+        """
+        Is true when command beams lone notes.
+        """
+        return self._beam_lone_notes
+
+    @property
+    def beam_rests(self) -> typing.Optional[bool]:
+        r"""
+        Is true when beams include rests.
+        """
+        return self._beam_rests
+
+    @property
+    def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
+        r"""
+        Gets stemlet length.
+        """
+        return self._stemlet_length
+
+
 class BeamGroupsCommand(Command):
     """
     Beam groups command.
@@ -456,70 +537,157 @@ class ForceFractionCommand(Command):
             tuplet.force_fraction = True
 
 
-class ForceRepeatTiesCommand(Command):
-    """
-    Force repeat-ties command.
+class ForceMultimeasureRestCommand(Command):
+    r"""
+    Force multimeasure rest command.
+
+    ..  container:: example
+
+        Forces multimeasure rest at every logical tie:
+
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
+        ...    rmakers.force_multimeasure_rest(
+        ...         abjad.select().logical_ties(),
+        ...     ),
+        ... )
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (5, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 5/8
+                    s1 * 5/8
+                }
+                \new RhythmicStaff
+                {
+                    R1 * 1/2
+                    R1 * 3/8
+                    R1 * 1/2
+                    R1 * 5/8
+                }
+            >>
+
+
+    ..  container:: example
+
+        Changes logical ties 1 and 2 to multimeasure rests:
+
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
+        ...     rmakers.force_multimeasure_rest(
+        ...         abjad.select().logical_ties()[1:3]
+        ...     )
+        ... )
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'4..
+                    R1 * 3/8
+                    R1 * 7/16
+                    c'4.
+                }
+            >>
+
+    ..  container:: example
+
+        Changes final two logical ties to multimeasure rests:
+
+        >>> rhythm_maker = rmakers.NoteRhythmMaker(
+        ...     rmakers.force_multimeasure_rest(
+        ...         abjad.select().logical_ties()[-2:]
+        ...     )
+        ... )
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'4..
+                    c'4.
+                    R1 * 7/16
+                    R1 * 3/8
+                }
+            >>
+
     """
 
     ### CLASS VARIABLES ###
 
-    __slots__ = "_threshold"
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        selector: abjad.SelectorTyping = None,
-        *,
-        threshold: typing.Union[
-            bool, abjad.IntegerPair, abjad.DurationInequality
-        ] = None,
-    ) -> None:
-        super().__init__(selector)
-        threshold_ = threshold
-        if isinstance(threshold, tuple) and len(threshold) == 2:
-            threshold_ = abjad.DurationInequality(
-                operator_string=">=", duration=threshold
-            )
-        if threshold_ is not None:
-            assert isinstance(threshold_, (bool, abjad.DurationInequality))
-        self._threshold = threshold_
+    __slots__ = ()
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
-        """
-        Calls tie command on ``staff``.
-        """
-        assert isinstance(staff, abjad.Staff), repr(staff)
-        selection = staff["MusicVoice"]
-        if self.selector is not None:
-            selection = self.selector(selection)
-        add_repeat_ties = []
-        for leaf in abjad.select(selection).leaves():
-            if abjad.inspect(leaf).has_indicator(abjad.Tie):
-                next_leaf = abjad.inspect(leaf).leaf(1)
-                if next_leaf is None:
-                    continue
-                if not isinstance(next_leaf, (abjad.Chord, abjad.Note)):
-                    continue
-                if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
-                    continue
-                add_repeat_ties.append(next_leaf)
-                abjad.detach(abjad.Tie, leaf)
-        for leaf in add_repeat_ties:
-            repeat_tie = abjad.RepeatTie()
-            abjad.attach(repeat_tie, leaf)
-
-    ### PUBLIC PROPERTIES ###
-
-    # TODO: activate threshold
-    @property
-    def threshold(self) -> typing.Union[bool, abjad.DurationInequality, None]:
-        """
-        Gets threshold.
-        """
-        return self._threshold
+    def __call__(self, staff, *, tag=None) -> None:
+        if isinstance(staff, abjad.Staff):
+            selection = staff["MusicVoice"]
+        else:
+            selection = staff
+        selections = self.selector(selection)
+        leaf_maker = abjad.LeafMaker(tag=tag, use_multimeasure_rests=True)
+        for selection in selections:
+            duration = abjad.inspect(selection).duration()
+            new_selection = leaf_maker([None], [duration])
+            abjad.mutate(selection).replace(new_selection)
 
 
 class ForceNoteCommand(Command):
@@ -724,14 +892,34 @@ class ForceNoteCommand(Command):
             abjad.mutate(leaf).replace([note])
 
 
-class RepeatTieCommand(Command):
+class ForceRepeatTiesCommand(Command):
     """
-    Repeat-tie command.
+    Force repeat-ties command.
     """
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ()
+    __slots__ = "_threshold"
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        selector: abjad.SelectorTyping = None,
+        *,
+        threshold: typing.Union[
+            bool, abjad.IntegerPair, abjad.DurationInequality
+        ] = None,
+    ) -> None:
+        super().__init__(selector)
+        threshold_ = threshold
+        if isinstance(threshold, tuple) and len(threshold) == 2:
+            threshold_ = abjad.DurationInequality(
+                operator_string=">=", duration=threshold
+            )
+        if threshold_ is not None:
+            assert isinstance(threshold_, (bool, abjad.DurationInequality))
+        self._threshold = threshold_
 
     ### SPECIAL METHODS ###
 
@@ -743,9 +931,31 @@ class RepeatTieCommand(Command):
         selection = staff["MusicVoice"]
         if self.selector is not None:
             selection = self.selector(selection)
-        for note in abjad.select(selection).notes():
-            tie = abjad.RepeatTie()
-            abjad.attach(tie, note, tag=tag)
+        add_repeat_ties = []
+        for leaf in abjad.select(selection).leaves():
+            if abjad.inspect(leaf).has_indicator(abjad.Tie):
+                next_leaf = abjad.inspect(leaf).leaf(1)
+                if next_leaf is None:
+                    continue
+                if not isinstance(next_leaf, (abjad.Chord, abjad.Note)):
+                    continue
+                if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
+                    continue
+                add_repeat_ties.append(next_leaf)
+                abjad.detach(abjad.Tie, leaf)
+        for leaf in add_repeat_ties:
+            repeat_tie = abjad.RepeatTie()
+            abjad.attach(repeat_tie, leaf)
+
+    ### PUBLIC PROPERTIES ###
+
+    # TODO: activate threshold
+    @property
+    def threshold(self) -> typing.Union[bool, abjad.DurationInequality, None]:
+        """
+        Gets threshold.
+        """
+        return self._threshold
 
 
 class ForceRestCommand(Command):
@@ -919,20 +1129,7 @@ class ForceRestCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = "_use_multimeasure_rests"
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        selector: abjad.SelectorTyping,
-        *,
-        use_multimeasure_rests: bool = None,
-    ) -> None:
-        super().__init__(selector)
-        if use_multimeasure_rests is not None:
-            assert isinstance(use_multimeasure_rests, type(True))
-        self._use_multimeasure_rests = use_multimeasure_rests
+    __slots__ = ()
 
     ### SPECIAL METHODS ###
 
@@ -943,7 +1140,6 @@ class ForceRestCommand(Command):
             selection = staff["MusicVoice"]
         else:
             selection = staff
-
         selections = self.selector(
             selection, previous=previous_logical_ties_produced
         )
@@ -954,36 +1150,44 @@ class ForceRestCommand(Command):
         # previous_logical_ties_produced = self._previous_logical_ties_produced()
         # if self._previous_incomplete_last_note():
         #    previous_logical_ties_produced -= 1
-        if self.use_multimeasure_rests is True:
-            leaf_maker = abjad.LeafMaker(tag=tag, use_multimeasure_rests=True)
-            for selection in selections:
-                duration = abjad.inspect(selection).duration()
-                new_selection = leaf_maker([None], [duration])
-                abjad.mutate(selection).replace(new_selection)
-        else:
-            leaves = abjad.select(selections).leaves()
-            for leaf in leaves:
-                rest = abjad.Rest(leaf.written_duration, tag=tag)
-                if leaf.multiplier is not None:
-                    rest.multiplier = leaf.multiplier
-                previous_leaf = abjad.inspect(leaf).leaf(-1)
-                next_leaf = abjad.inspect(leaf).leaf(1)
-                abjad.mutate(leaf).replace([rest])
-                if previous_leaf is not None:
-                    abjad.detach(abjad.Tie, previous_leaf)
-                abjad.detach(abjad.Tie, rest)
-                abjad.detach(abjad.RepeatTie, rest)
-                if next_leaf is not None:
-                    abjad.detach(abjad.RepeatTie, next_leaf)
+        leaves = abjad.select(selections).leaves()
+        for leaf in leaves:
+            rest = abjad.Rest(leaf.written_duration, tag=tag)
+            if leaf.multiplier is not None:
+                rest.multiplier = leaf.multiplier
+            previous_leaf = abjad.inspect(leaf).leaf(-1)
+            next_leaf = abjad.inspect(leaf).leaf(1)
+            abjad.mutate(leaf).replace([rest])
+            if previous_leaf is not None:
+                abjad.detach(abjad.Tie, previous_leaf)
+            abjad.detach(abjad.Tie, rest)
+            abjad.detach(abjad.RepeatTie, rest)
+            if next_leaf is not None:
+                abjad.detach(abjad.RepeatTie, next_leaf)
 
-    ### PUBLIC PROPERTIES ###
 
-    @property
-    def use_multimeasure_rests(self) -> typing.Optional[bool]:
+class RepeatTieCommand(Command):
+    """
+    Repeat-tie command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ()
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, staff, *, tag: str = None) -> None:
         """
-        Is true when rest command uses multimeasure rests.
+        Calls tie command on ``staff``.
         """
-        return self._use_multimeasure_rests
+        assert isinstance(staff, abjad.Staff), repr(staff)
+        selection = staff["MusicVoice"]
+        if self.selector is not None:
+            selection = self.selector(selection)
+        for note in abjad.select(selection).notes():
+            tie = abjad.RepeatTie()
+            abjad.attach(tie, note, tag=tag)
 
 
 class RewriteDotsCommand(Command):
@@ -1284,87 +1488,6 @@ class RewriteSustainedCommand(Command):
         return False
 
 
-class BeamCommand(Command):
-    """
-    Beam command.
-    """
-
-    ### CLASS VARIABLES ###
-
-    __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length")
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        selector: abjad.SelectorTyping = None,
-        *,
-        beam_lone_notes: bool = None,
-        beam_rests: bool = None,
-        stemlet_length: abjad.Number = None,
-    ) -> None:
-        super().__init__(selector)
-        if beam_lone_notes is not None:
-            beam_lone_notes = bool(beam_lone_notes)
-        self._beam_lone_notes = beam_lone_notes
-        if beam_rests is not None:
-            beam_rests = bool(beam_rests)
-        self._beam_rests = beam_rests
-        if stemlet_length is not None:
-            assert isinstance(stemlet_length, (int, float))
-        self._stemlet_length = stemlet_length
-
-    ### SPECIAL METHODS ###
-
-    def __call__(self, staff, tag: str = None) -> None:
-        """
-        Calls beam command on ``staff``.
-        """
-        if isinstance(staff, abjad.Staff):
-            selection = staff["MusicVoice"]
-        else:
-            selection = staff
-        if self.selector is not None:
-            selections = self.selector(selection)
-        else:
-            selections = [selection]
-        for selection in selections:
-            unbeam()(selection)
-            leaves = abjad.select(selection).leaves(
-                do_not_iterate_grace_containers=True
-            )
-            abjad.beam(
-                leaves,
-                beam_lone_notes=self.beam_lone_notes,
-                beam_rests=self.beam_rests,
-                stemlet_length=self.stemlet_length,
-                tag=tag,
-            )
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def beam_lone_notes(self) -> typing.Optional[bool]:
-        """
-        Is true when command beams lone notes.
-        """
-        return self._beam_lone_notes
-
-    @property
-    def beam_rests(self) -> typing.Optional[bool]:
-        r"""
-        Is true when beams include rests.
-        """
-        return self._beam_rests
-
-    @property
-    def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
-        r"""
-        Gets stemlet length.
-        """
-        return self._stemlet_length
-
-
 class SplitMeasuresCommand(Command):
     """
     Split measures command.
@@ -1521,6 +1644,24 @@ class UntieCommand(Command):
 
 
 ### FACTORY FUNCTIONS ###
+
+
+def beam(
+    selector: abjad.SelectorTyping = abjad.select().tuplets(),
+    *,
+    beam_lone_notes: bool = None,
+    beam_rests: bool = None,
+    stemlet_length: abjad.Number = None,
+) -> BeamCommand:
+    """
+    Makes simple beam command.
+    """
+    return BeamCommand(
+        selector,
+        beam_rests=beam_rests,
+        beam_lone_notes=beam_lone_notes,
+        stemlet_length=stemlet_length,
+    )
 
 
 def beam_groups(
@@ -2344,6 +2485,22 @@ def force_fraction(
     return ForceFractionCommand(selector)
 
 
+def force_multimeasure_rest(
+    selector: abjad.SelectorTyping = None
+) -> ForceMultimeasureRestCommand:
+    """
+    Makes force multimeasure rest command.
+    """
+    return ForceMultimeasureRestCommand(selector)
+
+
+def force_note(selector: abjad.SelectorTyping,) -> ForceNoteCommand:
+    """
+    Makes force note command.
+    """
+    return ForceNoteCommand(selector)
+
+
 def force_repeat_ties(
     threshold=True, selector: abjad.SelectorTyping = None
 ) -> ForceRepeatTiesCommand:
@@ -2353,11 +2510,11 @@ def force_repeat_ties(
     return ForceRepeatTiesCommand(selector, threshold=threshold)
 
 
-def force_note(selector: abjad.SelectorTyping,) -> ForceNoteCommand:
+def force_rest(selector: abjad.SelectorTyping) -> ForceRestCommand:
     """
-    Makes force note command.
+    Makes force rest command.
     """
-    return ForceNoteCommand(selector)
+    return ForceRestCommand(selector)
 
 
 def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
@@ -2549,15 +2706,11 @@ def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
     return RepeatTieCommand(selector)
 
 
-def force_rest(
-    selector: abjad.SelectorTyping, *, use_multimeasure_rests: bool = None
-) -> ForceRestCommand:
+def rewrite_dots(selector: abjad.SelectorTyping = None) -> RewriteDotsCommand:
     """
-    Makes force rest command.
+    Makes rewrite dots command.
     """
-    return ForceRestCommand(
-        selector, use_multimeasure_rests=use_multimeasure_rests
-    )
+    return RewriteDotsCommand(selector)
 
 
 def rewrite_meter(
@@ -3068,31 +3221,6 @@ def rewrite_sustained(
 
     """
     return RewriteSustainedCommand(selector)
-
-
-def rewrite_dots(selector: abjad.SelectorTyping = None) -> RewriteDotsCommand:
-    """
-    Makes rewrite dots command.
-    """
-    return RewriteDotsCommand(selector)
-
-
-def beam(
-    selector: abjad.SelectorTyping = abjad.select().tuplets(),
-    *,
-    beam_lone_notes: bool = None,
-    beam_rests: bool = None,
-    stemlet_length: abjad.Number = None,
-) -> BeamCommand:
-    """
-    Makes simple beam command.
-    """
-    return BeamCommand(
-        selector,
-        beam_rests=beam_rests,
-        beam_lone_notes=beam_lone_notes,
-        stemlet_length=stemlet_length,
-    )
 
 
 def split_measures(*, repeat_ties=None) -> SplitMeasuresCommand:

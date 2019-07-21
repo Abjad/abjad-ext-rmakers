@@ -6,45 +6,7 @@ from .RhythmMaker import RhythmMaker
 
 
 class NoteRhythmMaker(RhythmMaker):
-    r"""
-    Note rhythm-maker.
-
-    ..  container:: example
-
-        Makes notes equal to the durations of divisions. Adds ties where
-        necessary:
-
-        >>> rhythm_maker = rmakers.NoteRhythmMaker()
-
-        >>> divisions = [(5, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection,
-        ...     divisions,
-        ...     )
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> abjad.f(lilypond_file[abjad.Score])
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    c'2
-                    ~
-                    c'8
-                    c'4.
-                }
-            >>
-
+    """
     """
 
     ### CLASS VARIABLES ###
@@ -121,138 +83,10 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Silences all leaves:
+            Forces rest at every logical tie:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
             ...     rmakers.force_rest(abjad.select()),
-            ... )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        r4.
-                        r2
-                        r4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every other division:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     rmakers.force_rest(
-            ...         abjad.select().logical_ties().get([0], 2),
-            ...     )
-            ... )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        c'4.
-                        r2
-                        c'4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every output division:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...    rmakers.force_rest(abjad.select().logical_ties()),
-            ... )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        r2
-                        r4.
-                        r2
-                        r4.
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every output division and uses multimeasure rests:
-
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...    rmakers.force_rest(
-            ...         abjad.select().logical_ties(), 
-            ...         use_multimeasure_rests=True,
-            ...     ),
             ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (5, 8)]
@@ -281,10 +115,11 @@ class NoteRhythmMaker(RhythmMaker):
                     }
                     \new RhythmicStaff
                     {
-                        R1 * 1/2
-                        R1 * 3/8
-                        R1 * 1/2
-                        R1 * 5/8
+                        r2
+                        r4.
+                        r2
+                        r2
+                        r8
                     }
                 >>
 
