@@ -62,7 +62,6 @@ def incised(
     extra_counts: typing.Sequence[int] = None,
     incise: _specifiers.Incise = None,
     preprocessor: abjad.Expression = None,
-    replace_rests_with_skips: bool = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
 ) -> IncisedRhythmMaker:
