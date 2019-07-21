@@ -732,7 +732,7 @@ class ForceNoteCommand(Command):
 
 class ForceRepeatTieCommand(Command):
     """
-    Force repeat-ties command.
+    Force repeat-tie command.
     """
 
     ### CLASS VARIABLES ###
@@ -763,11 +763,19 @@ class ForceRepeatTieCommand(Command):
 
     def __call__(self, voice, *, tag: str = None) -> None:
         """
-        Calls tie command.
+        Calls force repeat-tie command.
         """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
+        if isinstance(self.threshold, abjad.DurationInequality):
+            inequality = self.threshold
+        elif self.threshold is True:
+            inequality = abjad.DurationInequality(">=", 0)
+        else:
+            duration = abjad.Duration(self.threshold)
+            inequality = abjad.DurationInequality(">=", duration)
+        assert isinstance(inequality, abjad.DurationInequality)
         add_repeat_ties = []
         for leaf in abjad.select(selection).leaves():
             if abjad.inspect(leaf).has_indicator(abjad.Tie):
@@ -778,6 +786,9 @@ class ForceRepeatTieCommand(Command):
                     continue
                 if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
                     continue
+                duration = abjad.inspect(leaf).duration()
+                if not inequality(duration):
+                    continue
                 add_repeat_ties.append(next_leaf)
                 abjad.detach(abjad.Tie, leaf)
         for leaf in add_repeat_ties:
@@ -786,7 +797,6 @@ class ForceRepeatTieCommand(Command):
 
     ### PUBLIC PROPERTIES ###
 
-    # TODO: activate threshold
     @property
     def threshold(self) -> typing.Union[bool, abjad.DurationInequality, None]:
         """
