@@ -2680,12 +2680,17 @@ class TaleaRhythmMaker(RhythmMaker):
 
             REGRESSION. Nonperiodic rest commands respect state.
 
-            Only divisions 0 and 2 are rested here:
+            TODO: change TUPLET selector to GROUP_BY_MEASURE selector and allow
+            to be statal with divisions_produced. Possibly also allow tuplet
+            selectors to be statal by tallying tuplet_produced in state
+            metadata.
+
+            Only tuplets 0 and 2 are rested here:
 
             >>> selector = abjad.select().tuplets().get([0, 2, 7])
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.force_rest(selector),
-            ...     rmakers.rewrite_rest_filled(selector),
+            ...     rmakers.rewrite_rest_filled(),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     extra_counts=[0, 1, 2],
@@ -2745,8 +2750,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-# TODO: make statal division resting work again:
-#            Only division 7 is rested here:
+# TODO: allow statal GROUP_BY_MEASURE selector (or maybe tuplet selecctor) to work here:
+#            Only tuplet 7 is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selection = rhythm_maker(divisions, previous_state=state)
@@ -2810,7 +2815,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> selector = abjad.select().tuplets().get([2], 3)
             >>> rhythm_maker = rmakers.TaleaRhythmMaker(
             ...     rmakers.force_rest(selector),
-            ...     rmakers.rewrite_rest_filled(selector),
+            ...     rmakers.rewrite_rest_filled(),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     extra_counts=[0, 1, 2],
@@ -2872,7 +2877,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     ]
                 )
 
-# TODO: make statal division resting work again.
+# TODO: allow statal GROUP_BY_MEASURE selector (or maybe tuplet selecctor) to work here:
 #            Incomplete first note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
