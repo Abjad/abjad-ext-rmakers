@@ -1080,6 +1080,7 @@ class RewriteMeterCommand(Command):
         staff = abjad.inspect(voice).parentage().parent
         assert isinstance(staff, abjad.Staff), repr(staff)
         time_signature_voice = staff["TimeSignatureVoice"]
+        assert isinstance(time_signature_voice, abjad.Voice)
         meters = []
         for skip in time_signature_voice:
             time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
