@@ -94,7 +94,6 @@ def note(
 
 def talea(
     *commands: _commands.Command,
-    curtail_ties: bool = None,
     extra_counts: abjad.IntegerSequence = None,
     preprocessor: abjad.Expression = None,
     read_talea_once_only: bool = None,
@@ -107,7 +106,6 @@ def talea(
     """
     return TaleaRhythmMaker(
         *commands,
-        curtail_ties=curtail_ties,
         preprocessor=preprocessor,
         extra_counts=extra_counts,
         read_talea_once_only=read_talea_once_only,

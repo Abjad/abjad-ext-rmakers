@@ -77,19 +77,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
     __documentation_section__ = "Rhythm-makers"
 
-    __slots__ = (
-        "_curtail_ties",
-        "_extra_counts",
-        "_read_talea_once_only",
-        "_talea",
-    )
+    __slots__ = ("_extra_counts", "_read_talea_once_only", "_talea")
 
     ### INITIALIZER ###
 
     def __init__(
         self,
         *commands: _commands.Command,
-        curtail_ties: bool = None,
         extra_counts: abjad.IntegerSequence = None,
         preprocessor: abjad.Expression = None,
         read_talea_once_only: bool = None,
@@ -109,9 +103,6 @@ class TaleaRhythmMaker(RhythmMaker):
         if talea is not None:
             assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
-        if curtail_ties is not None:
-            curtail_ties = bool(curtail_ties)
-        self._curtail_ties = curtail_ties
         if extra_counts is not None:
             assert abjad.mathtools.all_are_integer_equivalent_numbers(
                 extra_counts
@@ -207,15 +198,9 @@ class TaleaRhythmMaker(RhythmMaker):
         for i, part in enumerate(parts):
             if any(isinstance(_, abjad.Rest) for _ in part):
                 continue
-            # part = abjad.select(part)
             if len(part) == 1:
                 continue
-            if self.curtail_ties:
-                # this appears to be an ancient accidental constraint
-                # induced by the way tie spanners used to attach:
-                abjad.tie(part[-2:])
-            else:
-                abjad.tie(part)
+            abjad.tie(part)
         # TODO: this will need to be generalized and better tested:
         if unscaled_end_counts:
             total = len(unscaled_end_counts)
@@ -3076,13 +3061,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         """
         return super().commands
-
-    @property
-    def curtail_ties(self) -> typing.Optional[bool]:
-        """
-        Deprecated: included only for backwards compatibility.
-        """
-        return self._curtail_ties
 
     @property
     def spelling(self) -> typing.Optional[_specifiers.Spelling]:
