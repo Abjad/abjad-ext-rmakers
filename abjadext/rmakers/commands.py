@@ -1,5 +1,6 @@
 import abjad
 import typing
+from . import specifiers as _specifiers
 
 
 ### CLASSES ###
@@ -1185,7 +1186,20 @@ class RewriteRestFilledCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ()
+    __slots__ = "_spelling"
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        selector: abjad.SelectorTyping = None,
+        *,
+        spelling: _specifiers.Spelling = None,
+    ) -> None:
+        super().__init__(selector)
+        if spelling is not None:
+            assert isinstance(spelling, _specifiers.Spelling)
+        self._spelling = spelling
 
     ### SPECIAL METHODS ###
 
@@ -1196,7 +1210,20 @@ class RewriteRestFilledCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        maker = abjad.LeafMaker(tag=tag)
+        if self.spelling is not None:
+            increase_monotonic = self.spelling.increase_monotonic
+            forbidden_note_duration = self.spelling.forbidden_note_duration
+            forbidden_rest_duration = self.spelling.forbidden_rest_duration
+        else:
+            increase_monotonic = None
+            forbidden_note_duration = None
+            forbidden_rest_duration = None
+        maker = abjad.LeafMaker(
+            increase_monotonic=increase_monotonic,
+            forbidden_note_duration=forbidden_note_duration,
+            forbidden_rest_duration=forbidden_rest_duration,
+            tag=tag,
+        )
         for tuplet in abjad.select(selection).tuplets():
             if not tuplet.rest_filled():
                 continue
@@ -1205,38 +1232,14 @@ class RewriteRestFilledCommand(Command):
             abjad.mutate(tuplet[:]).replace(rests)
             tuplet.multiplier = abjad.Multiplier(1)
 
-        # TODO: use this rewrite:
-        #    # TODO: pass in duration specifier
-        #    # TODO: pass in tie specifier
-        #    def _rewrite_sustained_(self, staff, tag=None):
-        #        if not self.rewrite_sustained:
-        #            return None
-        #        selection = staff["MusicVoice"][:]
-        #        if self.selector is not None:
-        #            selection = self.selector(selection)
-        #        maker = abjad.LeafMaker(tag=tag)
-        #        for tuplet in abjad.select(selection).tuplets():
-        #            if not tuplet.sustained():
-        #                continue
-        #            duration = abjad.inspect(tuplet).duration()
-        #            leaves = abjad.select(tuplet).leaves()
-        #            first_leaf = leaves[0]
-        #            if abjad.inspect(first_leaf).has_indicator(abjad.RepeatTie):
-        #                first_leaf_has_repeat_tie = True
-        #            else:
-        #                first_leaf_has_repeat_tie = False
-        #            last_leaf = leaves[-1]
-        #            if abjad.inspect(last_leaf).has_indicator(abjad.Tie):
-        #                last_leaf_has_tie = True
-        #            else:
-        #                last_leaf_has_tie = False
-        #            notes = maker([0], [duration])
-        #            abjad.mutate(tuplet[:]).replace(notes)
-        #            tuplet.multiplier = abjad.Multiplier(1)
-        #            if first_leaf_has_repeat_tie:
-        #                abjad.attach(abjad.RepeatTie(), tuplet[0])
-        #            if last_leaf_has_tie:
-        #                abjad.attach(abjad.Tie(), tuplet[-1])
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def spelling(self) -> typing.Optional[_specifiers.Spelling]:
+        """
+        Gets spelling specifier.
+        """
+        return self._spelling
 
 
 class RewriteSustainedCommand(Command):
@@ -1377,16 +1380,14 @@ class UnbeamCommand(Command):
         if self.selector is not None:
             selections = self.selector(selection)
         else:
-            selections = [selection]
-        # TODO: not need to iterate selections?
-        for selection in selections:
-            leaves = abjad.select(selection).leaves(
-                do_not_iterate_grace_containers=True
-            )
-            for leaf in leaves:
-                abjad.detach(abjad.BeamCount, leaf)
-                abjad.detach(abjad.StartBeam, leaf)
-                abjad.detach(abjad.StopBeam, leaf)
+            selections = selection
+        leaves = abjad.select(selections).leaves(
+            do_not_iterate_grace_containers=True
+        )
+        for leaf in leaves:
+            abjad.detach(abjad.BeamCount, leaf)
+            abjad.detach(abjad.StartBeam, leaf)
+            abjad.detach(abjad.StopBeam, leaf)
 
 
 class UntieCommand(Command):
@@ -2481,7 +2482,8 @@ def rewrite_meter(*, reference_meters=None) -> RewriteMeterCommand:
 
 
 def rewrite_rest_filled(
-    selector: abjad.SelectorTyping = None
+    selector: abjad.SelectorTyping = None,
+    spelling: _specifiers.Spelling = None,
 ) -> RewriteRestFilledCommand:
     r"""
     Makes rewrite rest-filled command.
@@ -2491,8 +2493,8 @@ def rewrite_rest_filled(
         Does not rewrite rest-filled tuplets:
 
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-        ...     rmakers.beam(),
-        ...     extra_counts=[2, 1, 1, 1],
+        ...     rmakers.extract_trivial(),
+        ...     extra_counts=[1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
         ...         denominator=16,
@@ -2525,8 +2527,7 @@ def rewrite_rest_filled(
                 }
                 \new RhythmicStaff
                 {
-                    \times 2/3 {
-                        r16
+                    \times 4/5 {
                         r16
                         r16
                         r16
@@ -2561,14 +2562,12 @@ def rewrite_rest_filled(
                 }
             >>
 
-    ..  container:: example
-
         Rewrites rest-filled tuplets:
 
         >>> rhythm_maker = rmakers.TaleaRhythmMaker(
         ...     rmakers.rewrite_rest_filled(),
-        ...     rmakers.beam(),
-        ...     extra_counts=[2, 1, 1, 1],
+        ...     rmakers.extract_trivial(),
+        ...     extra_counts=[1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
         ...         denominator=16,
@@ -2601,24 +2600,61 @@ def rewrite_rest_filled(
                 }
                 \new RhythmicStaff
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        r4
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        r4
-                        r16
-                    }
+                    r4
+                    r4
+                    r4
+                    r16
+                    r4
+                    r16
+                }
+            >>
+
+        With spelling specifier:
+
+        >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+        ...     rmakers.rewrite_rest_filled(
+        ...         spelling=rmakers.Spelling(increase_monotonic=True)
+        ...     ),
+        ...     rmakers.extract_trivial(),
+        ...     extra_counts=[1],
+        ...     talea=rmakers.Talea(
+        ...         counts=[-1],
+        ...         denominator=16,
+        ...         ),
+        ...     )
+
+        >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/16
+                    s1 * 1/4
+                    \time 4/16
+                    s1 * 1/4
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    r4
+                    r4
+                    r16
+                    r4
+                    r16
+                    r4
                 }
             >>
 
@@ -2628,8 +2664,8 @@ def rewrite_rest_filled(
         ...     rmakers.rewrite_rest_filled(
         ...         abjad.select().tuplets()[-2:],
         ...         ),
-        ...     rmakers.beam(),
-        ...     extra_counts=[2, 1, 1, 1],
+        ...     rmakers.extract_trivial(),
+        ...     extra_counts=[1],
         ...     talea=rmakers.Talea(
         ...         counts=[-1],
         ...         denominator=16,
@@ -2662,8 +2698,7 @@ def rewrite_rest_filled(
                 }
                 \new RhythmicStaff
                 {
-                    \times 2/3 {
-                        r16
+                    \times 4/5 {
                         r16
                         r16
                         r16
@@ -2677,16 +2712,10 @@ def rewrite_rest_filled(
                         r16
                         r16
                     }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        r4
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
-                        r4
-                        r16
-                    }
+                    r4
+                    r16
+                    r4
+                    r16
                 }
             >>
 
@@ -2694,7 +2723,7 @@ def rewrite_rest_filled(
         even after rewriting.
 
     """
-    return RewriteRestFilledCommand(selector)
+    return RewriteRestFilledCommand(selector, spelling=spelling)
 
 
 def rewrite_sustained(
