@@ -47,7 +47,7 @@ from .commands import force_augmentation
 from .commands import force_diminution
 from .commands import force_fraction
 from .commands import force_note
-from .commands import force_repeat_ties
+from .commands import force_repeat_tie
 from .commands import force_rest
 from .commands import repeat_tie
 from .commands import rewrite_dots

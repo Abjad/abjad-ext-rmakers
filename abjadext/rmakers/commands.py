@@ -730,7 +730,7 @@ class ForceNoteCommand(Command):
             abjad.mutate(leaf).replace([note])
 
 
-class ForceRepeatTiesCommand(Command):
+class ForceRepeatTieCommand(Command):
     """
     Force repeat-ties command.
     """
@@ -2315,13 +2315,13 @@ def force_note(selector: abjad.SelectorTyping,) -> ForceNoteCommand:
     return ForceNoteCommand(selector)
 
 
-def force_repeat_ties(
+def force_repeat_tie(
     threshold=True, selector: abjad.SelectorTyping = None
-) -> ForceRepeatTiesCommand:
+) -> ForceRepeatTieCommand:
     """
     Makes force repeat-ties command.
     """
-    return ForceRepeatTiesCommand(selector, threshold=threshold)
+    return ForceRepeatTieCommand(selector, threshold=threshold)
 
 
 def force_rest(selector: abjad.SelectorTyping) -> ForceRestCommand:
