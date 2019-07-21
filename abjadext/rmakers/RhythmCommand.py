@@ -360,7 +360,6 @@ class RhythmCommand(object):
             lambda match: match.assignment.rhythm_maker
         )
         components: typing.List[abjad.Component] = []
-        ###previous_segment_stop_state = self._previous_segment_stop_state()
         maker_to_previous_state = abjad.OrderedDict()
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
@@ -388,19 +387,17 @@ class RhythmCommand(object):
         self._state = rhythm_maker.state
         selection = abjad.select(components)
         assert isinstance(selection, abjad.Selection), repr(selection)
-        ###self._apply_specifiers(selection)
-
         staff = RhythmMaker._make_staff(time_signatures)
-        staff["MusicVoice"].extend(selection)
-        ###divisions_consumed = len(divisions)
+        voice = staff["MusicVoice"]
+        voice.extend(selection)
         divisions_consumed = division_count
-        self._apply_specifiers(staff, divisions_consumed)
+        self._apply_specifiers(voice, divisions_consumed)
         #        if self._already_cached_state is not True:
         #            self._cache_state(staff, divisions_consumed)
         #        # self._check_wellformedness(staff)
-        self._validate_tuplets(staff)
-        selection = staff["MusicVoice"][:]
-        staff["MusicVoice"][:] = []
+        self._validate_tuplets(voice)
+        selection = voice[:]
+        voice[:] = []
         return selection
 
     def __eq__(self, argument) -> bool:
@@ -516,7 +513,7 @@ class RhythmCommand(object):
         divisions = divisions.flatten(depth=-1)
         return divisions
 
-    def _apply_specifiers(self, staff, divisions_consumed):
+    def _apply_specifiers(self, voice, divisions_consumed):
         # TODO: will need to restore:
         #        previous_logical_ties_produced = self._previous_logical_ties_produced()
         #        if self._previous_incomplete_last_note():
@@ -524,18 +521,18 @@ class RhythmCommand(object):
         for command in self.commands or []:
             if isinstance(command, _commands.CacheStateCommand):
                 # TODO: restore:
-                #                self._cache_state(staff, divisions_consumed)
+                #                self._cache_state(voice, divisions_consumed)
                 #                self._already_cached_state = True
                 continue
             elif isinstance(command, _commands.ForceRestCommand):
                 command(
-                    staff,
+                    voice,
                     # TODO: restore
                     ###previous_logical_ties_produced=previous_logical_ties_produced,
                     tag=self.tag,
                 )
             else:
-                command(staff, tag=self.tag)
+                command(voice, tag=self.tag)
 
     def _check_rhythm_maker_input(self, rhythm_maker):
         prototype = (MakerAssignment, MakerAssignments, RhythmMaker)

@@ -28,9 +28,9 @@ class Command(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
-        Calls command on ``staff``.
+        Calls command on ``voice``.
         """
         pass
 
@@ -106,14 +106,11 @@ class BeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, tag: str = None) -> None:
+    def __call__(self, voice, tag: str = None) -> None:
         """
-        Calls beam command on ``staff``.
+        Calls beam command on ``voice``.
         """
-        if isinstance(staff, abjad.Staff):
-            selection = staff["MusicVoice"]
-        else:
-            selection = staff
+        selection = voice
         if self.selector is not None:
             selections = self.selector(selection)
         else:
@@ -187,17 +184,16 @@ class BeamGroupsCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, tag: str = None) -> None:
+    def __call__(self, voice, tag: str = None) -> None:
         """
-        Calls beam groups command on ``staff``.
+        Calls beam groups command on ``voice``.
         """
         components: typing.List[abjad.Component] = []
-        if not isinstance(staff, abjad.Staff):
-            selections = staff
+        if not isinstance(voice, abjad.Voice):
+            selections = voice
         else:
             assert self.selector is not None
-            selection = staff["MusicVoice"]
-            selections = self.selector(selection)
+            selections = self.selector(voice)
         unbeam()(selections)
         durations = []
         for selection in selections:
@@ -288,11 +284,11 @@ class DenominatorCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls denominator command.
         """
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         denominator = self.denominator
@@ -333,11 +329,11 @@ class DurationBracketCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls duration bracket command.
         """
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
@@ -358,11 +354,11 @@ class ExtractTrivialCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls duration bracket command.
         """
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         tuplets = abjad.select(selection).tuplets()
@@ -399,15 +395,12 @@ class FeatherBeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, tag: str = None) -> None:
+    def __call__(self, voice, tag: str = None) -> None:
         """
-        Calls feather beam command on ``staff``.
+        Calls feather beam command.
         """
         components: typing.List[abjad.Component] = []
-        if isinstance(staff, abjad.Staff):
-            selection = staff["MusicVoice"]
-        else:
-            selection = staff
+        selection = voice
         if self.selector is not None:
             selections = self.selector(selection)
         else:
@@ -480,11 +473,11 @@ class ForceAugmentationCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls force augmentation command.
         """
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
@@ -503,11 +496,11 @@ class ForceDiminutionCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls force diminution command.
         """
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
@@ -526,11 +519,11 @@ class ForceFractionCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls force fraction command.
         """
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
@@ -677,12 +670,10 @@ class ForceMultimeasureRestCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag=None) -> None:
-        if isinstance(staff, abjad.Staff):
-            selection = staff["MusicVoice"]
-        else:
-            selection = staff
-        selections = self.selector(selection)
+    def __call__(self, voice, *, tag=None) -> None:
+        selection = voice
+        if self.selector is not None:
+            selections = self.selector(selection)
         leaf_maker = abjad.LeafMaker(tag=tag, use_multimeasure_rests=True)
         for selection in selections:
             duration = abjad.inspect(selection).duration()
@@ -867,12 +858,10 @@ class ForceNoteCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, tag=None):
-        if isinstance(staff, abjad.Staff):
-            selection = staff["MusicVoice"]
-        else:
-            selection = staff
-        selection = self.selector(selection)
+    def __call__(self, voice, *, tag=None):
+        selection = voice
+        if self.selector is not None:
+            selection = self.selector(selection)
 
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
@@ -923,12 +912,11 @@ class ForceRepeatTiesCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
-        Calls tie command on ``staff``.
+        Calls tie command.
         """
-        assert isinstance(staff, abjad.Staff), repr(staff)
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         add_repeat_ties = []
@@ -1134,15 +1122,13 @@ class ForceRestCommand(Command):
     ### SPECIAL METHODS ###
 
     def __call__(
-        self, staff, *, previous_logical_ties_produced=None, tag=None
+        self, voice, *, previous_logical_ties_produced=None, tag=None
     ):
-        if isinstance(staff, abjad.Staff):
-            selection = staff["MusicVoice"]
-        else:
-            selection = staff
-        selections = self.selector(
-            selection, previous=previous_logical_ties_produced
-        )
+        selection = voice
+        if self.selector is not None:
+            selections = self.selector(
+                selection, previous=previous_logical_ties_produced
+            )
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
         # logical_ties = list(logical_ties)
@@ -1177,12 +1163,11 @@ class RepeatTieCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
-        Calls tie command on ``staff``.
+        Calls tie command.
         """
-        assert isinstance(staff, abjad.Staff), repr(staff)
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for note in abjad.select(selection).notes():
@@ -1201,18 +1186,13 @@ class RewriteDotsCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls rewrite dots command.
         """
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        if self.selector is not None:
-            selection = self.selector(staff)
-        # TODO: can this branch be removed?
-        else:
-            selection = abjad.select(staff)
         for tuplet in abjad.select(selection).tuplets():
             tuplet.rewrite_dots()
 
@@ -1234,13 +1214,13 @@ class RewriteMeterCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(
-        self, staff, *, time_signatures=None, tag: str = None
-    ) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls rewrite meter command.
         """
-        assert time_signatures is None, repr(time_signatures)
+        assert isinstance(voice, abjad.Voice), repr(voice)
+        staff = abjad.inspect(voice).parentage().parent
+        assert isinstance(staff, abjad.Staff), repr(staff)
         time_signature_voice = staff["TimeSignatureVoice"]
         meters = []
         for skip in time_signature_voice:
@@ -1250,9 +1230,11 @@ class RewriteMeterCommand(Command):
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = self.reference_meters or ()
         command = SplitMeasuresCommand(repeat_ties=self.repeat_ties)
-        command(staff, time_signatures=meters)
-        music_voice = staff["MusicVoice"]
-        selections = abjad.select(staff["MusicVoice"][:]).group_by_measure()
+        ###command(staff, durations=durations)
+        command(voice, durations=durations)
+        ###music_voice = staff["MusicVoice"]
+        ###selections = abjad.select(staff["MusicVoice"][:]).group_by_measure()
+        selections = abjad.select(voice[:]).group_by_measure()
         for meter, selection in zip(meters, selections):
             for reference_meter in reference_meters:
                 if str(reference_meter) == str(meter):
@@ -1267,7 +1249,8 @@ class RewriteMeterCommand(Command):
             abjad.mutate(selection).rewrite_meter(
                 meter, rewrite_tuplets=False, repeat_ties=self.repeat_ties
             )
-        selections = abjad.select(staff["MusicVoice"][:]).group_by_measure()
+        ###selections = abjad.select(staff["MusicVoice"][:]).group_by_measure()
+        selections = abjad.select(voice[:]).group_by_measure()
         for meter, selection in zip(meters, selections):
             leaves = abjad.select(selection).leaves(
                 do_not_iterate_grace_containers=True
@@ -1360,14 +1343,11 @@ class RewriteRestFilledCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls rewrite rest-filled command.
         """
-        selection = staff["MusicVoice"]
-        if self.selector is not None:
-            selection = self.selector(selection)
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         maker = abjad.LeafMaker(tag=tag)
@@ -1436,14 +1416,11 @@ class RewriteSustainedCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls rewrite sustained command.
         """
-        selection = staff["MusicVoice"]
-        if self.selector is not None:
-            selection = self.selector(selection)
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
@@ -1505,28 +1482,29 @@ class SplitMeasuresCommand(Command):
     ### SPECIAL METHODS ###
 
     def __call__(
-        self, staff, *, time_signatures=None, tag: str = None
+        self,
+        voice,
+        *,
+        durations: typing.Sequence[abjad.DurationTyping] = None,
+        tag: str = None,
     ) -> None:
         """
-        Calls split command.
+        Calls split measures command.
         """
-        music_voice = staff["MusicVoice"]
-        if time_signatures is None:
-            time_signature_voice = staff["TimeSignatureVoice"]
-            durations = [
-                abjad.inspect(_).duration() for _ in time_signature_voice
-            ]
-        else:
-            durations = [abjad.Duration(_.pair) for _ in time_signatures]
+        if durations is None:
+            # TODO: implement abjad.inspect() method for measure durations
+            staff = abjad.inspect(voice).parentage().parent
+            voice_ = staff["TimeSignatureVoice"]
+            durations = [abjad.inspect(_).duration() for _ in voice_]
         total_duration = sum(durations)
-        music_duration = abjad.inspect(music_voice).duration()
+        music_duration = abjad.inspect(voice).duration()
         if total_duration != music_duration:
             message = f"Total duration of splits is {total_duration!s}"
             message += f" but duration of music is {music_duration!s}:"
             message += f"\ndurations: {durations}."
-            message += f"\nmusic voice: {music_voice[:]}."
+            message += f"\nvoice: {voice[:]}."
             raise Exception(message)
-        abjad.mutate(music_voice[:]).split(
+        abjad.mutate(voice[:]).split(
             durations=durations, repeat_ties=self.repeat_ties
         )
 
@@ -1551,12 +1529,11 @@ class TieCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
-        Calls tie command on ``staff``.
+        Calls tie command.
         """
-        assert isinstance(staff, abjad.Staff), repr(staff)
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for note in abjad.select(selection).notes():
@@ -1575,11 +1552,11 @@ class TrivializeCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls trivialize command.
         """
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
@@ -1597,18 +1574,16 @@ class UnbeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, tag: str = None) -> None:
+    def __call__(self, voice, tag: str = None) -> None:
         """
-        Calls unbeam command ``staff``.
+        Calls unbeam command.
         """
-        if isinstance(staff, abjad.Staff):
-            selection = staff["MusicVoice"]
-        else:
-            selection = staff
+        selection = voice
         if self.selector is not None:
             selections = self.selector(selection)
         else:
             selections = [selection]
+        # TODO: not need to iterate selections?
         for selection in selections:
             leaves = abjad.select(selection).leaves(
                 do_not_iterate_grace_containers=True
@@ -1630,12 +1605,11 @@ class UntieCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, staff, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
-        Calls untie command on ``staff``.
+        Calls untie command.
         """
-        assert isinstance(staff, abjad.Staff), repr(staff)
-        selection = staff["MusicVoice"]
+        selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
         for leaf in abjad.select(selection).leaves():

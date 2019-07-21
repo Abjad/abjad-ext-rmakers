@@ -81,15 +81,16 @@ class RhythmMaker(object):
         prototype = (abjad.Tuplet, abjad.Selection)
         for item in music:
             assert isinstance(item, prototype), repr(item)
-        staff["MusicVoice"].extend(music)
+        voice = staff["MusicVoice"]
+        voice.extend(music)
         divisions_consumed = len(divisions)
-        self._apply_specifiers(staff, divisions_consumed)
+        self._apply_specifiers(voice, divisions_consumed)
         if self._already_cached_state is not True:
-            self._cache_state(staff, divisions_consumed)
+            self._cache_state(voice, divisions_consumed)
         # self._check_wellformedness(staff)
-        self._validate_tuplets(staff)
-        selection = staff["MusicVoice"][:]
-        staff["MusicVoice"][:] = []
+        self._validate_tuplets(voice)
+        selection = voice[:]
+        voice[:] = []
         return selection
 
     def __eq__(self, argument) -> bool:
@@ -124,29 +125,27 @@ class RhythmMaker(object):
 
     ### PRIVATE METHODS ###
 
-    def _apply_specifiers(self, staff, divisions_consumed):
+    def _apply_specifiers(self, voice, divisions_consumed):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
         for command in self.commands or []:
             if isinstance(command, _commands.CacheStateCommand):
-                self._cache_state(staff, divisions_consumed)
+                self._cache_state(voice, divisions_consumed)
                 self._already_cached_state = True
                 continue
             elif isinstance(command, _commands.ForceRestCommand):
                 command(
-                    staff,
+                    voice,
                     previous_logical_ties_produced=previous_logical_ties_produced,
                     tag=self.tag,
                 )
             else:
-                command(staff, tag=self.tag)
+                command(voice, tag=self.tag)
 
-    def _cache_state(self, staff, divisions_consumed):
-        music_voice = staff["MusicVoice"]
-        time_signature_voice = staff["TimeSignatureVoice"]
+    def _cache_state(self, voice, divisions_consumed):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
-        logical_ties_produced = len(abjad.select(music_voice).logical_ties())
+        logical_ties_produced = len(abjad.select(voice).logical_ties())
         logical_ties_produced += previous_logical_ties_produced
         if self._previous_incomplete_last_note():
             logical_ties_produced -= 1
