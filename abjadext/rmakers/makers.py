@@ -73,7 +73,6 @@ def incised(
         preprocessor=preprocessor,
         extra_counts=extra_counts,
         incise=incise,
-        replace_rests_with_skips=replace_rests_with_skips,
         spelling=spelling,
         tag=tag,
     )
