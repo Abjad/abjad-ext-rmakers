@@ -1198,7 +1198,7 @@ class RewriteRestFilledCommand(Command):
             selection = self.selector(selection)
         maker = abjad.LeafMaker(tag=tag)
         for tuplet in abjad.select(selection).tuplets():
-            if not self.is_rest_filled_tuplet(tuplet):
+            if not tuplet.rest_filled():
                 continue
             duration = abjad.inspect(tuplet).duration()
             rests = maker([None], [duration])
@@ -1216,7 +1216,7 @@ class RewriteRestFilledCommand(Command):
         #            selection = self.selector(selection)
         #        maker = abjad.LeafMaker(tag=tag)
         #        for tuplet in abjad.select(selection).tuplets():
-        #            if not self.is_sustained_tuplet(tuplet):
+        #            if not tuplet.sustained():
         #                continue
         #            duration = abjad.inspect(tuplet).duration()
         #            leaves = abjad.select(tuplet).leaves()
@@ -1238,18 +1238,6 @@ class RewriteRestFilledCommand(Command):
         #            if last_leaf_has_tie:
         #                abjad.attach(abjad.Tie(), tuplet[-1])
 
-    ### PUBLIC METHODS ###
-
-    # TODO: move to abjad.Tuplet
-    @staticmethod
-    def is_rest_filled_tuplet(tuplet):
-        """
-        Is true when ``argument`` is rest-filled tuplet.
-        """
-        if not isinstance(tuplet, abjad.Tuplet):
-            return False
-        return all(isinstance(_, abjad.Rest) for _ in tuplet)
-
 
 class RewriteSustainedCommand(Command):
     """
@@ -1270,7 +1258,7 @@ class RewriteSustainedCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
-            if not self.is_sustained_tuplet(tuplet):
+            if not tuplet.sustained():
                 continue
             duration = abjad.inspect(tuplet).duration()
             leaves = abjad.select(tuplet).leaves()
@@ -1286,29 +1274,6 @@ class RewriteSustainedCommand(Command):
                 abjad.detach(abjad.Tie, tuplet[-1])
             tuplet[0]._set_duration(duration)
             tuplet.multiplier = abjad.Multiplier(1)
-
-    ### PUBLIC METHODS ###
-
-    # TODO: move to abjad.Tuplet
-    @staticmethod
-    def is_sustained_tuplet(argument):
-        """
-        Is true when ``argument`` is sustained tuplet.
-        """
-        if not isinstance(argument, abjad.Tuplet):
-            return False
-        lt_head_count = 0
-        leaves = abjad.select(argument).leaves()
-        for leaf in leaves:
-            lt = abjad.inspect(leaf).logical_tie()
-            if lt.head is leaf:
-                lt_head_count += 1
-        if lt_head_count == 0:
-            return True
-        lt = abjad.inspect(leaves[0]).logical_tie()
-        if lt.head is leaves[0] and lt_head_count == 1:
-            return True
-        return False
 
 
 class SplitMeasuresCommand(Command):
@@ -2806,7 +2771,7 @@ def rewrite_sustained(
 
             >>> staff = lilypond_file[abjad.Score]
             >>> for tuplet in abjad.select(staff).tuplets():
-            ...     rmakers.RewriteSustainedCommand.is_sustained_tuplet(tuplet)
+            ...     tuplet.sustained()
             ...
             True
             True
