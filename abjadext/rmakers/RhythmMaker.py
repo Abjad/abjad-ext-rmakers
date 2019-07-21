@@ -184,7 +184,6 @@ class RhythmMaker(object):
         increase_monotonic=None,
         forbidden_note_duration=None,
         forbidden_rest_duration=None,
-        repeat_ties=False,
         tag: str = None,
     ):
         assert all(x != 0 for x in talea), repr(talea)
@@ -193,7 +192,6 @@ class RhythmMaker(object):
             increase_monotonic=increase_monotonic,
             forbidden_note_duration=forbidden_note_duration,
             forbidden_rest_duration=forbidden_rest_duration,
-            repeat_ties=repeat_ties,
             tag=tag,
         )
         pitches: typing.List[typing.Union[int, None]]
@@ -210,7 +208,7 @@ class RhythmMaker(object):
                 and abjad.inspect(leaves[0]).logical_tie().is_trivial
                 and not isinstance(leaves[0], abjad.Rest)
             ):
-                abjad.tie(leaves, repeat=repeat_ties)
+                abjad.tie(leaves)
             result.extend(leaves)
         result = abjad.select(result)
         return result

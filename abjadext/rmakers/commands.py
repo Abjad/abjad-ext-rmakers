@@ -776,7 +776,7 @@ class ForceRepeatTieCommand(Command):
             duration = abjad.Duration(self.threshold)
             inequality = abjad.DurationInequality(">=", duration)
         assert isinstance(inequality, abjad.DurationInequality)
-        add_repeat_ties = []
+        attach_repeat_ties = []
         for leaf in abjad.select(selection).leaves():
             if abjad.inspect(leaf).has_indicator(abjad.Tie):
                 next_leaf = abjad.inspect(leaf).leaf(1)
@@ -789,9 +789,9 @@ class ForceRepeatTieCommand(Command):
                 duration = abjad.inspect(leaf).duration()
                 if not inequality(duration):
                     continue
-                add_repeat_ties.append(next_leaf)
+                attach_repeat_ties.append(next_leaf)
                 abjad.detach(abjad.Tie, leaf)
-        for leaf in add_repeat_ties:
+        for leaf in attach_repeat_ties:
             repeat_tie = abjad.RepeatTie()
             abjad.attach(repeat_tie, leaf)
 
@@ -1063,13 +1063,12 @@ class RewriteMeterCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_reference_meters", "_repeat_ties")
+    __slots__ = ("_reference_meters",)
 
     ### INITIALIZER ###
 
-    def __init__(self, *, reference_meters=None, repeat_ties=None) -> None:
+    def __init__(self, *, reference_meters=None) -> None:
         self._reference_meters = reference_meters
-        self._repeat_ties = repeat_ties
 
     ### SPECIAL METHODS ###
 
@@ -1088,11 +1087,8 @@ class RewriteMeterCommand(Command):
             meters.append(meter)
         durations = [abjad.Duration(_) for _ in meters]
         reference_meters = self.reference_meters or ()
-        command = SplitMeasuresCommand(repeat_ties=self.repeat_ties)
-        ###command(staff, durations=durations)
+        command = SplitMeasuresCommand()
         command(voice, durations=durations)
-        ###music_voice = staff["MusicVoice"]
-        ###selections = abjad.select(staff["MusicVoice"][:]).group_by_measure()
         selections = abjad.select(voice[:]).group_by_measure()
         for meter, selection in zip(meters, selections):
             for reference_meter in reference_meters:
@@ -1105,10 +1101,7 @@ class RewriteMeterCommand(Command):
                 if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
             unbeam()(nontupletted_leaves)
-            abjad.mutate(selection).rewrite_meter(
-                meter, rewrite_tuplets=False, repeat_ties=self.repeat_ties
-            )
-        ###selections = abjad.select(staff["MusicVoice"][:]).group_by_measure()
+            abjad.mutate(selection).rewrite_meter(meter, rewrite_tuplets=False)
         selections = abjad.select(voice[:]).group_by_measure()
         for meter, selection in zip(meters, selections):
             leaves = abjad.select(selection).leaves(
@@ -1183,13 +1176,6 @@ class RewriteMeterCommand(Command):
         """
         return self._reference_meters
 
-    @property
-    def repeat_ties(self):
-        """
-        Gets repeat ties.
-        """
-        return self._repeat_ties
-
 
 class RewriteRestFilledCommand(Command):
     """
@@ -1227,7 +1213,7 @@ class RewriteRestFilledCommand(Command):
         #        selection = staff["MusicVoice"][:]
         #        if self.selector is not None:
         #            selection = self.selector(selection)
-        #        maker = abjad.LeafMaker(repeat_ties=self.repeat_ties, tag=tag)
+        #        maker = abjad.LeafMaker(tag=tag)
         #        for tuplet in abjad.select(selection).tuplets():
         #            if not self.is_sustained_tuplet(tuplet):
         #                continue
@@ -1331,12 +1317,7 @@ class SplitMeasuresCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = "_repeat_ties"
-
-    ### INITIALIZER ###
-
-    def __init__(self, *, repeat_ties=None) -> None:
-        self._repeat_ties = repeat_ties
+    __slots__ = ()
 
     ### SPECIAL METHODS ###
 
@@ -1363,18 +1344,7 @@ class SplitMeasuresCommand(Command):
             message += f"\ndurations: {durations}."
             message += f"\nvoice: {voice[:]}."
             raise Exception(message)
-        abjad.mutate(voice[:]).split(
-            durations=durations, repeat_ties=self.repeat_ties
-        )
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def repeat_ties(self):
-        """
-        Is true when command uses repeat ties.
-        """
-        return self._repeat_ties
+        abjad.mutate(voice[:]).split(durations=durations)
 
 
 class TieCommand(Command):
@@ -2537,15 +2507,11 @@ def rewrite_dots(selector: abjad.SelectorTyping = None) -> RewriteDotsCommand:
     return RewriteDotsCommand(selector)
 
 
-def rewrite_meter(
-    *, reference_meters=None, repeat_ties=None
-) -> RewriteMeterCommand:
+def rewrite_meter(*, reference_meters=None) -> RewriteMeterCommand:
     """
     Makes rewrite meter command.
     """
-    return RewriteMeterCommand(
-        reference_meters=reference_meters, repeat_ties=repeat_ties
-    )
+    return RewriteMeterCommand(reference_meters=reference_meters)
 
 
 def rewrite_rest_filled(
@@ -3047,11 +3013,11 @@ def rewrite_sustained(
     return RewriteSustainedCommand(selector)
 
 
-def split_measures(*, repeat_ties=None) -> SplitMeasuresCommand:
+def split_measures() -> SplitMeasuresCommand:
     """
     Makes split measures command.
     """
-    return SplitMeasuresCommand(repeat_ties=repeat_ties)
+    return SplitMeasuresCommand()
 
 
 def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
