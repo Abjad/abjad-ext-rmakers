@@ -29,7 +29,6 @@ from .commands import BeamCommand
 from .commands import BeamGroupsCommand
 from .commands import CacheStateCommand
 from .commands import FeatherBeamCommand
-from .commands import ForceMultimeasureRestCommand
 from .commands import ForceNoteCommand
 from .commands import ForceRestCommand
 from .commands import RewriteMeterCommand
@@ -47,7 +46,6 @@ from .commands import feather_beam
 from .commands import force_augmentation
 from .commands import force_diminution
 from .commands import force_fraction
-from .commands import force_multimeasure_rest
 from .commands import force_note
 from .commands import force_repeat_ties
 from .commands import force_rest
