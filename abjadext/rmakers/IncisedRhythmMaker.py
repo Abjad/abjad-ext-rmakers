@@ -3,7 +3,6 @@ import typing
 from . import commands as _commands
 from . import specifiers as _specifiers
 from .RhythmMaker import RhythmMaker
-from .TaleaRhythmMaker import TaleaRhythmMaker
 
 
 class IncisedRhythmMaker(RhythmMaker):
@@ -259,12 +258,11 @@ class IncisedRhythmMaker(RhythmMaker):
     def _numeric_map_to_leaf_selections(self, numeric_map, lcd):
         selections = []
         specifier = self._get_spelling_specifier()
-        class_ = TaleaRhythmMaker
         for numeric_map_part in numeric_map:
             numeric_map_part = [
                 _ for _ in numeric_map_part if _ != abjad.Duration(0)
             ]
-            selection = class_._make_leaves_from_talea(
+            selection = self._make_leaves_from_talea(
                 numeric_map_part,
                 lcd,
                 forbidden_note_duration=specifier.forbidden_note_duration,

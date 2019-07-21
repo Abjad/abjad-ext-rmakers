@@ -178,6 +178,44 @@ class RhythmMaker(object):
             self, storage_format_args_values=commands
         )
 
+    @staticmethod
+    def _make_leaves_from_talea(
+        talea,
+        talea_denominator,
+        increase_monotonic=None,
+        forbidden_note_duration=None,
+        forbidden_rest_duration=None,
+        repeat_ties=False,
+        tag: str = None,
+    ):
+        assert all(x != 0 for x in talea), repr(talea)
+        result: typing.List[abjad.Leaf] = []
+        leaf_maker = abjad.LeafMaker(
+            increase_monotonic=increase_monotonic,
+            forbidden_note_duration=forbidden_note_duration,
+            forbidden_rest_duration=forbidden_rest_duration,
+            repeat_ties=repeat_ties,
+            tag=tag,
+        )
+        pitches: typing.List[typing.Union[int, None]]
+        for note_value in talea:
+            if 0 < note_value:
+                pitches = [0]
+            else:
+                pitches = [None]
+            division = abjad.Duration(abs(note_value), talea_denominator)
+            durations = [division]
+            leaves = leaf_maker(pitches, durations)
+            if (
+                1 < len(leaves)
+                and abjad.inspect(leaves[0]).logical_tie().is_trivial
+                and not isinstance(leaves[0], abjad.Rest)
+            ):
+                abjad.tie(leaves, repeat=repeat_ties)
+            result.extend(leaves)
+        result = abjad.select(result)
+        return result
+
     def _make_music(self, divisions):
         return []
 
