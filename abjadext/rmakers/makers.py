@@ -14,18 +14,17 @@ from .TupletRhythmMaker import TupletRhythmMaker
 
 
 def accelerando(
-    *commands: _commands.Command,
-    interpolations: typing.Union[
-        _specifiers.Interpolation, typing.Sequence[_specifiers.Interpolation]
-    ] = None,
-    spelling: _specifiers.Spelling = None,
-    tag: str = None,
+    *interpolations, spelling: _specifiers.Spelling = None, tag: str = None
 ) -> AccelerandoRhythmMaker:
     """
     Makes accelerando rhythm-maker.
     """
+    interpolations_ = []
+    for interpolation in interpolations:
+        interpolation_ = _specifiers.Interpolation(*interpolation)
+        interpolations_.append(interpolation_)
     return AccelerandoRhythmMaker(
-        *commands, interpolations=interpolations, spelling=spelling, tag=tag
+        interpolations=interpolations_, spelling=spelling, tag=tag
     )
 
 
