@@ -23,17 +23,10 @@ class IncisedRhythmMaker(RhythmMaker):
         *commands: _commands.Command,
         extra_counts: typing.Sequence[int] = None,
         incise: _specifiers.Incise = None,
-        ###preprocessor: abjad.Expression = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
-        RhythmMaker.__init__(
-            self,
-            *commands,
-            ###preprocessor=preprocessor,
-            spelling=spelling,
-            tag=tag,
-        )
+        RhythmMaker.__init__(self, *commands, spelling=spelling, tag=tag)
         prototype = (_specifiers.Incise, type(None))
         assert isinstance(incise, prototype)
         self._incise = incise

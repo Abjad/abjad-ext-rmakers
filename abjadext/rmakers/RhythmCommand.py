@@ -324,7 +324,8 @@ class RhythmCommand(object):
             raise Exception(message)
         division_count = len(divisions)
         assignments: typing.List[MakerAssignment] = []
-        if isinstance(rhythm_maker, RhythmMaker):
+        # if isinstance(rhythm_maker, RhythmMaker):
+        if isinstance(rhythm_maker, (RhythmMaker, RhythmCommand)):
             assignment = MakerAssignment(abjad.index([0], 1), rhythm_maker)
             assignments.append(assignment)
         elif isinstance(rhythm_maker, MakerAssignment):
@@ -363,7 +364,9 @@ class RhythmCommand(object):
         maker_to_previous_state = abjad.OrderedDict()
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
+            rhythm_command = None
             if isinstance(rhythm_maker, type(self)):
+                rhythm_command = rhythm_maker
                 rhythm_maker = rhythm_maker.rhythm_maker
             if self.tag is not None:
                 rhythm_maker = abjad.new(rhythm_maker, tag=self.tag)
@@ -380,6 +383,14 @@ class RhythmCommand(object):
                     rhythm_maker, None
                 )
             selection = rhythm_maker(divisions_, previous_state=previous_state)
+            if rhythm_command is not None:
+                if self.tag is not None:
+                    rhythm_command = abjad.new(rhythm_command, tag=self.tag)
+                voice = abjad.Voice(selection)
+                divisions_consumed = len(divisions_)
+                rhythm_command._apply_specifiers(voice, divisions_consumed)
+                selection = voice[:]
+                voice[:] = []
             assert isinstance(selection, abjad.Selection), repr(selection)
             components.extend(selection)
             maker_to_previous_state[rhythm_maker] = rhythm_maker.state
@@ -535,7 +546,12 @@ class RhythmCommand(object):
                 command(voice, tag=self.tag)
 
     def _check_rhythm_maker_input(self, rhythm_maker):
-        prototype = (MakerAssignment, MakerAssignments, RhythmMaker)
+        prototype = (
+            MakerAssignment,
+            MakerAssignments,
+            RhythmCommand,
+            RhythmMaker,
+        )
         if isinstance(rhythm_maker, prototype):
             return
         message = '\n  Input parameter "rhythm_maker" accepts:'
