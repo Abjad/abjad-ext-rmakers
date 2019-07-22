@@ -69,7 +69,7 @@ def incised(
     return IncisedRhythmMaker(
         *commands,
         extra_counts=extra_counts,
-        incise=rmakers.Incise(
+        incise=_specifiers.Incise(
             fill_with_rests=fill_with_rests,
             outer_divisions_only=outer_divisions_only,
             prefix_talea=prefix_talea,
