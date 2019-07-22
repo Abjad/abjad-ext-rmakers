@@ -53,7 +53,13 @@ def even_division(
 def incised(
     *commands: _commands.Command,
     extra_counts: typing.Sequence[int] = None,
-    incise: _specifiers.Incise = None,
+    fill_with_rests: bool = None,
+    outer_divisions_only: bool = None,
+    prefix_talea: typing.Sequence[int] = None,
+    prefix_counts: typing.Sequence[int] = None,
+    suffix_talea: typing.Sequence[int] = None,
+    suffix_counts: typing.Sequence[int] = None,
+    talea_denominator: int = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
 ) -> IncisedRhythmMaker:
@@ -63,7 +69,15 @@ def incised(
     return IncisedRhythmMaker(
         *commands,
         extra_counts=extra_counts,
-        incise=incise,
+        incise=rmakers.Incise(
+            fill_with_rests=fill_with_rests,
+            outer_divisions_only=outer_divisions_only,
+            prefix_talea=prefix_talea,
+            prefix_counts=prefix_counts,
+            suffix_talea=suffix_talea,
+            suffix_counts=suffix_counts,
+            talea_denominator=talea_denominator,
+        ),
         spelling=spelling,
         tag=tag,
     )
@@ -110,11 +124,12 @@ def talea(
 
 
 def tuplet(
+    tuplet_ratios: abjad.RatioSequenceTyping,
     *commands: _commands.Command,
+    # TODO: remove in favor of dedicated denominator control commands:
     denominator: typing.Union[int, abjad.DurationTyping] = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
-    tuplet_ratios: abjad.RatioSequenceTyping = None,
 ) -> TupletRhythmMaker:
     """
     Makes tuplet rhythm-maker.
