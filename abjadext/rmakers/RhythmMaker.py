@@ -41,6 +41,10 @@ class RhythmMaker(object):
         for command in commands:
             assert isinstance(command, _commands.Command), repr(command)
         commands_ = tuple(commands)
+        #        if commands:
+        #            message = "pass commands to rhythm command (not rhythm-maker):\n"
+        #            message += f"   {repr(commands)}"
+        #            raise Exception(message)
         self._commands = commands_
         if spelling is not None:
             assert isinstance(spelling, _specifiers.Spelling)

@@ -43,7 +43,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences every other logical tie:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.force_rest(
             ...         abjad.select().logical_ties().get([0], 2),
             ...     ),
@@ -86,7 +87,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Forces rest at every logical tie:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.force_rest(abjad.select()),
             ... )
 
@@ -128,7 +130,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Silences every other output division except for the first and last:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.force_rest(
             ...         abjad.select().logical_ties().get([0], 2)[1:-1],
             ...     ),
@@ -174,7 +177,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Beams each division:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.beam(abjad.select().logical_ties(pitched=True)),
             ...     )
 
@@ -217,7 +221,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Beams divisions together:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.beam_groups(abjad.select().logical_ties()),
             ... )
 
@@ -344,7 +349,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> nonlast_lts = abjad.select().logical_ties()[:-1]
             >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.tie(nonlast_lts.map(last_leaf)),
             ... )
 
@@ -390,7 +396,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> lts = abjad.select().logical_ties().get([0], 2)
             >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.tie(lts.map(last_leaf)),
             ... )
 
@@ -433,7 +440,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Strips all ties:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.untie(),
             ... )
 
@@ -515,7 +523,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Spells tuplets as augmentations:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.force_augmentation(),
             ... )
 
@@ -562,7 +571,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Forces rest in logical tie 0:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.force_rest(abjad.select().logical_ties()[0]),
             ...     )
 
@@ -606,7 +616,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Forces rests in first two logical ties:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.force_rest(abjad.select().logical_ties()[:2]),
             ...     )
 
@@ -650,7 +661,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Forces rests in first and last logical ties:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.force_rest(
             ...         abjad.select().logical_ties().get([0, -1])
             ...     ),
@@ -708,7 +720,7 @@ class NoteRhythmMaker(RhythmMaker):
     #            ...     weights, cyclic=True, overhang=True,
     #            ...     )
     #            >>> divisions = divisions.flatten(depth=-1)
-    #            >>> rhythm_maker = rmakers.NoteRhythmMaker(preprocessor=divisions)
+    #            >>> rhythm_maker = rmakers.rhythm(rmakers.note(), preprocessor=divisions)
     #
     #            >>> divisions = [(4, 4), (4, 4)]
     #            >>> selection = rhythm_maker(divisions)
@@ -828,7 +840,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            >>> rhythm_maker = rmakers.NoteRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.note(),
             ...     rmakers.rewrite_meter(),
             ...     )
 

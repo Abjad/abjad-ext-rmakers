@@ -388,7 +388,9 @@ class RhythmCommand(object):
                     rhythm_command = abjad.new(rhythm_command, tag=self.tag)
                 voice = abjad.Voice(selection)
                 divisions_consumed = len(divisions_)
-                rhythm_command._apply_specifiers(voice, divisions_consumed)
+                rhythm_command._apply_specifiers(
+                    voice, divisions_consumed, rhythm_maker
+                )
                 selection = voice[:]
                 voice[:] = []
             assert isinstance(selection, abjad.Selection), repr(selection)
@@ -402,10 +404,7 @@ class RhythmCommand(object):
         voice = staff["MusicVoice"]
         voice.extend(selection)
         divisions_consumed = division_count
-        self._apply_specifiers(voice, divisions_consumed)
-        #        if self._already_cached_state is not True:
-        #            self._cache_state(staff, divisions_consumed)
-        #        # self._check_wellformedness(staff)
+        self._apply_specifiers(voice, divisions_consumed, rhythm_maker)
         self._validate_tuplets(voice)
         selection = voice[:]
         voice[:] = []
@@ -524,16 +523,15 @@ class RhythmCommand(object):
         divisions = divisions.flatten(depth=-1)
         return divisions
 
-    def _apply_specifiers(self, voice, divisions_consumed):
+    def _apply_specifiers(self, voice, divisions_consumed, rhythm_maker):
         # TODO: will need to restore:
         #        previous_logical_ties_produced = self._previous_logical_ties_produced()
         #        if self._previous_incomplete_last_note():
         #            previous_logical_ties_produced -= 1
         for command in self.commands or []:
             if isinstance(command, _commands.CacheStateCommand):
-                # TODO: restore:
-                #                self._cache_state(voice, divisions_consumed)
-                #                self._already_cached_state = True
+                rhythm_maker._cache_state(voice, divisions_consumed)
+                rhythm_maker._already_cached_state = True
                 continue
             elif isinstance(command, _commands.ForceRestCommand):
                 command(

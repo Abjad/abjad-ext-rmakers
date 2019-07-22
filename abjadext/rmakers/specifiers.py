@@ -201,18 +201,17 @@ class Incise(object):
 
             Divides middle part of every division ``1:1``:
 
-            >>> specifier = rmakers.Incise(
-            ...     prefix_talea=[-1],
-            ...     prefix_counts=[0, 1],
-            ...     suffix_talea=[-1],
-            ...     suffix_counts=[1],
-            ...     talea_denominator=16,
-            ...     body_ratio=abjad.Ratio((1, 1)),
-            ...     )
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
+            ...         prefix_talea=[-1],
+            ...         prefix_counts=[0, 1],
+            ...         suffix_talea=[-1],
+            ...         suffix_counts=[1],
+            ...         talea_denominator=16,
+            ...         body_ratio=abjad.Ratio((1, 1)),
+            ...     ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     incise=specifier,
             ...     )
 
             >>> divisions = 4 * [(5, 16)]
@@ -563,14 +562,14 @@ class Spelling(object):
 
             Decreases monotically:
 
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.talea(
+            ...         [5],
+            ...         16,
+            ...         spelling=rmakers.Spelling(increase_monotonic=False),
+            ...         ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     spelling=rmakers.Spelling(increase_monotonic=False),
-            ...     talea=rmakers.Talea(
-            ...         counts=[5],
-            ...         denominator=16,
-            ...         ),
             ...     )
 
             >>> divisions = [(3, 4), (3, 4)]
@@ -617,14 +616,14 @@ class Spelling(object):
 
             Increases monotically:
 
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.talea(
+            ...         [5],
+            ...         16,
+            ...         spelling=rmakers.Spelling(increase_monotonic=True),
+            ...         ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     spelling=rmakers.Spelling(increase_monotonic=True),
-            ...     talea=rmakers.Talea(
-            ...         counts=[5],
-            ...         denominator=16,
-            ...         ),
             ...     )
 
             >>> divisions = [(3, 4), (3, 4)]
@@ -679,15 +678,15 @@ class Spelling(object):
 
             Forbids note durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.talea(
+            ...         [1, 1, 1, 1, 4, -4],
+            ...         16,
+            ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 4)),
+            ...     ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 4)),
-            ...     talea=rmakers.Talea(
-            ...         counts=[1, 1, 1, 1, 4, -4],
-            ...         denominator=16,
-            ...         ),
-            ...     )
+            ... )
 
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = rhythm_maker(divisions)
@@ -746,15 +745,15 @@ class Spelling(object):
 
             Forbids rest durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = rmakers.TaleaRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     spelling=rmakers.Spelling(forbidden_rest_duration=(1, 4)),
-            ...     talea=rmakers.Talea(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.talea(
             ...         counts=[1, 1, 1, 1, 4, -4],
             ...         denominator=16,
-            ...         ),
-            ...     )
+            ...         spelling=rmakers.Spelling(forbidden_rest_duration=(1, 4)),
+            ...     ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ... )
 
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = rhythm_maker(divisions)

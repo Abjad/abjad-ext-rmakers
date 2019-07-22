@@ -52,6 +52,7 @@ def even_division(
 def incised(
     *commands: _commands.Command,
     extra_counts: typing.Sequence[int] = None,
+    body_ratio: abjad.RatioTyping = None,
     fill_with_rests: bool = None,
     outer_divisions_only: bool = None,
     prefix_talea: typing.Sequence[int] = None,
@@ -69,6 +70,7 @@ def incised(
         *commands,
         extra_counts=extra_counts,
         incise=_specifiers.Incise(
+            body_ratio=body_ratio,
             fill_with_rests=fill_with_rests,
             outer_divisions_only=outer_divisions_only,
             prefix_talea=prefix_talea,

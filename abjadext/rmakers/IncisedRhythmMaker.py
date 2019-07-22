@@ -306,21 +306,21 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Forces rest at every other tuplet:
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.force_rest(
-            ...         abjad.select().logical_ties().get([1], 2),
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         outer_divisions_only=True,
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         suffix_talea=[-1],
             ...         suffix_counts=[1],
             ...         talea_denominator=16,
-            ...         ),
-            ...     )
+            ...     ),
+            ...     rmakers.force_rest(
+            ...         abjad.select().logical_ties().get([1], 2),
+            ...     ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ... )
 
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
@@ -365,11 +365,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
             >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -377,6 +374,9 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
             ...         ),
+            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
@@ -421,11 +421,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> nonfirst_tuplets = abjad.select().tuplets()[1:]
             >>> first_leaf = abjad.select().leaf(0)
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.repeat_tie(nonfirst_tuplets.map(first_leaf)),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -433,6 +430,9 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
             ...         ),
+            ...     rmakers.repeat_tie(nonfirst_tuplets.map(first_leaf)),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
@@ -483,11 +483,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Add one extra count per tuplet:
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.force_augmentation(),
-            ...     rmakers.beam(),
-            ...     extra_counts=[1],
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
+            ...         extra_counts=[1],
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -495,6 +493,8 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
             ...         ),
+            ...     rmakers.force_augmentation(),
+            ...     rmakers.beam(),
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
@@ -553,16 +553,16 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[0, 1],
             ...         suffix_talea=[-1],
             ...         suffix_counts=[1],
             ...         talea_denominator=16,
             ...         ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ...     )
 
             >>> divisions = 4 * [(5, 16)]
@@ -606,57 +606,10 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Doesn't incise:
-
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-
-            >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'2
-                        ~
-                        c'8
-                        c'2
-                        ~
-                        c'8
-                        c'2
-                        ~
-                        c'8
-                    }
-                >>
-
-        ..  container:: example
-
             Fills divisions with notes. Incises outer divisions only:
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         prefix_talea=[-8, -7],
             ...         prefix_counts=[2],
             ...         suffix_talea=[-3],
@@ -664,6 +617,8 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         talea_denominator=32,
             ...         outer_divisions_only=True,
             ...     ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ... )
 
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
@@ -712,10 +667,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Fills divisions with rests. Incises outer divisions only:
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         prefix_talea=[7, 8],
             ...         prefix_counts=[2],
             ...         suffix_talea=[3],
@@ -724,6 +677,8 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         fill_with_rests=True,
             ...         outer_divisions_only=True,
             ...     ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ... )
 
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
@@ -778,10 +733,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Spells durations with the fewest number of glyphs:
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -789,6 +742,8 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
             ...         ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
@@ -830,18 +785,18 @@ class IncisedRhythmMaker(RhythmMaker):
             Forbids notes with written duration greater than or equal to
             ``1/2``:
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 2)),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
             ...         suffix_talea=[-1],
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
+            ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 2)),
             ...         ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
@@ -890,11 +845,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     rmakers.rewrite_meter(),
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -902,6 +854,9 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
             ...         ),
+            ...     rmakers.beam(),
+            ...     rmakers.extract_trivial(),
+            ...     rmakers.rewrite_meter(),
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
@@ -950,11 +905,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Makes augmentations:
 
-            >>> rhythm_maker = rmakers.IncisedRhythmMaker(
-            ...     rmakers.force_augmentation(),
-            ...     rmakers.beam(),
-            ...     extra_counts=[1],
-            ...     incise=rmakers.Incise(
+            >>> rhythm_maker = rmakers.rhythm(
+            ...     rmakers.incised(
+            ...         extra_counts=[1],
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
             ...         outer_divisions_only=True,
@@ -962,6 +915,8 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         suffix_counts=[1],
             ...         talea_denominator=8,
             ...         ),
+            ...     rmakers.force_augmentation(),
+            ...     rmakers.beam(),
             ...     tag='INCISED_RHYTHM_MAKER',
             ...     )
 
