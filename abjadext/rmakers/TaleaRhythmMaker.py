@@ -85,7 +85,7 @@ class TaleaRhythmMaker(RhythmMaker):
         self,
         *commands: _commands.Command,
         extra_counts: abjad.IntegerSequence = None,
-        preprocessor: abjad.Expression = None,
+        ###preprocessor: abjad.Expression = None,
         read_talea_once_only: bool = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
@@ -96,7 +96,7 @@ class TaleaRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *commands,
-            preprocessor=preprocessor,
+            ###preprocessor=preprocessor,
             spelling=spelling,
             tag=tag,
         )

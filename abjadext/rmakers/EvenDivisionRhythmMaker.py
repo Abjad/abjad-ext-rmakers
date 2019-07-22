@@ -25,14 +25,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         denominator: typing.Union[str, int] = "from_counts",
         denominators: typing.Sequence[int] = [8],
         extra_counts: typing.Sequence[int] = None,
-        preprocessor: abjad.Expression = None,
+        ###preprocessor: abjad.Expression = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
         RhythmMaker.__init__(
             self,
             *commands,
-            preprocessor=preprocessor,
+            ###preprocessor=preprocessor,
             spelling=spelling,
             tag=tag,
         )

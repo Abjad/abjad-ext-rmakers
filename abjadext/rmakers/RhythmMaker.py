@@ -19,7 +19,7 @@ class RhythmMaker(object):
         "_already_cached_state",
         "_commands",
         "_previous_state",
-        "_preprocessor",
+        #        "_preprocessor",
         "_spelling",
         "_state",
         "_tag",
@@ -35,7 +35,7 @@ class RhythmMaker(object):
     def __init__(
         self,
         *commands: _commands.Command,
-        preprocessor: abjad.Expression = None,
+        ###preprocessor: abjad.Expression = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
     ) -> None:
@@ -44,9 +44,9 @@ class RhythmMaker(object):
             assert isinstance(command, _commands.Command), repr(command)
         commands_ = tuple(commands)
         self._commands = commands_
-        if preprocessor is not None:
-            assert isinstance(preprocessor, abjad.Expression)
-        self._preprocessor = preprocessor
+        #        if preprocessor is not None:
+        #            assert isinstance(preprocessor, abjad.Expression)
+        #        self._preprocessor = preprocessor
         if spelling is not None:
             assert isinstance(spelling, _specifiers.Spelling)
         self._spelling = spelling
@@ -71,11 +71,11 @@ class RhythmMaker(object):
         time_signatures = [abjad.TimeSignature(_) for _ in divisions]
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         staff = self._make_staff(time_signatures)
-        if self.preprocessor is not None:
-            divisions = self.preprocessor(divisions)
-            assert isinstance(divisions, abjad.Sequence), repr(divisions)
-            divisions = divisions.flatten(depth=-1)
-            divisions = list(divisions)
+        #        if self.preprocessor is not None:
+        #            divisions = self.preprocessor(divisions)
+        #            assert isinstance(divisions, abjad.Sequence), repr(divisions)
+        #            divisions = divisions.flatten(depth=-1)
+        #            divisions = list(divisions)
         music = self._make_music(divisions)
         assert isinstance(music, list), repr(music)
         prototype = (abjad.Tuplet, abjad.Selection)
@@ -298,12 +298,12 @@ class RhythmMaker(object):
         """
         return list(self._commands)
 
-    @property
-    def preprocessor(self) -> typing.Optional[abjad.Expression]:
-        r"""
-        Gets division preprocessor.
-        """
-        return self._preprocessor
+    #    @property
+    #    def preprocessor(self) -> typing.Optional[abjad.Expression]:
+    #        r"""
+    #        Gets division preprocessor.
+    #        """
+    #        return self._preprocessor
 
     @property
     def previous_state(self) -> abjad.OrderedDict:

@@ -144,7 +144,7 @@ class TupletRhythmMaker(RhythmMaker):
         self,
         *commands: _commands.Command,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
-        preprocessor: abjad.Expression = None,
+        ###preprocessor: abjad.Expression = None,
         spelling: _specifiers.Spelling = None,
         tag: str = None,
         tuplet_ratios: abjad.RatioSequenceTyping = None,
@@ -152,7 +152,7 @@ class TupletRhythmMaker(RhythmMaker):
         RhythmMaker.__init__(
             self,
             *commands,
-            preprocessor=preprocessor,
+            ###preprocessor=preprocessor,
             spelling=spelling,
             tag=tag,
         )
