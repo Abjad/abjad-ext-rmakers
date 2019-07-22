@@ -29,9 +29,9 @@ def accelerando(
 
 
 def even_division(
+    denominators: typing.Sequence[int],
     *commands: _commands.Command,
     denominator: typing.Union[str, int] = "from_counts",
-    denominators: typing.Sequence[int] = [8],
     extra_counts: typing.Sequence[int] = None,
     spelling: _specifiers.Spelling = None,
     tag: str = None,
