@@ -324,7 +324,6 @@ class RhythmCommand(object):
             raise Exception(message)
         division_count = len(divisions)
         assignments: typing.List[MakerAssignment] = []
-        # if isinstance(rhythm_maker, RhythmMaker):
         if isinstance(rhythm_maker, (RhythmMaker, RhythmCommand)):
             assignment = MakerAssignment(abjad.index([0], 1), rhythm_maker)
             assignments.append(assignment)
@@ -388,7 +387,7 @@ class RhythmCommand(object):
                     rhythm_command = abjad.new(rhythm_command, tag=self.tag)
                 voice = abjad.Voice(selection)
                 divisions_consumed = len(divisions_)
-                rhythm_command._apply_specifiers(
+                rhythm_command._call_commands(
                     voice, divisions_consumed, rhythm_maker
                 )
                 selection = voice[:]
@@ -404,7 +403,7 @@ class RhythmCommand(object):
         voice = staff["MusicVoice"]
         voice.extend(selection)
         divisions_consumed = division_count
-        self._apply_specifiers(voice, divisions_consumed, rhythm_maker)
+        self._call_commands(voice, divisions_consumed, rhythm_maker)
         self._validate_tuplets(voice)
         selection = voice[:]
         voice[:] = []
@@ -523,7 +522,7 @@ class RhythmCommand(object):
         divisions = divisions.flatten(depth=-1)
         return divisions
 
-    def _apply_specifiers(self, voice, divisions_consumed, rhythm_maker):
+    def _call_commands(self, voice, divisions_consumed, rhythm_maker):
         # TODO: will need to restore:
         #        previous_logical_ties_produced = self._previous_logical_ties_produced()
         #        if self._previous_incomplete_last_note():

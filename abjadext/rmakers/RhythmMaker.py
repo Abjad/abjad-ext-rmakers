@@ -78,7 +78,7 @@ class RhythmMaker(object):
         voice = staff["MusicVoice"]
         voice.extend(music)
         divisions_consumed = len(divisions)
-        self._apply_specifiers(voice, divisions_consumed)
+        self._call_commands(voice, divisions_consumed)
         if self._already_cached_state is not True:
             self._cache_state(voice, divisions_consumed)
         # self._check_wellformedness(staff)
@@ -119,7 +119,7 @@ class RhythmMaker(object):
 
     ### PRIVATE METHODS ###
 
-    def _apply_specifiers(self, voice, divisions_consumed):
+    def _call_commands(self, voice, divisions_consumed):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         if self._previous_incomplete_last_note():
             previous_logical_ties_produced -= 1
