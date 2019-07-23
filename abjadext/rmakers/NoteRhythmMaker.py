@@ -16,6 +16,13 @@ class NoteRhythmMaker(RhythmMaker):
 
     __slots__ = ()
 
+    ### INITIALIZER ###
+
+    def __init__(
+        self, spelling: _specifiers.Spelling = None, tag: str = None
+    ) -> None:
+        RhythmMaker.__init__(self, spelling=spelling, tag=tag)
+
     ### PRIVATE METHODS ###
 
     def _make_music(self, divisions) -> typing.List[abjad.Selection]:

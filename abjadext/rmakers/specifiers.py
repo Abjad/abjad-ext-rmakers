@@ -59,7 +59,7 @@ class Incise(object):
     def __init__(
         self,
         *,
-        body_ratio: abjad.Ratio = None,
+        body_ratio: abjad.RatioTyping = None,
         fill_with_rests: bool = None,
         outer_divisions_only: bool = None,
         prefix_counts: typing.Sequence[int] = None,

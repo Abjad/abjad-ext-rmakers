@@ -80,7 +80,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
     def __init__(
         self,
-        *commands: _commands.Command,
         extra_counts: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
         spelling: _specifiers.Spelling = None,
@@ -89,7 +88,7 @@ class TaleaRhythmMaker(RhythmMaker):
             counts=[1], denominator=16
         ),
     ) -> None:
-        RhythmMaker.__init__(self, *commands, spelling=spelling, tag=tag)
+        RhythmMaker.__init__(self, spelling=spelling, tag=tag)
         if talea is not None:
             assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea

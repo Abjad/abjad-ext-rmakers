@@ -30,7 +30,6 @@ def accelerando(
 
 def even_division(
     denominators: typing.Sequence[int],
-    *commands: _commands.Command,
     denominator: typing.Union[str, int] = "from_counts",
     extra_counts: typing.Sequence[int] = None,
     spelling: _specifiers.Spelling = None,
@@ -40,7 +39,6 @@ def even_division(
     Makes even-division rhythm-maker.
     """
     return EvenDivisionRhythmMaker(
-        *commands,
         denominator=denominator,
         denominators=denominators,
         extra_counts=extra_counts,
@@ -50,7 +48,6 @@ def even_division(
 
 
 def incised(
-    *commands: _commands.Command,
     extra_counts: typing.Sequence[int] = None,
     body_ratio: abjad.RatioTyping = None,
     fill_with_rests: bool = None,
@@ -67,7 +64,6 @@ def incised(
     Makes incised rhythm-maker
     """
     return IncisedRhythmMaker(
-        *commands,
         extra_counts=extra_counts,
         incise=_specifiers.Incise(
             body_ratio=body_ratio,
@@ -85,20 +81,17 @@ def incised(
 
 
 def note(
-    *commands: _commands.Command,
-    spelling: _specifiers.Spelling = None,
-    tag: str = None,
+    spelling: _specifiers.Spelling = None, tag: str = None
 ) -> NoteRhythmMaker:
     """
     Makes note rhythm-maker.
     """
-    return NoteRhythmMaker(*commands, spelling=spelling, tag=tag)
+    return NoteRhythmMaker(spelling=spelling, tag=tag)
 
 
 def talea(
     counts,
     denominator,
-    *commands: _commands.Command,
     end_counts: abjad.IntegerSequence = None,
     extra_counts: abjad.IntegerSequence = None,
     preamble=None,
@@ -110,7 +103,6 @@ def talea(
     Makes talea rhythm-maker.
     """
     return TaleaRhythmMaker(
-        *commands,
         extra_counts=extra_counts,
         read_talea_once_only=read_talea_once_only,
         spelling=spelling,
@@ -126,7 +118,6 @@ def talea(
 
 def tuplet(
     tuplet_ratios: abjad.RatioSequenceTyping,
-    *commands: _commands.Command,
     # TODO: remove in favor of dedicated denominator control commands:
     denominator: typing.Union[int, abjad.DurationTyping] = None,
     spelling: _specifiers.Spelling = None,
@@ -136,7 +127,6 @@ def tuplet(
     Makes tuplet rhythm-maker.
     """
     return TupletRhythmMaker(
-        *commands,
         denominator=denominator,
         spelling=spelling,
         tag=tag,
