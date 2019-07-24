@@ -68,6 +68,2515 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
+    ..  container:: example
+
+        Silences first and last logical ties:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16),
+        ...     rmakers.force_rest(
+        ...         abjad.select().logical_ties().get([0, -1]),
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ... )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    c'8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Silences all logical ties. Then sustains first and last logical
+        ties:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16),
+        ...     rmakers.force_rest(abjad.select().logical_ties()),
+        ...     rmakers.force_note(
+        ...         abjad.select().logical_ties().get([0, -1]),
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ... )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    r8
+                    r8.
+                    r4
+                    r16
+                    r8
+                    r16
+                    r8
+                    r4
+                    r16
+                    r8
+                    r8.
+                    c'8
+                }
+            >>
+
+    ..  container:: example
+
+        REGRESSION. Nonperiodic rest commands respect state.
+
+        Only logical ties 0 and 2 are rested here:
+
+        >>> command = rmakers.rhythm(
+        ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
+        ...     rmakers.force_rest(
+        ...         abjad.select().logical_ties().get([0, 2, 12]),
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = command(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    r4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        c'8
+                        r4
+                        c'8.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
+                        c'16
+                        c'4
+                        c'8.
+                        ~
+                    }
+                    c'16
+                    c'4
+                    c'8.
+                }
+            >>
+
+        >>> state = command.state
+        >>> abjad.f(state)
+        abjad.OrderedDict(
+            [
+                ('divisions_consumed', 4),
+                ('incomplete_last_note', True),
+                ('logical_ties_produced', 8),
+                ('talea_weight_consumed', 31),
+                ]
+            )
+
+# TODO: make this work again relatively soon
+#            Only logical tie 12 is rested here:
+#
+#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selection = command(divisions, previous_segment_stop_state=state)
+#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+#            ...     selection,
+#            ...     divisions,
+#            ...     )
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#
+#            ..  docs::
+#
+#                >>> abjad.f(lilypond_file[abjad.Score])
+#                \new Score
+#                <<
+#                    \new GlobalContext
+#                    {
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                    }
+#                    \new RhythmicStaff
+#                    {
+#                        \tweak text #tuplet-number::calc-fraction-text
+#                        \times 6/7 {
+#                            c'16
+#                            c'4
+#                            c'8
+#                            ~
+#                        }
+#                        \times 4/5 {
+#                            c'8
+#                            c'4
+#                            c'4
+#                        }
+#                        r4
+#                        c'8
+#                        ~
+#                        \times 8/9 {
+#                            c'8
+#                            c'4
+#                            c'8.
+#                        }
+#                    }
+#                >>
+#
+#            >>> state = command.state
+#            >>> abjad.f(state)
+#            abjad.OrderedDict(
+#                [
+#                    ('divisions_consumed', 8),
+#                    ('incomplete_last_note', True),
+#                    ('logical_ties_produced', 16),
+#                    ('talea_weight_consumed', 63),
+#                    ]
+#                )
+
+#        ..  container:: example
+#
+#            REGRESSION. Periodic rest commands also respect state.
+#
+#            >>> rhythm_maker = rmakers.rhythm(
+#            ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
+#            ...     rmakers.force_rest(
+#            ...         abjad.select().logical_ties().get([3], 4),
+#            ...     ),
+#            ...     rmakers.beam(),
+#            ...     rmakers.extract_trivial(),
+#            ...     )
+#
+#            Incomplete last note is rested here:
+#
+#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selection = rhythm_maker(divisions)
+#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+#            ...     selection,
+#            ...     divisions,
+#            ...     )
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#
+#            ..  docs::
+#
+#                >>> abjad.f(lilypond_file[abjad.Score])
+#                \new Score
+#                <<
+#                    \new GlobalContext
+#                    {
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                    }
+#                    \new RhythmicStaff
+#                    {
+#                        c'4
+#                        c'8
+#                        ~
+#                        \times 8/9 {
+#                            c'8
+#                            c'4
+#                            r8.
+#                        }
+#                        \tweak text #tuplet-number::calc-fraction-text
+#                        \times 3/4 {
+#                            r16
+#                            c'4
+#                            c'8.
+#                            ~
+#                        }
+#                        c'16
+#                        c'4
+#                        r8.
+#                    }
+#                >>
+#
+#            >>> state = rhythm_maker.state
+#            >>> abjad.f(state)
+#            abjad.OrderedDict(
+#                [
+#                    ('divisions_consumed', 4),
+#                    ('incomplete_last_note', True),
+#                    ('logical_ties_produced', 8),
+#                    ('talea_weight_consumed', 31),
+#                    ]
+#                )
+#
+#            Incomplete first note is rested here:
+#
+#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selection = rhythm_maker(divisions, previous_state=state)
+#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+#            ...     selection,
+#            ...     divisions,
+#            ...     )
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#
+#            ..  docs::
+#
+#                >>> abjad.f(lilypond_file[abjad.Score])
+#                \new Score
+#                <<
+#                    \new GlobalContext
+#                    {
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                    }
+#                    \new RhythmicStaff
+#                    {
+#                        \tweak text #tuplet-number::calc-fraction-text
+#                        \times 6/7 {
+#                            r16
+#                            c'4
+#                            c'8
+#                            ~
+#                        }
+#                        \times 4/5 {
+#                            c'8
+#                            c'4
+#                            r4
+#                        }
+#                        c'4
+#                        c'8
+#                        ~
+#                        \times 8/9 {
+#                            c'8
+#                            c'4
+#                            r8.
+#                        }
+#                    }
+#                >>
+#
+#            >>> state = rhythm_maker.state
+#            >>> abjad.f(state)
+#            abjad.OrderedDict(
+#                [
+#                    ('divisions_consumed', 8),
+#                    ('incomplete_last_note', True),
+#                    ('logical_ties_produced', 16),
+#                    ('talea_weight_consumed', 63),
+#                    ]
+#                )
+
+    ..  container:: example
+
+        REGRESSION. Spells tuplet denominator in terms of duration when
+        denominator is given as a duration:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
+        ...     rmakers.denominator((1, 16)),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 8/9 {
+                        c'8.
+                        [
+                        c'16
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/8 {
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 8/10 {
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Beams each division:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1], 16),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Beams tuplets together:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1], 16),
+        ...     rmakers.beam_groups(abjad.select().tuplets()),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \set stemLeftBeamCount = 0
+                    \set stemRightBeamCount = 2
+                    c'16
+                    [
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 0
+                    c'16
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Beams nothing:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1], 16),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                }
+            >>
+
+    ..  container:: example
+
+        Does not beam rests:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 1, 1, -1], 16),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    ]
+                    c'16
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    ]
+                    c'16
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                }
+            >>
+
+    ..  container:: example
+
+        Does beam rests:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 1, 1, -1], 16),
+        ...     rmakers.beam(beam_rests=True),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    ]
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    ]
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    ]
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Beams rests with stemlets:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 1, 1, -1], 16),
+        ...     rmakers.beam(
+        ...         beam_rests=True,
+        ...         stemlet_length=0.75,
+        ...         ),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \override Staff.Stem.stemlet-length = 0.75
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    \revert Staff.Stem.stemlet-length
+                    c'16
+                    ]
+                    \override Staff.Stem.stemlet-length = 0.75
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    \revert Staff.Stem.stemlet-length
+                    c'16
+                    ]
+                    \override Staff.Stem.stemlet-length = 0.75
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    \revert Staff.Stem.stemlet-length
+                    r16
+                    ]
+                    \override Staff.Stem.stemlet-length = 0.75
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    \revert Staff.Stem.stemlet-length
+                    r16
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Does not tie across divisions:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([5, 3, 3, 3], 16),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Ties across divisions:
+
+        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([5, 3, 3, 3], 16),
+        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    c'8.
+                    [
+                    c'8.
+                    ~
+                    ]
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Ties across every other tuplet:
+
+        >>> tuplets = abjad.select().tuplets().get([0], 2)
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([5, 3, 3, 3], 16),
+        ...     rmakers.tie(tuplets.map(last_leaf)),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        TIE-CONSECUTIVE-NOTES RECIPE:
+
+        >>> nonlast_notes = abjad.select().notes()[:-1]
+        >>> selector = abjad.select().runs()
+        >>> selector = selector.map(nonlast_notes)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([5, -3, 3, 3], 16),
+        ...     rmakers.untie(selector),
+        ...     rmakers.tie(selector),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    c'4
+                    ~
+                    c'16
+                    r8.
+                    c'8.
+                    ~
+                    [
+                    c'8.
+                    ~
+                    ]
+                    c'4
+                    ~
+                    c'16
+                    r8.
+                    c'8.
+                    ~
+                    [
+                    c'8.
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        REGRESSION. Commands survive new:
+
+        >>> command = rmakers.rhythm(
+        ...     rmakers.talea([5, -3, 3, 3], 16),
+        ...     rmakers.extract_trivial(),
+        ...     )
+        >>> new_command = abjad.new(command)
+        >>> abjad.f(command)
+        abjadext.rmakers.RhythmCommand(
+            abjadext.rmakers.TaleaRhythmMaker(
+                talea=abjadext.specifiers.Talea(
+                    counts=[5, -3, 3, 3],
+                    denominator=16,
+                    ),
+                ),
+            ExtractTrivialCommand()
+            )
+
+        >>> command == new_command
+        True
+
+    ..  container:: example
+
+        Working with ``denominator``.
+
+        Reduces terms in tuplet ratio to relative primes when no tuplet
+        command is given:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 8/9 {
+                        c'8.
+                        [
+                        c'16
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 4/5 {
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+        REGRESSION. Spells tuplet denominator in terms of duration when
+        denominator is given as a duration:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
+        ...     rmakers.denominator((1, 16)),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 8/9 {
+                        c'8.
+                        [
+                        c'16
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/8 {
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ~
+                        ]
+                    }
+                    \times 8/10 {
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Working with ``diminution``.
+        
+        Makes diminished tuplets when ``diminution`` is true (or when no
+        tuplet command is given):
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1], 16, extra_counts=[0, -1]),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+        Makes augmented tuplets when ``diminution`` is set to false:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1], 16, extra_counts=[0, -1]),
+        ...     rmakers.beam(),
+        ...     rmakers.force_augmentation(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                    \time 1/4
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Working with ``trivialize``.
+
+        Leaves trivializable tuplets as-is when no tuplet command is
+        given. The tuplets in measures 2 and 4 can be written as trivial
+        tuplets, but they are not:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \times 2/3 {
+                        c'4.
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \times 2/3 {
+                        c'4.
+                        c'4.
+                    }
+                }
+            >>
+
+        Rewrites trivializable tuplets as trivial (1:1) tuplets when
+        ``trivialize`` is true:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
+        ...     rmakers.trivialize(),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+        REGRESSION #907a. Rewrites trivializable tuplets even when
+        tuplets contain multiple ties:
+
+        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
+        ...     rmakers.trivialize(),
+        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        c'4
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+        REGRESSION #907b. Rewrites trivializable tuplets even when
+        tuplets contain very long ties:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
+        ...     rmakers.trivialize(),
+        ...     rmakers.tie(abjad.select().notes()[:-1]),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        ~
+                        c'4
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4
+                        ~
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Working with ``rewrite_rest_filled``.
+
+        Makes rest-filled tuplets when ``rewrite_rest_filled`` is false (or
+        when no tuplet command is given):
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([3, 3, -6, -6], 16, extra_counts=[1, 0]),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        r4
+                        r16
+                        r8.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
+                        r8.
+                        c'8.
+                        [
+                        c'16
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        r4.
+                    }
+                }
+            >>
+
+        Rewrites rest-filled tuplets when ``rewrite_rest_filled`` is true:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([3, 3, -6, -6], 16, extra_counts=[1, 0]),
+        ...     rmakers.beam(),
+        ...     rmakers.rewrite_rest_filled(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        r2
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7 {
+                        r8.
+                        c'8.
+                        [
+                        c'16
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        r4.
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        No rest commands:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    c'8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    c'8
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Silences every other output division:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16),
+        ...     rmakers.force_rest(
+        ...         abjad.select().tuplets().get([1], 2),
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.rewrite_rest_filled(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    r2
+                    c'8
+                    c'4
+                    r2
+                }
+            >>
+
+    ..  container:: example
+
+        Sustains every other output division:
+
+        >>> selector = abjad.select().tuplets().get([1], 2)
+        >>> nonlast_notes = abjad.select().notes()[:-1]
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16),
+        ...     rmakers.tie(selector.map(nonlast_notes)),
+        ...     rmakers.rewrite_sustained(selector),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    c'2
+                    ~
+                    c'8
+                    c'4
+                    c'2
+                }
+            >>
+
+    ..  container:: example
+
+        REGRESSION. Nonperiodic rest commands respect state.
+
+        TODO: change TUPLET selector to GROUP_BY_MEASURE selector and allow
+        to be statal with divisions_produced. Possibly also allow tuplet
+        selectors to be statal by tallying tuplet_produced in state
+        metadata.
+
+        Only tuplets 0 and 2 are rested here:
+
+        >>> selector = abjad.select().tuplets().get([0, 2, 7])
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
+        ...     rmakers.force_rest(selector),
+        ...     rmakers.rewrite_rest_filled(),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    r4.
+                    \times 8/9 {
+                        c'8
+                        c'4
+                        c'8.
+                    }
+                    r4.
+                    c'16
+                    c'4
+                    c'8.
+                }
+            >>
+
+        >>> state = rhythm_maker.state
+        >>> abjad.f(state)
+        abjad.OrderedDict(
+            [
+                ('divisions_consumed', 4),
+                ('incomplete_last_note', True),
+                ('logical_ties_produced', 8),
+                ('talea_weight_consumed', 31),
+                ]
+            )
+
+# TODO: allow statal GROUP_BY_MEASURE selector (or maybe tuplet selecctor) to work here:
+#            Only tuplet 7 is rested here:
+#
+#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selection = rhythm_maker(divisions, previous_state=state)
+#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+#            ...     selection,
+#            ...     divisions,
+#            ...     )
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#
+#            ..  docs::
+#
+#                >>> abjad.f(lilypond_file[abjad.Score])
+#                \new Score
+#                <<
+#                    \new GlobalContext
+#                    {
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                    }
+#                    \new RhythmicStaff
+#                    {
+#                        \tweak text #tuplet-number::calc-fraction-text
+#                        \times 6/7 {
+#                            c'16
+#                            c'4
+#                            c'8
+#                            ~
+#                        }
+#                        \times 4/5 {
+#                            c'8
+#                            c'4
+#                            c'4
+#                        }
+#                        c'4
+#                        c'8
+#                        r2
+#                    }
+#                >>
+#
+#            >>> state = rhythm_maker.state
+#            >>> abjad.f(state)
+#            abjad.OrderedDict(
+#                [
+#                    ('divisions_consumed', 8),
+#                    ('incomplete_last_note', True),
+#                    ('logical_ties_produced', 15),
+#                    ('talea_weight_consumed', 63),
+#                    ]
+#                )
+
+    ..  container:: example
+
+        REGRESSION. Periodic rest commands also respect state.
+
+        >>> selector = abjad.select().tuplets().get([2], 3)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
+        ...     rmakers.force_rest(selector),
+        ...     rmakers.rewrite_rest_filled(),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    c'4
+                    c'8
+                    ~
+                    \times 8/9 {
+                        c'8
+                        c'4
+                        c'8.
+                    }
+                    r4.
+                    c'16
+                    c'4
+                    c'8.
+                }
+            >>
+
+        >>> state = rhythm_maker.state
+        >>> abjad.f(state)
+        abjad.OrderedDict(
+            [
+                ('divisions_consumed', 4),
+                ('incomplete_last_note', True),
+                ('logical_ties_produced', 8),
+                ('talea_weight_consumed', 31),
+                ]
+            )
+
+# TODO: allow statal GROUP_BY_MEASURE selector (or maybe tuplet selecctor) to work here:
+#            Incomplete first note is rested here:
+#
+#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selection = rhythm_maker(divisions, previous_state=state)
+#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+#            ...     selection,
+#            ...     divisions,
+#            ...     )
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#
+#            ..  docs::
+#
+#                >>> abjad.f(lilypond_file[abjad.Score])
+#                \new Score
+#                <<
+#                    \new GlobalContext
+#                    {
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                        \time 3/8
+#                        s1 * 3/8
+#                        \time 4/8
+#                        s1 * 1/2
+#                    }
+#                    \new RhythmicStaff
+#                    {
+#                        \tweak text #tuplet-number::calc-fraction-text
+#                        \times 6/7 {
+#                            c'16
+#                            c'4
+#                            c'8
+#                        }
+#                        r2
+#                        c'4
+#                        c'8
+#                        ~
+#                        \times 8/9 {
+#                            c'8
+#                            c'4
+#                            c'8.
+#                        }
+#                    }
+#                >>
+#
+#            >>> state = rhythm_maker.state
+#            >>> abjad.f(state)
+#            abjad.OrderedDict(
+#                [
+#                    ('divisions_consumed', 8),
+#                    ('incomplete_last_note', True),
+#                    ('logical_ties_produced', 15),
+#                    ('talea_weight_consumed', 63),
+#                    ]
+#                )
+
+    ..  container:: example
+
+        Forces the first leaf and the last two leaves to be rests:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16),
+        ...     rmakers.force_rest(
+        ...         abjad.select().leaves().get([0, -2, -1])
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ~
+                    ]
+                    c'8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    ]
+                    r8.
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Forces rest at last leaf of every tuplet:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.talea([1, 2, 3, 4], 16),
+        ...     rmakers.force_rest(
+        ...         abjad.select().tuplets().map(abjad.select().leaf(0))
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    r4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ]
+                    r8
+                    c'4
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    c'8
+                    ]
+                }
+            >>
+
     """
 
     ### CLASS VARIABLES ###
@@ -396,2523 +2905,6 @@ class TaleaRhythmMaker(RhythmMaker):
         return talea
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def commands(self):
-        r"""
-        Gets commands.
-
-        ..  container:: example
-
-            Silences first and last logical ties:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16),
-            ...     rmakers.force_rest(
-            ...         abjad.select().logical_ties().get([0, -1]),
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        r8
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences all logical ties. Then sustains first and last logical
-            ties:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16),
-            ...     rmakers.force_rest(abjad.select().logical_ties()),
-            ...     rmakers.force_note(
-            ...         abjad.select().logical_ties().get([0, -1]),
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        r8
-                        r8.
-                        r4
-                        r16
-                        r8
-                        r16
-                        r8
-                        r4
-                        r16
-                        r8
-                        r8.
-                        c'8
-                    }
-                >>
-
-        ..  container:: example
-
-            REGRESSION. Nonperiodic rest commands respect state.
-
-            Only logical ties 0 and 2 are rested here:
-
-            >>> command = rmakers.rhythm(
-            ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
-            ...     rmakers.force_rest(
-            ...         abjad.select().logical_ties().get([0, 2, 12]),
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = command(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        r4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            r4
-                            c'8.
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'16
-                            c'4
-                            c'8.
-                            ~
-                        }
-                        c'16
-                        c'4
-                        c'8.
-                    }
-                >>
-
-            >>> state = command.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 4),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 8),
-                    ('talea_weight_consumed', 31),
-                    ]
-                )
-
-    # TODO: make this work again relatively soon
-#            Only logical tie 12 is rested here:
-#
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = command(divisions, previous_segment_stop_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-#            ...     selection,
-#            ...     divisions,
-#            ...     )
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
-#
-#            ..  docs::
-#
-#                >>> abjad.f(lilypond_file[abjad.Score])
-#                \new Score
-#                <<
-#                    \new GlobalContext
-#                    {
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                    }
-#                    \new RhythmicStaff
-#                    {
-#                        \tweak text #tuplet-number::calc-fraction-text
-#                        \times 6/7 {
-#                            c'16
-#                            c'4
-#                            c'8
-#                            ~
-#                        }
-#                        \times 4/5 {
-#                            c'8
-#                            c'4
-#                            c'4
-#                        }
-#                        r4
-#                        c'8
-#                        ~
-#                        \times 8/9 {
-#                            c'8
-#                            c'4
-#                            c'8.
-#                        }
-#                    }
-#                >>
-#
-#            >>> state = command.state
-#            >>> abjad.f(state)
-#            abjad.OrderedDict(
-#                [
-#                    ('divisions_consumed', 8),
-#                    ('incomplete_last_note', True),
-#                    ('logical_ties_produced', 16),
-#                    ('talea_weight_consumed', 63),
-#                    ]
-#                )
-
-#        ..  container:: example
-#
-#            REGRESSION. Periodic rest commands also respect state.
-#
-#            >>> rhythm_maker = rmakers.rhythm(
-#            ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
-#            ...     rmakers.force_rest(
-#            ...         abjad.select().logical_ties().get([3], 4),
-#            ...     ),
-#            ...     rmakers.beam(),
-#            ...     rmakers.extract_trivial(),
-#            ...     )
-#
-#            Incomplete last note is rested here:
-#
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = rhythm_maker(divisions)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-#            ...     selection,
-#            ...     divisions,
-#            ...     )
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
-#
-#            ..  docs::
-#
-#                >>> abjad.f(lilypond_file[abjad.Score])
-#                \new Score
-#                <<
-#                    \new GlobalContext
-#                    {
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                    }
-#                    \new RhythmicStaff
-#                    {
-#                        c'4
-#                        c'8
-#                        ~
-#                        \times 8/9 {
-#                            c'8
-#                            c'4
-#                            r8.
-#                        }
-#                        \tweak text #tuplet-number::calc-fraction-text
-#                        \times 3/4 {
-#                            r16
-#                            c'4
-#                            c'8.
-#                            ~
-#                        }
-#                        c'16
-#                        c'4
-#                        r8.
-#                    }
-#                >>
-#
-#            >>> state = rhythm_maker.state
-#            >>> abjad.f(state)
-#            abjad.OrderedDict(
-#                [
-#                    ('divisions_consumed', 4),
-#                    ('incomplete_last_note', True),
-#                    ('logical_ties_produced', 8),
-#                    ('talea_weight_consumed', 31),
-#                    ]
-#                )
-#
-#            Incomplete first note is rested here:
-#
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = rhythm_maker(divisions, previous_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-#            ...     selection,
-#            ...     divisions,
-#            ...     )
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
-#
-#            ..  docs::
-#
-#                >>> abjad.f(lilypond_file[abjad.Score])
-#                \new Score
-#                <<
-#                    \new GlobalContext
-#                    {
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                    }
-#                    \new RhythmicStaff
-#                    {
-#                        \tweak text #tuplet-number::calc-fraction-text
-#                        \times 6/7 {
-#                            r16
-#                            c'4
-#                            c'8
-#                            ~
-#                        }
-#                        \times 4/5 {
-#                            c'8
-#                            c'4
-#                            r4
-#                        }
-#                        c'4
-#                        c'8
-#                        ~
-#                        \times 8/9 {
-#                            c'8
-#                            c'4
-#                            r8.
-#                        }
-#                    }
-#                >>
-#
-#            >>> state = rhythm_maker.state
-#            >>> abjad.f(state)
-#            abjad.OrderedDict(
-#                [
-#                    ('divisions_consumed', 8),
-#                    ('incomplete_last_note', True),
-#                    ('logical_ties_produced', 16),
-#                    ('talea_weight_consumed', 63),
-#                    ]
-#                )
-
-        ..  container:: example
-
-            REGRESSION. Spells tuplet denominator in terms of duration when
-            denominator is given as a duration:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
-            ...     rmakers.denominator((1, 16)),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            c'16
-                            ~
-                            ]
-                        }
-                        \times 8/9 {
-                            c'8.
-                            [
-                            c'16
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ~
-                            ]
-                        }
-                        \times 8/10 {
-                            c'8
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams each division:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1], 16),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams tuplets together:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1], 16),
-            ...     rmakers.beam_groups(abjad.select().tuplets()),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 2
-                        c'16
-                        [
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 0
-                        c'16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams nothing:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1], 16),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                    }
-                >>
-
-        ..  container:: example
-
-            Does not beam rests:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 1, 1, -1], 16),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        ]
-                        c'16
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        ]
-                        c'16
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        r16
-                    }
-                >>
-
-        ..  container:: example
-
-            Does beam rests:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 1, 1, -1], 16),
-            ...     rmakers.beam(beam_rests=True),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        ]
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        ]
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams rests with stemlets:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 1, 1, -1], 16),
-            ...     rmakers.beam(
-            ...         beam_rests=True,
-            ...         stemlet_length=0.75,
-            ...         ),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \override Staff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        \revert Staff.Stem.stemlet-length
-                        c'16
-                        ]
-                        \override Staff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        \revert Staff.Stem.stemlet-length
-                        c'16
-                        ]
-                        \override Staff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        \revert Staff.Stem.stemlet-length
-                        r16
-                        ]
-                        \override Staff.Stem.stemlet-length = 0.75
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        r16
-                        c'16
-                        c'16
-                        c'16
-                        \revert Staff.Stem.stemlet-length
-                        r16
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Does not tie across divisions:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([5, 3, 3, 3], 16),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Ties across divisions:
-
-            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([5, 3, 3, 3], 16),
-            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Ties across every other tuplet:
-
-            >>> tuplets = abjad.select().tuplets().get([0], 2)
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([5, 3, 3, 3], 16),
-            ...     rmakers.tie(tuplets.map(last_leaf)),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            TIE-CONSECUTIVE-NOTES RECIPE:
-
-            >>> nonlast_notes = abjad.select().notes()[:-1]
-            >>> selector = abjad.select().runs()
-            >>> selector = selector.map(nonlast_notes)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([5, -3, 3, 3], 16),
-            ...     rmakers.untie(selector),
-            ...     rmakers.tie(selector),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        ~
-                        c'16
-                        r8.
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ~
-                        ]
-                        c'4
-                        ~
-                        c'16
-                        r8.
-                        c'8.
-                        ~
-                        [
-                        c'8.
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            REGRESSION. Commands survive new:
-
-            >>> command = rmakers.rhythm(
-            ...     rmakers.talea([5, -3, 3, 3], 16),
-            ...     rmakers.extract_trivial(),
-            ...     )
-            >>> new_command = abjad.new(command)
-            >>> abjad.f(command)
-            abjadext.rmakers.RhythmCommand(
-                abjadext.rmakers.TaleaRhythmMaker(
-                    talea=abjadext.specifiers.Talea(
-                        counts=[5, -3, 3, 3],
-                        denominator=16,
-                        ),
-                    ),
-                ExtractTrivialCommand()
-                )
-
-            >>> command == new_command
-            True
-
-        ..  container:: example
-
-            Working with ``denominator``.
-
-            Reduces terms in tuplet ratio to relative primes when no tuplet
-            command is given:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            c'16
-                            ~
-                            ]
-                        }
-                        \times 8/9 {
-                            c'8.
-                            [
-                            c'16
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ~
-                            ]
-                        }
-                        \times 4/5 {
-                            c'8
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ]
-                        }
-                    }
-                >>
-
-            REGRESSION. Spells tuplet denominator in terms of duration when
-            denominator is given as a duration:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
-            ...     rmakers.denominator((1, 16)),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            c'16
-                            ~
-                            ]
-                        }
-                        \times 8/9 {
-                            c'8.
-                            [
-                            c'16
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8 {
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ~
-                            ]
-                        }
-                        \times 8/10 {
-                            c'8
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'16
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Working with ``diminution``.
-            
-            Makes diminished tuplets when ``diminution`` is true (or when no
-            tuplet command is given):
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1], 16, extra_counts=[0, -1]),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }
-                >>
-
-            Makes augmented tuplets when ``diminution`` is set to false:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1], 16, extra_counts=[0, -1]),
-            ...     rmakers.beam(),
-            ...     rmakers.force_augmentation(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                        \time 1/4
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Working with ``trivialize``.
-
-            Leaves trivializable tuplets as-is when no tuplet command is
-            given. The tuplets in measures 2 and 4 can be written as trivial
-            tuplets, but they are not:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                        \times 2/3 {
-                            c'4.
-                            c'4.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                        \times 2/3 {
-                            c'4.
-                            c'4.
-                        }
-                    }
-                >>
-
-            Rewrites trivializable tuplets as trivial (1:1) tuplets when
-            ``trivialize`` is true:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
-            ...     rmakers.trivialize(),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'4
-                        }
-                    }
-                >>
-
-            REGRESSION #907a. Rewrites trivializable tuplets even when
-            tuplets contain multiple ties:
-
-            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
-            ...     rmakers.trivialize(),
-            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'4
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            c'4
-                        }
-                    }
-                >>
-
-            REGRESSION #907b. Rewrites trivializable tuplets even when
-            tuplets contain very long ties:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
-            ...     rmakers.trivialize(),
-            ...     rmakers.tie(abjad.select().notes()[:-1]),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            ~
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            ~
-                            c'4
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            ~
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4
-                            ~
-                            c'4
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Working with ``rewrite_rest_filled``.
-
-            Makes rest-filled tuplets when ``rewrite_rest_filled`` is false (or
-            when no tuplet command is given):
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([3, 3, -6, -6], 16, extra_counts=[1, 0]),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                            r16
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r4
-                            r16
-                            r8.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            r8.
-                            c'8.
-                            [
-                            c'16
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            r4.
-                        }
-                    }
-                >>
-
-            Rewrites rest-filled tuplets when ``rewrite_rest_filled`` is true:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([3, 3, -6, -6], 16, extra_counts=[1, 0]),
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_rest_filled(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                            r16
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            r2
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
-                            r8.
-                            c'8.
-                            [
-                            c'16
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            r4.
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            No rest commands:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'8
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            Silences every other output division:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16),
-            ...     rmakers.force_rest(
-            ...         abjad.select().tuplets().get([1], 2),
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_rest_filled(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        r2
-                        c'8
-                        c'4
-                        r2
-                    }
-                >>
-
-        ..  container:: example
-
-            Sustains every other output division:
-
-            >>> selector = abjad.select().tuplets().get([1], 2)
-            >>> nonlast_notes = abjad.select().notes()[:-1]
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16),
-            ...     rmakers.tie(selector.map(nonlast_notes)),
-            ...     rmakers.rewrite_sustained(selector),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                        c'2
-                    }
-                >>
-
-        ..  container:: example
-
-            REGRESSION. Nonperiodic rest commands respect state.
-
-            TODO: change TUPLET selector to GROUP_BY_MEASURE selector and allow
-            to be statal with divisions_produced. Possibly also allow tuplet
-            selectors to be statal by tallying tuplet_produced in state
-            metadata.
-
-            Only tuplets 0 and 2 are rested here:
-
-            >>> selector = abjad.select().tuplets().get([0, 2, 7])
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
-            ...     rmakers.force_rest(selector),
-            ...     rmakers.rewrite_rest_filled(),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        r4.
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                        r4.
-                        c'16
-                        c'4
-                        c'8.
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 4),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 8),
-                    ('talea_weight_consumed', 31),
-                    ]
-                )
-
-# TODO: allow statal GROUP_BY_MEASURE selector (or maybe tuplet selecctor) to work here:
-#            Only tuplet 7 is rested here:
-#
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = rhythm_maker(divisions, previous_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-#            ...     selection,
-#            ...     divisions,
-#            ...     )
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
-#
-#            ..  docs::
-#
-#                >>> abjad.f(lilypond_file[abjad.Score])
-#                \new Score
-#                <<
-#                    \new GlobalContext
-#                    {
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                    }
-#                    \new RhythmicStaff
-#                    {
-#                        \tweak text #tuplet-number::calc-fraction-text
-#                        \times 6/7 {
-#                            c'16
-#                            c'4
-#                            c'8
-#                            ~
-#                        }
-#                        \times 4/5 {
-#                            c'8
-#                            c'4
-#                            c'4
-#                        }
-#                        c'4
-#                        c'8
-#                        r2
-#                    }
-#                >>
-#
-#            >>> state = rhythm_maker.state
-#            >>> abjad.f(state)
-#            abjad.OrderedDict(
-#                [
-#                    ('divisions_consumed', 8),
-#                    ('incomplete_last_note', True),
-#                    ('logical_ties_produced', 15),
-#                    ('talea_weight_consumed', 63),
-#                    ]
-#                )
-
-        ..  container:: example
-
-            REGRESSION. Periodic rest commands also respect state.
-
-            >>> selector = abjad.select().tuplets().get([2], 3)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
-            ...     rmakers.force_rest(selector),
-            ...     rmakers.rewrite_rest_filled(),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        c'4
-                        c'8
-                        ~
-                        \times 8/9 {
-                            c'8
-                            c'4
-                            c'8.
-                        }
-                        r4.
-                        c'16
-                        c'4
-                        c'8.
-                    }
-                >>
-
-            >>> state = rhythm_maker.state
-            >>> abjad.f(state)
-            abjad.OrderedDict(
-                [
-                    ('divisions_consumed', 4),
-                    ('incomplete_last_note', True),
-                    ('logical_ties_produced', 8),
-                    ('talea_weight_consumed', 31),
-                    ]
-                )
-
-# TODO: allow statal GROUP_BY_MEASURE selector (or maybe tuplet selecctor) to work here:
-#            Incomplete first note is rested here:
-#
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = rhythm_maker(divisions, previous_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-#            ...     selection,
-#            ...     divisions,
-#            ...     )
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
-#
-#            ..  docs::
-#
-#                >>> abjad.f(lilypond_file[abjad.Score])
-#                \new Score
-#                <<
-#                    \new GlobalContext
-#                    {
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                        \time 3/8
-#                        s1 * 3/8
-#                        \time 4/8
-#                        s1 * 1/2
-#                    }
-#                    \new RhythmicStaff
-#                    {
-#                        \tweak text #tuplet-number::calc-fraction-text
-#                        \times 6/7 {
-#                            c'16
-#                            c'4
-#                            c'8
-#                        }
-#                        r2
-#                        c'4
-#                        c'8
-#                        ~
-#                        \times 8/9 {
-#                            c'8
-#                            c'4
-#                            c'8.
-#                        }
-#                    }
-#                >>
-#
-#            >>> state = rhythm_maker.state
-#            >>> abjad.f(state)
-#            abjad.OrderedDict(
-#                [
-#                    ('divisions_consumed', 8),
-#                    ('incomplete_last_note', True),
-#                    ('logical_ties_produced', 15),
-#                    ('talea_weight_consumed', 63),
-#                    ]
-#                )
-
-        ..  container:: example
-
-            Forces the first leaf and the last two leaves to be rests:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16),
-            ...     rmakers.force_rest(
-            ...         abjad.select().leaves().get([0, -2, -1])
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ~
-                        ]
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        ]
-                        r8.
-                        r8
-                    }
-                >>
-
-        ..  container:: example
-
-            Forces rest at last leaf of every tuplet:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.talea([1, 2, 3, 4], 16),
-            ...     rmakers.force_rest(
-            ...         abjad.select().tuplets().map(abjad.select().leaf(0))
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        r4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                        r8
-                        c'4
-                        r16
-                        c'8
-                        [
-                        c'8.
-                        c'8
-                        ]
-                    }
-                >>
-
-        """
-        pass
 
     @property
     def spelling(self) -> typing.Optional[_specifiers.Spelling]:

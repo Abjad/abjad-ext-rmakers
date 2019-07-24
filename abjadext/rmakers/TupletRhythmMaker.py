@@ -130,6 +130,1325 @@ class TupletRhythmMaker(RhythmMaker):
                 }
             >>
 
+    ..  container:: example
+
+        Beams each division:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(1, 1, 1, 1)]),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file)  # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 5/8
+                    s1 * 5/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 6/8
+                    s1 * 3/4
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6 {
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'16.
+                        [
+                        c'16.
+                        c'16.
+                        c'16.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Beams each division:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(1, 1, 1, 1)]),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file)  # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 5/8
+                    s1 * 5/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 6/8
+                    s1 * 3/4
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6 {
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'16.
+                        [
+                        c'16.
+                        c'16.
+                        c'16.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Beams tuplets together:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)]),
+        ...     rmakers.beam_groups(abjad.select().tuplets()),
+        ...     )
+
+        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file)  # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 5/8
+                    s1 * 5/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 6/8
+                    s1 * 3/4
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/9 {
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8.
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8.
+                        ]
+                        c'4.
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8.
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4.
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 1
+                        c'8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 1
+                        c'8
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8
+                        ]
+                        c'4
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8
+                        ]
+                    }
+                    \times 4/5 {
+                        c'4.
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Beams nothing:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)]),
+        ...     )
+
+        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file)  # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 5/8
+                    s1 * 5/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 6/8
+                    s1 * 3/4
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/9 {
+                        c'8.
+                        c'8.
+                        c'4.
+                        c'8.
+                        c'8.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4.
+                        c'8
+                        c'8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        c'8
+                        c'4
+                        c'8
+                        c'8
+                    }
+                    \times 4/5 {
+                        c'4.
+                        c'8
+                        c'8
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Ties nothing:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 1/2
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'4
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'16.
+                        r8.
+                        c'16.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8.
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Ties across all divisions:
+
+        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
+        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 1/2
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'16.
+                        r8.
+                        c'16.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8.
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Ties across every other division:
+
+        >>> tuplets = abjad.select().tuplets().get([0], 2)
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
+        ...     rmakers.tie(tuplets.map(last_leaf)),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 1/2
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 5/16
+                    s1 * 5/16
+                    \time 5/16
+                    s1 * 5/16
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'16.
+                        r8.
+                        c'16.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6 {
+                        c'16.
+                        r8.
+                        c'16.
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes diminished tuplets:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(2, 1)]),
+        ...     rmakers.force_diminution(),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 2/3 {
+                        c'4
+                        c'8
+                    }
+                    \times 2/3 {
+                        c'4
+                        c'8
+                    }
+                    \times 2/3 {
+                        c'2
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes augmented tuplets:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(2, 1)]),
+        ...     rmakers.force_augmentation(),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(2, 8), (2, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 2/8
+                    s1 * 1/4
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'8
+                        [
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'8
+                        [
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3 {
+                        c'4
+                        c'8
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes diminished tuplets and does not rewrite dots:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(1, 1)]),
+        ...     rmakers.beam(),
+        ...     rmakers.force_diminution(),
+        ...     )
+
+        >>> divisions = [(2, 8), (3, 8), (7, 16)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8..
+                        [
+                        c'8..
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes diminished tuplets and rewrites dots:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(1, 1)]),
+        ...     rmakers.rewrite_dots(),
+        ...     rmakers.force_diminution(),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(2, 8), (3, 8), (7, 16)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4 {
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 7/8 {
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes augmented tuplets and does not rewrite dots:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(1, 1)]),
+        ...     rmakers.beam(),
+        ...     rmakers.force_augmentation(),
+        ...     )
+
+        >>> divisions = [(2, 8), (3, 8), (7, 16)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8..
+                        [
+                        c'8..
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes augmented tuplets and rewrites dots:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(1, 1)]),
+        ...     rmakers.beam(),
+        ...     rmakers.rewrite_dots(),
+        ...     rmakers.force_augmentation(),
+        ...     )
+
+        >>> divisions = [(2, 8), (3, 8), (7, 16)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 2/8
+                    s1 * 1/4
+                    \time 3/8
+                    s1 * 3/8
+                    \time 7/16
+                    s1 * 7/16
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 7/4 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Leaves trivializable tuplets as-is when ``trivialize`` is false:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
+        ...     rmakers.beam(),
+        ...     rmakers.rewrite_dots(),
+        ...     )
+
+        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4.
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2 {
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        r4
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Rewrites trivializable tuplets when ``trivialize`` is true.
+        Measures 2 and 4 contain trivial tuplets with 1:1 ratios. To remove
+        these trivial tuplets, set ``extract_trivial`` as shown in the next
+        example:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
+        ...     rmakers.beam(),
+        ...     rmakers.trivialize(),
+        ...     )
+
+        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4.
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        r4
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                }
+            >>
+
+        REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when
+        both are true. Measures 2 and 4 are first rewritten as trivial but
+        then supplied again with nontrivial prolation when removing dots.
+        The result is that measures 2 and 4 carry nontrivial prolation with
+        no dots:
+        
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
+        ...     rmakers.beam(),
+        ...     rmakers.trivialize(),
+        ...     rmakers.rewrite_dots(),
+        ...     )
+
+        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                    \time 3/8
+                    s1 * 3/8
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4.
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2 {
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        r4
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Leaves trivial tuplets as-is when ``extract_trivial`` is
+        false:
+
+        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(2, 3), (1, 1)]),
+        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.beam(),
+        ...     )
+
+        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 2/8
+                    s1 * 1/4
+                    \time 3/8
+                    s1 * 3/8
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1 {
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Extracts trivial tuplets when ``extract_trivial`` is true.
+        Measures 2 and 4 in the example below now contain only a flat list
+        of notes:
+
+        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> last_leaf = abjad.select().leaf(-1)
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(2, 3), (1, 1)]),
+        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     )
+
+        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 2/8
+                    s1 * 1/4
+                    \time 3/8
+                    s1 * 3/8
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    c'8
+                    [
+                    c'8
+                    ~
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    c'8
+                    [
+                    c'8
+                    ]
+                }
+            >>
+
+        .. note:: Flattening trivial tuplets makes it possible
+            subsequently to rewrite the meter of the untupletted notes.
+
+    ..  container:: example
+
+        REGRESSION: Very long ties are preserved when ``extract_trivial``
+        is true:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(2, 3), (1, 1)]),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ...     rmakers.tie(abjad.select().notes()[:-1]),
+        ...     )
+
+        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 2/8
+                    s1 * 1/4
+                    \time 3/8
+                    s1 * 3/8
+                    \time 2/8
+                    s1 * 1/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        ~
+                        c'4.
+                        ~
+                    }
+                    c'8
+                    [
+                    ~
+                    c'8
+                    ]
+                    ~
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        ~
+                        c'4.
+                        ~
+                    }
+                    c'8
+                    [
+                    ~
+                    c'8
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        No rest commands:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(4, 1)]),
+        ...     )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'4.
+                        c'16.
+                    }
+                    \times 4/5 {
+                        c'2
+                        c'8
+                    }
+                    \times 4/5 {
+                        c'4.
+                        c'16.
+                    }
+                    \times 4/5 {
+                        c'2
+                        c'8
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Masks every other output division:
+
+        >>> rhythm_maker = rmakers.rhythm(
+        ...     rmakers.tuplet([(4, 1)]),
+        ...     rmakers.force_rest(
+        ...         abjad.select().tuplets().get([1], 2),
+        ...     ),
+        ...     rmakers.rewrite_rest_filled(
+        ...         abjad.select().tuplets().get([1], 2),
+        ...     ),
+        ...     rmakers.extract_trivial(),
+        ... )
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> selection = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selection,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                    \time 3/8
+                    s1 * 3/8
+                    \time 4/8
+                    s1 * 1/2
+                }
+                \new RhythmicStaff
+                {
+                    \times 4/5 {
+                        c'4.
+                        c'16.
+                    }
+                    r2
+                    \times 4/5 {
+                        c'4.
+                        c'16.
+                    }
+                    r2
+                }
+            >>
+
     """
 
     ### CLASS VARIABLES ###
@@ -175,1333 +1494,6 @@ class TupletRhythmMaker(RhythmMaker):
         return tuplets
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def commands(self):
-        r"""
-        Gets commands.
-
-        ..  container:: example
-
-            Beams each division:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(1, 1, 1, 1)]),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file)  # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 6/8
-                        s1 * 3/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6 {
-                            c'8.
-                            [
-                            c'8.
-                            c'8.
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16.
-                            [
-                            c'16.
-                            c'16.
-                            c'16.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            c'8.
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams each division:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(1, 1, 1, 1)]),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file)  # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 6/8
-                        s1 * 3/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6 {
-                            c'8.
-                            [
-                            c'8.
-                            c'8.
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16.
-                            [
-                            c'16.
-                            c'16.
-                            c'16.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            c'8.
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams tuplets together:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)]),
-            ...     rmakers.beam_groups(abjad.select().tuplets()),
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file)  # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 6/8
-                        s1 * 3/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/9 {
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8.
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8.
-                            ]
-                            c'4.
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8.
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 1
-                            c'8
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 1
-                            c'8
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8
-                            ]
-                            c'4
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8
-                            ]
-                        }
-                        \times 4/5 {
-                            c'4.
-                            \set stemLeftBeamCount = 0
-                            \set stemRightBeamCount = 1
-                            c'8
-                            [
-                            \set stemLeftBeamCount = 1
-                            \set stemRightBeamCount = 0
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Beams nothing:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)]),
-            ...     )
-
-            >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file)  # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 6/8
-                        s1 * 3/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/9 {
-                            c'8.
-                            c'8.
-                            c'4.
-                            c'8.
-                            c'8.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            c'8
-                            c'8
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            c'8
-                            c'4
-                            c'8
-                            c'8
-                        }
-                        \times 4/5 {
-                            c'4.
-                            c'8
-                            c'8
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Ties nothing:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(1, 2), (3, 8), (5, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 1/2
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'4
-                            c'4.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16.
-                            r8.
-                            c'16.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8.
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Ties across all divisions:
-
-            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
-            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(1, 2), (3, 8), (5, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 1/2
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'4
-                            c'4.
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16.
-                            r8.
-                            c'16.
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8.
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Ties across every other division:
-
-            >>> tuplets = abjad.select().tuplets().get([0], 2)
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
-            ...     rmakers.tie(tuplets.map(last_leaf)),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 1/2
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'4
-                            c'4.
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'16.
-                            r8.
-                            c'16.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8.
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6 {
-                            c'16.
-                            r8.
-                            c'16.
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Makes diminished tuplets:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(2, 1)]),
-            ...     rmakers.force_diminution(),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 2/3 {
-                            c'4
-                            c'8
-                        }
-                        \times 2/3 {
-                            c'4
-                            c'8
-                        }
-                        \times 2/3 {
-                            c'2
-                            c'4
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Makes augmented tuplets:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(2, 1)]),
-            ...     rmakers.force_augmentation(),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(2, 8), (2, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'8
-                            [
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'8
-                            [
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3 {
-                            c'4
-                            c'8
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Makes diminished tuplets and does not rewrite dots:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(1, 1)]),
-            ...     rmakers.beam(),
-            ...     rmakers.force_diminution(),
-            ...     )
-
-            >>> divisions = [(2, 8), (3, 8), (7, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 3/8
-                        s1 * 3/8
-                        \time 7/16
-                        s1 * 7/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8..
-                            [
-                            c'8..
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Makes diminished tuplets and rewrites dots:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(1, 1)]),
-            ...     rmakers.rewrite_dots(),
-            ...     rmakers.force_diminution(),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(2, 8), (3, 8), (7, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 3/8
-                        s1 * 3/8
-                        \time 7/16
-                        s1 * 7/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
-                            c'4
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 7/8 {
-                            c'4
-                            c'4
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Makes augmented tuplets and does not rewrite dots:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(1, 1)]),
-            ...     rmakers.beam(),
-            ...     rmakers.force_augmentation(),
-            ...     )
-
-            >>> divisions = [(2, 8), (3, 8), (7, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 3/8
-                        s1 * 3/8
-                        \time 7/16
-                        s1 * 7/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8..
-                            [
-                            c'8..
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Makes augmented tuplets and rewrites dots:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(1, 1)]),
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     rmakers.force_augmentation(),
-            ...     )
-
-            >>> divisions = [(2, 8), (3, 8), (7, 16)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 3/8
-                        s1 * 3/8
-                        \time 7/16
-                        s1 * 7/16
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 7/4 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Leaves trivializable tuplets as-is when ``trivialize`` is false:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
-            ...     rmakers.beam(),
-            ...     rmakers.rewrite_dots(),
-            ...     )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            r4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2 {
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            r4
-                            c'4.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Rewrites trivializable tuplets when ``trivialize`` is true.
-            Measures 2 and 4 contain trivial tuplets with 1:1 ratios. To remove
-            these trivial tuplets, set ``extract_trivial`` as shown in the next
-            example:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
-            ...     rmakers.beam(),
-            ...     rmakers.trivialize(),
-            ...     )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            r4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'4.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            r4
-                            c'4.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                        }
-                    }
-                >>
-
-            REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when
-            both are true. Measures 2 and 4 are first rewritten as trivial but
-            then supplied again with nontrivial prolation when removing dots.
-            The result is that measures 2 and 4 carry nontrivial prolation with
-            no dots:
-            
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
-            ...     rmakers.beam(),
-            ...     rmakers.trivialize(),
-            ...     rmakers.rewrite_dots(),
-            ...     )
-
-            >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4.
-                            r4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2 {
-                            c'4
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            r4
-                            c'4.
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Leaves trivial tuplets as-is when ``extract_trivial`` is
-            false:
-
-            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(2, 3), (1, 1)]),
-            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
-            ...     rmakers.beam(),
-            ...     )
-
-            >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 2/8
-                        s1 * 1/4
-                        \time 3/8
-                        s1 * 3/8
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4
-                            c'4.
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            ~
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4
-                            c'4.
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Extracts trivial tuplets when ``extract_trivial`` is true.
-            Measures 2 and 4 in the example below now contain only a flat list
-            of notes:
-
-            >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-            >>> last_leaf = abjad.select().leaf(-1)
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(2, 3), (1, 1)]),
-            ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     )
-
-            >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 2/8
-                        s1 * 1/4
-                        \time 3/8
-                        s1 * 3/8
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4
-                            c'4.
-                            ~
-                        }
-                        c'8
-                        [
-                        c'8
-                        ~
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4
-                            c'4.
-                            ~
-                        }
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                >>
-
-            .. note:: Flattening trivial tuplets makes it possible
-                subsequently to rewrite the meter of the untupletted notes.
-
-        ..  container:: example
-
-            REGRESSION: Very long ties are preserved when ``extract_trivial``
-            is true:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(2, 3), (1, 1)]),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ...     rmakers.tie(abjad.select().notes()[:-1]),
-            ...     )
-
-            >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 2/8
-                        s1 * 1/4
-                        \time 3/8
-                        s1 * 3/8
-                        \time 2/8
-                        s1 * 1/4
-                    }
-                    \new RhythmicStaff
-                    {
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4
-                            ~
-                            c'4.
-                            ~
-                        }
-                        c'8
-                        [
-                        ~
-                        c'8
-                        ]
-                        ~
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
-                            c'4
-                            ~
-                            c'4.
-                            ~
-                        }
-                        c'8
-                        [
-                        ~
-                        c'8
-                        ]
-                    }
-                >>
-
-        ..  container:: example
-
-            No rest commands:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(4, 1)]),
-            ...     )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'4.
-                            c'16.
-                        }
-                        \times 4/5 {
-                            c'2
-                            c'8
-                        }
-                        \times 4/5 {
-                            c'4.
-                            c'16.
-                        }
-                        \times 4/5 {
-                            c'2
-                            c'8
-                        }
-                    }
-                >>
-
-        ..  container:: example
-
-            Masks every other output division:
-
-            >>> rhythm_maker = rmakers.rhythm(
-            ...     rmakers.tuplet([(4, 1)]),
-            ...     rmakers.force_rest(
-            ...         abjad.select().tuplets().get([1], 2),
-            ...     ),
-            ...     rmakers.rewrite_rest_filled(
-            ...         abjad.select().tuplets().get([1], 2),
-            ...     ),
-            ...     rmakers.extract_trivial(),
-            ... )
-
-            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection,
-            ...     divisions,
-            ...     )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> abjad.f(lilypond_file[abjad.Score])
-                \new Score
-                <<
-                    \new GlobalContext
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
-                    \new RhythmicStaff
-                    {
-                        \times 4/5 {
-                            c'4.
-                            c'16.
-                        }
-                        r2
-                        \times 4/5 {
-                            c'4.
-                            c'16.
-                        }
-                        r2
-                    }
-                >>
-
-        """
-        pass
 
     @property
     def denominator(
