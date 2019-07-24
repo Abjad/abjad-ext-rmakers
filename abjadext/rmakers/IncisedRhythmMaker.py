@@ -297,7 +297,7 @@ class IncisedRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def commands(self) -> typing.List[_commands.Command]:
+    def commands(self):
         r"""
         Gets commands.
 
@@ -471,7 +471,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().commands
+        pass
 
     @property
     def extra_counts(self) -> typing.Optional[typing.List[int]]:

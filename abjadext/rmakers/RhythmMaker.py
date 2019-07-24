@@ -17,35 +17,19 @@ class RhythmMaker(object):
 
     __slots__ = (
         "_already_cached_state",
-        "_commands",
         "_previous_state",
         "_spelling",
         "_state",
         "_tag",
     )
 
-    # to make sure abjad.new() copies commands
-    _positional_arguments_name = "commands"
-
     _publish_storage_format = True
 
     ### INITIALIZER ###
 
     def __init__(
-        self,
-        *commands: _commands.Command,
-        spelling: _specifiers.Spelling = None,
-        tag: str = None,
+        self, spelling: _specifiers.Spelling = None, tag: str = None
     ) -> None:
-        commands = commands or ()
-        for command in commands:
-            assert isinstance(command, _commands.Command), repr(command)
-        commands_ = tuple(commands)
-        #        if commands:
-        #            message = "pass commands to rhythm command (not rhythm-maker):\n"
-        #            message += f"   {repr(commands)}"
-        #            raise Exception(message)
-        self._commands = commands_
         if spelling is not None:
             assert isinstance(spelling, _specifiers.Spelling)
         self._spelling = spelling
@@ -78,7 +62,6 @@ class RhythmMaker(object):
         voice = staff["MusicVoice"]
         voice.extend(music)
         divisions_consumed = len(divisions)
-        self._call_commands(voice, divisions_consumed)
         if self._already_cached_state is not True:
             self._cache_state(voice, divisions_consumed)
         # self._check_wellformedness(staff)
@@ -119,24 +102,6 @@ class RhythmMaker(object):
 
     ### PRIVATE METHODS ###
 
-    def _call_commands(self, voice, divisions_consumed):
-        previous_logical_ties_produced = self._previous_logical_ties_produced()
-        if self._previous_incomplete_last_note():
-            previous_logical_ties_produced -= 1
-        for command in self.commands or []:
-            if isinstance(command, _commands.CacheStateCommand):
-                self._cache_state(voice, divisions_consumed)
-                self._already_cached_state = True
-                continue
-            elif isinstance(command, _commands.ForceRestCommand):
-                command(
-                    voice,
-                    previous_logical_ties_produced=previous_logical_ties_produced,
-                    tag=self.tag,
-                )
-            else:
-                command(voice, tag=self.tag)
-
     def _cache_state(self, voice, divisions_consumed):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
         logical_ties_produced = len(abjad.select(voice).logical_ties())
@@ -152,6 +117,9 @@ class RhythmMaker(object):
         state = abjad.OrderedDict(sorted(items))
         self._state = state
 
+    def _call_commands(self, voice, divisions_consumed):
+        pass
+
     #    def _check_wellformedness(self, stafff):
     #        for component in abjad.iterate(staff).components():
     #            inspector = abjad.inspect(component)
@@ -166,10 +134,7 @@ class RhythmMaker(object):
         return _specifiers.Spelling()
 
     def _get_format_specification(self):
-        commands = self.commands or []
-        return abjad.FormatSpecification(
-            self, storage_format_args_values=commands
-        )
+        return abjad.FormatSpecification(self)
 
     @staticmethod
     def _make_leaves_from_talea(
@@ -284,13 +249,6 @@ class RhythmMaker(object):
             assert len(tuplet), repr(tuplet)
 
     ### PUBLIC PROPERTIES ###
-
-    @property
-    def commands(self) -> typing.List[_commands.Command]:
-        """
-        Gets commands.
-        """
-        return list(self._commands)
 
     @property
     def previous_state(self) -> abjad.OrderedDict:

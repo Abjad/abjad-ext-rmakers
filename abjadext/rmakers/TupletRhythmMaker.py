@@ -177,7 +177,7 @@ class TupletRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def commands(self) -> typing.List[_commands.Command]:
+    def commands(self):
         r"""
         Gets commands.
 
@@ -1501,7 +1501,7 @@ class TupletRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().commands
+        pass
 
     @property
     def denominator(

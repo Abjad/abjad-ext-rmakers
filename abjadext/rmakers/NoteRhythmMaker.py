@@ -42,7 +42,7 @@ class NoteRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def commands(self) -> typing.List[_commands.Command]:
+    def commands(self):
         r"""
         Gets commands.
 
@@ -711,7 +711,7 @@ class NoteRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().commands
+        pass
 
     # TODO: port tests to rhythm command
     #    @property

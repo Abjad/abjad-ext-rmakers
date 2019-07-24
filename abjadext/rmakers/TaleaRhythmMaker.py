@@ -398,7 +398,7 @@ class TaleaRhythmMaker(RhythmMaker):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def commands(self) -> typing.List[_commands.Command]:
+    def commands(self):
         r"""
         Gets commands.
 
@@ -1651,20 +1651,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> command == new_command
             True
-
-            REGRESSION. None eliminates commands when passed to new:
-
-            >>> new_rhythm_maker = abjad.new(command.rhythm_maker, None)
-            >>> abjad.f(new_rhythm_maker)
-            abjadext.rmakers.TaleaRhythmMaker(
-                talea=abjadext.specifiers.Talea(
-                    counts=[5, -3, 3, 3],
-                    denominator=16,
-                    ),
-                )
-
-            >>> new_rhythm_maker.commands
-            []
 
         ..  container:: example
 
@@ -2926,7 +2912,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
         """
-        return super().commands
+        pass
 
     @property
     def spelling(self) -> typing.Optional[_specifiers.Spelling]:
