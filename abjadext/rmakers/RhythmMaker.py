@@ -28,7 +28,7 @@ class RhythmMaker(object):
     ### INITIALIZER ###
 
     def __init__(
-        self, spelling: _specifiers.Spelling = None, tag: str = None
+        self, *, spelling: _specifiers.Spelling = None, tag: str = None
     ) -> None:
         if spelling is not None:
             assert isinstance(spelling, _specifiers.Spelling)
