@@ -102,7 +102,10 @@ class MakerAssignments(object):
     def __init__(self, *assignments: MakerAssignment) -> None:
         assignments = assignments or ()
         for assignment in assignments:
-            assert isinstance(assignment, MakerAssignment), repr(assignment)
+            if not isinstance(assignment, MakerAssignment):
+                message = "must be maker assignment:\n"
+                message += f"   {repr(assignment)}"
+                raise Exception(message)
         assignments_ = tuple(assignments)
         self._assignments = assignments_
 
