@@ -60,7 +60,7 @@ class MakerAssignment(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def pattern(self) -> typing.Union[abjad.DurationInequality, abjad.Pattern]:
+    def pattern(self) -> typing.Union[typing.Callable]:
         """
         Gets pattern.
         """
