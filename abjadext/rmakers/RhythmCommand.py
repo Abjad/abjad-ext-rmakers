@@ -137,7 +137,7 @@ class MakerAssignments(object):
         return list(self._assignments)
 
 
-class MakerMatch(object):
+class _MakerMatch(object):
     """
     Maker match.
     """
@@ -344,13 +344,13 @@ class RhythmCommand(object):
                 if isinstance(
                     assignment.pattern, abjad.Pattern
                 ) and assignment.pattern.matches_index(i, division_count):
-                    match = MakerMatch(division, assignment)
+                    match = _MakerMatch(division, assignment)
                     matches.append(match)
                     break
                 elif isinstance(
                     assignment.pattern, abjad.DurationInequality
                 ) and assignment.pattern(division):
-                    match = MakerMatch(division, assignment)
+                    match = _MakerMatch(division, assignment)
                     matches.append(match)
                     break
             else:
