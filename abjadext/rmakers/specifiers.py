@@ -747,8 +747,8 @@ class Spelling(object):
 
             >>> rhythm_maker = rmakers.rhythm(
             ...     rmakers.talea(
-            ...         counts=[1, 1, 1, 1, 4, -4],
-            ...         denominator=16,
+            ...         [1, 1, 1, 1, 4, -4],
+            ...         16,
             ...         spelling=rmakers.Spelling(forbidden_rest_duration=(1, 4)),
             ...     ),
             ...     rmakers.beam(),
@@ -809,15 +809,15 @@ class Talea(object):
     ..  container:: example
 
         >>> talea = rmakers.Talea(
-        ...     counts=[2, 1, 3, 2, 4, 1, 1],
-        ...     denominator=16,
+        ...     [2, 1, 3, 2, 4, 1, 1],
+        ...     16,
         ...     preamble=[1, 1, 1, 1],
         ...     )
 
         >>> abjad.f(talea)
         abjadext.specifiers.Talea(
-            counts=[2, 1, 3, 2, 4, 1, 1],
-            denominator=16,
+            [2, 1, 3, 2, 4, 1, 1],
+            16,
             preamble=[1, 1, 1, 1],
             )
 
@@ -835,9 +835,9 @@ class Talea(object):
 
     def __init__(
         self,
+        counts: abjad.IntegerSequence,
+        denominator,
         *,
-        counts: abjad.IntegerSequence = (1,),
-        denominator: int = 16,
         end_counts: abjad.IntegerSequence = None,
         preamble: abjad.IntegerSequence = None,
     ) -> None:
@@ -869,8 +869,8 @@ class Talea(object):
             With preamble:
 
             >>> talea = rmakers.Talea(
-            ...     counts=[10],
-            ...     denominator=16,
+            ...     [10],
+            ...     16,
             ...     preamble=[1, -1, 1],
             ...     )
 
@@ -947,8 +947,8 @@ class Talea(object):
             Gets item at index:
 
             >>> talea = rmakers.Talea(
-            ...     counts=[2, 1, 3, 2, 4, 1, 1],
-            ...     denominator=16,
+            ...     [2, 1, 3, 2, 4, 1, 1],
+            ...     16,
             ...     preamble=[1, 1, 1, 1],
             ...     )
 
@@ -1022,8 +1022,8 @@ class Talea(object):
         ..  container:: example
 
             >>> talea = rmakers.Talea(
-            ...     counts=[2, 1, 3, 2, 4, 1, 1],
-            ...     denominator=16,
+            ...     [2, 1, 3, 2, 4, 1, 1],
+            ...     16,
             ...     preamble=[1, 1, 1, 1],
             ...     )
 
@@ -1056,12 +1056,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = rmakers.Talea(
-            ...     counts=[2, 1, 3, 2, 4, 1, 1],
-            ...     denominator=16,
-            ...     )
-
-            >>> len(talea)
+            >>> len(rmakers.Talea([2, 1, 3, 2, 4, 1, 1], 16))
             7
 
         Defined equal to length of counts.
@@ -1088,12 +1083,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = rmakers.Talea(
-            ...     counts=[2, 1, 3, 2, 4, 1, 1],
-            ...     denominator=16,
-            ...     )
-
-            >>> talea.counts
+            >>> rmakers.Talea([2, 1, 3, 2, 4, 1, 1], 16).counts
             [2, 1, 3, 2, 4, 1, 1]
 
         """
@@ -1109,12 +1099,7 @@ class Talea(object):
 
         ..  container:: example
 
-            >>> talea = rmakers.Talea(
-            ...     counts=[2, 1, 3, 2, 4, 1, 1],
-            ...     denominator=16,
-            ...     )
-
-            >>> talea.denominator
+            >>> rmakers.Talea([2, 1, 3, 2, 4, 1, 1], 16).denominator
             16
 
         Set to nonnegative integer power of two.
@@ -1131,8 +1116,8 @@ class Talea(object):
         ..  container:: example
 
             >>> talea = rmakers.Talea(
-            ...     counts=[3, 4],
-            ...     denominator=16,
+            ...     [3, 4],
+            ...     16,
             ...     end_counts=[1, 1],
             ...     )
 
@@ -1154,39 +1139,24 @@ class Talea(object):
 
             Equal to weight of counts:
 
-            >>> talea = rmakers.Talea(
-            ...     counts=[1, 2, 3, 4],
-            ...     denominator=16,
-            ...     )
-
-            >>> talea.period
+            >>> rmakers.Talea([1, 2, 3, 4], 16).period
             10
 
             Rests make no difference:
 
-            >>> talea = rmakers.Talea(
-            ...     counts=[1, 2, -3, 4],
-            ...     denominator=16,
-            ...     )
-
-            >>> talea.period
+            >>> rmakers.Talea([1, 2, -3, 4], 16).period
             10
 
             Denominator makes no difference:
 
-            >>> talea = rmakers.Talea(
-            ...     counts=[1, 2, -3, 4],
-            ...     denominator=32,
-            ...     )
-
-            >>> talea.period
+            >>> rmakers.Talea([1, 2, -3, 4], 32).period
             10
 
             Preamble makes no difference:
 
             >>> talea = rmakers.Talea(
-            ...     counts=[1, 2, -3, 4],
-            ...     denominator=32,
+            ...     [1, 2, -3, 4],
+            ...     32,
             ...     preamble=[1, 1, 1],
             ...     )
 
@@ -1204,8 +1174,8 @@ class Talea(object):
         ..  container:: example
 
             >>> talea = rmakers.Talea(
-            ...     counts=[2, 1, 3, 2, 4, 1, 1],
-            ...     denominator=16,
+            ...     [2, 1, 3, 2, 4, 1, 1],
+            ...     16,
             ...     preamble=[1, 1, 1, 1],
             ...     )
 
@@ -1215,8 +1185,8 @@ class Talea(object):
         ..  container:: example
 
             >>> talea = rmakers.Talea(
-            ...     counts=[16, -4, 16],
-            ...     denominator=16,
+            ...     [16, -4, 16],
+            ...     16,
             ...     preamble=[1],
             ...     )
 
@@ -1243,70 +1213,70 @@ class Talea(object):
         ..  container:: example
 
             >>> talea = rmakers.Talea(
-            ...     counts=[2, 1, 3, 2, 4, 1, 1],
-            ...     denominator=16,
+            ...     [2, 1, 3, 2, 4, 1, 1],
+            ...     16,
             ...     preamble=[1, 1, 1, 1],
             ...     )
 
             >>> abjad.f(talea.advance(0))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16,
                 preamble=[1, 1, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(1))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16,
                 preamble=[1, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(2))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16,
                 preamble=[1, 1],
                 )
 
             >>> abjad.f(talea.advance(3))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16,
                 preamble=[1],
                 )
 
             >>> abjad.f(talea.advance(4))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16
                 )
 
             >>> abjad.f(talea.advance(5))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16,
                 preamble=[1, 1, 3, 2, 4, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(6))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16,
                 preamble=[1, 3, 2, 4, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(7))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16,
                 preamble=[3, 2, 4, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(8))
             abjadext.specifiers.Talea(
-                counts=[2, 1, 3, 2, 4, 1, 1],
-                denominator=16,
+                [2, 1, 3, 2, 4, 1, 1],
+                16,
                 preamble=[2, 2, 4, 1, 1],
                 )
 
@@ -1314,21 +1284,18 @@ class Talea(object):
 
             REGRESSION. Works when talea advances by period of talea:
 
-            >>> talea = rmakers.Talea(
-            ...     counts=[1, 2, 3, 4],
-            ...     denominator=16,
-            ...     )
+            >>> talea = rmakers.Talea([1, 2, 3, 4], 16)
 
             >>> abjad.f(talea.advance(10))
             abjadext.specifiers.Talea(
-                counts=[1, 2, 3, 4],
-                denominator=16,
+                [1, 2, 3, 4],
+                16
                 )
 
             >>> abjad.f(talea.advance(20))
             abjadext.specifiers.Talea(
-                counts=[1, 2, 3, 4],
-                denominator=16,
+                [1, 2, 3, 4],
+                16
                 )
 
         """
