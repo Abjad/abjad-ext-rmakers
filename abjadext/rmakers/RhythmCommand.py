@@ -142,23 +142,20 @@ class MakerAssignments(object):
         return list(self._assignments)
 
 
-class _MakerMatch(object):
+class MakerMatch(object):
     """
     Maker match.
     """
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_assignment", "_division")
+    __slots__ = ("_assignment", "_payload")
 
     ### INITIALIZER ###
 
-    def __init__(self, division, assignment) -> None:
-        ###prototype = (abjad.NonreducedFraction, abjad.TimeSignature)
-        ###assert isinstance(division, prototype), repr(division)
-        self._division = division
-        ###assert isinstance(assignment, MakerAssignment), repr(assignment)
+    def __init__(self, assignment, payload) -> None:
         self._assignment = assignment
+        self._payload = payload
 
     ### SPECIAL METHODS ###
 
@@ -177,21 +174,18 @@ class _MakerMatch(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    ###def assignment(self) -> MakerAssignment:
     def assignment(self):
         """
         Gets assignment.
         """
         return self._assignment
 
-    # possibly change to "payload"
     @property
-    ###def division(self) -> abjad.NonreducedFraction:
-    def division(self):
+    def payload(self) -> typing.Any:
         """
-        Gets division.
+        Gets payload.
         """
-        return self._division
+        return self._payload
 
 
 class RhythmCommand(object):
@@ -350,13 +344,13 @@ class RhythmCommand(object):
                 if isinstance(
                     assignment.pattern, abjad.Pattern
                 ) and assignment.pattern.matches_index(i, division_count):
-                    match = _MakerMatch(division, assignment)
+                    match = MakerMatch(assignment, division)
                     matches.append(match)
                     break
                 elif isinstance(
                     assignment.pattern, abjad.DurationInequality
                 ) and assignment.pattern(division):
-                    match = _MakerMatch(division, assignment)
+                    match = MakerMatch(assignment, division)
                     matches.append(match)
                     break
             else:
@@ -376,7 +370,7 @@ class RhythmCommand(object):
             if self.tag is not None:
                 rhythm_maker = abjad.new(rhythm_maker, tag=self.tag)
             assert isinstance(rhythm_maker, RhythmMaker), repr(rhythm_maker)
-            divisions_ = [match.division for match in group]
+            divisions_ = [match.payload for match in group]
             # TODO: eventually allow previous segment stop state
             #       and local stop state to work together
             previous_state = previous_segment_stop_state
