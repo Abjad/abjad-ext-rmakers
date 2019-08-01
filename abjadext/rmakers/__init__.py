@@ -17,6 +17,7 @@ from .makers import tuplet
 from .RhythmCommand import RhythmCommand
 from .RhythmCommand import MakerAssignment
 from .RhythmCommand import MakerAssignments
+from .RhythmCommand import _MakerMatch
 from .RhythmCommand import rhythm
 from .specifiers import Incise
 from .specifiers import Interpolation

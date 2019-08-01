@@ -156,10 +156,10 @@ class _MakerMatch(object):
     def __init__(
         self, division: abjad.NonreducedFraction, assignment: MakerAssignment
     ) -> None:
-        prototype = (abjad.NonreducedFraction, abjad.TimeSignature)
-        assert isinstance(division, prototype), repr(division)
+        ###prototype = (abjad.NonreducedFraction, abjad.TimeSignature)
+        ###assert isinstance(division, prototype), repr(division)
         self._division = division
-        assert isinstance(assignment, MakerAssignment), repr(assignment)
+        ###assert isinstance(assignment, MakerAssignment), repr(assignment)
         self._assignment = assignment
 
     ### SPECIAL METHODS ###
@@ -179,14 +179,17 @@ class _MakerMatch(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def assignment(self) -> MakerAssignment:
+    ###def assignment(self) -> MakerAssignment:
+    def assignment(self):
         """
         Gets assignment.
         """
         return self._assignment
 
+    # possibly change to "payload"
     @property
-    def division(self) -> abjad.NonreducedFraction:
+    ###def division(self) -> abjad.NonreducedFraction:
+    def division(self):
         """
         Gets division.
         """
