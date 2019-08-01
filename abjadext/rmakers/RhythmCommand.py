@@ -153,9 +153,7 @@ class _MakerMatch(object):
 
     ### INITIALIZER ###
 
-    def __init__(
-        self, division, assignment
-    ) -> None:
+    def __init__(self, division, assignment) -> None:
         ###prototype = (abjad.NonreducedFraction, abjad.TimeSignature)
         ###assert isinstance(division, prototype), repr(division)
         self._division = division
