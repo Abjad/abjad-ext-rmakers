@@ -34,7 +34,8 @@ class Stack(object):
         preprocessor: abjad.Expression = None,
         tag: str = None,
     ) -> None:
-        assert isinstance(maker, (Stack, RhythmMaker)), repr(maker)
+        prototype = (RhythmMaker, Stack, Tesselation)
+        assert isinstance(maker, prototype), repr(maker)
         self._maker = maker
         commands = commands or ()
         commands_ = tuple(commands)
@@ -143,7 +144,7 @@ class Stack(object):
         return list(self._commands)
 
     @property
-    def maker(self) -> typing.Union["Stack", RhythmMaker]:
+    def maker(self) -> typing.Union[RhythmMaker, "Stack", "Tesselation"]:
         """
         Gets maker.
         """
@@ -864,6 +865,164 @@ class RhythmAssignments(object):
         return list(self._assignments)
 
 
+class Tesselation(object):
+    """
+    Tesselation.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_assignments", "_state", "_tag")
+
+    # to make sure abjad.new() copies sassignments
+    _positional_arguments_name = "assignments"
+
+    _publish_storage_format = True
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self, *assignments: RhythmAssignment, tag: str = None
+    ) -> None:
+        assignments = assignments or ()
+        for assignment in assignments:
+            if not isinstance(assignment, RhythmAssignment):
+                message = "must be assignment:\n"
+                message += f"   {repr(assignment)}"
+                raise Exception(message)
+        assignments_ = tuple(assignments)
+        self._assignments = assignments_
+        self._state = abjad.OrderedDict()
+        if tag is not None:
+            assert isinstance(tag, str), repr(tag)
+        self._tag = tag
+
+    ### SPECIAL METHODS ###
+
+    def __call__(
+        self, divisions, previous_state: abjad.OrderedDict = None
+    ) -> abjad.Selection:
+        """
+        Calls tesselation.
+        """
+        division_count = len(divisions)
+        matches = []
+        for i, division in enumerate(divisions):
+            for assignment in self.assignments:
+                if assignment.predicate is None:
+                    match = MakerMatch(assignment, division)
+                    matches.append(match)
+                    break
+                elif isinstance(assignment.predicate, abjad.Pattern):
+                    if assignment.predicate.matches_index(i, division_count):
+                        match = MakerMatch(assignment, division)
+                        matches.append(match)
+                        break
+                elif assignment.predicate(division):
+                    match = MakerMatch(assignment, division)
+                    matches.append(match)
+                    break
+            else:
+                raise Exception(f"no match for division {i}.")
+        assert len(divisions) == len(matches)
+        groups = abjad.sequence(matches).group_by(
+            lambda match: match.assignment.rhythm_maker
+        )
+        components: typing.List[abjad.Component] = []
+        maker_to_previous_state = abjad.OrderedDict()
+        pp = (RhythmMaker, RhythmCommand)
+        for group in groups:
+            rhythm_maker = group[0].assignment.rhythm_maker
+            if self.tag is not None:
+                rhythm_maker = abjad.new(rhythm_maker, tag=self.tag)
+            assert isinstance(rhythm_maker, pp), repr(rhythm_maker)
+            divisions_ = [match.payload for match in group]
+            ###previous_state = previous_segment_stop_state
+            if (
+                previous_state is None
+                and group[0].assignment.remember_state_across_gaps
+            ):
+                previous_state = maker_to_previous_state.get(
+                    rhythm_maker, None
+                )
+            if isinstance(rhythm_maker, RhythmMaker):
+                selection = rhythm_maker(
+                    divisions_, previous_state=previous_state
+                )
+            else:
+                selection = rhythm_maker(
+                    divisions_, previous_segment_stop_state=previous_state
+                )
+            assert isinstance(selection, abjad.Selection), repr(selection)
+            components.extend(selection)
+            maker_to_previous_state[rhythm_maker] = rhythm_maker.state
+        if isinstance(rhythm_maker, RhythmCommand):
+            rhythm_maker = rhythm_maker.rhythm_maker
+        assert isinstance(rhythm_maker, RhythmMaker), repr(rhythm_maker)
+        self._state = rhythm_maker.state
+        selection = abjad.select(components)
+        return selection
+
+    def __eq__(self, argument) -> bool:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __hash__(self) -> int:
+        """
+        Delegates to storage format manager.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f"unhashable type: {self}")
+        return result
+
+    def __repr__(self) -> str:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+    ### PRIVATE METHODS ###
+
+    def _get_format_specification(self):
+        return abjad.FormatSpecification(
+            self, storage_format_args_values=self.assignments
+        )
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def assignments(self) -> typing.List[RhythmAssignment]:
+        """
+        Gets assignments.
+        """
+        return list(self._assignments)
+
+    @property
+    def state(self) -> abjad.OrderedDict:
+        """
+        Gets state.
+        """
+        return self._state
+
+    @property
+    def tag(self) -> typing.Optional[str]:
+        """
+        Gets tag.
+        """
+        return self._tag
+
+
 ### FACTORY FUNCTIONS ###
 
 
@@ -904,3 +1063,10 @@ def stack(
     Makes stack.
     """
     return Stack(maker, *commands, preprocessor=preprocessor, tag=tag)
+
+
+def tesselate(*assignments: RhythmAssignment, tag: str = None) -> Tesselation:
+    """
+    Makes tesselation.
+    """
+    return Tesselation(*assignments, tag=tag)
