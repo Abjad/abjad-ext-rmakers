@@ -14,10 +14,10 @@ from .makers import incised
 from .makers import note
 from .makers import talea
 from .makers import tuplet
-from .RhythmCommand import MakerMatch
+from .RhythmCommand import Match
 
 ####from .RhythmCommand import RhythmCommand
-from .RhythmCommand import RhythmAssignment
+from .RhythmCommand import Assignment
 from .RhythmCommand import Stack
 from .RhythmCommand import Bind
 from .RhythmCommand import assign

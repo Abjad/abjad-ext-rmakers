@@ -3,9 +3,7 @@ import typing
 from . import commands as _commands
 from .RhythmMaker import RhythmMaker
 
-RhythmMakerTyping = typing.Union[
-    "RhythmAssignment", RhythmMaker, "Stack", "Bind"
-]
+RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 
 
 ### CLASSES ###
@@ -248,9 +246,9 @@ class Stack(object):
         return self._tag
 
 
-class MakerMatch(object):
+class Match(object):
     """
-    Maker match.
+    Match.
     """
 
     ### CLASS VARIABLES ###
@@ -311,9 +309,9 @@ class MakerMatch(object):
         return self._payload
 
 
-class RhythmAssignment(object):
+class Assignment(object):
     """
-    Rhythm assignment.
+    Assignment.
     """
 
     ### CLASS VARIABLES ###
@@ -412,12 +410,10 @@ class Bind(object):
 
     ### INITIALIZER ###
 
-    def __init__(
-        self, *assignments: RhythmAssignment, tag: str = None
-    ) -> None:
+    def __init__(self, *assignments: Assignment, tag: str = None) -> None:
         assignments = assignments or ()
         for assignment in assignments:
-            if not isinstance(assignment, RhythmAssignment):
+            if not isinstance(assignment, Assignment):
                 message = "must be assignment:\n"
                 message += f"   {repr(assignment)}"
                 raise Exception(message)
@@ -434,23 +430,23 @@ class Bind(object):
         self, divisions, previous_state: abjad.OrderedDict = None
     ) -> abjad.Selection:
         """
-        Calls tesselation.
+        Calls bind.
         """
         division_count = len(divisions)
         matches = []
         for i, division in enumerate(divisions):
             for assignment in self.assignments:
                 if assignment.predicate is None:
-                    match = MakerMatch(assignment, division)
+                    match = Match(assignment, division)
                     matches.append(match)
                     break
                 elif isinstance(assignment.predicate, abjad.Pattern):
                     if assignment.predicate.matches_index(i, division_count):
-                        match = MakerMatch(assignment, division)
+                        match = Match(assignment, division)
                         matches.append(match)
                         break
                 elif assignment.predicate(division):
-                    match = MakerMatch(assignment, division)
+                    match = Match(assignment, division)
                     matches.append(match)
                     break
             else:
@@ -533,7 +529,7 @@ class Bind(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def assignments(self) -> typing.List[RhythmAssignment]:
+    def assignments(self) -> typing.List[Assignment]:
         """
         Gets assignments.
         """
@@ -562,15 +558,22 @@ def assign(
     predicate: typing.Union[typing.Callable, abjad.Pattern] = None,
     *,
     remember_state_across_gaps: bool = None,
-) -> RhythmAssignment:
+) -> Assignment:
     """
-    Makes rhythm assignment.
+    Makes assignment.
     """
-    return RhythmAssignment(
+    return Assignment(
         rhythm_maker,
         predicate,
         remember_state_across_gaps=remember_state_across_gaps,
     )
+
+
+def bind(*assignments: Assignment, tag: str = None) -> Bind:
+    """
+    Makes bind.
+    """
+    return Bind(*assignments, tag=tag)
 
 
 def stack(
@@ -580,10 +583,3 @@ def stack(
     Makes stack.
     """
     return Stack(maker, *commands, preprocessor=preprocessor, tag=tag)
-
-
-def bind(*assignments: RhythmAssignment, tag: str = None) -> Bind:
-    """
-    Makes tesselation.
-    """
-    return Bind(*assignments, tag=tag)
