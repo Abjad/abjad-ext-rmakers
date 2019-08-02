@@ -1,30 +1,30 @@
 """
 Tools for rhythm construction.
 """
-from .RhythmMaker import RhythmMaker
-from .AccelerandoRhythmMaker import AccelerandoRhythmMaker
-from .EvenDivisionRhythmMaker import EvenDivisionRhythmMaker
-from .IncisedRhythmMaker import IncisedRhythmMaker
-from .NoteRhythmMaker import NoteRhythmMaker
-from .TaleaRhythmMaker import TaleaRhythmMaker
-from .TupletRhythmMaker import TupletRhythmMaker
+from .makers import AccelerandoRhythmMaker
+from .makers import EvenDivisionRhythmMaker
+from .makers import IncisedRhythmMaker
+from .makers import NoteRhythmMaker
+from .makers import RhythmMaker
+from .makers import TaleaRhythmMaker
+from .makers import TupletRhythmMaker
 from .makers import accelerando
 from .makers import even_division
 from .makers import incised
 from .makers import note
 from .makers import talea
 from .makers import tuplet
-from .RhythmCommand import Match
+from .stack import Match
 
-####from .RhythmCommand import RhythmCommand
-from .RhythmCommand import Assignment
-from .RhythmCommand import Stack
-from .RhythmCommand import Bind
-from .RhythmCommand import assign
+####from .stack import stack
+from .stack import Assignment
+from .stack import Stack
+from .stack import Bind
+from .stack import assign
 
-# from .RhythmCommand import command
-from .RhythmCommand import stack
-from .RhythmCommand import bind
+# from .stack import command
+from .stack import stack
+from .stack import bind
 from .specifiers import Incise
 from .specifiers import Interpolation
 from .specifiers import Spelling

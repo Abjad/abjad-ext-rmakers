@@ -1,7 +1,7 @@
 import abjad
 import typing
 from . import commands as _commands
-from .RhythmMaker import RhythmMaker
+from .makers import RhythmMaker
 
 RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 
@@ -99,8 +99,8 @@ class Stack(object):
             ...     rmakers.force_fraction(),
             ... )
             >>> abjad.f(command)
-            abjadext.RhythmCommand.Stack(
-                abjadext.rmakers.TupletRhythmMaker(
+            abjadext.stack.Stack(
+                abjadext.makers.TupletRhythmMaker(
                     tuplet_ratios=[
                         abjad.Ratio((1, 2)),
                         ],
@@ -192,8 +192,8 @@ class Stack(object):
             >>> command_2 = abjad.new(command_1)
 
             >>> abjad.f(command_1)
-            abjadext.RhythmCommand.Stack(
-                abjadext.rmakers.TupletRhythmMaker(
+            abjadext.stack.Stack(
+                abjadext.makers.TupletRhythmMaker(
                     tuplet_ratios=[
                         abjad.Ratio((1, 2)),
                         ],
@@ -202,8 +202,8 @@ class Stack(object):
                 )
 
             >>> abjad.f(command_2)
-            abjadext.RhythmCommand.Stack(
-                abjadext.rmakers.TupletRhythmMaker(
+            abjadext.stack.Stack(
+                abjadext.makers.TupletRhythmMaker(
                     tuplet_ratios=[
                         abjad.Ratio((1, 2)),
                         ],
