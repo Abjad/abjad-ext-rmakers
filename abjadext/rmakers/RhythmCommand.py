@@ -18,7 +18,7 @@ class Stack(object):
 
     ### CLASS ATTRIBUTES ###
 
-    __slots__ = ("_commands", "_maker", "_tag")
+    __slots__ = ("_commands", "_maker", "_preprocessor", "_tag")
 
     # to make sure abjad.new() copies commands
     _positional_arguments_name = "commands"
@@ -27,12 +27,21 @@ class Stack(object):
 
     ### INITIALIZER ###
 
-    def __init__(self, maker, *commands, tag: str = None) -> None:
+    def __init__(
+        self,
+        maker,
+        *commands,
+        preprocessor: abjad.Expression = None,
+        tag: str = None,
+    ) -> None:
         assert isinstance(maker, (Stack, RhythmMaker)), repr(maker)
         self._maker = maker
         commands = commands or ()
         commands_ = tuple(commands)
         self._commands = commands_
+        if preprocessor is not None:
+            assert isinstance(preprocessor, abjad.Expression)
+        self._preprocessor = preprocessor
         if tag is not None:
             assert isinstance(tag, str), repr(tag)
         self._tag = tag
@@ -50,8 +59,9 @@ class Stack(object):
         maker = self.maker
         if self.tag is not None:
             maker = abjad.new(maker, tag=self.tag)
-        selection = maker(time_signatures, previous_state=previous_state)
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
+        divisions = self._apply_division_expression(time_signatures_)
+        selection = maker(divisions, previous_state=previous_state)
         staff = RhythmMaker._make_staff(time_signatures_)
         staff["MusicVoice"].extend(selection)
         for command in self.commands:
@@ -97,6 +107,23 @@ class Stack(object):
 
     ### PRIVATE METHODS ###
 
+    def _apply_division_expression(self, divisions) -> abjad.Sequence:
+        if self.preprocessor is not None:
+            result = self.preprocessor(divisions)
+            if not isinstance(result, abjad.Sequence):
+                message = "division preprocessor must return sequence:\n"
+                message += f"  Input divisions:\n"
+                message += f"    {divisions}\n"
+                message += f"  Division preprocessor:\n"
+                message += f"    {self.preprocessor}\n"
+                message += f"  Result:\n"
+                message += f"    {result}"
+                raise Exception(message)
+            divisions = result
+        divisions = abjad.sequence(divisions)
+        divisions = divisions.flatten(depth=-1)
+        return divisions
+
     def _get_format_specification(self):
         manager = abjad.StorageFormatManager(self)
         values = []
@@ -121,6 +148,13 @@ class Stack(object):
         Gets maker.
         """
         return self._maker
+
+    @property
+    def preprocessor(self) -> typing.Optional[abjad.Expression]:
+        """
+        Gets preprocessor.
+        """
+        return self._preprocessor
 
     @property
     def tag(self) -> typing.Optional[str]:
@@ -863,8 +897,10 @@ def command(
     )
 
 
-def stack(maker, *commands, tag: str = None) -> Stack:
+def stack(
+    maker, *commands, preprocessor: abjad.Expression = None, tag: str = None
+) -> Stack:
     """
     Makes stack.
     """
-    return Stack(maker, *commands, tag=tag)
+    return Stack(maker, *commands, preprocessor=preprocessor, tag=tag)
