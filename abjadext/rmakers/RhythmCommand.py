@@ -51,8 +51,8 @@ class Stack(object):
         if self.tag is not None:
             maker = abjad.new(maker, tag=self.tag)
         selection = maker(time_signatures, previous_state=previous_state)
-        time_signatures = [abjad.TimeSignature(_) for _ in time_signatures]
-        staff = RhythmMaker._make_staff(time_signatures)
+        time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
+        staff = RhythmMaker._make_staff(time_signatures_)
         staff["MusicVoice"].extend(selection)
         for command in self.commands:
             try:
@@ -274,7 +274,6 @@ class RhythmCommand(object):
 
     def __init__(
         self,
-        # TODO: change to "*assignments"
         rhythm_maker: RhythmMakerTyping,
         *commands: _commands.Command,
         preprocessor: abjad.Expression = None,

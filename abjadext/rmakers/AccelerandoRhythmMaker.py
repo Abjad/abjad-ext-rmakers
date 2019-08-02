@@ -2634,7 +2634,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Consumes 3 divisions:
 
-            >>> command = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.accelerando(
             ...         [(1, 8), (1, 20), (1, 16)],
             ...         [(1, 20), (1, 8), (1, 16)],
@@ -2644,7 +2644,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ... )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8)]
-            >>> selection = command(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -2822,7 +2822,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            >>> state = command.maker.state
+            >>> state = stack.maker.state
             >>> abjad.f(state)
             abjad.OrderedDict(
                 [
@@ -2834,7 +2834,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Advances 3 divisions; then consumes another 3 divisions:
 
             >>> divisions = [(4, 8), (3, 8), (4, 8)]
-            >>> selection = command(divisions, previous_state=state)
+            >>> selection = stack(divisions, previous_state=state)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3014,7 +3014,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            >>> state = command.maker.state
+            >>> state = stack.maker.state
             >>> abjad.f(state)
             abjad.OrderedDict(
                 [
@@ -3026,7 +3026,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Advances 6 divisions; then consumes another 3 divisions:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8)]
-            >>> selection = command(divisions, previous_state=state)
+            >>> selection = stack(divisions, previous_state=state)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3204,7 +3204,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            >>> state = command.maker.state
+            >>> state = stack.maker.state
             >>> abjad.f(state)
             abjad.OrderedDict(
                 [

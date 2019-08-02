@@ -13,7 +13,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
         Forces rest at every other tuplet:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.incised(
         ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
@@ -30,7 +30,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -72,7 +72,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.incised(
         ...         prefix_talea=[-1],
         ...         prefix_counts=[1],
@@ -87,7 +87,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -128,7 +128,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
         >>> nonfirst_tuplets = abjad.select().tuplets()[1:]
         >>> first_leaf = abjad.select().leaf(0)
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.incised(
         ...         prefix_talea=[-1],
         ...         prefix_counts=[1],
@@ -143,7 +143,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -475,7 +475,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Add one extra count per tuplet:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         extra_counts=[1],
             ...         prefix_talea=[-1],
@@ -490,7 +490,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -545,7 +545,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[0, 1],
@@ -558,7 +558,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = 4 * [(5, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -600,7 +600,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Fills divisions with notes. Incises outer divisions only:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         prefix_talea=[-8, -7],
             ...         prefix_counts=[2],
@@ -614,7 +614,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
 
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -659,7 +659,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Fills divisions with rests. Incises outer divisions only:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         prefix_talea=[7, 8],
             ...         prefix_counts=[2],
@@ -674,7 +674,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
 
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -725,7 +725,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Spells durations with the fewest number of glyphs:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -739,7 +739,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -777,7 +777,7 @@ class IncisedRhythmMaker(RhythmMaker):
             Forbids notes with written duration greater than or equal to
             ``1/2``:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -792,7 +792,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -837,7 +837,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[1],
@@ -852,7 +852,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -897,7 +897,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
             Makes augmentations:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         extra_counts=[1],
             ...         prefix_talea=[-1],
@@ -913,7 +913,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,

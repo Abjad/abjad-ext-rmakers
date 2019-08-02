@@ -13,7 +13,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         Silences every other logical tie:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(
         ...         abjad.select().logical_ties().get([0], 2),
@@ -21,7 +21,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -57,13 +57,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         Forces rest at every logical tie:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select()),
         ... )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (5, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -100,7 +100,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         Silences every other output division except for the first and last:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(
         ...         abjad.select().logical_ties().get([0], 2)[1:-1],
@@ -108,7 +108,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -147,13 +147,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         Beams each division:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.beam(abjad.select().logical_ties(pitched=True)),
         ...     )
 
         >>> divisions = [(5, 32), (5, 32)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -191,13 +191,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         Beams divisions together:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.beam_groups(abjad.select().logical_ties()),
         ... )
 
         >>> divisions = [(5, 32), (5, 32)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -241,10 +241,10 @@ class NoteRhythmMaker(RhythmMaker):
 
         Makes no beams:
 
-        >>> rhythm_maker = rmakers.NoteRhythmMaker()
+        >>> stack = rmakers.NoteRhythmMaker()
 
         >>> divisions = [(5, 32), (5, 32)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -278,10 +278,10 @@ class NoteRhythmMaker(RhythmMaker):
 
         Does not tie across divisions:
 
-        >>> rhythm_maker = rmakers.NoteRhythmMaker()
+        >>> stack = rmakers.NoteRhythmMaker()
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -319,13 +319,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         >>> nonlast_lts = abjad.select().logical_ties()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.tie(nonlast_lts.map(last_leaf)),
         ... )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -366,13 +366,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         >>> lts = abjad.select().logical_ties().get([0], 2)
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.tie(lts.map(last_leaf)),
         ... )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -410,13 +410,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         Strips all ties:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.untie(),
         ... )
 
         >>> divisions = [(7, 16), (1, 4), (5, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -450,10 +450,10 @@ class NoteRhythmMaker(RhythmMaker):
 
         Spells tuplets as diminutions:
 
-        >>> rhythm_maker = rmakers.NoteRhythmMaker()
+        >>> stack = rmakers.NoteRhythmMaker()
 
         >>> divisions = [(5, 14), (3, 7)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -493,13 +493,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         Spells tuplets as augmentations:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_augmentation(),
         ... )
 
         >>> divisions = [(5, 14), (3, 7)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -541,13 +541,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         Forces rest in logical tie 0:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().logical_ties()[0]),
         ...     )
 
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -586,13 +586,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         Forces rests in first two logical ties:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().logical_ties()[:2]),
         ...     )
 
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -631,7 +631,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         Forces rests in first and last logical ties:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(
         ...         abjad.select().logical_ties().get([0, -1])
@@ -639,7 +639,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
 
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -840,7 +840,7 @@ class NoteRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.note(),
             ...     rmakers.rewrite_meter(),
             ...     )
