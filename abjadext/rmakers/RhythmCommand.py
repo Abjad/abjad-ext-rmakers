@@ -308,9 +308,9 @@ class RhythmCommand(object):
         Calls ``RhythmCommand`` on ``time_signatures``.
         """
         rhythm_maker = self.rhythm_maker
-        time_signatures = [abjad.TimeSignature(_) for _ in time_signatures]
-        original_duration = sum(_.duration for _ in time_signatures)
-        divisions = self._apply_division_expression(time_signatures)
+        time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
+        original_duration = sum(_.duration for _ in time_signatures_)
+        divisions = self._apply_division_expression(time_signatures_)
         transformed_duration = sum(_.duration for _ in divisions)
         if transformed_duration != original_duration:
             message = "original duration ...\n"
@@ -397,7 +397,7 @@ class RhythmCommand(object):
         self._state = rhythm_maker.state
         selection = abjad.select(components)
         assert isinstance(selection, abjad.Selection), repr(selection)
-        staff = RhythmMaker._make_staff(time_signatures)
+        staff = RhythmMaker._make_staff(time_signatures_)
         voice = staff["MusicVoice"]
         voice.extend(selection)
         divisions_consumed = division_count
