@@ -33,7 +33,7 @@ class RhythmMaker(object):
         if spelling is not None:
             assert isinstance(spelling, _specifiers.Spelling)
         self._spelling = spelling
-        self._already_cached_state = None
+        self._already_cached_state = False
         self._previous_state = abjad.OrderedDict()
         self._state = abjad.OrderedDict()
         if tag is not None:

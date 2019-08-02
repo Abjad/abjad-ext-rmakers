@@ -41,6 +41,8 @@ class Stack(object):
     ) -> None:
         prototype = (RhythmCommand, RhythmMaker, Stack, Tesselation)
         assert isinstance(maker, prototype), repr(maker)
+        if tag is not None:
+            maker = abjad.new(maker, tag=tag)
         self._maker = maker
         commands = commands or ()
         commands_ = tuple(commands)
@@ -62,20 +64,22 @@ class Stack(object):
         """
         Calls stack.
         """
-        maker = self.maker
-        if self.tag is not None:
-            maker = abjad.new(maker, tag=self.tag)
+        ###maker = self.maker
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
+        staff = RhythmMaker._make_staff(time_signatures_)
         divisions = self._apply_division_expression(time_signatures_)
-        if isinstance(maker, RhythmCommand):
-            selection = maker(
+        if isinstance(self.maker, RhythmCommand):
+            selection = self.maker(
                 divisions, previous_segment_stop_state=previous_state
             )
         else:
-            selection = maker(divisions, previous_state=previous_state)
-        staff = RhythmMaker._make_staff(time_signatures_)
+            selection = self.maker(divisions, previous_state=previous_state)
         staff["MusicVoice"].extend(selection)
         for command in self.commands:
+            if isinstance(command, _commands.CacheStateCommand):
+                assert isinstance(self.maker, RhythmMaker), repr(self.maker)
+                self.maker._cache_state(staff["MusicVoice"], len(divisions))
+                self.maker._already_cached_state = True
             try:
                 command(staff["MusicVoice"], tag=self.tag)
             except:
