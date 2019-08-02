@@ -13,14 +13,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Repeats talea of 1/16, 2/16, 3/16, 4/16:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -72,7 +72,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Silences first and last logical ties:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.force_rest(
         ...         abjad.select().logical_ties().get([0, -1]),
@@ -82,7 +82,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -135,7 +135,7 @@ class TaleaRhythmMaker(RhythmMaker):
         Silences all logical ties. Then sustains first and last logical
         ties:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.force_rest(abjad.select().logical_ties()),
         ...     rmakers.force_note(
@@ -146,7 +146,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -193,7 +193,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Only logical ties 0 and 2 are rested here:
 
-        >>> command = rmakers.command(
+        >>> command = rmakers.stack(
         ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
         ...     rmakers.force_rest(
         ...         abjad.select().logical_ties().get([0, 2, 12]),
@@ -250,7 +250,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = command.state
+        >>> state = command.maker.state
         >>> abjad.f(state)
         abjad.OrderedDict(
             [
@@ -328,7 +328,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #
 #            REGRESSION. Periodic rest commands also respect state.
 #
-#            >>> rhythm_maker = rmakers.command(
+#            >>> stack = rmakers.stack(
 #            ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
 #            ...     rmakers.force_rest(
 #            ...         abjad.select().logical_ties().get([3], 4),
@@ -340,7 +340,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #            Incomplete last note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = rhythm_maker(divisions)
+#            >>> selection = stack(divisions)
 #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
 #            ...     selection,
 #            ...     divisions,
@@ -386,7 +386,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #                    }
 #                >>
 #
-#            >>> state = rhythm_maker.state
+#            >>> state = stack.maker.state
 #            >>> abjad.f(state)
 #            abjad.OrderedDict(
 #                [
@@ -400,7 +400,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #            Incomplete first note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = rhythm_maker(divisions, previous_state=state)
+#            >>> selection = stack(divisions, previous_state=state)
 #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
 #            ...     selection,
 #            ...     divisions,
@@ -448,7 +448,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #                    }
 #                >>
 #
-#            >>> state = rhythm_maker.state
+#            >>> state = stack.maker.state
 #            >>> abjad.f(state)
 #            abjad.OrderedDict(
 #                [
@@ -464,14 +464,14 @@ class TaleaRhythmMaker(RhythmMaker):
         REGRESSION. Spells tuplet denominator in terms of duration when
         denominator is given as a duration:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
         ...     rmakers.denominator((1, 16)),
         ...     rmakers.beam(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -540,14 +540,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Beams each division:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1], 16),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -615,14 +615,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Beams tuplets together:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1], 16),
         ...     rmakers.beam_groups(abjad.select().tuplets()),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -740,13 +740,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Beams nothing:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1], 16),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -806,14 +806,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Does not beam rests:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 1, 1, -1], 16),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -887,14 +887,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Does beam rests:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 1, 1, -1], 16),
         ...     rmakers.beam(beam_rests=True),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -962,7 +962,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Beams rests with stemlets:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 1, 1, -1], 16),
         ...     rmakers.beam(
         ...         beam_rests=True,
@@ -972,7 +972,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1048,14 +1048,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Does not tie across divisions:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([5, 3, 3, 3], 16),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1109,7 +1109,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([5, 3, 3, 3], 16),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
         ...     rmakers.beam(),
@@ -1117,7 +1117,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1174,7 +1174,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         >>> tuplets = abjad.select().tuplets().get([0], 2)
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([5, 3, 3, 3], 16),
         ...     rmakers.tie(tuplets.map(last_leaf)),
         ...     rmakers.beam(),
@@ -1182,7 +1182,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1239,7 +1239,7 @@ class TaleaRhythmMaker(RhythmMaker):
         >>> nonlast_notes = abjad.select().notes()[:-1]
         >>> selector = abjad.select().runs()
         >>> selector = selector.map(nonlast_notes)
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([5, -3, 3, 3], 16),
         ...     rmakers.untie(selector),
         ...     rmakers.tie(selector),
@@ -1248,7 +1248,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1299,13 +1299,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
         REGRESSION. Commands survive new:
 
-        >>> command = rmakers.command(
+        >>> command = rmakers.stack(
         ...     rmakers.talea([5, -3, 3, 3], 16),
         ...     rmakers.extract_trivial(),
         ...     )
         >>> new_command = abjad.new(command)
         >>> abjad.f(command)
-        abjadext.rmakers.RhythmCommand(
+        abjadext.RhythmCommand.Stack(
             abjadext.rmakers.TaleaRhythmMaker(
                 talea=abjadext.specifiers.Talea(
                     [5, -3, 3, 3],
@@ -1325,13 +1325,13 @@ class TaleaRhythmMaker(RhythmMaker):
         Reduces terms in tuplet ratio to relative primes when no tuplet
         command is given:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
         ...     rmakers.beam(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1399,14 +1399,14 @@ class TaleaRhythmMaker(RhythmMaker):
         REGRESSION. Spells tuplet denominator in terms of duration when
         denominator is given as a duration:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
         ...     rmakers.denominator((1, 16)),
         ...     rmakers.beam(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1478,14 +1478,14 @@ class TaleaRhythmMaker(RhythmMaker):
         Makes diminished tuplets when ``diminution`` is true (or when no
         tuplet command is given):
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1], 16, extra_counts=[0, -1]),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1561,7 +1561,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Makes augmented tuplets when ``diminution`` is set to false:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1], 16, extra_counts=[0, -1]),
         ...     rmakers.beam(),
         ...     rmakers.force_augmentation(),
@@ -1569,7 +1569,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1651,13 +1651,13 @@ class TaleaRhythmMaker(RhythmMaker):
         given. The tuplets in measures 2 and 4 can be written as trivial
         tuplets, but they are not:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
         ...     rmakers.beam(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1710,14 +1710,14 @@ class TaleaRhythmMaker(RhythmMaker):
         Rewrites trivializable tuplets as trivial (1:1) tuplets when
         ``trivialize`` is true:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
         ...     rmakers.trivialize(),
         ...     rmakers.beam(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1774,7 +1774,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
         ...     rmakers.trivialize(),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
@@ -1782,7 +1782,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1840,7 +1840,7 @@ class TaleaRhythmMaker(RhythmMaker):
         REGRESSION #907b. Rewrites trivializable tuplets even when
         tuplets contain very long ties:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
         ...     rmakers.trivialize(),
         ...     rmakers.tie(abjad.select().notes()[:-1]),
@@ -1848,7 +1848,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1914,13 +1914,13 @@ class TaleaRhythmMaker(RhythmMaker):
         Makes rest-filled tuplets when ``rewrite_rest_filled`` is false (or
         when no tuplet command is given):
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, -6, -6], 16, extra_counts=[1, 0]),
         ...     rmakers.beam(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -1978,14 +1978,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Rewrites rest-filled tuplets when ``rewrite_rest_filled`` is true:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, -6, -6], 16, extra_counts=[1, 0]),
         ...     rmakers.beam(),
         ...     rmakers.rewrite_rest_filled(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -2043,14 +2043,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         No rest commands:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -2102,7 +2102,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Silences every other output division:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.force_rest(
         ...         abjad.select().tuplets().get([1], 2),
@@ -2113,7 +2113,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -2156,7 +2156,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         >>> selector = abjad.select().tuplets().get([1], 2)
         >>> nonlast_notes = abjad.select().notes()[:-1]
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.tie(selector.map(nonlast_notes)),
         ...     rmakers.rewrite_sustained(selector),
@@ -2165,7 +2165,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -2215,7 +2215,7 @@ class TaleaRhythmMaker(RhythmMaker):
         Only tuplets 0 and 2 are rested here:
 
         >>> selector = abjad.select().tuplets().get([0, 2, 7])
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
         ...     rmakers.force_rest(selector),
         ...     rmakers.rewrite_rest_filled(),
@@ -2224,7 +2224,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -2262,7 +2262,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = rhythm_maker.state
+        >>> state = stack.maker.state
         >>> abjad.f(state)
         abjad.OrderedDict(
             [
@@ -2277,7 +2277,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #            Only tuplet 7 is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = rhythm_maker(divisions, previous_state=state)
+#            >>> selection = stack(divisions, previous_state=state)
 #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
 #            ...     selection,
 #            ...     divisions,
@@ -2320,7 +2320,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #                    }
 #                >>
 #
-#            >>> state = rhythm_maker.state
+#            >>> state = stack.maker.state
 #            >>> abjad.f(state)
 #            abjad.OrderedDict(
 #                [
@@ -2336,7 +2336,7 @@ class TaleaRhythmMaker(RhythmMaker):
         REGRESSION. Periodic rest commands also respect state.
 
         >>> selector = abjad.select().tuplets().get([2], 3)
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
         ...     rmakers.force_rest(selector),
         ...     rmakers.rewrite_rest_filled(),
@@ -2345,7 +2345,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -2385,7 +2385,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = rhythm_maker.state
+        >>> state = stack.maker.state
         >>> abjad.f(state)
         abjad.OrderedDict(
             [
@@ -2400,7 +2400,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #            Incomplete first note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = rhythm_maker(divisions, previous_state=state)
+#            >>> selection = stack(divisions, previous_state=state)
 #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
 #            ...     selection,
 #            ...     divisions,
@@ -2443,7 +2443,7 @@ class TaleaRhythmMaker(RhythmMaker):
 #                    }
 #                >>
 #
-#            >>> state = rhythm_maker.state
+#            >>> state = stack.maker.state
 #            >>> abjad.f(state)
 #            abjad.OrderedDict(
 #                [
@@ -2458,7 +2458,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Forces the first leaf and the last two leaves to be rests:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.force_rest(
         ...         abjad.select().leaves().get([0, -2, -1])
@@ -2468,7 +2468,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -2520,7 +2520,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Forces rest at last leaf of every tuplet:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.force_rest(
         ...         abjad.select().tuplets().map(abjad.select().leaf(0))
@@ -2530,7 +2530,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -2620,13 +2620,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
             REGRESSION. Commands appear in storage format:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([5, -3, 3, 3], 16),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ... )
-            >>> abjad.f(rhythm_maker)
-            abjadext.rmakers.RhythmCommand(
+            >>> abjad.f(stack)
+            abjadext.RhythmCommand.Stack(
                 abjadext.rmakers.TaleaRhythmMaker(
                     talea=abjadext.specifiers.Talea(
                         [5, -3, 3, 3],
@@ -2918,7 +2918,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Spells nonassignable durations with monontonically decreasing
             durations:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [5],
             ...         16,
@@ -2929,7 +2929,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -2978,7 +2978,7 @@ class TaleaRhythmMaker(RhythmMaker):
             Spells nonassignable durations with monontonically increasing
             durations:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [5], 16,
             ...         spelling=rmakers.Spelling(increase_monotonic=True),
@@ -2988,7 +2988,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3036,14 +3036,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Forbids no durations:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([1, 1, 1, 1, 4, 4], 16),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     )
 
             >>> divisions = [(3, 4), (3, 4)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3087,7 +3087,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Forbids durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [1, 1, 1, 1, 4, 4], 16,
             ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 4)),
@@ -3097,7 +3097,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(3, 4), (3, 4)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3151,7 +3151,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([5, 4], 16),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
@@ -3159,7 +3159,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(3, 4), (3, 4), (3, 4)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3231,14 +3231,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
             No extra counts:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([1, 2, 3, 4], 16),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3290,13 +3290,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Adds one extra count to every other division:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[0, 1]),
             ...     rmakers.beam(),
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3358,13 +3358,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Adds two extra counts to every other division:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[0, 2]),
             ...     rmakers.beam(),
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3435,13 +3435,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Removes one count from every other division:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[0, -1]),
             ...     rmakers.beam(),
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3517,14 +3517,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Reads talea cyclically:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([1, 2, 3, 4], 16),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     )
 
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3579,7 +3579,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Reads talea once only:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [1, 2, 3, 4],
             ...         16,
@@ -3588,11 +3588,11 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
 
-            Calling rhythm_maker on these divisions raises an exception because talea
+            Calling stack on these divisions raises an exception because talea
             is too short to read once only:
 
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> rhythm_maker(divisions)
+            >>> stack(divisions)
             Traceback (most recent call last):
                 ...
             Exception: () + (1, 2, 3, 4) is too short to read [6, 6, 6, 6] once.
@@ -3614,7 +3614,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Consumes 4 divisions and 31 counts:
 
-            >>> command = rmakers.command(
+            >>> command = rmakers.stack(
             ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
@@ -3668,7 +3668,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            >>> state = command.state
+            >>> state = command.maker.state
             >>> abjad.f(state)
             abjad.OrderedDict(
                 [
@@ -3683,7 +3683,7 @@ class TaleaRhythmMaker(RhythmMaker):
             divisions and 31 counts:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = command(divisions, previous_segment_stop_state=state)
+            >>> selection = command(divisions, previous_state=state)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3731,7 +3731,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            >>> state = command.state
+            >>> state = command.maker.state
             >>> abjad.f(state)
             abjad.OrderedDict(
                 [
@@ -3746,7 +3746,7 @@ class TaleaRhythmMaker(RhythmMaker):
             31 counts:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = command(divisions, previous_segment_stop_state=state)
+            >>> selection = command(divisions, previous_state=state)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3797,7 +3797,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            >>> state = command.state
+            >>> state = command.maker.state
             >>> abjad.f(state)
             abjad.OrderedDict(
                 [
@@ -3819,14 +3819,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[0, 1]),
             ...     rmakers.beam(),
             ...     tag='TALEA_RHYTHM_MAKER',
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3896,7 +3896,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Preamble less than total duration:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [8, -4, 8],
             ...         32,
@@ -3907,7 +3907,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -3955,7 +3955,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Preamble more than total duration; ignores counts:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [8, -4, 8],
             ...         32,
@@ -3966,7 +3966,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -4006,7 +4006,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             Working with ``end_counts``.
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [8, -4, 8],
             ...         32,
@@ -4017,7 +4017,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -4063,7 +4063,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             REGRESSION. End counts leave 5-durated tie in tact:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [6],
             ...         16,
@@ -4074,7 +4074,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
 
             >>> divisions = [(3, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,

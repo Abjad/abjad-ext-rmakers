@@ -99,8 +99,11 @@ class Stack(object):
 
     def _get_format_specification(self):
         manager = abjad.StorageFormatManager(self)
+        values = []
+        values.append(self.maker)
+        values.extend(self.commands)
         return abjad.FormatSpecification(
-            self, storage_format_args_values=self.commands
+            self, storage_format_args_values=values
         )
 
     ### PUBLIC PROPERTIES ###
@@ -298,7 +301,7 @@ class RhythmCommand(object):
 
     def __call__(
         self,
-        time_signatures: typing.Sequence[abjad.TimeSignature],
+        time_signatures: typing.Sequence[abjad.IntegerPair],
         previous_segment_stop_state: abjad.OrderedDict = None,
     ) -> abjad.Selection:
         """

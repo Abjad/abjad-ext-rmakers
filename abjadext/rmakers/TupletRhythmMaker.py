@@ -13,7 +13,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes tuplets with ``3:2`` ratios:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(3, 2)]),
         ...     rmakers.beam(),
         ...     )
@@ -74,7 +74,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, -1), (3, 1)]),
         ...     rmakers.beam(),
         ...     )
@@ -134,7 +134,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Beams each division:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 1, 1, 1)]),
         ...     rmakers.beam(),
         ...     )
@@ -208,7 +208,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Beams each division:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 1, 1, 1)]),
         ...     rmakers.beam(),
         ...     )
@@ -282,7 +282,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Beams tuplets together:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)]),
         ...     rmakers.beam_groups(abjad.select().tuplets()),
         ...     )
@@ -381,7 +381,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Beams nothing:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)]),
         ...     )
 
@@ -445,7 +445,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Ties nothing:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
         ...     rmakers.beam(),
         ...     )
@@ -500,7 +500,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
         ...     rmakers.beam(),
@@ -558,7 +558,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> tuplets = abjad.select().tuplets().get([0], 2)
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
         ...     rmakers.tie(tuplets.map(last_leaf)),
         ...     rmakers.beam(),
@@ -622,7 +622,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes diminished tuplets:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(2, 1)]),
         ...     rmakers.force_diminution(),
         ...     rmakers.beam(),
@@ -671,7 +671,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes augmented tuplets:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(2, 1)]),
         ...     rmakers.force_augmentation(),
         ...     rmakers.beam(),
@@ -727,7 +727,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes diminished tuplets and does not rewrite dots:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.force_diminution(),
@@ -785,7 +785,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes diminished tuplets and rewrites dots:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 1)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.force_diminution(),
@@ -840,7 +840,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes augmented tuplets and does not rewrite dots:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.force_augmentation(),
@@ -898,7 +898,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes augmented tuplets and rewrites dots:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.rewrite_dots(),
@@ -957,7 +957,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Leaves trivializable tuplets as-is when ``trivialize`` is false:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.rewrite_dots(),
@@ -1020,7 +1020,7 @@ class TupletRhythmMaker(RhythmMaker):
         these trivial tuplets, set ``extract_trivial`` as shown in the next
         example:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.trivialize(),
@@ -1082,7 +1082,7 @@ class TupletRhythmMaker(RhythmMaker):
         The result is that measures 2 and 4 carry nontrivial prolation with
         no dots:
         
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.trivialize(),
@@ -1146,7 +1146,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
         ...     rmakers.beam(),
@@ -1216,7 +1216,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
         ...     rmakers.beam(),
@@ -1281,7 +1281,7 @@ class TupletRhythmMaker(RhythmMaker):
         REGRESSION: Very long ties are preserved when ``extract_trivial``
         is true:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
@@ -1346,7 +1346,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         No rest commands:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(4, 1)]),
         ...     )
 
@@ -1399,7 +1399,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Masks every other output division:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(4, 1)]),
         ...     rmakers.force_rest(
         ...         abjad.select().tuplets().get([1], 2),
@@ -1508,7 +1508,7 @@ class TupletRhythmMaker(RhythmMaker):
             relatively prime when ``denominator`` is set to none. This
             means that ratios like ``6:4`` and ``10:8`` do not arise:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
@@ -1568,7 +1568,7 @@ class TupletRhythmMaker(RhythmMaker):
             duration when ``denominator`` is set to a duration. The
             setting does not affect the first tuplet:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
@@ -1628,7 +1628,7 @@ class TupletRhythmMaker(RhythmMaker):
             Sets the preferred denominator of each tuplet in terms 32nd notes.
             The setting affects all tuplets:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
@@ -1688,7 +1688,7 @@ class TupletRhythmMaker(RhythmMaker):
             Sets the preferred denominator each tuplet in terms 64th notes. The
             setting affects all tuplets:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
@@ -1750,7 +1750,7 @@ class TupletRhythmMaker(RhythmMaker):
             sets the preferred denominator of each tuplet to ``8``. Setting
             does not affect the third tuplet:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
@@ -1810,7 +1810,7 @@ class TupletRhythmMaker(RhythmMaker):
             Sets the preferred denominator of each tuplet to ``12``. Setting
             affects all tuplets:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
@@ -1870,7 +1870,7 @@ class TupletRhythmMaker(RhythmMaker):
             Sets the preferred denominator of each tuplet to ``13``. Setting
             does not affect any tuplet:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
@@ -1936,7 +1936,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.tuplet([(3, 2)]),
             ...     rmakers.beam(),
             ...     tag='TUPLET_RHYTHM_MAKER',
@@ -2004,13 +2004,13 @@ class TupletRhythmMaker(RhythmMaker):
 
             Makes tuplets with ``3:2`` ratios:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(3, 2)]),
             ...     rmakers.beam(),
             ...     )
 
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -2065,13 +2065,13 @@ class TupletRhythmMaker(RhythmMaker):
 
             Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, -1), (3, 1)]),
             ...     rmakers.beam(),
             ...     )
 
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -2125,10 +2125,10 @@ class TupletRhythmMaker(RhythmMaker):
 
             Makes length-1 tuplets:
 
-            >>> rhythm_maker = rmakers.command(rmakers.tuplet([(1,)]))
+            >>> stack = rmakers.stack(rmakers.tuplet([(1,)]))
 
             >>> divisions = [(1, 5), (1, 4), (1, 6), (7, 9)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
