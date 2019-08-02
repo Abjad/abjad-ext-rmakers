@@ -4,7 +4,7 @@ from . import commands as _commands
 from .RhythmMaker import RhythmMaker
 
 RhythmMakerTyping = typing.Union[
-    "RhythmAssignment", RhythmMaker, "Stack", "Tesselation"
+    "RhythmAssignment", RhythmMaker, "Stack", "Bind"
 ]
 
 
@@ -34,7 +34,7 @@ class Stack(object):
         preprocessor: abjad.Expression = None,
         tag: str = None,
     ) -> None:
-        prototype = (RhythmMaker, Stack, Tesselation)
+        prototype = (RhythmMaker, Stack, Bind)
         assert isinstance(maker, prototype), repr(maker)
         if tag is not None:
             maker = abjad.new(maker, tag=tag)
@@ -220,7 +220,7 @@ class Stack(object):
         return list(self._commands)
 
     @property
-    def maker(self) -> typing.Union[RhythmMaker, "Stack", "Tesselation"]:
+    def maker(self) -> typing.Union[RhythmMaker, "Stack", "Bind"]:
         """
         Gets maker.
         """
@@ -396,9 +396,9 @@ class RhythmAssignment(object):
         return self._rhythm_maker
 
 
-class Tesselation(object):
+class Bind(object):
     """
-    Tesselation.
+    Bind.
     """
 
     ### CLASS VARIABLES ###
@@ -582,8 +582,8 @@ def stack(
     return Stack(maker, *commands, preprocessor=preprocessor, tag=tag)
 
 
-def tesselate(*assignments: RhythmAssignment, tag: str = None) -> Tesselation:
+def bind(*assignments: RhythmAssignment, tag: str = None) -> Bind:
     """
     Makes tesselation.
     """
-    return Tesselation(*assignments, tag=tag)
+    return Bind(*assignments, tag=tag)

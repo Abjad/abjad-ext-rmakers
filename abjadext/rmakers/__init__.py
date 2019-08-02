@@ -19,12 +19,12 @@ from .RhythmCommand import MakerMatch
 ####from .RhythmCommand import RhythmCommand
 from .RhythmCommand import RhythmAssignment
 from .RhythmCommand import Stack
-from .RhythmCommand import Tesselation
+from .RhythmCommand import Bind
 from .RhythmCommand import assign
 
 # from .RhythmCommand import command
 from .RhythmCommand import stack
-from .RhythmCommand import tesselate
+from .RhythmCommand import bind
 from .specifiers import Incise
 from .specifiers import Interpolation
 from .specifiers import Spelling
