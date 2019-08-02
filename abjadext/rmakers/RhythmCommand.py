@@ -4,7 +4,12 @@ from . import commands as _commands
 from .RhythmMaker import RhythmMaker
 
 RhythmMakerTyping = typing.Union[
-    RhythmMaker, "RhythmAssignment", "RhythmAssignments"
+    "RhythmAssignment",
+    "RhythmAssignments",
+    "RhythmCommand",
+    RhythmMaker,
+    "Stack",
+    "Tesselation",
 ]
 
 
@@ -163,6 +168,13 @@ class Stack(object):
         Gets preprocessor.
         """
         return self._preprocessor
+
+    @property
+    def state(self) -> abjad.OrderedDict:
+        """
+        Gets state.
+        """
+        return self.maker.state
 
     @property
     def tag(self) -> typing.Optional[str]:
@@ -428,6 +440,7 @@ class RhythmCommand(object):
                     rhythm_command = abjad.new(rhythm_command, tag=self.tag)
                 voice = abjad.Voice(selection)
                 divisions_consumed = len(divisions_)
+                assert rhythm_command is not None
                 rhythm_command._call_commands(
                     voice, divisions_consumed, rhythm_maker
                 )
