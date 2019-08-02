@@ -41,14 +41,12 @@ class Stack(object):
 
     def __call__(
         self,
-        time_signatures: typing.Sequence[abjad.TimeSignature],
+        time_signatures: typing.Sequence[abjad.IntegerPair],
         previous_state: abjad.OrderedDict = None,
     ) -> abjad.Selection:
         """
         Calls stack.
         """
-        time_signatures = [abjad.TimeSignature(_) for _ in time_signatures]
-        original_duration = sum(_.duration for _ in time_signatures)
         maker = self.maker
         if self.tag is not None:
             maker = abjad.new(maker, tag=self.tag)
@@ -61,9 +59,10 @@ class Stack(object):
                 message = "exception while calling:\n"
                 message += f"   {format(command)}"
                 raise Exception(message)
-        selection = voice[:]
+        result = voice[:]
+        assert isinstance(result, abjad.Selection)
         voice[:] = []
-        return selection
+        return result
 
     def __eq__(self, argument) -> bool:
         """
