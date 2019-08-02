@@ -4,12 +4,7 @@ from . import commands as _commands
 from .RhythmMaker import RhythmMaker
 
 RhythmMakerTyping = typing.Union[
-    "RhythmAssignment",
-    "RhythmAssignments",
-    "RhythmCommand",
-    RhythmMaker,
-    "Stack",
-    "Tesselation",
+    "RhythmAssignment", "RhythmCommand", RhythmMaker, "Stack", "Tesselation"
 ]
 
 
@@ -257,7 +252,7 @@ class RhythmCommand(object):
     ..  container:: example
 
         >>> command = rmakers.command(
-        ...     rmakers.RhythmAssignments(
+        ...     rmakers.tesselate(
         ...         rmakers.assign(
         ...             rmakers.even_division(
         ...                 [8], denominator=16, extra_counts=[1]
@@ -383,14 +378,11 @@ class RhythmCommand(object):
             assignments.append(assignment)
         elif isinstance(rhythm_maker, RhythmAssignment):
             assignments.append(rhythm_maker)
-        elif isinstance(rhythm_maker, RhythmAssignments):
+        elif isinstance(rhythm_maker, Tesselation):
             for item in rhythm_maker.assignments:
-                assert isinstance(item, RhythmAssignment)
                 assignments.append(item)
         else:
-            message = "must be rhythm-maker or division assignment(s)"
-            message += f" (not {rhythm_maker})."
-            raise TypeError(message)
+            raise TypeError(rhythm_maker)
         assert all(isinstance(_, RhythmAssignment) for _ in assignments)
         matches = []
         for i, division in enumerate(divisions):
@@ -602,12 +594,7 @@ class RhythmCommand(object):
                 command(voice, tag=self.tag)
 
     def _check_rhythm_maker_input(self, rhythm_maker):
-        prototype = (
-            RhythmAssignment,
-            RhythmAssignments,
-            RhythmCommand,
-            RhythmMaker,
-        )
+        prototype = (RhythmAssignment, RhythmCommand, RhythmMaker, Tesselation)
         if isinstance(rhythm_maker, prototype):
             return
         message = '\n  Input parameter "rhythm_maker" accepts:'
@@ -815,80 +802,6 @@ class RhythmAssignment(object):
         Gets rhythm-maker.
         """
         return self._rhythm_maker
-
-
-class RhythmAssignments(object):
-    """
-    Rhythm assignments.
-    """
-
-    ### CLASS VARIABLES ###
-
-    __slots__ = "_assignments"
-
-    # to make sure abjad.new() copies sassignments
-    _positional_arguments_name = "assignments"
-
-    _publish_storage_format = True
-
-    ### INITIALIZER ###
-
-    def __init__(self, *assignments: RhythmAssignment) -> None:
-        assignments = assignments or ()
-        for assignment in assignments:
-            if not isinstance(assignment, RhythmAssignment):
-                message = "must be maker assignment:\n"
-                message += f"   {repr(assignment)}"
-                raise Exception(message)
-        assignments_ = tuple(assignments)
-        self._assignments = assignments_
-
-    ### SPECIAL METHODS ###
-
-    def __eq__(self, argument) -> bool:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager.compare_objects(self, argument)
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __hash__(self) -> int:
-        """
-        Delegates to storage format manager.
-        """
-        hash_values = abjad.StorageFormatManager(self).get_hash_values()
-        try:
-            result = hash(hash_values)
-        except TypeError:
-            raise TypeError(f"unhashable type: {self}")
-        return result
-
-    def __repr__(self) -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
-
-    ### PRIVATE METHODS ###
-
-    def _get_format_specification(self):
-        return abjad.FormatSpecification(
-            self, storage_format_args_values=self.assignments
-        )
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def assignments(self) -> typing.List[RhythmAssignment]:
-        """
-        Gets assignments.
-        """
-        return list(self._assignments)
 
 
 class Tesselation(object):

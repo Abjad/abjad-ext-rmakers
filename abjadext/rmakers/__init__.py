@@ -17,7 +17,6 @@ from .makers import tuplet
 from .RhythmCommand import MakerMatch
 from .RhythmCommand import RhythmCommand
 from .RhythmCommand import RhythmAssignment
-from .RhythmCommand import RhythmAssignments
 from .RhythmCommand import Stack
 from .RhythmCommand import Tesselation
 from .RhythmCommand import assign
