@@ -1,5 +1,4 @@
 import abjad
-import types
 import typing
 from . import commands as _commands
 from .RhythmMaker import RhythmMaker
@@ -19,7 +18,7 @@ class Stack(object):
 
     ### CLASS ATTRIBUTES ###
 
-    __slots__ = "_commands"
+    __slots__ = ("_commands", "_maker")
 
     # to make sure abjad.new() copies commands
     _positional_arguments_name = "commands"
@@ -28,35 +27,37 @@ class Stack(object):
 
     ### INITIALIZER ###
 
-    def __init__(self, *commands) -> None:
+    def __init__(self, maker, *commands) -> None:
+        assert isinstance(maker, (Stack, RhythmMaker)), repr(maker)
+        self._maker = maker
         commands = commands or ()
         commands_ = tuple(commands)
         self._commands = commands_
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, argument: typing.Any, **keywords) -> typing.Any:
+    def __call__(
+        self,
+        time_signatures: typing.Sequence[abjad.TimeSignature],
+        previous_state: abjad.OrderedDict = None,
+    ) -> abjad.Selection:
         """
-        Calls stack on ``argument``.
+        Calls stack.
         """
-        if not self.commands:
-            return result
-        try:
-            result: typing.Any = self.commands[0](argument, **keywords)
-        except:
-            message = "exception while calling:\n"
-            message += f"   {format(self.commands[0])}"
-            raise Exception(message)
-        for command in self.commands[1:]:
+        time_signatures = [abjad.TimeSignature(_) for _ in time_signatures]
+        original_duration = sum(_.duration for _ in time_signatures)
+        selection = self.maker(time_signatures, previous_state=previous_state)
+        voice = abjad.Voice(selection)
+        for command in self.commands:
             try:
-                result_ = command(result)
+                command(voice)
             except:
                 message = "exception while calling:\n"
                 message += f"   {format(command)}"
                 raise Exception(message)
-            if result_ is not None:
-                result = result_
-        return result
+        selection = voice[:]
+        voice[:] = []
+        return selection
 
     def __eq__(self, argument) -> bool:
         """
@@ -103,6 +104,13 @@ class Stack(object):
         Gets commands.
         """
         return list(self._commands)
+
+    @property
+    def maker(self) -> typing.Union["Stack", RhythmMaker]:
+        """
+        Gets maker.
+        """
+        return self._maker
 
 
 class MakerMatch(object):
@@ -277,7 +285,7 @@ class RhythmCommand(object):
 
     def __call__(
         self,
-        time_signatures: typing.Iterable[abjad.TimeSignature],
+        time_signatures: typing.Sequence[abjad.TimeSignature],
         previous_segment_stop_state: abjad.OrderedDict = None,
     ) -> abjad.Selection:
         """
@@ -839,8 +847,8 @@ def command(
     )
 
 
-def stack(*commands) -> Stack:
+def stack(maker, *commands) -> Stack:
     """
     Makes stack.
     """
-    return Stack(*commands)
+    return Stack(maker, *commands)

@@ -356,7 +356,7 @@ class ExtractTrivialCommand(Command):
 
     def __call__(self, voice, *, tag: str = None) -> None:
         """
-        Calls duration bracket command.
+        Calls extract trivial command.
         """
         selection = voice
         if self.selector is not None:

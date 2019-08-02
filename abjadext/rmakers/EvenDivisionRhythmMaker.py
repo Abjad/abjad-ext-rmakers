@@ -14,7 +14,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         Forces tuplet diminution:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[0, 0, 1]),
         ...     rmakers.force_diminution(),
         ...     rmakers.beam(),
