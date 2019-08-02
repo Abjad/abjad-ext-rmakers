@@ -64,7 +64,6 @@ class Stack(object):
         """
         Calls stack.
         """
-        ###maker = self.maker
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
         staff = RhythmMaker._make_staff(time_signatures_)
         divisions = self._apply_division_expression(time_signatures_)
@@ -418,9 +417,10 @@ class RhythmCommand(object):
         components: typing.List[abjad.Component] = []
         maker_to_previous_state = abjad.OrderedDict()
         for group in groups:
-            rhythm_maker = group[0].assignment.rhythm_maker
+            assignment = group[0].assignment
+            rhythm_maker = assignment.rhythm_maker
             rhythm_command = None
-            if isinstance(rhythm_maker, type(self)):
+            if isinstance(rhythm_maker, RhythmCommand):
                 rhythm_command = rhythm_maker
                 rhythm_maker = rhythm_maker.rhythm_maker
             if self.tag is not None:
@@ -428,12 +428,10 @@ class RhythmCommand(object):
             pcc = (RhythmMaker, Stack)
             assert isinstance(rhythm_maker, pcc), repr(rhythm_maker)
             divisions_ = [match.payload for match in group]
-            # TODO: eventually allow previous segment stop state
-            #       and local stop state to work together
             previous_state = previous_segment_stop_state
             if (
                 previous_state is None
-                and group[0].assignment.remember_state_across_gaps
+                and assignment.remember_state_across_gaps
             ):
                 previous_state = maker_to_previous_state.get(
                     rhythm_maker, None
@@ -454,17 +452,9 @@ class RhythmCommand(object):
                 voice[:] = []
             assert isinstance(selection, abjad.Selection), repr(selection)
             components.extend(selection)
-            if isinstance(rhythm_maker, Stack):
-                state = rhythm_maker.maker.state
-            else:
-                state = rhythm_maker.state
-            maker_to_previous_state[rhythm_maker] = state
+            maker_to_previous_state[rhythm_maker] = rhythm_maker.state
         assert isinstance(rhythm_maker, (RhythmMaker, Stack))
-        if isinstance(rhythm_maker, Stack):
-            state = rhythm_maker.maker.state
-        else:
-            state = rhythm_maker.state
-        self._state = state
+        self._state = rhythm_maker.state
         selection = abjad.select(components)
         assert isinstance(selection, abjad.Selection), repr(selection)
         staff = RhythmMaker._make_staff(time_signatures_)
@@ -966,35 +956,37 @@ class Tesselation(object):
         )
         components: typing.List[abjad.Component] = []
         maker_to_previous_state = abjad.OrderedDict()
-        pp = (RhythmMaker, RhythmCommand)
+        pp = (RhythmCommand, RhythmMaker, Stack)
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
             if self.tag is not None:
                 rhythm_maker = abjad.new(rhythm_maker, tag=self.tag)
             assert isinstance(rhythm_maker, pp), repr(rhythm_maker)
             divisions_ = [match.payload for match in group]
-            ###previous_state = previous_segment_stop_state
+            previous_state_ = previous_state
             if (
-                previous_state is None
+                previous_state_ is None
                 and group[0].assignment.remember_state_across_gaps
             ):
-                previous_state = maker_to_previous_state.get(
+                previous_state_ = maker_to_previous_state.get(
                     rhythm_maker, None
                 )
-            if isinstance(rhythm_maker, RhythmMaker):
+            if isinstance(rhythm_maker, (RhythmMaker, Stack)):
                 selection = rhythm_maker(
-                    divisions_, previous_state=previous_state
+                    divisions_, previous_state=previous_state_
                 )
             else:
                 selection = rhythm_maker(
-                    divisions_, previous_segment_stop_state=previous_state
+                    divisions_, previous_segment_stop_state=previous_state_
                 )
             assert isinstance(selection, abjad.Selection), repr(selection)
             components.extend(selection)
             maker_to_previous_state[rhythm_maker] = rhythm_maker.state
         if isinstance(rhythm_maker, RhythmCommand):
             rhythm_maker = rhythm_maker.rhythm_maker
-        assert isinstance(rhythm_maker, RhythmMaker), repr(rhythm_maker)
+        assert isinstance(rhythm_maker, (RhythmMaker, Stack)), repr(
+            rhythm_maker
+        )
         self._state = rhythm_maker.state
         selection = abjad.select(components)
         return selection
