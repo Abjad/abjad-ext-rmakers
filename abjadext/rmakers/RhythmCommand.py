@@ -444,7 +444,9 @@ class RhythmCommand(object):
                 rhythm_command._call_commands(
                     voice, divisions_consumed, rhythm_maker
                 )
-                selection = voice[:]
+                result_ = voice[:]
+                assert isinstance(result_, abjad.Selection)
+                selection = result_
                 voice[:] = []
             assert isinstance(selection, abjad.Selection), repr(selection)
             components.extend(selection)
@@ -467,9 +469,10 @@ class RhythmCommand(object):
         divisions_consumed = division_count
         self._call_commands(voice, divisions_consumed, rhythm_maker)
         self._validate_tuplets(voice)
-        selection = voice[:]
+        result = voice[:]
+        assert isinstance(result, abjad.Selection)
         voice[:] = []
-        return selection
+        return result
 
     def __eq__(self, argument) -> bool:
         """
