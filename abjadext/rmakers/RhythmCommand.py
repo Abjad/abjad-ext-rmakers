@@ -1,145 +1,15 @@
 import abjad
+import types
 import typing
 from . import commands as _commands
 from .RhythmMaker import RhythmMaker
 
 RhythmMakerTyping = typing.Union[
-    RhythmMaker, "MakerAssignment", "MakerAssignments"
+    RhythmMaker, "RhythmAssignment", "RhythmAssignments"
 ]
 
 
 ### CLASSES ###
-
-
-class MakerAssignment(object):
-    """
-    Maker assignment.
-    """
-
-    ### CLASS VARIABLES ###
-
-    __slots__ = ("_pattern", "_remember_state_across_gaps", "_rhythm_maker")
-
-    _publish_storage_format = True
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        pattern: typing.Union[abjad.DurationInequality, abjad.Pattern],
-        # TODO: eventually restore typecheck:
-        ###rhythm_maker: typing.Union[RhythmMaker, "RhythmCommand"],
-        rhythm_maker,
-        *,
-        remember_state_across_gaps: bool = None,
-    ) -> None:
-        prototype = (abjad.DurationInequality, abjad.Pattern)
-        assert isinstance(pattern, prototype), repr(pattern)
-        self._pattern = pattern
-        ###r_prototype = (RhythmMaker, RhythmCommand)
-        ###assert isinstance(rhythm_maker, r_prototype), repr(rhythm_maker)
-        self._rhythm_maker = rhythm_maker
-        if remember_state_across_gaps is None:
-            remember_state_across_gaps = bool(remember_state_across_gaps)
-        self._remember_state_across_gaps = remember_state_across_gaps
-
-    ### SPECIAL METHODS ###
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Gets storage format.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation.
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def pattern(
-        self
-    ) -> typing.Union[abjad.DurationInequality, abjad.Pattern, None]:
-        """
-        Gets pattern.
-        """
-        return self._pattern
-
-    @property
-    def remember_state_across_gaps(self) -> typing.Optional[bool]:
-        """
-        Is true when assignment remembers rhythm-maker state across gaps.
-        """
-        return self._remember_state_across_gaps
-
-    # TODO: eventually restore typecheck
-    @property
-    ###def rhythm_maker(self) -> typing.Union[RhythmMaker, "RhythmCommand"]:
-    def rhythm_maker(self):
-        """
-        Gets rhythm-maker.
-        """
-        return self._rhythm_maker
-
-
-class MakerAssignments(object):
-    """
-    Maker assignments.
-    """
-
-    ### CLASS VARIABLES ###
-
-    __slots__ = ("_assignments",)
-
-    # to make sure abjad.new() copies sassignments
-    _positional_arguments_name = "assignments"
-
-    _publish_storage_format = True
-
-    ### INITIALIZER ###
-
-    def __init__(self, *assignments: MakerAssignment) -> None:
-        assignments = assignments or ()
-        for assignment in assignments:
-            if not isinstance(assignment, MakerAssignment):
-                message = "must be maker assignment:\n"
-                message += f"   {repr(assignment)}"
-                raise Exception(message)
-        assignments_ = tuple(assignments)
-        self._assignments = assignments_
-
-    ### SPECIAL METHODS ###
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Gets storage format.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation.
-        """
-        return abjad.StorageFormatManager(self).get_repr_format()
-
-    ### PRIVATE METHODS ###
-
-    def _get_format_specification(self):
-        return abjad.FormatSpecification(
-            self, storage_format_args_values=self.assignments
-        )
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def assignments(self) -> typing.List[MakerAssignment]:
-        """
-        Gets assignments.
-        """
-        return list(self._assignments)
 
 
 class MakerMatch(object):
@@ -159,15 +29,32 @@ class MakerMatch(object):
 
     ### SPECIAL METHODS ###
 
+    def __eq__(self, argument) -> bool:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
     def __format__(self, format_specification="") -> str:
         """
-        Gets storage format.
+        Delegates to storage format manager.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
+    def __hash__(self) -> int:
+        """
+        Delegates to storage format manager.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f"unhashable type: {self}")
+        return result
+
     def __repr__(self) -> str:
         """
-        Gets interpreter representation.
+        Delegates to storage format manager.
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 
@@ -194,22 +81,15 @@ class RhythmCommand(object):
 
     ..  container:: example
 
-        >>> even_divisions = rmakers.EvenDivisionRhythmMaker(
-        ...     denominator=16,
-        ...     extra_counts=[1],
-        ... )
-        >>> notes = rmakers.NoteRhythmMaker()
-
-        >>> command = rmakers.RhythmCommand(
-        ...     rmakers.MakerAssignments(
-        ...         rmakers.MakerAssignment(
+        >>> command = rmakers.command(
+        ...     rmakers.RhythmAssignments(
+        ...         rmakers.assign(
+        ...             rmakers.even_division(
+        ...                 [8], denominator=16, extra_counts=[1]
+        ...             ),
         ...             abjad.index([1], 2),
-        ...             even_divisions,
         ...         ),
-        ...         rmakers.MakerAssignment(
-        ...             abjad.index([0], 1),
-        ...             notes,
-        ...         ),
+        ...         rmakers.assign(rmakers.note()),
         ...     ),
         ... )
 
@@ -218,7 +98,7 @@ class RhythmCommand(object):
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
-        ...     )
+        ... )
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -323,33 +203,34 @@ class RhythmCommand(object):
             message += "... transformed duration."
             raise Exception(message)
         division_count = len(divisions)
-        assignments: typing.List[MakerAssignment] = []
+        assignments: typing.List[RhythmAssignment] = []
         if isinstance(rhythm_maker, (RhythmMaker, RhythmCommand)):
-            assignment = MakerAssignment(abjad.index([0], 1), rhythm_maker)
+            assignment = RhythmAssignment(rhythm_maker, abjad.index([0], 1))
             assignments.append(assignment)
-        elif isinstance(rhythm_maker, MakerAssignment):
+        elif isinstance(rhythm_maker, RhythmAssignment):
             assignments.append(rhythm_maker)
-        elif isinstance(rhythm_maker, MakerAssignments):
+        elif isinstance(rhythm_maker, RhythmAssignments):
             for item in rhythm_maker.assignments:
-                assert isinstance(item, MakerAssignment)
+                assert isinstance(item, RhythmAssignment)
                 assignments.append(item)
         else:
             message = "must be rhythm-maker or division assignment(s)"
             message += f" (not {rhythm_maker})."
             raise TypeError(message)
-        assert all(isinstance(_, MakerAssignment) for _ in assignments)
+        assert all(isinstance(_, RhythmAssignment) for _ in assignments)
         matches = []
         for i, division in enumerate(divisions):
             for assignment in assignments:
-                if isinstance(
-                    assignment.pattern, abjad.Pattern
-                ) and assignment.pattern.matches_index(i, division_count):
+                if assignment.predicate is None:
                     match = MakerMatch(assignment, division)
                     matches.append(match)
                     break
-                elif isinstance(
-                    assignment.pattern, abjad.DurationInequality
-                ) and assignment.pattern(division):
+                elif isinstance(assignment.predicate, abjad.Pattern):
+                    if assignment.predicate.matches_index(i, division_count):
+                        match = MakerMatch(assignment, division)
+                        matches.append(match)
+                        break
+                elif assignment.predicate(division):
                     match = MakerMatch(assignment, division)
                     matches.append(match)
                     break
@@ -416,16 +297,16 @@ class RhythmCommand(object):
 
         ..  container:: example
 
-            >>> command_1 = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            >>> command_1 = rmakers.command(
+            ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
-            >>> command_2 = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            >>> command_2 = rmakers.command(
+            ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
-            >>> command_3 = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            >>> command_3 = rmakers.command(
+            ...     rmakers.tuplet([(1, 2)]),
             ... )
 
             >>> command_1 == command_1
@@ -454,7 +335,7 @@ class RhythmCommand(object):
 
     def __hash__(self) -> int:
         """
-        Hashes rhythm command.
+        Delegates to storage format manager.
         """
         hash_values = abjad.StorageFormatManager(self).get_hash_values()
         try:
@@ -465,14 +346,14 @@ class RhythmCommand(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats rhythm command.
+        Delegates to storage format manager.
 
         ..  container:: example
 
             REGRESSION. Commands appear in format:
 
-            >>> command = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            >>> command = rmakers.command(
+            ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
             >>> abjad.f(command)
@@ -490,12 +371,12 @@ class RhythmCommand(object):
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation of rhythm command.
+        Delegates to storage format manager.
 
         ..  container:: example
 
-            >>> rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            >>> rmakers.command(
+            ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
             RhythmCommand(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), ForceFractionCommand())
@@ -544,8 +425,8 @@ class RhythmCommand(object):
 
     def _check_rhythm_maker_input(self, rhythm_maker):
         prototype = (
-            MakerAssignment,
-            MakerAssignments,
+            RhythmAssignment,
+            RhythmAssignments,
             RhythmCommand,
             RhythmMaker,
         )
@@ -595,8 +476,8 @@ class RhythmCommand(object):
 
             REGRESSION. ``abjad.new()`` copies commands:
 
-            >>> command_1 = rmakers.RhythmCommand(
-            ...     rmakers.TupletRhythmMaker(tuplet_ratios=[(1, 2)]),
+            >>> command_1 = rmakers.command(
+            ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
             >>> command_2 = abjad.new(command_1)
@@ -643,7 +524,7 @@ class RhythmCommand(object):
 
             Raises exception on invalid input:
 
-            >>> command = rmakers.RhythmCommand(
+            >>> command = rmakers.command(
             ...     rhythm_maker='text',
             ...     )
             Traceback (most recent call last):
@@ -673,11 +554,185 @@ class RhythmCommand(object):
         return self._tag
 
 
+class RhythmAssignment(object):
+    """
+    Rhythm assignment.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_predicate", "_remember_state_across_gaps", "_rhythm_maker")
+
+    _publish_storage_format = True
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        rhythm_maker: typing.Union[RhythmMaker, RhythmCommand],
+        predicate: typing.Union[typing.Callable, abjad.Pattern] = None,
+        *,
+        remember_state_across_gaps: bool = None,
+    ) -> None:
+        if predicate is not None and not isinstance(predicate, abjad.Pattern):
+            assert callable(predicate)
+        self._predicate = predicate
+        prototype = (RhythmMaker, RhythmCommand)
+        assert isinstance(rhythm_maker, prototype), repr(rhythm_maker)
+        self._rhythm_maker = rhythm_maker
+        if remember_state_across_gaps is None:
+            remember_state_across_gaps = bool(remember_state_across_gaps)
+        self._remember_state_across_gaps = remember_state_across_gaps
+
+    ### SPECIAL METHODS ###
+
+    def __eq__(self, argument) -> bool:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __hash__(self) -> int:
+        """
+        Delegates to storage format manager.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f"unhashable type: {self}")
+        return result
+
+    def __repr__(self) -> str:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def predicate(self) -> typing.Union[typing.Callable, abjad.Pattern, None]:
+        """
+        Gets predicate.
+        """
+        return self._predicate
+
+    @property
+    def remember_state_across_gaps(self) -> typing.Optional[bool]:
+        """
+        Is true when assignment remembers rhythm-maker state across gaps.
+        """
+        return self._remember_state_across_gaps
+
+    @property
+    def rhythm_maker(self) -> typing.Union[RhythmMaker, RhythmCommand]:
+        """
+        Gets rhythm-maker.
+        """
+        return self._rhythm_maker
+
+
+class RhythmAssignments(object):
+    """
+    Rhythm assignments.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = "_assignments"
+
+    # to make sure abjad.new() copies sassignments
+    _positional_arguments_name = "assignments"
+
+    _publish_storage_format = True
+
+    ### INITIALIZER ###
+
+    def __init__(self, *assignments: RhythmAssignment) -> None:
+        assignments = assignments or ()
+        for assignment in assignments:
+            if not isinstance(assignment, RhythmAssignment):
+                message = "must be maker assignment:\n"
+                message += f"   {repr(assignment)}"
+                raise Exception(message)
+        assignments_ = tuple(assignments)
+        self._assignments = assignments_
+
+    ### SPECIAL METHODS ###
+
+    def __eq__(self, argument) -> bool:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __hash__(self) -> int:
+        """
+        Delegates to storage format manager.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f"unhashable type: {self}")
+        return result
+
+    def __repr__(self) -> str:
+        """
+        Delegates to storage format manager.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+    ### PRIVATE METHODS ###
+
+    def _get_format_specification(self):
+        return abjad.FormatSpecification(
+            self, storage_format_args_values=self.assignments
+        )
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def assignments(self) -> typing.List[RhythmAssignment]:
+        """
+        Gets assignments.
+        """
+        return list(self._assignments)
+
+
 ### FACTORY FUNCTIONS ###
 
 
-def rhythm(
-    # TODO: change to "*assignments"
+def assign(
+    rhythm_maker,
+    predicate: typing.Union[typing.Callable, abjad.Pattern] = None,
+    *,
+    remember_state_across_gaps: bool = None,
+) -> RhythmAssignment:
+    """
+    Makes rhythm assignment.
+    """
+    return RhythmAssignment(
+        rhythm_maker,
+        predicate,
+        remember_state_across_gaps=remember_state_across_gaps,
+    )
+
+
+def command(
     rhythm_maker: RhythmMakerTyping,
     *commands: _commands.Command,
     preprocessor: abjad.Expression = None,
@@ -687,9 +742,5 @@ def rhythm(
     Makes rhythm command.
     """
     return RhythmCommand(
-        # TODO: change to "*assignments"
-        rhythm_maker,
-        *commands,
-        preprocessor=preprocessor,
-        tag=tag,
+        rhythm_maker, *commands, preprocessor=preprocessor, tag=tag
     )

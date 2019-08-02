@@ -15,10 +15,11 @@ from .makers import note
 from .makers import talea
 from .makers import tuplet
 from .RhythmCommand import RhythmCommand
-from .RhythmCommand import MakerAssignment
-from .RhythmCommand import MakerAssignments
+from .RhythmCommand import RhythmAssignment
+from .RhythmCommand import RhythmAssignments
 from .RhythmCommand import MakerMatch
-from .RhythmCommand import rhythm
+from .RhythmCommand import assign
+from .RhythmCommand import command
 from .specifiers import Incise
 from .specifiers import Interpolation
 from .specifiers import Spelling

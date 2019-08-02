@@ -14,7 +14,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Makes accelerandi:
 
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.feather_beam(),
         ...     rmakers.duration_bracket(),
@@ -255,7 +255,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Makes ritardandi:
 
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando([(1, 20), (1, 8), (1, 16)]),
         ...     rmakers.feather_beam(),
         ...     rmakers.duration_bracket(),
@@ -500,7 +500,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         REGRESSION. ``abjad.new()`` preserves commands:
 
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.force_fraction()
         ... )
@@ -512,7 +512,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Sets duration bracket with no beams:
 
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.duration_bracket(),
         ... )
@@ -741,7 +741,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Beams tuplets together without feathering:
 
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.beam_groups(abjad.select().tuplets()),
         ...     rmakers.duration_bracket(),
@@ -1021,7 +1021,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         >>> last_leaf = abjad.select().leaf(-1)
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.duration_bracket(),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
@@ -1268,7 +1268,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         >>> tuplets = abjad.select().tuplets().get([0], 2)
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.duration_bracket(),
         ...     rmakers.tie(tuplets.map(last_leaf)),
@@ -1512,7 +1512,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Forces rests at first and last leaves:
 
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando(
         ...         [(1, 8), (1, 20), (1, 16)],
         ...         [(1, 20), (1, 8), (1, 16)],
@@ -1771,7 +1771,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Forces rests in every other tuplet:
 
-        >>> rhythm_maker = rmakers.rhythm(
+        >>> rhythm_maker = rmakers.command(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.force_rest(abjad.select().tuplets().get([1], 2)),
         ...     rmakers.rewrite_rest_filled(),
@@ -2234,7 +2234,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Alternates accelerandi and ritardandi:
 
-            >>> rhythm_maker = rmakers.rhythm(
+            >>> rhythm_maker = rmakers.command(
             ...     rmakers.accelerando(
             ...         [(1, 8), (1, 20), (1, 16)],
             ...         [(1, 20), (1, 8), (1, 16)],
@@ -2480,7 +2480,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Makes a single note in short division:
 
-            >>> rhythm_maker = rmakers.rhythm(
+            >>> rhythm_maker = rmakers.command(
             ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
             ...     rmakers.feather_beam(),
             ...     rmakers.duration_bracket(),
@@ -2634,7 +2634,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Consumes 3 divisions:
 
-            >>> command = rmakers.rhythm(
+            >>> command = rmakers.command(
             ...     rmakers.accelerando(
             ...         [(1, 8), (1, 20), (1, 16)],
             ...         [(1, 20), (1, 8), (1, 16)],
@@ -3225,7 +3225,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             Tags LilyPond output:
 
-            >>> rhythm_maker = rmakers.rhythm(
+            >>> rhythm_maker = rmakers.command(
             ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
             ...     rmakers.feather_beam(),
             ...     rmakers.duration_bracket(),

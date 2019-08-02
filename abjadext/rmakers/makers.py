@@ -30,6 +30,7 @@ def accelerando(
 
 def even_division(
     denominators: typing.Sequence[int],
+    *,
     denominator: typing.Union[str, int] = "from_counts",
     extra_counts: typing.Sequence[int] = None,
     spelling: _specifiers.Spelling = None,
