@@ -12,6 +12,99 @@ RhythmMakerTyping = typing.Union[
 ### CLASSES ###
 
 
+class Stack(object):
+    """
+    Stack.
+    """
+
+    ### CLASS ATTRIBUTES ###
+
+    __slots__ = "_commands"
+
+    # to make sure abjad.new() copies commands
+    _positional_arguments_name = "commands"
+
+    _publish_storage_format = True
+
+    ### INITIALIZER ###
+
+    def __init__(self, *commands) -> None:
+        commands = commands or ()
+        commands_ = tuple(commands)
+        self._commands = commands_
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, argument: typing.Any, **keywords) -> typing.Any:
+        """
+        Calls stack on ``argument``.
+        """
+        if not self.commands:
+            return result
+        try:
+            result: typing.Any = self.commands[0](argument, **keywords)
+        except:
+            message = "exception while calling:\n"
+            message += f"   {format(self.commands[0])}"
+            raise Exception(message)
+        for command in self.commands[1:]:
+            try:
+                result_ = command(result)
+            except:
+                message = "exception while calling:\n"
+                message += f"   {format(command)}"
+                raise Exception(message)
+            if result_ is not None:
+                result = result_
+        return result
+
+    def __eq__(self, argument) -> bool:
+        """
+        Delegates to format manager.
+        """
+        return abjad.StorageFormatManager.compare_objects(self, argument)
+
+    def __format__(self, format_specification="") -> str:
+        """
+        Delegates to format manager.
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __hash__(self) -> int:
+        """
+        Delegates to format manager.
+        """
+        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        try:
+            result = hash(hash_values)
+        except TypeError:
+            raise TypeError(f"unhashable type: {self}")
+        return result
+
+    def __repr__(self) -> str:
+        """
+        Delegates to format manager.
+        """
+        return abjad.StorageFormatManager(self).get_repr_format()
+
+    ### PRIVATE METHODS ###
+
+    def _get_format_specification(self):
+        manager = abjad.StorageFormatManager(self)
+        return abjad.FormatSpecification(
+            self, storage_format_args_values=self.commands
+        )
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def commands(self):
+        """
+        Gets commands.
+        """
+        return list(self._commands)
+
+
 class MakerMatch(object):
     """
     Maker match.
@@ -744,3 +837,10 @@ def command(
     return RhythmCommand(
         rhythm_maker, *commands, preprocessor=preprocessor, tag=tag
     )
+
+
+def stack(*commands) -> Stack:
+    """
+    Makes stack.
+    """
+    return Stack(*commands)

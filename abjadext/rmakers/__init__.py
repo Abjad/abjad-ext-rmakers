@@ -14,12 +14,14 @@ from .makers import incised
 from .makers import note
 from .makers import talea
 from .makers import tuplet
+from .RhythmCommand import MakerMatch
 from .RhythmCommand import RhythmCommand
 from .RhythmCommand import RhythmAssignment
 from .RhythmCommand import RhythmAssignments
-from .RhythmCommand import MakerMatch
+from .RhythmCommand import Stack
 from .RhythmCommand import assign
 from .RhythmCommand import command
+from .RhythmCommand import stack
 from .specifiers import Incise
 from .specifiers import Interpolation
 from .specifiers import Spelling
