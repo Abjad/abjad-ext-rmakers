@@ -435,17 +435,17 @@ class RhythmCommand(object):
                 voice[:] = []
             assert isinstance(selection, abjad.Selection), repr(selection)
             components.extend(selection)
-            if isinstance(rhythm_maker, RhythmMaker):
-                maker_to_previous_state[rhythm_maker] = rhythm_maker.state
+            if isinstance(rhythm_maker, Stack):
+                state = rhythm_maker.maker.state
             else:
-                assert isinstance(rhythm_maker, Stack)
-                maker_to_previous_state[
-                    rhythm_maker
-                ] = rhythm_maker.maker.state
-        if isinstance(rhythm_maker, RhythmMaker):
-            self._state = rhythm_maker.state
+                state = rhythm_maker.state
+            maker_to_previous_state[rhythm_maker] = state
+        assert isinstance(rhythm_maker, (RhythmMaker, Stack))
+        if isinstance(rhythm_maker, Stack):
+            state = rhythm_maker.maker.state
         else:
-            self._state = rhythm_maker.maker.state
+            state = rhythm_maker.state
+        self._state = state
         selection = abjad.select(components)
         assert isinstance(selection, abjad.Selection), repr(selection)
         staff = RhythmMaker._make_staff(time_signatures_)
