@@ -18,7 +18,7 @@ class Stack(object):
 
     ### CLASS ATTRIBUTES ###
 
-    __slots__ = ("_commands", "_maker")
+    __slots__ = ("_commands", "_maker", "_tag")
 
     # to make sure abjad.new() copies commands
     _positional_arguments_name = "commands"
@@ -27,12 +27,15 @@ class Stack(object):
 
     ### INITIALIZER ###
 
-    def __init__(self, maker, *commands) -> None:
+    def __init__(self, maker, *commands, tag: str = None) -> None:
         assert isinstance(maker, (Stack, RhythmMaker)), repr(maker)
         self._maker = maker
         commands = commands or ()
         commands_ = tuple(commands)
         self._commands = commands_
+        if tag is not None:
+            assert isinstance(tag, str), repr(tag)
+        self._tag = tag
 
     ### SPECIAL METHODS ###
 
@@ -46,11 +49,14 @@ class Stack(object):
         """
         time_signatures = [abjad.TimeSignature(_) for _ in time_signatures]
         original_duration = sum(_.duration for _ in time_signatures)
-        selection = self.maker(time_signatures, previous_state=previous_state)
+        maker = self.maker
+        if self.tag is not None:
+            maker = abjad.new(maker, tag=self.tag)
+        selection = maker(time_signatures, previous_state=previous_state)
         voice = abjad.Voice(selection)
         for command in self.commands:
             try:
-                command(voice)
+                command(voice, tag=self.tag)
             except:
                 message = "exception while calling:\n"
                 message += f"   {format(command)}"
@@ -111,6 +117,13 @@ class Stack(object):
         Gets maker.
         """
         return self._maker
+
+    @property
+    def tag(self) -> typing.Optional[str]:
+        """
+        Gets tag.
+        """
+        return self._tag
 
 
 class MakerMatch(object):
@@ -847,8 +860,8 @@ def command(
     )
 
 
-def stack(maker, *commands) -> Stack:
+def stack(maker, *commands, tag: str = None) -> Stack:
     """
     Makes stack.
     """
-    return Stack(maker, *commands)
+    return Stack(maker, *commands, tag=tag)
