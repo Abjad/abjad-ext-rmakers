@@ -538,7 +538,7 @@ class ForceNoteCommand(Command):
 
         Changes logical ties 1 and 2 to notes:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().leaves()),
         ...     rmakers.force_note(abjad.select().logical_ties()[1:3]),
@@ -580,7 +580,7 @@ class ForceNoteCommand(Command):
 
         Sustains logical ties -1 and -2 to notes:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().leaves()),
         ...     rmakers.force_note(abjad.select().logical_ties()[-2:]),
@@ -622,7 +622,7 @@ class ForceNoteCommand(Command):
 
         Changes patterned selection of leaves to notes:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().leaves()),
         ...     rmakers.force_note(abjad.select().logical_ties()[1:-1]),
@@ -665,7 +665,7 @@ class ForceNoteCommand(Command):
         Changes patterned selection of leave to notes. Works inverted composite
         pattern:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().leaves()),
         ...     rmakers.force_note(abjad.select().logical_ties().get([0, -1])),
@@ -817,7 +817,7 @@ class ForceRestCommand(Command):
 
         Changes logical ties 1 and 2 to rests:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().logical_ties()[1:3]),
         ... )
@@ -858,7 +858,7 @@ class ForceRestCommand(Command):
 
         Changes logical ties -1 and -2 to rests:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().logical_ties()[-2:]),
         ... )
@@ -899,7 +899,7 @@ class ForceRestCommand(Command):
 
         Changes patterned selection of logical ties to rests:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(abjad.select().logical_ties()[1:-1]),
         ... )
@@ -941,7 +941,7 @@ class ForceRestCommand(Command):
         Changes patterned selection of logical ties to rests. Works with
         inverted composite pattern:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(
         ...         abjad.select().logical_ties().get([0, -1]),
@@ -1479,7 +1479,7 @@ def denominator(
         relatively prime when ``denominator`` is set to none. This
         means that ratios like ``6:4`` and ``10:8`` do not arise:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.beam(),
@@ -1545,7 +1545,7 @@ def denominator(
         duration when ``denominator`` is set to a duration. The
         setting does not affect the first tuplet:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator((1, 16)),
@@ -1611,7 +1611,7 @@ def denominator(
         Sets the preferred denominator of each tuplet in terms 32nd notes.
         The setting affects all tuplets:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator((1, 32)),
@@ -1677,7 +1677,7 @@ def denominator(
         Sets the preferred denominator each tuplet in terms 64th notes. The
         setting affects all tuplets:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator((1, 64)),
@@ -1745,7 +1745,7 @@ def denominator(
         sets the preferred denominator of each tuplet to ``8``. Setting
         does not affect the third tuplet:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator(8),
@@ -1811,7 +1811,7 @@ def denominator(
         Sets the preferred denominator of each tuplet to ``12``. Setting
         affects all tuplets:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator(12),
@@ -1880,7 +1880,7 @@ def denominator(
         Sets the preferred denominator of each tuplet to ``13``. Setting
         does not affect any tuplet:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.denominator(13),
@@ -1964,7 +1964,7 @@ def extract_trivial(
 
         With selector:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8]),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(abjad.select().tuplets()[-2:]),
@@ -2058,7 +2058,7 @@ def force_augmentation(
 
         This means that even simple tuplets format as explicit fractions:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.beam(),
         ...     )
@@ -2114,7 +2114,7 @@ def force_augmentation(
         We can temporarily restore LilyPond's default tuplet numbering like
         this:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.beam(),
         ...     )
@@ -2177,7 +2177,7 @@ def force_augmentation(
         Which then makes it possible to show that the force fraction
         property cancels LilyPond's default tuplet numbering once again:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.force_fraction(),
         ...     rmakers.beam(),
@@ -2297,7 +2297,7 @@ def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
 
         >>> selector = abjad.select().tuplets()[1:]
         >>> selector = selector.map(abjad.select().note(0))
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.repeat_tie(selector),
         ...     rmakers.beam(),
@@ -2387,7 +2387,7 @@ def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
 
         >>> selector = abjad.select().tuplets().get([1], 2)
         >>> selector = selector.map(abjad.select().note(0))
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.repeat_tie(selector),
         ...     rmakers.beam(),
@@ -2500,7 +2500,7 @@ def rewrite_rest_filled(
 
         Does not rewrite rest-filled tuplets:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.talea([-1], 16, extra_counts=[1]),
         ...     rmakers.extract_trivial(),
         ...     )
@@ -2568,7 +2568,7 @@ def rewrite_rest_filled(
 
         Rewrites rest-filled tuplets:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.talea([-1], 16, extra_counts=[1]),
         ...     rmakers.rewrite_rest_filled(),
         ...     rmakers.extract_trivial(),
@@ -2611,7 +2611,7 @@ def rewrite_rest_filled(
 
         With spelling specifier:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.talea([-1], 16, extra_counts=[1]),
         ...     rmakers.rewrite_rest_filled(
         ...         spelling=rmakers.Spelling(increase_monotonic=True)
@@ -2656,7 +2656,7 @@ def rewrite_rest_filled(
 
         With selector:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.talea([-1], 16, extra_counts=[1]),
         ...     rmakers.rewrite_rest_filled(
         ...         abjad.select().tuplets()[-2:],
@@ -2730,7 +2730,7 @@ def rewrite_sustained(
         likely to rewrite:
 
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.talea([6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]),
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
         ...     rmakers.beam(),
@@ -2808,7 +2808,7 @@ def rewrite_sustained(
         Rewrite sustained tuplets like this:
 
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.talea([6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]),
         ...     rmakers.rewrite_sustained(),
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
@@ -2868,7 +2868,7 @@ def rewrite_sustained(
         that result -- like this:
 
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.talea([6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]),
         ...     rmakers.beam(),
         ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
@@ -2920,7 +2920,7 @@ def rewrite_sustained(
 
         >>> selector = abjad.select().notes()[:-1]
         >>> selector = abjad.select().tuplets().map(selector)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
         ...     rmakers.rewrite_sustained(
@@ -3003,7 +3003,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
 
         TIE-CONSECUTIVE-NOTES RECIPE. Attaches ties notes in selection:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(abjad.select().notes()[5:15]),
         ...     rmakers.beam(),
@@ -3101,7 +3101,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
 
         >>> selector = abjad.select().tuplets()[:-1]
         >>> selector = selector.map(abjad.select().note(-1))
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
         ...     rmakers.beam(),
@@ -3191,7 +3191,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
 
         >>> selector = abjad.select().tuplets().get([0], 2)
         >>> selector = selector.map(abjad.select().note(-1))
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
         ...     rmakers.beam(),
@@ -3281,7 +3281,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.tuplet([(5, 2)]),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
         ...     )
@@ -3340,7 +3340,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
         >>> selector = abjad.select().tuplets()
         >>> nonlast_notes = abjad.select().notes()[:-1]
         >>> selector = selector.map(nonlast_notes)
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.untie(selector),
         ...     rmakers.tie(selector),
@@ -3438,7 +3438,7 @@ def tie(selector: abjad.SelectorTyping = None) -> TieCommand:
 
         >>> selector = abjad.select().tuplets().get([0], 2)
         >>> selector = selector.map(abjad.select().notes()[:-1])
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
         ...     rmakers.beam(),
@@ -3552,7 +3552,7 @@ def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
         Attaches ties to nonlast notes; then detaches ties from select
         notes:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(abjad.select().notes()[:-1]),
         ...     rmakers.untie(abjad.select().notes().get([0], 4)),
@@ -3651,7 +3651,7 @@ def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
         Attaches repeat-ties to nonfirst notes; then detaches ties from
         select notes:
 
-        >>> rhythm_maker = rmakers.command(
+        >>> rhythm_maker = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.repeat_tie(abjad.select().notes()[1:]),
         ...     rmakers.untie(abjad.select().notes().get([0], 4)),

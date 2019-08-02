@@ -201,7 +201,7 @@ class Incise(object):
 
             Divides middle part of every division ``1:1``:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[0, 1],
@@ -562,7 +562,7 @@ class Spelling(object):
 
             Decreases monotically:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.talea(
             ...         [5],
             ...         16,
@@ -616,7 +616,7 @@ class Spelling(object):
 
             Increases monotically:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.talea(
             ...         [5],
             ...         16,
@@ -678,7 +678,7 @@ class Spelling(object):
 
             Forbids note durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.talea(
             ...         [1, 1, 1, 1, 4, -4],
             ...         16,
@@ -745,7 +745,7 @@ class Spelling(object):
 
             Forbids rest durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = rmakers.command(
+            >>> rhythm_maker = rmakers.stack(
             ...     rmakers.talea(
             ...         [1, 1, 1, 1, 4, -4],
             ...         16,

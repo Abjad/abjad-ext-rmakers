@@ -720,7 +720,7 @@ class NoteRhythmMaker(RhythmMaker):
     #            ...     weights, cyclic=True, overhang=True,
     #            ...     )
     #            >>> divisions = divisions.flatten(depth=-1)
-    #            >>> rhythm_maker = rmakers.command(rmakers.note(), preprocessor=divisions)
+    #            >>> rhythm_maker = rmakers.stack(rmakers.note(), preprocessor=divisions)
     #
     #            >>> divisions = [(4, 4), (4, 4)]
     #            >>> selection = rhythm_maker(divisions)
