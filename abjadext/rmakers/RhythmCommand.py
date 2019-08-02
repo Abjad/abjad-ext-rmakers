@@ -51,17 +51,19 @@ class Stack(object):
         if self.tag is not None:
             maker = abjad.new(maker, tag=self.tag)
         selection = maker(time_signatures, previous_state=previous_state)
-        voice = abjad.Voice(selection)
+        time_signatures = [abjad.TimeSignature(_) for _ in time_signatures]
+        staff = RhythmMaker._make_staff(time_signatures)
+        staff["MusicVoice"].extend(selection)
         for command in self.commands:
             try:
-                command(voice, tag=self.tag)
+                command(staff["MusicVoice"], tag=self.tag)
             except:
                 message = "exception while calling:\n"
                 message += f"   {format(command)}"
                 raise Exception(message)
-        result = voice[:]
+        result = staff["MusicVoice"][:]
         assert isinstance(result, abjad.Selection)
-        voice[:] = []
+        staff["MusicVoice"][:] = []
         return result
 
     def __eq__(self, argument) -> bool:
