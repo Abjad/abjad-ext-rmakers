@@ -10309,7 +10309,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         16
                         ),
                     ),
-                BeamCommand(selector=abjad.select().tuplets()),
+                BeamCommand(selector=abjad.select().tuplets().map(expression=abjad.select().leaves(grace=False))),
                 ExtractTrivialCommand()
                 )
 

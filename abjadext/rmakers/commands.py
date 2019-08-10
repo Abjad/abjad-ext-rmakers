@@ -117,9 +117,7 @@ class BeamCommand(Command):
             selections = [selection]
         for selection in selections:
             unbeam()(selection)
-            leaves = abjad.select(selection).leaves(
-                do_not_iterate_grace_containers=True
-            )
+            leaves = abjad.select(selection).leaves()
             abjad.beam(
                 leaves,
                 beam_lone_notes=self.beam_lone_notes,
@@ -159,7 +157,7 @@ class BeamGroupsCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length")
+    __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length", "_tag")
 
     ### INITIALIZER ###
 
@@ -170,6 +168,7 @@ class BeamGroupsCommand(Command):
         beam_lone_notes: bool = None,
         beam_rests: bool = None,
         stemlet_length: abjad.Number = None,
+        tag: str = None,
     ) -> None:
         super().__init__(selector)
         if beam_lone_notes is not None:
@@ -181,6 +180,9 @@ class BeamGroupsCommand(Command):
         if stemlet_length is not None:
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
+        if tag is not None:
+            assert isinstance(tag, str), repr(tag)
+        self._tag = tag
 
     ### SPECIAL METHODS ###
 
@@ -191,6 +193,8 @@ class BeamGroupsCommand(Command):
         components: typing.List[abjad.Component] = []
         if not isinstance(voice, abjad.Voice):
             selections = voice
+            if self.selector is not None:
+                selections = self.selector(selections)
         else:
             assert self.selector is not None
             selections = self.selector(voice)
@@ -206,9 +210,13 @@ class BeamGroupsCommand(Command):
                 components.append(selection)
             else:
                 raise TypeError(selection)
-        leaves = abjad.select(components).leaves(
-            do_not_iterate_grace_containers=True
-        )
+        leaves = abjad.select(components).leaves()
+        parts = []
+        if tag is not None:
+            parts.append(tag)
+        if self.tag is not None:
+            parts.append(self.tag)
+        tag = ":".join(parts)
         abjad.beam(
             leaves,
             beam_lone_notes=self.beam_lone_notes,
@@ -241,6 +249,13 @@ class BeamGroupsCommand(Command):
         Gets stemlet length.
         """
         return self._stemlet_length
+
+    @property
+    def tag(self) -> typing.Optional[str]:
+        """
+        Gets tag.
+        """
+        return self._tag
 
 
 class CacheStateCommand(Command):
@@ -407,9 +422,7 @@ class FeatherBeamCommand(Command):
             selections = [selection]
         for selection in selections:
             unbeam()(selection)
-            leaves = abjad.select(selection).leaves(
-                do_not_iterate_grace_containers=True
-            )
+            leaves = abjad.select(selection).leaves()
             abjad.beam(
                 leaves,
                 beam_rests=self.beam_rests,
@@ -1113,9 +1126,7 @@ class RewriteMeterCommand(Command):
             abjad.mutate(selection).rewrite_meter(meter, rewrite_tuplets=False)
         selections = abjad.select(voice[:]).group_by_measure()
         for meter, selection in zip(meters, selections):
-            leaves = abjad.select(selection).leaves(
-                do_not_iterate_grace_containers=True
-            )
+            leaves = abjad.select(selection).leaves(grace=False)
             beat_durations = []
             beat_offsets = meter.depthwise_offset_inventory[1]
             for start, stop in abjad.sequence(beat_offsets).nwise():
@@ -1388,9 +1399,7 @@ class UnbeamCommand(Command):
             selections = self.selector(selection)
         else:
             selections = selection
-        leaves = abjad.select(selections).leaves(
-            do_not_iterate_grace_containers=True
-        )
+        leaves = abjad.select(selections).leaves()
         for leaf in leaves:
             abjad.detach(abjad.BeamCount, leaf)
             abjad.detach(abjad.StartBeam, leaf)
@@ -1424,7 +1433,9 @@ class UntieCommand(Command):
 
 
 def beam(
-    selector: abjad.SelectorTyping = abjad.select().tuplets(),
+    selector: abjad.SelectorTyping = abjad.select()
+    .tuplets()
+    .map(abjad.select().leaves(grace=False)),
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
@@ -1442,11 +1453,15 @@ def beam(
 
 
 def beam_groups(
-    selector: typing.Optional[abjad.SelectorTyping] = abjad.select(),
+    ###selector: typing.Optional[abjad.SelectorTyping] = abjad.select(),
+    selector: typing.Optional[abjad.SelectorTyping] = abjad.select()
+    .tuplets(level=-1)
+    .map(abjad.select().leaves(grace=False)),
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
     stemlet_length: abjad.Number = None,
+    tag: str = None,
 ) -> BeamGroupsCommand:
     """
     Makes beam divisions together command.
@@ -1456,6 +1471,7 @@ def beam_groups(
         beam_lone_notes=beam_lone_notes,
         beam_rests=beam_rests,
         stemlet_length=stemlet_length,
+        tag=tag,
     )
 
 
@@ -2030,7 +2046,9 @@ def extract_trivial(
 
 
 def feather_beam(
-    selector: abjad.SelectorTyping = abjad.select().tuplets(),
+    selector: abjad.SelectorTyping = abjad.select()
+    .tuplets()
+    .map(abjad.select().leaves(grace=False)),
     *,
     beam_rests: bool = None,
     stemlet_length: abjad.Number = None,
@@ -3536,7 +3554,10 @@ def trivialize(selector: abjad.SelectorTyping = None) -> TrivializeCommand:
     return TrivializeCommand(selector)
 
 
-def unbeam(selector: abjad.SelectorTyping = None) -> UnbeamCommand:
+def unbeam(
+    # TODO: remove grace=False
+    selector: abjad.SelectorTyping = abjad.select().leaves(grace=False)
+) -> UnbeamCommand:
     """
     Makes unbeam command.
     """
