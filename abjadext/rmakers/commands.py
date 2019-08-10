@@ -3555,8 +3555,7 @@ def trivialize(selector: abjad.SelectorTyping = None) -> TrivializeCommand:
 
 
 def unbeam(
-    # TODO: remove grace=False
-    selector: abjad.SelectorTyping = abjad.select().leaves(grace=False)
+    selector: abjad.SelectorTyping = abjad.select().leaves()
 ) -> UnbeamCommand:
     """
     Makes unbeam command.
