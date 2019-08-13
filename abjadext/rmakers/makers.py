@@ -6764,6 +6764,393 @@ class IncisedRhythmMaker(RhythmMaker):
         return super().tag
 
 
+class MultipliedDurationRhythmMaker(RhythmMaker):
+    r"""
+    Multiplied-duration rhythm-maker.
+
+    ..  container:: example
+
+        >>> rhythm_maker = rmakers.multiplied_duration()
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> selections = rhythm_maker(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections,
+        ...     divisions,
+        ...     )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 1/4
+                    s1 * 1/4
+                    \time 3/16
+                    s1 * 3/16
+                    \time 5/8
+                    s1 * 5/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    s1 * 1/3
+                }
+                \new RhythmicStaff
+                {
+                    c'1 * 1/4
+                    c'1 * 3/16
+                    c'1 * 5/8
+                    c'1 * 1/3
+                }
+            >>
+
+    ..  container:: example
+
+        >>> rhythm_maker = rmakers.multiplied_duration()
+        >>> abjad.f(rhythm_maker)
+        abjadext.makers.MultipliedDurationRhythmMaker(
+            prototype=abjad.Note,
+            duration=abjad.Duration(1, 1),
+            )
+
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_duration", "_prototype")
+
+    _prototypes = (abjad.MultimeasureRest, abjad.Note, abjad.Rest, abjad.Skip)
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        prototype: typing.Type = abjad.Note,
+        *,
+        duration: abjad.DurationTyping = (1, 1),
+        tag: str = None,
+    ) -> None:
+        RhythmMaker.__init__(self, tag=tag)
+        if prototype not in self._prototypes:
+            message = "must be note, (multimeasure) rest, skip:\n"
+            message += f"   {repr(prototype)}"
+            raise Exception(message)
+        self._prototype = prototype
+        duration = abjad.Duration(duration)
+        self._duration = duration
+
+    ### PRIVATE METHODS ###
+
+    def _make_music(self, divisions) -> typing.List[abjad.Selection]:
+        component: typing.Union[abjad.MultimeasureRest, abjad.Skip]
+        components = []
+        for division in divisions:
+            assert isinstance(division, abjad.NonreducedFraction)
+            multiplier = division / self.duration
+            if self.prototype is abjad.Note:
+                component = self.prototype(
+                    "c'", self.duration, multiplier=multiplier, tag=self.tag
+                )
+            else:
+                component = self.prototype(
+                    self.duration, multiplier=multiplier, tag=self.tag
+                )
+            components.append(component)
+        selection = abjad.select(components)
+        return [selection]
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def duration(self) -> abjad.Duration:
+        r"""
+        Gets (written) duration.
+
+        ..  container:: example
+
+            Makes multiplied-duration whole notes when ``duration`` is unset:
+
+            >>> rhythm_maker = rmakers.multiplied_duration()
+            >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/4
+                        s1 * 1/4
+                        \time 3/16
+                        s1 * 3/16
+                        \time 5/8
+                        s1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        s1 * 1/3
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'1 * 1/4
+                        c'1 * 3/16
+                        c'1 * 5/8
+                        c'1 * 1/3
+                    }
+                >>
+
+            Makes multiplied-duration half notes when ``duration=(1, 2)``:
+
+            >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 2))
+            >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/4
+                        s1 * 1/4
+                        \time 3/16
+                        s1 * 3/16
+                        \time 5/8
+                        s1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        s1 * 1/3
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'2 * 2/4
+                        c'2 * 6/16
+                        c'2 * 10/8
+                        c'2 * 2/3
+                    }
+                >>
+
+            Makes multiplied-duration quarter notes when ``duration=(1, 4)``:
+
+            >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 4))
+            >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/4
+                        s1 * 1/4
+                        \time 3/16
+                        s1 * 3/16
+                        \time 5/8
+                        s1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        s1 * 1/3
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'4 * 4/4
+                        c'4 * 12/16
+                        c'4 * 20/8
+                        c'4 * 4/3
+                    }
+                >>
+
+        """
+        return self._duration
+
+    @property
+    def prototype(self) -> typing.Type:
+        r"""
+        Gets prototype.
+
+        ..  container:: example
+
+            Makes multiplied-duration notes when ``prototype`` is unset:
+
+            >>> rhythm_maker = rmakers.multiplied_duration()
+            >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/4
+                        s1 * 1/4
+                        \time 3/16
+                        s1 * 3/16
+                        \time 5/8
+                        s1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        s1 * 1/3
+                    }
+                    \new RhythmicStaff
+                    {
+                        c'1 * 1/4
+                        c'1 * 3/16
+                        c'1 * 5/8
+                        c'1 * 1/3
+                    }
+                >>
+
+        ..  container:: example
+
+            Makes multiplied-duration rests when ``prototype=abjad.Rest``:
+
+            >>> rhythm_maker = rmakers.multiplied_duration(abjad.Rest)
+            >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/4
+                        s1 * 1/4
+                        \time 3/16
+                        s1 * 3/16
+                        \time 5/8
+                        s1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        s1 * 1/3
+                    }
+                    \new RhythmicStaff
+                    {
+                        r1 * 1/4
+                        r1 * 3/16
+                        r1 * 5/8
+                        r1 * 1/3
+                    }
+                >>
+
+        ..  container:: example
+
+            Makes multiplied-duration multimeasures rests when
+            ``prototype=abjad.MultimeasureRest``:
+
+            >>> rhythm_maker = rmakers.multiplied_duration(
+            ...     abjad.MultimeasureRest
+            ... )
+            >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/4
+                        s1 * 1/4
+                        \time 3/16
+                        s1 * 3/16
+                        \time 5/8
+                        s1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        s1 * 1/3
+                    }
+                    \new RhythmicStaff
+                    {
+                        R1 * 1/4
+                        R1 * 3/16
+                        R1 * 5/8
+                        R1 * 1/3
+                    }
+                >>
+
+        ..  container:: example
+
+            Makes multiplied-duration skips when ``prototype=abjad.Skip``:
+
+            >>> rhythm_maker = rmakers.multiplied_duration(abjad.Skip)
+            >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+            >>> selections = rhythm_maker(divisions)
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+            ...     selections,
+            ...     divisions,
+            ...     )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> abjad.f(lilypond_file[abjad.Score])
+                \new Score
+                <<
+                    \new GlobalContext
+                    {
+                        \time 1/4
+                        s1 * 1/4
+                        \time 3/16
+                        s1 * 3/16
+                        \time 5/8
+                        s1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        s1 * 1/3
+                    }
+                    \new RhythmicStaff
+                    {
+                        s1 * 1/4
+                        s1 * 3/16
+                        s1 * 5/8
+                        s1 * 1/3
+                    }
+                >>
+
+        """
+        return self._prototype
+
+
 class NoteRhythmMaker(RhythmMaker):
     r"""
     Note rhtyhm-maker.
@@ -7479,10 +7866,9 @@ class NoteRhythmMaker(RhythmMaker):
     #            ...     weights, cyclic=True, overhang=True,
     #            ...     )
     #            >>> divisions = divisions.flatten(depth=-1)
-    #            >>> rhythm_maker = rmakers.stack(rmakers.note(), preprocessor=divisions)
-    #
+    #            >>> stack = rmakers.stack(rmakers.note(), preprocessor=divisions)
     #            >>> divisions = [(4, 4), (4, 4)]
-    #            >>> selection = rhythm_maker(divisions)
+    #            >>> selection = stack(divisions)
     #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
     #            ...     selection,
     #            ...     divisions,
@@ -7525,7 +7911,6 @@ class NoteRhythmMaker(RhythmMaker):
             Spells durations with the fewest number of glyphs:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker()
-
             >>> divisions = [(5, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
@@ -7563,7 +7948,6 @@ class NoteRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
             ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 2))
             ...     )
-
             >>> divisions = [(5, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
@@ -7599,13 +7983,12 @@ class NoteRhythmMaker(RhythmMaker):
 
             Rewrites meter:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.note(),
             ...     rmakers.rewrite_meter(),
             ...     )
-
             >>> divisions = [(3, 4), (6, 16), (9, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -7647,9 +8030,8 @@ class NoteRhythmMaker(RhythmMaker):
         ..  container:: example
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     tag='NOTE_RHYTHM_MAKER',
+            ...     tag="NOTE_RHYTHM_MAKER",
             ...     )
-
             >>> divisions = [(5, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
@@ -11793,13 +12175,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes tuplets with ``3:2`` ratios:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(3, 2)]),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -11854,13 +12235,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, -1), (3, 1)]),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -11914,13 +12294,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         Beams each division:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 1, 1, 1)]),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -11988,13 +12367,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         Beams each division:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 1, 1, 1)]),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12062,13 +12440,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         Beams tuplets together:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)]),
         ...     rmakers.beam_groups(abjad.select().tuplets()),
         ...     )
-
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12161,10 +12538,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Beams nothing:
 
-        >>> rhythm_maker = rmakers.stack(
-        ...     rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)]),
-        ...     )
-
+        >>> rhythm_maker = rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)])
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selection = rhythm_maker(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
@@ -12225,13 +12599,12 @@ class TupletRhythmMaker(RhythmMaker):
 
         Ties nothing:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12280,14 +12653,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12338,14 +12710,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> tuplets = abjad.select().tuplets().get([0], 2)
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
         ...     rmakers.tie(tuplets.map(last_leaf)),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12402,14 +12773,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes diminished tuplets:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 1)]),
         ...     rmakers.force_diminution(),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(2, 8), (2, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12451,14 +12821,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes augmented tuplets:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 1)]),
         ...     rmakers.force_augmentation(),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(2, 8), (2, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12507,14 +12876,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes diminished tuplets and does not rewrite dots:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.force_diminution(),
         ...     )
-
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12565,15 +12933,14 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes diminished tuplets and rewrites dots:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 1)]),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.force_diminution(),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12620,14 +12987,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes augmented tuplets and does not rewrite dots:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.force_augmentation(),
         ...     )
-
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12678,15 +13044,14 @@ class TupletRhythmMaker(RhythmMaker):
 
         Makes augmented tuplets and rewrites dots:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.rewrite_dots(),
         ...     rmakers.force_augmentation(),
         ...     )
-
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12737,14 +13102,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         Leaves trivializable tuplets as-is when ``trivialize`` is false:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.rewrite_dots(),
         ...     )
-
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12800,14 +13164,13 @@ class TupletRhythmMaker(RhythmMaker):
         these trivial tuplets, set ``extract_trivial`` as shown in the next
         example:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.trivialize(),
         ...     )
-
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12862,15 +13225,14 @@ class TupletRhythmMaker(RhythmMaker):
         The result is that measures 2 and 4 carry nontrivial prolation with
         no dots:
         
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.trivialize(),
         ...     rmakers.rewrite_dots(),
         ...     )
-
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12926,14 +13288,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
         ...     rmakers.beam(),
         ...     )
-
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -12996,15 +13357,14 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
         >>> last_leaf = abjad.select().leaf(-1)
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
         ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     )
-
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -13061,15 +13421,14 @@ class TupletRhythmMaker(RhythmMaker):
         REGRESSION: Very long ties are preserved when ``extract_trivial``
         is true:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     rmakers.tie(abjad.select().notes()[:-1]),
         ...     )
-
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -13126,10 +13485,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         No rest commands:
 
-        >>> rhythm_maker = rmakers.stack(
-        ...     rmakers.tuplet([(4, 1)]),
-        ...     )
-
+        >>> rhythm_maker = rmakers.tuplet([(4, 1)])
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selection = rhythm_maker(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
@@ -13179,7 +13535,7 @@ class TupletRhythmMaker(RhythmMaker):
 
         Masks every other output division:
 
-        >>> rhythm_maker = rmakers.stack(
+        >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(4, 1)]),
         ...     rmakers.force_rest(
         ...         abjad.select().tuplets().get([1], 2),
@@ -13189,9 +13545,8 @@ class TupletRhythmMaker(RhythmMaker):
         ...     ),
         ...     rmakers.extract_trivial(),
         ... )
-
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
+        >>> selection = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     selection,
         ...     divisions,
@@ -13288,14 +13643,13 @@ class TupletRhythmMaker(RhythmMaker):
             relatively prime when ``denominator`` is set to none. This
             means that ratios like ``6:4`` and ``10:8`` do not arise:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
             ...     )
-
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -13348,15 +13702,14 @@ class TupletRhythmMaker(RhythmMaker):
             duration when ``denominator`` is set to a duration. The
             setting does not affect the first tuplet:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
             ...     rmakers.denominator((1, 16)),
             ...     )
-
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -13408,15 +13761,14 @@ class TupletRhythmMaker(RhythmMaker):
             Sets the preferred denominator of each tuplet in terms 32nd notes.
             The setting affects all tuplets:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
             ...     rmakers.denominator((1, 32)),
             ...     )
-
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -13468,15 +13820,14 @@ class TupletRhythmMaker(RhythmMaker):
             Sets the preferred denominator each tuplet in terms 64th notes. The
             setting affects all tuplets:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
             ...     rmakers.denominator((1, 64)),
             ...     )
-
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -13530,15 +13881,14 @@ class TupletRhythmMaker(RhythmMaker):
             sets the preferred denominator of each tuplet to ``8``. Setting
             does not affect the third tuplet:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
             ...     rmakers.denominator(8),
             ...     )
-
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -13590,15 +13940,14 @@ class TupletRhythmMaker(RhythmMaker):
             Sets the preferred denominator of each tuplet to ``12``. Setting
             affects all tuplets:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
             ...     rmakers.denominator(12),
             ...     )
-
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -13650,15 +13999,14 @@ class TupletRhythmMaker(RhythmMaker):
             Sets the preferred denominator of each tuplet to ``13``. Setting
             does not affect any tuplet:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
             ...     rmakers.beam(),
             ...     rmakers.rewrite_dots(),
             ...     rmakers.denominator(13),
             ...     )
-
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -13716,14 +14064,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(3, 2)]),
             ...     rmakers.beam(),
             ...     tag='TUPLET_RHYTHM_MAKER',
             ...     )
-
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selection = rhythm_maker(divisions)
+            >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selection,
             ...     divisions,
@@ -14031,6 +14378,18 @@ def incised(
         spelling=spelling,
         tag=tag,
     )
+
+
+def multiplied_duration(
+    prototype: typing.Type = abjad.Note,
+    *,
+    duration: abjad.DurationTyping = (1, 1),
+    tag: str = None,
+) -> MultipliedDurationRhythmMaker:
+    """
+    Makes multiplied-duration rhythm-maker.
+    """
+    return MultipliedDurationRhythmMaker(prototype, duration=duration, tag=tag)
 
 
 def note(

@@ -4,6 +4,7 @@ Tools for rhythm construction.
 from .makers import AccelerandoRhythmMaker
 from .makers import EvenDivisionRhythmMaker
 from .makers import IncisedRhythmMaker
+from .makers import MultipliedDurationRhythmMaker
 from .makers import NoteRhythmMaker
 from .makers import RhythmMaker
 from .makers import TaleaRhythmMaker
@@ -11,18 +12,15 @@ from .makers import TupletRhythmMaker
 from .makers import accelerando
 from .makers import even_division
 from .makers import incised
+from .makers import multiplied_duration
 from .makers import note
 from .makers import talea
 from .makers import tuplet
 from .stack import Match
-
-####from .stack import stack
 from .stack import Assignment
 from .stack import Stack
 from .stack import Bind
 from .stack import assign
-
-# from .stack import command
 from .stack import stack
 from .stack import bind
 from .specifiers import Incise
