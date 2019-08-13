@@ -108,10 +108,9 @@ class Stack(object):
         Calls stack.
         """
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
-        divisions = [abjad.NonreducedFraction(_) for _ in time_signatures]
+        divisions_ = [abjad.NonreducedFraction(_) for _ in time_signatures]
         staff = RhythmMaker._make_staff(time_signatures_)
-        ###divisions = self._apply_division_expression(time_signatures_)
-        divisions = self._apply_division_expression(divisions)
+        divisions = self._apply_division_expression(divisions_)
         selection = self.maker(divisions, previous_state=previous_state)
         staff["MusicVoice"].extend(selection)
         for command in self.commands:
