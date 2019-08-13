@@ -39,6 +39,7 @@ from .commands import RewriteMeterCommand
 from .commands import RewriteSustainedCommand
 from .commands import SplitMeasuresCommand
 from .commands import TieCommand
+from .commands import TremoloContainerCommand
 from .commands import UnbeamCommand
 from .commands import beam
 from .commands import beam_groups
@@ -60,6 +61,7 @@ from .commands import rewrite_rest_filled
 from .commands import rewrite_sustained
 from .commands import split_measures
 from .commands import tie
+from .commands import tremolo_container
 from .commands import trivialize
 from .commands import unbeam
 from .commands import untie

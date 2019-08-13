@@ -18,7 +18,7 @@ RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 #            >>> divisions = abjad.sequence().join()
 #            >>> divisions = divisions.split(
 #            ...     weights, cyclic=True, overhang=True,
-#            ...     )
+#            ... )
 #            >>> divisions = divisions.flatten(depth=-1)
 #            >>> stack = rmakers.stack(rmakers.note(), preprocessor=divisions)
 #            >>> divisions = [(4, 4), (4, 4)]
@@ -26,7 +26,7 @@ RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
 #            ...     selection,
 #            ...     divisions,
-#            ...     )
+#            ... )
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::

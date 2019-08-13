@@ -20,7 +20,7 @@ class Incise(object):
         ...     prefix_talea=[-1],
         ...     prefix_counts=[1],
         ...     talea_denominator=16,
-        ...     )
+        ... )
 
     ..  container:: example
 
@@ -33,7 +33,7 @@ class Incise(object):
         ...     suffix_talea=[-1],
         ...     suffix_counts=[1],
         ...     talea_denominator=16,
-        ...     )
+        ... )
 
     """
 
@@ -129,7 +129,7 @@ class Incise(object):
             ...     prefix_talea=[-1],
             ...     prefix_counts=[1],
             ...     talea_denominator=16,
-            ...     )
+            ... )
 
             >>> abjad.f(specifier)
             abjadext.specifiers.Incise(
@@ -150,7 +150,7 @@ class Incise(object):
             ...     suffix_talea=[-1],
             ...     suffix_counts=[1],
             ...     talea_denominator=16,
-            ...     )
+            ... )
 
             >>> abjad.f(specifier)
             abjadext.specifiers.Incise(
@@ -212,13 +212,12 @@ class Incise(object):
             ...     ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     )
+            ... )
             >>> divisions = 4 * [(5, 16)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
+            ...     selections, divisions
+            ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -384,7 +383,7 @@ class Interpolation(object):
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
-            ...     )
+            ... )
             >>> abjad.f(specifier)
             abjadext.specifiers.Interpolation(
                 start_duration=abjad.Duration(1, 4),
@@ -405,7 +404,7 @@ class Interpolation(object):
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
-            ...     )
+            ... )
             Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
 
         """
@@ -425,7 +424,7 @@ class Interpolation(object):
             ...     start_duration=(1, 4),
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
-            ...     )
+            ... )
             >>> specifier = specifier.reverse()
             >>> abjad.f(specifier)
             abjadext.specifiers.Interpolation(
@@ -442,7 +441,7 @@ class Interpolation(object):
             ...     start_duration=(1, 16),
             ...     stop_duration=(1, 4),
             ...     written_duration=(1, 16),
-            ...     )
+            ... )
             >>> specifier = specifier.reverse()
             >>> abjad.f(specifier)
             abjadext.specifiers.Interpolation(
@@ -569,13 +568,12 @@ class Spelling(object):
             ...         ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     )
+            ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
+            ...     selections, divisions
+            ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -622,13 +620,12 @@ class Spelling(object):
             ...         ),
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
-            ...     )
+            ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
+            ...     selections, divisions
+            ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -687,9 +684,8 @@ class Spelling(object):
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
+            ...     selections, divisions
+            ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -753,9 +749,8 @@ class Spelling(object):
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections,
-            ...     divisions,
-            ...     )
+            ...     selections, divisions
+            ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -807,7 +802,7 @@ class Talea(object):
         ...     [2, 1, 3, 2, 4, 1, 1],
         ...     16,
         ...     preamble=[1, 1, 1, 1],
-        ...     )
+        ... )
 
         >>> abjad.f(talea)
         abjadext.specifiers.Talea(
@@ -944,7 +939,7 @@ class Talea(object):
             ...     [2, 1, 3, 2, 4, 1, 1],
             ...     16,
             ...     preamble=[1, 1, 1, 1],
-            ...     )
+            ... )
 
             >>> talea[0]
             NonreducedFraction(1, 16)
@@ -1019,7 +1014,7 @@ class Talea(object):
             ...     [2, 1, 3, 2, 4, 1, 1],
             ...     16,
             ...     preamble=[1, 1, 1, 1],
-            ...     )
+            ... )
 
             >>> for duration in talea:
             ...     duration
@@ -1113,7 +1108,7 @@ class Talea(object):
             ...     [3, 4],
             ...     16,
             ...     end_counts=[1, 1],
-            ...     )
+            ... )
 
             >>> talea.end_counts
             [1, 1]
@@ -1152,7 +1147,7 @@ class Talea(object):
             ...     [1, 2, -3, 4],
             ...     32,
             ...     preamble=[1, 1, 1],
-            ...     )
+            ... )
 
             >>> talea.period
             10
@@ -1171,7 +1166,7 @@ class Talea(object):
             ...     [2, 1, 3, 2, 4, 1, 1],
             ...     16,
             ...     preamble=[1, 1, 1, 1],
-            ...     )
+            ... )
 
             >>> talea.preamble
             [1, 1, 1, 1]
@@ -1182,7 +1177,7 @@ class Talea(object):
             ...     [16, -4, 16],
             ...     16,
             ...     preamble=[1],
-            ...     )
+            ... )
 
             >>> for i, duration in enumerate(talea):
             ...     duration
@@ -1210,7 +1205,7 @@ class Talea(object):
             ...     [2, 1, 3, 2, 4, 1, 1],
             ...     16,
             ...     preamble=[1, 1, 1, 1],
-            ...     )
+            ... )
 
             >>> abjad.f(talea.advance(0))
             abjadext.specifiers.Talea(
