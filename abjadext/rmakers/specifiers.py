@@ -201,7 +201,7 @@ class Incise(object):
 
             Divides middle part of every division ``1:1``:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.incised(
             ...         prefix_talea=[-1],
             ...         prefix_counts=[0, 1],
@@ -213,9 +213,8 @@ class Incise(object):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     )
-
             >>> divisions = 4 * [(5, 16)]
-            >>> selections = rhythm_maker(divisions)
+            >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
             ...     divisions,
@@ -562,7 +561,7 @@ class Spelling(object):
 
             Decreases monotically:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [5],
             ...         16,
@@ -571,9 +570,8 @@ class Spelling(object):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     )
-
             >>> divisions = [(3, 4), (3, 4)]
-            >>> selections = rhythm_maker(divisions)
+            >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
             ...     divisions,
@@ -616,7 +614,7 @@ class Spelling(object):
 
             Increases monotically:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [5],
             ...         16,
@@ -625,9 +623,8 @@ class Spelling(object):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ...     )
-
             >>> divisions = [(3, 4), (3, 4)]
-            >>> selections = rhythm_maker(divisions)
+            >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
             ...     divisions,
@@ -678,7 +675,7 @@ class Spelling(object):
 
             Forbids note durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [1, 1, 1, 1, 4, -4],
             ...         16,
@@ -687,9 +684,8 @@ class Spelling(object):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ... )
-
             >>> divisions = [(3, 4), (3, 4)]
-            >>> selections = rhythm_maker(divisions)
+            >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
             ...     divisions,
@@ -745,7 +741,7 @@ class Spelling(object):
 
             Forbids rest durations equal to ``1/4`` or greater:
 
-            >>> rhythm_maker = rmakers.stack(
+            >>> stack = rmakers.stack(
             ...     rmakers.talea(
             ...         [1, 1, 1, 1, 4, -4],
             ...         16,
@@ -754,9 +750,8 @@ class Spelling(object):
             ...     rmakers.beam(),
             ...     rmakers.extract_trivial(),
             ... )
-
             >>> divisions = [(3, 4), (3, 4)]
-            >>> selections = rhythm_maker(divisions)
+            >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(
             ...     selections,
             ...     divisions,

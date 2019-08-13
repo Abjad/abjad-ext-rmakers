@@ -6,6 +6,56 @@ from .makers import RhythmMaker
 RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 
 
+# TODO: integrate tests
+#    @property
+#    def preprocessor(self) -> typing.Optional[abjad.Expression]:
+#        r"""
+#        Gets division preprocessor.
+#
+#        ..  container:: example
+#
+#            >>> weights = [abjad.NonreducedFraction(3, 8)]
+#            >>> divisions = abjad.sequence().join()
+#            >>> divisions = divisions.split(
+#            ...     weights, cyclic=True, overhang=True,
+#            ...     )
+#            >>> divisions = divisions.flatten(depth=-1)
+#            >>> stack = rmakers.stack(rmakers.note(), preprocessor=divisions)
+#            >>> divisions = [(4, 4), (4, 4)]
+#            >>> selection = stack(divisions)
+#            >>> lilypond_file = abjad.LilyPondFile.rhythm(
+#            ...     selection,
+#            ...     divisions,
+#            ...     )
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#
+#            ..  docs::
+#
+#                >>> abjad.f(lilypond_file[abjad.Score])
+#                \new Score
+#                <<
+#                    \new GlobalContext
+#                    {
+#                        \time 4/4
+#                        s1 * 1
+#                        \time 4/4
+#                        s1 * 1
+#                    }
+#                    \new RhythmicStaff
+#                    {
+#                        c'4.
+#                        c'4.
+#                        c'4.
+#                        c'4.
+#                        c'4.
+#                        c'8
+#                    }
+#                >>
+#
+#        """
+#        return super().preprocessor
+
+
 ### CLASSES ###
 
 
@@ -58,8 +108,10 @@ class Stack(object):
         Calls stack.
         """
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
+        divisions = [abjad.NonreducedFraction(_) for _ in time_signatures]
         staff = RhythmMaker._make_staff(time_signatures_)
-        divisions = self._apply_division_expression(time_signatures_)
+        ###divisions = self._apply_division_expression(time_signatures_)
+        divisions = self._apply_division_expression(divisions)
         selection = self.maker(divisions, previous_state=previous_state)
         staff["MusicVoice"].extend(selection)
         for command in self.commands:
@@ -140,7 +192,12 @@ class Stack(object):
     ### PRIVATE METHODS ###
 
     def _apply_division_expression(self, divisions) -> abjad.Sequence:
-        original_duration = sum(_.duration for _ in divisions)
+        prototype = abjad.NonreducedFraction
+        if not all(isinstance(_, prototype) for _ in divisions):
+            message = "must be nonreduced fractions:\n"
+            message += f"   {repr(divisions)}"
+            raise Exception(message)
+        original_duration = abjad.Duration(sum(divisions))
         if self.preprocessor is not None:
             result = self.preprocessor(divisions)
             if not isinstance(result, abjad.Sequence):
@@ -155,7 +212,7 @@ class Stack(object):
             divisions = result
         divisions = abjad.sequence(divisions)
         divisions = divisions.flatten(depth=-1)
-        transformed_duration = sum(_.duration for _ in divisions)
+        transformed_duration = abjad.Duration(sum(divisions))
         if transformed_duration != original_duration:
             message = "original duration ...\n"
             message += f"    {original_duration}\n"
