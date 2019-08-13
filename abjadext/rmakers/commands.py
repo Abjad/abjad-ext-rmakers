@@ -280,7 +280,7 @@ class DenominatorCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = "_denominator"
+    __slots__ = ("_denominator",)
 
     ### INITIALIZER ###
 
@@ -754,7 +754,7 @@ class ForceRepeatTieCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = "_threshold"
+    __slots__ = ("_threshold",)
 
     ### INITIALIZER ###
 
@@ -1204,7 +1204,7 @@ class RewriteRestFilledCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = "_spelling"
+    __slots__ = ("_spelling",)
 
     ### INITIALIZER ###
 
