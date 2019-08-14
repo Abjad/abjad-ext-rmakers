@@ -42,6 +42,7 @@ from .commands import SplitMeasuresCommand
 from .commands import TieCommand
 from .commands import TremoloContainerCommand
 from .commands import UnbeamCommand
+from .commands import after_grace_container
 from .commands import beam
 from .commands import beam_groups
 from .commands import cache_state
@@ -56,6 +57,7 @@ from .commands import force_note
 from .commands import force_repeat_tie
 from .commands import force_rest
 from .commands import grace_container
+from .commands import on_beat_grace_container
 from .commands import repeat_tie
 from .commands import rewrite_dots
 from .commands import rewrite_meter

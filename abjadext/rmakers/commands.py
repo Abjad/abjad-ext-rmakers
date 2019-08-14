@@ -1031,7 +1031,13 @@ class GraceContainerCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_counts", "_talea")
+    __slots__ = ("_class_", "_counts", "_talea")
+
+    _classes = (
+        abjad.GraceContainer,
+        abjad.AfterGraceContainer,
+        abjad.OnBeatGraceContainer,
+    )
 
     ### INITIALIZER ###
 
@@ -1040,11 +1046,14 @@ class GraceContainerCommand(Command):
         counts: abjad.IntegerSequence,
         selector: abjad.SelectorTyping = None,
         *,
+        class_: typing.Type = abjad.GraceContainer,
         talea: _specifiers.Talea = _specifiers.Talea([1], 8),
     ) -> None:
         super().__init__(selector)
         assert all(isinstance(_, int) for _ in counts), repr(counts)
         self._counts = tuple(counts)
+        assert class_ in self._classes, repr(class_)
+        self._class_ = class_
         assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
 
@@ -1066,10 +1075,17 @@ class GraceContainerCommand(Command):
             stop = start + count
             durations = self.talea[start:stop]
             notes = maker([0], durations)
-            container = abjad.GraceContainer(notes)
+            container = self.class_(notes)
             abjad.attach(container, leaf)
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def class_(self) -> typing.Type:
+        """
+        Gets class.
+        """
+        return self._class_
 
     @property
     def counts(self) -> typing.Tuple[int, ...]:
@@ -1534,6 +1550,99 @@ class UntieCommand(Command):
 ### FACTORY FUNCTIONS ###
 
 
+def after_grace_container(
+    counts: abjad.IntegerSequence,
+    selector: abjad.SelectorTyping = None,
+    *,
+    talea: _specifiers.Talea = _specifiers.Talea([1], 8),
+) -> GraceContainerCommand:
+    r"""
+    Makes after-grace container command.
+
+    ..  container:: example
+
+        >>> selector = abjad.select().note(-1)
+        >>> selector = abjad.select().tuplets().map(selector)
+        >>> stack = rmakers.stack(
+        ...     rmakers.even_division([4], extra_counts=[2]),
+        ...     rmakers.after_grace_container([2, 4], selector),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections, divisions
+        ... )
+        >>> staff = lilypond_file[abjad.Staff]
+        >>> containers = abjad.select().components(abjad.AfterGraceContainer)
+        >>> result = [abjad.beam(_) for _ in containers(staff)]
+        >>> selector = containers.map(abjad.select().with_next_leaf())
+        >>> result = [abjad.slur(_) for _ in selector(staff)]
+        >>> slash = abjad.LilyPondLiteral(r"\slash")
+        >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/4
+                    s1 * 3/4
+                    \time 3/4
+                    s1 * 3/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        c'4
+                        c'4
+                        c'4
+                        \afterGrace
+                        c'4
+                        {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            ]
+                        }
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        )
+                        c'4
+                        c'4
+                        c'4
+                        \afterGrace
+                        c'4
+                        {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            c'8
+                            c'8
+                            )
+                            ]
+                        }
+                    }
+                }
+            >>
+
+    """
+    return GraceContainerCommand(
+        counts, selector, class_=abjad.AfterGraceContainer, talea=talea
+    )
+
+
 def beam(
     selector: abjad.SelectorTyping = abjad.select()
     .tuplets()
@@ -1544,7 +1653,7 @@ def beam(
     stemlet_length: abjad.Number = None,
 ) -> BeamCommand:
     """
-    Makes simple beam command.
+    Makes beam command.
     """
     return BeamCommand(
         selector,
@@ -1565,7 +1674,7 @@ def beam_groups(
     tag: str = None,
 ) -> BeamGroupsCommand:
     """
-    Makes beam divisions together command.
+    Makes beam-groups command.
     """
     return BeamGroupsCommand(
         selector,
@@ -2510,6 +2619,177 @@ def grace_container(
 
     """
     return GraceContainerCommand(counts, selector, talea=talea)
+
+
+def on_beat_grace_container(
+    counts: abjad.IntegerSequence,
+    selector: abjad.SelectorTyping = None,
+    *,
+    talea: _specifiers.Talea = _specifiers.Talea([1], 8),
+) -> GraceContainerCommand:
+    r"""
+    Makes on-beat grace container command.
+
+    ..  container:: example
+
+        >>> selector = abjad.select().notes().exclude([0, -1])
+        >>> selector = abjad.select().tuplets().map(selector)
+        >>> stack = rmakers.stack(
+        ...     rmakers.even_division([4], extra_counts=[2]),
+        ...     rmakers.on_beat_grace_container([2, 4], selector),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections, divisions
+        ... )
+        >>> staff = lilypond_file[abjad.Staff]
+        >>> containers = abjad.select().components(abjad.OnBeatGraceContainer)
+        >>> result = [abjad.beam(_) for _ in containers(staff)]
+        >>> result = [abjad.slur(_) for _ in containers(staff)]
+        >>> slash = abjad.LilyPondLiteral(r"\slash")
+        >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
+        >>> abjad.override(staff).tuplet_bracket.staff_padding = 4
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/4
+                    s1 * 3/4
+                    \time 3/4
+                    s1 * 3/4
+                }
+                \new RhythmicStaff
+                \with
+                {
+                    \override TupletBracket.staff-padding = #4
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        <<
+                            {
+                                \set fontSize = #-2
+                                \once \override NoteColumn.force-hshift = 0.2
+                                \slash
+                                \slash
+                                <c' \tweak Accidental.stencil ##f c'>8 * 1
+                                [
+                                (
+                                c'8 * 1
+                                )
+                                ]
+                            }
+                        \\
+                            c'4
+                        >>
+                        <<
+                            {
+                                \set fontSize = #-2
+                                \once \override NoteColumn.force-hshift = 0.2
+                                \slash
+                                \slash
+                                <c' \tweak Accidental.stencil ##f c'>8 * 1/2
+                                [
+                                (
+                                c'8 * 1/2
+                                c'8 * 1/2
+                                c'8 * 1/2
+                                )
+                                ]
+                            }
+                        \\
+                            c'4
+                        >>
+                        <<
+                            {
+                                \set fontSize = #-2
+                                \once \override NoteColumn.force-hshift = 0.2
+                                \slash
+                                \slash
+                                <c' \tweak Accidental.stencil ##f c'>8 * 1
+                                [
+                                (
+                                c'8 * 1
+                                )
+                                ]
+                            }
+                        \\
+                            c'4
+                        >>
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        <<
+                            {
+                                \set fontSize = #-2
+                                \once \override NoteColumn.force-hshift = 0.2
+                                \slash
+                                \slash
+                                <c' \tweak Accidental.stencil ##f c'>8 * 1/2
+                                [
+                                (
+                                c'8 * 1/2
+                                c'8 * 1/2
+                                c'8 * 1/2
+                                )
+                                ]
+                            }
+                        \\
+                            c'4
+                        >>
+                        <<
+                            {
+                                \set fontSize = #-2
+                                \once \override NoteColumn.force-hshift = 0.2
+                                \slash
+                                \slash
+                                <c' \tweak Accidental.stencil ##f c'>8 * 1
+                                [
+                                (
+                                c'8 * 1
+                                )
+                                ]
+                            }
+                        \\
+                            c'4
+                        >>
+                        <<
+                            {
+                                \set fontSize = #-2
+                                \once \override NoteColumn.force-hshift = 0.2
+                                \slash
+                                \slash
+                                <c' \tweak Accidental.stencil ##f c'>8 * 1/2
+                                [
+                                (
+                                c'8 * 1/2
+                                c'8 * 1/2
+                                c'8 * 1/2
+                                )
+                                ]
+                            }
+                        \\
+                            c'4
+                        >>
+                        c'4
+                    }
+                }
+            >>
+
+    """
+    return GraceContainerCommand(
+        counts, selector, class_=abjad.OnBeatGraceContainer, talea=talea
+    )
 
 
 def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:
