@@ -1024,6 +1024,68 @@ class ForceRestCommand(Command):
                 abjad.detach(abjad.RepeatTie, next_leaf)
 
 
+class GraceContainerCommand(Command):
+    """
+    Grace container command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_counts", "_talea")
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        counts: abjad.IntegerSequence,
+        selector: abjad.SelectorTyping = None,
+        *,
+        talea: _specifiers.Talea = _specifiers.Talea([1], 8),
+    ) -> None:
+        super().__init__(selector)
+        assert all(isinstance(_, int) for _ in counts), repr(counts)
+        self._counts = tuple(counts)
+        assert isinstance(talea, _specifiers.Talea), repr(talea)
+        self._talea = talea
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, voice, *, tag: str = None) -> None:
+        """
+        Calls tremolo container command.
+        """
+        selection = voice
+        if self.selector is not None:
+            selection = self.selector(selection)
+        leaves = abjad.select(selection).leaves(grace=False)
+        counts = abjad.CyclicTuple(self.counts)
+        maker = abjad.LeafMaker()
+        start = 0
+        for i, leaf in enumerate(leaves):
+            count = counts[i]
+            stop = start + count
+            durations = self.talea[start:stop]
+            notes = maker([0], durations)
+            container = abjad.GraceContainer(notes)
+            abjad.attach(container, leaf)
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def counts(self) -> typing.Tuple[int, ...]:
+        """
+        Gets counts.
+        """
+        return self._counts
+
+    @property
+    def talea(self) -> _specifiers.Talea:
+        """
+        Gets talea.
+        """
+        return self._talea
+
+
 class RepeatTieCommand(Command):
     """
     Repeat-tie command.
@@ -1493,7 +1555,6 @@ def beam(
 
 
 def beam_groups(
-    ###selector: typing.Optional[abjad.SelectorTyping] = abjad.select(),
     selector: typing.Optional[abjad.SelectorTyping] = abjad.select()
     .tuplets(level=-1)
     .map(abjad.select().leaves(grace=False)),
@@ -2320,6 +2381,135 @@ def force_rest(selector: abjad.SelectorTyping) -> ForceRestCommand:
     Makes force rest command.
     """
     return ForceRestCommand(selector)
+
+
+def grace_container(
+    counts: abjad.IntegerSequence,
+    selector: abjad.SelectorTyping = None,
+    *,
+    talea: _specifiers.Talea = _specifiers.Talea([1], 8),
+) -> GraceContainerCommand:
+    r"""
+    Makes grace container command.
+
+    ..  container:: example
+
+        >>> selector = abjad.select().notes().exclude([0, -1])
+        >>> selector = abjad.select().tuplets().map(selector)
+        >>> stack = rmakers.stack(
+        ...     rmakers.even_division([4], extra_counts=[2]),
+        ...     rmakers.grace_container([2, 4], selector),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections, divisions
+        ... )
+        >>> staff = lilypond_file[abjad.Staff]
+        >>> containers = abjad.select().components(abjad.GraceContainer)
+        >>> result = [abjad.beam(_) for _ in containers(staff)]
+        >>> selector = containers.map(abjad.select().with_next_leaf())
+        >>> result = [abjad.slur(_) for _ in selector(staff)]
+        >>> slash = abjad.LilyPondLiteral(r"\slash")
+        >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/4
+                    s1 * 3/4
+                    \time 3/4
+                    s1 * 3/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        c'4
+                    }
+                }
+            >>
+
+    """
+    return GraceContainerCommand(counts, selector, talea=talea)
 
 
 def repeat_tie(selector: abjad.SelectorTyping = None) -> RepeatTieCommand:

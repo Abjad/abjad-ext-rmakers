@@ -35,6 +35,7 @@ from .commands import CacheStateCommand
 from .commands import FeatherBeamCommand
 from .commands import ForceNoteCommand
 from .commands import ForceRestCommand
+from .commands import GraceContainerCommand
 from .commands import RewriteMeterCommand
 from .commands import RewriteSustainedCommand
 from .commands import SplitMeasuresCommand
@@ -54,6 +55,7 @@ from .commands import force_fraction
 from .commands import force_note
 from .commands import force_repeat_tie
 from .commands import force_rest
+from .commands import grace_container
 from .commands import repeat_tie
 from .commands import rewrite_dots
 from .commands import rewrite_meter
