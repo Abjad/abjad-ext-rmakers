@@ -1158,8 +1158,17 @@ class RewriteMeterCommand(Command):
 
     ### INITIALIZER ###
 
-    def __init__(self, *, reference_meters=None) -> None:
-        self._reference_meters = reference_meters
+    def __init__(
+        self, *, reference_meters: typing.Sequence[abjad.Meter] = None
+    ) -> None:
+        reference_meters_ = None
+        if reference_meters is not None:
+            if not all(isinstance(_, abjad.Meter) for _ in reference_meters):
+                message = "must be sequence of meters:\n"
+                message += f"   {repr(reference_meters)}"
+                raise Exception(message)
+            reference_meters_ = tuple(reference_meters)
+        self._reference_meters = reference_meters_
 
     ### SPECIAL METHODS ###
 
@@ -1260,7 +1269,9 @@ class RewriteMeterCommand(Command):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def reference_meters(self):
+    def reference_meters(
+        self
+    ) -> typing.Optional[typing.Tuple[abjad.Meter, ...]]:
         """
         Gets reference meters.
         """
