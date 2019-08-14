@@ -119,7 +119,7 @@ class Incise(object):
 
     def __format__(self, format_specification="") -> str:
         """
-        Formats incise specifier.
+        Delegates to storage format manager.
 
         ..  container:: example
 
@@ -161,6 +161,12 @@ class Incise(object):
                 talea_denominator=16,
                 )
 
+        """
+        return abjad.StorageFormatManager(self).get_storage_format()
+
+    def __repr__(self) -> str:
+        """
+        Delegates to storage format manager.
         """
         return abjad.StorageFormatManager(self).get_storage_format()
 
@@ -396,7 +402,7 @@ class Interpolation(object):
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation of interpolation specifier.
+        Delegates to storage format manager.
 
         ..  container:: example
 
