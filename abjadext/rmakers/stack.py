@@ -110,14 +110,14 @@ class Stack(object):
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
         divisions_ = [abjad.NonreducedFraction(_) for _ in time_signatures]
         staff = RhythmMaker._make_staff(time_signatures_)
-        music_voice = staff["Music_Voice"]
+        music_voice = staff["Rhythm_Maker_Music_Voice"]
         divisions = self._apply_division_expression(divisions_)
         selection = self.maker(divisions, previous_state=previous_state)
         music_voice.extend(selection)
         for command in self.commands:
             if isinstance(command, _commands.CacheStateCommand):
                 assert isinstance(self.maker, RhythmMaker), repr(self.maker)
-                self.maker._cache_state(staff["Music_Voice"], len(divisions))
+                self.maker._cache_state(music_voice, len(divisions))
                 self.maker._already_cached_state = True
             try:
                 command(music_voice, tag=self.tag)

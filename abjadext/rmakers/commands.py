@@ -2728,12 +2728,15 @@ def on_beat_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> music_voice = abjad.Voice(selections, name="Music_Voice")
+        >>> music_voice = abjad.Voice(
+        ...     selections, name="Rhythm_Maker_Music_Voice"
+        ... )
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     abjad.select(music_voice), divisions, pitched_staff=False
         ... )
         >>> staff = lilypond_file[abjad.Staff]
-        >>> abjad.override(staff).tuplet_bracket.staff_padding = 4
+        >>> abjad.override(staff).tuplet_bracket.direction = abjad.Up
+        >>> abjad.override(staff).tuplet_bracket.staff_padding = 5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2751,10 +2754,11 @@ def on_beat_grace_container(
                 \new RhythmicStaff
                 \with
                 {
-                    \override TupletBracket.staff-padding = #4
+                    \override TupletBracket.direction = #up
+                    \override TupletBracket.staff-padding = #5
                 }
                 {
-                    \context Voice = "Music_Voice"
+                    \context Voice = "Rhythm_Maker_Music_Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5 {
@@ -2776,7 +2780,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "Music_Voice"
+                                \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
                                     \voiceTwo
                                     c'4
@@ -2801,7 +2805,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "Music_Voice"
+                                \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
                                     \oneVoice
                                     \voiceTwo
@@ -2825,7 +2829,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "Music_Voice"
+                                \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
                                     \oneVoice
                                     \voiceTwo
@@ -2857,7 +2861,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "Music_Voice"
+                                \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
                                     \voiceTwo
                                     c'4
@@ -2880,7 +2884,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "Music_Voice"
+                                \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
                                     \oneVoice
                                     \voiceTwo
@@ -2906,7 +2910,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "Music_Voice"
+                                \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
                                     \oneVoice
                                     \voiceTwo
@@ -2932,7 +2936,9 @@ def on_beat_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> music_voice = abjad.Voice(selections, name="Music_Voice")
+        >>> music_voice = abjad.Voice(
+        ...     selections, name="Rhythm_Maker_Music_Voice"
+        ... )
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     abjad.select(music_voice), divisions, pitched_staff=False
         ... )
@@ -2953,7 +2959,7 @@ def on_beat_grace_container(
                 }
                 \new RhythmicStaff
                 {
-                    \context Voice = "Music_Voice"
+                    \context Voice = "Rhythm_Maker_Music_Voice"
                     {
                         <<
                             \context Voice = "On_Beat_Grace_Container"
@@ -2976,7 +2982,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "Music_Voice"
+                            \context Voice = "Rhythm_Maker_Music_Voice"
                             {
                                 \voiceTwo
                                 c'4
@@ -3001,7 +3007,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "Music_Voice"
+                            \context Voice = "Rhythm_Maker_Music_Voice"
                             {
                                 \oneVoice
                                 \voiceTwo
@@ -3031,7 +3037,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "Music_Voice"
+                            \context Voice = "Rhythm_Maker_Music_Voice"
                             {
                                 \oneVoice
                                 \voiceTwo
@@ -3057,7 +3063,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "Music_Voice"
+                            \context Voice = "Rhythm_Maker_Music_Voice"
                             {
                                 \oneVoice
                                 \voiceTwo
@@ -3087,7 +3093,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "Music_Voice"
+                            \context Voice = "Rhythm_Maker_Music_Voice"
                             {
                                 \oneVoice
                                 \voiceTwo

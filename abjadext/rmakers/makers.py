@@ -61,15 +61,15 @@ class RhythmMaker(object):
         prototype = (abjad.Tuplet, abjad.Selection)
         for item in music:
             assert isinstance(item, prototype), repr(item)
-        voice = staff["Music_Voice"]
-        voice.extend(music)
+        music_voice = staff["Rhythm_Maker_Music_Voice"]
+        music_voice.extend(music)
         divisions_consumed = len(divisions)
         if self._already_cached_state is not True:
-            self._cache_state(voice, divisions_consumed)
+            self._cache_state(music_voice, divisions_consumed)
         # self._check_wellformedness(staff)
-        self._validate_tuplets(voice)
-        selection = voice[:]
-        voice[:] = []
+        self._validate_tuplets(music_voice)
+        selection = music_voice[:]
+        music_voice[:] = []
         return selection
 
     def __eq__(self, argument) -> bool:
@@ -187,7 +187,7 @@ class RhythmMaker(object):
             time_signature_voice.append(skip)
             abjad.attach(time_signature, skip, context="Staff")
         staff.append(time_signature_voice)
-        staff.append(abjad.Voice(name="Music_Voice"))
+        staff.append(abjad.Voice(name="Rhythm_Maker_Music_Voice"))
         return staff
 
     def _make_tuplets(self, divisions, leaf_lists):
