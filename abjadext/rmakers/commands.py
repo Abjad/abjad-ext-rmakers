@@ -1033,11 +1033,7 @@ class GraceContainerCommand(Command):
 
     __slots__ = ("_class_", "_counts", "_talea")
 
-    _classes = (
-        abjad.GraceContainer,
-        abjad.AfterGraceContainer,
-        abjad.OnBeatGraceContainer,
-    )
+    _classes = (abjad.GraceContainer, abjad.AfterGraceContainer)
 
     ### INITIALIZER ###
 
@@ -1061,7 +1057,7 @@ class GraceContainerCommand(Command):
 
     def __call__(self, voice, *, tag: str = None) -> None:
         """
-        Calls tremolo container command.
+        Calls grace container command.
         """
         selection = voice
         if self.selector is not None:
@@ -1093,6 +1089,83 @@ class GraceContainerCommand(Command):
         Gets counts.
         """
         return self._counts
+
+    @property
+    def talea(self) -> _specifiers.Talea:
+        """
+        Gets talea.
+        """
+        return self._talea
+
+
+class OnBeatGraceContainerCommand(Command):
+    """
+    On-beat grace container command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_counts", "_grace_leaf_duration", "_talea")
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        counts: abjad.IntegerSequence,
+        selector: abjad.SelectorTyping = None,
+        *,
+        grace_leaf_duration: abjad.DurationTyping = None,
+        talea: _specifiers.Talea = _specifiers.Talea([1], 8),
+    ) -> None:
+        super().__init__(selector)
+        assert all(isinstance(_, int) for _ in counts), repr(counts)
+        self._counts = tuple(counts)
+        if grace_leaf_duration is not None:
+            grace_leaf_duration = abjad.Duration(grace_leaf_duration)
+        self._grace_leaf_duration = grace_leaf_duration
+        assert isinstance(talea, _specifiers.Talea), repr(talea)
+        self._talea = talea
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, voice, *, tag: str = None) -> None:
+        """
+        Calls on-beat grace container command.
+        """
+        selections = voice
+        if self.selector is not None:
+            selections = self.selector(selections)
+        counts = abjad.CyclicTuple(self.counts)
+        maker = abjad.LeafMaker()
+        start = 0
+        for i, selection in enumerate(selections):
+            count = counts[i]
+            stop = start + count
+            durations = self.talea[start:stop]
+            notes = maker([0], durations)
+            abjad.on_beat_grace_container(
+                notes,
+                selection,
+                anchor_voice_number=2,
+                grace_voice_number=1,
+                grace_leaf_duration=self.grace_leaf_duration,
+            )
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def counts(self) -> typing.Tuple[int, ...]:
+        """
+        Gets counts.
+        """
+        return self._counts
+
+    @property
+    def grace_leaf_duration(self) -> typing.Optional[abjad.Duration]:
+        """
+        Gets grace leaf duration.
+        """
+        return self._grace_leaf_duration
 
     @property
     def talea(self) -> _specifiers.Talea:
@@ -2636,8 +2709,9 @@ def on_beat_grace_container(
     counts: abjad.IntegerSequence,
     selector: abjad.SelectorTyping = None,
     *,
+    grace_leaf_duration: abjad.DurationTyping = None,
     talea: _specifiers.Talea = _specifiers.Talea([1], 8),
-) -> GraceContainerCommand:
+) -> OnBeatGraceContainerCommand:
     r"""
     Makes on-beat grace container command.
 
@@ -2645,22 +2719,20 @@ def on_beat_grace_container(
 
         >>> selector = abjad.select().notes().exclude([0, -1])
         >>> selector = abjad.select().tuplets().map(selector)
+        >>> selector = selector.notes().map(abjad.select())
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
-        ...     rmakers.on_beat_grace_container([2, 4], selector),
-        ...     rmakers.extract_trivial(),
+        ...     rmakers.on_beat_grace_container(
+        ...         [2, 4], selector, grace_leaf_duration=(1, 28)
+        ...     ),
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
+        >>> music_voice = abjad.Voice(selections, name="Music_Voice")
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
+        ...     abjad.select(music_voice), divisions, pitched_staff=False
         ... )
         >>> staff = lilypond_file[abjad.Staff]
-        >>> containers = abjad.select().components(abjad.OnBeatGraceContainer)
-        >>> result = [abjad.beam(_) for _ in containers(staff)]
-        >>> result = [abjad.slur(_) for _ in containers(staff)]
-        >>> slash = abjad.LilyPondLiteral(r"\slash")
-        >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
         >>> abjad.override(staff).tuplet_bracket.staff_padding = 4
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -2682,124 +2754,353 @@ def on_beat_grace_container(
                     \override TupletBracket.staff-padding = #4
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
-                        c'4
-                        <<
-                            {
-                                \set fontSize = #-2
-                                \once \override NoteColumn.force-hshift = 0.2
-                                \slash
-                                \slash
-                                <c' \tweak Accidental.stencil ##f c'>8 * 1
-                                [
-                                (
-                                c'8 * 1
-                                )
-                                ]
-                            }
-                        \\
+                    \context Voice = "Music_Voice"
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
                             c'4
-                        >>
-                        <<
-                            {
-                                \set fontSize = #-2
-                                \once \override NoteColumn.force-hshift = 0.2
-                                \slash
-                                \slash
-                                <c' \tweak Accidental.stencil ##f c'>8 * 1/2
-                                [
-                                (
-                                c'8 * 1/2
-                                c'8 * 1/2
-                                c'8 * 1/2
-                                )
-                                ]
-                            }
-                        \\
+                            <<
+                                \context Voice = "On_Beat_Grace_Container"
+                                {
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
+                                    <
+                                        \tweak font-size #0
+                                        \tweak transparent ##t
+                                        c'
+                                    >8 * 10/21
+                                    [
+                                    (
+                                    c'8 * 10/21
+                                    )
+                                    ]
+                                }
+                                \context Voice = "MusicVoice"
+                                {
+                                    \voiceTwo
+                                    c'4
+                                }
+                            >>
+                            <<
+                                \context Voice = "On_Beat_Grace_Container"
+                                {
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
+                                    <
+                                        \tweak font-size #0
+                                        \tweak transparent ##t
+                                        c'
+                                    >8 * 10/21
+                                    [
+                                    (
+                                    c'8 * 10/21
+                                    c'8 * 10/21
+                                    c'8 * 10/21
+                                    )
+                                    ]
+                                }
+                                \context Voice = "MusicVoice"
+                                {
+                                    \oneVoice
+                                    \voiceTwo
+                                    c'4
+                                }
+                            >>
+                            <<
+                                \context Voice = "On_Beat_Grace_Container"
+                                {
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
+                                    <
+                                        \tweak font-size #0
+                                        \tweak transparent ##t
+                                        c'
+                                    >8 * 10/21
+                                    [
+                                    (
+                                    c'8 * 10/21
+                                    )
+                                    ]
+                                }
+                                \context Voice = "MusicVoice"
+                                {
+                                    \oneVoice
+                                    \voiceTwo
+                                    c'4
+                                }
+                            >>
+                            \oneVoice
                             c'4
-                        >>
-                        <<
-                            {
-                                \set fontSize = #-2
-                                \once \override NoteColumn.force-hshift = 0.2
-                                \slash
-                                \slash
-                                <c' \tweak Accidental.stencil ##f c'>8 * 1
-                                [
-                                (
-                                c'8 * 1
-                                )
-                                ]
-                            }
-                        \\
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5 {
                             c'4
-                        >>
-                        c'4
+                            <<
+                                \context Voice = "On_Beat_Grace_Container"
+                                {
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
+                                    <
+                                        \tweak font-size #0
+                                        \tweak transparent ##t
+                                        c'
+                                    >8 * 10/21
+                                    [
+                                    (
+                                    c'8 * 10/21
+                                    c'8 * 10/21
+                                    c'8 * 10/21
+                                    )
+                                    ]
+                                }
+                                \context Voice = "MusicVoice"
+                                {
+                                    \voiceTwo
+                                    c'4
+                                }
+                            >>
+                            <<
+                                \context Voice = "On_Beat_Grace_Container"
+                                {
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
+                                    <
+                                        \tweak font-size #0
+                                        \tweak transparent ##t
+                                        c'
+                                    >8 * 10/21
+                                    [
+                                    (
+                                    c'8 * 10/21
+                                    )
+                                    ]
+                                }
+                                \context Voice = "MusicVoice"
+                                {
+                                    \oneVoice
+                                    \voiceTwo
+                                    c'4
+                                }
+                            >>
+                            <<
+                                \context Voice = "On_Beat_Grace_Container"
+                                {
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
+                                    <
+                                        \tweak font-size #0
+                                        \tweak transparent ##t
+                                        c'
+                                    >8 * 10/21
+                                    [
+                                    (
+                                    c'8 * 10/21
+                                    c'8 * 10/21
+                                    c'8 * 10/21
+                                    )
+                                    ]
+                                }
+                                \context Voice = "MusicVoice"
+                                {
+                                    \oneVoice
+                                    \voiceTwo
+                                    c'4
+                                }
+                            >>
+                            \oneVoice
+                            c'4
+                        }
                     }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
-                        c'4
+                }
+            >>
+
+    ..  container:: example
+
+        >>> selector = abjad.select().logical_ties()
+        >>> stack = rmakers.stack(
+        ...     rmakers.talea([5], 16),
+        ...     rmakers.extract_trivial(),
+        ...     rmakers.on_beat_grace_container(
+        ...         [6, 2], selector, grace_leaf_duration=(1, 28)
+        ...     ),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+        >>> music_voice = abjad.Voice(selections, name="Music_Voice")
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     abjad.select(music_voice), divisions, pitched_staff=False
+        ... )
+        >>> staff = lilypond_file[abjad.Staff]
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/4
+                    s1 * 3/4
+                    \time 3/4
+                    s1 * 3/4
+                }
+                \new RhythmicStaff
+                {
+                    \context Voice = "Music_Voice"
+                    {
                         <<
+                            \context Voice = "On_Beat_Grace_Container"
                             {
-                                \set fontSize = #-2
-                                \once \override NoteColumn.force-hshift = 0.2
+                                \set fontSize = #-3
                                 \slash
-                                \slash
-                                <c' \tweak Accidental.stencil ##f c'>8 * 1/2
+                                \voiceOne
+                                <
+                                    \tweak font-size #0
+                                    \tweak transparent ##t
+                                    c'
+                                >8 * 2/7
                                 [
                                 (
-                                c'8 * 1/2
-                                c'8 * 1/2
-                                c'8 * 1/2
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
                                 )
                                 ]
                             }
-                        \\
-                            c'4
+                            \context Voice = "MusicVoice"
+                            {
+                                \voiceTwo
+                                c'4
+                                ~
+                                c'16
+                            }
                         >>
                         <<
+                            \context Voice = "On_Beat_Grace_Container"
                             {
-                                \set fontSize = #-2
-                                \once \override NoteColumn.force-hshift = 0.2
+                                \set fontSize = #-3
                                 \slash
-                                \slash
-                                <c' \tweak Accidental.stencil ##f c'>8 * 1
+                                \voiceOne
+                                <
+                                    \tweak font-size #0
+                                    \tweak transparent ##t
+                                    c'
+                                >8 * 2/7
                                 [
                                 (
-                                c'8 * 1
+                                c'8 * 2/7
                                 )
                                 ]
                             }
-                        \\
-                            c'4
+                            \context Voice = "MusicVoice"
+                            {
+                                \oneVoice
+                                \voiceTwo
+                                c'4
+                                ~
+                                c'16
+                            }
                         >>
                         <<
+                            \context Voice = "On_Beat_Grace_Container"
                             {
-                                \set fontSize = #-2
-                                \once \override NoteColumn.force-hshift = 0.2
+                                \set fontSize = #-3
                                 \slash
-                                \slash
-                                <c' \tweak Accidental.stencil ##f c'>8 * 1/2
+                                \voiceOne
+                                <
+                                    \tweak font-size #0
+                                    \tweak transparent ##t
+                                    c'
+                                >8 * 2/7
                                 [
                                 (
-                                c'8 * 1/2
-                                c'8 * 1/2
-                                c'8 * 1/2
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
                                 )
                                 ]
                             }
-                        \\
-                            c'4
+                            \context Voice = "MusicVoice"
+                            {
+                                \oneVoice
+                                \voiceTwo
+                                c'8
+                                ~
+                                c'8.
+                            }
                         >>
-                        c'4
+                        <<
+                            \context Voice = "On_Beat_Grace_Container"
+                            {
+                                \set fontSize = #-3
+                                \slash
+                                \voiceOne
+                                <
+                                    \tweak font-size #0
+                                    \tweak transparent ##t
+                                    c'
+                                >8 * 2/7
+                                [
+                                (
+                                c'8 * 2/7
+                                )
+                                ]
+                            }
+                            \context Voice = "MusicVoice"
+                            {
+                                \oneVoice
+                                \voiceTwo
+                                c'4
+                                ~
+                                c'16
+                            }
+                        >>
+                        <<
+                            \context Voice = "On_Beat_Grace_Container"
+                            {
+                                \set fontSize = #-3
+                                \slash
+                                \voiceOne
+                                <
+                                    \tweak font-size #0
+                                    \tweak transparent ##t
+                                    c'
+                                >8 * 2/7
+                                [
+                                (
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                c'8 * 2/7
+                                )
+                                ]
+                            }
+                            \context Voice = "MusicVoice"
+                            {
+                                \oneVoice
+                                \voiceTwo
+                                c'4
+                            }
+                        >>
                     }
                 }
             >>
 
     """
-    return GraceContainerCommand(
-        counts, selector, class_=abjad.OnBeatGraceContainer, talea=talea
+    return OnBeatGraceContainerCommand(
+        counts, selector, grace_leaf_duration=grace_leaf_duration, talea=talea
     )
 
 

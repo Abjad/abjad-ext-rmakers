@@ -110,23 +110,24 @@ class Stack(object):
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
         divisions_ = [abjad.NonreducedFraction(_) for _ in time_signatures]
         staff = RhythmMaker._make_staff(time_signatures_)
+        music_voice = staff["MusicVoice"]
         divisions = self._apply_division_expression(divisions_)
         selection = self.maker(divisions, previous_state=previous_state)
-        staff["MusicVoice"].extend(selection)
+        music_voice.extend(selection)
         for command in self.commands:
             if isinstance(command, _commands.CacheStateCommand):
                 assert isinstance(self.maker, RhythmMaker), repr(self.maker)
                 self.maker._cache_state(staff["MusicVoice"], len(divisions))
                 self.maker._already_cached_state = True
             try:
-                command(staff["MusicVoice"], tag=self.tag)
+                command(music_voice, tag=self.tag)
             except:
                 message = "exception while calling:\n"
                 message += f"   {format(command)}"
                 raise Exception(message)
-        result = staff["MusicVoice"][:]
+        result = music_voice[:]
         assert isinstance(result, abjad.Selection)
-        staff["MusicVoice"][:] = []
+        music_voice[:] = []
         return result
 
     def __eq__(self, argument) -> bool:
