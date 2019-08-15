@@ -1114,15 +1114,15 @@ class OnBeatGraceContainerCommand(Command):
         counts: abjad.IntegerSequence,
         selector: abjad.SelectorTyping = None,
         *,
-        grace_leaf_duration: abjad.DurationTyping = None,
+        leaf_duration: abjad.DurationTyping = None,
         talea: _specifiers.Talea = _specifiers.Talea([1], 8),
     ) -> None:
         super().__init__(selector)
         assert all(isinstance(_, int) for _ in counts), repr(counts)
         self._counts = tuple(counts)
-        if grace_leaf_duration is not None:
-            grace_leaf_duration = abjad.Duration(grace_leaf_duration)
-        self._grace_leaf_duration = grace_leaf_duration
+        if leaf_duration is not None:
+            leaf_duration = abjad.Duration(leaf_duration)
+        self._grace_leaf_duration = leaf_duration
         assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
 
@@ -1148,7 +1148,7 @@ class OnBeatGraceContainerCommand(Command):
                 selection,
                 anchor_voice_number=2,
                 grace_voice_number=1,
-                grace_leaf_duration=self.grace_leaf_duration,
+                leaf_duration=self.leaf_duration,
             )
 
     ### PUBLIC PROPERTIES ###
@@ -1161,7 +1161,7 @@ class OnBeatGraceContainerCommand(Command):
         return self._counts
 
     @property
-    def grace_leaf_duration(self) -> typing.Optional[abjad.Duration]:
+    def leaf_duration(self) -> typing.Optional[abjad.Duration]:
         """
         Gets grace leaf duration.
         """
@@ -2709,7 +2709,7 @@ def on_beat_grace_container(
     counts: abjad.IntegerSequence,
     selector: abjad.SelectorTyping = None,
     *,
-    grace_leaf_duration: abjad.DurationTyping = None,
+    leaf_duration: abjad.DurationTyping = None,
     talea: _specifiers.Talea = _specifiers.Talea([1], 8),
 ) -> OnBeatGraceContainerCommand:
     r"""
@@ -2723,7 +2723,7 @@ def on_beat_grace_container(
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
         ...     rmakers.on_beat_grace_container(
-        ...         [2, 4], selector, grace_leaf_duration=(1, 28)
+        ...         [2, 4], selector, leaf_duration=(1, 28)
         ...     ),
         ... )
         >>> divisions = [(3, 4), (3, 4)]
@@ -2927,7 +2927,7 @@ def on_beat_grace_container(
         ...     rmakers.talea([5], 16),
         ...     rmakers.extract_trivial(),
         ...     rmakers.on_beat_grace_container(
-        ...         [6, 2], selector, grace_leaf_duration=(1, 28)
+        ...         [6, 2], selector, leaf_duration=(1, 28)
         ...     ),
         ... )
         >>> divisions = [(3, 4), (3, 4)]
@@ -3100,7 +3100,7 @@ def on_beat_grace_container(
 
     """
     return OnBeatGraceContainerCommand(
-        counts, selector, grace_leaf_duration=grace_leaf_duration, talea=talea
+        counts, selector, leaf_duration=leaf_duration, talea=talea
     )
 
 
