@@ -1033,7 +1033,7 @@ class GraceContainerCommand(Command):
 
     __slots__ = ("_class_", "_counts", "_talea")
 
-    _classes = (abjad.GraceContainer, abjad.AfterGraceContainer)
+    _classes = (abjad.BeforeGraceContainer, abjad.AfterGraceContainer)
 
     ### INITIALIZER ###
 
@@ -1042,7 +1042,7 @@ class GraceContainerCommand(Command):
         counts: abjad.IntegerSequence,
         selector: abjad.SelectorTyping = None,
         *,
-        class_: typing.Type = abjad.GraceContainer,
+        class_: typing.Type = abjad.BeforeGraceContainer,
         talea: _specifiers.Talea = _specifiers.Talea([1], 8),
     ) -> None:
         super().__init__(selector)
@@ -2600,7 +2600,7 @@ def grace_container(
         ...     selections, divisions
         ... )
         >>> staff = lilypond_file[abjad.Staff]
-        >>> containers = abjad.select().components(abjad.GraceContainer)
+        >>> containers = abjad.select().components(abjad.BeforeGraceContainer)
         >>> result = [abjad.beam(_) for _ in containers(staff)]
         >>> selector = containers.map(abjad.select().with_next_leaf())
         >>> result = [abjad.slur(_) for _ in selector(staff)]
