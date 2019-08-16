@@ -56,7 +56,7 @@ from .commands import force_fraction
 from .commands import force_note
 from .commands import force_repeat_tie
 from .commands import force_rest
-from .commands import grace_container
+from .commands import before_grace_container
 from .commands import on_beat_grace_container
 from .commands import repeat_tie
 from .commands import rewrite_dots

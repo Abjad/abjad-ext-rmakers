@@ -2576,7 +2576,7 @@ def force_rest(selector: abjad.SelectorTyping) -> ForceRestCommand:
     return ForceRestCommand(selector)
 
 
-def grace_container(
+def before_grace_container(
     counts: abjad.IntegerSequence,
     selector: abjad.SelectorTyping = None,
     *,
@@ -2591,7 +2591,7 @@ def grace_container(
         >>> selector = abjad.select().tuplets().map(selector)
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
-        ...     rmakers.grace_container([2, 4], selector),
+        ...     rmakers.before_grace_container([2, 4], selector),
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 4), (3, 4)]
