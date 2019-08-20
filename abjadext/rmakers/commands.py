@@ -1285,13 +1285,19 @@ class RewriteMeterCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_reference_meters",)
+    __slots__ = ("_boundary_depth", "_reference_meters")
 
     ### INITIALIZER ###
 
     def __init__(
-        self, *, reference_meters: typing.Sequence[abjad.Meter] = None
+        self,
+        *,
+        boundary_depth: int = None,
+        reference_meters: typing.Sequence[abjad.Meter] = None,
     ) -> None:
+        if boundary_depth is not None:
+            assert isinstance(boundary_depth, int)
+        self._boundary_depth = boundary_depth
         reference_meters_ = None
         if reference_meters is not None:
             if not all(isinstance(_, abjad.Meter) for _ in reference_meters):
@@ -1312,7 +1318,7 @@ class RewriteMeterCommand(Command):
         assert isinstance(staff, abjad.Staff), repr(staff)
         time_signature_voice = staff["TimeSignatureVoice"]
         assert isinstance(time_signature_voice, abjad.Voice)
-        meters = []
+        meters, preferred_meters = [], []
         for skip in time_signature_voice:
             time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
             meter = abjad.Meter(time_signature)
@@ -1328,14 +1334,19 @@ class RewriteMeterCommand(Command):
                     meter = reference_meter
                     break
 
+            preferred_meters.append(meter)
             nontupletted_leaves = []
             for leaf in abjad.iterate(selection).leaves():
                 if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
             unbeam()(nontupletted_leaves)
-            abjad.mutate(selection).rewrite_meter(meter, rewrite_tuplets=False)
+            abjad.mutate(selection).rewrite_meter(
+                meter,
+                boundary_depth=self.boundary_depth,
+                rewrite_tuplets=False,
+            )
         selections = abjad.select(voice[:]).group_by_measure()
-        for meter, selection in zip(meters, selections):
+        for meter, selection in zip(preferred_meters, selections):
             leaves = abjad.select(selection).leaves(grace=False)
             beat_durations = []
             beat_offsets = meter.depthwise_offset_inventory[1]
@@ -1398,6 +1409,13 @@ class RewriteMeterCommand(Command):
         return beamable_groups
 
     ### PUBLIC PROPERTIES ###
+
+    @property
+    def boundary_depth(self) -> typing.Optional[int]:
+        """
+        Gets boundary depth.
+        """
+        return self._boundary_depth
 
     @property
     def reference_meters(
@@ -3360,11 +3378,15 @@ def rewrite_dots(selector: abjad.SelectorTyping = None) -> RewriteDotsCommand:
     return RewriteDotsCommand(selector)
 
 
-def rewrite_meter(*, reference_meters=None) -> RewriteMeterCommand:
+def rewrite_meter(
+    *, boundary_depth: int = None, reference_meters=None
+) -> RewriteMeterCommand:
     """
     Makes rewrite meter command.
     """
-    return RewriteMeterCommand(reference_meters=reference_meters)
+    return RewriteMeterCommand(
+        boundary_depth=boundary_depth, reference_meters=reference_meters
+    )
 
 
 def rewrite_rest_filled(
