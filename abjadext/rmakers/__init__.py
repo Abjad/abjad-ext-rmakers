@@ -42,6 +42,7 @@ from .commands import SplitMeasuresCommand
 from .commands import TieCommand
 from .commands import TremoloContainerCommand
 from .commands import UnbeamCommand
+from .commands import WrittenDurationCommand
 from .commands import after_grace_container
 from .commands import beam
 from .commands import beam_groups
@@ -69,3 +70,4 @@ from .commands import tremolo_container
 from .commands import trivialize
 from .commands import unbeam
 from .commands import untie
+from .commands import written_duration

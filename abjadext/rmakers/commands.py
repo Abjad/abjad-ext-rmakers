@@ -106,7 +106,7 @@ class BeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls beam command on ``voice``.
         """
@@ -186,7 +186,7 @@ class BeamGroupsCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls beam groups command on ``voice``.
         """
@@ -358,6 +358,64 @@ class DurationBracketCommand(Command):
             abjad.override(tuplet).tuplet_number.text = markup
 
 
+class WrittenDurationCommand(Command):
+    """
+    Written duration command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ("_duration",)
+
+    ### INITIALIZER ###
+
+    def __init__(
+        self,
+        duration: abjad.DurationTyping,
+        *,
+        selector: abjad.SelectorTyping = "baca.leaf(0)",
+    ) -> None:
+        super().__init__(selector)
+        duration_ = abjad.Duration(duration)
+        self._duration = duration_
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, voice, *, tag: str = None) -> None:
+        """
+        Calls duration multiplier command.
+        """
+        selection = voice
+        if self.selector is not None:
+            selection = self.selector(selection)
+        leaves = abjad.select(selection).leaves()
+        assert isinstance(leaves, abjad.Selection)
+        for leaf in leaves:
+            self._set_written_duration(leaf, self.duration)
+
+    ### PRIVATE METHODS ###
+
+    @staticmethod
+    def _set_written_duration(leaf, written_duration):
+        if written_duration is None:
+            return
+        old_duration = abjad.inspect(leaf).duration()
+        if written_duration == old_duration:
+            return
+        leaf.written_duration = written_duration
+        multiplier = old_duration / written_duration
+        leaf.multiplier = multiplier
+
+    ### PUBLIC PROPERTIES ###
+
+    @property
+    def duration(self) -> typing.Optional[abjad.Duration]:
+        """
+        Gets written duration.
+        """
+        return self._duration
+
+
 class ExtractTrivialCommand(Command):
     """
     Extract trivial command.
@@ -410,7 +468,7 @@ class FeatherBeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls feather beam command.
         """
@@ -1592,7 +1650,7 @@ class UnbeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: str = None) -> None:
         """
         Calls unbeam command.
         """
@@ -4674,3 +4732,13 @@ def untie(selector: abjad.SelectorTyping = None) -> UntieCommand:
 
     """
     return UntieCommand(selector=selector)
+
+
+def written_duration(
+    duration: abjad.DurationTyping,
+    selector: abjad.SelectorTyping = abjad.select().leaves(),
+) -> WrittenDurationCommand:
+    """
+    Makes written duration command.
+    """
+    return WrittenDurationCommand(duration, selector=selector)
