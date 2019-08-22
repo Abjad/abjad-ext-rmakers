@@ -1089,7 +1089,7 @@ class GraceContainerCommand(Command):
 
     ### CLASS VARIABLES ###
 
-    __slots__ = ("_class_", "_counts", "_talea")
+    __slots__ = ("_beam_and_slash", "_class_", "_counts", "_talea")
 
     _classes = (abjad.BeforeGraceContainer, abjad.AfterGraceContainer)
 
@@ -1101,6 +1101,7 @@ class GraceContainerCommand(Command):
         selector: abjad.SelectorTyping = None,
         *,
         class_: typing.Type = abjad.BeforeGraceContainer,
+        beam_and_slash: bool = None,
         talea: _specifiers.Talea = _specifiers.Talea([1], 8),
     ) -> None:
         super().__init__(selector)
@@ -1108,6 +1109,9 @@ class GraceContainerCommand(Command):
         self._counts = tuple(counts)
         assert class_ in self._classes, repr(class_)
         self._class_ = class_
+        if beam_and_slash is not None:
+            beam_and_slash = bool(beam_and_slash)
+        self._beam_and_slash = beam_and_slash
         assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
 
@@ -1129,6 +1133,10 @@ class GraceContainerCommand(Command):
             stop = start + count
             durations = self.talea[start:stop]
             notes = maker([0], durations)
+            if self.beam_and_slash:
+                abjad.beam(notes)
+                literal = abjad.LilyPondLiteral(r"\slash")
+                abjad.attach(literal, notes[0])
             container = self.class_(notes)
             abjad.attach(container, leaf)
 
@@ -1147,6 +1155,14 @@ class GraceContainerCommand(Command):
         Gets counts.
         """
         return self._counts
+
+    @property
+    def beam_and_slash(self) -> typing.Optional[bool]:
+        """
+        Is true when command beams notes and attaches Nalesnik ``\slash``
+        command to first note.
+        """
+        return self._beam_and_slash
 
     @property
     def talea(self) -> _specifiers.Talea:
@@ -1714,6 +1730,7 @@ def after_grace_container(
     counts: abjad.IntegerSequence,
     selector: abjad.SelectorTyping = None,
     *,
+    beam_and_slash: bool = None,
     talea: _specifiers.Talea = _specifiers.Talea([1], 8),
 ) -> GraceContainerCommand:
     r"""
@@ -1721,11 +1738,13 @@ def after_grace_container(
 
     ..  container:: example
 
+        Single after-graces with slurs applied manually:
+
         >>> selector = abjad.select().note(-1)
         >>> selector = abjad.select().tuplets().map(selector)
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
-        ...     rmakers.after_grace_container([2, 4], selector),
+        ...     rmakers.after_grace_container([1], selector),
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 4), (3, 4)]
@@ -1735,11 +1754,78 @@ def after_grace_container(
         ... )
         >>> staff = lilypond_file[abjad.Staff]
         >>> containers = abjad.select().components(abjad.AfterGraceContainer)
-        >>> result = [abjad.beam(_) for _ in containers(staff)]
         >>> selector = containers.map(abjad.select().with_next_leaf())
         >>> result = [abjad.slur(_) for _ in selector(staff)]
-        >>> slash = abjad.LilyPondLiteral(r"\slash")
-        >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/4
+                    s1 * 3/4
+                    \time 3/4
+                    s1 * 3/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        c'4
+                        c'4
+                        c'4
+                        \afterGrace
+                        c'4
+                        {
+                            c'8
+                            (
+                        }
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        )
+                        c'4
+                        c'4
+                        c'4
+                        \afterGrace
+                        c'4
+                        {
+                            c'8
+                            )
+                            (
+                        }
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Multiple after-graces with ``beam_and_slash=True`` and with slurs
+        applied manually:
+
+        >>> selector = abjad.select().note(-1)
+        >>> selector = abjad.select().tuplets().map(selector)
+        >>> stack = rmakers.stack(
+        ...     rmakers.even_division([4], extra_counts=[2]),
+        ...     rmakers.after_grace_container(
+        ...         [2, 4], selector, beam_and_slash=True,
+        ...     ),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections, divisions
+        ... )
+        >>> staff = lilypond_file[abjad.Staff]
+        >>> containers = abjad.select().components(abjad.AfterGraceContainer)
+        >>> selector = containers.map(abjad.select().with_next_leaf())
+        >>> result = [abjad.slur(_) for _ in selector(staff)]
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1799,7 +1885,11 @@ def after_grace_container(
 
     """
     return GraceContainerCommand(
-        counts, selector, class_=abjad.AfterGraceContainer, talea=talea
+        counts,
+        selector,
+        beam_and_slash=beam_and_slash,
+        class_=abjad.AfterGraceContainer,
+        talea=talea,
     )
 
 
