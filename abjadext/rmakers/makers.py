@@ -14085,6 +14085,7 @@ def note(
 def talea(
     counts,
     denominator,
+    advance: int = None,
     end_counts: abjad.IntegerSequence = None,
     extra_counts: abjad.IntegerSequence = None,
     preamble=None,
@@ -14095,17 +14096,20 @@ def talea(
     """
     Makes talea rhythm-maker.
     """
+    talea = _specifiers.Talea(
+        counts=counts,
+        denominator=denominator,
+        end_counts=end_counts,
+        preamble=preamble,
+    )
+    if advance is not None:
+        talea = talea.advance(advance)
     return TaleaRhythmMaker(
         extra_counts=extra_counts,
         read_talea_once_only=read_talea_once_only,
         spelling=spelling,
         tag=tag,
-        talea=_specifiers.Talea(
-            counts=counts,
-            denominator=denominator,
-            end_counts=end_counts,
-            preamble=preamble,
-        ),
+        talea=talea,
     )
 
 
