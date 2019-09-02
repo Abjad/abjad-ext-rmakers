@@ -4278,9 +4278,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         denominators = tuple(denominators)
         self._denominators: typing.Tuple[int, ...] = denominators
         if extra_counts is not None:
-            if not abjad.mathtools.all_are_integer_equivalent(
-                extra_counts
-            ):
+            if not abjad.mathtools.all_are_integer_equivalent(extra_counts):
                 message = "must be integer sequence:\n"
                 message += f"    {repr(extra_counts)}"
                 raise Exception(message)
