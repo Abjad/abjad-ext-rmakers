@@ -1214,6 +1214,8 @@ class OnBeatGraceContainerCommand(Command):
         start = 0
         for i, selection in enumerate(selections):
             count = counts[i]
+            if not count:
+                continue
             stop = start + count
             durations = self.talea[start:stop]
             notes = maker([0], durations)
