@@ -1130,6 +1130,8 @@ class GraceContainerCommand(Command):
         start = 0
         for i, leaf in enumerate(leaves):
             count = counts[i]
+            if not count:
+                continue
             stop = start + count
             durations = self.talea[start:stop]
             notes = maker([0], durations)
