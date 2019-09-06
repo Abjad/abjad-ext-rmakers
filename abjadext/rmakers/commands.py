@@ -399,7 +399,7 @@ class WrittenDurationCommand(Command):
     def _set_written_duration(leaf, written_duration):
         if written_duration is None:
             return
-        old_duration = abjad.inspect(leaf).duration()
+        old_duration = leaf.written_duration
         if written_duration == old_duration:
             return
         leaf.written_duration = written_duration
