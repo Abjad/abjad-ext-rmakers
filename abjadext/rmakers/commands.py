@@ -1939,6 +1939,135 @@ def beam_groups(
     )
 
 
+def before_grace_container(
+    counts: abjad.IntegerSequence,
+    selector: abjad.SelectorTyping = None,
+    *,
+    talea: _specifiers.Talea = _specifiers.Talea([1], 8),
+) -> GraceContainerCommand:
+    r"""
+    Makes grace container command.
+
+    ..  container:: example
+
+        >>> selector = abjad.select().notes().exclude([0, -1])
+        >>> selector = abjad.select().tuplets().map(selector)
+        >>> stack = rmakers.stack(
+        ...     rmakers.even_division([4], extra_counts=[2]),
+        ...     rmakers.before_grace_container([2, 4], selector),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(
+        ...     selections, divisions
+        ... )
+        >>> staff = lilypond_file[abjad.Staff]
+        >>> containers = abjad.select().components(abjad.BeforeGraceContainer)
+        >>> result = [abjad.beam(_) for _ in containers(staff)]
+        >>> selector = containers.map(abjad.select().with_next_leaf())
+        >>> result = [abjad.slur(_) for _ in selector(staff)]
+        >>> slash = abjad.LilyPondLiteral(r"\slash")
+        >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> abjad.f(lilypond_file[abjad.Score])
+            \new Score
+            <<
+                \new GlobalContext
+                {
+                    \time 3/4
+                    s1 * 3/4
+                    \time 3/4
+                    s1 * 3/4
+                }
+                \new RhythmicStaff
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5 {
+                        c'4
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        \grace {
+                            \slash
+                            c'8
+                            [
+                            (
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        )
+                        c'4
+                    }
+                }
+            >>
+
+    """
+    return GraceContainerCommand(counts, selector, talea=talea)
+
+
 def cache_state() -> CacheStateCommand:
     """
     Makes cache state command.
@@ -2744,135 +2873,6 @@ def force_rest(selector: abjad.SelectorTyping) -> ForceRestCommand:
     Makes force rest command.
     """
     return ForceRestCommand(selector)
-
-
-def before_grace_container(
-    counts: abjad.IntegerSequence,
-    selector: abjad.SelectorTyping = None,
-    *,
-    talea: _specifiers.Talea = _specifiers.Talea([1], 8),
-) -> GraceContainerCommand:
-    r"""
-    Makes grace container command.
-
-    ..  container:: example
-
-        >>> selector = abjad.select().notes().exclude([0, -1])
-        >>> selector = abjad.select().tuplets().map(selector)
-        >>> stack = rmakers.stack(
-        ...     rmakers.even_division([4], extra_counts=[2]),
-        ...     rmakers.before_grace_container([2, 4], selector),
-        ...     rmakers.extract_trivial(),
-        ... )
-        >>> divisions = [(3, 4), (3, 4)]
-        >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
-        >>> staff = lilypond_file[abjad.Staff]
-        >>> containers = abjad.select().components(abjad.BeforeGraceContainer)
-        >>> result = [abjad.beam(_) for _ in containers(staff)]
-        >>> selector = containers.map(abjad.select().with_next_leaf())
-        >>> result = [abjad.slur(_) for _ in selector(staff)]
-        >>> slash = abjad.LilyPondLiteral(r"\slash")
-        >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> abjad.f(lilypond_file[abjad.Score])
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 3/4
-                    s1 * 3/4
-                    \time 3/4
-                    s1 * 3/4
-                }
-                \new RhythmicStaff
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
-                        c'4
-                        \grace {
-                            \slash
-                            c'8
-                            [
-                            (
-                            c'8
-                            ]
-                        }
-                        c'4
-                        )
-                        \grace {
-                            \slash
-                            c'8
-                            [
-                            (
-                            c'8
-                            c'8
-                            c'8
-                            ]
-                        }
-                        c'4
-                        )
-                        \grace {
-                            \slash
-                            c'8
-                            [
-                            (
-                            c'8
-                            ]
-                        }
-                        c'4
-                        )
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
-                        c'4
-                        \grace {
-                            \slash
-                            c'8
-                            [
-                            (
-                            c'8
-                            c'8
-                            c'8
-                            ]
-                        }
-                        c'4
-                        )
-                        \grace {
-                            \slash
-                            c'8
-                            [
-                            (
-                            c'8
-                            ]
-                        }
-                        c'4
-                        )
-                        \grace {
-                            \slash
-                            c'8
-                            [
-                            (
-                            c'8
-                            c'8
-                            c'8
-                            ]
-                        }
-                        c'4
-                        )
-                        c'4
-                    }
-                }
-            >>
-
-    """
-    return GraceContainerCommand(counts, selector, talea=talea)
 
 
 def on_beat_grace_container(
