@@ -29,7 +29,7 @@ class Command(object):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls command on ``voice``.
         """
@@ -106,7 +106,7 @@ class BeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls beam command on ``voice``.
         """
@@ -168,7 +168,7 @@ class BeamGroupsCommand(Command):
         beam_lone_notes: bool = None,
         beam_rests: bool = None,
         stemlet_length: abjad.Number = None,
-        tag: str = None,
+        tag: abjad.Tag = None,
     ) -> None:
         super().__init__(selector)
         if beam_lone_notes is not None:
@@ -181,12 +181,12 @@ class BeamGroupsCommand(Command):
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
         if tag is not None:
-            assert isinstance(tag, str), repr(tag)
+            assert isinstance(tag, abjad.Tag), repr(tag)
         self._tag = tag
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls beam groups command on ``voice``.
         """
@@ -251,7 +251,7 @@ class BeamGroupsCommand(Command):
         return self._stemlet_length
 
     @property
-    def tag(self) -> typing.Optional[str]:
+    def tag(self) -> typing.Optional[abjad.Tag]:
         """
         Gets tag.
         """
@@ -299,7 +299,7 @@ class DenominatorCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls denominator command.
         """
@@ -344,7 +344,7 @@ class DurationBracketCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls duration bracket command.
         """
@@ -381,7 +381,7 @@ class WrittenDurationCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls duration multiplier command.
         """
@@ -427,7 +427,7 @@ class ExtractTrivialCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls extract trivial command.
         """
@@ -468,7 +468,7 @@ class FeatherBeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls feather beam command.
         """
@@ -544,7 +544,7 @@ class ForceAugmentationCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls force augmentation command.
         """
@@ -567,7 +567,7 @@ class ForceDiminutionCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls force diminution command.
         """
@@ -590,7 +590,7 @@ class ForceFractionCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls force fraction command.
         """
@@ -832,7 +832,7 @@ class ForceRepeatTieCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls force repeat-tie command.
         """
@@ -1117,7 +1117,7 @@ class GraceContainerCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls grace container command.
         """
@@ -1204,7 +1204,7 @@ class OnBeatGraceContainerCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls on-beat grace container command.
         """
@@ -1264,7 +1264,7 @@ class RepeatTieCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls tie command.
         """
@@ -1287,7 +1287,7 @@ class RewriteDotsCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls rewrite dots command.
         """
@@ -1329,7 +1329,7 @@ class RewriteMeterCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls rewrite meter command.
         """
@@ -1471,7 +1471,7 @@ class RewriteRestFilledCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls rewrite rest-filled command.
         """
@@ -1521,7 +1521,7 @@ class RewriteSustainedCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls rewrite sustained command.
         """
@@ -1563,7 +1563,7 @@ class SplitMeasuresCommand(Command):
         voice,
         *,
         durations: typing.Sequence[abjad.DurationTyping] = None,
-        tag: str = None,
+        tag: abjad.Tag = None,
     ) -> None:
         """
         Calls split measures command.
@@ -1595,7 +1595,7 @@ class TieCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls tie command.
         """
@@ -1628,7 +1628,7 @@ class TremoloContainerCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls tremolo container command.
         """
@@ -1666,7 +1666,7 @@ class TrivializeCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls trivialize command.
         """
@@ -1688,7 +1688,7 @@ class UnbeamCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls unbeam command.
         """
@@ -1715,7 +1715,7 @@ class UntieCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(self, voice, *, tag: str = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls untie command.
         """
@@ -1925,7 +1925,7 @@ def beam_groups(
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
     stemlet_length: abjad.Number = None,
-    tag: str = None,
+    tag: abjad.Tag = None,
 ) -> BeamGroupsCommand:
     """
     Makes beam-groups command.

@@ -30,7 +30,7 @@ class RhythmMaker(object):
     ### INITIALIZER ###
 
     def __init__(
-        self, *, spelling: _specifiers.Spelling = None, tag: str = None
+        self, *, spelling: _specifiers.Spelling = None, tag: abjad.Tag = None
     ) -> None:
         if spelling is not None:
             assert isinstance(spelling, _specifiers.Spelling)
@@ -39,7 +39,7 @@ class RhythmMaker(object):
         self._previous_state = abjad.OrderedDict()
         self._state = abjad.OrderedDict()
         if tag is not None:
-            assert isinstance(tag, str), repr(tag)
+            assert isinstance(tag, abjad.Tag), repr(tag)
         self._tag = tag
 
     ### SPECIAL METHODS ###
@@ -144,7 +144,7 @@ class RhythmMaker(object):
         increase_monotonic=None,
         forbidden_note_duration=None,
         forbidden_rest_duration=None,
-        tag: str = None,
+        tag: abjad.Tag = None,
     ):
         assert all(x != 0 for x in talea), repr(talea)
         result: typing.List[abjad.Leaf] = []
@@ -273,7 +273,7 @@ class RhythmMaker(object):
         return self._state
 
     @property
-    def tag(self) -> typing.Optional[str]:
+    def tag(self) -> typing.Optional[abjad.Tag]:
         """
         Gets tag.
         """
@@ -2188,7 +2188,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             typing.Sequence[_specifiers.Interpolation],
         ] = None,
         spelling: _specifiers.Spelling = None,
-        tag: str = None,
+        tag: abjad.Tag = None,
     ) -> None:
         RhythmMaker.__init__(self, spelling=spelling, tag=tag)
         if isinstance(interpolations, _specifiers.Interpolation):
@@ -2413,7 +2413,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @classmethod
     def _make_accelerando(
-        class_, total_duration, interpolations, index, *, tag: str = None
+        class_, total_duration, interpolations, index, *, tag: abjad.Tag = None
     ) -> abjad.Tuplet:
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
@@ -3465,7 +3465,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return super().state
 
     @property
-    def tag(self) -> typing.Optional[str]:
+    def tag(self) -> typing.Optional[abjad.Tag]:
         r"""
         Gets tag.
 
@@ -3477,7 +3477,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
             ...     rmakers.feather_beam(),
             ...     rmakers.duration_bracket(),
-            ...     tag="ACCELERANDO_RHYTHM_MAKER",
+            ...     tag=abjad.Tag("ACCELERANDO_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
@@ -4269,7 +4269,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         denominators: typing.Sequence[int] = [8],
         extra_counts: typing.Sequence[int] = None,
         spelling: _specifiers.Spelling = None,
-        tag: str = None,
+        tag: abjad.Tag = None,
     ) -> None:
         RhythmMaker.__init__(self, spelling=spelling, tag=tag)
         assert abjad.mathtools.all_are_nonnegative_integer_powers_of_two(
@@ -5924,7 +5924,7 @@ class IncisedRhythmMaker(RhythmMaker):
         extra_counts: typing.Sequence[int] = None,
         incise: _specifiers.Incise = None,
         spelling: _specifiers.Spelling = None,
-        tag: str = None,
+        tag: abjad.Tag = None,
     ) -> None:
         RhythmMaker.__init__(self, spelling=spelling, tag=tag)
         prototype = (_specifiers.Incise, type(None))
@@ -6606,7 +6606,7 @@ class IncisedRhythmMaker(RhythmMaker):
         return super().spelling
 
     @property
-    def tag(self) -> typing.Optional[str]:
+    def tag(self) -> typing.Optional[abjad.Tag]:
         r"""
         Gets tag.
 
@@ -6626,7 +6626,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ...         ),
             ...     rmakers.force_augmentation(),
             ...     rmakers.beam(),
-            ...     tag="INCISED_RHYTHM_MAKER",
+            ...     tag=abjad.Tag("INCISED_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
             >>> selection = stack(divisions)
@@ -6736,7 +6736,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         prototype: typing.Type = abjad.Note,
         *,
         duration: abjad.DurationTyping = (1, 1),
-        tag: str = None,
+        tag: abjad.Tag = None,
     ) -> None:
         RhythmMaker.__init__(self, tag=tag)
         if prototype not in self._prototypes:
@@ -7702,7 +7702,7 @@ class NoteRhythmMaker(RhythmMaker):
     ### INITIALIZER ###
 
     def __init__(
-        self, spelling: _specifiers.Spelling = None, tag: str = None
+        self, spelling: _specifiers.Spelling = None, tag: abjad.Tag = None
     ) -> None:
         RhythmMaker.__init__(self, spelling=spelling, tag=tag)
 
@@ -7843,14 +7843,14 @@ class NoteRhythmMaker(RhythmMaker):
         return super().spelling
 
     @property
-    def tag(self):
+    def tag(self) -> typing.Optional[abjad.Tag]:
         r"""
         Gets tag.
 
         ..  container:: example
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
-            ...     tag="NOTE_RHYTHM_MAKER",
+            ...     tag=abjad.Tag("NOTE_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(5, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
@@ -10400,7 +10400,7 @@ class TaleaRhythmMaker(RhythmMaker):
         extra_counts: abjad.IntegerSequence = None,
         read_talea_once_only: bool = None,
         spelling: _specifiers.Spelling = None,
-        tag: str = None,
+        tag: abjad.Tag = None,
         talea: _specifiers.Talea = _specifiers.Talea(
             counts=[1], denominator=16
         ),
@@ -11600,7 +11600,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return super().state
 
     @property
-    def tag(self) -> typing.Optional[str]:
+    def tag(self) -> typing.Optional[abjad.Tag]:
         r"""
         Gets tag.
 
@@ -11609,7 +11609,7 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> stack = rmakers.stack(
             ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[0, 1]),
             ...     rmakers.beam(),
-            ...     tag="TALEA_RHYTHM_MAKER",
+            ...     tag=abjad.Tag("TALEA_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
@@ -13294,7 +13294,7 @@ class TupletRhythmMaker(RhythmMaker):
         self,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
         spelling: _specifiers.Spelling = None,
-        tag: str = None,
+        tag: abjad.Tag = None,
         tuplet_ratios: abjad.RatioSequenceTyping = None,
     ) -> None:
         RhythmMaker.__init__(self, spelling=spelling, tag=tag)
@@ -13747,7 +13747,7 @@ class TupletRhythmMaker(RhythmMaker):
         return self._denominator
 
     @property
-    def tag(self) -> typing.Optional[str]:
+    def tag(self) -> typing.Optional[abjad.Tag]:
         r"""
         Gets tag.
 
@@ -13756,7 +13756,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(3, 2)]),
             ...     rmakers.beam(),
-            ...     tag="TUPLET_RHYTHM_MAKER",
+            ...     tag=abjad.Tag("TUPLET_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
             >>> selection = stack(divisions)
@@ -13995,7 +13995,9 @@ class TupletRhythmMaker(RhythmMaker):
 
 
 def accelerando(
-    *interpolations, spelling: _specifiers.Spelling = None, tag: str = None
+    *interpolations,
+    spelling: _specifiers.Spelling = None,
+    tag: abjad.Tag = None,
 ) -> AccelerandoRhythmMaker:
     """
     Makes accelerando rhythm-maker.
@@ -14015,7 +14017,7 @@ def even_division(
     denominator: typing.Union[str, int] = "from_counts",
     extra_counts: typing.Sequence[int] = None,
     spelling: _specifiers.Spelling = None,
-    tag: str = None,
+    tag: abjad.Tag = None,
 ) -> EvenDivisionRhythmMaker:
     """
     Makes even-division rhythm-maker.
@@ -14040,7 +14042,7 @@ def incised(
     suffix_counts: typing.Sequence[int] = None,
     talea_denominator: int = None,
     spelling: _specifiers.Spelling = None,
-    tag: str = None,
+    tag: abjad.Tag = None,
 ) -> IncisedRhythmMaker:
     """
     Makes incised rhythm-maker
@@ -14066,7 +14068,7 @@ def multiplied_duration(
     prototype: typing.Type = abjad.Note,
     *,
     duration: abjad.DurationTyping = (1, 1),
-    tag: str = None,
+    tag: abjad.Tag = None,
 ) -> MultipliedDurationRhythmMaker:
     """
     Makes multiplied-duration rhythm-maker.
@@ -14075,7 +14077,7 @@ def multiplied_duration(
 
 
 def note(
-    spelling: _specifiers.Spelling = None, tag: str = None
+    spelling: _specifiers.Spelling = None, tag: abjad.Tag = None
 ) -> NoteRhythmMaker:
     """
     Makes note rhythm-maker.
@@ -14092,7 +14094,7 @@ def talea(
     preamble=None,
     read_talea_once_only: bool = None,
     spelling: _specifiers.Spelling = None,
-    tag: str = None,
+    tag: abjad.Tag = None,
 ) -> TaleaRhythmMaker:
     """
     Makes talea rhythm-maker.
@@ -14119,7 +14121,7 @@ def tuplet(
     # TODO: remove in favor of dedicated denominator control commands:
     denominator: typing.Union[int, abjad.DurationTyping] = None,
     spelling: _specifiers.Spelling = None,
-    tag: str = None,
+    tag: abjad.Tag = None,
 ) -> TupletRhythmMaker:
     """
     Makes tuplet rhythm-maker.

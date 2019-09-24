@@ -80,7 +80,7 @@ class Stack(object):
         maker,
         *commands,
         preprocessor: abjad.Expression = None,
-        tag: str = None,
+        tag: abjad.Tag = None,
     ) -> None:
         prototype = (RhythmMaker, Stack, Bind)
         assert isinstance(maker, prototype), repr(maker)
@@ -94,7 +94,7 @@ class Stack(object):
             assert isinstance(preprocessor, abjad.Expression)
         self._preprocessor = preprocessor
         if tag is not None:
-            assert isinstance(tag, str), repr(tag)
+            assert isinstance(tag, abjad.Tag), repr(tag)
         self._tag = tag
 
     ### SPECIAL METHODS ###
@@ -296,7 +296,7 @@ class Stack(object):
         return self.maker.state
 
     @property
-    def tag(self) -> typing.Optional[str]:
+    def tag(self) -> typing.Optional[abjad.Tag]:
         """
         Gets tag.
         """
@@ -467,7 +467,9 @@ class Bind(object):
 
     ### INITIALIZER ###
 
-    def __init__(self, *assignments: Assignment, tag: str = None) -> None:
+    def __init__(
+        self, *assignments: Assignment, tag: abjad.Tag = None
+    ) -> None:
         assignments = assignments or ()
         for assignment in assignments:
             if not isinstance(assignment, Assignment):
@@ -478,7 +480,7 @@ class Bind(object):
         self._assignments = assignments_
         self._state = abjad.OrderedDict()
         if tag is not None:
-            assert isinstance(tag, str), repr(tag)
+            assert isinstance(tag, abjad.Tag), repr(tag)
         self._tag = tag
 
     ### SPECIAL METHODS ###
@@ -600,7 +602,7 @@ class Bind(object):
         return self._state
 
     @property
-    def tag(self) -> typing.Optional[str]:
+    def tag(self) -> typing.Optional[abjad.Tag]:
         """
         Gets tag.
         """
@@ -626,7 +628,7 @@ def assign(
     )
 
 
-def bind(*assignments: Assignment, tag: str = None) -> Bind:
+def bind(*assignments: Assignment, tag: abjad.Tag = None) -> Bind:
     """
     Makes bind.
     """
@@ -634,7 +636,10 @@ def bind(*assignments: Assignment, tag: str = None) -> Bind:
 
 
 def stack(
-    maker, *commands, preprocessor: abjad.Expression = None, tag: str = None
+    maker,
+    *commands,
+    preprocessor: abjad.Expression = None,
+    tag: abjad.Tag = None,
 ) -> Stack:
     """
     Makes stack.
