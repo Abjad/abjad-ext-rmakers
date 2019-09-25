@@ -213,10 +213,10 @@ class BeamGroupsCommand(Command):
         leaves = abjad.select(components).leaves()
         parts = []
         if tag is not None:
-            parts.append(tag)
+            parts.append(str(tag))
         if self.tag is not None:
-            parts.append(self.tag)
-        tag = ":".join(parts)
+            parts.append(str(self.tag))
+        tag = abjad.Tag.from_words(parts)
         abjad.beam(
             leaves,
             beam_lone_notes=self.beam_lone_notes,
@@ -1382,7 +1382,7 @@ class RewriteMeterCommand(Command):
                 abjad.beam(
                     beamable_group,
                     beam_rests=False,
-                    tag="rmakers.RewriteMeterCommand.__call__",
+                    tag=abjad.Tag("rmakers.RewriteMeterCommand.__call__"),
                 )
 
     ### PRIVATE METHODS ###
