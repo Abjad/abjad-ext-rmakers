@@ -216,7 +216,8 @@ class BeamGroupsCommand(Command):
             parts.append(str(tag))
         if self.tag is not None:
             parts.append(str(self.tag))
-        tag = abjad.Tag.from_words(parts)
+        string = ":".join(parts)
+        tag = abjad.Tag(string)
         abjad.beam(
             leaves,
             beam_lone_notes=self.beam_lone_notes,
