@@ -1175,6 +1175,35 @@ class GraceContainerCommand(Command):
         return self._talea
 
 
+class InvisibleMusicCommand(Command):
+    """
+    Invisible music command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ()
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+        """
+        Calls invisible music command.
+        """
+        selection = voice
+        if self.selector is not None:
+            selection = self.selector(selection)
+        if tag is None:
+            tag = abjad.Tag()
+        tag_1 = tag.append(abjad.tags.INVISIBLE_MUSIC_COMMAND)
+        literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
+        tag_2 = tag.append(abjad.tags.INVISIBLE_MUSIC_COLORING)
+        literal_2 = abjad.LilyPondLiteral(r"\abjad-invisible-music-coloring")
+        for leaf in abjad.select(selection).leaves():
+            abjad.attach(literal_1, leaf, tag=tag_1, deactivate=True)
+            abjad.attach(literal_2, leaf, tag=tag_2)
+
+
 class OnBeatGraceContainerCommand(Command):
     """
     On-beat grace container command.
@@ -2874,6 +2903,13 @@ def force_rest(selector: abjad.SelectorTyping) -> ForceRestCommand:
     Makes force rest command.
     """
     return ForceRestCommand(selector)
+
+
+def invisible_music(selector: abjad.SelectorTyping) -> InvisibleMusicCommand:
+    """
+    Makes invisible music command.
+    """
+    return InvisibleMusicCommand(selector=selector)
 
 
 def on_beat_grace_container(
