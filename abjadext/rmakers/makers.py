@@ -10566,13 +10566,15 @@ class TaleaRhythmMaker(RhythmMaker):
         counts = result["counts"]
         preamble = counts["preamble"]
         if counts["talea"]:
-            numeric_map = self._make_numeric_map(
+            numeric_map, expanded_talea = self._make_numeric_map(
                 divisions,
                 counts["preamble"],
                 counts["talea"],
                 counts["extra_counts"],
                 counts["end_counts"],
             )
+            if expanded_talea is not None:
+                unscaled_talea = expanded_talea
             talea_weight_consumed = sum(_.weight() for _ in numeric_map)
             leaf_lists = self._make_leaf_lists(numeric_map, lcd)
             if not counts["extra_counts"]:
@@ -10591,7 +10593,9 @@ class TaleaRhythmMaker(RhythmMaker):
             self._apply_ties_to_split_notes(
                 tuplets, unscaled_end_counts, unscaled_preamble, unscaled_talea
             )
-        if talea_weight_consumed not in advanced_talea:
+        if "+" in talea or "-" in talea:
+            pass
+        elif talea_weight_consumed not in advanced_talea:
             last_leaf = abjad.inspect(tuplets).leaf(-1)
             if isinstance(last_leaf, abjad.Note):
                 self.state["incomplete_last_note"] = True
@@ -10605,7 +10609,10 @@ class TaleaRhythmMaker(RhythmMaker):
     ):
         assert all(isinstance(_, int) for _ in end_counts), repr(end_counts)
         assert all(isinstance(_, int) for _ in preamble), repr(preamble)
-        assert all(isinstance(_, int) for _ in talea), repr(talea)
+        for count in talea:
+            assert isinstance(count, int) or count in "+-", repr(talea)
+        if "+" in talea or "-" in talea:
+            assert not preamble, repr(preamble)
         prolated_divisions = self._make_prolated_divisions(
             divisions, extra_counts
         )
@@ -10613,8 +10620,24 @@ class TaleaRhythmMaker(RhythmMaker):
             abjad.NonreducedFraction(_) for _ in prolated_divisions
         ]
         if not preamble and not talea:
-            return prolated_divisions
+            return prolated_divisions, None
         prolated_numerators = [_.numerator for _ in prolated_divisions]
+        expanded_talea = None
+        if "-" in talea or "+" in talea:
+            total_weight = sum(prolated_numerators)
+            talea_ = list(talea)
+            if "-" in talea:
+                index = talea_.index("-")
+            else:
+                index = talea_.index("+")
+            talea_[index] = 0
+            explicit_weight = sum([abs(_) for _ in talea_])
+            implicit_weight = total_weight - explicit_weight
+            if "-" in talea:
+                implicit_weight *= -1
+            talea_[index] = implicit_weight
+            expanded_talea = tuple(talea_)
+            talea = abjad.CyclicTuple(expanded_talea)
         result = self._split_talea_extended_to_weights(
             preamble, talea, prolated_numerators
         )
@@ -10633,7 +10656,7 @@ class TaleaRhythmMaker(RhythmMaker):
             result = counts.partition_by_weights(division_weights)
         for sequence in result:
             assert all(isinstance(_, int) for _ in sequence), repr(sequence)
-        return result
+        return result, expanded_talea
 
     def _make_prolated_divisions(self, divisions, extra_counts):
         prolated_divisions = []

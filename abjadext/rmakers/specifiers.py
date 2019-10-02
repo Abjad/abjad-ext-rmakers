@@ -831,13 +831,14 @@ class Talea(object):
 
     def __init__(
         self,
-        counts: abjad.IntegerSequence,
+        counts,
         denominator,
         *,
         end_counts: abjad.IntegerSequence = None,
         preamble: abjad.IntegerSequence = None,
     ) -> None:
-        assert all(isinstance(_, int) for _ in counts)
+        for count in counts:
+            assert isinstance(count, int) or count in "+-", repr(count)
         self._counts = counts
         if not abjad.mathtools.is_nonnegative_integer_power_of_two(
             denominator
@@ -1060,7 +1061,7 @@ class Talea(object):
 
     def __repr__(self) -> str:
         """
-        Gets interpreter representation.
+        Delegates to storage format manager.
         """
         return abjad.StorageFormatManager(self).get_repr_format()
 
@@ -1072,7 +1073,7 @@ class Talea(object):
     ### PUBLIC PROPERTIES ###
 
     @property
-    def counts(self) -> typing.Optional[typing.List[int]]:
+    def counts(self):
         """
         Gets counts.
 
