@@ -66,7 +66,6 @@ class RhythmMaker(object):
         divisions_consumed = len(divisions)
         if self._already_cached_state is not True:
             self._cache_state(music_voice, divisions_consumed)
-        # self._check_wellformedness(staff)
         self._validate_tuplets(music_voice)
         selection = music_voice[:]
         music_voice[:] = []
@@ -120,14 +119,6 @@ class RhythmMaker(object):
 
     def _call_commands(self, voice, divisions_consumed):
         pass
-
-    #    def _check_wellformedness(self, stafff):
-    #        for component in abjad.iterate(staff).components():
-    #            inspector = abjad.inspect(component)
-    #            if not inspector.wellformed():
-    #                report = inspector.tabulate_wellformedness()
-    #                report = repr(component) + "\n" + report
-    #                raise Exception(report)
 
     def _get_spelling_specifier(self):
         if self.spelling is not None:
