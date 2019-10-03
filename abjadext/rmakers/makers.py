@@ -10593,6 +10593,8 @@ class TaleaRhythmMaker(RhythmMaker):
             self._apply_ties_to_split_notes(
                 tuplets, unscaled_end_counts, unscaled_preamble, unscaled_talea
             )
+        for tuplet in abjad.iterate(tuplets).components(abjad.Tuplet):
+            tuplet.normalize_multiplier()
         if "+" in talea or "-" in talea:
             pass
         elif talea_weight_consumed not in advanced_talea:
