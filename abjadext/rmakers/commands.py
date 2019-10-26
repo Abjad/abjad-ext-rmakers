@@ -3010,7 +3010,6 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \oneVoice %! abjad.on_beat_grace_container(5)
                                     \voiceTwo %! abjad.on_beat_grace_container(4)
                                     c'4
                                 }
@@ -3034,7 +3033,6 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \oneVoice %! abjad.on_beat_grace_container(5)
                                     \voiceTwo %! abjad.on_beat_grace_container(4)
                                     c'4
                                 }
@@ -3089,7 +3087,6 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \oneVoice %! abjad.on_beat_grace_container(5)
                                     \voiceTwo %! abjad.on_beat_grace_container(4)
                                     c'4
                                 }
@@ -3115,7 +3112,6 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \oneVoice %! abjad.on_beat_grace_container(5)
                                     \voiceTwo %! abjad.on_beat_grace_container(4)
                                     c'4
                                 }
@@ -3212,7 +3208,6 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \oneVoice %! abjad.on_beat_grace_container(5)
                                 \voiceTwo %! abjad.on_beat_grace_container(4)
                                 c'4
                                 ~
@@ -3242,7 +3237,6 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \oneVoice %! abjad.on_beat_grace_container(5)
                                 \voiceTwo %! abjad.on_beat_grace_container(4)
                                 c'8
                                 ~
@@ -3268,7 +3262,6 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \oneVoice %! abjad.on_beat_grace_container(5)
                                 \voiceTwo %! abjad.on_beat_grace_container(4)
                                 c'4
                                 ~
@@ -3298,7 +3291,6 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \oneVoice %! abjad.on_beat_grace_container(5)
                                 \voiceTwo %! abjad.on_beat_grace_container(4)
                                 c'4
                             }
