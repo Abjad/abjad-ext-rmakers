@@ -2472,7 +2472,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @property
     def interpolations(
-        self
+        self,
     ) -> typing.Optional[typing.List[_specifiers.Interpolation]]:
         r"""
         Gets interpolations.
@@ -13344,7 +13344,7 @@ class TupletRhythmMaker(RhythmMaker):
 
     @property
     def denominator(
-        self
+        self,
     ) -> typing.Optional[typing.Union[str, abjad.Duration, int]]:
         r"""
         Gets preferred denominator.

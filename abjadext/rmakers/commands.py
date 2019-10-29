@@ -1469,7 +1469,7 @@ class RewriteMeterCommand(Command):
 
     @property
     def reference_meters(
-        self
+        self,
     ) -> typing.Optional[typing.Tuple[abjad.Meter, ...]]:
         """
         Gets reference meters.
@@ -2569,7 +2569,7 @@ def denominator(
 
 
 def duration_bracket(
-    selector: abjad.Expression = None
+    selector: abjad.Expression = None,
 ) -> DurationBracketCommand:
     """
     Makes duration bracket command.
@@ -2578,7 +2578,7 @@ def duration_bracket(
 
 
 def extract_trivial(
-    selector: abjad.Expression = None
+    selector: abjad.Expression = None,
 ) -> ExtractTrivialCommand:
     r"""
     Makes extract trivial command.
@@ -3729,7 +3729,7 @@ def rewrite_rest_filled(
 
 
 def rewrite_sustained(
-    selector: abjad.Expression = abjad.select().tuplets()
+    selector: abjad.Expression = abjad.select().tuplets(),
 ) -> RewriteSustainedCommand:
     r"""
     Makes tuplet command.
@@ -4663,7 +4663,7 @@ def trivialize(selector: abjad.Expression = None) -> TrivializeCommand:
 
 
 def unbeam(
-    selector: abjad.Expression = abjad.select().leaves()
+    selector: abjad.Expression = abjad.select().leaves(),
 ) -> UnbeamCommand:
     """
     Makes unbeam command.
