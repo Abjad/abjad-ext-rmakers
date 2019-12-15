@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 import pathlib
-import setuptools
 
+import setuptools
 
 subpackage_name = "rmakers"
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
             ]
         },
         include_package_data=True,
-        install_requires=["abjad >= 2.21"],
+        install_requires=["abjad >= 3.0"],
         license="MIT",
         long_description=pathlib.Path("README.md").read_text(),
         keywords=", ".join(
