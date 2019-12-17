@@ -227,9 +227,7 @@ class Stack(object):
         values = []
         values.append(self.maker)
         values.extend(self.commands)
-        return abjad.FormatSpecification(
-            self, storage_format_args_values=values
-        )
+        return abjad.FormatSpecification(self, storage_format_args_values=values)
 
     ### PUBLIC PROPERTIES ###
 
@@ -467,9 +465,7 @@ class Bind(object):
 
     ### INITIALIZER ###
 
-    def __init__(
-        self, *assignments: Assignment, tag: abjad.Tag = None
-    ) -> None:
+    def __init__(self, *assignments: Assignment, tag: abjad.Tag = None) -> None:
         assignments = assignments or ()
         for assignment in assignments:
             if not isinstance(assignment, Assignment):
@@ -528,13 +524,9 @@ class Bind(object):
                 previous_state_ is None
                 and group[0].assignment.remember_state_across_gaps
             ):
-                previous_state_ = maker_to_previous_state.get(
-                    rhythm_maker, None
-                )
+                previous_state_ = maker_to_previous_state.get(rhythm_maker, None)
             if isinstance(rhythm_maker, (RhythmMaker, Stack)):
-                selection = rhythm_maker(
-                    divisions_, previous_state=previous_state_
-                )
+                selection = rhythm_maker(divisions_, previous_state=previous_state_)
             else:
                 selection = rhythm_maker(
                     divisions_, previous_segment_stop_state=previous_state_
@@ -542,9 +534,7 @@ class Bind(object):
             assert isinstance(selection, abjad.Selection), repr(selection)
             components.extend(selection)
             maker_to_previous_state[rhythm_maker] = rhythm_maker.state
-        assert isinstance(rhythm_maker, (RhythmMaker, Stack)), repr(
-            rhythm_maker
-        )
+        assert isinstance(rhythm_maker, (RhythmMaker, Stack)), repr(rhythm_maker)
         self._state = rhythm_maker.state
         selection = abjad.select(components)
         return selection
@@ -622,9 +612,7 @@ def assign(
     Makes assignment.
     """
     return Assignment(
-        rhythm_maker,
-        predicate,
-        remember_state_across_gaps=remember_state_across_gaps,
+        rhythm_maker, predicate, remember_state_across_gaps=remember_state_across_gaps,
     )
 
 
@@ -636,10 +624,7 @@ def bind(*assignments: Assignment, tag: abjad.Tag = None) -> Bind:
 
 
 def stack(
-    maker,
-    *commands,
-    preprocessor: abjad.Expression = None,
-    tag: abjad.Tag = None,
+    maker, *commands, preprocessor: abjad.Expression = None, tag: abjad.Tag = None,
 ) -> Stack:
     """
     Makes stack.

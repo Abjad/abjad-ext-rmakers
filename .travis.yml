@@ -2,13 +2,10 @@ sudo: false
 
 language: python
 
-# xenial necessary for "3.8-dev"
-dist: xenial
-
 python:
     - 3.6
-    - "3.7-dev"
-    #- "3.8-dev"
+    - 3.7
+    - 3.8
 
 before_install:
     # alias package
@@ -59,9 +56,14 @@ install:
     - pip install -e .[test] # maybe don't need test dependencies
 
 script:
-    - black --target-version=py36 --line-length=79 --check --diff $PACKAGE
-    - mypy --ignore-missing-imports $PACKAGE
-    - pytest $PACKAGE
+    - black --version
+    - make black-check
+    #- flake8 --version
+    #- make flake8
+    - mypy --version
+    - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then make mypy; fi
+    - pytest --version
+    - make pytest
 
 after_success:
     - pip install --quiet coveralls

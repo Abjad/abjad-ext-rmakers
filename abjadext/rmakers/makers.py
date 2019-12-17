@@ -186,9 +186,7 @@ class RhythmMaker(object):
         tuplets = []
         for division, leaf_list in zip(divisions, leaf_lists):
             duration = abjad.Duration(division)
-            tuplet = abjad.Tuplet.from_duration(
-                duration, leaf_list, tag=self.tag
-            )
+            tuplet = abjad.Tuplet.from_duration(duration, leaf_list, tag=self.tag)
             tuplets.append(tuplet)
         return tuplets
 
@@ -228,11 +226,7 @@ class RhythmMaker(object):
         assert len(scaled_divisions) == len(divisions)
         assert len(scaled_counts) == len(counts)
         return abjad.OrderedDict(
-            {
-                "divisions": scaled_divisions,
-                "lcd": lcd,
-                "counts": scaled_counts,
-            }
+            {"divisions": scaled_divisions, "lcd": lcd, "counts": scaled_counts,}
         )
 
     def _validate_tuplets(self, selections):
@@ -2175,8 +2169,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
     def __init__(
         self,
         interpolations: typing.Union[
-            _specifiers.Interpolation,
-            typing.Sequence[_specifiers.Interpolation],
+            _specifiers.Interpolation, typing.Sequence[_specifiers.Interpolation],
         ] = None,
         spelling: _specifiers.Spelling = None,
         tag: abjad.Tag = None,
@@ -2197,9 +2190,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
     def _fix_rounding_error(selection, total_duration, interpolation):
         selection_duration = abjad.inspect(selection).duration()
         if not selection_duration == total_duration:
-            needed_duration = (
-                total_duration - abjad.inspect(selection[:-1]).duration()
-            )
+            needed_duration = total_duration - abjad.inspect(selection[:-1]).duration()
             multiplier = needed_duration / interpolation.written_duration
             selection[-1].multiplier = multiplier
 
@@ -2439,9 +2430,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         for i, duration in enumerate(durations):
             written_duration = interpolation.written_duration
             multiplier = duration / written_duration
-            note = abjad.Note(
-                0, written_duration, multiplier=multiplier, tag=tag
-            )
+            note = abjad.Note(0, written_duration, multiplier=multiplier, tag=tag)
             notes.append(note)
         selection = abjad.select(notes)
         class_._fix_rounding_error(selection, total_duration, interpolation)
@@ -2453,9 +2442,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         tuplets = []
         interpolations = self._get_interpolations()
         for i, division in enumerate(divisions):
-            tuplet = self._make_accelerando(
-                division, interpolations, i, tag=self.tag
-            )
+            tuplet = self._make_accelerando(division, interpolations, i, tag=self.tag)
             tuplets.append(tuplet)
         return tuplets
 
@@ -4321,17 +4308,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 durations = note_count * [basic_duration]
                 notes = maker([0], durations)
                 assert all(
-                    _.written_duration.denominator == denominator_
-                    for _ in notes
+                    _.written_duration.denominator == denominator_ for _ in notes
                 )
             tuplet_duration = abjad.Duration(division)
-            tuplet = abjad.Tuplet.from_duration(
-                tuplet_duration, notes, tag=self.tag
-            )
-            if (
-                self.denominator == "from_counts"
-                and unprolated_note_count is not None
-            ):
+            tuplet = abjad.Tuplet.from_duration(tuplet_duration, notes, tag=self.tag)
+            if self.denominator == "from_counts" and unprolated_note_count is not None:
                 denominator = unprolated_note_count
                 tuplet.denominator = denominator
             elif isinstance(self.denominator, int):
@@ -5966,9 +5947,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 numerator = division.numerator + (
                     prolation_addendum % division.numerator
                 )
-            numeric_map_part = self._make_numeric_map_part(
-                numerator, prefix, suffix
-            )
+            numeric_map_part = self._make_numeric_map_part(numerator, prefix, suffix)
             numeric_map.append(numeric_map_part)
         return numeric_map
 
@@ -6050,9 +6029,7 @@ class IncisedRhythmMaker(RhythmMaker):
         assert all(isinstance(_, abjad.Tuplet) for _ in tuplets)
         return tuplets
 
-    def _make_numeric_map_part(
-        self, numerator, prefix, suffix, is_note_filled=True
-    ):
+    def _make_numeric_map_part(self, numerator, prefix, suffix, is_note_filled=True):
         prefix_weight = abjad.mathtools.weight(prefix)
         suffix_weight = abjad.mathtools.weight(suffix)
         middle = numerator - prefix_weight - suffix_weight
@@ -6095,9 +6072,7 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 numerator = divisions[0][0]
             numerator += prolation_addendum % numerator
-            numeric_map_part = self._make_numeric_map_part(
-                numerator, prefix, suffix
-            )
+            numeric_map_part = self._make_numeric_map_part(numerator, prefix, suffix)
             numeric_map.append(numeric_map_part)
         else:
             prolation_addendum = extra_counts[0]
@@ -6106,9 +6081,7 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 numerator = divisions[0].numerator
             numerator += prolation_addendum % numerator
-            numeric_map_part = self._make_numeric_map_part(
-                numerator, prefix, ()
-            )
+            numeric_map_part = self._make_numeric_map_part(numerator, prefix, ())
             numeric_map.append(numeric_map_part)
             for i, division in enumerate(divisions[1:-1]):
                 index = i + 1
@@ -6118,9 +6091,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 else:
                     numerator = division.numerator
                 numerator += prolation_addendum % numerator
-                numeric_map_part = self._make_numeric_map_part(
-                    numerator, (), ()
-                )
+                numeric_map_part = self._make_numeric_map_part(numerator, (), ())
                 numeric_map.append(numeric_map_part)
             try:
                 index = i + 2
@@ -6133,9 +6104,7 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 numerator = divisions[-1].numerator
             numerator += prolation_addendum % numerator
-            numeric_map_part = self._make_numeric_map_part(
-                numerator, (), suffix
-            )
+            numeric_map_part = self._make_numeric_map_part(numerator, (), suffix)
             numeric_map.append(numeric_map_part)
         return numeric_map
 
@@ -6143,9 +6112,7 @@ class IncisedRhythmMaker(RhythmMaker):
         selections = []
         specifier = self._get_spelling_specifier()
         for numeric_map_part in numeric_map:
-            numeric_map_part = [
-                _ for _ in numeric_map_part if _ != abjad.Duration(0)
-            ]
+            numeric_map_part = [_ for _ in numeric_map_part if _ != abjad.Duration(0)]
             selection = self._make_leaves_from_talea(
                 numeric_map_part,
                 lcd,
@@ -10392,18 +10359,14 @@ class TaleaRhythmMaker(RhythmMaker):
         read_talea_once_only: bool = None,
         spelling: _specifiers.Spelling = None,
         tag: abjad.Tag = None,
-        talea: _specifiers.Talea = _specifiers.Talea(
-            counts=[1], denominator=16
-        ),
+        talea: _specifiers.Talea = _specifiers.Talea(counts=[1], denominator=16),
     ) -> None:
         RhythmMaker.__init__(self, spelling=spelling, tag=tag)
         if talea is not None:
             assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
         if extra_counts is not None:
-            assert abjad.mathtools.all_are_integer_equivalent_numbers(
-                extra_counts
-            )
+            assert abjad.mathtools.all_are_integer_equivalent_numbers(extra_counts)
         self._extra_counts = extra_counts
         if read_talea_once_only is not None:
             read_talea_once_only = bool(read_talea_once_only)
@@ -10597,21 +10560,15 @@ class TaleaRhythmMaker(RhythmMaker):
         self.state[string] += talea_weight_consumed
         return tuplets
 
-    def _make_numeric_map(
-        self, divisions, preamble, talea, extra_counts, end_counts
-    ):
+    def _make_numeric_map(self, divisions, preamble, talea, extra_counts, end_counts):
         assert all(isinstance(_, int) for _ in end_counts), repr(end_counts)
         assert all(isinstance(_, int) for _ in preamble), repr(preamble)
         for count in talea:
             assert isinstance(count, int) or count in "+-", repr(talea)
         if "+" in talea or "-" in talea:
             assert not preamble, repr(preamble)
-        prolated_divisions = self._make_prolated_divisions(
-            divisions, extra_counts
-        )
-        prolated_divisions = [
-            abjad.NonreducedFraction(_) for _ in prolated_divisions
-        ]
+        prolated_divisions = self._make_prolated_divisions(divisions, extra_counts)
+        prolated_divisions = [abjad.NonreducedFraction(_) for _ in prolated_divisions]
         if not preamble and not talea:
             return prolated_divisions, None
         prolated_numerators = [_.numerator for _ in prolated_divisions]
@@ -10681,9 +10638,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return prolated_divisions
 
     def _prepare_input(self):
-        talea_weight_consumed = self.previous_state.get(
-            "talea_weight_consumed", 0
-        )
+        talea_weight_consumed = self.previous_state.get("talea_weight_consumed", 0)
         if self.talea is None:
             end_counts = ()
             preamble = ()
@@ -10711,10 +10666,7 @@ class TaleaRhythmMaker(RhythmMaker):
         preamble_weight = abjad.mathtools.weight(preamble)
         talea_weight = abjad.mathtools.weight(talea)
         weight = abjad.mathtools.weight(weights)
-        if (
-            self.read_talea_once_only
-            and preamble_weight + talea_weight < weight
-        ):
+        if self.read_talea_once_only and preamble_weight + talea_weight < weight:
             message = f"{preamble!s} + {talea!s} is too short"
             message += f" to read {weights} once."
             raise Exception(message)
@@ -13318,9 +13270,7 @@ class TupletRhythmMaker(RhythmMaker):
             if isinstance(denominator, tuple):
                 denominator = abjad.Duration(denominator)
             prototype = (abjad.Duration, int)
-            assert denominator == "divisions" or isinstance(
-                denominator, prototype
-            )
+            assert denominator == "divisions" or isinstance(denominator, prototype)
         self._denominator = denominator
         tuple_ratios_ = None
         if tuplet_ratios is not None:
@@ -13334,18 +13284,14 @@ class TupletRhythmMaker(RhythmMaker):
         tuplet_ratios = abjad.CyclicTuple(self.tuplet_ratios)
         for i, division in enumerate(divisions):
             ratio = tuplet_ratios[i]
-            tuplet = abjad.Tuplet.from_duration_and_ratio(
-                division, ratio, tag=self.tag
-            )
+            tuplet = abjad.Tuplet.from_duration_and_ratio(division, ratio, tag=self.tag)
             tuplets.append(tuplet)
         return tuplets
 
     ### PUBLIC PROPERTIES ###
 
     @property
-    def denominator(
-        self,
-    ) -> typing.Optional[typing.Union[str, abjad.Duration, int]]:
+    def denominator(self,) -> typing.Optional[typing.Union[str, abjad.Duration, int]]:
         r"""
         Gets preferred denominator.
 
@@ -14011,9 +13957,7 @@ class TupletRhythmMaker(RhythmMaker):
 
 
 def accelerando(
-    *interpolations,
-    spelling: _specifiers.Spelling = None,
-    tag: abjad.Tag = None,
+    *interpolations, spelling: _specifiers.Spelling = None, tag: abjad.Tag = None,
 ) -> AccelerandoRhythmMaker:
     """
     Makes accelerando rhythm-maker.

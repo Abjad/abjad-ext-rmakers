@@ -111,9 +111,7 @@ class Incise(object):
         self._fill_with_rests: typing.Optional[bool] = fill_with_rests
         if outer_divisions_only is not None:
             outer_divisions_only = bool(outer_divisions_only)
-        self._outer_divisions_only: typing.Optional[
-            bool
-        ] = outer_divisions_only
+        self._outer_divisions_only: typing.Optional[bool] = outer_divisions_only
 
     ### SPECIAL METHODS ###
 
@@ -184,9 +182,7 @@ class Incise(object):
     def _is_length_tuple(argument):
         if argument is None:
             return True
-        if abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(
-            argument
-        ):
+        if abjad.mathtools.all_are_nonnegative_integer_equivalent_numbers(argument):
             if isinstance(argument, (tuple, list)):
                 return True
         return False
@@ -840,9 +836,7 @@ class Talea(object):
         for count in counts:
             assert isinstance(count, int) or count in "+-", repr(count)
         self._counts = counts
-        if not abjad.mathtools.is_nonnegative_integer_power_of_two(
-            denominator
-        ):
+        if not abjad.mathtools.is_nonnegative_integer_power_of_two(denominator):
             message = f"denominator {denominator} must be integer power of 2."
             raise Exception(message)
         self._denominator = denominator
@@ -932,9 +926,7 @@ class Talea(object):
 
     def __getitem__(
         self, argument
-    ) -> typing.Union[
-        abjad.NonreducedFraction, typing.List[abjad.NonreducedFraction]
-    ]:
+    ) -> typing.Union[abjad.NonreducedFraction, typing.List[abjad.NonreducedFraction]]:
         """
         Gets item or slice identified by ``argument``.
 
@@ -994,8 +986,7 @@ class Talea(object):
         elif isinstance(argument, slice):
             counts_ = counts_.__getitem__(argument)
             result = [
-                abjad.NonreducedFraction(count, self.denominator)
-                for count in counts_
+                abjad.NonreducedFraction(count, self.denominator) for count in counts_
             ]
             return result
         raise ValueError(argument)
@@ -1322,10 +1313,7 @@ class Talea(object):
                 consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
         return abjad.new(
-            self,
-            counts=counts,
-            denominator=self.denominator,
-            preamble=preamble_,
+            self, counts=counts, denominator=self.denominator, preamble=preamble_,
         )
 
 

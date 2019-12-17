@@ -1052,9 +1052,7 @@ class ForceRestCommand(Command):
 
     ### SPECIAL METHODS ###
 
-    def __call__(
-        self, voice, *, previous_logical_ties_produced=None, tag=None
-    ):
+    def __call__(self, voice, *, previous_logical_ties_produced=None, tag=None):
         selection = voice
         if self.selector is not None:
             selections = self.selector(
@@ -1391,9 +1389,7 @@ class RewriteMeterCommand(Command):
                     nontupletted_leaves.append(leaf)
             unbeam()(nontupletted_leaves)
             abjad.mutate(selection).rewrite_meter(
-                meter,
-                boundary_depth=self.boundary_depth,
-                rewrite_tuplets=False,
+                meter, boundary_depth=self.boundary_depth, rewrite_tuplets=False,
             )
         selections = abjad.select(voice[:]).group_by_measure()
         for meter, selection in zip(preferred_meters, selections):
@@ -1403,9 +1399,7 @@ class RewriteMeterCommand(Command):
             for start, stop in abjad.sequence(beat_offsets).nwise():
                 beat_duration = stop - start
                 beat_durations.append(beat_duration)
-            beamable_groups = self._make_beamable_groups(
-                leaves, beat_durations
-            )
+            beamable_groups = self._make_beamable_groups(leaves, beat_durations)
             for beamable_group in beamable_groups:
                 if not beamable_group:
                     continue
@@ -1468,9 +1462,7 @@ class RewriteMeterCommand(Command):
         return self._boundary_depth
 
     @property
-    def reference_meters(
-        self,
-    ) -> typing.Optional[typing.Tuple[abjad.Meter, ...]]:
+    def reference_meters(self,) -> typing.Optional[typing.Tuple[abjad.Meter, ...]]:
         """
         Gets reference meters.
         """
@@ -2568,18 +2560,14 @@ def denominator(
     return DenominatorCommand(denominator, selector)
 
 
-def duration_bracket(
-    selector: abjad.Expression = None,
-) -> DurationBracketCommand:
+def duration_bracket(selector: abjad.Expression = None,) -> DurationBracketCommand:
     """
     Makes duration bracket command.
     """
     return DurationBracketCommand(selector)
 
 
-def extract_trivial(
-    selector: abjad.Expression = None,
-) -> ExtractTrivialCommand:
+def extract_trivial(selector: abjad.Expression = None,) -> ExtractTrivialCommand:
     r"""
     Makes extract trivial command.
 
@@ -2666,9 +2654,7 @@ def feather_beam(
     )
 
 
-def force_augmentation(
-    selector: abjad.Expression = None,
-) -> ForceAugmentationCommand:
+def force_augmentation(selector: abjad.Expression = None,) -> ForceAugmentationCommand:
     r"""
     Makes force augmentation command.
 
@@ -2862,9 +2848,7 @@ def force_augmentation(
     return ForceAugmentationCommand(selector)
 
 
-def force_diminution(
-    selector: abjad.Expression = None,
-) -> ForceDiminutionCommand:
+def force_diminution(selector: abjad.Expression = None,) -> ForceDiminutionCommand:
     """
     Makes force diminution command.
     """
@@ -4662,9 +4646,7 @@ def trivialize(selector: abjad.Expression = None) -> TrivializeCommand:
     return TrivializeCommand(selector)
 
 
-def unbeam(
-    selector: abjad.Expression = abjad.select().leaves(),
-) -> UnbeamCommand:
+def unbeam(selector: abjad.Expression = abjad.select().leaves(),) -> UnbeamCommand:
     """
     Makes unbeam command.
     """
