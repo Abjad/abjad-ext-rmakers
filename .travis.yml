@@ -1,70 +1,36 @@
-sudo: false
-
 language: python
-
+dist: xenial
+sudo: false
 python:
-    - 3.6
-    - 3.7
-    - 3.8
+- 3.6
+- 3.7
+- 3.8
 
 before_install:
-    # alias package
-    - PACKAGE=`pwd`/abjadext
-
-    # upgrade pip:
-    - pip install --upgrade pip
-
-    # install mypy:
-    - pip install mypy
-
-    # install lilypond:
-    - LILYPOND=/tmp/lilypond
-    - LILYPOND_URL=http://lilypond.org/download/binaries/linux-64/
-    - LILYPOND_SOURCE=lilypond-2.19.83-1.linux-64.sh
-    - wget -q -O $LILYPOND $LILYPOND_URL/$LILYPOND_SOURCE
-    - sh $LILYPOND --batch
-
-    # clone & install abjad dev branch:
-    - ABJAD=/tmp/abjad
-    - git clone -b trevor/dev https://github.com/Abjad/abjad.git $ABJAD
-    - pip install -e $ABJAD
-    - export MYPYPATH=$ABJAD
-    - export PATH=$PATH:$ABJAD/abjad/scr
-
-    # clone & install tonality:
-    - TONALITY=/tmp/abjad-ext-tonality
-    - git clone https://github.com/Abjad/abjad-ext-tonality.git $TONALITY
-    - pip install -e $TONALITY
-    - export MYPYPATH=$MYPYPATH:$TONALITY
-
-    # set path:
-    - export PATH=/home/travis/bin:$PATH
-
-    # install uqbar:
-    - pip install -U https://github.com/josiah-wolf-oberholtzer/uqbar/archive/master.zip
-
-    # log setup:
-    - echo $MYPYPATH
-    - echo $PATH
-    - ls
-    - ls /tmp
-    - pwd
-    - which mypy
+- wget -q ${LILYPOND_URL}lilypond-${LILYPOND_VERSION}-1.linux-64.sh
+- sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
+- export PATH=/home/travis/bin:$PATH
+- pip install -U pip regex
+- export ABJAD_ARCHIVE=https://github.com/Abjad/abjad/archive/master.zip
+- pip install -U $ABJAD_ARCHIVE
+- pip install --no-deps --target /tmp/typehints $ABJAD_ARCHIVE
+- pip install --no-deps --target /tmp/typehints uqbar
+- export MYPYPATH=/tmp/typehints
 
 install:
-    - pip install coverage
-    - pip install -e .[test] # maybe don't need test dependencies
+- pip install -e .[test]
+- black --version
+- flake8 --version
+- mypy --version
+- pytest --version
 
 script:
-    - black --version
-    - make black-check
-    #- flake8 --version
-    #- make flake8
-    - mypy --version
-    - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then make mypy; fi
-    - pytest --version
-    - make pytest
+- make black-check
+#- flake8 --version
+#- make flake8
+- if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then make mypy; fi
+- make pytest
 
 after_success:
-    - pip install --quiet coveralls
-    - coveralls
+- pip install --quiet coveralls
+- coveralls

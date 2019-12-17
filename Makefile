@@ -3,8 +3,8 @@
 project = abjadext
 errors = E123,E203,E265,E266,E501,W503
 origin := $(shell git config --get remote.origin.url)
-formatPaths = ${project}/ *.py
-testPaths = ${project}/ 
+formatPaths = ${project}/ tests/ *.py
+testPaths = ${project}/ tests/
 
 black-check:
 	black --target-version py36 --exclude '.*boilerplate.*' --check --diff ${formatPaths}
