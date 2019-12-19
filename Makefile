@@ -86,11 +86,9 @@ reformat:
 	make black-reformat
 
 release:
-	make docs
 	make clean
 	make build
 	twine upload dist/*.tar.gz
-	make gh-pages
 
 test:
 	make black-check
