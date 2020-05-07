@@ -1,9 +1,10 @@
-import abjad
 import math
 import typing
+
+import abjad
+
 from . import commands as _commands
 from . import specifiers as _specifiers
-
 
 ### CLASSES ###
 

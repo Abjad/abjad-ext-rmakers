@@ -1,5 +1,6 @@
-import abjad
 import typing
+
+import abjad
 
 ClassTyping = typing.Union[int, type]
 

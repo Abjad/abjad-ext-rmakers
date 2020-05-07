@@ -1,5 +1,7 @@
-import abjad
 import typing
+
+import abjad
+
 from . import commands as _commands
 from .makers import RhythmMaker
 

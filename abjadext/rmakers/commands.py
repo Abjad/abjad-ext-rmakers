@@ -1,7 +1,8 @@
-import abjad
 import typing
-from . import specifiers as _specifiers
 
+import abjad
+
+from . import specifiers as _specifiers
 
 ### CLASSES ###
 
@@ -1159,7 +1160,7 @@ class GraceContainerCommand(Command):
 
     @property
     def beam_and_slash(self) -> typing.Optional[bool]:
-        """
+        r"""
         Is true when command beams notes and attaches Nalesnik ``\slash``
         command to first note.
         """
