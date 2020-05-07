@@ -3,7 +3,6 @@ import typing
 
 import abjad
 
-from . import commands as _commands
 from . import specifiers as _specifiers
 
 ### CLASSES ###
@@ -2011,7 +2010,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                 }
             >>
-            
 
     ..  container:: example
 
@@ -2198,7 +2196,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
     def _get_interpolations(self):
         specifiers_ = self.interpolations
         if specifiers_ is None:
-            specifiers_ = abjad.CyclicTuple([Interpolation()])
+            specifiers_ = abjad.CyclicTuple([_specifiers.Interpolation()])
         elif isinstance(specifiers_, _specifiers.Interpolation):
             specifiers_ = abjad.CyclicTuple([specifiers_])
         else:
@@ -2216,7 +2214,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ``[0, 1]`` normalized.
 
         ..  container:: example
-        
+
             >>> rmakers.AccelerandoRhythmMaker._interpolate_cosine(
             ...     y1=0,
             ...     y2=1,
@@ -2435,7 +2433,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             notes.append(note)
         selection = abjad.select(notes)
         class_._fix_rounding_error(selection, total_duration, interpolation)
-        pair = (abjad.inspect(selection).duration(), total_duration)
         tuplet = abjad.Tuplet((1, 1), selection, tag=tag)
         return tuplet
 
@@ -6160,7 +6157,7 @@ class IncisedRhythmMaker(RhythmMaker):
     def extra_counts(self) -> typing.Optional[typing.List[int]]:
         r"""
         Gets extra counts.
-        
+
         ..  container:: example
 
             Add one extra count per tuplet:
@@ -9273,7 +9270,7 @@ class TaleaRhythmMaker(RhythmMaker):
     ..  container:: example
 
         Working with ``diminution``.
-        
+
         Makes diminished tuplets when ``diminution`` is true (or when no
         tuplet command is given):
 
@@ -10473,7 +10470,7 @@ class TaleaRhythmMaker(RhythmMaker):
     def _get_talea(self):
         if self.talea is not None:
             return self.talea
-        return Talea()
+        return _specifiers.Talea()
 
     def _make_leaf_lists(self, numeric_map, talea_denominator):
         leaf_lists = []
@@ -10491,7 +10488,6 @@ class TaleaRhythmMaker(RhythmMaker):
         return leaf_lists
 
     def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
-        input_divisions = divisions[:]
         input_ = self._prepare_input()
         end_counts = input_["end_counts"]
         preamble = input_["preamble"]
@@ -12895,7 +12891,7 @@ class TupletRhythmMaker(RhythmMaker):
         then supplied again with nontrivial prolation when removing dots.
         The result is that measures 2 and 4 carry nontrivial prolation with
         no dots:
-        
+
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
         ...     rmakers.beam(),
@@ -13273,7 +13269,7 @@ class TupletRhythmMaker(RhythmMaker):
             prototype = (abjad.Duration, int)
             assert denominator == "divisions" or isinstance(denominator, prototype)
         self._denominator = denominator
-        tuple_ratios_ = None
+        tuplet_ratios_ = None
         if tuplet_ratios is not None:
             tuplet_ratios_ = tuple([abjad.Ratio(_) for _ in tuplet_ratios])
         self._tuplet_ratios = tuplet_ratios_

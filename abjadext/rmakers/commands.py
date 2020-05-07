@@ -474,7 +474,6 @@ class FeatherBeamCommand(Command):
         """
         Calls feather beam command.
         """
-        components: typing.List[abjad.Component] = []
         selection = voice
         if self.selector is not None:
             selections = self.selector(selection)
@@ -2663,7 +2662,7 @@ def force_augmentation(selector: abjad.Expression = None,) -> ForceAugmentationC
 
         The ``default.ily`` stylesheet included in all Abjad API examples
         includes the following:
-        
+
         ``\override TupletNumber.text = #tuplet-number::calc-fraction-text``
 
         This means that even simple tuplets format as explicit fractions:

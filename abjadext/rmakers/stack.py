@@ -225,7 +225,6 @@ class Stack(object):
         return divisions
 
     def _get_format_specification(self):
-        manager = abjad.StorageFormatManager(self)
         values = []
         values.append(self.maker)
         values.extend(self.commands)
