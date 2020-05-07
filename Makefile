@@ -45,7 +45,21 @@ gh-pages:
 		git push -u origin gh-pages
 	rm -Rf gh-pages/
 
-isort:
+isort-check:
+	isort \
+		--case-sensitive \
+		--check-only \
+		--line-width 90 \
+		--multi-line 3 \
+		--recursive \
+		--skip ${project}/__init__.py \
+		--skip-glob '*boilerplate*' \
+		--thirdparty uqbar \
+		--trailing-comma \
+		--use-parentheses -y \
+		${formatPaths}
+
+isort-reformat:
 	isort \
 		--case-sensitive \
 		--line-width 90 \
@@ -83,7 +97,7 @@ pytest-x:
 		${testPaths}
 
 reformat:
-	make isort
+	make isort-reformat
 	make black-reformat
 
 release:
