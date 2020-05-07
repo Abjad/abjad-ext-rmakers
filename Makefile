@@ -1,7 +1,7 @@
 .PHONY: docs build
 
 project = abjadext
-errors = E123,E203,E265,E266,E231,E501,E722,W503
+errors = E123,E203,E231,E265,E266,E501,E722,W503
 origin := $(shell git config --get remote.origin.url)
 formatPaths = ${project}/ tests/ *.py
 testPaths = ${project}/ tests/
