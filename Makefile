@@ -48,6 +48,7 @@ gh-pages:
 isort:
 	isort \
 		--case-sensitive \
+		--line-width 90 \
 		--multi-line 3 \
 		--recursive \
 		--skip ${project}/__init__.py \
