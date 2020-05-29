@@ -204,11 +204,11 @@ class Stack(object):
             result = self.preprocessor(divisions)
             if not isinstance(result, abjad.Sequence):
                 message = "division preprocessor must return sequence:\n"
-                message += f"  Input divisions:\n"
+                message += "  Input divisions:\n"
                 message += f"    {divisions}\n"
-                message += f"  Division preprocessor:\n"
+                message += "  Division preprocessor:\n"
                 message += f"    {self.preprocessor}\n"
-                message += f"  Result:\n"
+                message += "  Result:\n"
                 message += f"    {result}"
                 raise Exception(message)
             divisions = result

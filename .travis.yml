@@ -1,3 +1,5 @@
+os: linux
+
 dist: xenial
 
 language: python
@@ -13,6 +15,15 @@ env:
         - LILYPOND_VERSION=2.19.84
 
 before_install:
+    # alias package
+    - PACKAGE=`pwd`/akasha
+
+    # install pip, isort, flake8, mypy
+    - pip install --upgrade pip
+    - pip install flake8
+    - pip install isort
+    - pip install mypy
+
     - wget -q ${LILYPOND_URL}lilypond-${LILYPOND_VERSION}-1.linux-64.sh
     - sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
     - export PATH=/home/travis/bin:$PATH
@@ -23,18 +34,39 @@ before_install:
     - pip install --no-deps --target /tmp/typehints uqbar
     - export MYPYPATH=/tmp/typehints
 
-install:
-    - pip install -e .[test]
+    # log versions
     - black --version
     - flake8 --version
+    - isort --version
     - mypy --version
+    - pip --version
     - pytest --version
+
+    # log environment variables
+    - echo $MYPYPATH
+    - echo $PACKAGE
+    - echo $PATH
+    - echo $TRAVIS_BUILD_DIR
+
+    # log script paths
+    - which baca-doctest
+    - which black-check
+    - which flake8-check
+    - which isort-check
+    - which prime-parser-tables
+
+    # log present working directory
+    - pwd
+    - ls
+
+install:
+    - pip install -e .[test]
 
 script:
     - make black-check
-    #- flake8 --version
-    #- make flake8
-    - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then make mypy; fi
+    - make flake8
+    - make isort-check
+    - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then mypy .; fi
     - make pytest
 
 after_success:
