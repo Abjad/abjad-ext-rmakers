@@ -13,7 +13,7 @@ python:
 
 before_install:
 
-    # install pip, isort, flake8, mypy
+    # pip, flake8, isort, mypy
     - pip install --upgrade pip
     - pip install flake8
     - pip install isort
@@ -26,20 +26,21 @@ before_install:
     - sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
     - export PATH=/home/travis/bin:$PATH
 
-    # - pip install -U pip regex
-
-    #- export ABJAD_ARCHIVE=https://github.com/Abjad/abjad/archive/master.zip
-    #- pip install -U $ABJAD_ARCHIVE
-    #- pip install --no-deps --target /tmp/typehints $ABJAD_ARCHIVE
+    # install abjad
+    - export ABJAD_ARCHIVE=https://github.com/Abjad/abjad/archive/master.zip
+    - pip install -U $ABJAD_ARCHIVE
+    - pip install --no-deps --target /tmp/typehints $ABJAD_ARCHIVE
     
     # clone & install abjad dev branch:
-    - ABJAD=/tmp/abjad
-    - git clone -b trevor/dev https://github.com/Abjad/abjad.git $ABJAD
-    - pip install -e $ABJAD
-    - export MYPYPATH=$ABJAD
-    - export PATH=$PATH:$ABJAD/abjad/scr
+    # - ABJAD=/tmp/abjad
+    # - git clone -b trevor/dev https://github.com/Abjad/abjad.git $ABJAD
+    # - pip install -e $ABJAD
+    # - export MYPYPATH=$ABJAD
+    # - export PATH=$PATH:$ABJAD/abjad/scr
 
+    # install uqbar
     - pip install --no-deps --target /tmp/typehints uqbar
+
     - export MYPYPATH=$MYPYPATH:/tmp/typehints
 
     # log environment variables
