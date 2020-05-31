@@ -19,7 +19,7 @@ def read_version():
 if __name__ == "__main__":
     setuptools.setup(
         author="Trevor Bača",
-        author_email="trevorbaca@gmail.com",
+        author_email="trevor.baca@gmail.com",
         classifiers=[
             "Development Status :: 3 - Alpha",
             "License :: OSI Approved :: GNU General Public License (GPL)",
@@ -32,9 +32,12 @@ if __name__ == "__main__":
                 "black",
                 "flake8",
                 "isort",
-                "mypy >= 0.660",
-                "pytest >= 4.1.0",
-                "pytest-cov >= 2.6.0",
+                #"mypy >= 0.660",
+                "mypy",
+                #"pytest >= 4.1.0",
+                "pytest",
+                #"pytest-cov >= 2.6.0",
+                "pytest-cov",
                 "pytest-helpers-namespace",
             ]
         },
@@ -53,6 +56,6 @@ if __name__ == "__main__":
         name="abjad-ext-{}".format(subpackage_name),
         packages=["abjadext"],
         platforms="Any",
-        url="http://www.projectabjad.org",
+        url="http://abjad.github.io",
         version=read_version(),
     )
