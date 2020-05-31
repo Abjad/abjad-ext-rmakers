@@ -15,8 +15,6 @@ env:
         - LILYPOND_VERSION=2.19.84
 
 before_install:
-    # alias package
-    - PACKAGE=`pwd`/akasha
 
     # install pip, isort, flake8, mypy
     - pip install --upgrade pip
@@ -40,11 +38,10 @@ before_install:
     - isort --version
     - mypy --version
     - pip --version
-    - pytest --version
+    # - pytest --version
 
     # log environment variables
     - echo $MYPYPATH
-    - echo $PACKAGE
     - echo $PATH
     - echo $TRAVIS_BUILD_DIR
 
@@ -61,6 +58,7 @@ before_install:
 
 install:
     - pip install -e .[test]
+    - pytest --version
 
 script:
     - make black-check
