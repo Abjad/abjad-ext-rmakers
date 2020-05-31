@@ -11,11 +11,6 @@ python:
     - 3.7
     - 3.8
 
-env:
-    global:
-        - LILYPOND_URL=http://lilypond.org/downloads/binaries/linux-64/
-        - LILYPOND_VERSION=2.19.84
-
 before_install:
 
     # install pip, isort, flake8, mypy
@@ -25,6 +20,8 @@ before_install:
     - pip install mypy
 
     # install lilypond
+    - LILYPOND_URL=http://lilypond.org/downloads/binaries/linux-64/
+    - LILYPOND_VERSION=2.19.84
     - wget -q ${LILYPOND_URL}lilypond-${LILYPOND_VERSION}-1.linux-64.sh
     - sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
     - export PATH=/home/travis/bin:$PATH
