@@ -57,7 +57,8 @@ script:
     - make black-check
     - make flake8
     - make isort-check
-    - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then mypy .; fi
+    # - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then mypy .; fi
+    - mypy .
     - make pytest
 
 after_success:
