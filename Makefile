@@ -49,27 +49,26 @@ isort-check:
 	isort \
 		--case-sensitive \
 		--check-only \
-		--line-width 90 \
-		--multi-line 3 \
+		--diff \
+		--force-grid-wrap=0 \
+		--line-width 88 \
+		--multi-line=3 \
 		--recursive \
-		--skip ${project}/__init__.py \
-		--skip-glob '*boilerplate*' \
-		--thirdparty uqbar \
+		--thirdparty=uqbar \
 		--trailing-comma \
-		--use-parentheses -y \
+		--use-parentheses \
 		${formatPaths}
 
 isort-reformat:
 	isort \
+		--apply \
 		--case-sensitive \
 		--line-width 90 \
 		--multi-line 3 \
 		--recursive \
-		--skip ${project}/__init__.py \
-		--skip-glob '*boilerplate*' \
-		--thirdparty uqbar \
+		--thirdparty=uqbar \
 		--trailing-comma \
-		--use-parentheses -y \
+		--use-parentheses \
 		${formatPaths}
 
 mypy:
