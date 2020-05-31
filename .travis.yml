@@ -39,7 +39,7 @@ before_install:
     # - export PATH=$PATH:$ABJAD/abjad/scr
 
     # install uqbar
-    - pip install --no-deps --target /tmp/typehints uqbar
+    # - pip install --no-deps --target /tmp/typehints uqbar
 
     - export MYPYPATH=$MYPYPATH:/tmp/typehints
 
