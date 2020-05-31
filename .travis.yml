@@ -38,7 +38,7 @@ before_install:
     - isort --version
     - mypy --version
     - pip --version
-    # - pytest --version
+    - pytest --version
 
     # log environment variables
     - echo $MYPYPATH
@@ -57,7 +57,6 @@ script:
     - make black-check
     - make flake8
     - make isort-check
-    # - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then mypy .; fi
     - mypy .
     - make pytest
 
