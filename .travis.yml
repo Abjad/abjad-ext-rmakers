@@ -27,21 +27,17 @@ before_install:
     - export PATH=/home/travis/bin:$PATH
 
     # install abjad
-    - export ABJAD_ARCHIVE=https://github.com/Abjad/abjad/archive/master.zip
-    - pip install -U $ABJAD_ARCHIVE
-    - pip install --no-deps --target /tmp/typehints $ABJAD_ARCHIVE
+    # - export ABJAD_ARCHIVE=https://github.com/Abjad/abjad/archive/master.zip
+    # - pip install -U $ABJAD_ARCHIVE
+    # - pip install --no-deps --target /tmp/typehints $ABJAD_ARCHIVE
+    # - export MYPYPATH=$MYPYPATH:/tmp/typehints
     
     # clone & install abjad dev branch:
-    # - ABJAD=/tmp/abjad
-    # - git clone -b trevor/dev https://github.com/Abjad/abjad.git $ABJAD
-    # - pip install -e $ABJAD
-    # - export MYPYPATH=$ABJAD
+    - ABJAD=/tmp/abjad
+    - git clone -b trevor/dev https://github.com/Abjad/abjad.git $ABJAD
+    - pip install -e $ABJAD
+    - export MYPYPATH=$ABJAD
     # - export PATH=$PATH:$ABJAD/abjad/scr
-
-    # install uqbar
-    # - pip install --no-deps --target /tmp/typehints uqbar
-
-    - export MYPYPATH=$MYPYPATH:/tmp/typehints
 
     # log environment variables
     - echo $MYPYPATH
