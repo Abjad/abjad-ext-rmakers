@@ -26,7 +26,7 @@ before_install:
     - sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
     - export PATH=/home/travis/bin:$PATH
 
-    - pip install -U pip regex
+    # - pip install -U pip regex
 
     #- export ABJAD_ARCHIVE=https://github.com/Abjad/abjad/archive/master.zip
     #- pip install -U $ABJAD_ARCHIVE
@@ -42,14 +42,6 @@ before_install:
     - pip install --no-deps --target /tmp/typehints uqbar
     - export MYPYPATH=$MYPYPATH:/tmp/typehints
 
-    # log versions
-    - black --version
-    - flake8 --version
-    - isort --version
-    - mypy --version
-    - pip --version
-    # - pytest --version
-
     # log environment variables
     - echo $MYPYPATH
     - echo $PATH
@@ -61,6 +53,13 @@ before_install:
 
 install:
     - pip install -e .[test]
+
+    # log versions
+    - black --version
+    - flake8 --version
+    - isort --version
+    - mypy --version
+    - pip --version
     - pytest --version
 
 script:
