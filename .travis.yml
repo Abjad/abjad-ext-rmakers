@@ -24,20 +24,13 @@ before_install:
     - LILYPOND_VERSION=2.19.84
     - wget -q ${LILYPOND_URL}lilypond-${LILYPOND_VERSION}-1.linux-64.sh
     - sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
-    - export PATH=/home/travis/bin:$PATH
+    # - export PATH=/home/travis/bin:$PATH
 
-    # install abjad
-    # - export ABJAD_ARCHIVE=https://github.com/Abjad/abjad/archive/master.zip
-    # - pip install -U $ABJAD_ARCHIVE
-    # - pip install --no-deps --target /tmp/typehints $ABJAD_ARCHIVE
-    # - export MYPYPATH=$MYPYPATH:/tmp/typehints
-    
     # clone & install abjad dev branch:
     - ABJAD=/tmp/abjad
     - git clone -b trevor/dev https://github.com/Abjad/abjad.git $ABJAD
     - pip install -e $ABJAD
     - export MYPYPATH=$ABJAD
-    # - export PATH=$PATH:$ABJAD/abjad/scr
 
     # log environment variables
     - echo $MYPYPATH
