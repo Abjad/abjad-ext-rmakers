@@ -46,7 +46,6 @@ before_install:
     - echo $TRAVIS_BUILD_DIR
 
     # log script paths
-    - which baca-doctest
     - which black-check
     - which flake8-check
     - which isort-check
