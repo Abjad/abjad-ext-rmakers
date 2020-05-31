@@ -47,12 +47,14 @@ gh-pages:
 
 isort-check:
 	isort \
+		--apply \
 		--case-sensitive \
 		--check-only \
 		--diff \
 		--force-grid-wrap=0 \
-		--line-width 88 \
+		--line-width=88 \
 		--multi-line=3 \
+		--project=abjad \
 		--recursive \
 		--thirdparty=uqbar \
 		--trailing-comma \
@@ -63,8 +65,10 @@ isort-reformat:
 	isort \
 		--apply \
 		--case-sensitive \
-		--line-width 90 \
-		--multi-line 3 \
+		--force-grid-wrap=0 \
+		--line-width=88 \
+		--multi-line=3 \
+		--project=abjad \
 		--recursive \
 		--thirdparty=uqbar \
 		--trailing-comma \
