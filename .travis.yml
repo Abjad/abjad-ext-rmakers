@@ -45,12 +45,6 @@ before_install:
     - echo $PATH
     - echo $TRAVIS_BUILD_DIR
 
-    # log script paths
-    - which black-check
-    - which flake8-check
-    - which isort-check
-    - which prime-parser-tables
-
     # log present working directory
     - pwd
     - ls
