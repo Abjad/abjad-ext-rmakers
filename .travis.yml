@@ -27,7 +27,7 @@ before_install:
     - pip install /tmp/abjad
     - export MYPYPATH=$MYPYPATH:/tmp/abjad
 
-    # log environment variables
+    # log environment variables:
     - echo $MYPYPATH
     - echo $PATH
     - echo $PYTHONPATH
@@ -37,7 +37,7 @@ before_install:
 install:
     - pip install -e .[test]
 
-    # log versions
+    # log versions:
     - black --version
     - flake8 --version
     - isort --version
