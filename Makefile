@@ -30,7 +30,7 @@ docs:
 	make -C docs/ html
 
 flake8-check:
-	flake8 --max-line-length=88 --isolated --ignore=${errors} ${formatPaths}
+	flake8 --ignore=${errors} --isolated --max-line-length ${formatPaths}
 
 gh-pages:
 	rm -Rf gh-pages/
