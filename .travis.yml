@@ -11,6 +11,9 @@ python:
     - 3.7
     - 3.8
 
+git:
+    depth: false
+
 before_install:
 
     # install lilypond:
@@ -44,9 +47,9 @@ install:
 
 script:
     - make black-check
-    - make flake8
+    - make flake8-check
     - make isort-check
-    - mypy .
+    - make mypy
     - make pytest
 
 after_success:
