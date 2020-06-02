@@ -76,7 +76,7 @@ isort-reformat:
 		${formatPaths}
 
 mypy:
-	mypy . ${project}/
+	mypy ${project}/
 
 pytest:
 	rm -Rf htmlcov/
