@@ -1,16 +1,16 @@
 .PHONY: docs build
 
 project = abjadext
-errors = E123,E203,E231,E265,E266,E501,E722,W503
+errors = E203,E266,E501,W503
 origin := $(shell git config --get remote.origin.url)
 formatPaths = ${project}/ tests/ *.py
 testPaths = ${project}/ tests/
 
 black-check:
-	black --target-version py36 --exclude '.*boilerplate.*' --check --diff ${formatPaths}
+	black --target-version py38 --exclude '.*boilerplate.*' --check --diff ${formatPaths}
 
 black-reformat:
-	black --target-version py36 --exclude '.*boilerplate.*' ${formatPaths}
+	black --target-version py38 --exclude '.*boilerplate.*' ${formatPaths}
 
 build:
 	python setup.py sdist
@@ -29,8 +29,8 @@ clean:
 docs:
 	make -C docs/ html
 
-flake8:
-	flake8 --max-line-length=90 --isolated --ignore=${errors} ${formatPaths}
+flake8-check:
+	flake8 --max-line-length=88 --isolated --ignore=${errors} ${formatPaths}
 
 gh-pages:
 	rm -Rf gh-pages/
@@ -76,7 +76,7 @@ isort-reformat:
 		${formatPaths}
 
 mypy:
-	mypy --ignore-missing-imports ${project}/
+	mypy . ${project}/
 
 pytest:
 	rm -Rf htmlcov/
@@ -108,9 +108,14 @@ release:
 	make build
 	twine upload dist/*.tar.gz
 
+check:
+	make black-check
+	make flake8-check
+	make isort-check
+
 test:
 	make black-check
-	make flake8
+	make flake8-check
 	make isort-check
 	make mypy
 	make pytest

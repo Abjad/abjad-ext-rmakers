@@ -13,29 +13,23 @@ python:
 
 before_install:
 
-    # upgrade pip
-    - pip install --upgrade pip
-
-    # install lilypond
-    - LILYPOND_URL=http://lilypond.org/downloads/binaries/linux-64/
-    - LILYPOND_VERSION=2.19.84
-    - wget -q ${LILYPOND_URL}lilypond-${LILYPOND_VERSION}-1.linux-64.sh
-    - sh lilypond-$LILYPOND_VERSION-1.linux-64.sh --batch
+    # install lilypond:
+    - lilypond_url=http://lilypond.org/download/binaries/linux-64/
+    - lilypond_source=lilypond-2.19.84-1.linux-64.sh
+    - wget -q -O /tmp/lilypond $lilypond_url/$lilypond_source
+    - sh /tmp/lilypond --batch
 
     # clone & install abjad dev branch:
-    - ABJAD=/tmp/abjad
-    - git clone -b trevor/dev https://github.com/Abjad/abjad.git $ABJAD
-    - pip install -e $ABJAD
-    - export MYPYPATH=$ABJAD
+    - git clone -b trevor/dev https://github.com/Abjad/abjad.git /tmp/abjad
+    - pip install -e /tmp/abjad
+    - export MYPYPATH=$MYPYPATH:/tmp/abjad
 
     # log environment variables
     - echo $MYPYPATH
     - echo $PATH
+    - echo $PYTHONPATH
     - echo $TRAVIS_BUILD_DIR
-
-    # log present working directory
-    - pwd
-    - ls
+    - echo $TRAVIS_PYTHON_VERSION
 
 install:
     - pip install -e .[test]

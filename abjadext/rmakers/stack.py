@@ -123,7 +123,7 @@ class Stack(object):
                 self.maker._already_cached_state = True
             try:
                 command(music_voice, tag=self.tag)
-            except:
+            except Exception:
                 message = "exception while calling:\n"
                 message += f"   {format(command)}"
                 raise Exception(message)

@@ -226,7 +226,7 @@ class RhythmMaker(object):
         assert len(scaled_divisions) == len(divisions)
         assert len(scaled_counts) == len(counts)
         return abjad.OrderedDict(
-            {"divisions": scaled_divisions, "lcd": lcd, "counts": scaled_counts,}
+            {"divisions": scaled_divisions, "lcd": lcd, "counts": scaled_counts}
         )
 
     def _validate_tuplets(self, selections):
