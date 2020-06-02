@@ -7,10 +7,10 @@ formatPaths = ${project}/ tests/ *.py
 testPaths = ${project}/ tests/
 
 black-check:
-	black --target-version py38 --exclude '.*boilerplate.*' --check --diff ${formatPaths}
+	black --check --diff --target-version py38 ${formatPaths}
 
 black-reformat:
-	black --target-version py38 --exclude '.*boilerplate.*' ${formatPaths}
+	black --target-version py38 ${formatPaths}
 
 build:
 	python setup.py sdist
