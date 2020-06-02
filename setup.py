@@ -29,12 +29,12 @@ if __name__ == "__main__":
         ],
         extras_require={
             "test": [
-                "black",
-                "flake8",
-                "isort",
-                "mypy",
-                "pytest",
-                "pytest-cov",
+                "black>=19.10b0",
+                "flake8>=3.8.2",
+                "isort>=4.3.21",
+                "mypy>=0.770",
+                "pytest>=5.4.2",
+                "pytest-cov>=2.6.0",
                 "pytest-helpers-namespace",
             ]
         },
