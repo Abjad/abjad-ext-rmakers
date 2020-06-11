@@ -1,16 +1,10 @@
 .PHONY: docs build
 
-project = abjadext
-errors = E203,E266,E501,W503
-origin := $(shell git config --get remote.origin.url)
-formatPaths = ${project}/ tests/ *.py
-testPaths = ${project}/ tests/
-
 black-check:
-	black --check --diff --target-version py38 ${formatPaths}
+	black --check --diff --target-version=py38 .
 
 black-reformat:
-	black --target-version py38 ${formatPaths}
+	black --target-version=py38 .
 
 build:
 	python setup.py sdist
@@ -29,8 +23,14 @@ clean:
 docs:
 	make -C docs/ html
 
-flake8-check:
-	flake8 --ignore=${errors} --isolated --max-line-length=88 ${formatPaths}
+flake_exclude = --exclude=__metadata__.py
+flake_ignore = --ignore=E203,E266,E501,W503
+flake_options = --isolated --max-line-length=88
+
+flake8:
+	flake8 ${flake_exclude} ${flake_ignore} ${flake_options}
+
+origin := $(shell git config --get remote.origin.url)
 
 gh-pages:
 	rm -Rf gh-pages/
@@ -47,7 +47,6 @@ gh-pages:
 
 isort-check:
 	isort \
-		--apply \
 		--case-sensitive \
 		--check-only \
 		--diff \
@@ -59,7 +58,7 @@ isort-check:
 		--thirdparty=uqbar \
 		--trailing-comma \
 		--use-parentheses \
-		${formatPaths}
+		.
 
 isort-reformat:
 	isort \
@@ -73,10 +72,12 @@ isort-reformat:
 		--thirdparty=uqbar \
 		--trailing-comma \
 		--use-parentheses \
-		${formatPaths}
+		.
 
 mypy:
-	mypy ${project}/
+	mypy .
+
+project = abjadext
 
 pytest:
 	rm -Rf htmlcov/
@@ -86,7 +87,7 @@ pytest:
 		--cov-report=term \
 		--cov=${project}/ \
 		--durations=20 \
-		${testPaths}
+		.
 
 pytest-x:
 	rm -Rf htmlcov/
@@ -97,7 +98,7 @@ pytest-x:
 		--cov-report=term \
 		--cov=${project}/ \
 		--durations=20 \
-		${testPaths}
+		.
 
 reformat:
 	make black-reformat
@@ -110,12 +111,13 @@ release:
 
 check:
 	make black-check
-	make flake8-check
+	make flake8
 	make isort-check
+	make mypy
 
 test:
 	make black-check
-	make flake8-check
+	make flake8
 	make isort-check
 	make mypy
 	make pytest
