@@ -47,32 +47,32 @@ gh-pages:
 
 isort-check:
 	isort \
-		--case-sensitive \
-		--check-only \
-		--diff \
-		--force-grid-wrap=0 \
-		--line-width=88 \
-		--multi-line=3 \
-		--project=abjad \
-		--recursive \
-		--thirdparty=uqbar \
-		--trailing-comma \
-		--use-parentheses \
-		.
+	--case-sensitive \
+	--check-only \
+	--diff \
+	--force-grid-wrap=0 \
+	--line-width=88 \
+	--multi-line=3 \
+	--project=abjad \
+	--recursive \
+	--thirdparty=uqbar \
+	--trailing-comma \
+	--use-parentheses \
+	.
 
 isort-reformat:
 	isort \
-		--apply \
-		--case-sensitive \
-		--force-grid-wrap=0 \
-		--line-width=88 \
-		--multi-line=3 \
-		--project=abjad \
-		--recursive \
-		--thirdparty=uqbar \
-		--trailing-comma \
-		--use-parentheses \
-		.
+	--apply \
+	--case-sensitive \
+	--force-grid-wrap=0 \
+	--line-width=88 \
+	--multi-line=3 \
+	--project=abjad \
+	--recursive \
+	--thirdparty=uqbar \
+	--trailing-comma \
+	--use-parentheses \
+	.
 
 mypy:
 	mypy .
@@ -82,23 +82,23 @@ project = abjadext
 pytest:
 	rm -Rf htmlcov/
 	pytest \
-		--cov-config=.coveragerc \
-		--cov-report=html \
-		--cov-report=term \
-		--cov=${project}/ \
-		--durations=20 \
-		.
+	--cov-config=.coveragerc \
+	--cov-report=html \
+	--cov-report=term \
+	--cov=${project}/ \
+	--durations=20 \
+	.
 
 pytest-x:
 	rm -Rf htmlcov/
 	pytest \
-		-x \
-		--cov-config=.coveragerc \
-		--cov-report=html \
-		--cov-report=term \
-		--cov=${project}/ \
-		--durations=20 \
-		.
+	-x \
+	--cov-config=.coveragerc \
+	--cov-report=html \
+	--cov-report=term \
+	--cov=${project}/ \
+	--durations=20 \
+	.
 
 reformat:
 	make black-reformat
