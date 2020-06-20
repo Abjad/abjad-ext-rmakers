@@ -23,12 +23,11 @@ clean:
 docs:
 	make -C docs/ html
 
-flake_exclude = --exclude=__metadata__.py
 flake_ignore = --ignore=E203,E266,E501,W503
 flake_options = --isolated --max-line-length=88
 
 flake8:
-	flake8 ${flake_exclude} ${flake_ignore} ${flake_options}
+	flake8 ${flake_ignore} ${flake_options}
 
 origin := $(shell git config --get remote.origin.url)
 
@@ -85,7 +84,7 @@ pytest:
 	--cov-config=.coveragerc \
 	--cov-report=html \
 	--cov-report=term \
-	--cov=${project}/ \
+	--cov=${project} \
 	--durations=20 \
 	.
 
@@ -96,7 +95,7 @@ pytest-x:
 	--cov-config=.coveragerc \
 	--cov-report=html \
 	--cov-report=term \
-	--cov=${project}/ \
+	--cov=${project} \
 	--durations=20 \
 	.
 
