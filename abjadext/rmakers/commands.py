@@ -1566,7 +1566,7 @@ class RewriteSustainedCommand(Command):
             assert len(tuplet) == 1, repr(tuplet)
             if not last_leaf_has_tie:
                 abjad.detach(abjad.Tie, tuplet[-1])
-            tuplet[0]._set_duration(duration)
+            abjad.Mutation._set_leaf_duration(tuplet[0], duration)
             tuplet.multiplier = abjad.Multiplier(1)
 
 
