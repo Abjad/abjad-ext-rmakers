@@ -13281,7 +13281,9 @@ class TupletRhythmMaker(RhythmMaker):
         tuplet_ratios = abjad.CyclicTuple(self.tuplet_ratios)
         for i, division in enumerate(divisions):
             ratio = tuplet_ratios[i]
-            tuplet = abjad.Tuplet.from_duration_and_ratio(division, ratio, tag=self.tag)
+            tuplet = abjad.makers.tuplet_from_duration_and_ratio(
+                division, ratio, tag=self.tag
+            )
             tuplets.append(tuplet)
         return tuplets
 
