@@ -1389,8 +1389,11 @@ class RewriteMeterCommand(Command):
                 if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
             unbeam()(nontupletted_leaves)
-            abjad.mutate(selection).rewrite_meter(
-                meter, boundary_depth=self.boundary_depth, rewrite_tuplets=False,
+            abjad.Meter.rewrite_meter(
+                selection,
+                meter,
+                boundary_depth=self.boundary_depth,
+                rewrite_tuplets=False,
             )
         selections = abjad.select(voice[:]).group_by_measure()
         for meter, selection in zip(preferred_meters, selections):
