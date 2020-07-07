@@ -1555,7 +1555,7 @@ class RewriteSustainedCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
-            if not tuplet.sustained():
+            if not abjad.inspect(tuplet).sustained():
                 continue
             duration = abjad.inspect(tuplet).duration()
             leaves = abjad.select(tuplet).leaves()
@@ -3784,7 +3784,7 @@ def rewrite_sustained(
 
             >>> staff = lilypond_file[abjad.Score]
             >>> for tuplet in abjad.select(staff).tuplets():
-            ...     tuplet.sustained()
+            ...     abjad.inspect(tuplet).sustained()
             ...
             True
             True
