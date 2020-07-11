@@ -19,8 +19,6 @@ class Command(object):
 
     __slots__ = ("_selector",)
 
-    _publish_storage_format = True
-
     ### INITIALIZER ###
 
     def __init__(self, selector: abjad.Expression = None) -> None:

@@ -25,8 +25,6 @@ class RhythmMaker(object):
         "_tag",
     )
 
-    _publish_storage_format = True
-
     ### INITIALIZER ###
 
     def __init__(

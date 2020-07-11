@@ -53,8 +53,6 @@ class Incise(object):
         "_talea_denominator",
     )
 
-    _publish_storage_format = True
-
     ### INITIALIZER ###
 
     def __init__(
@@ -312,8 +310,6 @@ class Interpolation(object):
 
     __slots__ = ("_start_duration", "_stop_duration", "_written_duration")
 
-    _publish_storage_format = True
-
     ### INITIALIZER ###
 
     def __init__(
@@ -429,8 +425,6 @@ class Spelling(object):
         "_forbidden_rest_duration",
         "_increase_monotonic",
     )
-
-    _publish_storage_format = True
 
     ### INITIALIZER ###
 
@@ -739,8 +733,6 @@ class Talea(object):
     __documentation_section__ = "Specifiers"
 
     __slots__ = ("_counts", "_end_counts", "_denominator", "_preamble")
-
-    _publish_storage_format = True
 
     ### INITIALIZER ###
 

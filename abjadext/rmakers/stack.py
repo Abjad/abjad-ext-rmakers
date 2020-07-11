@@ -73,8 +73,6 @@ class Stack(object):
     # to make sure abjad.new() copies commands
     _positional_arguments_name = "commands"
 
-    _publish_storage_format = True
-
     ### INITIALIZER ###
 
     def __init__(
@@ -343,8 +341,6 @@ class Assignment(object):
 
     __slots__ = ("_predicate", "_remember_state_across_gaps", "_rhythm_maker")
 
-    _publish_storage_format = True
-
     ### INITIALIZER ###
 
     def __init__(
@@ -424,8 +420,6 @@ class Bind(object):
 
     # to make sure abjad.new() copies sassignments
     _positional_arguments_name = "assignments"
-
-    _publish_storage_format = True
 
     ### INITIALIZER ###
 
