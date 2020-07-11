@@ -115,53 +115,6 @@ class Incise(object):
 
     ### SPECIAL METHODS ###
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to storage format manager.
-
-        ..  container:: example
-
-            Formats incise specifier:
-
-            >>> specifier = rmakers.Incise(
-            ...     prefix_talea=[-1],
-            ...     prefix_counts=[1],
-            ...     talea_denominator=16,
-            ... )
-
-            >>> abjad.f(specifier)
-            abjadext.specifiers.Incise(
-                prefix_counts=[1],
-                prefix_talea=[-1],
-                suffix_counts=(),
-                suffix_talea=(),
-                talea_denominator=16,
-                )
-
-        ..  container:: example
-
-            Formats incise specifier:
-
-            >>> specifier = rmakers.Incise(
-            ...     prefix_talea=[-1],
-            ...     prefix_counts=[0, 1],
-            ...     suffix_talea=[-1],
-            ...     suffix_counts=[1],
-            ...     talea_denominator=16,
-            ... )
-
-            >>> abjad.f(specifier)
-            abjadext.specifiers.Incise(
-                prefix_counts=[0, 1],
-                prefix_talea=[-1],
-                suffix_counts=[1],
-                suffix_talea=[-1],
-                talea_denominator=16,
-                )
-
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
     def __repr__(self) -> str:
         """
         Delegates to storage format manager.
@@ -375,27 +328,6 @@ class Interpolation(object):
 
     ### SPECIAL METHODS ###
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats interpolation specifier.
-
-        ..  container:: example
-
-            >>> specifier = rmakers.Interpolation(
-            ...     start_duration=(1, 4),
-            ...     stop_duration=(1, 16),
-            ...     written_duration=(1, 16),
-            ... )
-            >>> abjad.f(specifier)
-            abjadext.specifiers.Interpolation(
-                start_duration=abjad.Duration(1, 4),
-                stop_duration=abjad.Duration(1, 16),
-                written_duration=abjad.Duration(1, 16),
-                )
-
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
     def __repr__(self) -> str:
         """
         Delegates to storage format manager.
@@ -524,19 +456,6 @@ class Spelling(object):
         self._increase_monotonic = increase_monotonic
 
     ### SPECIAL METHODS ###
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats duration specifier.
-
-        ..  container:: example
-
-            >>> specifier = rmakers.Spelling()
-            >>> abjad.f(specifier)
-            abjadext.specifiers.Spelling()
-
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
 
     def __repr__(self) -> str:
         """
@@ -917,12 +836,6 @@ class Talea(object):
         Delegates to storage format manager.
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
 
     def __getitem__(
         self, argument

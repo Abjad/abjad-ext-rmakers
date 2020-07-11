@@ -43,12 +43,6 @@ class Command(object):
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
     def __hash__(self) -> int:
         """
         Delegates to storage format manager.

@@ -140,31 +140,6 @@ class Stack(object):
             return self.commands == argument.commands
         return False
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to format manager.
-
-        ..  container:: example
-
-            REGRESSION. Commands appear in format:
-
-            >>> command = rmakers.stack(
-            ...     rmakers.tuplet([(1, 2)]),
-            ...     rmakers.force_fraction(),
-            ... )
-            >>> abjad.f(command)
-            abjadext.stack.Stack(
-                abjadext.makers.TupletRhythmMaker(
-                    tuplet_ratios=[
-                        abjad.Ratio((1, 2)),
-                        ],
-                    ),
-                ForceFractionCommand()
-                )
-
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
     def __hash__(self) -> int:
         """
         Delegates to format manager.
@@ -325,12 +300,6 @@ class Match(object):
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
     def __hash__(self) -> int:
         """
         Delegates to storage format manager.
@@ -402,12 +371,6 @@ class Assignment(object):
         Delegates to storage format manager.
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
 
     def __hash__(self) -> int:
         """
@@ -545,12 +508,6 @@ class Bind(object):
         Delegates to storage format manager.
         """
         return abjad.StorageFormatManager.compare_objects(self, argument)
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
 
     def __hash__(self) -> int:
         """

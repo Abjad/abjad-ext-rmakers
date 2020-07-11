@@ -88,12 +88,6 @@ class RhythmMaker(object):
             raise TypeError(f"unhashable type: {self}")
         return result
 
-    def __format__(self, format_specification="") -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.StorageFormatManager(self).get_storage_format()
-
     def __repr__(self) -> str:
         """
         Delegates to storage format manager.
@@ -10369,36 +10363,6 @@ class TaleaRhythmMaker(RhythmMaker):
         if read_talea_once_only is not None:
             read_talea_once_only = bool(read_talea_once_only)
         self._read_talea_once_only = read_talea_once_only
-
-    ### SPECIAL METHODS ###
-
-    def __format__(self, format_specification="") -> str:
-        """
-        Formats talea rhythm-maker.
-
-        ..  container:: example
-
-            REGRESSION. Commands appear in storage format:
-
-            >>> stack = rmakers.stack(
-            ...     rmakers.talea([5, -3, 3, 3], 16),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-            >>> abjad.f(stack)
-            abjadext.stack.Stack(
-                abjadext.makers.TaleaRhythmMaker(
-                    talea=abjadext.specifiers.Talea(
-                        [5, -3, 3, 3],
-                        16
-                        ),
-                    ),
-                BeamCommand(selector=abjad.select().tuplets().map(expression=abjad.select().leaves(grace=False))),
-                ExtractTrivialCommand()
-                )
-
-        """
-        return super().__format__(format_specification=format_specification)
 
     ### PRIVATE METHODS ###
 
