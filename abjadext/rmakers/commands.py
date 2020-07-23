@@ -8,7 +8,7 @@ from . import specifiers as _specifiers
 ### CLASSES ###
 
 
-class Command(object):
+class Command:
     """
     Command baseclass.
     """

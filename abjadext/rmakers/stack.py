@@ -61,7 +61,7 @@ RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 ### CLASSES ###
 
 
-class Stack(object):
+class Stack:
     """
     Stack.
     """
@@ -275,7 +275,7 @@ class Stack(object):
         return self._tag
 
 
-class Match(object):
+class Match:
     """
     Match.
     """
@@ -332,7 +332,7 @@ class Match(object):
         return self._payload
 
 
-class Assignment(object):
+class Assignment:
     """
     Assignment.
     """
@@ -409,7 +409,7 @@ class Assignment(object):
         return self._rhythm_maker
 
 
-class Bind(object):
+class Bind:
     """
     Bind.
     """

@@ -8,7 +8,7 @@ ClassTyping = typing.Union[int, type]
 ### CLASSES ###
 
 
-class Incise(object):
+class Incise:
     """
     Incise specifier.
 
@@ -297,7 +297,7 @@ class Incise(object):
         return self._talea_denominator
 
 
-class Interpolation(object):
+class Interpolation:
     """
     Interpolation specifier.
     """
@@ -409,7 +409,7 @@ class Interpolation(object):
         return self._written_duration
 
 
-class Spelling(object):
+class Spelling:
     """
     Duration spelling specifier.
     """
@@ -705,7 +705,7 @@ class Spelling(object):
         return self._forbidden_rest_duration
 
 
-class Talea(object):
+class Talea:
     """
     Talea specifier.
 

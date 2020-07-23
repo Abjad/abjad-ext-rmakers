@@ -8,7 +8,7 @@ from . import specifiers as _specifiers
 ### CLASSES ###
 
 
-class RhythmMaker(object):
+class RhythmMaker:
     """
     Rhythm-maker baseclass.
     """
