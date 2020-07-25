@@ -1,7 +1,6 @@
 import typing
 
 import abjad
-from abjad.illustrate import duration_to_score_markup
 
 from . import specifiers as _specifiers
 
@@ -348,7 +347,7 @@ class DurationBracketCommand(Command):
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
             duration_ = abjad.inspect(tuplet).duration()
-            markup = duration_to_score_markup(duration_)
+            markup = abjad.illustrators.duration_to_score_markup(duration_)
             markup = markup.scale((0.75, 0.75))
             abjad.override(tuplet).tuplet_number.text = markup
 
