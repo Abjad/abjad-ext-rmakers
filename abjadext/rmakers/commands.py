@@ -347,7 +347,8 @@ class DurationBracketCommand(Command):
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
             duration_ = abjad.inspect(tuplet).duration()
-            markup = abjad.illustrators.duration_to_score_markup(duration_)
+            notes = abjad.LeafMaker()([0], [duration_])
+            markup = abjad.illustrators.selection_to_score_markup(notes)
             markup = markup.scale((0.75, 0.75))
             abjad.override(tuplet).tuplet_number.text = markup
 
