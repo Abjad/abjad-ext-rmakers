@@ -368,7 +368,7 @@ class WrittenDurationCommand(Command):
         self,
         duration: abjad.DurationTyping,
         *,
-        selector: abjad.Expression = abjad.Expression().select().leaf(0),
+        selector: abjad.Expression = abjad.select().leaf(0),
     ) -> None:
         super().__init__(selector)
         duration_ = abjad.Duration(duration)
