@@ -1186,9 +1186,9 @@ class InvisibleMusicCommand(Command):
             selection = self.selector(selection)
         if tag is None:
             tag = abjad.Tag()
-        tag_1 = tag.append(abjad.tags.INVISIBLE_MUSIC_COMMAND)
+        tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
         literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
-        tag_2 = tag.append(abjad.tags.INVISIBLE_MUSIC_COLORING)
+        tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
         literal_2 = abjad.LilyPondLiteral(r"\abjad-invisible-music-coloring")
         for leaf in abjad.select(selection).leaves():
             abjad.attach(literal_1, leaf, tag=tag_1, deactivate=True)
