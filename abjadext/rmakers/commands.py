@@ -432,7 +432,7 @@ class ExtractTrivialCommand(Command):
         tuplets = abjad.select(selection).tuplets()
         for tuplet in tuplets:
             if tuplet.trivial():
-                abjad.mutate(tuplet).extract()
+                abjad.mutate.extract(tuplet)
 
 
 class FeatherBeamCommand(Command):
@@ -792,7 +792,7 @@ class ForceNoteCommand(Command):
             note = abjad.Note("C4", leaf.written_duration, tag=tag)
             if leaf.multiplier is not None:
                 note.multiplier = leaf.multiplier
-            abjad.mutate(leaf).replace([note])
+            abjad.mutate.replace(leaf, [note])
 
 
 class ForceRepeatTieCommand(Command):
@@ -1065,7 +1065,7 @@ class ForceRestCommand(Command):
                 rest.multiplier = leaf.multiplier
             previous_leaf = abjad.inspect(leaf).leaf(-1)
             next_leaf = abjad.inspect(leaf).leaf(1)
-            abjad.mutate(leaf).replace([rest])
+            abjad.mutate.replace(leaf, [rest])
             if previous_leaf is not None:
                 abjad.detach(abjad.Tie, previous_leaf)
             abjad.detach(abjad.Tie, rest)
@@ -1515,7 +1515,7 @@ class RewriteRestFilledCommand(Command):
                 continue
             duration = abjad.inspect(tuplet).duration()
             rests = maker([None], [duration])
-            abjad.mutate(tuplet[:]).replace(rests)
+            abjad.mutate.replace(tuplet[:], rests)
             tuplet.multiplier = abjad.Multiplier(1)
 
     ### PUBLIC PROPERTIES ###
@@ -1561,7 +1561,7 @@ class RewriteSustainedCommand(Command):
             assert len(tuplet) == 1, repr(tuplet)
             if not last_leaf_has_tie:
                 abjad.detach(abjad.Tie, tuplet[-1])
-            abjad.Mutation._set_leaf_duration(tuplet[0], duration)
+            abjad.mutate._set_leaf_duration(tuplet[0], duration)
             tuplet.multiplier = abjad.Multiplier(1)
 
 
@@ -1599,7 +1599,7 @@ class SplitMeasuresCommand(Command):
             message += f"\ndurations: {durations}."
             message += f"\nvoice: {voice[:]}."
             raise Exception(message)
-        abjad.mutate(voice[:]).split(durations=durations)
+        abjad.mutate.split(voice[:], durations=durations)
 
 
 class TieCommand(Command):
@@ -1659,7 +1659,7 @@ class TremoloContainerCommand(Command):
             container = abjad.TremoloContainer(
                 self.count, [left_note, right_note], tag=tag
             )
-            abjad.mutate(note).replace(container)
+            abjad.mutate.replace(note, container)
 
     ### PUBLIC PROPERTIES ###
 
