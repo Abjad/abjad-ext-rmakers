@@ -194,7 +194,7 @@ class BeamGroupsCommand(Command):
         unbeam()(selections)
         durations = []
         for selection in selections:
-            duration = abjad.inspect(selection).duration()
+            duration = abjad.inspectx.duration(selection)
             durations.append(duration)
         for selection in selections:
             if isinstance(selection, abjad.Selection):
@@ -307,7 +307,7 @@ class DenominatorCommand(Command):
             if isinstance(denominator, abjad.Duration):
                 unit_duration = denominator
                 assert unit_duration.numerator == 1
-                duration = abjad.inspect(tuplet).duration()
+                duration = abjad.inspectx.duration(tuplet)
                 denominator_ = unit_duration.denominator
                 nonreduced_fraction = duration.with_denominator(denominator_)
                 tuplet.denominator = nonreduced_fraction.numerator
@@ -346,7 +346,7 @@ class DurationBracketCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
-            duration_ = abjad.inspect(tuplet).duration()
+            duration_ = abjad.inspectx.duration(tuplet)
             notes = abjad.LeafMaker()([0], [duration_])
             markup = abjad.illustrators.selection_to_score_markup(notes)
             markup = markup.scale((0.75, 0.75))
@@ -494,8 +494,8 @@ class FeatherBeamCommand(Command):
     def _is_accelerando(selection):
         first_leaf = abjad.select(selection).leaf(0)
         last_leaf = abjad.select(selection).leaf(-1)
-        first_duration = abjad.inspect(first_leaf).duration()
-        last_duration = abjad.inspect(last_leaf).duration()
+        first_duration = abjad.inspectx.duration(first_leaf)
+        last_duration = abjad.inspectx.duration(last_leaf)
         if last_duration < first_duration:
             return True
         return False
@@ -504,8 +504,8 @@ class FeatherBeamCommand(Command):
     def _is_ritardando(selection):
         first_leaf = abjad.select(selection).leaf(0)
         last_leaf = abjad.select(selection).leaf(-1)
-        first_duration = abjad.inspect(first_leaf).duration()
-        last_duration = abjad.inspect(last_leaf).duration()
+        first_duration = abjad.inspectx.duration(first_leaf)
+        last_duration = abjad.inspectx.duration(last_leaf)
         if first_duration < last_duration:
             return True
         return False
@@ -843,15 +843,15 @@ class ForceRepeatTieCommand(Command):
         assert isinstance(inequality, abjad.DurationInequality)
         attach_repeat_ties = []
         for leaf in abjad.select(selection).leaves():
-            if abjad.inspect(leaf).has_indicator(abjad.Tie):
-                next_leaf = abjad.inspect(leaf).leaf(1)
+            if abjad.inspectx.has_indicator(leaf, abjad.Tie):
+                next_leaf = abjad.inspectx.leaf(leaf, 1)
                 if next_leaf is None:
                     continue
                 if not isinstance(next_leaf, (abjad.Chord, abjad.Note)):
                     continue
-                if abjad.inspect(next_leaf).has_indicator(abjad.RepeatTie):
+                if abjad.inspectx.has_indicator(next_leaf, abjad.RepeatTie):
                     continue
-                duration = abjad.inspect(leaf).duration()
+                duration = abjad.inspectx.duration(leaf)
                 if not inequality(duration):
                     continue
                 attach_repeat_ties.append(next_leaf)
@@ -1063,8 +1063,8 @@ class ForceRestCommand(Command):
             rest = abjad.Rest(leaf.written_duration, tag=tag)
             if leaf.multiplier is not None:
                 rest.multiplier = leaf.multiplier
-            previous_leaf = abjad.inspect(leaf).leaf(-1)
-            next_leaf = abjad.inspect(leaf).leaf(1)
+            previous_leaf = abjad.inspectx.leaf(leaf, -1)
+            next_leaf = abjad.inspectx.leaf(leaf, 1)
             abjad.mutate.replace(leaf, [rest])
             if previous_leaf is not None:
                 abjad.detach(abjad.Tie, previous_leaf)
@@ -1355,13 +1355,13 @@ class RewriteMeterCommand(Command):
         Calls rewrite meter command.
         """
         assert isinstance(voice, abjad.Voice), repr(voice)
-        staff = abjad.inspect(voice).parentage().parent
+        staff = abjad.inspectx.parentage(voice).parent
         assert isinstance(staff, abjad.Staff), repr(staff)
         time_signature_voice = staff["TimeSignatureVoice"]
         assert isinstance(time_signature_voice, abjad.Voice)
         meters, preferred_meters = [], []
         for skip in time_signature_voice:
-            time_signature = abjad.inspect(skip).indicator(abjad.TimeSignature)
+            time_signature = abjad.inspectx.indicator(skip, abjad.TimeSignature)
             meter = abjad.Meter(time_signature)
             meters.append(meter)
         durations = [abjad.Duration(_) for _ in meters]
@@ -1378,7 +1378,7 @@ class RewriteMeterCommand(Command):
             preferred_meters.append(meter)
             nontupletted_leaves = []
             for leaf in abjad.iterate(selection).leaves():
-                if not abjad.inspect(leaf).parentage().count(abjad.Tuplet):
+                if not abjad.inspectx.parentage(leaf).count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
             unbeam()(nontupletted_leaves)
             abjad.Meter.rewrite_meter(
@@ -1409,7 +1409,7 @@ class RewriteMeterCommand(Command):
 
     @staticmethod
     def _make_beamable_groups(components, durations):
-        music_duration = abjad.inspect(components).duration()
+        music_duration = abjad.inspectx.duration(components)
         if music_duration != sum(durations):
             message = f"music duration {music_duration} does not equal"
             message += f" total duration {sum(durations)}:\n"
@@ -1419,7 +1419,7 @@ class RewriteMeterCommand(Command):
         component_to_timespan = []
         start_offset = abjad.Offset(0)
         for component in components:
-            duration = abjad.inspect(component).duration()
+            duration = abjad.inspectx.duration(component)
             stop_offset = start_offset + duration
             timespan = abjad.Timespan(start_offset, stop_offset)
             pair = (component, timespan)
@@ -1440,7 +1440,7 @@ class RewriteMeterCommand(Command):
             group_to_target_duration.append(pair)
         beamable_groups = []
         for group, target_duration in group_to_target_duration:
-            group_duration = abjad.inspect(group).duration()
+            group_duration = abjad.inspectx.duration(group)
             assert group_duration <= target_duration
             if group_duration == target_duration:
                 beamable_groups.append(group)
@@ -1513,7 +1513,7 @@ class RewriteRestFilledCommand(Command):
         for tuplet in abjad.select(selection).tuplets():
             if not tuplet.rest_filled():
                 continue
-            duration = abjad.inspect(tuplet).duration()
+            duration = abjad.inspectx.duration(tuplet)
             rests = maker([None], [duration])
             abjad.mutate.replace(tuplet[:], rests)
             tuplet.multiplier = abjad.Multiplier(1)
@@ -1547,12 +1547,12 @@ class RewriteSustainedCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         for tuplet in abjad.select(selection).tuplets():
-            if not abjad.inspect(tuplet).sustained():
+            if not abjad.inspectx.sustained(tuplet):
                 continue
-            duration = abjad.inspect(tuplet).duration()
+            duration = abjad.inspectx.duration(tuplet)
             leaves = abjad.select(tuplet).leaves()
             last_leaf = leaves[-1]
-            if abjad.inspect(last_leaf).has_indicator(abjad.Tie):
+            if abjad.inspectx.has_indicator(last_leaf, abjad.Tie):
                 last_leaf_has_tie = True
             else:
                 last_leaf_has_tie = False
@@ -1587,12 +1587,13 @@ class SplitMeasuresCommand(Command):
         Calls split measures command.
         """
         if durations is None:
-            # TODO: implement abjad.inspect() method for measure durations
-            staff = abjad.inspect(voice).parentage().parent
+            # TODO: implement abjad.inspectx() method for measure durations
+            staff = abjad.inspectx.parentage(voice).parent
+            assert isinstance(staff, abjad.Staff)
             voice_ = staff["TimeSignatureVoice"]
-            durations = [abjad.inspect(_).duration() for _ in voice_]
+            durations = [abjad.inspectx.duration(_) for _ in voice_]
         total_duration = sum(durations)
-        music_duration = abjad.inspect(voice).duration()
+        music_duration = abjad.inspectx.duration(voice)
         if total_duration != music_duration:
             message = f"Total duration of splits is {total_duration!s}"
             message += f" but duration of music is {music_duration!s}:"
@@ -3776,7 +3777,7 @@ def rewrite_sustained(
 
             >>> staff = lilypond_file[abjad.Score]
             >>> for tuplet in abjad.select(staff).tuplets():
-            ...     abjad.inspect(tuplet).sustained()
+            ...     abjad.inspectx.sustained(tuplet)
             ...
             True
             True

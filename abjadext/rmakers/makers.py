@@ -148,7 +148,7 @@ class RhythmMaker:
             leaves = leaf_maker(pitches, durations)
             if (
                 1 < len(leaves)
-                and abjad.inspect(leaves[0]).logical_tie().is_trivial
+                and abjad.inspectx.logical_tie(leaves[0]).is_trivial
                 and not isinstance(leaves[0], abjad.Rest)
             ):
                 abjad.tie(leaves)
@@ -2179,9 +2179,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @staticmethod
     def _fix_rounding_error(selection, total_duration, interpolation):
-        selection_duration = abjad.inspect(selection).duration()
+        selection_duration = abjad.inspectx.duration(selection)
         if not selection_duration == total_duration:
-            needed_duration = total_duration - abjad.inspect(selection[:-1]).duration()
+            needed_duration = total_duration - abjad.inspectx.duration(selection[:-1])
             multiplier = needed_duration / interpolation.written_duration
             selection[-1].multiplier = multiplier
 
@@ -10421,7 +10421,7 @@ class TaleaRhythmMaker(RhythmMaker):
             total = len(unscaled_end_counts)
             end_leaves = leaves[-total:]
             for leaf in reversed(end_leaves):
-                previous_leaf = abjad.inspect(leaf).leaf(-1)
+                previous_leaf = abjad.inspectx.leaf(leaf, -1)
                 if previous_leaf is not None:
                     abjad.detach(abjad.Tie, previous_leaf)
 
@@ -10507,7 +10507,7 @@ class TaleaRhythmMaker(RhythmMaker):
         if "+" in talea or "-" in talea:
             pass
         elif talea_weight_consumed not in advanced_talea:
-            last_leaf = abjad.inspect(tuplets).leaf(-1)
+            last_leaf = abjad.inspectx.leaf(tuplets, -1)
             if isinstance(last_leaf, abjad.Note):
                 self.state["incomplete_last_note"] = True
         string = "talea_weight_consumed"
