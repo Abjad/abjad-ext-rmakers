@@ -3274,7 +3274,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
+            >>> abjad.f(lilypond_file[abjad.Score], align_tags=30)
             \new Score
             <<
                 \new GlobalContext
@@ -6383,7 +6383,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> abjad.f(lilypond_file[abjad.Score], strict=40)
+            >>> abjad.f(lilypond_file[abjad.Score], align_tags=40)
             \new Score
             <<
                 \new GlobalContext
@@ -11345,7 +11345,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
+            >>> abjad.f(lilypond_file[abjad.Score], align_tags=30)
             \new Score
             <<
                 \new GlobalContext
@@ -13488,7 +13488,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> abjad.f(lilypond_file[abjad.Score], strict=30)
+            >>> abjad.f(lilypond_file[abjad.Score], align_tags=30)
             \new Score
             <<
                 \new GlobalContext
