@@ -353,7 +353,8 @@ class DurationBracketCommand(Command):
             assert len(markup.contents) == 1, repr(markup)
             string = markup.contents[0]
             markup = abjad.Markup(
-                rf"\markup \scale #'(0.75 . 0.75) {string}", literal=True,
+                rf"\markup \scale #'(0.75 . 0.75) {string}",
+                literal=True,
             )
             abjad.override(tuplet).tuplet_number.text = markup
 
@@ -1463,7 +1464,9 @@ class RewriteMeterCommand(Command):
         return self._boundary_depth
 
     @property
-    def reference_meters(self,) -> typing.Optional[typing.Tuple[abjad.Meter, ...]]:
+    def reference_meters(
+        self,
+    ) -> typing.Optional[typing.Tuple[abjad.Meter, ...]]:
         """
         Gets reference meters.
         """
@@ -2562,14 +2565,18 @@ def denominator(
     return DenominatorCommand(denominator, selector)
 
 
-def duration_bracket(selector: abjad.Expression = None,) -> DurationBracketCommand:
+def duration_bracket(
+    selector: abjad.Expression = None,
+) -> DurationBracketCommand:
     """
     Makes duration bracket command.
     """
     return DurationBracketCommand(selector)
 
 
-def extract_trivial(selector: abjad.Expression = None,) -> ExtractTrivialCommand:
+def extract_trivial(
+    selector: abjad.Expression = None,
+) -> ExtractTrivialCommand:
     r"""
     Makes extract trivial command.
 
@@ -2656,7 +2663,9 @@ def feather_beam(
     )
 
 
-def force_augmentation(selector: abjad.Expression = None,) -> ForceAugmentationCommand:
+def force_augmentation(
+    selector: abjad.Expression = None,
+) -> ForceAugmentationCommand:
     r"""
     Makes force augmentation command.
 
@@ -2850,21 +2859,27 @@ def force_augmentation(selector: abjad.Expression = None,) -> ForceAugmentationC
     return ForceAugmentationCommand(selector)
 
 
-def force_diminution(selector: abjad.Expression = None,) -> ForceDiminutionCommand:
+def force_diminution(
+    selector: abjad.Expression = None,
+) -> ForceDiminutionCommand:
     """
     Makes force diminution command.
     """
     return ForceDiminutionCommand(selector)
 
 
-def force_fraction(selector: abjad.Expression = None,) -> ForceFractionCommand:
+def force_fraction(
+    selector: abjad.Expression = None,
+) -> ForceFractionCommand:
     """
     Makes force fraction command.
     """
     return ForceFractionCommand(selector)
 
 
-def force_note(selector: abjad.Expression,) -> ForceNoteCommand:
+def force_note(
+    selector: abjad.Expression,
+) -> ForceNoteCommand:
     """
     Makes force note command.
     """
@@ -4648,7 +4663,9 @@ def trivialize(selector: abjad.Expression = None) -> TrivializeCommand:
     return TrivializeCommand(selector)
 
 
-def unbeam(selector: abjad.Expression = abjad.select().leaves(),) -> UnbeamCommand:
+def unbeam(
+    selector: abjad.Expression = abjad.select().leaves(),
+) -> UnbeamCommand:
     """
     Makes unbeam command.
     """

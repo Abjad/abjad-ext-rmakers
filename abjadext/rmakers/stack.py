@@ -564,7 +564,9 @@ def assign(
     Makes assignment.
     """
     return Assignment(
-        rhythm_maker, predicate, remember_state_across_gaps=remember_state_across_gaps,
+        rhythm_maker,
+        predicate,
+        remember_state_across_gaps=remember_state_across_gaps,
     )
 
 
@@ -576,7 +578,10 @@ def bind(*assignments: Assignment, tag: abjad.Tag = None) -> Bind:
 
 
 def stack(
-    maker, *commands, preprocessor: abjad.Expression = None, tag: abjad.Tag = None,
+    maker,
+    *commands,
+    preprocessor: abjad.Expression = None,
+    tag: abjad.Tag = None,
 ) -> Stack:
     """
     Makes stack.

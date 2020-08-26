@@ -1216,7 +1216,10 @@ class Talea:
                 consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
         return abjad.new(
-            self, counts=counts, denominator=self.denominator, preamble=preamble_,
+            self,
+            counts=counts,
+            denominator=self.denominator,
+            preamble=preamble_,
         )
 
 
