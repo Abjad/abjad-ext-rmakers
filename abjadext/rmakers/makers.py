@@ -208,7 +208,7 @@ class RhythmMaker:
         dummy_division = scaled_divisions.pop()
         lcd = dummy_division.denominator
         multiplier = lcd / talea_denominator
-        assert abjad.mathx.is_integer_equivalent(multiplier)
+        assert abjad.math.is_integer_equivalent(multiplier)
         multiplier = int(multiplier)
         scaled_counts = {}
         for name, vector in counts.items():
@@ -4045,13 +4045,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         tag: abjad.Tag = None,
     ) -> None:
         RhythmMaker.__init__(self, spelling=spelling, tag=tag)
-        assert abjad.mathx.all_are_nonnegative_integer_powers_of_two(
+        assert abjad.math.all_are_nonnegative_integer_powers_of_two(denominators), repr(
             denominators
-        ), repr(denominators)
+        )
         denominators = tuple(denominators)
         self._denominators: typing.Tuple[int, ...] = denominators
         if extra_counts is not None:
-            if not abjad.mathx.all_are_integer_equivalent(extra_counts):
+            if not abjad.math.all_are_integer_equivalent(extra_counts):
                 message = "must be integer sequence:\n"
                 message += f"    {repr(extra_counts)}"
                 raise Exception(message)
@@ -4075,7 +4075,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         extra_counts = extra_counts.rotate(-divisions_consumed)
         extra_counts = abjad.CyclicTuple(extra_counts)
         for i, division in enumerate(divisions):
-            if not abjad.mathx.is_positive_integer_power_of_two(division.denominator):
+            if not abjad.math.is_positive_integer_power_of_two(division.denominator):
                 message = "non-power-of-two divisions not implemented:"
                 message += f" {division}."
                 raise Exception(message)
@@ -5699,7 +5699,7 @@ class IncisedRhythmMaker(RhythmMaker):
             extra_counts = tuple(extra_counts)
         assert (
             extra_counts is None
-            or abjad.mathx.all_are_nonnegative_integer_equivalent_numbers(extra_counts)
+            or abjad.math.all_are_nonnegative_integer_equivalent_numbers(extra_counts)
         ), extra_counts
         self._extra_counts = extra_counts
 
@@ -5821,8 +5821,8 @@ class IncisedRhythmMaker(RhythmMaker):
         return tuplets
 
     def _make_numeric_map_part(self, numerator, prefix, suffix, is_note_filled=True):
-        prefix_weight = abjad.mathx.weight(prefix)
-        suffix_weight = abjad.mathx.weight(suffix)
+        prefix_weight = abjad.math.weight(prefix)
+        suffix_weight = abjad.math.weight(suffix)
         middle = numerator - prefix_weight - suffix_weight
         if numerator < prefix_weight:
             weights = [numerator]
@@ -10157,7 +10157,7 @@ class TaleaRhythmMaker(RhythmMaker):
             assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
         if extra_counts is not None:
-            assert abjad.mathx.all_are_integer_equivalent_numbers(extra_counts)
+            assert abjad.math.all_are_integer_equivalent_numbers(extra_counts)
         self._extra_counts = extra_counts
         if read_talea_once_only is not None:
             read_talea_once_only = bool(read_talea_once_only)
@@ -10422,10 +10422,10 @@ class TaleaRhythmMaker(RhythmMaker):
         }
 
     def _split_talea_extended_to_weights(self, preamble, talea, weights):
-        assert abjad.mathx.all_are_positive_integers(weights)
-        preamble_weight = abjad.mathx.weight(preamble)
-        talea_weight = abjad.mathx.weight(talea)
-        weight = abjad.mathx.weight(weights)
+        assert abjad.math.all_are_positive_integers(weights)
+        preamble_weight = abjad.math.weight(preamble)
+        talea_weight = abjad.math.weight(talea)
+        weight = abjad.math.weight(weights)
         if self.read_talea_once_only and preamble_weight + talea_weight < weight:
             message = f"{preamble!s} + {talea!s} is too short"
             message += f" to read {weights} once."

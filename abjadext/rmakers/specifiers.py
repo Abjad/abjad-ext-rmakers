@@ -92,7 +92,7 @@ class Incise:
         if suffix_talea:
             assert suffix_counts
         if talea_denominator is not None:
-            if not abjad.mathx.is_nonnegative_integer_power_of_two(talea_denominator):
+            if not abjad.math.is_nonnegative_integer_power_of_two(talea_denominator):
                 message = f"talea denominator {talea_denominator!r} must be nonnegative"
                 message += " integer power of 2."
                 raise Exception(message)
@@ -131,7 +131,7 @@ class Incise:
     def _is_length_tuple(argument):
         if argument is None:
             return True
-        if abjad.mathx.all_are_nonnegative_integer_equivalent_numbers(argument):
+        if abjad.math.all_are_nonnegative_integer_equivalent_numbers(argument):
             if isinstance(argument, (tuple, list)):
                 return True
         return False
@@ -745,7 +745,7 @@ class Talea:
         for count in counts:
             assert isinstance(count, int) or count in "+-", repr(count)
         self._counts = counts
-        if not abjad.mathx.is_nonnegative_integer_power_of_two(denominator):
+        if not abjad.math.is_nonnegative_integer_power_of_two(denominator):
             message = f"denominator {denominator} must be integer power of 2."
             raise Exception(message)
         self._denominator = denominator
@@ -806,7 +806,7 @@ class Talea:
         assert 0 < argument, repr(argument)
         if self.preamble:
             preamble = abjad.Sequence([abs(_) for _ in self.preamble])
-            cumulative = abjad.mathx.cumulative_sums(preamble)[1:]
+            cumulative = abjad.math.cumulative_sums(preamble)[1:]
             if argument in cumulative:
                 return True
             preamble_weight = preamble.weight()
@@ -816,7 +816,7 @@ class Talea:
             counts = [abs(_) for _ in self.counts]
         else:
             counts = []
-        cumulative = abjad.mathx.cumulative_sums(counts)[:-1]
+        cumulative = abjad.math.cumulative_sums(counts)[:-1]
         argument -= preamble_weight
         argument %= self.period
         return argument in cumulative

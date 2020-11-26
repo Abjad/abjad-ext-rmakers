@@ -311,7 +311,7 @@ class DenominatorCommand(Command):
                 denominator_ = unit_duration.denominator
                 nonreduced_fraction = duration.with_denominator(denominator_)
                 tuplet.denominator = nonreduced_fraction.numerator
-            elif abjad.mathx.is_positive_integer(denominator):
+            elif abjad.math.is_positive_integer(denominator):
                 tuplet.denominator = denominator
             else:
                 message = f"invalid preferred denominator: {denominator!r}."

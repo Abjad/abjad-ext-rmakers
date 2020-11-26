@@ -76,25 +76,19 @@ mypy:
 project = abjadext
 
 pytest:
+	pytest .
+
+pytest-coverage:
 	rm -Rf htmlcov/
 	pytest \
 	--cov-config=.coveragerc \
 	--cov-report=html \
 	--cov-report=term \
 	--cov=${project} \
-	--durations=20 \
 	.
 
 pytest-x:
-	rm -Rf htmlcov/
-	pytest \
-	-x \
-	--cov-config=.coveragerc \
-	--cov-report=html \
-	--cov-report=term \
-	--cov=${project} \
-	--durations=20 \
-	.
+	pytest -x .
 
 reformat:
 	make black-reformat
