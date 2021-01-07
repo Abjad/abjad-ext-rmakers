@@ -7252,7 +7252,7 @@ class NoteRhythmMaker(RhythmMaker):
                 \new RhythmicStaff
                 {
                     \tweak edge-height #'(0.7 . 0)
-                    \times 4/7 {
+                    \times 8/14 {
                         c'2
                         ~
                         c'8
@@ -7297,7 +7297,7 @@ class NoteRhythmMaker(RhythmMaker):
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \tweak edge-height #'(0.7 . 0)
-                    \times 8/7 {
+                    \times 16/14 {
                         c'4
                         ~
                         c'16
