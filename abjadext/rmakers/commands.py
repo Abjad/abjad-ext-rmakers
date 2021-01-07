@@ -1280,6 +1280,28 @@ class OnBeatGraceContainerCommand(Command):
         return self._talea
 
 
+class ReduceMultiplierCommand(Command):
+    """
+    Reduce multiplier command.
+    """
+
+    ### CLASS VARIABLES ###
+
+    __slots__ = ()
+
+    ### SPECIAL METHODS ###
+
+    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+        """
+        Calls reduce multiplier command.
+        """
+        selection = voice
+        if self.selector is not None:
+            selection = self.selector(selection)
+        for tuplet in abjad.select(selection).tuplets():
+            tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
+
+
 class RepeatTieCommand(Command):
     """
     Repeat-tie command.
@@ -3489,6 +3511,15 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
 
     """
     return RepeatTieCommand(selector)
+
+
+def reduce_multiplier(
+    selector: abjad.Expression = None,
+) -> ReduceMultiplierCommand:
+    """
+    Makes reduce multiplier command.
+    """
+    return ReduceMultiplierCommand(selector)
 
 
 def rewrite_dots(selector: abjad.Expression = None) -> RewriteDotsCommand:
