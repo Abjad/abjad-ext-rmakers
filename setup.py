@@ -29,7 +29,7 @@ if __name__ == "__main__":
         ],
         extras_require={
             "test": [
-                "black>=19.10b0",
+                "black==20.8b1",
                 "flake8>=3.8.2",
                 "isort>=4.3.21",
                 "mypy>=0.770",
@@ -39,14 +39,13 @@ if __name__ == "__main__":
             ]
         },
         include_package_data=True,
-        install_requires=["abjad >= 3.1"],
+        install_requires=["abjad==3.2"],
         license="MIT",
         long_description=pathlib.Path("README.md").read_text(),
         keywords=", ".join(
             [
                 "music composition",
                 "music notation",
-                "formalized score control",
                 "lilypond",
             ]
         ),
