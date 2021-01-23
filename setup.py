@@ -3,18 +3,20 @@ import pathlib
 
 import setuptools
 
-subpackage_name = "rmakers"
+name = "rmakers"
 
 
 def read_version():
     root_path = pathlib.Path(__file__).parent
-    version_path = root_path / "abjadext" / subpackage_name / "_version.py"
+    version_path = root_path / "abjadext" / name / "_version.py"
     with version_path.open() as file_pointer:
         file_contents = file_pointer.read()
     local_dict = {}
     exec(file_contents, None, local_dict)
     return local_dict["__version__"]
 
+
+description = "Rhythm-makers extend Abjad with tools for rhythmic construction."
 
 if __name__ == "__main__":
     setuptools.setup(
@@ -27,6 +29,7 @@ if __name__ == "__main__":
             "Programming Language :: Python :: Implementation :: CPython",
             "Topic :: Artistic Software",
         ],
+        description=description,
         extras_require={
             "test": [
                 "black==20.8b1",
@@ -49,7 +52,7 @@ if __name__ == "__main__":
                 "lilypond",
             ]
         ),
-        name="abjad-ext-{}".format(subpackage_name),
+        name=f"abjad-ext-{name}",
         packages=["abjadext"],
         platforms="Any",
         url="http://abjad.github.io",
