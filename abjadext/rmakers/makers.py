@@ -5006,7 +5006,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                     {
                         c'16
-                        ^ \markup { "0 becomes 0" }
+                        ^ \markup { 0 becomes 0 }
                         [
                         c'16
                         c'16
@@ -5017,7 +5017,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7 {
                             c'16
-                            ^ \markup { "1 becomes 1" }
+                            ^ \markup { 1 becomes 1 }
                             [
                             c'16
                             c'16
@@ -5030,7 +5030,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8 {
                             c'16
-                            ^ \markup { "2 becomes 2" }
+                            ^ \markup { 2 becomes 2 }
                             [
                             c'16
                             c'16
@@ -5043,7 +5043,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 6/9 {
                             c'16
-                            ^ \markup { "3 becomes 3" }
+                            ^ \markup { 3 becomes 3 }
                             [
                             c'16
                             c'16
@@ -5058,7 +5058,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/10 {
                             c'16
-                            ^ \markup { "4 becomes 4" }
+                            ^ \markup { 4 becomes 4 }
                             [
                             c'16
                             c'16
@@ -5074,7 +5074,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/11 {
                             c'16
-                            ^ \markup { "5 becomes 5" }
+                            ^ \markup { 5 becomes 5 }
                             [
                             c'16
                             c'16
@@ -5089,7 +5089,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         c'16
-                        ^ \markup { "6 becomes 0" }
+                        ^ \markup { 6 becomes 0 }
                         [
                         c'16
                         c'16
@@ -5100,7 +5100,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7 {
                             c'16
-                            ^ \markup { "7 becomes 1" }
+                            ^ \markup { 7 becomes 1 }
                             [
                             c'16
                             c'16
@@ -5113,7 +5113,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8 {
                             c'16
-                            ^ \markup { "8 becomes 2" }
+                            ^ \markup { 8 becomes 2 }
                             [
                             c'16
                             c'16
@@ -5126,7 +5126,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 6/9 {
                             c'16
-                            ^ \markup { "9 becomes 3" }
+                            ^ \markup { 9 becomes 3 }
                             [
                             c'16
                             c'16
@@ -5141,7 +5141,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/10 {
                             c'16
-                            ^ \markup { "10 becomes 4" }
+                            ^ \markup { 10 becomes 4 }
                             [
                             c'16
                             c'16
@@ -5157,7 +5157,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/11 {
                             c'16
-                            ^ \markup { "11 becomes 5" }
+                            ^ \markup { 11 becomes 5 }
                             [
                             c'16
                             c'16
@@ -5256,7 +5256,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                     {
                         c'16
-                        ^ \markup { "0 becomes 0" }
+                        ^ \markup { 0 becomes 0 }
                         [
                         c'16
                         c'16
@@ -5267,7 +5267,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5 {
                             c'16
-                            ^ \markup { "-1 becomes -1" }
+                            ^ \markup { -1 becomes -1 }
                             [
                             c'16
                             c'16
@@ -5278,7 +5278,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4 {
                             c'16
-                            ^ \markup { "-2 becomes -2" }
+                            ^ \markup { -2 becomes -2 }
                             [
                             c'16
                             c'16
@@ -5286,7 +5286,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         c'16
-                        ^ \markup { "-3 becomes 0" }
+                        ^ \markup { -3 becomes 0 }
                         [
                         c'16
                         c'16
@@ -5297,7 +5297,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5 {
                             c'16
-                            ^ \markup { "-4 becomes -1" }
+                            ^ \markup { -4 becomes -1 }
                             [
                             c'16
                             c'16
@@ -5308,7 +5308,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4 {
                             c'16
-                            ^ \markup { "-5 becomes -2" }
+                            ^ \markup { -5 becomes -2 }
                             [
                             c'16
                             c'16
@@ -5316,7 +5316,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         c'16
-                        ^ \markup { "-6 becomes 0" }
+                        ^ \markup { -6 becomes 0 }
                         [
                         c'16
                         c'16
@@ -5327,7 +5327,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5 {
                             c'16
-                            ^ \markup { "-7 becomes -1" }
+                            ^ \markup { -7 becomes -1 }
                             [
                             c'16
                             c'16
@@ -5338,7 +5338,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4 {
                             c'16
-                            ^ \markup { "-8 becomes -2" }
+                            ^ \markup { -8 becomes -2 }
                             [
                             c'16
                             c'16
