@@ -46,7 +46,6 @@ jobs:
       run: |
         # lilypond is installed in /home/runner/bin
         export PATH=/home/runner/bin:${PATH}
-        /tmp/baca/scr/doctest "$GITHUB_WORKSPACE"
         black --version
         flake8 --version
         isort --version
@@ -59,7 +58,6 @@ jobs:
       run: |
         # lilypond is installed in /home/runner/bin
         export PATH=/home/runner/bin:${PATH}
-        /tmp/baca/scr/doctest "$GITHUB_WORKSPACE"
         export MYPYPATH=$MYPYPATH:/tmp/abjad
         echo $MYPYPATH
         make black-check
