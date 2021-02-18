@@ -2470,8 +2470,7 @@ def denominator(
         ... )
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
-        >>> moment = abjad.SchemeMoment((1, 28))
-        >>> abjad.setting(score).proportional_notation_duration = moment
+        >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
