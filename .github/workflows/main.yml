@@ -44,6 +44,9 @@ jobs:
 
     - name: Log versions
       run: |
+        # lilypond is installed in /home/runner/bin
+        export PATH=/home/runner/bin:${PATH}
+        /tmp/baca/scr/doctest "$GITHUB_WORKSPACE"
         black --version
         flake8 --version
         isort --version
