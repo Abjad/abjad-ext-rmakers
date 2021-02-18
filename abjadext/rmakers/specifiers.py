@@ -355,7 +355,7 @@ class Interpolation:
             ... )
             >>> specifier = specifier.reverse()
             >>> abjad.f(specifier)
-            abjadext.specifiers.Interpolation(
+            rmakers.Interpolation(
                 start_duration=abjad.Duration(1, 16),
                 stop_duration=abjad.Duration(1, 4),
                 written_duration=abjad.Duration(1, 16),
@@ -372,7 +372,7 @@ class Interpolation:
             ... )
             >>> specifier = specifier.reverse()
             >>> abjad.f(specifier)
-            abjadext.specifiers.Interpolation(
+            rmakers.Interpolation(
                 start_duration=abjad.Duration(1, 4),
                 stop_duration=abjad.Duration(1, 16),
                 written_duration=abjad.Duration(1, 16),
@@ -718,7 +718,7 @@ class Talea:
         ... )
 
         >>> abjad.f(talea)
-        abjadext.specifiers.Talea(
+        rmakers.Talea(
             [2, 1, 3, 2, 4, 1, 1],
             16,
             preamble=[1, 1, 1, 1],
@@ -1109,62 +1109,62 @@ class Talea:
             ... )
 
             >>> abjad.f(talea.advance(0))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 1, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(1))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(2))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 1],
                 )
 
             >>> abjad.f(talea.advance(3))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1],
                 )
 
             >>> abjad.f(talea.advance(4))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16
                 )
 
             >>> abjad.f(talea.advance(5))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 1, 3, 2, 4, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(6))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 3, 2, 4, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(7))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[3, 2, 4, 1, 1],
                 )
 
             >>> abjad.f(talea.advance(8))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[2, 2, 4, 1, 1],
@@ -1177,13 +1177,13 @@ class Talea:
             >>> talea = rmakers.Talea([1, 2, 3, 4], 16)
 
             >>> abjad.f(talea.advance(10))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [1, 2, 3, 4],
                 16
                 )
 
             >>> abjad.f(talea.advance(20))
-            abjadext.specifiers.Talea(
+            rmakers.Talea(
                 [1, 2, 3, 4],
                 16
                 )

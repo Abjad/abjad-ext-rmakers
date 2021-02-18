@@ -221,8 +221,8 @@ class Stack:
             >>> command_2 = abjad.new(command_1)
 
             >>> abjad.f(command_1)
-            abjadext.stack.Stack(
-                abjadext.makers.TupletRhythmMaker(
+            rmakers.Stack(
+                rmakers.TupletRhythmMaker(
                     tuplet_ratios=[
                         abjad.Ratio((1, 2)),
                         ],
@@ -231,8 +231,8 @@ class Stack:
                 )
 
             >>> abjad.f(command_2)
-            abjadext.stack.Stack(
-                abjadext.makers.TupletRhythmMaker(
+            rmakers.Stack(
+                rmakers.TupletRhythmMaker(
                     tuplet_ratios=[
                         abjad.Ratio((1, 2)),
                         ],

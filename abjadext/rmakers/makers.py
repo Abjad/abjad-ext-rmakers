@@ -6465,7 +6465,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> abjad.f(rhythm_maker)
-        abjadext.makers.MultipliedDurationRhythmMaker(
+        rmakers.MultipliedDurationRhythmMaker(
             prototype=abjad.Note,
             duration=abjad.Duration(1, 1),
             )
@@ -8898,9 +8898,9 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
             >>> new_command = abjad.new(command)
             >>> abjad.f(command)
-            abjadext.stack.Stack(
-                abjadext.makers.TaleaRhythmMaker(
-                    talea=abjadext.specifiers.Talea(
+            rmakers.Stack(
+                rmakers.TaleaRhythmMaker(
+                    talea=rmakers.Talea(
                         [5, -3, 3, 3],
                         16
                         ),
