@@ -3291,7 +3291,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> string = abjad.LilyPondFormatManager.align_tags(string, 30)
             >>> print(string)
             \new Score
@@ -6436,7 +6436,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> string = abjad.LilyPondFormatManager.align_tags(string, 40)
             >>> print(string)
             \new Score
@@ -7689,7 +7689,7 @@ class NoteRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> print(string)
             \new Score
             <<
@@ -10844,35 +10844,35 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'4
                         ~
                         c'16
-                        [ %! rmakers.RewriteMeterCommand.__call__
+                        [
                         c'8.
                         ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
+                        ]
                         c'16
-                        [ %! rmakers.RewriteMeterCommand.__call__
+                        [
                         c'8.
                         ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
+                        ]
                         c'8
-                        [ %! rmakers.RewriteMeterCommand.__call__
-                        c'8
-                        ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
-                        c'8
-                        [ %! rmakers.RewriteMeterCommand.__call__
+                        [
                         c'8
                         ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
+                        ]
+                        c'8
+                        [
+                        c'8
+                        ~
+                        ]
                         c'8.
-                        [ %! rmakers.RewriteMeterCommand.__call__
-                        c'16
-                        ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
-                        c'8.
-                        [ %! rmakers.RewriteMeterCommand.__call__
+                        [
                         c'16
                         ~
-                        ] %! rmakers.RewriteMeterCommand.__call__
+                        ]
+                        c'8.
+                        [
+                        c'16
+                        ~
+                        ]
                         c'4
                         c'4
                     }
@@ -11490,7 +11490,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> string = abjad.LilyPondFormatManager.align_tags(string, 30)
             >>> print(string)
             \new Score
@@ -13671,7 +13671,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> string = abjad.LilyPondFormatManager.align_tags(string, 30)
             >>> print(string)
             \new Score

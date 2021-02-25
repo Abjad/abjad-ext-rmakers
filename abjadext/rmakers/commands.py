@@ -3011,9 +3011,9 @@ def on_beat_grace_container(
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                    \slash %! abjad.on_beat_grace_container(2)
-                                    \voiceOne %! abjad.on_beat_grace_container(3)
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size #0
                                         \tweak transparent ##t
@@ -3027,16 +3027,16 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \voiceTwo %! abjad.on_beat_grace_container(4)
+                                    \voiceTwo
                                     c'4
                                 }
                             >>
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                    \slash %! abjad.on_beat_grace_container(2)
-                                    \voiceOne %! abjad.on_beat_grace_container(3)
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size #0
                                         \tweak transparent ##t
@@ -3052,16 +3052,16 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \voiceTwo %! abjad.on_beat_grace_container(4)
+                                    \voiceTwo
                                     c'4
                                 }
                             >>
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                    \slash %! abjad.on_beat_grace_container(2)
-                                    \voiceOne %! abjad.on_beat_grace_container(3)
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size #0
                                         \tweak transparent ##t
@@ -3075,11 +3075,11 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \voiceTwo %! abjad.on_beat_grace_container(4)
+                                    \voiceTwo
                                     c'4
                                 }
                             >>
-                            \oneVoice %! abjad.on_beat_grace_container(5)
+                            \oneVoice
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
@@ -3088,9 +3088,9 @@ def on_beat_grace_container(
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                    \slash %! abjad.on_beat_grace_container(2)
-                                    \voiceOne %! abjad.on_beat_grace_container(3)
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size #0
                                         \tweak transparent ##t
@@ -3106,16 +3106,16 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \voiceTwo %! abjad.on_beat_grace_container(4)
+                                    \voiceTwo
                                     c'4
                                 }
                             >>
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                    \slash %! abjad.on_beat_grace_container(2)
-                                    \voiceOne %! abjad.on_beat_grace_container(3)
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size #0
                                         \tweak transparent ##t
@@ -3129,16 +3129,16 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \voiceTwo %! abjad.on_beat_grace_container(4)
+                                    \voiceTwo
                                     c'4
                                 }
                             >>
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                    \slash %! abjad.on_beat_grace_container(2)
-                                    \voiceOne %! abjad.on_beat_grace_container(3)
+                                    \set fontSize = #-3
+                                    \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size #0
                                         \tweak transparent ##t
@@ -3154,11 +3154,11 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "Rhythm_Maker_Music_Voice"
                                 {
-                                    \voiceTwo %! abjad.on_beat_grace_container(4)
+                                    \voiceTwo
                                     c'4
                                 }
                             >>
-                            \oneVoice %! abjad.on_beat_grace_container(5)
+                            \oneVoice
                             c'4
                         }
                     }
@@ -3206,9 +3206,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                \slash %! abjad.on_beat_grace_container(2)
-                                \voiceOne %! abjad.on_beat_grace_container(3)
+                                \set fontSize = #-3
+                                \slash
+                                \voiceOne
                                 <
                                     \tweak font-size #0
                                     \tweak transparent ##t
@@ -3226,7 +3226,7 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \voiceTwo %! abjad.on_beat_grace_container(4)
+                                \voiceTwo
                                 c'4
                                 ~
                                 c'16
@@ -3235,9 +3235,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                \slash %! abjad.on_beat_grace_container(2)
-                                \voiceOne %! abjad.on_beat_grace_container(3)
+                                \set fontSize = #-3
+                                \slash
+                                \voiceOne
                                 <
                                     \tweak font-size #0
                                     \tweak transparent ##t
@@ -3251,7 +3251,7 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \voiceTwo %! abjad.on_beat_grace_container(4)
+                                \voiceTwo
                                 c'4
                                 ~
                                 c'16
@@ -3260,9 +3260,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                \slash %! abjad.on_beat_grace_container(2)
-                                \voiceOne %! abjad.on_beat_grace_container(3)
+                                \set fontSize = #-3
+                                \slash
+                                \voiceOne
                                 <
                                     \tweak font-size #0
                                     \tweak transparent ##t
@@ -3280,7 +3280,7 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \voiceTwo %! abjad.on_beat_grace_container(4)
+                                \voiceTwo
                                 c'8
                                 ~
                                 c'8.
@@ -3289,9 +3289,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                \slash %! abjad.on_beat_grace_container(2)
-                                \voiceOne %! abjad.on_beat_grace_container(3)
+                                \set fontSize = #-3
+                                \slash
+                                \voiceOne
                                 <
                                     \tweak font-size #0
                                     \tweak transparent ##t
@@ -3305,7 +3305,7 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \voiceTwo %! abjad.on_beat_grace_container(4)
+                                \voiceTwo
                                 c'4
                                 ~
                                 c'16
@@ -3314,9 +3314,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \set fontSize = #-3 %! abjad.on_beat_grace_container(1)
-                                \slash %! abjad.on_beat_grace_container(2)
-                                \voiceOne %! abjad.on_beat_grace_container(3)
+                                \set fontSize = #-3
+                                \slash
+                                \voiceOne
                                 <
                                     \tweak font-size #0
                                     \tweak transparent ##t
@@ -3334,7 +3334,7 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
-                                \voiceTwo %! abjad.on_beat_grace_container(4)
+                                \voiceTwo
                                 c'4
                             }
                         >>
