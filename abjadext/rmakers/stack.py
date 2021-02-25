@@ -33,7 +33,8 @@ RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 #
 #            ..  docs::
 #
-#                >>> abjad.f(lilypond_file[abjad.Score])
+#                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+#                >>> print(string)
 #                \new Score
 #                <<
 #                    \new GlobalContext
@@ -220,7 +221,8 @@ class Stack:
             ... )
             >>> command_2 = abjad.new(command_1)
 
-            >>> abjad.f(command_1)
+            >>> string = abjad.storage(command_1)
+            >>> print(string)
             rmakers.Stack(
                 rmakers.TupletRhythmMaker(
                     tuplet_ratios=[
@@ -230,7 +232,8 @@ class Stack:
                 ForceFractionCommand()
                 )
 
-            >>> abjad.f(command_2)
+            >>> string = abjad.storage(command_2)
+            >>> print(string)
             rmakers.Stack(
                 rmakers.TupletRhythmMaker(
                     tuplet_ratios=[

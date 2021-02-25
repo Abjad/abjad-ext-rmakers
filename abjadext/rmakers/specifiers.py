@@ -173,7 +173,8 @@ class Incise:
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> print(string)
                 \new Score
                 <<
                     \new GlobalContext
@@ -354,7 +355,8 @@ class Interpolation:
             ...     written_duration=(1, 16),
             ... )
             >>> specifier = specifier.reverse()
-            >>> abjad.f(specifier)
+            >>> string = abjad.storage(specifier)
+            >>> print(string)
             rmakers.Interpolation(
                 start_duration=abjad.Duration(1, 16),
                 stop_duration=abjad.Duration(1, 4),
@@ -371,7 +373,8 @@ class Interpolation:
             ...     written_duration=(1, 16),
             ... )
             >>> specifier = specifier.reverse()
-            >>> abjad.f(specifier)
+            >>> string = abjad.storage(specifier)
+            >>> print(string)
             rmakers.Interpolation(
                 start_duration=abjad.Duration(1, 4),
                 stop_duration=abjad.Duration(1, 16),
@@ -491,7 +494,8 @@ class Spelling:
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> print(string)
                 \new Score
                 <<
                     \new GlobalContext
@@ -543,7 +547,8 @@ class Spelling:
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> print(string)
                 \new Score
                 <<
                     \new GlobalContext
@@ -603,7 +608,8 @@ class Spelling:
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> print(string)
                 \new Score
                 <<
                     \new GlobalContext
@@ -668,7 +674,8 @@ class Spelling:
 
             ..  docs::
 
-                >>> abjad.f(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> print(string)
                 \new Score
                 <<
                     \new GlobalContext
@@ -717,7 +724,8 @@ class Talea:
         ...     preamble=[1, 1, 1, 1],
         ... )
 
-        >>> abjad.f(talea)
+        >>> string = abjad.storage(talea)
+        >>> print(string)
         rmakers.Talea(
             [2, 1, 3, 2, 4, 1, 1],
             16,
@@ -1108,62 +1116,71 @@ class Talea:
             ...     preamble=[1, 1, 1, 1],
             ... )
 
-            >>> abjad.f(talea.advance(0))
+            >>> string = abjad.storage(talea.advance(0))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 1, 1, 1],
                 )
 
-            >>> abjad.f(talea.advance(1))
+            >>> string = abjad.storage(talea.advance(1))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 1, 1],
                 )
 
-            >>> abjad.f(talea.advance(2))
+            >>> string = abjad.storage(talea.advance(2))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 1],
                 )
 
-            >>> abjad.f(talea.advance(3))
+            >>> string = abjad.storage(talea.advance(3))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1],
                 )
 
-            >>> abjad.f(talea.advance(4))
+            >>> string = abjad.storage(talea.advance(4))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16
                 )
 
-            >>> abjad.f(talea.advance(5))
+            >>> string = abjad.storage(talea.advance(5))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 1, 3, 2, 4, 1, 1],
                 )
 
-            >>> abjad.f(talea.advance(6))
+            >>> string = abjad.storage(talea.advance(6))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[1, 3, 2, 4, 1, 1],
                 )
 
-            >>> abjad.f(talea.advance(7))
+            >>> string = abjad.storage(talea.advance(7))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
                 preamble=[3, 2, 4, 1, 1],
                 )
 
-            >>> abjad.f(talea.advance(8))
+            >>> string = abjad.storage(talea.advance(8))
+            >>> print(string)
             rmakers.Talea(
                 [2, 1, 3, 2, 4, 1, 1],
                 16,
@@ -1176,13 +1193,15 @@ class Talea:
 
             >>> talea = rmakers.Talea([1, 2, 3, 4], 16)
 
-            >>> abjad.f(talea.advance(10))
+            >>> string = abjad.storage(talea.advance(10))
+            >>> print(string)
             rmakers.Talea(
                 [1, 2, 3, 4],
                 16
                 )
 
-            >>> abjad.f(talea.advance(20))
+            >>> string = abjad.storage(talea.advance(20))
+            >>> print(string)
             rmakers.Talea(
                 [1, 2, 3, 4],
                 16

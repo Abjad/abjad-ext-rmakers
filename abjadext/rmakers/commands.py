@@ -620,7 +620,8 @@ class ForceNoteCommand(Command):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -661,7 +662,8 @@ class ForceNoteCommand(Command):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -702,7 +704,8 @@ class ForceNoteCommand(Command):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -744,7 +747,8 @@ class ForceNoteCommand(Command):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -894,7 +898,8 @@ class ForceRestCommand(Command):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -934,7 +939,8 @@ class ForceRestCommand(Command):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -974,7 +980,8 @@ class ForceRestCommand(Command):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -1017,7 +1024,8 @@ class ForceRestCommand(Command):
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -1808,7 +1816,8 @@ def after_grace_container(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -1878,7 +1887,8 @@ def after_grace_container(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -2017,7 +2027,8 @@ def before_grace_container(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -2148,7 +2159,8 @@ def denominator(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2213,7 +2225,8 @@ def denominator(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2277,7 +2290,8 @@ def denominator(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2341,7 +2355,8 @@ def denominator(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2407,7 +2422,8 @@ def denominator(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2472,7 +2488,8 @@ def denominator(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2537,7 +2554,8 @@ def denominator(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2616,7 +2634,8 @@ def extract_trivial(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -2709,7 +2728,8 @@ def force_augmentation(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -2766,7 +2786,8 @@ def force_augmentation(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2828,7 +2849,8 @@ def force_augmentation(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             \with
             {
@@ -2963,7 +2985,8 @@ def on_beat_grace_container(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3165,7 +3188,8 @@ def on_beat_grace_container(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3349,7 +3373,8 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3437,7 +3462,8 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3559,7 +3585,8 @@ def rewrite_rest_filled(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3626,7 +3653,8 @@ def rewrite_rest_filled(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3669,7 +3697,8 @@ def rewrite_rest_filled(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3712,7 +3741,8 @@ def rewrite_rest_filled(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3782,7 +3812,8 @@ def rewrite_sustained(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3859,7 +3890,8 @@ def rewrite_sustained(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3918,7 +3950,8 @@ def rewrite_sustained(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -3969,7 +4002,8 @@ def rewrite_sustained(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4047,7 +4081,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4143,7 +4178,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4231,7 +4267,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4318,7 +4355,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4377,7 +4415,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4472,7 +4511,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4575,7 +4615,8 @@ def tremolo_container(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4637,7 +4678,8 @@ def tremolo_container(
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4723,7 +4765,8 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
@@ -4820,7 +4863,8 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
 
         ..  docs::
 
-            >>> abjad.f(lilypond_file[abjad.Score])
+            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> print(string)
             \new Score
             <<
                 \new GlobalContext
