@@ -353,7 +353,7 @@ class DurationBracketCommand(Command):
                 rf"\markup \scale #'(0.75 . 0.75) {string}",
                 literal=True,
             )
-            abjad.override(tuplet).tuplet_number.text = markup
+            abjad.override(tuplet).TupletNumber.text = markup
 
 
 class WrittenDurationCommand(Command):
@@ -487,9 +487,9 @@ class FeatherBeamCommand(Command):
         for selection in selections:
             first_leaf = abjad.select(selection).leaf(0)
             if self._is_accelerando(selection):
-                abjad.override(first_leaf).beam.grow_direction = abjad.Right
+                abjad.override(first_leaf).Beam.grow_direction = abjad.Right
             elif self._is_ritardando(selection):
-                abjad.override(first_leaf).beam.grow_direction = abjad.Left
+                abjad.override(first_leaf).Beam.grow_direction = abjad.Left
 
     ### PRIVATE METHODS ###
 
@@ -2154,7 +2154,7 @@ def denominator(
         ...     selections, divisions
         ... )
         >>> score = lilypond_file[abjad.Score]
-        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2220,7 +2220,7 @@ def denominator(
         ...     selections, divisions
         ... )
         >>> score = lilypond_file[abjad.Score]
-        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2285,7 +2285,7 @@ def denominator(
         ...     selections, divisions
         ... )
         >>> score = lilypond_file[abjad.Score]
-        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2350,7 +2350,7 @@ def denominator(
         ...     selections, divisions
         ... )
         >>> score = lilypond_file[abjad.Score]
-        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2417,7 +2417,7 @@ def denominator(
         ...     selections, divisions
         ... )
         >>> score = lilypond_file[abjad.Score]
-        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2482,7 +2482,7 @@ def denominator(
         ...     selections, divisions
         ... )
         >>> score = lilypond_file[abjad.Score]
-        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -2549,7 +2549,7 @@ def denominator(
         ...     selections, divisions
         ... )
         >>> score = lilypond_file[abjad.Score]
-        >>> abjad.override(score).tuplet_bracket.staff_padding = 4.5
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2781,7 +2781,7 @@ def force_augmentation(
         ... )
         >>> staff = lilypond_file[abjad.Score]
         >>> string = 'tuplet-number::calc-denominator-text'
-        >>> abjad.override(staff).tuplet_number.text = string
+        >>> abjad.override(staff).TupletNumber.text = string
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2844,7 +2844,7 @@ def force_augmentation(
         ... )
         >>> staff = lilypond_file[abjad.Score]
         >>> string = 'tuplet-number::calc-denominator-text'
-        >>> abjad.override(staff).tuplet_number.text = string
+        >>> abjad.override(staff).TupletNumber.text = string
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2979,8 +2979,8 @@ def on_beat_grace_container(
         ...     abjad.select(music_voice), divisions, pitched_staff=False
         ... )
         >>> staff = lilypond_file[abjad.Staff]
-        >>> abjad.override(staff).tuplet_bracket.direction = abjad.Up
-        >>> abjad.override(staff).tuplet_bracket.staff_padding = 5
+        >>> abjad.override(staff).TupletBracket.direction = abjad.Up
+        >>> abjad.override(staff).TupletBracket.staff_padding = 5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::

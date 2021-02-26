@@ -4994,7 +4994,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     selection, divisions
             ... )
             >>> staff = lilypond_file[abjad.Staff]
-            >>> abjad.override(staff).text_script.staff_padding = 7
+            >>> abjad.override(staff).TextScript.staff_padding = 7
             >>> groups = abjad.select(staff).leaves().group_by_measure()
             >>> for group, label in zip(groups, labels):
             ...     markup = abjad.Markup(label, direction=abjad.Up)
@@ -5251,7 +5251,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     selection, divisions
             ... )
             >>> staff = lilypond_file[abjad.Staff]
-            >>> abjad.override(staff).text_script.staff_padding = 8
+            >>> abjad.override(staff).TextScript.staff_padding = 8
             >>> groups = abjad.select(staff).leaves().group_by_measure()
             >>> for group, label in zip(groups, labels):
             ...     markup = abjad.Markup(label, direction=abjad.Up)
