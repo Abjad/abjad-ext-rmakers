@@ -2164,7 +2164,7 @@ def denominator(
             \new Score
             \with
             {
-                \override TupletBracket.staff-padding = #4.5
+                \override TupletBracket.staff-padding = 4.5
             }
             <<
                 \new GlobalContext
@@ -2230,7 +2230,7 @@ def denominator(
             \new Score
             \with
             {
-                \override TupletBracket.staff-padding = #4.5
+                \override TupletBracket.staff-padding = 4.5
             }
             <<
                 \new GlobalContext
@@ -2295,7 +2295,7 @@ def denominator(
             \new Score
             \with
             {
-                \override TupletBracket.staff-padding = #4.5
+                \override TupletBracket.staff-padding = 4.5
             }
             <<
                 \new GlobalContext
@@ -2360,7 +2360,7 @@ def denominator(
             \new Score
             \with
             {
-                \override TupletBracket.staff-padding = #4.5
+                \override TupletBracket.staff-padding = 4.5
             }
             <<
                 \new GlobalContext
@@ -2427,7 +2427,7 @@ def denominator(
             \new Score
             \with
             {
-                \override TupletBracket.staff-padding = #4.5
+                \override TupletBracket.staff-padding = 4.5
             }
             <<
                 \new GlobalContext
@@ -2493,7 +2493,7 @@ def denominator(
             \new Score
             \with
             {
-                \override TupletBracket.staff-padding = #4.5
+                \override TupletBracket.staff-padding = 4.5
                 proportionalNotationDuration = #(ly:make-moment 1 28)
             }
             <<
@@ -2559,7 +2559,7 @@ def denominator(
             \new Score
             \with
             {
-                \override TupletBracket.staff-padding = #4.5
+                \override TupletBracket.staff-padding = 4.5
             }
             <<
                 \new GlobalContext
@@ -3000,7 +3000,7 @@ def on_beat_grace_container(
                 \with
                 {
                     \override TupletBracket.direction = #up
-                    \override TupletBracket.staff-padding = #5
+                    \override TupletBracket.staff-padding = 5
                 }
                 {
                     \context Voice = "Rhythm_Maker_Music_Voice"
@@ -3015,7 +3015,7 @@ def on_beat_grace_container(
                                     \slash
                                     \voiceOne
                                     <
-                                        \tweak font-size #0
+                                        \tweak font-size 0
                                         \tweak transparent ##t
                                         c'
                                     >8 * 10/21
@@ -3038,7 +3038,7 @@ def on_beat_grace_container(
                                     \slash
                                     \voiceOne
                                     <
-                                        \tweak font-size #0
+                                        \tweak font-size 0
                                         \tweak transparent ##t
                                         c'
                                     >8 * 10/21
@@ -3063,7 +3063,7 @@ def on_beat_grace_container(
                                     \slash
                                     \voiceOne
                                     <
-                                        \tweak font-size #0
+                                        \tweak font-size 0
                                         \tweak transparent ##t
                                         c'
                                     >8 * 10/21
@@ -3092,7 +3092,7 @@ def on_beat_grace_container(
                                     \slash
                                     \voiceOne
                                     <
-                                        \tweak font-size #0
+                                        \tweak font-size 0
                                         \tweak transparent ##t
                                         c'
                                     >8 * 10/21
@@ -3117,7 +3117,7 @@ def on_beat_grace_container(
                                     \slash
                                     \voiceOne
                                     <
-                                        \tweak font-size #0
+                                        \tweak font-size 0
                                         \tweak transparent ##t
                                         c'
                                     >8 * 10/21
@@ -3140,7 +3140,7 @@ def on_beat_grace_container(
                                     \slash
                                     \voiceOne
                                     <
-                                        \tweak font-size #0
+                                        \tweak font-size 0
                                         \tweak transparent ##t
                                         c'
                                     >8 * 10/21
@@ -3210,7 +3210,7 @@ def on_beat_grace_container(
                                 \slash
                                 \voiceOne
                                 <
-                                    \tweak font-size #0
+                                    \tweak font-size 0
                                     \tweak transparent ##t
                                     c'
                                 >8 * 2/7
@@ -3239,7 +3239,7 @@ def on_beat_grace_container(
                                 \slash
                                 \voiceOne
                                 <
-                                    \tweak font-size #0
+                                    \tweak font-size 0
                                     \tweak transparent ##t
                                     c'
                                 >8 * 2/7
@@ -3264,7 +3264,7 @@ def on_beat_grace_container(
                                 \slash
                                 \voiceOne
                                 <
-                                    \tweak font-size #0
+                                    \tweak font-size 0
                                     \tweak transparent ##t
                                     c'
                                 >8 * 2/7
@@ -3293,7 +3293,7 @@ def on_beat_grace_container(
                                 \slash
                                 \voiceOne
                                 <
-                                    \tweak font-size #0
+                                    \tweak font-size 0
                                     \tweak transparent ##t
                                     c'
                                 >8 * 2/7
@@ -3318,7 +3318,7 @@ def on_beat_grace_container(
                                 \slash
                                 \voiceOne
                                 <
-                                    \tweak font-size #0
+                                    \tweak font-size 0
                                     \tweak transparent ##t
                                     c'
                                 >8 * 2/7
