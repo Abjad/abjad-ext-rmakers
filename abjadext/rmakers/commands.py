@@ -2780,7 +2780,7 @@ def force_augmentation(
         ...     selections, divisions
         ... )
         >>> staff = lilypond_file[abjad.Score]
-        >>> string = 'tuplet-number::calc-denominator-text'
+        >>> string = '#tuplet-number::calc-denominator-text'
         >>> abjad.override(staff).TupletNumber.text = string
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -2843,7 +2843,7 @@ def force_augmentation(
         ...     selections, divisions
         ... )
         >>> staff = lilypond_file[abjad.Score]
-        >>> string = 'tuplet-number::calc-denominator-text'
+        >>> string = '#tuplet-number::calc-denominator-text'
         >>> abjad.override(staff).TupletNumber.text = string
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
