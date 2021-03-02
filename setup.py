@@ -30,19 +30,17 @@ if __name__ == "__main__":
             "Topic :: Artistic Software",
         ],
         description=description,
-        extras_require={
-            "test": [
-                "black==20.8b1",
-                "flake8>=3.8.2",
-                "isort>=4.3.21",
-                "mypy>=0.770",
-                "pytest>=5.4.2",
-                "pytest-cov>=2.6.0",
-                "pytest-helpers-namespace",
-            ]
-        },
         include_package_data=True,
-        install_requires=["abjad==3.2"],
+        install_requires=[
+            "abjad==3.3",
+            "black>=20.8b1",
+            "flake8",
+            "isort",
+            "mypy>=0.770",
+            "pytest>=5.4.2",
+            "pytest-cov>=2.6.0",
+            "pytest-helpers-namespace",
+        ],
         license="MIT",
         long_description=pathlib.Path("README.md").read_text(),
         keywords=", ".join(
