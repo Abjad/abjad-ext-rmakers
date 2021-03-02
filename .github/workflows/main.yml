@@ -40,7 +40,7 @@ jobs:
 
     - name: Install this package
       run: |
-        python -m pip install -e .[test]
+        python -m pip install -e .
 
     - name: Log versions
       run: |
