@@ -1,4 +1,4 @@
-.PHONY: docs build
+.PHONY: build
 
 black-check:
 	black --check --diff --target-version=py38 .
@@ -17,32 +17,13 @@ clean:
 	rm -Rif __pycache__
 	rm -Rif build/
 	rm -Rif dist/
-	rm -Rif htmlcov/
 	rm -Rif prof/
-
-docs:
-	make -C docs/ html
 
 flake_ignore = --ignore=E203,E266,E501,W503
 flake_options = --isolated --max-line-length=88
 
 flake8:
 	flake8 ${flake_ignore} ${flake_options}
-
-origin := $(shell git config --get remote.origin.url)
-
-gh-pages:
-	rm -Rf gh-pages/
-	git clone $(origin) gh-pages/
-	cd gh-pages/ && \
-		git checkout gh-pages || git checkout --orphan gh-pages
-	rsync -rtv --del --exclude=.git docs/build/html/ gh-pages/
-	cd gh-pages && \
-		touch .nojekyll && \
-		git add --all . && \
-		git commit --allow-empty -m "Update docs" && \
-		git push -u origin gh-pages
-	rm -Rf gh-pages/
 
 isort-check:
 	isort \
@@ -73,19 +54,8 @@ isort-reformat:
 mypy:
 	mypy .
 
-project = abjadext
-
 pytest:
 	pytest .
-
-pytest-coverage:
-	rm -Rf htmlcov/
-	pytest \
-	--cov-config=.coveragerc \
-	--cov-report=html \
-	--cov-report=term \
-	--cov=${project} \
-	.
 
 pytest-x:
 	pytest -x .
@@ -106,8 +76,5 @@ check:
 	make mypy
 
 test:
-	make black-check
-	make flake8
-	make isort-check
-	make mypy
+	make check
 	make pytest
