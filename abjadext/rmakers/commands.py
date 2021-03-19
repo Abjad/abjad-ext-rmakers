@@ -1,3 +1,6 @@
+"""
+Rhythm-maker commands.
+"""
 import typing
 
 import abjad
@@ -614,6 +617,7 @@ class ForceNoteCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -636,9 +640,15 @@ class ForceNoteCommand(Command):
                 \new RhythmicStaff
                 {
                     r4..
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     c'4.
                     c'4..
                     r4.
+                    - \tweak staff-padding 18
+                    - \tweak transparent ##t
+                    ^ \markup I
                 }
             >>
 
@@ -655,6 +665,7 @@ class ForceNoteCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -677,9 +688,15 @@ class ForceNoteCommand(Command):
                 \new RhythmicStaff
                 {
                     c'4..
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     r4.
                     r4..
                     c'4.
+                    - \tweak staff-padding 18
+                    - \tweak transparent ##t
+                    ^ \markup I
                 }
             >>
 
@@ -804,6 +821,7 @@ class ForceRestCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -826,9 +844,15 @@ class ForceRestCommand(Command):
                 \new RhythmicStaff
                 {
                     c'4..
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     r4.
                     r4..
                     c'4.
+                    - \tweak staff-padding 18
+                    - \tweak transparent ##t
+                    ^ \markup I
                 }
             >>
 
@@ -843,6 +867,7 @@ class ForceRestCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -865,9 +890,15 @@ class ForceRestCommand(Command):
                 \new RhythmicStaff
                 {
                     c'4..
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     c'4.
                     r4..
                     r4.
+                    - \tweak staff-padding 18
+                    - \tweak transparent ##t
+                    ^ \markup I
                 }
             >>
 
@@ -882,6 +913,7 @@ class ForceRestCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -904,9 +936,15 @@ class ForceRestCommand(Command):
                 \new RhythmicStaff
                 {
                     c'4..
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     r4.
                     r4..
                     c'4.
+                    - \tweak staff-padding 18
+                    - \tweak transparent ##t
+                    ^ \markup I
                 }
             >>
 
@@ -924,6 +962,7 @@ class ForceRestCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -946,9 +985,15 @@ class ForceRestCommand(Command):
                 \new RhythmicStaff
                 {
                     r4..
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     c'4.
                     c'4..
                     r4.
+                    - \tweak staff-padding 18
+                    - \tweak transparent ##t
+                    ^ \markup I
                 }
             >>
 
@@ -1710,6 +1755,7 @@ def after_grace_container(
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Staff]
         >>> containers = abjad.select().components(abjad.AfterGraceContainer)
         >>> selector = containers.map(abjad.select().with_next_leaf())
@@ -1734,6 +1780,9 @@ def after_grace_container(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5 {
                         c'4
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         c'4
                         c'4
                         c'4
@@ -1779,6 +1828,7 @@ def after_grace_container(
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Staff]
         >>> containers = abjad.select().components(abjad.AfterGraceContainer)
         >>> selector = containers.map(abjad.select().with_next_leaf())
@@ -1803,6 +1853,9 @@ def after_grace_container(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5 {
                         c'4
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         c'4
                         c'4
                         c'4
@@ -1914,6 +1967,7 @@ def before_grace_container(
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Staff]
         >>> containers = abjad.select().components(abjad.BeforeGraceContainer)
         >>> result = [abjad.beam(_) for _ in containers(staff)]
@@ -1941,6 +1995,9 @@ def before_grace_container(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5 {
                         c'4
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         \grace {
                             \slash
                             c'8
@@ -2049,6 +2106,7 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2078,6 +2136,9 @@ def denominator(
                 {
                     \times 4/5 {
                         c'32
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ]
@@ -2113,6 +2174,7 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2142,6 +2204,9 @@ def denominator(
                 {
                     \times 4/5 {
                         c'32
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ]
@@ -2176,6 +2241,7 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2205,6 +2271,9 @@ def denominator(
                 {
                     \times 4/5 {
                         c'32
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ]
@@ -2239,6 +2308,7 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2268,6 +2338,9 @@ def denominator(
                 {
                     \times 8/10 {
                         c'32
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ]
@@ -2304,6 +2377,7 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2333,6 +2407,9 @@ def denominator(
                 {
                     \times 8/10 {
                         c'32
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ]
@@ -2367,6 +2444,7 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
@@ -2398,6 +2476,9 @@ def denominator(
                 {
                     \times 12/15 {
                         c'32
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ]
@@ -2432,6 +2513,7 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2461,6 +2543,9 @@ def denominator(
                 {
                     \times 4/5 {
                         c'32
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ]
@@ -2512,6 +2597,7 @@ def extract_trivial(
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2536,6 +2622,9 @@ def extract_trivial(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -2604,6 +2693,7 @@ def force_augmentation(
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2625,6 +2715,9 @@ def force_augmentation(
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -2657,6 +2750,7 @@ def force_augmentation(
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Score]
         >>> string = '#tuplet-number::calc-denominator-text'
         >>> abjad.override(staff).TupletNumber.text = string
@@ -2685,6 +2779,9 @@ def force_augmentation(
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -2718,6 +2815,7 @@ def force_augmentation(
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Score]
         >>> string = '#tuplet-number::calc-denominator-text'
         >>> abjad.override(staff).TupletNumber.text = string
@@ -2747,6 +2845,9 @@ def force_augmentation(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -2854,6 +2955,7 @@ def on_beat_grace_container(
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     abjad.select(music_voice), divisions, pitched_staff=False
         ... )
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Staff]
         >>> abjad.override(staff).TupletBracket.direction = abjad.Up
         >>> abjad.override(staff).TupletBracket.staff_padding = 5
@@ -2884,6 +2986,9 @@ def on_beat_grace_container(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5 {
                             c'4
+                            - \tweak staff-padding 11
+                            - \tweak transparent ##t
+                            ^ \markup I
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
@@ -3059,6 +3164,7 @@ def on_beat_grace_container(
         >>> lilypond_file = abjad.LilyPondFile.rhythm(
         ...     abjad.select(music_voice), divisions, pitched_staff=False
         ... )
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Staff]
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -3090,6 +3196,9 @@ def on_beat_grace_container(
                                     \tweak transparent ##t
                                     c'
                                 >8 * 2/7
+                                - \tweak staff-padding 11
+                                - \tweak transparent ##t
+                                ^ \markup I
                                 [
                                 (
                                 c'8 * 2/7
@@ -3243,6 +3352,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3270,6 +3380,9 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -3330,6 +3443,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3357,6 +3471,9 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -3451,6 +3568,7 @@ def rewrite_rest_filled(
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3474,6 +3592,9 @@ def rewrite_rest_filled(
                 {
                     \times 4/5 {
                         r16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         r16
                         r16
                         r16
@@ -3517,6 +3638,7 @@ def rewrite_rest_filled(
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3539,6 +3661,9 @@ def rewrite_rest_filled(
                 \new RhythmicStaff
                 {
                     r4
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     r4
                     r4
                     r16
@@ -3559,6 +3684,7 @@ def rewrite_rest_filled(
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3581,6 +3707,9 @@ def rewrite_rest_filled(
                 \new RhythmicStaff
                 {
                     r4
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     r4
                     r16
                     r4
@@ -3601,6 +3730,7 @@ def rewrite_rest_filled(
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3624,6 +3754,9 @@ def rewrite_rest_filled(
                 {
                     \times 4/5 {
                         r16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         r16
                         r16
                         r16
@@ -3670,6 +3803,7 @@ def rewrite_sustained(
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3693,6 +3827,9 @@ def rewrite_sustained(
                 {
                     \times 2/3 {
                         c'4.
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                     }
                     \times 4/5 {
                         c'4
@@ -3746,6 +3883,7 @@ def rewrite_sustained(
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3770,6 +3908,9 @@ def rewrite_sustained(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1 {
                         c'4
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1 {
@@ -3804,6 +3945,7 @@ def rewrite_sustained(
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3826,6 +3968,9 @@ def rewrite_sustained(
                 \new RhythmicStaff
                 {
                     c'4
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     c'4
                     ~
                     c'4
@@ -3854,6 +3999,7 @@ def rewrite_sustained(
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3877,6 +4023,9 @@ def rewrite_sustained(
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         ~
                         [
                         c'8
@@ -3931,6 +4080,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3958,6 +4108,9 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -4026,6 +4179,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4053,6 +4207,9 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -4113,6 +4270,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4140,6 +4298,9 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -4199,6 +4360,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         >>> divisions = [(4, 8), (4, 8), (4, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4220,6 +4382,9 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                 {
                     \times 4/7 {
                         c'2
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         ~
                         c'8
                         c'4
@@ -4257,6 +4422,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4284,6 +4450,9 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         ~
                         [
                         c'8
@@ -4351,6 +4520,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4378,6 +4548,9 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         ~
                         [
                         c'8
@@ -4453,6 +4626,7 @@ def tremolo_container(
         >>> selector = abjad.select().components(abjad.TremoloContainer)
         >>> result = [abjad.slur(_) for _ in selector(selections)]
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4472,6 +4646,9 @@ def tremolo_container(
                 {
                     \repeat tremolo 2 {
                         c'16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         (
                         c'16
                         )
@@ -4495,6 +4672,9 @@ def tremolo_container(
                         c'16
                         (
                         c'16
+                        - \tweak staff-padding 18
+                        - \tweak transparent ##t
+                        ^ \markup I
                         )
                     }
                 }
@@ -4514,6 +4694,7 @@ def tremolo_container(
         >>> selector = abjad.select().components(abjad.TremoloContainer)
         >>> result = [abjad.slur(_) for _ in selector(selections)]
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4533,6 +4714,9 @@ def tremolo_container(
                 {
                     \repeat tremolo 4 {
                         c'32
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         (
                         c'32
                         )
@@ -4556,6 +4740,9 @@ def tremolo_container(
                         c'32
                         (
                         c'32
+                        - \tweak staff-padding 18
+                        - \tweak transparent ##t
+                        ^ \markup I
                         )
                     }
                 }
@@ -4599,6 +4786,7 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4626,6 +4814,9 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ~
@@ -4695,6 +4886,7 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+        >>> rmakers.attach_markup_struts(lilypond_file)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4722,6 +4914,9 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
                 {
                     \times 2/3 {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         \repeatTie

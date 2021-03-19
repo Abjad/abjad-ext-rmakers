@@ -1,3 +1,6 @@
+"""
+Rhythm-maker stack class and collaborators.
+"""
 import typing
 
 import abjad
@@ -6,54 +9,6 @@ from . import commands as _commands
 from .makers import RhythmMaker
 
 RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
-
-
-# TODO: integrate tests
-#    @property
-#    def preprocessor(self) -> typing.Optional[abjad.Expression]:
-#        r"""
-#        Gets division preprocessor.
-#
-#        ..  container:: example
-#
-#            >>> weights = [abjad.NonreducedFraction(3, 8)]
-#            >>> divisions = abjad.sequence().join()
-#            >>> divisions = divisions.split(
-#            ...     weights, cyclic=True, overhang=True,
-#            ... )
-#            >>> divisions = divisions.flatten(depth=-1)
-#            >>> stack = rmakers.stack(rmakers.note(), preprocessor=divisions)
-#            >>> divisions = [(4, 4), (4, 4)]
-#            >>> selection = stack(divisions)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
-#
-#            ..  docs::
-#
-#                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
-#                >>> print(string)
-#                \new Score
-#                <<
-#                    \new GlobalContext
-#                    {
-#                        \time 4/4
-#                        s1 * 1
-#                        \time 4/4
-#                        s1 * 1
-#                    }
-#                    \new RhythmicStaff
-#                    {
-#                        c'4.
-#                        c'4.
-#                        c'4.
-#                        c'4.
-#                        c'4.
-#                        c'8
-#                    }
-#                >>
-#
-#        """
-#        return super().preprocessor
 
 
 ### CLASSES ###

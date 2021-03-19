@@ -1,3 +1,6 @@
+"""
+Rhythm-maker specifiers.
+"""
 import typing
 
 import abjad
@@ -167,6 +170,7 @@ class Incise:
             >>> divisions = 4 * [(5, 16)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -189,6 +193,9 @@ class Incise:
                     \new RhythmicStaff
                     {
                         c'8
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         ]
@@ -486,6 +493,7 @@ class Spelling:
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -504,6 +512,9 @@ class Spelling:
                     \new RhythmicStaff
                     {
                         c'4
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         ~
                         c'16
                         c'4
@@ -537,6 +548,7 @@ class Spelling:
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -555,6 +567,9 @@ class Spelling:
                     \new RhythmicStaff
                     {
                         c'16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         ~
                         c'4
                         c'16
@@ -596,6 +611,7 @@ class Spelling:
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -614,6 +630,9 @@ class Spelling:
                     \new RhythmicStaff
                     {
                         c'16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'16
                         c'16
@@ -660,6 +679,7 @@ class Spelling:
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -678,6 +698,9 @@ class Spelling:
                     \new RhythmicStaff
                     {
                         c'16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'16
                         c'16
