@@ -272,9 +272,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -496,9 +494,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -735,9 +731,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -948,9 +942,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1212,9 +1204,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1442,9 +1432,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1675,9 +1663,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1912,9 +1898,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2357,9 +2341,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -2584,9 +2566,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(5, 8), (3, 8), (1, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -2731,9 +2711,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -2910,9 +2888,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> divisions = [(4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -3091,9 +3067,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> divisions = [(3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -3286,9 +3260,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
@@ -3518,9 +3490,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 16), (6, 16), (6, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3572,9 +3542,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 16), (6, 16), (6, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3632,9 +3600,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3711,9 +3677,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3784,9 +3748,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3861,9 +3823,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3937,9 +3897,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4002,9 +3960,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4157,9 +4113,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4261,9 +4215,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4360,9 +4312,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4459,9 +4409,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4560,9 +4508,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4668,9 +4614,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4728,9 +4672,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4779,9 +4721,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4821,9 +4761,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4874,9 +4812,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -4990,9 +4926,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = 12 * [(6, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> staff = lilypond_file[abjad.Staff]
             >>> abjad.override(staff).TextScript.staff_padding = 7
             >>> groups = abjad.select(staff).leaves().group_by_measure()
@@ -5247,9 +5181,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = 9 * [(6, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> staff = lilypond_file[abjad.Staff]
             >>> abjad.override(staff).TextScript.staff_padding = 8
             >>> groups = abjad.select(staff).leaves().group_by_measure()
@@ -5412,9 +5344,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -5482,9 +5412,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
             >>> selection = stack(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -5574,9 +5502,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5630,9 +5556,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5685,9 +5609,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6015,9 +5937,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6082,9 +6002,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = 4 * [(5, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6137,9 +6055,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6196,9 +6112,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6260,9 +6174,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6312,9 +6224,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6371,9 +6281,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6431,9 +6339,7 @@ class IncisedRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
@@ -6484,9 +6390,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6586,9 +6490,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration()
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6623,9 +6525,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 2))
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6660,9 +6560,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 4))
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6707,9 +6605,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration()
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6746,9 +6642,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration(abjad.Rest)
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6788,9 +6682,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6827,9 +6719,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration(abjad.Skip)
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -6879,9 +6769,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6921,9 +6809,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (5, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6965,9 +6851,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7009,9 +6893,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 32), (5, 32)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7052,9 +6934,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 32), (5, 32)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7098,9 +6978,7 @@ class NoteRhythmMaker(RhythmMaker):
         >>> stack = rmakers.NoteRhythmMaker()
         >>> divisions = [(5, 32), (5, 32)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7135,9 +7013,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7178,9 +7054,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7224,9 +7098,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7267,9 +7139,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(7, 16), (1, 4), (5, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7303,9 +7173,7 @@ class NoteRhythmMaker(RhythmMaker):
         >>> stack = rmakers.NoteRhythmMaker()
         >>> divisions = [(5, 14), (3, 7)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7348,9 +7216,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 14), (3, 7)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7395,9 +7261,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7439,9 +7303,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7485,9 +7347,7 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7563,9 +7423,7 @@ class NoteRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.NoteRhythmMaker()
             >>> divisions = [(5, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -7600,9 +7458,7 @@ class NoteRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(5, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -7639,9 +7495,7 @@ class NoteRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 4), (6, 16), (9, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -7684,9 +7538,8 @@ class NoteRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(5, 8), (3, 8)]
             >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
@@ -7703,6 +7556,9 @@ class NoteRhythmMaker(RhythmMaker):
                 \new RhythmicStaff
                 {
                     c'2 %! NOTE_RHYTHM_MAKER
+                    - \tweak staff-padding 11
+                    - \tweak transparent ##t
+                    ^ \markup I
                     ~
                     c'8 %! NOTE_RHYTHM_MAKER
                     c'4. %! NOTE_RHYTHM_MAKER
@@ -7728,9 +7584,8 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -7753,6 +7608,9 @@ class TaleaRhythmMaker(RhythmMaker):
                     \new RhythmicStaff
                     {
                         c'16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         [
                         c'8
                         c'8.
@@ -7771,6 +7629,9 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8
                         c'8.
                         c'8
+                        - \tweak staff-padding 18
+                        - \tweak transparent ##t
+                        ^ \markup I
                         ]
                     }
                 >>
@@ -7789,9 +7650,8 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -7814,6 +7674,9 @@ class TaleaRhythmMaker(RhythmMaker):
                     \new RhythmicStaff
                     {
                         r16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         c'8
                         [
                         c'8.
@@ -7833,6 +7696,9 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         ]
                         r8
+                        - \tweak staff-padding 18
+                        - \tweak transparent ##t
+                        ^ \markup I
                     }
                 >>
 
@@ -7852,9 +7718,8 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
+            >>> rmakers.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -7877,6 +7742,9 @@ class TaleaRhythmMaker(RhythmMaker):
                     \new RhythmicStaff
                     {
                         c'16
+                        - \tweak staff-padding 11
+                        - \tweak transparent ##t
+                        ^ \markup I
                         r8
                         r8.
                         r4
@@ -7889,6 +7757,9 @@ class TaleaRhythmMaker(RhythmMaker):
                         r8
                         r8.
                         c'8
+                        - \tweak staff-padding 18
+                        - \tweak transparent ##t
+                        ^ \markup I
                     }
                 >>
 
@@ -7908,9 +7779,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = command(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -7971,9 +7840,7 @@ class TaleaRhythmMaker(RhythmMaker):
     #
     #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
     #            >>> selection = command(divisions, previous_segment_stop_state=state)
-    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-    #            ...     selection, divisions
-    #            ... )
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
     #            >>> abjad.show(lilypond_file) # doctest: +SKIP
     #
     #            ..  docs::
@@ -8047,9 +7914,7 @@ class TaleaRhythmMaker(RhythmMaker):
     #
     #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
     #            >>> selection = stack(divisions)
-    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-    #            ...     selection, divisions
-    #            ... )
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
     #            >>> abjad.show(lilypond_file) # doctest: +SKIP
     #
     #            ..  docs::
@@ -8108,9 +7973,7 @@ class TaleaRhythmMaker(RhythmMaker):
     #
     #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
     #            >>> selection = stack(divisions, previous_state=state)
-    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-    #            ...     selection, divisions
-    #            ... )
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
     #            >>> abjad.show(lilypond_file) # doctest: +SKIP
     #
     #            ..  docs::
@@ -8179,9 +8042,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8254,9 +8115,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8328,9 +8187,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8451,9 +8308,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8517,9 +8372,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8597,9 +8450,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8674,9 +8525,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8756,9 +8605,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8817,9 +8664,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8881,9 +8726,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -8946,9 +8789,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9029,9 +8870,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9103,9 +8942,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9181,9 +9018,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9264,9 +9099,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9351,9 +9184,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9410,9 +9241,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9474,9 +9303,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9539,9 +9366,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9610,9 +9435,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9674,9 +9497,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9738,9 +9559,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9800,9 +9619,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9851,9 +9668,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9909,9 +9724,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -9963,9 +9776,7 @@ class TaleaRhythmMaker(RhythmMaker):
     #
     #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
     #            >>> selection = stack(divisions, previous_state=state)
-    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-    #            ...     selection, divisions
-    #            ... )
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
     #            >>> abjad.show(lilypond_file) # doctest: +SKIP
     #
     #            ..  docs::
@@ -10031,9 +9842,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10087,9 +9896,7 @@ class TaleaRhythmMaker(RhythmMaker):
     #
     #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
     #            >>> selection = stack(divisions, previous_state=state)
-    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-    #            ...     selection, divisions
-    #            ... )
+    #            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
     #            >>> abjad.show(lilypond_file) # doctest: +SKIP
     #
     #            ..  docs::
@@ -10155,9 +9962,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10216,9 +10021,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10593,9 +10396,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10651,9 +10452,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10705,9 +10504,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10758,9 +10555,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10819,9 +10614,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 4), (3, 4), (3, 4)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10897,9 +10690,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -10954,9 +10745,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ...     )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11022,9 +10811,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ...     )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11099,9 +10886,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ...     )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11182,9 +10967,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ...     )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11278,9 +11061,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = command(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11341,9 +11122,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = command(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11405,9 +11184,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = command(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11485,9 +11262,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
@@ -11566,9 +11341,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11624,9 +11397,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11674,9 +11445,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11730,9 +11499,7 @@ class TaleaRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(3, 8), (3, 8)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -11778,9 +11545,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11838,9 +11603,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11897,9 +11660,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file)  # doctest: +SKIP
 
         ..  docs::
@@ -11970,9 +11731,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file)  # doctest: +SKIP
 
         ..  docs::
@@ -12043,9 +11802,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file)  # doctest: +SKIP
 
         ..  docs::
@@ -12138,9 +11895,7 @@ class TupletRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)])
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selection = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file)  # doctest: +SKIP
 
         ..  docs::
@@ -12202,9 +11957,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12257,9 +12010,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12314,9 +12065,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12377,9 +12126,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (2, 8), (4, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12425,9 +12172,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (2, 8), (4, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12480,9 +12225,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12538,9 +12281,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12591,9 +12332,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12649,9 +12388,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12706,9 +12443,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12768,9 +12503,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12830,9 +12563,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12892,9 +12623,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12962,9 +12691,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13026,9 +12753,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13085,9 +12810,7 @@ class TupletRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.tuplet([(4, 1)])
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selection = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13144,9 +12867,7 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selection, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13245,9 +12966,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13305,9 +13024,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13364,9 +13081,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13423,9 +13138,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13484,9 +13197,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13543,9 +13254,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13602,9 +13311,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13666,9 +13373,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
@@ -13733,9 +13438,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13793,9 +13496,7 @@ class TupletRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -13849,9 +13550,7 @@ class TupletRhythmMaker(RhythmMaker):
             >>> stack = rmakers.stack(rmakers.tuplet([(1,)]))
             >>> divisions = [(1, 5), (1, 4), (1, 6), (7, 9)]
             >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selection, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::

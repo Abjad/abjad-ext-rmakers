@@ -613,93 +613,7 @@ class ForceNoteCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
-            >>> print(string)
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    r4..
-                    c'4.
-                    c'4..
-                    r4.
-                }
-            >>
-
-    ..  container:: example
-
-        Sustains logical ties -1 and -2 to notes:
-
-        >>> stack = rmakers.stack(
-        ...     rmakers.note(),
-        ...     rmakers.force_rest(abjad.select().leaves()),
-        ...     rmakers.force_note(abjad.select().logical_ties()[-2:]),
-        ... )
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
-            >>> print(string)
-            \new Score
-            <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \new RhythmicStaff
-                {
-                    r4..
-                    r4.
-                    c'4..
-                    c'4.
-                }
-            >>
-
-    ..  container:: example
-
-        Changes patterned selection of leaves to notes:
-
-        >>> stack = rmakers.stack(
-        ...     rmakers.note(),
-        ...     rmakers.force_rest(abjad.select().leaves()),
-        ...     rmakers.force_note(abjad.select().logical_ties()[1:-1]),
-        ... )
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -740,9 +654,7 @@ class ForceNoteCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -891,9 +803,7 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -932,9 +842,7 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -973,9 +881,7 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1017,9 +923,7 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1805,9 +1709,7 @@ def after_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> staff = lilypond_file[abjad.Staff]
         >>> containers = abjad.select().components(abjad.AfterGraceContainer)
         >>> selector = containers.map(abjad.select().with_next_leaf())
@@ -1876,9 +1778,7 @@ def after_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> staff = lilypond_file[abjad.Staff]
         >>> containers = abjad.select().components(abjad.AfterGraceContainer)
         >>> selector = containers.map(abjad.select().with_next_leaf())
@@ -2013,9 +1913,7 @@ def before_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> staff = lilypond_file[abjad.Staff]
         >>> containers = abjad.select().components(abjad.BeforeGraceContainer)
         >>> result = [abjad.beam(_) for _ in containers(staff)]
@@ -2150,9 +2048,7 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2216,9 +2112,7 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2281,9 +2175,7 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2346,9 +2238,7 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2413,9 +2303,7 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2478,9 +2366,7 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
@@ -2545,9 +2431,7 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> score = lilypond_file[abjad.Score]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -2627,9 +2511,7 @@ def extract_trivial(
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2721,9 +2603,7 @@ def force_augmentation(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2776,9 +2656,7 @@ def force_augmentation(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> staff = lilypond_file[abjad.Score]
         >>> string = '#tuplet-number::calc-denominator-text'
         >>> abjad.override(staff).TupletNumber.text = string
@@ -2839,9 +2717,7 @@ def force_augmentation(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> staff = lilypond_file[abjad.Score]
         >>> string = '#tuplet-number::calc-denominator-text'
         >>> abjad.override(staff).TupletNumber.text = string
@@ -3366,9 +3242,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3455,9 +3329,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3578,9 +3450,7 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3646,9 +3516,7 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3690,9 +3558,7 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3734,9 +3600,7 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3805,9 +3669,7 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3883,9 +3745,7 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3943,9 +3803,7 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3995,9 +3853,7 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4074,9 +3930,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4171,9 +4025,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4260,9 +4112,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4348,9 +4198,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(4, 8), (4, 8), (4, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4408,9 +4256,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4504,9 +4350,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4608,9 +4452,7 @@ def tremolo_container(
         >>> selections = stack(divisions)
         >>> selector = abjad.select().components(abjad.TremoloContainer)
         >>> result = [abjad.slur(_) for _ in selector(selections)]
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4671,9 +4513,7 @@ def tremolo_container(
         >>> selections = stack(divisions)
         >>> selector = abjad.select().components(abjad.TremoloContainer)
         >>> result = [abjad.slur(_) for _ in selector(selections)]
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4758,9 +4598,7 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4856,9 +4694,7 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     selections, divisions
-        ... )
+        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::

@@ -50,6 +50,7 @@ from .commands import (
     untie,
     written_duration,
 )
+from .lib import attach_markup_struts
 from .makers import (
     AccelerandoRhythmMaker,
     EvenDivisionRhythmMaker,
@@ -120,6 +121,8 @@ __all__ = [
     "unbeam",
     "untie",
     "written_duration",
+    # lib:
+    "attach_markup_struts",
     # makers:
     "AccelerandoRhythmMaker",
     "EvenDivisionRhythmMaker",

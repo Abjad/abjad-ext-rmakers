@@ -166,9 +166,7 @@ class Incise:
             ... )
             >>> divisions = 4 * [(5, 16)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -487,9 +485,7 @@ class Spelling:
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -540,9 +536,7 @@ class Spelling:
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -601,9 +595,7 @@ class Spelling:
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
@@ -667,9 +659,7 @@ class Spelling:
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(
-            ...     selections, divisions
-            ... )
+            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
