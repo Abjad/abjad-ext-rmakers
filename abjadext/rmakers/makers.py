@@ -333,7 +333,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 63/32
                         - \tweak staff-padding 11
@@ -383,7 +384,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 117/64
                         [
@@ -429,7 +431,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 63/32
                         [
@@ -476,7 +479,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 117/64
                         [
@@ -562,7 +566,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #left
                         c'16 * 3/4
                         - \tweak staff-padding 11
@@ -613,7 +618,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #left
                         c'16 * 5/8
                         [
@@ -660,7 +666,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #left
                         c'16 * 3/4
                         [
@@ -708,7 +715,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #left
                         c'16 * 5/8
                         [
@@ -806,7 +814,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16 * 63/32
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -853,7 +862,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16 * 117/64
                         c'16 * 99/64
                         c'16 * 69/64
@@ -896,7 +906,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16 * 63/32
                         c'16 * 115/64
                         c'16 * 91/64
@@ -940,7 +951,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16 * 117/64
                         c'16 * 99/64
                         c'16 * 69/64
@@ -1024,7 +1036,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \set stemLeftBeamCount = 0
                         \set stemRightBeamCount = 2
                         c'16 * 63/32
@@ -1084,7 +1097,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 2
                         c'16 * 117/64
@@ -1137,7 +1151,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 2
                         c'16 * 63/32
@@ -1193,7 +1208,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 2
                         c'16 * 117/64
@@ -1293,7 +1309,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 63/32
                         - \tweak staff-padding 11
@@ -1344,7 +1361,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 117/64
                         [
@@ -1391,7 +1409,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 63/32
                         [
@@ -1439,7 +1458,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 117/64
                         [
@@ -1528,7 +1548,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 63/32
                         - \tweak staff-padding 11
@@ -1579,7 +1600,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 117/64
                         [
@@ -1625,7 +1647,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 63/32
                         [
@@ -1673,7 +1696,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 117/64
                         [
@@ -1766,7 +1790,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         \override Staff.Stem.stemlet-length = 0.75
                         r16 * 63/32
@@ -1818,7 +1843,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #left
                         \override Staff.Stem.stemlet-length = 0.75
                         c'16 * 5/8
@@ -1867,7 +1893,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         \override Staff.Stem.stemlet-length = 0.75
                         c'16 * 63/32
@@ -1916,7 +1943,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #left
                         \override Staff.Stem.stemlet-length = 0.75
                         c'16 * 5/8
@@ -2008,7 +2036,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 63/32
                         - \tweak staff-padding 11
@@ -2059,7 +2088,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \once \override Beam.grow-direction = #right
                         c'16 * 63/32
                         [
@@ -2458,7 +2488,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 63/32
                             - \tweak staff-padding 11
@@ -2508,7 +2539,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #left
                             c'16 * 5/8
                             [
@@ -2555,7 +2587,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 63/32
                             [
@@ -2602,7 +2635,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #left
                             c'16 * 5/8
                             [
@@ -2690,7 +2724,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 61/32
                             - \tweak staff-padding 11
@@ -2742,7 +2777,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
@@ -2837,7 +2873,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             - \tweak staff-padding 11
@@ -2886,7 +2923,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
@@ -2934,7 +2972,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
@@ -3018,7 +3057,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             - \tweak staff-padding 11
@@ -3069,7 +3109,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
@@ -3394,24 +3435,37 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {          %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    \times 1/1            %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    {                     %! ACCELERANDO_RHYTHM_MAKER
                         \once \override Beam.grow-direction = #right
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 63/32      %! ACCELERANDO_RHYTHM_MAKER
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
                         ^ \markup I
+                        %! ACCELERANDO_RHYTHM_MAKER
                         [                 %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 115/64     %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 91/64      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 35/32      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 29/32      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 13/16      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         ]                 %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
                     }                     %! ACCELERANDO_RHYTHM_MAKER
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
@@ -3444,20 +3498,32 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {          %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    \times 1/1            %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    {                     %! ACCELERANDO_RHYTHM_MAKER
                         \once \override Beam.grow-direction = #right
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 117/64     %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         [                 %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 99/64      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 69/64      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 13/16      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 47/64      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         ]                 %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
                     }                     %! ACCELERANDO_RHYTHM_MAKER
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
@@ -3490,21 +3556,34 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {          %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    \times 1/1            %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    {                     %! ACCELERANDO_RHYTHM_MAKER
                         \once \override Beam.grow-direction = #right
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 63/32      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         [                 %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 115/64     %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 91/64      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 35/32      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 29/32      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 13/16      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         ]                 %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
                     }                     %! ACCELERANDO_RHYTHM_MAKER
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
@@ -3537,23 +3616,35 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
                         }
-                    \times 1/1 {          %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    \times 1/1            %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    {                     %! ACCELERANDO_RHYTHM_MAKER
                         \once \override Beam.grow-direction = #right
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 117/64     %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         [                 %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 99/64      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 69/64      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 13/16      %! ACCELERANDO_RHYTHM_MAKER
+                        %! ACCELERANDO_RHYTHM_MAKER
                         c'16 * 47/64      %! ACCELERANDO_RHYTHM_MAKER
                         - \tweak staff-padding 18
                         - \tweak transparent ##t
                         ^ \markup I
+                        %! ACCELERANDO_RHYTHM_MAKER
                         ]                 %! ACCELERANDO_RHYTHM_MAKER
+                    %! ACCELERANDO_RHYTHM_MAKER
                     }                     %! ACCELERANDO_RHYTHM_MAKER
                     \revert TupletNumber.text
                 }
@@ -6645,27 +6736,48 @@ class IncisedRhythmMaker(RhythmMaker):
                 }
                 \new RhythmicStaff
                 {
+                    %! INCISED_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
-                    \times 16/9 {                   %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
+                    \times 16/9                     %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
+                    {                               %! INCISED_RHYTHM_MAKER
+                        %! INCISED_RHYTHM_MAKER
                         r16                         %! INCISED_RHYTHM_MAKER
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
                         ^ \markup I
+                        %! INCISED_RHYTHM_MAKER
                         c'2                         %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
                     }                               %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
-                    \times 8/5 {                    %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
+                    \times 8/5                      %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
+                    {                               %! INCISED_RHYTHM_MAKER
+                        %! INCISED_RHYTHM_MAKER
                         c'4                         %! INCISED_RHYTHM_MAKER
                         ~
+                        %! INCISED_RHYTHM_MAKER
                         c'16                        %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
                     }                               %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text %! INCISED_RHYTHM_MAKER
-                    \times 12/7 {                   %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
+                    \times 12/7                     %! INCISED_RHYTHM_MAKER
+                    %! INCISED_RHYTHM_MAKER
+                    {                               %! INCISED_RHYTHM_MAKER
+                        %! INCISED_RHYTHM_MAKER
                         c'4.                        %! INCISED_RHYTHM_MAKER
+                        %! INCISED_RHYTHM_MAKER
                         r16                         %! INCISED_RHYTHM_MAKER
                         - \tweak staff-padding 18
                         - \tweak transparent ##t
                         ^ \markup I
+                    %! INCISED_RHYTHM_MAKER
                     }                               %! INCISED_RHYTHM_MAKER
                 }
             >>
@@ -7982,12 +8094,15 @@ class NoteRhythmMaker(RhythmMaker):
                 }
                 \new RhythmicStaff
                 {
+                    %! NOTE_RHYTHM_MAKER
                     c'2 %! NOTE_RHYTHM_MAKER
                     - \tweak staff-padding 11
                     - \tweak transparent ##t
                     ^ \markup I
                     ~
+                    %! NOTE_RHYTHM_MAKER
                     c'8 %! NOTE_RHYTHM_MAKER
+                    %! NOTE_RHYTHM_MAKER
                     c'4. %! NOTE_RHYTHM_MAKER
                 }
             >>
@@ -11681,41 +11796,78 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
                 \new RhythmicStaff
                 {
+                    %! TALEA_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
-                    \times 1/1 {          %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
+                    \times 1/1            %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
+                    {                     %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'16              %! TALEA_RHYTHM_MAKER
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
                         ^ \markup I
+                        %! TALEA_RHYTHM_MAKER
                         [                 %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'8               %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'8.              %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         ]                 %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
                     }                     %! TALEA_RHYTHM_MAKER
-                    \times 8/9 {          %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
+                    \times 8/9            %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
+                    {                     %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'4               %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'16              %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         [                 %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'8               %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'8               %! TALEA_RHYTHM_MAKER
                         ~
+                        %! TALEA_RHYTHM_MAKER
                         ]                 %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
                     }                     %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text %! TALEA_RHYTHM_MAKER
-                    \times 1/1 {          %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
+                    \times 1/1            %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
+                    {                     %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'16              %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'4               %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'16              %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
                     }                     %! TALEA_RHYTHM_MAKER
-                    \times 8/9 {          %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
+                    \times 8/9            %! TALEA_RHYTHM_MAKER
+                    %! TALEA_RHYTHM_MAKER
+                    {                     %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'8               %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         [                 %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'8.              %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         ]                 %! TALEA_RHYTHM_MAKER
+                        %! TALEA_RHYTHM_MAKER
                         c'4               %! TALEA_RHYTHM_MAKER
                         - \tweak staff-padding 18
                         - \tweak transparent ##t
                         ^ \markup I
+                    %! TALEA_RHYTHM_MAKER
                     }                     %! TALEA_RHYTHM_MAKER
                 }
             >>
@@ -13962,31 +14114,62 @@ class TupletRhythmMaker(RhythmMaker):
                 }
                 \new RhythmicStaff
                 {
-                    \times 4/5 {          %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
+                    \times 4/5            %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
+                    {                     %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         c'4.              %! TUPLET_RHYTHM_MAKER
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
                         ^ \markup I
+                        %! TUPLET_RHYTHM_MAKER
                         c'4               %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
                     }                     %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 3/5 {          %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
+                    \times 3/5            %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
+                    {                     %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         c'4.              %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         c'4               %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
                     }                     %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
+                    \times 1/1            %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
+                    {                     %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         c'8.              %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         [                 %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         c'8               %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         ]                 %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
                     }                     %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text %! TUPLET_RHYTHM_MAKER
-                    \times 1/1 {          %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
+                    \times 1/1            %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
+                    {                     %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         c'8.              %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         [                 %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         c'8               %! TUPLET_RHYTHM_MAKER
+                        %! TUPLET_RHYTHM_MAKER
                         ]                 %! TUPLET_RHYTHM_MAKER
+                    %! TUPLET_RHYTHM_MAKER
                     }                     %! TUPLET_RHYTHM_MAKER
                 }
             >>
