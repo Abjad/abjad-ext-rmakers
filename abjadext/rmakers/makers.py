@@ -3388,7 +3388,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
-            >>> string = abjad.LilyPondFormatManager.align_tags(string, 30)
             >>> print(string)
             \new Score
             <<
@@ -6721,7 +6720,6 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
-            >>> string = abjad.LilyPondFormatManager.align_tags(string, 40)
             >>> print(string)
             \new Score
             <<
@@ -11779,7 +11777,6 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
-            >>> string = abjad.LilyPondFormatManager.align_tags(string, 30)
             >>> print(string)
             \new Score
             <<
@@ -14097,7 +14094,6 @@ class TupletRhythmMaker(RhythmMaker):
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
-            >>> string = abjad.LilyPondFormatManager.align_tags(string, 30)
             >>> print(string)
             \new Score
             <<
