@@ -43,8 +43,6 @@ class Stack:
         commands = commands or ()
         commands_ = tuple(commands)
         self._commands = commands_
-        if preprocessor is not None:
-            assert isinstance(preprocessor, abjad.Expression)
         self._preprocessor = preprocessor
         if tag is not None:
             assert isinstance(tag, abjad.Tag), repr(tag)
