@@ -1374,7 +1374,7 @@ class RewriteMeterCommand(Command):
             leaves = abjad.select(selection).leaves(grace=False)
             beat_durations = []
             beat_offsets = meter.depthwise_offset_inventory[1]
-            for start, stop in abjad.sequence(beat_offsets).nwise():
+            for start, stop in abjad.Sequence(beat_offsets).nwise():
                 beat_duration = stop - start
                 beat_durations.append(beat_duration)
             beamable_groups = self._make_beamable_groups(leaves, beat_durations)

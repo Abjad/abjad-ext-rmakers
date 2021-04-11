@@ -136,7 +136,7 @@ class Stack:
                 message += f"    {result}"
                 raise Exception(message)
             divisions = result
-        divisions = abjad.sequence(divisions)
+        divisions = abjad.Sequence(divisions)
         divisions = divisions.flatten(depth=-1)
         transformed_duration = abjad.Duration(sum(divisions))
         if transformed_duration != original_duration:
@@ -418,7 +418,7 @@ class Bind:
             else:
                 raise Exception(f"no match for division {i}.")
         assert len(divisions) == len(matches)
-        groups = abjad.sequence(matches).group_by(
+        groups = abjad.Sequence(matches).group_by(
             lambda match: match.assignment.rhythm_maker
         )
         components: typing.List[abjad.Component] = []

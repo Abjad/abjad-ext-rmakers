@@ -2157,7 +2157,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             specifiers_ = abjad.CyclicTuple(specifiers_)
         string = "divisions_consumed"
         divisions_consumed = self.previous_state.get(string, 0)
-        specifiers_ = abjad.sequence(specifiers_).rotate(n=-divisions_consumed)
+        specifiers_ = abjad.Sequence(specifiers_).rotate(n=-divisions_consumed)
         specifiers_ = abjad.CyclicTuple(specifiers_)
         return specifiers_
 
@@ -4278,13 +4278,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         tuplets = []
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
-        denominators = abjad.sequence(self.denominators)
-        denominators = denominators.rotate(-divisions_consumed)
-        denominators = abjad.CyclicTuple(denominators)
+        denominators_ = abjad.Sequence(self.denominators)
+        denominators_ = denominators_.rotate(-divisions_consumed)
+        denominators = abjad.CyclicTuple(denominators_)
         extra_counts_ = self.extra_counts or [0]
-        extra_counts = abjad.sequence(extra_counts_)
-        extra_counts = extra_counts.rotate(-divisions_consumed)
-        extra_counts = abjad.CyclicTuple(extra_counts)
+        extra_counts__ = abjad.Sequence(extra_counts_)
+        extra_counts__ = extra_counts__.rotate(-divisions_consumed)
+        extra_counts = abjad.CyclicTuple(extra_counts__)
         for i, division in enumerate(divisions):
             if not abjad.math.is_positive_integer_power_of_two(division.denominator):
                 message = "non-power-of-two divisions not implemented:"
@@ -6123,7 +6123,7 @@ class IncisedRhythmMaker(RhythmMaker):
         middle = numerator - prefix_weight - suffix_weight
         if numerator < prefix_weight:
             weights = [numerator]
-            prefix = abjad.sequence(prefix)
+            prefix = abjad.Sequence(prefix)
             prefix = prefix.split(weights, cyclic=False, overhang=False)[0]
         middle = self._make_middle_of_numeric_map_part(middle)
         suffix_space = numerator - prefix_weight
@@ -6131,7 +6131,7 @@ class IncisedRhythmMaker(RhythmMaker):
             suffix = ()
         elif suffix_space < suffix_weight:
             weights = [suffix_space]
-            suffix = abjad.sequence(suffix)
+            suffix = abjad.Sequence(suffix)
             suffix = suffix.split(weights, cyclic=False, overhang=False)[0]
         numeric_map_part = prefix + middle + suffix
         return [abjad.Duration(_) for _ in numeric_map_part]
@@ -10529,7 +10529,7 @@ class TaleaRhythmMaker(RhythmMaker):
     ):
         leaves = abjad.select(tuplets).leaves()
         written_durations = [leaf.written_duration for leaf in leaves]
-        written_durations = abjad.sequence(written_durations)
+        written_durations = abjad.Sequence(written_durations)
         total_duration = written_durations.weight()
         preamble_weights = []
         if unscaled_preamble:
@@ -10571,9 +10571,9 @@ class TaleaRhythmMaker(RhythmMaker):
             )
         parts = preamble_parts + talea_parts
         part_durations = parts.flatten()
-        assert part_durations == abjad.sequence(written_durations)
+        assert part_durations == abjad.Sequence(written_durations)
         counts = [len(part) for part in parts]
-        parts = abjad.sequence(leaves).partition_by_counts(counts)
+        parts = abjad.Sequence(leaves).partition_by_counts(counts)
         for i, part in enumerate(parts):
             if any(isinstance(_, abjad.Rest) for _ in part):
                 continue
@@ -10711,7 +10711,7 @@ class TaleaRhythmMaker(RhythmMaker):
             preamble, talea, prolated_numerators
         )
         if end_counts:
-            end_counts = abjad.sequence(end_counts)
+            end_counts = abjad.Sequence(end_counts)
             end_weight = end_counts.weight()
             division_weights = [_.weight() for _ in result]
             counts = result.flatten()
@@ -10769,7 +10769,7 @@ class TaleaRhythmMaker(RhythmMaker):
             talea = talea.counts or ()
         talea = abjad.CyclicTuple(talea)
         extra_counts = self.extra_counts or ()
-        extra_counts = abjad.sequence(extra_counts)
+        extra_counts = abjad.Sequence(extra_counts)
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
         extra_counts = extra_counts.rotate(-divisions_consumed)
         extra_counts = abjad.CyclicTuple(extra_counts)
@@ -10790,11 +10790,11 @@ class TaleaRhythmMaker(RhythmMaker):
             message += f" to read {weights} once."
             raise Exception(message)
         if weight <= preamble_weight:
-            talea = abjad.sequence(preamble)
+            talea = abjad.Sequence(preamble)
             talea = talea.truncate(weight=weight)
         else:
             weight -= preamble_weight
-            talea = abjad.sequence(talea).repeat_to_weight(weight)
+            talea = abjad.Sequence(talea).repeat_to_weight(weight)
             talea = preamble + talea
         talea = talea.split(weights, cyclic=True)
         return talea
