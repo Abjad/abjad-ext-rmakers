@@ -533,7 +533,7 @@ def bind(*assignments: Assignment, tag: abjad.Tag = None) -> Bind:
 def stack(
     maker,
     *commands,
-    preprocessor: abjad.Expression = None,
+    preprocessor=None,
     tag: abjad.Tag = None,
 ) -> Stack:
     """
