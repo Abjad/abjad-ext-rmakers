@@ -1008,9 +1008,11 @@ class ForceRestCommand(Command):
     def __call__(self, voice, *, previous_logical_ties_produced=None, tag=None):
         selection = voice
         if self.selector is not None:
-            selections = self.selector(
-                selection, previous=previous_logical_ties_produced
+            selection = abjad.Selection(
+                selection,
+                previous=previous_logical_ties_produced,
             )
+            selections = self.selector(selection)
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select(selections).logical_ties()
         # logical_ties = list(logical_ties)
