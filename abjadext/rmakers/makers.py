@@ -1241,12 +1241,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Ties across tuplets:
 
-        >>> last_leaf = abjad.select().leaf(-1)
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> def selector(argument):
+        ...     getter = abjad.select().leaf(-1)
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     return [getter(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.duration_bracket(),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.feather_beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -1480,12 +1483,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Ties across every other tuplet:
 
-        >>> tuplets = abjad.select().tuplets().get([0], 2)
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     result = abjad.select(argument).tuplets().get([0], 2)
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.duration_bracket(),
-        ...     rmakers.tie(tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.feather_beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -3778,11 +3784,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         Ties nonlast tuplets:
 
-        >>> last_leaf = abjad.select().leaf(-1)
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> def selector(argument):
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8]),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -3937,11 +3946,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         Forces rest at every fourth logical tie:
 
-        >>> last_leaf = abjad.select().leaf(-1)
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
+        >>> def selector(argument):
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8]),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.force_rest(
         ...         abjad.select().logical_ties().get([3], 4),
         ...     ),
@@ -4022,11 +4034,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         Forces rest at leaf 0 of every tuplet:
 
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).leaf(0) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8]),
-        ...     rmakers.force_rest(
-        ...         abjad.select().tuplets().map(abjad.select().leaf(0))
-        ...     ),
+        ...     rmakers.force_rest(selector),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -4170,9 +4184,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         Ties and rewrites every other tuplet:
 
-        >>> tuplets = abjad.select().tuplets().get([0], 2)
-        >>> nonlast_notes = abjad.select().notes()[:-1]
-        >>> selector = tuplets.map(nonlast_notes)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets().get([0], 2)
+        ...     nonlast_notes = abjad.select().notes()[:-1]
+        ...     return [nonlast_notes(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
@@ -5855,8 +5871,11 @@ class IncisedRhythmMaker(RhythmMaker):
 
         Ties nonlast tuplets:
 
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.incised(
         ...         prefix_talea=[-1],
@@ -5866,7 +5885,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
         ...         ),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -5915,8 +5934,11 @@ class IncisedRhythmMaker(RhythmMaker):
 
         Repeat-ties nonfirst tuplets:
 
-        >>> nonfirst_tuplets = abjad.select().tuplets()[1:]
-        >>> first_leaf = abjad.select().leaf(0)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[1:]
+        ...     first_leaf = abjad.select().leaf(0)
+        ...     return [first_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.incised(
         ...         prefix_talea=[-1],
@@ -5926,7 +5948,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
         ...         ),
-        ...     rmakers.repeat_tie(nonfirst_tuplets.map(first_leaf)),
+        ...     rmakers.repeat_tie(selector),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -7521,11 +7543,14 @@ class NoteRhythmMaker(RhythmMaker):
 
         Ties across divisions:
 
-        >>> nonlast_lts = abjad.select().logical_ties()[:-1]
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).logical_ties()[:-1]
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
-        ...     rmakers.tie(nonlast_lts.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
@@ -7572,11 +7597,14 @@ class NoteRhythmMaker(RhythmMaker):
 
         Ties across every other logical tie:
 
-        >>> lts = abjad.select().logical_ties().get([0], 2)
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).logical_ties().get([0], 2)
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
-        ...     rmakers.tie(lts.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selection = stack(divisions)
@@ -9062,11 +9090,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Ties across divisions:
 
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([5, 3, 3, 3], 16),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -9131,11 +9162,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Ties across every other tuplet:
 
-        >>> tuplets = abjad.select().tuplets().get([0], 2)
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets().get([0], 2)
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([5, 3, 3, 3], 16),
-        ...     rmakers.tie(tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -9199,9 +9233,11 @@ class TaleaRhythmMaker(RhythmMaker):
 
         TIE-CONSECUTIVE-NOTES RECIPE:
 
-        >>> nonlast_notes = abjad.select().notes()[:-1]
-        >>> selector = abjad.select().runs()
-        >>> selector = selector.map(nonlast_notes)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).runs()
+        ...     nonlast_notes = abjad.select().notes()[:-1]
+        ...     return [nonlast_notes(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([5, -3, 3, 3], 16),
         ...     rmakers.untie(selector),
@@ -9758,12 +9794,15 @@ class TaleaRhythmMaker(RhythmMaker):
         REGRESSION #907a. Rewrites trivializable tuplets even when
         tuplets contain multiple ties:
 
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     last_leaf = abjad.select().leaf(-1)
+        ...     return [last_leaf(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
         ...     rmakers.trivialize(),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -10164,12 +10203,15 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Sustains every other output division:
 
-        >>> selector = abjad.select().tuplets().get([1], 2)
-        >>> nonlast_notes = abjad.select().notes()[:-1]
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets().get([1], 2)
+        ...     nonlast_notes = abjad.select().notes()[:-1]
+        ...     return [nonlast_notes(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
-        ...     rmakers.tie(selector.map(nonlast_notes)),
-        ...     rmakers.rewrite_sustained(selector),
+        ...     rmakers.tie(selector),
+        ...     rmakers.rewrite_sustained(abjad.select().tuplets().get([1], 2)),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -10432,11 +10474,13 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Forces rest at last leaf of every tuplet:
 
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).leaf(0) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
-        ...     rmakers.force_rest(
-        ...         abjad.select().tuplets().map(abjad.select().leaf(0))
-        ...     ),
+        ...     rmakers.force_rest(selector),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -12619,11 +12663,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         Ties across all divisions:
 
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     return [abjad.select(_).leaf(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
@@ -12678,11 +12724,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         Ties across every other division:
 
-        >>> tuplets = abjad.select().tuplets().get([0], 2)
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets().get([0], 2)
+        ...     return [abjad.select(_).leaf(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, -2, 1)]),
-        ...     rmakers.tie(tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
@@ -13276,11 +13324,13 @@ class TupletRhythmMaker(RhythmMaker):
         Leaves trivial tuplets as-is when ``extract_trivial`` is
         false:
 
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     return [abjad.select(_).leaf(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
@@ -13347,11 +13397,13 @@ class TupletRhythmMaker(RhythmMaker):
         Measures 2 and 4 in the example below now contain only a flat list
         of notes:
 
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     return [abjad.select(_).leaf(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )

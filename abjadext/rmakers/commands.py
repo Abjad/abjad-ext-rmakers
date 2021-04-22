@@ -1730,6 +1730,17 @@ class UntieCommand(Command):
             abjad.detach(abjad.RepeatTie, leaf)
 
 
+### DEFAULT SELECTORS ###
+
+
+def nongrace_leaves_in_each_tuplet(level=None):
+    def selector(argument):
+        result = abjad.select(argument).tuplets(level=level)
+        return abjad.select(abjad.select(_).leaves(grace=False) for _ in result)
+
+    return selector
+
+
 ### FACTORY FUNCTIONS ###
 
 
@@ -1747,8 +1758,10 @@ def after_grace_container(
 
         Single after-graces with slurs applied manually:
 
-        >>> selector = abjad.select().note(-1)
-        >>> selector = abjad.select().tuplets().map(selector)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).note(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
         ...     rmakers.after_grace_container([1], selector),
@@ -1759,8 +1772,11 @@ def after_grace_container(
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Staff]
-        >>> containers = abjad.select().components(abjad.AfterGraceContainer)
-        >>> selector = containers.map(abjad.select().with_next_leaf())
+
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
+        ...     return [abjad.select(_).with_next_leaf() for _ in result]
+
         >>> result = [abjad.slur(_) for _ in selector(staff)]
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -1818,8 +1834,10 @@ def after_grace_container(
         Multiple after-graces with ``beam_and_slash=True`` and with slurs
         applied manually:
 
-        >>> selector = abjad.select().note(-1)
-        >>> selector = abjad.select().tuplets().map(selector)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).note(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
         ...     rmakers.after_grace_container(
@@ -1832,8 +1850,11 @@ def after_grace_container(
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> rmakers.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Staff]
-        >>> containers = abjad.select().components(abjad.AfterGraceContainer)
-        >>> selector = containers.map(abjad.select().with_next_leaf())
+
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
+        ...     return [abjad.select(_).with_next_leaf() for _ in result]
+
         >>> result = [abjad.slur(_) for _ in selector(staff)]
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -1907,9 +1928,7 @@ def after_grace_container(
 
 
 def beam(
-    selector: abjad.Expression = abjad.select()
-    .tuplets()
-    .map(abjad.select().leaves(grace=False)),
+    selector=nongrace_leaves_in_each_tuplet(),
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
@@ -1927,9 +1946,7 @@ def beam(
 
 
 def beam_groups(
-    selector: typing.Optional[abjad.Expression] = abjad.select()
-    .tuplets(level=-1)
-    .map(abjad.select().leaves(grace=False)),
+    selector=nongrace_leaves_in_each_tuplet(level=-1),
     *,
     beam_lone_notes: bool = None,
     beam_rests: bool = None,
@@ -1959,8 +1976,10 @@ def before_grace_container(
 
     ..  container:: example
 
-        >>> selector = abjad.select().notes().exclude([0, -1])
-        >>> selector = abjad.select().tuplets().map(selector)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).notes().exclude([0, -1]) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
         ...     rmakers.before_grace_container([2, 4], selector),
@@ -1973,7 +1992,11 @@ def before_grace_container(
         >>> staff = lilypond_file[abjad.Staff]
         >>> containers = abjad.select().components(abjad.BeforeGraceContainer)
         >>> result = [abjad.beam(_) for _ in containers(staff)]
-        >>> selector = containers.map(abjad.select().with_next_leaf())
+
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).components(abjad.BeforeGraceContainer)
+        ...     return [abjad.select(_).with_next_leaf() for _ in result]
+
         >>> result = [abjad.slur(_) for _ in selector(staff)]
         >>> slash = abjad.LilyPondLiteral(r"\slash")
         >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
@@ -2658,9 +2681,7 @@ def extract_trivial(
 
 
 def feather_beam(
-    selector: abjad.Expression = abjad.select()
-    .tuplets()
-    .map(abjad.select().leaves(grace=False)),
+    selector=nongrace_leaves_in_each_tuplet(),
     *,
     beam_rests: bool = None,
     stemlet_length: abjad.Number = None,
@@ -2940,9 +2961,13 @@ def on_beat_grace_container(
 
     ..  container:: example
 
-        >>> selector = abjad.select().notes().exclude([0, -1])
-        >>> selector = abjad.select().tuplets().map(selector)
-        >>> selector = selector.notes().map(abjad.select())
+        >>> def selector(argument):
+        ...     getter = abjad.select().notes().exclude([0, -1])
+        ...     result = abjad.select(argument).tuplets()
+        ...     result = abjad.select(getter(_) for _ in result)
+        ...     result = result.notes()
+        ...     return [abjad.select(_) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
         ...     rmakers.on_beat_grace_container(
@@ -3344,8 +3369,10 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
         TIE-ACROSS-DIVISIONS RECIPE. Attaches repeat-ties to first note in
         nonfirst tuplets:
 
-        >>> selector = abjad.select().tuplets()[1:]
-        >>> selector = selector.map(abjad.select().note(0))
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[1:]
+        ...     return [abjad.select(_).note(0) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.repeat_tie(selector),
@@ -3435,8 +3462,10 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
 
         With pattern:
 
-        >>> selector = abjad.select().tuplets().get([1], 2)
-        >>> selector = selector.map(abjad.select().note(0))
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets().get([1], 2)
+        ...     return [abjad.select(_).note(0) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.repeat_tie(selector),
@@ -3796,10 +3825,13 @@ def rewrite_sustained(
         Sustained tuplets generalize a class of rhythms composers are
         likely to rewrite:
 
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[1:3]
+        ...     return [abjad.select(_).leaf(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]),
-        ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
@@ -3875,11 +3907,14 @@ def rewrite_sustained(
 
         Rewrite sustained tuplets like this:
 
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[1:3]
+        ...     return [abjad.select(_).leaf(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]),
         ...     rmakers.rewrite_sustained(),
-        ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
@@ -3936,11 +3971,14 @@ def rewrite_sustained(
         Rewrite sustained tuplets -- and then extract the trivial tuplets
         that result -- like this:
 
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[1:3]
+        ...     return [abjad.select(_).leaf(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]),
         ...     rmakers.beam(),
-        ...     rmakers.tie(abjad.select().tuplets()[1:3].map(last_leaf)),
+        ...     rmakers.tie(selector),
         ...     rmakers.rewrite_sustained(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -3988,8 +4026,10 @@ def rewrite_sustained(
 
         With selector:
 
-        >>> selector = abjad.select().notes()[:-1]
-        >>> selector = abjad.select().tuplets().map(selector)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).notes()[:-1] for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
@@ -4171,8 +4211,10 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         TIE-ACROSS-DIVISIONS RECIPE. Attaches ties to last note in nonlast
         tuplets:
 
-        >>> selector = abjad.select().tuplets()[:-1]
-        >>> selector = selector.map(abjad.select().note(-1))
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     return [abjad.select(_).note(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
@@ -4262,8 +4304,10 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         With pattern:
 
-        >>> selector = abjad.select().tuplets().get([0], 2)
-        >>> selector = selector.map(abjad.select().note(-1))
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets().get([0], 2)
+        ...     return [abjad.select(_).note(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
@@ -4353,11 +4397,13 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         TIE-ACROSS-DIVISIONS RECIPE:
 
-        >>> nonlast_tuplets = abjad.select().tuplets()[:-1]
-        >>> last_leaf = abjad.select().leaf(-1)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()[:-1]
+        ...     return [abjad.select(_).leaf(-1) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(5, 2)]),
-        ...     rmakers.tie(nonlast_tuplets.map(last_leaf)),
+        ...     rmakers.tie(selector),
         ... )
         >>> divisions = [(4, 8), (4, 8), (4, 8)]
         >>> selections = stack(divisions)
@@ -4412,9 +4458,10 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         TIE-WITHIN-DIVISIONS RECIPE:
 
-        >>> selector = abjad.select().tuplets()
-        >>> nonlast_notes = abjad.select().notes()[:-1]
-        >>> selector = selector.map(nonlast_notes)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).notes()[:-1] for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.untie(selector),
@@ -4512,8 +4559,10 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         With pattern:
 
-        >>> selector = abjad.select().tuplets().get([0], 2)
-        >>> selector = selector.map(abjad.select().notes()[:-1])
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets().get([0], 2)
+        ...     return [abjad.select(_).notes()[:-1] for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
@@ -4616,8 +4665,10 @@ def tremolo_container(
 
         Repeats figures two times each:
 
-        >>> selector = abjad.select().notes().get([0, -1])
-        >>> selector = abjad.select().tuplets().map(selector)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).notes().get([0, -1]) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4]),
         ...     rmakers.tremolo_container(2, selector),
@@ -4684,8 +4735,10 @@ def tremolo_container(
 
         Repeats figures four times each:
 
-        >>> selector = abjad.select().notes().get([0, -1])
-        >>> selector = abjad.select().tuplets().map(selector)
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).tuplets()
+        ...     return [abjad.select(_).notes().get([0, -1]) for _ in result]
+
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4]),
         ...     rmakers.tremolo_container(4, selector),
