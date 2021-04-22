@@ -328,7 +328,7 @@
 #            >>> divisions = [(4, 4), (4, 4)]
 #            >>> selection = stack(divisions)
 #            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-#            >>> rmakers.attach_markup_struts(lilypond_file)
+#            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
