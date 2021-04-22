@@ -374,7 +374,7 @@ class WrittenDurationCommand(Command):
         self,
         duration: abjad.DurationTyping,
         *,
-        selector: abjad.Expression = abjad.select().leaf(0),
+        selector=lambda _: abjad.select(_).leaf(0),
     ) -> None:
         super().__init__(selector)
         duration_ = abjad.Duration(duration)
@@ -611,8 +611,8 @@ class ForceNoteCommand(Command):
 
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
-        ...     rmakers.force_rest(abjad.select().leaves()),
-        ...     rmakers.force_note(abjad.select().logical_ties()[1:3]),
+        ...     rmakers.force_rest(lambda _: abjad.select(_).leaves()),
+        ...     rmakers.force_note(lambda _: abjad.select(_).logical_ties()[1:3]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
@@ -659,8 +659,8 @@ class ForceNoteCommand(Command):
 
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
-        ...     rmakers.force_rest(abjad.select().leaves()),
-        ...     rmakers.force_note(abjad.select().logical_ties().get([0, -1])),
+        ...     rmakers.force_rest(lambda _: abjad.select(_).leaves()),
+        ...     rmakers.force_note(lambda _: abjad.select(_).logical_ties().get([0, -1])),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
@@ -816,7 +816,7 @@ class ForceRestCommand(Command):
 
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
-        ...     rmakers.force_rest(abjad.select().logical_ties()[1:3]),
+        ...     rmakers.force_rest(lambda _: abjad.select(_).logical_ties()[1:3]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
@@ -862,7 +862,7 @@ class ForceRestCommand(Command):
 
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
-        ...     rmakers.force_rest(abjad.select().logical_ties()[-2:]),
+        ...     rmakers.force_rest(lambda _: abjad.select(_).logical_ties()[-2:]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
@@ -908,7 +908,7 @@ class ForceRestCommand(Command):
 
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
-        ...     rmakers.force_rest(abjad.select().logical_ties()[1:-1]),
+        ...     rmakers.force_rest(lambda _: abjad.select(_).logical_ties()[1:-1]),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
@@ -956,7 +956,7 @@ class ForceRestCommand(Command):
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
         ...     rmakers.force_rest(
-        ...         abjad.select().logical_ties().get([0, -1]),
+        ...         lambda _: abjad.select(_).logical_ties().get([0, -1]),
         ...     ),
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
@@ -1990,7 +1990,10 @@ def before_grace_container(
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.illustrators.attach_markup_struts(lilypond_file)
         >>> staff = lilypond_file[abjad.Staff]
-        >>> containers = abjad.select().components(abjad.BeforeGraceContainer)
+
+        >>> def containers(argument):
+        ...     return abjad.select(argument).components(abjad.BeforeGraceContainer)
+
         >>> result = [abjad.beam(_) for _ in containers(staff)]
 
         >>> def selector(argument):
@@ -2112,7 +2115,7 @@ def cache_state() -> CacheStateCommand:
 
 def denominator(
     denominator: typing.Union[int, abjad.DurationTyping],
-    selector: abjad.Expression = abjad.select().tuplets(),
+    selector=lambda _: abjad.select(_).tuplets(),
 ) -> DenominatorCommand:
     r"""
     Makes tuplet denominator command.
@@ -2617,7 +2620,7 @@ def extract_trivial(
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8]),
         ...     rmakers.beam(),
-        ...     rmakers.extract_trivial(abjad.select().tuplets()[-2:]),
+        ...     rmakers.extract_trivial(lambda _: abjad.select(_).tuplets()[-2:]),
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
@@ -2962,9 +2965,10 @@ def on_beat_grace_container(
     ..  container:: example
 
         >>> def selector(argument):
-        ...     getter = abjad.select().notes().exclude([0, -1])
         ...     result = abjad.select(argument).tuplets()
-        ...     result = abjad.select(getter(_) for _ in result)
+        ...     result = abjad.select(
+        ...         abjad.select(_).notes().exclude([0, -1]) for _ in result
+        ...     )
         ...     result = result.notes()
         ...     return [abjad.select(_) for _ in result]
 
@@ -3175,7 +3179,9 @@ def on_beat_grace_container(
 
     ..  container:: example
 
-        >>> selector = abjad.select().logical_ties()
+        >>> def selector(argument):
+        ...     return abjad.select(argument).logical_ties()
+
         >>> stack = rmakers.stack(
         ...     rmakers.talea([5], 16),
         ...     rmakers.extract_trivial(),
@@ -3754,7 +3760,7 @@ def rewrite_rest_filled(
         >>> stack = rmakers.stack(
         ...     rmakers.talea([-1], 16, extra_counts=[1]),
         ...     rmakers.rewrite_rest_filled(
-        ...         abjad.select().tuplets()[-2:],
+        ...         lambda _: abjad.select(_).tuplets()[-2:],
         ...     ),
         ...     rmakers.extract_trivial(),
         ... )
@@ -3815,7 +3821,7 @@ def rewrite_rest_filled(
 
 
 def rewrite_sustained(
-    selector: abjad.Expression = abjad.select().tuplets(),
+    selector=lambda _: abjad.select(_).tuplets(),
 ) -> RewriteSustainedCommand:
     r"""
     Makes tuplet command.
@@ -4034,7 +4040,7 @@ def rewrite_sustained(
         ...     rmakers.even_division([8], extra_counts=[1]),
         ...     rmakers.tie(selector),
         ...     rmakers.rewrite_sustained(
-        ...         abjad.select().tuplets()[-2:],
+        ...         lambda _: abjad.select(_).tuplets()[-2:],
         ...     ),
         ...     rmakers.beam(),
         ... )
@@ -4116,7 +4122,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
-        ...     rmakers.tie(abjad.select().notes()[5:15]),
+        ...     rmakers.tie(lambda _: abjad.select(_).notes()[5:15]),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -4676,7 +4682,10 @@ def tremolo_container(
         ... )
         >>> divisions = [(4, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> selector = abjad.select().components(abjad.TremoloContainer)
+
+        >>> def selector(argument):
+        ...     return abjad.select(argument).components(abjad.TremoloContainer)
+
         >>> result = [abjad.slur(_) for _ in selector(selections)]
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.illustrators.attach_markup_struts(lilypond_file)
@@ -4746,7 +4755,10 @@ def tremolo_container(
         ... )
         >>> divisions = [(4, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> selector = abjad.select().components(abjad.TremoloContainer)
+
+        >>> def selector(argument):
+        ...     return abjad.select(argument).components(abjad.TremoloContainer)
+
         >>> result = [abjad.slur(_) for _ in selector(selections)]
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.illustrators.attach_markup_struts(lilypond_file)
@@ -4815,7 +4827,7 @@ def trivialize(selector: abjad.Expression = None) -> TrivializeCommand:
 
 
 def unbeam(
-    selector: abjad.Expression = abjad.select().leaves(),
+    selector=lambda _: abjad.select(_).leaves(),
 ) -> UnbeamCommand:
     """
     Makes unbeam command.
@@ -4834,8 +4846,8 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
 
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
-        ...     rmakers.tie(abjad.select().notes()[:-1]),
-        ...     rmakers.untie(abjad.select().notes().get([0], 4)),
+        ...     rmakers.tie(lambda _: abjad.select(_).notes()[:-1]),
+        ...     rmakers.untie(lambda _: abjad.select(_).notes().get([0], 4)),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -4934,8 +4946,8 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
 
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
-        ...     rmakers.repeat_tie(abjad.select().notes()[1:]),
-        ...     rmakers.untie(abjad.select().notes().get([0], 4)),
+        ...     rmakers.repeat_tie(lambda _: abjad.select(_).notes()[1:]),
+        ...     rmakers.untie(lambda _: abjad.select(_).notes().get([0], 4)),
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -5034,7 +5046,7 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
 
 def written_duration(
     duration: abjad.DurationTyping,
-    selector: abjad.Expression = abjad.select().leaves(),
+    selector=lambda _: abjad.select(_).leaves(),
 ) -> WrittenDurationCommand:
     """
     Makes written duration command.
