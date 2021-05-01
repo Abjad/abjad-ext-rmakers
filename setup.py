@@ -32,7 +32,7 @@ if __name__ == "__main__":
         description=description,
         include_package_data=True,
         install_requires=[
-            "abjad==3.3",
+            "abjad==3.4",
             "black>=20.8b1",
             "flake8",
             "isort",
