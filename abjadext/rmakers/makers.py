@@ -5212,7 +5212,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> labels = []
             >>> for count in extra_counts:
             ...     modular_count = count % modulus
-            ...     label = f"{count:3} becomes {modular_count:2}"
+            ...     label = rf"\markup {{ {count:3} becomes {modular_count:2} }}"
             ...     labels.append(label)
 
             Which produces the following pattern of changes:
@@ -5230,7 +5230,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> abjad.override(staff).TextScript.staff_padding = 7
             >>> groups = abjad.select(staff).leaves().group_by_measure()
             >>> for group, label in zip(groups, labels):
-            ...     markup = abjad.Markup(label, direction=abjad.Up)
+            ...     markup = abjad.Markup(label, direction=abjad.Up, literal=True)
             ...     abjad.attach(markup, group[0])
             ...
 
@@ -5474,7 +5474,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> labels = []
             >>> for count in extra_counts:
             ...     modular_count = -(abs(count) % modulus)
-            ...     label = f"{count:3} becomes {modular_count:2}"
+            ...     label = rf"\markup {{ {count:3} becomes {modular_count:2} }}"
             ...     labels.append(label)
 
             Which produces the following pattern of changes:
@@ -5492,7 +5492,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> abjad.override(staff).TextScript.staff_padding = 8
             >>> groups = abjad.select(staff).leaves().group_by_measure()
             >>> for group, label in zip(groups, labels):
-            ...     markup = abjad.Markup(label, direction=abjad.Up)
+            ...     markup = abjad.Markup(label, direction=abjad.Up, literal=True)
             ...     abjad.attach(markup, group[0])
             ...
 
