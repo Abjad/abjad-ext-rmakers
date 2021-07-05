@@ -52,7 +52,7 @@ isort-reformat:
 	.
 
 mypy:
-	mypy .
+	# mypy .
 
 pytest:
 	pytest .
