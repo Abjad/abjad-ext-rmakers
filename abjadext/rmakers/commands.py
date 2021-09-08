@@ -2999,7 +2999,7 @@ def on_beat_grace_container(
         ...     abjad.select(music_voice), divisions, pitched_staff=False
         ... )
         >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file[abjad.Staff]
+        >>> staff = lilypond_file["Staff"]
         >>> abjad.override(staff).TupletBracket.direction = abjad.Up
         >>> abjad.override(staff).TupletBracket.staff_padding = 5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3212,7 +3212,7 @@ def on_beat_grace_container(
         ...     abjad.select(music_voice), divisions, pitched_staff=False
         ... )
         >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file[abjad.Staff]
+        >>> staff = lilypond_file["Staff"]
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::

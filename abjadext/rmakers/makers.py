@@ -5322,7 +5322,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> staff = lilypond_file[abjad.Staff]
+            >>> staff = lilypond_file["Staff"]
             >>> abjad.override(staff).TextScript.staff_padding = 7
             >>> groups = abjad.select(staff).leaves().group_by_measure()
             >>> for group, label in zip(groups, labels):
@@ -5594,7 +5594,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> selection = stack(divisions)
             >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
             >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> staff = lilypond_file[abjad.Staff]
+            >>> staff = lilypond_file["Staff"]
             >>> abjad.override(staff).TextScript.staff_padding = 8
             >>> groups = abjad.select(staff).leaves().group_by_measure()
             >>> for group, label in zip(groups, labels):
