@@ -616,9 +616,12 @@ class ForceNoteCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -626,29 +629,20 @@ class ForceNoteCommand(Command):
             >>> print(string)
             \new Score
             <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \new RhythmicStaff
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
                     r4..
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     c'4.
+                    \time 7/16
                     c'4..
+                    \time 3/8
                     r4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -664,9 +658,12 @@ class ForceNoteCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -674,29 +671,20 @@ class ForceNoteCommand(Command):
             >>> print(string)
             \new Score
             <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \new RhythmicStaff
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
                     c'4..
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     r4.
+                    \time 7/16
                     r4..
+                    \time 3/8
                     c'4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -820,9 +808,12 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -830,29 +821,20 @@ class ForceRestCommand(Command):
             >>> print(string)
             \new Score
             <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \new RhythmicStaff
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
                     c'4..
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     r4.
+                    \time 7/16
                     r4..
+                    \time 3/8
                     c'4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -866,9 +848,12 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -876,29 +861,20 @@ class ForceRestCommand(Command):
             >>> print(string)
             \new Score
             <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \new RhythmicStaff
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
                     c'4..
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     c'4.
+                    \time 7/16
                     r4..
+                    \time 3/8
                     r4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -912,9 +888,12 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -922,29 +901,20 @@ class ForceRestCommand(Command):
             >>> print(string)
             \new Score
             <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \new RhythmicStaff
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
                     c'4..
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     r4.
+                    \time 7/16
                     r4..
+                    \time 3/8
                     c'4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -961,9 +931,12 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -971,29 +944,20 @@ class ForceRestCommand(Command):
             >>> print(string)
             \new Score
             <<
-                \new GlobalContext
-                {
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \new RhythmicStaff
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
                     r4..
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     c'4.
+                    \time 7/16
                     c'4..
+                    \time 3/8
                     r4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -1734,6 +1698,10 @@ class UntieCommand(Command):
 
 
 def nongrace_leaves_in_each_tuplet(level=None):
+    """
+    Makes nongrace leaves in each tuplet command.
+    """
+
     def selector(argument):
         result = abjad.select(argument).tuplets(level=level)
         return abjad.select(abjad.select(_).leaves(grace=False) for _ in result)
@@ -1769,16 +1737,18 @@ def after_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file[abjad.Staff]
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> staff = lilypond_file[abjad.Score][0]
 
-        >>> def selector(argument):
-        ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
-        ...     return [abjad.select(_).with_next_leaf() for _ in result]
+        ..  book::
+            :lilypond/no-stylesheet:
 
-        >>> result = [abjad.slur(_) for _ in selector(staff)]
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> def selector(argument):
+            ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
+            ...     return [abjad.select(_).with_next_leaf() for _ in result]
+
+            >>> result = [abjad.slur(_) for _ in selector(staff)]
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -1786,21 +1756,17 @@ def after_grace_container(
             >>> print(string)
             \new Score
             <<
-                \new GlobalContext
-                {
-                    \time 3/4
-                    s1 * 3/4
-                    \time 3/4
-                    s1 * 3/4
-                }
                 \new RhythmicStaff
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
+                        \time 3/4
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4
                         c'4
                         c'4
@@ -1812,7 +1778,9 @@ def after_grace_container(
                         }
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
+                        \time 3/4
                         c'4
                         )
                         c'4
