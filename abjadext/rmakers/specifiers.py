@@ -169,9 +169,12 @@ class Incise:
             ... )
             >>> divisions = 4 * [(5, 16)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -179,38 +182,32 @@ class Incise:
                 >>> print(string)
                 \new Score
                 <<
-                    \new GlobalContext
-                    {
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
                     \new RhythmicStaff
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 5/16
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                         r16
+                        \time 5/16
                         r16
                         c'16.
                         [
                         c'16.
                         ]
                         r16
+                        \time 5/16
                         c'8
                         [
                         c'8
                         ]
                         r16
+                        \time 5/16
                         r16
                         c'16.
                         [
@@ -492,9 +489,12 @@ class Spelling:
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -502,19 +502,14 @@ class Spelling:
                 >>> print(string)
                 \new Score
                 <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
                     \new RhythmicStaff
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/4
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         c'16
                         c'4
@@ -524,6 +519,7 @@ class Spelling:
                         c'8
                         ~
                         ]
+                        \time 3/4
                         c'8.
                         c'4
                         ~
@@ -547,9 +543,12 @@ class Spelling:
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -557,19 +556,14 @@ class Spelling:
                 >>> print(string)
                 \new Score
                 <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
                     \new RhythmicStaff
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/4
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         c'4
                         c'16
@@ -577,6 +571,7 @@ class Spelling:
                         c'4
                         c'8
                         ~
+                        \time 3/4
                         c'8.
                         [
                         c'16
@@ -610,9 +605,12 @@ class Spelling:
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -620,19 +618,14 @@ class Spelling:
                 >>> print(string)
                 \new Score
                 <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
                     \new RhythmicStaff
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/4
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16
                         c'16
@@ -642,6 +635,7 @@ class Spelling:
                         c'8
                         ]
                         r4
+                        \time 3/4
                         c'16
                         [
                         c'16
@@ -678,9 +672,12 @@ class Spelling:
             ... )
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -688,19 +685,14 @@ class Spelling:
                 >>> print(string)
                 \new Score
                 <<
-                    \new GlobalContext
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
                     \new RhythmicStaff
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/4
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16
                         c'16
@@ -709,6 +701,7 @@ class Spelling:
                         c'4
                         r8
                         r8
+                        \time 3/4
                         c'16
                         [
                         c'16

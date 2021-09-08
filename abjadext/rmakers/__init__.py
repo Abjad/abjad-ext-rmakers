@@ -1,6 +1,7 @@
 """
 Tools for rhythm construction.
 """
+from . import helpers
 from ._version import __version__, __version_info__
 from .commands import (
     BeamCommand,
@@ -73,6 +74,7 @@ from .stack import Assignment, Bind, Match, Stack, assign, bind, stack
 __all__ = [
     "__version__",
     "__version_info__",
+    "helpers",
     # commands:
     "BeamCommand",
     "BeamGroupsCommand",
