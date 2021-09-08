@@ -180,9 +180,9 @@ class Incise:
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     \with
                     {
                         \override Clef.stencil = ##f
@@ -500,9 +500,9 @@ class Spelling:
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     \with
                     {
                         \override Clef.stencil = ##f
@@ -554,9 +554,9 @@ class Spelling:
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     \with
                     {
                         \override Clef.stencil = ##f
@@ -616,9 +616,9 @@ class Spelling:
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     \with
                     {
                         \override Clef.stencil = ##f
@@ -683,9 +683,9 @@ class Spelling:
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     \with
                     {
                         \override Clef.stencil = ##f

@@ -627,9 +627,9 @@ class ForceNoteCommand(Command):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 \with
                 {
                     \override Clef.stencil = ##f
@@ -669,9 +669,9 @@ class ForceNoteCommand(Command):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 \with
                 {
                     \override Clef.stencil = ##f
@@ -819,9 +819,9 @@ class ForceRestCommand(Command):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 \with
                 {
                     \override Clef.stencil = ##f
@@ -859,9 +859,9 @@ class ForceRestCommand(Command):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 \with
                 {
                     \override Clef.stencil = ##f
@@ -899,9 +899,9 @@ class ForceRestCommand(Command):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 \with
                 {
                     \override Clef.stencil = ##f
@@ -942,9 +942,9 @@ class ForceRestCommand(Command):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 \with
                 {
                     \override Clef.stencil = ##f
@@ -1754,9 +1754,9 @@ def after_grace_container(
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 \with
                 {
                     \override Clef.stencil = ##f
@@ -1799,8 +1799,8 @@ def after_grace_container(
 
     ..  container:: example
 
-        Multiple after-graces with ``beam_and_slash=True`` and with slurs
-        applied manually:
+        Multiple after-graces with ``beam_and_slash=True`` and with slurs applied
+        manually:
 
         >>> def selector(argument):
         ...     result = abjad.select(argument).tuplets()
@@ -1815,38 +1815,38 @@ def after_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file[abjad.Staff]
+        >>> lilypond_file = rmakers.helpers.example(
+        ...     selections, divisions, includes=["abjad.ily"]
+        ... )
 
-        >>> def selector(argument):
-        ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
-        ...     return [abjad.select(_).with_next_leaf() for _ in result]
+        ..  book::
+            :lilypond/no-stylesheet:
 
-        >>> result = [abjad.slur(_) for _ in selector(staff)]
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> def selector(argument):
+            ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
+            ...     return [abjad.select(_).with_next_leaf() for _ in result]
+
+            >>> staff = lilypond_file[abjad.Score][0]
+            >>> result = [abjad.slur(_) for _ in selector(staff)]
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context RhythmicStaff = "Staff"
+                \with
                 {
-                    \time 3/4
-                    s1 * 3/4
-                    \time 3/4
-                    s1 * 3/4
+                    \override Clef.stencil = ##f
                 }
-                \new RhythmicStaff
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
+                        \time 3/4
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4
                         c'4
                         c'4
@@ -1862,7 +1862,9 @@ def after_grace_container(
                         }
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
+                        \time 3/4
                         c'4
                         )
                         c'4
@@ -1955,9 +1957,10 @@ def before_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file[abjad.Staff]
+        >>> lilypond_file = rmakers.helpers.example(
+        ...     selections, divisions, includes=["abjad.ily"]
+        ... )
+        >>> staff = lilypond_file[abjad.Score]["Staff"]
 
         >>> def containers(argument):
         ...     return abjad.select(argument).components(abjad.BeforeGraceContainer)
@@ -1971,29 +1974,29 @@ def before_grace_container(
         >>> result = [abjad.slur(_) for _ in selector(staff)]
         >>> slash = abjad.LilyPondLiteral(r"\slash")
         >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context RhythmicStaff = "Staff"
+                \with
                 {
-                    \time 3/4
-                    s1 * 3/4
-                    \time 3/4
-                    s1 * 3/4
+                    \override Clef.stencil = ##f
                 }
-                \new RhythmicStaff
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
+                        \time 3/4
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         \grace {
                             \slash
                             c'8
@@ -2029,7 +2032,9 @@ def before_grace_container(
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
+                        \time 3/4
                         c'4
                         \grace {
                             \slash
