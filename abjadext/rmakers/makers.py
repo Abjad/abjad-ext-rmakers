@@ -300,14 +300,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -328,7 +328,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -351,14 +352,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -379,7 +380,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -398,14 +400,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -426,7 +428,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -446,14 +449,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -474,7 +477,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -533,14 +537,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -561,7 +565,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -585,14 +590,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -613,7 +618,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -633,14 +639,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -661,7 +667,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -682,14 +689,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -710,7 +717,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -781,14 +789,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -809,7 +817,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -829,14 +838,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -857,7 +866,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -873,14 +883,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -901,7 +911,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -918,14 +929,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -946,7 +957,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1003,14 +1015,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1031,7 +1043,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1064,14 +1077,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1092,7 +1105,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1118,14 +1132,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1146,7 +1160,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1175,14 +1190,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1203,7 +1218,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1278,14 +1294,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1306,7 +1322,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1330,14 +1347,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1358,7 +1375,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1378,14 +1396,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1406,7 +1424,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1427,14 +1446,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1455,7 +1474,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1519,14 +1539,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1547,7 +1567,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1571,14 +1592,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1599,7 +1620,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1618,14 +1640,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1646,7 +1668,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1667,14 +1690,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1695,7 +1718,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1761,14 +1785,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1789,7 +1813,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1814,14 +1839,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1842,7 +1867,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1864,14 +1890,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1892,7 +1918,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -1914,14 +1941,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -1942,7 +1969,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'4.
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -2007,14 +2035,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -2035,7 +2063,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -2059,14 +2088,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     r4.
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -2087,7 +2116,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                     c'2
                                 }
                             >>
-                            \layout {
+                            \layout
+                            {
                                 indent = 0
                                 ragged-right = ##t
                             }
@@ -2459,14 +2489,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2487,7 +2517,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'2
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -2510,14 +2541,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2538,7 +2569,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'4.
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -2558,14 +2590,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2586,7 +2618,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'2
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -2606,14 +2639,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2634,7 +2667,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'4.
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -2693,14 +2727,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2723,7 +2757,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'8
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -2748,14 +2783,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2776,7 +2811,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'4.
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -2844,14 +2880,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2872,7 +2908,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'4.
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -2894,14 +2931,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2922,7 +2959,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'2
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -2943,14 +2981,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -2971,7 +3009,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'4.
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -3028,14 +3067,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -3056,7 +3095,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'2
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -3080,14 +3120,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -3108,7 +3148,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'4.
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
@@ -3127,14 +3168,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -3155,12 +3196,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'2
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
@@ -3213,14 +3256,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -3241,12 +3284,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'4.
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             - \tweak staff-padding 11
@@ -3262,14 +3307,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -3290,12 +3335,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'2
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
@@ -3310,14 +3357,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \new Score
+                                \context Score = "Score"
                                 \with
                                 {
                                     \override SpacingSpanner.spacing-increment = 0.5
                                     proportionalNotationDuration = ##f
                                 }
                                 <<
-                                    \new RhythmicStaff
+                                    \context RhythmicStaff = "Rhythmic_Staff"
                                     \with
                                     {
                                         \remove Time_signature_engraver
@@ -3338,12 +3385,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                                         c'4.
                                     }
                                 >>
-                                \layout {
+                                \layout
+                                {
                                     indent = 0
                                     ragged-right = ##t
                                 }
                             }
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
@@ -3410,14 +3459,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -3473,14 +3522,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -3531,14 +3580,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
@@ -3591,14 +3640,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \new Score
+                            \context Score = "Score"
                             \with
                             {
                                 \override SpacingSpanner.spacing-increment = 0.5
                                 proportionalNotationDuration = ##f
                             }
                             <<
-                                \new RhythmicStaff
+                                \context RhythmicStaff = "Rhythmic_Staff"
                                 \with
                                 {
                                     \remove Time_signature_engraver
