@@ -625,7 +625,8 @@ class ForceNoteCommand(Command):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -667,7 +668,8 @@ class ForceNoteCommand(Command):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -817,7 +819,8 @@ class ForceRestCommand(Command):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -857,7 +860,8 @@ class ForceRestCommand(Command):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -897,7 +901,8 @@ class ForceRestCommand(Command):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -940,7 +945,8 @@ class ForceRestCommand(Command):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -1752,7 +1758,8 @@ def after_grace_container(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -1832,7 +1839,8 @@ def after_grace_container(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -1982,7 +1990,8 @@ def before_grace_container(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -2106,15 +2115,18 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> score = lilypond_file["Score"]
+            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             \with
@@ -2122,42 +2134,36 @@ def denominator(
                 \override TupletBracket.staff-padding = 4.5
             }
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/16
-                    s1 * 1/8
-                    \time 4/16
-                    s1 * 1/4
-                    \time 6/16
-                    s1 * 3/8
-                    \time 8/16
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 2/16
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         c'16
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/5
                     {
+                        \time 6/16
                         c'16
                         c'4
                     }
                     \times 4/5
                     {
+                        \time 8/16
                         c'8
                         c'2
                     }
@@ -2178,15 +2184,18 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> score = lilypond_file["Score"]
+            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             \with
@@ -2194,42 +2203,36 @@ def denominator(
                 \override TupletBracket.staff-padding = 4.5
             }
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/16
-                    s1 * 1/8
-                    \time 4/16
-                    s1 * 1/4
-                    \time 6/16
-                    s1 * 3/8
-                    \time 8/16
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 2/16
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         c'16
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/5
                     {
+                        \time 6/16
                         c'16
                         c'4
                     }
                     \times 8/10
                     {
+                        \time 8/16
                         c'8
                         c'2
                     }
@@ -2249,15 +2252,18 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> score = lilypond_file["Score"]
+            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             \with
@@ -2265,42 +2271,36 @@ def denominator(
                 \override TupletBracket.staff-padding = 4.5
             }
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/16
-                    s1 * 1/8
-                    \time 4/16
-                    s1 * 1/4
-                    \time 6/16
-                    s1 * 3/8
-                    \time 8/16
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 2/16
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                     }
                     \times 8/10
                     {
+                        \time 4/16
                         c'16
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 12/10
                     {
+                        \time 6/16
                         c'16
                         c'4
                     }
                     \times 16/20
                     {
+                        \time 8/16
                         c'8
                         c'2
                     }
@@ -2320,15 +2320,18 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> score = lilypond_file["Score"]
+            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             \with
@@ -2336,42 +2339,36 @@ def denominator(
                 \override TupletBracket.staff-padding = 4.5
             }
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/16
-                    s1 * 1/8
-                    \time 4/16
-                    s1 * 1/4
-                    \time 6/16
-                    s1 * 3/8
-                    \time 8/16
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 8/10
                     {
+                        \time 2/16
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                     }
                     \times 16/20
                     {
+                        \time 4/16
                         c'16
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 24/20
                     {
+                        \time 6/16
                         c'16
                         c'4
                     }
                     \times 32/40
                     {
+                        \time 8/16
                         c'8
                         c'2
                     }
@@ -2393,15 +2390,18 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> score = lilypond_file["Score"]
+            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             \with
@@ -2409,42 +2409,36 @@ def denominator(
                 \override TupletBracket.staff-padding = 4.5
             }
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/16
-                    s1 * 1/8
-                    \time 4/16
-                    s1 * 1/4
-                    \time 6/16
-                    s1 * 3/8
-                    \time 8/16
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 8/10
                     {
+                        \time 2/16
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                     }
                     \times 8/10
                     {
+                        \time 4/16
                         c'16
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/5
                     {
+                        \time 6/16
                         c'16
                         c'4
                     }
                     \times 8/10
                     {
+                        \time 8/16
                         c'8
                         c'2
                     }
@@ -2464,16 +2458,19 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> score = lilypond_file["Score"]
+            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+            >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             \with
@@ -2482,42 +2479,36 @@ def denominator(
                 proportionalNotationDuration = #(ly:make-moment 1 28)
             }
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/16
-                    s1 * 1/8
-                    \time 4/16
-                    s1 * 1/4
-                    \time 6/16
-                    s1 * 3/8
-                    \time 8/16
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 12/15
                     {
+                        \time 2/16
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                     }
                     \times 12/15
                     {
+                        \time 4/16
                         c'16
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 12/10
                     {
+                        \time 6/16
                         c'16
                         c'4
                     }
                     \times 12/15
                     {
+                        \time 8/16
                         c'8
                         c'2
                     }
@@ -2537,15 +2528,18 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> score = lilypond_file["Score"]
+            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             \with
@@ -2553,42 +2547,36 @@ def denominator(
                 \override TupletBracket.staff-padding = 4.5
             }
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/16
-                    s1 * 1/8
-                    \time 4/16
-                    s1 * 1/4
-                    \time 6/16
-                    s1 * 3/8
-                    \time 8/16
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 2/16
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         c'16
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/5
                     {
+                        \time 6/16
                         c'16
                         c'4
                     }
                     \times 4/5
                     {
+                        \time 8/16
                         c'8
                         c'2
                     }
@@ -2631,7 +2619,8 @@ def extract_trivial(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -2727,7 +2716,8 @@ def force_augmentation(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -2790,7 +2780,8 @@ def force_augmentation(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             \with
@@ -2851,20 +2842,17 @@ def force_augmentation(
         >>> selections = stack(divisions)
         >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
         >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file["Score"]
+        >>> staff = lilypond_file["Staff"]
         >>> string = '#tuplet-number::calc-denominator-text'
         >>> abjad.override(staff).TupletNumber.text = string
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            \with
-            {
-                \override TupletNumber.text = #tuplet-number::calc-denominator-text
-            }
             <<
                 \context GlobalContext = "Global_Context"
                 {
@@ -2876,6 +2864,10 @@ def force_augmentation(
                     s1 * 1/4
                 }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override TupletNumber.text = #tuplet-number::calc-denominator-text
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/3
@@ -3006,7 +2998,8 @@ def on_beat_grace_container(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3217,7 +3210,8 @@ def on_beat_grace_container(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3406,7 +3400,8 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3505,7 +3500,8 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3636,7 +3632,8 @@ def rewrite_rest_filled(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3710,7 +3707,8 @@ def rewrite_rest_filled(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3756,7 +3754,8 @@ def rewrite_rest_filled(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3802,7 +3801,8 @@ def rewrite_rest_filled(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3880,7 +3880,8 @@ def rewrite_sustained(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3967,7 +3968,8 @@ def rewrite_sustained(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4036,7 +4038,8 @@ def rewrite_sustained(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4093,7 +4096,8 @@ def rewrite_sustained(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4178,7 +4182,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4285,7 +4290,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4384,7 +4390,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4482,7 +4489,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4548,7 +4556,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4654,7 +4663,8 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4771,7 +4781,8 @@ def tremolo_container(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4844,7 +4855,8 @@ def tremolo_container(
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4936,7 +4948,8 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -5042,7 +5055,8 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file["Score"])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<

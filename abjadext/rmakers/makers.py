@@ -281,7 +281,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -518,7 +519,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -770,7 +772,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -996,7 +999,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -1275,7 +1279,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -1520,7 +1525,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -1766,7 +1772,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -2016,7 +2023,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -2470,7 +2478,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -2710,7 +2719,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -2863,7 +2873,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -3050,7 +3061,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -3239,7 +3251,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -3440,7 +3453,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> abjad.illustrators.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score, tags=True)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3728,7 +3742,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3786,7 +3801,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3852,7 +3868,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -3940,7 +3957,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4024,7 +4042,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4112,7 +4131,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4197,7 +4217,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4270,7 +4291,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -4432,7 +4454,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -4545,7 +4568,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -4653,7 +4677,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -4761,7 +4786,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -4871,7 +4897,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -4988,7 +5015,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5050,7 +5078,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5103,7 +5132,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5147,7 +5177,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5202,7 +5233,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5334,7 +5366,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5606,7 +5639,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5774,7 +5808,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5848,7 +5883,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -5944,7 +5980,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -6007,7 +6044,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -6069,7 +6107,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -6404,7 +6443,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -6479,7 +6519,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -6536,7 +6577,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -6600,7 +6642,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -6669,7 +6712,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -6726,7 +6770,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -6790,7 +6835,8 @@ class IncisedRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -6853,7 +6899,8 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> abjad.illustrators.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score, tags=True)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -6933,7 +6980,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7037,7 +7085,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -7076,7 +7125,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -7115,7 +7165,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -7164,7 +7215,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -7205,7 +7257,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -7249,7 +7302,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -7290,7 +7344,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -7344,7 +7399,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7391,7 +7447,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7440,7 +7497,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7489,7 +7547,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7534,7 +7593,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7582,7 +7642,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7621,7 +7682,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7671,7 +7733,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7724,7 +7787,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7772,7 +7836,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7810,7 +7875,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7859,7 +7925,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7910,7 +7977,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -7959,7 +8027,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8010,7 +8079,8 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8093,7 +8163,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -8132,7 +8203,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -8173,7 +8245,8 @@ class NoteRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -8221,7 +8294,8 @@ class NoteRhythmMaker(RhythmMaker):
             >>> abjad.illustrators.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score, tags=True)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8272,7 +8346,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8338,7 +8413,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8406,7 +8482,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8467,7 +8544,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8544,7 +8622,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8628,7 +8707,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8707,7 +8787,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8835,7 +8916,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8906,7 +8988,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -8991,7 +9074,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9073,7 +9157,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9160,7 +9245,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9228,7 +9314,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9299,7 +9386,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9370,7 +9458,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9458,7 +9547,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9541,7 +9631,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9628,7 +9719,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9716,7 +9808,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9808,7 +9901,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9876,7 +9970,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -9951,7 +10046,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10025,7 +10121,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10105,7 +10202,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10178,7 +10276,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10251,7 +10350,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10318,7 +10418,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10376,7 +10477,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10440,7 +10542,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10510,7 +10613,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10581,7 +10685,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -10649,7 +10754,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -11031,7 +11137,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11094,7 +11201,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11153,7 +11261,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11208,7 +11317,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11271,7 +11381,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11354,7 +11465,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11416,7 +11528,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11493,7 +11606,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11579,7 +11693,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11671,7 +11786,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11769,7 +11885,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11839,7 +11956,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11911,7 +12029,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -11997,7 +12116,8 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> abjad.illustrators.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score, tags=True)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12121,7 +12241,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -12184,7 +12305,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -12239,7 +12361,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -12300,7 +12423,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -12350,7 +12474,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12416,7 +12541,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12481,7 +12607,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12563,7 +12690,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12645,7 +12773,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12749,7 +12878,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12822,7 +12952,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12884,7 +13015,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -12948,7 +13080,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13017,7 +13150,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13070,7 +13204,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13130,7 +13265,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13193,7 +13329,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13251,7 +13388,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13314,7 +13452,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13376,7 +13515,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13444,7 +13584,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13512,7 +13653,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13582,7 +13724,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13660,7 +13803,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13728,7 +13872,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13791,7 +13936,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13859,7 +14005,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  docs::
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -13967,7 +14114,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14033,7 +14181,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14098,7 +14247,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14163,7 +14313,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14230,7 +14381,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14295,7 +14447,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14360,7 +14513,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14428,7 +14582,8 @@ class TupletRhythmMaker(RhythmMaker):
             >>> abjad.illustrators.attach_markup_struts(lilypond_file)
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score, tags=True)
             >>> print(string)
             \context Score = "Score"
             <<
@@ -14529,7 +14684,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14595,7 +14751,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -14657,7 +14814,8 @@ class TupletRhythmMaker(RhythmMaker):
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
                 <<

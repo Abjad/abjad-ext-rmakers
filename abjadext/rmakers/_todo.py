@@ -8,7 +8,8 @@
 #
 #            ..  docs::
 #
-#                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+#                >>> score = lilypond_file["Score"]
+#                >>> string = abjad.lilypond(score)
 #                >>> print(string)
 #                \new Score
 #                <<
@@ -82,7 +83,8 @@
 #
 #            ..  docs::
 #
-#                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+#                >>> score = lilypond_file["Score"]
+#                >>> string = abjad.lilypond(score)
 #                >>> print(string)
 #                \new Score
 #                <<
@@ -141,7 +143,8 @@
 #
 #            ..  docs::
 #
-#                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+#                >>> score = lilypond_file["Score"]
+#                >>> string = abjad.lilypond(score)
 #                >>> print(string)
 #                \new Score
 #                <<
@@ -204,7 +207,8 @@
 #
 #            ..  docs::
 #
-#                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+#                >>> score = lilypond_file["Score"]
+#                >>> string = abjad.lilypond(score)
 #                >>> print(string)
 #                \new Score
 #                <<
@@ -262,7 +266,8 @@
 #
 #            ..  docs::
 #
-#                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+#                >>> score = lilypond_file["Score"]
+#                >>> string = abjad.lilypond(score)
 #                >>> print(string)
 #                \new Score
 #                <<
@@ -333,7 +338,8 @@
 #
 #            ..  docs::
 #
-#                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+#                >>> score = lilypond_file["Score"]
+#                >>> string = abjad.lilypond(score)
 #                >>> print(string)
 #                \new Score
 #                <<
