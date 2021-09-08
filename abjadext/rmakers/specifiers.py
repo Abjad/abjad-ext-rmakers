@@ -178,7 +178,7 @@ class Incise:
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file["Score"])
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -498,7 +498,7 @@ class Spelling:
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file["Score"])
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -552,7 +552,7 @@ class Spelling:
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file["Score"])
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -614,7 +614,7 @@ class Spelling:
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file["Score"])
                 >>> print(string)
                 \context Score = "Score"
                 <<
@@ -681,7 +681,7 @@ class Spelling:
 
             ..  docs::
 
-                >>> string = abjad.lilypond(lilypond_file[abjad.Score])
+                >>> string = abjad.lilypond(lilypond_file["Score"])
                 >>> print(string)
                 \context Score = "Score"
                 <<

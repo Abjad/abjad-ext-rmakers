@@ -283,9 +283,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -296,7 +296,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -520,9 +520,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -533,7 +533,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -772,9 +772,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -785,7 +785,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -998,9 +998,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -1011,7 +1011,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -1277,9 +1277,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -1290,7 +1290,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -1522,9 +1522,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -1535,7 +1535,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -1768,9 +1768,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -1781,7 +1781,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -2018,9 +2018,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -2031,7 +2031,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -2472,9 +2472,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 4/8
                         s1 * 1/2
@@ -2485,7 +2485,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -2712,9 +2712,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 5/8
                         s1 * 5/8
@@ -2723,7 +2723,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \time 1/8
                         s1 * 1/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -2865,9 +2865,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -2876,7 +2876,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -3052,9 +3052,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 4/8
                         s1 * 1/2
@@ -3063,7 +3063,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -3241,9 +3241,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -3252,7 +3252,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -3442,9 +3442,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -3455,7 +3455,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -3730,9 +3730,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/16
                     s1 * 5/16
@@ -3741,10 +3741,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \time 6/16
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/8 {
+                    \times 5/8
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -3757,7 +3758,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     c'8
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'8
                         [
                         c'8
@@ -3786,9 +3788,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/16
                     s1 * 5/16
@@ -3797,10 +3799,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \time 6/16
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                    \times 5/4
+                    {
                         c'8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -3815,7 +3818,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     c'8
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                    \times 3/2
+                    {
                         c'16
                         [
                         c'16
@@ -3850,9 +3854,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -3863,10 +3867,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                    \times 4/4
+                    {
                         c'8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -3879,7 +3884,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                    \times 3/3
+                    {
                         c'8
                         [
                         c'8
@@ -3888,7 +3894,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                    \times 4/4
+                    {
                         c'8
                         [
                         c'8
@@ -3898,7 +3905,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                    \times 3/3
+                    {
                         c'8
                         [
                         c'8
@@ -3934,9 +3942,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -3947,10 +3955,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                    \times 4/4
+                    {
                         r8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -3962,7 +3971,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         r8
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                    \times 3/3
+                    {
                         c'8
                         [
                         c'8
@@ -3970,7 +3980,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         r8
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                    \times 4/4
+                    {
                         c'8
                         [
                         c'8
@@ -3979,7 +3990,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'8
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                    \times 3/3
+                    {
                         c'8
                         r8
                         c'8
@@ -4014,9 +4026,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -4027,10 +4039,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                    \times 4/4
+                    {
                         c'8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -4042,7 +4055,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         r8
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                    \times 3/3
+                    {
                         r8
                         c'8
                         [
@@ -4051,7 +4065,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                    \times 4/4
+                    {
                         c'8
                         [
                         c'8
@@ -4061,7 +4076,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                    \times 3/3
+                    {
                         c'8
                         [
                         c'8
@@ -4098,9 +4114,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -4111,10 +4127,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                    \times 3/3
+                    {
                         r8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -4125,7 +4142,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                    \times 4/4
+                    {
                         r8
                         c'8
                         [
@@ -4134,7 +4152,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3 {
+                    \times 3/3
+                    {
                         r8
                         c'8
                         [
@@ -4142,7 +4161,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4 {
+                    \times 4/4
+                    {
                         r8
                         c'8
                         [
@@ -4179,9 +4199,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -4192,14 +4212,15 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r2
                     - \tweak staff-padding 11
                     - \tweak transparent ##t
                     ^ \markup I
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'8
                         [
                         c'8
@@ -4209,7 +4230,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                     r2
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'8
                         [
                         c'8
@@ -4250,9 +4272,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -4263,14 +4285,15 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'2
                     - \tweak staff-padding 11
                     - \tweak transparent ##t
                     ^ \markup I
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'8
                         [
                         c'8
@@ -4280,7 +4303,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                     c'2
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'8
                         [
                         c'8
@@ -4410,9 +4434,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 4/8
                         s1 * 1/2
@@ -4423,9 +4447,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 2/3 {
+                        \times 2/3
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -4445,7 +4470,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'16
                             [
                             c'16
@@ -4459,7 +4485,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \times 2/3 {
+                        \times 2/3
+                        {
                             c'16
                             [
                             c'16
@@ -4476,7 +4503,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'16
                             [
                             c'16
@@ -4519,9 +4547,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 4/8
                         s1 * 1/2
@@ -4532,9 +4560,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 4/6 {
+                        \times 4/6
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -4554,7 +4583,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'16
                             [
                             c'16
@@ -4568,7 +4598,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \times 4/6 {
+                        \times 4/6
+                        {
                             c'16
                             [
                             c'16
@@ -4585,7 +4616,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'16
                             [
                             c'16
@@ -4623,9 +4655,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 4/8
                         s1 * 1/2
@@ -4636,9 +4668,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 8/12 {
+                        \times 8/12
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -4658,7 +4691,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'16
                             [
                             c'16
@@ -4672,7 +4706,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \times 8/12 {
+                        \times 8/12
+                        {
                             c'16
                             [
                             c'16
@@ -4689,7 +4724,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'16
                             [
                             c'16
@@ -4727,9 +4763,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 4/8
                         s1 * 1/2
@@ -4740,9 +4776,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 16/24 {
+                        \times 16/24
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -4762,7 +4799,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'16
                             [
                             c'16
@@ -4776,7 +4814,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \times 16/24 {
+                        \times 16/24
+                        {
                             c'16
                             [
                             c'16
@@ -4793,7 +4832,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'16
                             [
                             c'16
@@ -4833,9 +4873,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 4/8
                         s1 * 1/2
@@ -4846,9 +4886,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 8/12 {
+                        \times 8/12
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -4868,7 +4909,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10 {
+                        \times 6/10
+                        {
                             c'16
                             [
                             c'16
@@ -4882,7 +4924,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \times 8/12 {
+                        \times 8/12
+                        {
                             c'16
                             [
                             c'16
@@ -4899,7 +4942,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10 {
+                        \times 6/10
+                        {
                             c'16
                             [
                             c'16
@@ -4946,9 +4990,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/16
                         s1 * 3/16
@@ -4957,7 +5001,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/4
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'16
                         - \tweak staff-padding 11
@@ -5008,9 +5052,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/16
                         s1 * 3/16
@@ -5019,7 +5063,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/4
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'8.
                         - \tweak staff-padding 11
@@ -5061,9 +5105,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/16
                         s1 * 3/16
@@ -5072,7 +5116,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/4
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'8.
                         - \tweak staff-padding 11
@@ -5105,9 +5149,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/16
                         s1 * 3/16
@@ -5116,7 +5160,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/4
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'8.
                         - \tweak staff-padding 11
@@ -5160,9 +5204,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -5175,7 +5219,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'16
                         - \tweak staff-padding 11
@@ -5189,7 +5233,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         ]
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
+                        \times 6/7
+                        {
                             c'16
                             [
                             c'16
@@ -5201,7 +5246,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8 {
+                        \times 6/8
+                        {
                             c'16
                             [
                             c'16
@@ -5222,7 +5268,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         ]
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
+                        \times 6/7
+                        {
                             c'16
                             [
                             c'16
@@ -5289,9 +5336,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 6/16
                         s1 * 3/8
@@ -5318,7 +5365,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 6/16
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     \with
                     {
                         \override TextScript.staff-padding = 7
@@ -5328,7 +5375,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
                         ^ \markup I
-                        ^ \markup { 0 becomes 0 }
+                        ^ \markup {   0 becomes  0 }
                         [
                         c'16
                         c'16
@@ -5337,9 +5384,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         ]
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
+                        \times 6/7
+                        {
                             c'16
-                            ^ \markup { 1 becomes 1 }
+                            ^ \markup {   1 becomes  1 }
                             [
                             c'16
                             c'16
@@ -5350,9 +5398,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8 {
+                        \times 6/8
+                        {
                             c'16
-                            ^ \markup { 2 becomes 2 }
+                            ^ \markup {   2 becomes  2 }
                             [
                             c'16
                             c'16
@@ -5363,26 +5412,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \times 6/9 {
+                        \times 6/9
+                        {
                             c'16
-                            ^ \markup { 3 becomes 3 }
+                            ^ \markup {   3 becomes  3 }
                             [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10 {
-                            c'16
-                            ^ \markup { 4 becomes 4 }
-                            [
-                            c'16
                             c'16
                             c'16
                             c'16
@@ -5394,9 +5428,27 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/11 {
+                        \times 6/10
+                        {
                             c'16
-                            ^ \markup { 5 becomes 5 }
+                            ^ \markup {   4 becomes  4 }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/11
+                        {
+                            c'16
+                            ^ \markup {   5 becomes  5 }
                             [
                             c'16
                             c'16
@@ -5411,7 +5463,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         c'16
-                        ^ \markup { 6 becomes 0 }
+                        ^ \markup {   6 becomes  0 }
                         [
                         c'16
                         c'16
@@ -5420,9 +5472,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         ]
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
+                        \times 6/7
+                        {
                             c'16
-                            ^ \markup { 7 becomes 1 }
+                            ^ \markup {   7 becomes  1 }
                             [
                             c'16
                             c'16
@@ -5433,9 +5486,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8 {
+                        \times 6/8
+                        {
                             c'16
-                            ^ \markup { 8 becomes 2 }
+                            ^ \markup {   8 becomes  2 }
                             [
                             c'16
                             c'16
@@ -5446,26 +5500,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
-                        \times 6/9 {
+                        \times 6/9
+                        {
                             c'16
-                            ^ \markup { 9 becomes 3 }
+                            ^ \markup {   9 becomes  3 }
                             [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10 {
-                            c'16
-                            ^ \markup { 10 becomes 4 }
-                            [
-                            c'16
                             c'16
                             c'16
                             c'16
@@ -5477,9 +5516,27 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/11 {
+                        \times 6/10
+                        {
                             c'16
-                            ^ \markup { 11 becomes 5 }
+                            ^ \markup {  10 becomes  4 }
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/11
+                        {
+                            c'16
+                            ^ \markup {  11 becomes  5 }
                             [
                             c'16
                             c'16
@@ -5551,9 +5608,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 6/16
                         s1 * 3/8
@@ -5574,7 +5631,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 6/16
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     \with
                     {
                         \override TextScript.staff-padding = 8
@@ -5584,7 +5641,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
                         ^ \markup I
-                        ^ \markup { 0 becomes 0 }
+                        ^ \markup {   0 becomes  0 }
                         [
                         c'16
                         c'16
@@ -5593,9 +5650,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         ]
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
+                        \times 6/5
+                        {
                             c'16
-                            ^ \markup { -1 becomes -1 }
+                            ^ \markup {  -1 becomes -1 }
                             [
                             c'16
                             c'16
@@ -5604,9 +5662,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/4 {
+                        \times 6/4
+                        {
                             c'16
-                            ^ \markup { -2 becomes -2 }
+                            ^ \markup {  -2 becomes -2 }
                             [
                             c'16
                             c'16
@@ -5614,7 +5673,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         c'16
-                        ^ \markup { -3 becomes 0 }
+                        ^ \markup {  -3 becomes  0 }
                         [
                         c'16
                         c'16
@@ -5623,9 +5682,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         ]
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
+                        \times 6/5
+                        {
                             c'16
-                            ^ \markup { -4 becomes -1 }
+                            ^ \markup {  -4 becomes -1 }
                             [
                             c'16
                             c'16
@@ -5634,9 +5694,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/4 {
+                        \times 6/4
+                        {
                             c'16
-                            ^ \markup { -5 becomes -2 }
+                            ^ \markup {  -5 becomes -2 }
                             [
                             c'16
                             c'16
@@ -5644,7 +5705,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         c'16
-                        ^ \markup { -6 becomes 0 }
+                        ^ \markup {  -6 becomes  0 }
                         [
                         c'16
                         c'16
@@ -5653,9 +5714,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         ]
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
+                        \times 6/5
+                        {
                             c'16
-                            ^ \markup { -7 becomes -1 }
+                            ^ \markup {  -7 becomes -1 }
                             [
                             c'16
                             c'16
@@ -5664,9 +5726,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/4 {
+                        \times 6/4
+                        {
                             c'16
-                            ^ \markup { -8 becomes -2 }
+                            ^ \markup {  -8 becomes -2 }
                             [
                             c'16
                             c'16
@@ -5713,9 +5776,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/8
                         s1 * 1/4
@@ -5728,7 +5791,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 2/8
                         s1 * 1/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'16
                         - \tweak staff-padding 11
@@ -5739,7 +5802,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         c'16
                         ]
-                        \times 2/3 {
+                        \times 2/3
+                        {
                             c'8
                             [
                             c'8
@@ -5747,7 +5811,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         c'4
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'16
                             [
                             c'16
@@ -5785,9 +5850,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/8
                         s1 * 1/4
@@ -5800,7 +5865,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \time 2/8
                         s1 * 1/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4
                         - \tweak staff-padding 11
@@ -5812,7 +5877,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'16
                         c'16
                         ]
-                        \times 2/3 {
+                        \times 2/3
+                        {
                             c'8
                             [
                             c'8
@@ -5820,7 +5886,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             ]
                         }
                         c'4
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'16
                             [
                             c'16
@@ -5879,9 +5946,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -5892,7 +5959,7 @@ class IncisedRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r16
                     - \tweak staff-padding 11
@@ -5942,9 +6009,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 8/8
                     s1 * 1
@@ -5953,7 +6020,7 @@ class IncisedRhythmMaker(RhythmMaker):
                     \time 6/8
                     s1 * 3/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r8
                     - \tweak staff-padding 11
@@ -6004,9 +6071,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 8/8
                     s1 * 1
@@ -6015,7 +6082,7 @@ class IncisedRhythmMaker(RhythmMaker):
                     \time 6/8
                     s1 * 3/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r8
                     - \tweak staff-padding 11
@@ -6339,9 +6406,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 8/8
                         s1 * 1
@@ -6350,10 +6417,11 @@ class IncisedRhythmMaker(RhythmMaker):
                         \time 6/8
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 16/9 {
+                        \times 16/9
+                        {
                             r16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -6361,13 +6429,15 @@ class IncisedRhythmMaker(RhythmMaker):
                             c'2
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/5 {
+                        \times 8/5
+                        {
                             c'4
                             ~
                             c'16
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/7 {
+                        \times 12/7
+                        {
                             c'4.
                             r16
                             - \tweak staff-padding 18
@@ -6411,9 +6481,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 5/16
                         s1 * 5/16
@@ -6424,7 +6494,7 @@ class IncisedRhythmMaker(RhythmMaker):
                         \time 5/16
                         s1 * 5/16
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4
                         - \tweak staff-padding 11
@@ -6468,9 +6538,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 5/8
                         s1 * 5/8
@@ -6479,7 +6549,7 @@ class IncisedRhythmMaker(RhythmMaker):
                         \time 5/8
                         s1 * 5/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         r4
                         - \tweak staff-padding 11
@@ -6532,9 +6602,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 5/8
                         s1 * 5/8
@@ -6543,7 +6613,7 @@ class IncisedRhythmMaker(RhythmMaker):
                         \time 5/8
                         s1 * 5/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'8..
                         - \tweak staff-padding 11
@@ -6601,9 +6671,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 8/8
                         s1 * 1
@@ -6612,7 +6682,7 @@ class IncisedRhythmMaker(RhythmMaker):
                         \time 6/8
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         r8
                         - \tweak staff-padding 11
@@ -6658,9 +6728,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 8/8
                         s1 * 1
@@ -6669,7 +6739,7 @@ class IncisedRhythmMaker(RhythmMaker):
                         \time 6/8
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         r8
                         - \tweak staff-padding 11
@@ -6722,9 +6792,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 8/8
                         s1 * 1
@@ -6733,7 +6803,7 @@ class IncisedRhythmMaker(RhythmMaker):
                         \time 6/8
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         r8
                         - \tweak staff-padding 11
@@ -6785,9 +6855,9 @@ class IncisedRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 8/8
                     s1 * 1
@@ -6796,7 +6866,7 @@ class IncisedRhythmMaker(RhythmMaker):
                     \time 6/8
                     s1 * 3/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     %! INCISED_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text
@@ -6865,9 +6935,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/4
                     s1 * 1/4
@@ -6879,7 +6949,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                     \time 1/3
                     s1 * 1/3
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'1 * 1/4
                     - \tweak staff-padding 11
@@ -6969,9 +7039,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/4
                         s1 * 1/4
@@ -6983,7 +7053,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                         \time 1/3
                         s1 * 1/3
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'1 * 1/4
                         - \tweak staff-padding 11
@@ -7008,9 +7078,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/4
                         s1 * 1/4
@@ -7022,7 +7092,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                         \time 1/3
                         s1 * 1/3
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'2 * 2/4
                         - \tweak staff-padding 11
@@ -7047,9 +7117,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/4
                         s1 * 1/4
@@ -7061,7 +7131,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                         \time 1/3
                         s1 * 1/3
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4 * 4/4
                         - \tweak staff-padding 11
@@ -7096,9 +7166,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/4
                         s1 * 1/4
@@ -7110,7 +7180,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                         \time 1/3
                         s1 * 1/3
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'1 * 1/4
                         - \tweak staff-padding 11
@@ -7137,9 +7207,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/4
                         s1 * 1/4
@@ -7151,7 +7221,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                         \time 1/3
                         s1 * 1/3
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         r1 * 1/4
                         - \tweak staff-padding 11
@@ -7181,9 +7251,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/4
                         s1 * 1/4
@@ -7195,7 +7265,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                         \time 1/3
                         s1 * 1/3
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         R1 * 1/4
                         - \tweak staff-padding 11
@@ -7222,9 +7292,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/4
                         s1 * 1/4
@@ -7236,7 +7306,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                         \time 1/3
                         s1 * 1/3
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         s1 * 1/4
                         - \tweak staff-padding 11
@@ -7276,9 +7346,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -7289,7 +7359,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r2
                     - \tweak staff-padding 11
@@ -7323,9 +7393,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -7336,7 +7406,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 5/8
                     s1 * 5/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r2
                     - \tweak staff-padding 11
@@ -7372,9 +7442,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -7387,7 +7457,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 2/8
                     s1 * 1/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'2
                     - \tweak staff-padding 11
@@ -7421,16 +7491,16 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/32
                     s1 * 5/32
                     \time 5/32
                     s1 * 5/32
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'8
                     - \tweak staff-padding 11
@@ -7466,16 +7536,16 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/32
                     s1 * 5/32
                     \time 5/32
                     s1 * 5/32
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \set stemLeftBeamCount = 0
                     \set stemRightBeamCount = 1
@@ -7514,16 +7584,16 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/32
                     s1 * 5/32
                     \time 5/32
                     s1 * 5/32
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'8
                     - \tweak staff-padding 11
@@ -7553,9 +7623,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -7566,7 +7636,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'2
                     - \tweak staff-padding 11
@@ -7603,9 +7673,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -7616,7 +7686,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'2
                     - \tweak staff-padding 11
@@ -7656,9 +7726,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -7669,7 +7739,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'2
                     - \tweak staff-padding 11
@@ -7704,9 +7774,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 7/16
                     s1 * 7/16
@@ -7715,7 +7785,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 5/16
                     s1 * 5/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'4..
                     - \tweak staff-padding 11
@@ -7742,9 +7812,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     #(ly:expect-warning "strange time signature found")
                     \time 5/14
@@ -7753,10 +7823,11 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 3/7
                     s1 * 3/7
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak edge-height #'(0.7 . 0)
-                    \times 8/14 {
+                    \times 8/14
+                    {
                         c'2
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -7765,7 +7836,8 @@ class NoteRhythmMaker(RhythmMaker):
                         c'8
                     }
                     \tweak edge-height #'(0.7 . 0)
-                    \times 4/7 {
+                    \times 4/7
+                    {
                         c'2.
                     }
                 }
@@ -7789,9 +7861,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     #(ly:expect-warning "strange time signature found")
                     \time 5/14
@@ -7800,11 +7872,12 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 3/7
                     s1 * 3/7
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \tweak edge-height #'(0.7 . 0)
-                    \times 16/14 {
+                    \times 16/14
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -7814,7 +7887,8 @@ class NoteRhythmMaker(RhythmMaker):
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \tweak edge-height #'(0.7 . 0)
-                    \times 8/7 {
+                    \times 8/7
+                    {
                         c'4.
                     }
                 }
@@ -7838,9 +7912,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/8
                     s1 * 5/8
@@ -7851,7 +7925,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 5/8
                     s1 * 5/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r2
                     - \tweak staff-padding 11
@@ -7887,9 +7961,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/8
                     s1 * 5/8
@@ -7900,7 +7974,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 5/8
                     s1 * 5/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r2
                     - \tweak staff-padding 11
@@ -7938,9 +8012,9 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/8
                     s1 * 5/8
@@ -7951,7 +8025,7 @@ class NoteRhythmMaker(RhythmMaker):
                     \time 5/8
                     s1 * 5/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r2
                     - \tweak staff-padding 11
@@ -8021,16 +8095,16 @@ class NoteRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 5/8
                         s1 * 5/8
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'2
                         - \tweak staff-padding 11
@@ -8060,16 +8134,16 @@ class NoteRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 5/8
                         s1 * 5/8
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4
                         - \tweak staff-padding 11
@@ -8101,9 +8175,9 @@ class NoteRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/4
                         s1 * 3/4
@@ -8112,7 +8186,7 @@ class NoteRhythmMaker(RhythmMaker):
                         \time 9/16
                         s1 * 9/16
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'2.
                         - \tweak staff-padding 11
@@ -8149,16 +8223,16 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/8
                     s1 * 5/8
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     %! NOTE_RHYTHM_MAKER
                     c'2
@@ -8200,9 +8274,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8213,7 +8287,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -8266,9 +8340,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8279,7 +8353,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r16
                     - \tweak staff-padding 11
@@ -8334,9 +8408,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8347,7 +8421,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -8395,9 +8469,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8408,7 +8482,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r4
                     - \tweak staff-padding 11
@@ -8416,14 +8490,16 @@ class TaleaRhythmMaker(RhythmMaker):
                     ^ \markup I
                     c'8
                     ~
-                    \times 8/9 {
+                    \times 8/9
+                    {
                         c'8
                         r4
                         c'8.
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'16
                         c'4
                         c'8.
@@ -8470,9 +8546,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8483,10 +8559,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                    \times 6/7
+                    {
                         c'16
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -8498,7 +8575,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ~
                         ]
                     }
-                    \times 8/9 {
+                    \times 8/9
+                    {
                         c'8.
                         [
                         c'16
@@ -8507,7 +8585,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8 {
+                    \times 6/8
+                    {
                         c'4
                         c'16
                         [
@@ -8516,7 +8595,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ~
                         ]
                     }
-                    \times 8/10 {
+                    \times 8/10
+                    {
                         c'8
                         c'4
                         c'16
@@ -8550,9 +8630,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8563,7 +8643,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -8629,9 +8709,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8642,7 +8722,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \set stemLeftBeamCount = 0
                     \set stemRightBeamCount = 2
@@ -8757,9 +8837,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8770,7 +8850,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -8828,9 +8908,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8841,7 +8921,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -8913,9 +8993,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -8926,7 +9006,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -8995,9 +9075,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -9008,7 +9088,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \override Staff.Stem.stemlet-length = 0.75
                     c'16
@@ -9082,9 +9162,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -9095,7 +9175,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'4
                     - \tweak staff-padding 11
@@ -9150,9 +9230,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -9163,7 +9243,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'4
                     - \tweak staff-padding 11
@@ -9221,9 +9301,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -9234,7 +9314,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'4
                     - \tweak staff-padding 11
@@ -9292,9 +9372,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 4/8
                     s1 * 1/2
@@ -9305,7 +9385,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'4
                     - \tweak staff-padding 11
@@ -9380,9 +9460,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -9393,10 +9473,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                    \times 6/7
+                    {
                         c'16
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -9408,7 +9489,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ~
                         ]
                     }
-                    \times 8/9 {
+                    \times 8/9
+                    {
                         c'8.
                         [
                         c'16
@@ -9417,7 +9499,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'4
                         c'16
                         [
@@ -9426,7 +9509,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ~
                         ]
                     }
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'8
                         c'4
                         c'16
@@ -9459,9 +9543,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -9472,10 +9556,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                    \times 6/7
+                    {
                         c'16
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -9487,7 +9572,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ~
                         ]
                     }
-                    \times 8/9 {
+                    \times 8/9
+                    {
                         c'8.
                         [
                         c'16
@@ -9496,7 +9582,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8 {
+                    \times 6/8
+                    {
                         c'4
                         c'16
                         [
@@ -9505,7 +9592,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ~
                         ]
                     }
-                    \times 8/10 {
+                    \times 8/10
+                    {
                         c'8
                         c'4
                         c'16
@@ -9542,9 +9630,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/4
                     s1 * 1/4
@@ -9559,7 +9647,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 1/4
                     s1 * 1/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -9571,7 +9659,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'16
                         [
                         c'16
@@ -9585,7 +9674,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'16
                         [
                         c'16
@@ -9599,7 +9689,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'16
                         [
                         c'16
@@ -9627,9 +9718,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/4
                     s1 * 1/4
@@ -9644,7 +9735,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 1/4
                     s1 * 1/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -9656,7 +9747,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'16
                         [
                         c'16
@@ -9670,7 +9762,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'16
                         [
                         c'16
@@ -9684,7 +9777,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'16
                         [
                         c'16
@@ -9716,9 +9810,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -9729,10 +9823,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -9741,18 +9836,21 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         ]
                     }
-                    \times 2/3 {
+                    \times 2/3
+                    {
                         c'4.
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8.
                         ]
                     }
-                    \times 2/3 {
+                    \times 2/3
+                    {
                         c'4.
                         c'4.
                         - \tweak staff-padding 18
@@ -9780,9 +9878,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -9793,10 +9891,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -9806,19 +9905,22 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'4
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8.
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'4
                         c'4
                         - \tweak staff-padding 18
@@ -9851,9 +9953,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -9864,10 +9966,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -9878,13 +9981,15 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'4
                         c'4
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8.
@@ -9892,7 +9997,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'4
                         c'4
                         - \tweak staff-padding 18
@@ -9921,9 +10027,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -9934,10 +10040,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -9949,14 +10056,16 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'4
                         ~
                         c'4
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         ~
                         [
@@ -9965,7 +10074,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'4
                         ~
                         c'4
@@ -9997,9 +10107,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10010,10 +10120,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                    \times 6/7
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -10024,13 +10135,15 @@ class TaleaRhythmMaker(RhythmMaker):
                         r16
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         r4
                         r16
                         r8.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                    \times 6/7
+                    {
                         r8.
                         c'8.
                         [
@@ -10039,7 +10152,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         r4.
                         - \tweak staff-padding 18
@@ -10066,9 +10180,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10079,10 +10193,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                    \times 6/7
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -10093,11 +10208,13 @@ class TaleaRhythmMaker(RhythmMaker):
                         r16
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         r2
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7 {
+                    \times 6/7
+                    {
                         r8.
                         c'8.
                         [
@@ -10106,7 +10223,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         r4.
                         - \tweak staff-padding 18
@@ -10135,9 +10253,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10148,7 +10266,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -10202,9 +10320,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10215,7 +10333,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -10260,9 +10378,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10273,7 +10391,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'16
                     - \tweak staff-padding 11
@@ -10324,9 +10442,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10337,13 +10455,14 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r4.
                     - \tweak staff-padding 11
                     - \tweak transparent ##t
                     ^ \markup I
-                    \times 8/9 {
+                    \times 8/9
+                    {
                         c'8
                         c'4
                         c'8.
@@ -10393,9 +10512,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10406,7 +10525,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     c'4
                     - \tweak staff-padding 11
@@ -10414,7 +10533,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     ^ \markup I
                     c'8
                     ~
-                    \times 8/9 {
+                    \times 8/9
+                    {
                         c'8
                         c'4
                         c'8.
@@ -10463,9 +10583,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10476,7 +10596,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r16
                     - \tweak staff-padding 11
@@ -10531,9 +10651,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -10544,7 +10664,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     r16
                     - \tweak staff-padding 11
@@ -10913,9 +11033,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 5/8
                         s1 * 5/8
@@ -10924,7 +11044,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 5/8
                         s1 * 5/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4
                         - \tweak staff-padding 11
@@ -10976,9 +11096,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 5/8
                         s1 * 5/8
@@ -10987,7 +11107,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 5/8
                         s1 * 5/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'16
                         - \tweak staff-padding 11
@@ -11035,16 +11155,16 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/4
                         s1 * 3/4
                         \time 3/4
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'16
                         - \tweak staff-padding 11
@@ -11090,16 +11210,16 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/4
                         s1 * 3/4
                         \time 3/4
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'16
                         - \tweak staff-padding 11
@@ -11153,9 +11273,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/4
                         s1 * 3/4
@@ -11164,7 +11284,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 3/4
                         s1 * 3/4
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4
                         - \tweak staff-padding 11
@@ -11236,9 +11356,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11249,7 +11369,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'16
                         - \tweak staff-padding 11
@@ -11298,9 +11418,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11311,10 +11431,11 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -11324,7 +11445,8 @@ class TaleaRhythmMaker(RhythmMaker):
                             c'8.
                             ]
                         }
-                        \times 8/9 {
+                        \times 8/9
+                        {
                             c'4
                             c'16
                             [
@@ -11334,12 +11456,14 @@ class TaleaRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'16
                             c'4
                             c'16
                         }
-                        \times 8/9 {
+                        \times 8/9
+                        {
                             c'8
                             [
                             c'8.
@@ -11371,9 +11495,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11384,10 +11508,11 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -11397,7 +11522,8 @@ class TaleaRhythmMaker(RhythmMaker):
                             c'8.
                             ]
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'4
                             c'16
                             [
@@ -11406,7 +11532,8 @@ class TaleaRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'4
                             c'16
                             [
@@ -11414,7 +11541,8 @@ class TaleaRhythmMaker(RhythmMaker):
                             ~
                             ]
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'16
                             [
                             c'8.
@@ -11453,9 +11581,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11466,10 +11594,11 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -11480,7 +11609,8 @@ class TaleaRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/7 {
+                        \times 8/7
+                        {
                             c'4
                             c'16
                             [
@@ -11488,7 +11618,8 @@ class TaleaRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'8.
                             [
                             c'8.
@@ -11496,7 +11627,8 @@ class TaleaRhythmMaker(RhythmMaker):
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/7 {
+                        \times 8/7
+                        {
                             c'16
                             [
                             c'16
@@ -11541,9 +11673,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11554,7 +11686,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'16
                         - \tweak staff-padding 11
@@ -11639,9 +11771,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11652,7 +11784,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4
                         - \tweak staff-padding 11
@@ -11660,14 +11792,16 @@ class TaleaRhythmMaker(RhythmMaker):
                         ^ \markup I
                         c'8
                         ~
-                        \times 8/9 {
+                        \times 8/9
+                        {
                             c'8
                             c'4
                             c'8.
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
+                        \times 3/4
+                        {
                             c'16
                             c'4
                             c'8.
@@ -11707,9 +11841,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11720,10 +11854,11 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
+                        \times 6/7
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -11732,7 +11867,8 @@ class TaleaRhythmMaker(RhythmMaker):
                             c'8
                             ~
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'8
                             c'4
                             c'4
@@ -11740,7 +11876,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'4
                         c'8
                         ~
-                        \times 8/9 {
+                        \times 8/9
+                        {
                             c'8
                             c'4
                             c'8.
@@ -11776,9 +11913,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11789,10 +11926,11 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
+                        \times 3/4
+                        {
                             c'16
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -11806,13 +11944,15 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         ~
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7 {
+                        \times 6/7
+                        {
                             c'16
                             c'4
                             c'8
                             ~
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'8
                             c'4
                             c'4
@@ -11859,9 +11999,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -11872,7 +12012,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     %! TALEA_RHYTHM_MAKER
                     \tweak text #tuplet-number::calc-fraction-text
@@ -11983,9 +12123,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -11996,7 +12136,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'32
                         - \tweak staff-padding 11
@@ -12046,9 +12186,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -12059,7 +12199,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4.
                         - \tweak staff-padding 11
@@ -12101,9 +12241,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
@@ -12114,7 +12254,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \time 4/8
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4
                         - \tweak staff-padding 11
@@ -12162,16 +12302,16 @@ class TaleaRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 3/8
                         s1 * 3/8
                         \time 3/8
                         s1 * 3/8
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         c'4.
                         - \tweak staff-padding 11
@@ -12212,9 +12352,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/2
                     s1 * 1/2
@@ -12225,9 +12365,10 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 5/16
                     s1 * 5/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12235,19 +12376,22 @@ class TupletRhythmMaker(RhythmMaker):
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4.
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8
@@ -12274,9 +12418,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/2
                     s1 * 1/2
@@ -12287,10 +12431,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 5/16
                     s1 * 5/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12298,17 +12443,20 @@ class TupletRhythmMaker(RhythmMaker):
                         r4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'4.
                         c'8
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                    \times 5/6
+                    {
                         c'8.
                         r8.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4 {
+                    \times 5/4
+                    {
                         c'8.
                         [
                         c'16
@@ -12335,9 +12483,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/8
                     s1 * 5/8
@@ -12348,10 +12496,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                    \times 5/6
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12363,7 +12512,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16.
                         [
                         c'16.
@@ -12372,7 +12522,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8.
@@ -12381,7 +12532,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         [
                         c'8
@@ -12413,9 +12565,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/8
                     s1 * 5/8
@@ -12426,10 +12578,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                    \times 5/6
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12441,7 +12594,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16.
                         [
                         c'16.
@@ -12450,7 +12604,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8.
@@ -12459,7 +12614,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         [
                         c'8
@@ -12491,9 +12647,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/8
                     s1 * 5/8
@@ -12504,10 +12660,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9 {
+                    \times 5/9
+                    {
                         \set stemLeftBeamCount = 0
                         \set stemRightBeamCount = 1
                         c'8.
@@ -12530,7 +12687,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4.
                         \set stemLeftBeamCount = 0
                         \set stemRightBeamCount = 1
@@ -12541,7 +12699,8 @@ class TupletRhythmMaker(RhythmMaker):
                         c'8
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 1
                         c'8
@@ -12559,7 +12718,8 @@ class TupletRhythmMaker(RhythmMaker):
                         c'8
                         ]
                     }
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4.
                         \set stemLeftBeamCount = 0
                         \set stemRightBeamCount = 1
@@ -12591,9 +12751,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 5/8
                     s1 * 5/8
@@ -12604,10 +12764,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9 {
+                    \times 5/9
+                    {
                         c'8.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12618,20 +12779,23 @@ class TupletRhythmMaker(RhythmMaker):
                         c'8.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4.
                         c'8
                         c'8
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         c'8
                         c'4
                         c'8
                         c'8
                     }
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4.
                         c'8
                         c'8
@@ -12660,9 +12824,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/2
                     s1 * 1/2
@@ -12671,9 +12835,10 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 5/16
                     s1 * 5/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12681,13 +12846,15 @@ class TupletRhythmMaker(RhythmMaker):
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16.
                         r8.
                         c'16.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         [
                         c'8.
@@ -12719,9 +12886,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/2
                     s1 * 1/2
@@ -12730,9 +12897,10 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 5/16
                     s1 * 5/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12741,14 +12909,16 @@ class TupletRhythmMaker(RhythmMaker):
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16.
                         r8.
                         c'16.
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         [
                         c'8.
@@ -12780,9 +12950,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/2
                     s1 * 1/2
@@ -12793,9 +12963,10 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 5/16
                     s1 * 5/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12804,13 +12975,15 @@ class TupletRhythmMaker(RhythmMaker):
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'16.
                         r8.
                         c'16.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         [
                         c'8.
@@ -12818,7 +12991,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6 {
+                    \times 5/6
+                    {
                         c'16.
                         r8.
                         c'16.
@@ -12845,9 +13019,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 2/8
                     s1 * 1/4
@@ -12856,20 +13030,23 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
-                    \times 2/3 {
+                    \times 2/3
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
                         ^ \markup I
                         c'8
                     }
-                    \times 2/3 {
+                    \times 2/3
+                    {
                         c'4
                         c'8
                     }
-                    \times 2/3 {
+                    \times 2/3
+                    {
                         c'2
                         c'4
                     }
@@ -12895,9 +13072,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 2/8
                     s1 * 1/4
@@ -12906,10 +13083,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12919,14 +13097,16 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'8
                         [
                         c'16
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3 {
+                    \times 4/3
+                    {
                         c'4
                         c'8
                     }
@@ -12952,9 +13132,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 2/8
                     s1 * 1/4
@@ -12963,10 +13143,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 7/16
                     s1 * 7/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -12976,14 +13157,16 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8.
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8..
                         [
                         c'8..
@@ -13012,9 +13195,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 2/8
                     s1 * 1/4
@@ -13023,10 +13206,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 7/16
                     s1 * 7/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13036,12 +13220,14 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4 {
+                    \times 3/4
+                    {
                         c'4
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/8 {
+                    \times 7/8
+                    {
                         c'4
                         c'4
                     }
@@ -13067,9 +13253,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 2/8
                     s1 * 1/4
@@ -13078,10 +13264,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 7/16
                     s1 * 7/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13091,14 +13278,16 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8.
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8..
                         [
                         c'8..
@@ -13127,9 +13316,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 2/8
                     s1 * 1/4
@@ -13138,10 +13327,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 7/16
                     s1 * 7/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13151,14 +13341,16 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                    \times 3/2
+                    {
                         c'8
                         [
                         c'8
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/4 {
+                    \times 7/4
+                    {
                         c'8
                         [
                         c'8
@@ -13186,9 +13378,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -13199,10 +13391,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13210,16 +13403,19 @@ class TupletRhythmMaker(RhythmMaker):
                         r4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                    \times 3/2
+                    {
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                    \times 3/2
+                    {
                         c'8
                         [
                         c'8
@@ -13250,9 +13446,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -13263,10 +13459,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13274,16 +13471,19 @@ class TupletRhythmMaker(RhythmMaker):
                         r4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8.
                         [
                         c'8.
@@ -13314,9 +13514,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -13327,10 +13527,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 3/8
                     s1 * 3/8
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13338,16 +13539,19 @@ class TupletRhythmMaker(RhythmMaker):
                         r4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                    \times 3/2
+                    {
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2 {
+                    \times 3/2
+                    {
                         c'8
                         [
                         c'8
@@ -13380,9 +13584,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -13393,10 +13597,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 2/8
                     s1 * 1/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13405,7 +13610,8 @@ class TupletRhythmMaker(RhythmMaker):
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         [
                         c'8
@@ -13413,13 +13619,15 @@ class TupletRhythmMaker(RhythmMaker):
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4
                         c'4.
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1 {
+                    \times 1/1
+                    {
                         c'8
                         [
                         c'8
@@ -13454,9 +13662,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -13467,10 +13675,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 2/8
                     s1 * 1/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13484,7 +13693,8 @@ class TupletRhythmMaker(RhythmMaker):
                     ~
                     ]
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4
                         c'4.
                         ~
@@ -13520,9 +13730,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -13533,10 +13743,11 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 2/8
                     s1 * 1/4
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13552,7 +13763,8 @@ class TupletRhythmMaker(RhythmMaker):
                     ]
                     ~
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5 {
+                    \times 3/5
+                    {
                         c'4
                         ~
                         c'4.
@@ -13581,9 +13793,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -13594,24 +13806,28 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
                         ^ \markup I
                         c'16.
                     }
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'2
                         c'8
                     }
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4.
                         c'16.
                     }
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'2
                         c'8
                         - \tweak staff-padding 18
@@ -13645,9 +13861,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score])
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 3/8
                     s1 * 3/8
@@ -13658,9 +13874,10 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 4/8
                     s1 * 1/2
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4.
                         - \tweak staff-padding 11
                         - \tweak transparent ##t
@@ -13668,7 +13885,8 @@ class TupletRhythmMaker(RhythmMaker):
                         c'16.
                     }
                     r2
-                    \times 4/5 {
+                    \times 4/5
+                    {
                         c'4.
                         c'16.
                     }
@@ -13751,9 +13969,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/16
                         s1 * 1/8
@@ -13764,9 +13982,10 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 8/16
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'32
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -13775,16 +13994,19 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
+                        \times 6/5
+                        {
                             c'16
                             c'4
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'8
                             c'2
                         }
@@ -13813,9 +14035,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/16
                         s1 * 1/8
@@ -13826,9 +14048,10 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 8/16
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'32
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -13837,16 +14060,19 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
+                        \times 6/5
+                        {
                             c'16
                             c'4
                         }
-                        \times 8/10 {
+                        \times 8/10
+                        {
                             c'8
                             c'2
                         }
@@ -13874,9 +14100,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/16
                         s1 * 1/8
@@ -13887,9 +14113,10 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 8/16
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'32
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -13898,16 +14125,19 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \times 8/10 {
+                        \times 8/10
+                        {
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/10 {
+                        \times 12/10
+                        {
                             c'16
                             c'4
                         }
-                        \times 16/20 {
+                        \times 16/20
+                        {
                             c'8
                             c'2
                         }
@@ -13935,9 +14165,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/16
                         s1 * 1/8
@@ -13948,9 +14178,10 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 8/16
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 8/10 {
+                        \times 8/10
+                        {
                             c'32
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -13959,16 +14190,19 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \times 16/20 {
+                        \times 16/20
+                        {
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 24/20 {
+                        \times 24/20
+                        {
                             c'16
                             c'4
                         }
-                        \times 32/40 {
+                        \times 32/40
+                        {
                             c'8
                             c'2
                         }
@@ -13998,9 +14232,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/16
                         s1 * 1/8
@@ -14011,9 +14245,10 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 8/16
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 8/10 {
+                        \times 8/10
+                        {
                             c'32
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -14022,16 +14257,19 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \times 8/10 {
+                        \times 8/10
+                        {
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
+                        \times 6/5
+                        {
                             c'16
                             c'4
                         }
-                        \times 8/10 {
+                        \times 8/10
+                        {
                             c'8
                             c'2
                         }
@@ -14059,9 +14297,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/16
                         s1 * 1/8
@@ -14072,9 +14310,10 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 8/16
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 12/15 {
+                        \times 12/15
+                        {
                             c'32
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -14083,16 +14322,19 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \times 12/15 {
+                        \times 12/15
+                        {
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/10 {
+                        \times 12/10
+                        {
                             c'16
                             c'4
                         }
-                        \times 12/15 {
+                        \times 12/15
+                        {
                             c'8
                             c'2
                         }
@@ -14120,9 +14362,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 2/16
                         s1 * 1/8
@@ -14133,9 +14375,10 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 8/16
                         s1 * 1/2
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'32
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -14144,16 +14387,19 @@ class TupletRhythmMaker(RhythmMaker):
                             c'8
                             ]
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5 {
+                        \times 6/5
+                        {
                             c'16
                             c'4
                         }
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'8
                             c'2
                         }
@@ -14184,9 +14430,9 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> string = abjad.lilypond(lilypond_file[abjad.Score], tags=True)
             >>> print(string)
-            \new Score
+            \context Score = "Score"
             <<
-                \new GlobalContext
+                \context GlobalContext = "Global_Context"
                 {
                     \time 1/2
                     s1 * 1/2
@@ -14197,7 +14443,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \time 5/16
                     s1 * 5/16
                 }
-                \new RhythmicStaff
+                \context RhythmicStaff = "Staff"
                 {
                     %! TUPLET_RHYTHM_MAKER
                     \times 4/5
@@ -14285,9 +14531,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/2
                         s1 * 1/2
@@ -14298,9 +14544,10 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 5/16
                         s1 * 5/16
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'4.
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -14308,19 +14555,22 @@ class TupletRhythmMaker(RhythmMaker):
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5 {
+                        \times 3/5
+                        {
                             c'4.
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'8.
                             [
                             c'8
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'8.
                             [
                             c'8
@@ -14347,9 +14597,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         \time 1/2
                         s1 * 1/2
@@ -14360,10 +14610,11 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 5/16
                         s1 * 5/16
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'4
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
@@ -14371,17 +14622,20 @@ class TupletRhythmMaker(RhythmMaker):
                             r4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4 {
+                        \times 3/4
+                        {
                             c'4.
                             c'8
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6 {
+                        \times 5/6
+                        {
                             c'8.
                             r8.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/4 {
+                        \times 5/4
+                        {
                             c'8.
                             [
                             c'16
@@ -14405,9 +14659,9 @@ class TupletRhythmMaker(RhythmMaker):
 
                 >>> string = abjad.lilypond(lilypond_file[abjad.Score])
                 >>> print(string)
-                \new Score
+                \context Score = "Score"
                 <<
-                    \new GlobalContext
+                    \context GlobalContext = "Global_Context"
                     {
                         #(ly:expect-warning "strange time signature found")
                         \time 1/5
@@ -14421,25 +14675,29 @@ class TupletRhythmMaker(RhythmMaker):
                         \time 7/9
                         s1 * 7/9
                     }
-                    \new RhythmicStaff
+                    \context RhythmicStaff = "Staff"
                     {
                         \tweak edge-height #'(0.7 . 0)
-                        \times 4/5 {
+                        \times 4/5
+                        {
                             c'4
                             - \tweak staff-padding 11
                             - \tweak transparent ##t
                             ^ \markup I
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1 {
+                        \times 1/1
+                        {
                             c'4
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 2/3 {
+                        \times 2/3
+                        {
                             c'4
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 8/9 {
+                        \times 8/9
+                        {
                             c'2..
                         }
                     }
