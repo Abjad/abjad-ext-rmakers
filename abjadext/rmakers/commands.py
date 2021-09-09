@@ -2613,9 +2613,12 @@ def extract_trivial(
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2624,26 +2627,17 @@ def extract_trivial(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -2652,17 +2646,20 @@ def extract_trivial(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
                         c'8
                         ]
                     }
+                    \time 3/8
                     c'8
                     [
                     c'8
                     c'8
                     ]
+                    \time 3/8
                     c'8
                     [
                     c'8
@@ -2710,9 +2707,12 @@ def force_augmentation(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2721,30 +2721,15 @@ def force_augmentation(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2753,6 +2738,16 @@ def force_augmentation(
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2771,12 +2766,15 @@ def force_augmentation(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file["Score"]
-        >>> string = '#tuplet-number::calc-denominator-text'
-        >>> abjad.override(staff).TupletNumber.text = string
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> staff = lilypond_file["Staff"]
+            >>> string = '#tuplet-number::calc-denominator-text'
+            >>> abjad.override(staff).TupletNumber.text = string
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2784,35 +2782,17 @@ def force_augmentation(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            \with
-            {
-                \override TupletNumber.text = #tuplet-number::calc-denominator-text
-            }
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                    \override TupletNumber.text = #tuplet-number::calc-denominator-text
+                }
                 {
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2821,6 +2801,16 @@ def force_augmentation(
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2840,12 +2830,15 @@ def force_augmentation(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file["Staff"]
-        >>> string = '#tuplet-number::calc-denominator-text'
-        >>> abjad.override(staff).TupletNumber.text = string
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> staff = lilypond_file["Staff"]
+            >>> string = '#tuplet-number::calc-denominator-text'
+            >>> abjad.override(staff).TupletNumber.text = string
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2854,36 +2847,17 @@ def force_augmentation(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
                 \with
                 {
+                    \override Clef.stencil = ##f
                     \override TupletNumber.text = #tuplet-number::calc-denominator-text
                 }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2893,6 +2867,17 @@ def force_augmentation(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -3394,9 +3379,12 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3405,29 +3393,16 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -3435,6 +3410,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [
@@ -3444,6 +3420,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [
@@ -3453,6 +3430,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [
@@ -3462,6 +3440,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [
@@ -3471,6 +3450,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [
@@ -3494,9 +3474,12 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3505,29 +3488,16 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -3535,6 +3505,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [
@@ -3544,6 +3515,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -3552,6 +3524,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [
@@ -3561,6 +3534,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -3569,6 +3543,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [
@@ -3626,9 +3601,12 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3637,25 +3615,16 @@ def rewrite_rest_filled(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 4/16
                         r16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         r16
                         r16
                         r16
@@ -3663,6 +3632,7 @@ def rewrite_rest_filled(
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         r16
                         r16
                         r16
@@ -3672,6 +3642,7 @@ def rewrite_rest_filled(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
+                        \time 5/16
                         r16
                         r16
                         r16
@@ -3682,6 +3653,7 @@ def rewrite_rest_filled(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
+                        \time 5/16
                         r16
                         r16
                         r16
@@ -3701,9 +3673,12 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3712,26 +3687,20 @@ def rewrite_rest_filled(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/16
                     r4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 4/16
                     r4
+                    \time 5/16
                     r4
                     r16
+                    \time 5/16
                     r4
                     r16
                 }
@@ -3748,9 +3717,12 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3759,26 +3731,20 @@ def rewrite_rest_filled(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/16
                     r4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 4/16
                     r4
+                    \time 5/16
                     r16
                     r4
+                    \time 5/16
                     r16
                     r4
                 }
@@ -3795,9 +3761,12 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3806,25 +3775,16 @@ def rewrite_rest_filled(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 4/16
                         r16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         r16
                         r16
                         r16
@@ -3832,14 +3792,17 @@ def rewrite_rest_filled(
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         r16
                         r16
                         r16
                         r16
                         r16
                     }
+                    \time 5/16
                     r4
                     r16
+                    \time 5/16
                     r4
                     r16
                 }
@@ -3874,9 +3837,12 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3885,28 +3851,20 @@ def rewrite_sustained(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
+                        \time 4/16
                         c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         c'4
                         ~
                         c'16
@@ -3914,6 +3872,7 @@ def rewrite_sustained(
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         c'4
                         ~
                         c'16
@@ -3921,6 +3880,7 @@ def rewrite_sustained(
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         c'4
                         c'16
                     }
@@ -3962,9 +3922,12 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3973,41 +3936,35 @@ def rewrite_sustained(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/16
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/16
                         c'4
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/16
                         c'4
                         ~
                     }
                     \times 4/5
                     {
+                        \time 4/16
                         c'4
                         c'16
                     }
@@ -4032,9 +3989,12 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4043,29 +4003,23 @@ def rewrite_sustained(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                    \time 4/16
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/16
                     c'4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 4/16
                     c'4
                     ~
+                    \time 4/16
                     c'4
                     ~
                     \times 4/5
                     {
+                        \time 4/16
                         c'4
                         c'16
                     }
@@ -4090,9 +4044,12 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4101,25 +4058,16 @@ def rewrite_sustained(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         [
                         c'8
@@ -4129,6 +4077,7 @@ def rewrite_sustained(
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4140,11 +4089,13 @@ def rewrite_sustained(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/2
                     {
+                        \time 2/8
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/2
                     {
+                        \time 2/8
                         c'4
                     }
                 }
@@ -4176,9 +4127,12 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4187,29 +4141,16 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -4217,6 +4158,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4226,17 +4168,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
-                        c'8
-                        ~
-                        [
-                        c'8
-                        ~
-                        c'8
-                        ~
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4248,6 +4180,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4259,6 +4192,19 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4284,9 +4230,12 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4295,37 +4244,15 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8
-                        c'8
-                        ~
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4335,6 +4262,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4344,6 +4272,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4353,6 +4282,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4362,6 +4292,17 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4384,9 +4325,12 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4395,45 +4339,15 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8
-                        c'8
-                        ~
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4443,6 +4357,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4451,6 +4366,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4460,6 +4376,26 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4483,9 +4419,12 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(4, 8), (4, 8), (4, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4494,30 +4433,15 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 4/8
-                    s1 * 1/2
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/7
                     {
-                        c'2
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        ~
-                        c'8
-                        c'4
-                        ~
-                    }
-                    \times 4/7
-                    {
+                        \time 4/8
                         c'2
                         ~
                         c'8
@@ -4526,6 +4450,16 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 4/7
                     {
+                        \time 4/8
+                        c'2
+                        ~
+                        c'8
+                        c'4
+                        ~
+                    }
+                    \times 4/7
+                    {
+                        \time 4/8
                         c'2
                         ~
                         c'8
@@ -4550,9 +4484,12 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4561,38 +4498,15 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        ~
-                        [
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4603,6 +4517,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4613,6 +4528,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4623,6 +4539,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4633,6 +4550,18 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4657,9 +4586,12 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4668,46 +4600,15 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        ~
-                        [
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4718,6 +4619,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4726,6 +4628,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -4736,6 +4639,27 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4775,9 +4699,12 @@ def tremolo_container(
         ...     return abjad.select(argument).components(abjad.TremoloContainer)
 
         >>> result = [abjad.slur(_) for _ in selector(selections)]
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4786,20 +4713,15 @@ def tremolo_container(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/4
-                    s1 * 1
-                    \time 3/4
-                    s1 * 3/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \repeat tremolo 2 {
+                        \time 4/4
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         (
                         c'16
                         )
@@ -4813,6 +4735,7 @@ def tremolo_container(
                         )
                     }
                     \repeat tremolo 2 {
+                        \time 3/4
                         c'16
                         (
                         c'16
@@ -4823,9 +4746,6 @@ def tremolo_container(
                         c'16
                         (
                         c'16
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         )
                     }
                 }
@@ -4849,9 +4769,12 @@ def tremolo_container(
         ...     return abjad.select(argument).components(abjad.TremoloContainer)
 
         >>> result = [abjad.slur(_) for _ in selector(selections)]
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4860,20 +4783,15 @@ def tremolo_container(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/4
-                    s1 * 1
-                    \time 3/4
-                    s1 * 3/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \repeat tremolo 4 {
+                        \time 4/4
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         (
                         c'32
                         )
@@ -4887,6 +4805,7 @@ def tremolo_container(
                         )
                     }
                     \repeat tremolo 4 {
+                        \time 3/4
                         c'32
                         (
                         c'32
@@ -4897,9 +4816,6 @@ def tremolo_container(
                         c'32
                         (
                         c'32
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         )
                     }
                 }
@@ -4942,9 +4858,12 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4953,69 +4872,15 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8
-                        ~
-                        c'8
-                        ~
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        c'8
-                        ~
-                        [
-                        c'8
-                        c'8
-                        ~
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        c'8
-                        ~
-                        [
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        c'8
-                        ~
-                        [
-                        c'8
-                        ~
-                        c'8
-                        ~
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -5026,6 +4891,52 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        ~
+                        [
+                        c'8
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        ~
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ~
+                        c'8
+                        ~
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         ~
                         [
@@ -5049,9 +4960,12 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -5060,69 +4974,15 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8
-                        \repeatTie
-                        c'8
-                        \repeatTie
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        c'8
-                        \repeatTie
-                        [
-                        c'8
-                        c'8
-                        \repeatTie
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        c'8
-                        \repeatTie
-                        [
-                        c'8
-                        \repeatTie
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        c'8
-                        \repeatTie
-                        [
-                        c'8
-                        \repeatTie
-                        c'8
-                        \repeatTie
-                        ]
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -5133,6 +4993,52 @@ def untie(selector: abjad.Expression = None) -> UntieCommand:
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        c'8
+                        \repeatTie
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        \repeatTie
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        \repeatTie
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        \repeatTie
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
                         c'8
                         \repeatTie
                         [

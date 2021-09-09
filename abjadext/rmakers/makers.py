@@ -274,10 +274,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.duration_bracket(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -286,18 +289,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -338,10 +334,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         c'16 * 63/32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16 * 115/64
                         c'16 * 91/64
@@ -390,6 +384,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 3/8
                         c'16 * 117/64
                         [
                         c'16 * 99/64
@@ -438,6 +433,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         c'16 * 63/32
                         [
                         c'16 * 115/64
@@ -487,15 +483,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 3/8
                         c'16 * 117/64
                         [
                         c'16 * 99/64
                         c'16 * 69/64
                         c'16 * 13/16
                         c'16 * 47/64
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                     \revert TupletNumber.text
@@ -512,10 +506,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.duration_bracket(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -524,18 +521,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -576,10 +566,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #left
+                        \time 4/8
                         c'16 * 3/4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16 * 25/32
                         c'16 * 7/8
@@ -629,6 +617,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #left
+                        \time 3/8
                         c'16 * 5/8
                         [
                         c'16 * 43/64
@@ -678,6 +667,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #left
+                        \time 4/8
                         c'16 * 3/4
                         [
                         c'16 * 25/32
@@ -728,6 +718,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #left
+                        \time 3/8
                         c'16 * 5/8
                         [
                         c'16 * 43/64
@@ -735,9 +726,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         c'16 * 65/64
                         c'16 * 85/64
                         c'16 * 25/16
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                     \revert TupletNumber.text
@@ -765,10 +753,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.duration_bracket(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -777,18 +768,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -828,10 +812,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         }
                     \times 1/1
                     {
+                        \time 4/8
                         c'16 * 63/32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'16 * 115/64
                         c'16 * 91/64
                         c'16 * 35/32
@@ -877,6 +859,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         }
                     \times 1/1
                     {
+                        \time 3/8
                         c'16 * 117/64
                         c'16 * 99/64
                         c'16 * 69/64
@@ -922,6 +905,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         }
                     \times 1/1
                     {
+                        \time 4/8
                         c'16 * 63/32
                         c'16 * 115/64
                         c'16 * 91/64
@@ -968,14 +952,12 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         }
                     \times 1/1
                     {
+                        \time 3/8
                         c'16 * 117/64
                         c'16 * 99/64
                         c'16 * 69/64
                         c'16 * 13/16
                         c'16 * 47/64
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                     \revert TupletNumber.text
                 }
@@ -992,10 +974,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.duration_bracket(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -1004,18 +989,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -1057,10 +1035,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \set stemLeftBeamCount = 0
                         \set stemRightBeamCount = 2
+                        \time 4/8
                         c'16 * 63/32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         \set stemLeftBeamCount = 2
                         \set stemRightBeamCount = 2
@@ -1119,6 +1095,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 2
+                        \time 3/8
                         c'16 * 117/64
                         \set stemLeftBeamCount = 2
                         \set stemRightBeamCount = 2
@@ -1174,6 +1151,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 2
+                        \time 4/8
                         c'16 * 63/32
                         \set stemLeftBeamCount = 2
                         \set stemRightBeamCount = 2
@@ -1232,6 +1210,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     {
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 2
+                        \time 3/8
                         c'16 * 117/64
                         \set stemLeftBeamCount = 2
                         \set stemRightBeamCount = 2
@@ -1245,9 +1224,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \set stemLeftBeamCount = 2
                         \set stemRightBeamCount = 0
                         c'16 * 47/64
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                     \revert TupletNumber.text
@@ -1272,10 +1248,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.feather_beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -1284,18 +1263,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -1336,10 +1308,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         c'16 * 63/32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16 * 115/64
                         c'16 * 91/64
@@ -1389,6 +1359,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 3/8
                         c'16 * 117/64
                         [
                         c'16 * 99/64
@@ -1438,6 +1409,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         c'16 * 63/32
                         [
                         c'16 * 115/64
@@ -1488,15 +1460,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 3/8
                         c'16 * 117/64
                         [
                         c'16 * 99/64
                         c'16 * 69/64
                         c'16 * 13/16
                         c'16 * 47/64
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                     \revert TupletNumber.text
@@ -1518,10 +1488,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.feather_beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -1530,18 +1503,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -1582,10 +1548,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         c'16 * 63/32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16 * 115/64
                         c'16 * 91/64
@@ -1635,6 +1599,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 3/8
                         c'16 * 117/64
                         [
                         c'16 * 99/64
@@ -1683,6 +1648,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         c'16 * 63/32
                         [
                         c'16 * 115/64
@@ -1733,15 +1699,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 3/8
                         c'16 * 117/64
                         [
                         c'16 * 99/64
                         c'16 * 69/64
                         c'16 * 13/16
                         c'16 * 47/64
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                     \revert TupletNumber.text
@@ -1765,10 +1729,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.duration_bracket(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -1777,18 +1744,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -1829,11 +1789,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         \override Staff.Stem.stemlet-length = 0.75
                         r16 * 63/32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16 * 115/64
                         c'16 * 91/64
@@ -1883,6 +1841,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #left
+                        \time 3/8
                         \override Staff.Stem.stemlet-length = 0.75
                         c'16 * 5/8
                         [
@@ -1934,6 +1893,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         \override Staff.Stem.stemlet-length = 0.75
                         c'16 * 63/32
                         [
@@ -1985,6 +1945,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #left
+                        \time 3/8
                         \override Staff.Stem.stemlet-length = 0.75
                         c'16 * 5/8
                         [
@@ -1994,9 +1955,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         c'16 * 85/64
                         \revert Staff.Stem.stemlet-length
                         r16 * 25/16
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                     \revert TupletNumber.text
@@ -2016,10 +1974,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.feather_beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2028,18 +1989,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -2080,10 +2034,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         c'16 * 63/32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16 * 115/64
                         c'16 * 91/64
@@ -2093,6 +2045,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         ]
                     }
                     \revert TupletNumber.text
+                    \time 3/8
                     r4.
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
@@ -2133,6 +2086,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
+                        \time 4/8
                         c'16 * 63/32
                         [
                         c'16 * 115/64
@@ -2143,10 +2097,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         ]
                     }
                     \revert TupletNumber.text
+                    \time 3/8
                     r4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -2471,10 +2423,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.duration_bracket(),
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -2483,18 +2438,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -2535,10 +2483,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 4/8
                             c'16 * 63/32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16 * 115/64
                             c'16 * 91/64
@@ -2587,6 +2533,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #left
+                            \time 3/8
                             c'16 * 5/8
                             [
                             c'16 * 43/64
@@ -2636,6 +2583,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 4/8
                             c'16 * 63/32
                             [
                             c'16 * 115/64
@@ -2685,6 +2633,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #left
+                            \time 3/8
                             c'16 * 5/8
                             [
                             c'16 * 43/64
@@ -2692,9 +2641,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                             c'16 * 65/64
                             c'16 * 85/64
                             c'16 * 25/16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                         \revert TupletNumber.text
@@ -2712,10 +2658,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(5, 8), (3, 8), (1, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -2724,16 +2673,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 1/8
-                        s1 * 1/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -2776,10 +2720,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 5/8
                             c'16 * 61/32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16 * 115/64
                             c'16 * 49/32
@@ -2830,6 +2772,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 3/8
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -2839,6 +2782,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                             ]
                         }
                         \revert TupletNumber.text
+                        \time 1/8
                         c'8
                     }
                 >>
@@ -2866,10 +2810,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     rmakers.duration_bracket(),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -2878,16 +2825,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -2928,10 +2870,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 3/8
                             c'16 * 117/64
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16 * 99/64
                             c'16 * 69/64
@@ -2979,6 +2919,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #left
+                            \time 4/8
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -3029,6 +2970,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 3/8
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -3054,10 +2996,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Advances 3 divisions; then consumes another 3 divisions:
 
             >>> divisions = [(4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions, previous_state=state)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -3066,16 +3011,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -3116,10 +3056,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #left
+                            \time 4/8
                             c'16 * 3/4
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16 * 25/32
                             c'16 * 7/8
@@ -3169,6 +3107,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 3/8
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -3217,6 +3156,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #left
+                            \time 4/8
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -3244,10 +3184,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
             Advances 6 divisions; then consumes another 3 divisions:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions, previous_state=state)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -3256,16 +3199,11 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
@@ -3306,10 +3244,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 3/8
                             c'16 * 117/64
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16 * 99/64
                             c'16 * 69/64
@@ -3357,6 +3293,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #left
+                            \time 4/8
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -3407,6 +3344,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         \times 1/1
                         {
                             \once \override Beam.grow-direction = #right
+                            \time 3/8
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -3448,273 +3386,269 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     tag=abjad.Tag("ACCELERANDO_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \context RhythmicStaff = "Staff"
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score, tags=True)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \context Score = "Score"
                                 \with
                                 {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
+                                    \override SpacingSpanner.spacing-increment = 0.5
+                                    proportionalNotationDuration = ##f
                                 }
+                                <<
+                                    \context RhythmicStaff = "Rhythmic_Staff"
+                                    \with
+                                    {
+                                        \remove Time_signature_engraver
+                                        \remove Staff_symbol_engraver
+                                        \override Stem.direction = #up
+                                        \override Stem.length = 5
+                                        \override TupletBracket.bracket-visibility = ##t
+                                        \override TupletBracket.direction = #up
+                                        \override TupletBracket.minimum-length = 4
+                                        \override TupletBracket.padding = 1.25
+                                        \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                        \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                        \override TupletNumber.font-size = 0
+                                        \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                        tupletFullLength = ##t
+                                    }
+                                    {
+                                        c'2
+                                    }
+                                >>
+                                \layout
                                 {
-                                    c'2
+                                    indent = 0
+                                    ragged-right = ##t
                                 }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
                             }
-                        }
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    \times 1/1
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    {
-                        \once \override Beam.grow-direction = #right
                         %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 63/32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \times 1/1
                         %! ACCELERANDO_RHYTHM_MAKER
-                        [
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 115/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 91/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 35/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 29/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 13/16
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        ]
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \context Score = "Score"
-                            \with
+                            \once \override Beam.grow-direction = #right
+                            \time 4/8
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 63/32
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            [
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 115/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 91/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 35/32
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 29/32
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 13/16
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            ]
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \context Score = "Score"
                                 \with
                                 {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
+                                    \override SpacingSpanner.spacing-increment = 0.5
+                                    proportionalNotationDuration = ##f
                                 }
+                                <<
+                                    \context RhythmicStaff = "Rhythmic_Staff"
+                                    \with
+                                    {
+                                        \remove Time_signature_engraver
+                                        \remove Staff_symbol_engraver
+                                        \override Stem.direction = #up
+                                        \override Stem.length = 5
+                                        \override TupletBracket.bracket-visibility = ##t
+                                        \override TupletBracket.direction = #up
+                                        \override TupletBracket.minimum-length = 4
+                                        \override TupletBracket.padding = 1.25
+                                        \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                        \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                        \override TupletNumber.font-size = 0
+                                        \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                        tupletFullLength = ##t
+                                    }
+                                    {
+                                        c'4.
+                                    }
+                                >>
+                                \layout
                                 {
-                                    c'4.
+                                    indent = 0
+                                    ragged-right = ##t
                                 }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
                             }
-                        }
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    \times 1/1
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    {
-                        \once \override Beam.grow-direction = #right
                         %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 117/64
+                        \times 1/1
                         %! ACCELERANDO_RHYTHM_MAKER
-                        [
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 99/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 69/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 13/16
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 47/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        ]
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \context Score = "Score"
-                            \with
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 117/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            [
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 99/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 69/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 13/16
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 47/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            ]
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \context Score = "Score"
                                 \with
                                 {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
+                                    \override SpacingSpanner.spacing-increment = 0.5
+                                    proportionalNotationDuration = ##f
                                 }
+                                <<
+                                    \context RhythmicStaff = "Rhythmic_Staff"
+                                    \with
+                                    {
+                                        \remove Time_signature_engraver
+                                        \remove Staff_symbol_engraver
+                                        \override Stem.direction = #up
+                                        \override Stem.length = 5
+                                        \override TupletBracket.bracket-visibility = ##t
+                                        \override TupletBracket.direction = #up
+                                        \override TupletBracket.minimum-length = 4
+                                        \override TupletBracket.padding = 1.25
+                                        \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                        \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                        \override TupletNumber.font-size = 0
+                                        \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                        tupletFullLength = ##t
+                                    }
+                                    {
+                                        c'2
+                                    }
+                                >>
+                                \layout
                                 {
-                                    c'2
+                                    indent = 0
+                                    ragged-right = ##t
                                 }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
                             }
-                        }
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    \times 1/1
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    {
-                        \once \override Beam.grow-direction = #right
                         %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 63/32
+                        \times 1/1
                         %! ACCELERANDO_RHYTHM_MAKER
-                        [
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 115/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 91/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 35/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 29/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 13/16
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        ]
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                         {
-                            \context Score = "Score"
-                            \with
+                            \once \override Beam.grow-direction = #right
+                            \time 4/8
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 63/32
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            [
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 115/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 91/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 35/32
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 29/32
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 13/16
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            ]
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
                             {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \context Score = "Score"
                                 \with
                                 {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
+                                    \override SpacingSpanner.spacing-increment = 0.5
+                                    proportionalNotationDuration = ##f
                                 }
+                                <<
+                                    \context RhythmicStaff = "Rhythmic_Staff"
+                                    \with
+                                    {
+                                        \remove Time_signature_engraver
+                                        \remove Staff_symbol_engraver
+                                        \override Stem.direction = #up
+                                        \override Stem.length = 5
+                                        \override TupletBracket.bracket-visibility = ##t
+                                        \override TupletBracket.direction = #up
+                                        \override TupletBracket.minimum-length = 4
+                                        \override TupletBracket.padding = 1.25
+                                        \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                        \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                        \override TupletNumber.font-size = 0
+                                        \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                        tupletFullLength = ##t
+                                    }
+                                    {
+                                        c'4.
+                                    }
+                                >>
+                                \layout
                                 {
-                                    c'4.
+                                    indent = 0
+                                    ragged-right = ##t
                                 }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
                             }
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        \times 1/1
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 117/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            [
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 99/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 69/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 13/16
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            c'16 * 47/64
+                            %! ACCELERANDO_RHYTHM_MAKER
+                            ]
+                        %! ACCELERANDO_RHYTHM_MAKER
                         }
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    \times 1/1
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    {
-                        \once \override Beam.grow-direction = #right
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 117/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        [
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 99/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 69/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 13/16
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 47/64
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        ]
-                    %! ACCELERANDO_RHYTHM_MAKER
+                        \revert TupletNumber.text
                     }
-                    \revert TupletNumber.text
-                }
-            >>
+                >>
 
         """
         return super().tag
@@ -3735,10 +3669,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(5, 16), (6, 16), (6, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3747,26 +3684,20 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/16
-                    s1 * 5/16
-                    \time 6/16
-                    s1 * 3/8
-                    \time 6/16
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/8
                     {
+                        \time 5/16
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4
                     }
+                    \time 6/16
                     c'8
                     [
                     c'8
@@ -3775,6 +3706,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 6/16
                         c'8
                         [
                         c'8
@@ -3794,10 +3726,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ...     rmakers.force_augmentation(),
         ... )
         >>> divisions = [(5, 16), (6, 16), (6, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3806,28 +3741,22 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/16
-                    s1 * 5/16
-                    \time 6/16
-                    s1 * 3/8
-                    \time 6/16
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/4
                     {
+                        \time 5/16
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
                     }
+                    \time 6/16
                     c'8
                     [
                     c'8
@@ -3836,6 +3765,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
+                        \time 6/16
                         c'16
                         [
                         c'16
@@ -3861,10 +3791,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3873,26 +3806,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
                     {
+                        \time 4/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -3903,6 +3827,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
@@ -3913,6 +3838,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
                     {
+                        \time 4/8
                         c'8
                         [
                         c'8
@@ -3924,13 +3850,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -3950,10 +3874,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3962,26 +3889,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
                     {
+                        \time 4/8
                         r8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'8
                         [
                         c'8
@@ -3991,6 +3909,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
@@ -4000,6 +3919,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
                     {
+                        \time 4/8
                         c'8
                         [
                         c'8
@@ -4010,12 +3930,10 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         c'8
                         r8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 }
             >>
@@ -4035,10 +3953,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4047,26 +3968,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
                     {
+                        \time 4/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8
@@ -4076,6 +3988,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         r8
                         c'8
                         [
@@ -4086,6 +3999,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
                     {
+                        \time 4/8
                         c'8
                         [
                         c'8
@@ -4097,13 +4011,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -4124,10 +4036,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4136,26 +4051,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         r8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'8
                         [
                         c'8
@@ -4164,6 +4070,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
                     {
+                        \time 4/8
                         r8
                         c'8
                         [
@@ -4174,6 +4081,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
+                        \time 3/8
                         r8
                         c'8
                         [
@@ -4183,14 +4091,12 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
                     {
+                        \time 4/8
                         r8
                         c'8
                         [
                         c'8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -4210,10 +4116,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4222,26 +4131,18 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     r2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
@@ -4249,18 +4150,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'8
                         ]
                     }
+                    \time 4/8
                     r2
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
                         c'8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -4284,10 +4184,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4296,26 +4199,18 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
@@ -4323,18 +4218,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'8
                         ]
                     }
+                    \time 4/8
                     c'2
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
                         c'8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -4447,10 +4341,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -4459,25 +4356,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 2/3
                         {
+                            \time 4/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16
                             c'16
@@ -4495,6 +4383,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4510,6 +4399,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 2/3
                         {
+                            \time 4/8
                             c'16
                             [
                             c'16
@@ -4528,6 +4418,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4539,9 +4430,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             c'16
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -4561,10 +4449,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -4573,25 +4464,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 4/6
                         {
+                            \time 4/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16
                             c'16
@@ -4609,6 +4491,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4624,6 +4507,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 4/6
                         {
+                            \time 4/8
                             c'16
                             [
                             c'16
@@ -4642,6 +4526,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4653,9 +4538,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             c'16
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -4670,10 +4552,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -4682,25 +4567,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 8/12
                         {
+                            \time 4/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16
                             c'16
@@ -4718,6 +4594,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4733,6 +4610,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 8/12
                         {
+                            \time 4/8
                             c'16
                             [
                             c'16
@@ -4751,6 +4629,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4762,9 +4641,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             c'16
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -4779,10 +4655,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -4791,25 +4670,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 16/24
                         {
+                            \time 4/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16
                             c'16
@@ -4827,6 +4697,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4842,6 +4713,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 16/24
                         {
+                            \time 4/8
                             c'16
                             [
                             c'16
@@ -4860,6 +4732,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4871,9 +4744,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             c'16
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -4890,10 +4760,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -4902,25 +4775,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 8/12
                         {
+                            \time 4/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'16
                             c'16
@@ -4938,6 +4802,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/10
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4953,6 +4818,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 8/12
                         {
+                            \time 4/8
                             c'16
                             [
                             c'16
@@ -4971,6 +4837,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/10
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -4982,9 +4849,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             c'16
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -5008,10 +4872,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -5020,30 +4887,25 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 3/16
-                        s1 * 3/16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
                         \time 3/8
-                        s1 * 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
                         \time 3/4
-                        s1 * 3/4
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
-                        c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'16
-                        c'16
-                        ]
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
                         c'16
                         [
                         c'16
@@ -5071,10 +4933,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -5083,26 +4948,21 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 3/16
-                        s1 * 3/16
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/4
-                        s1 * 3/4
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \time 3/8
                         c'8
                         [
                         c'8
                         c'8
                         ]
+                        \time 3/4
                         c'8
                         [
                         c'8
@@ -5125,10 +4985,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -5137,22 +5000,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 3/16
-                        s1 * 3/16
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/4
-                        s1 * 3/4
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \time 3/8
                         c'4.
+                        \time 3/4
                         c'4
                         c'4
                         c'4
@@ -5170,10 +5028,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 16), (3, 8), (3, 4)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -5182,22 +5043,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 3/16
-                        s1 * 3/16
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/4
-                        s1 * 3/4
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \time 3/8
                         c'4.
+                        \time 3/4
                         c'2.
                     }
                 >>
@@ -5226,10 +5082,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -5238,25 +5097,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16
                         c'16
@@ -5267,6 +5115,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -5280,6 +5129,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -5291,6 +5141,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
+                        \time 3/8
                         c'16
                         [
                         c'16
@@ -5302,6 +5153,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -5310,9 +5162,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             c'16
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -5351,16 +5200,19 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = 12 * [(6, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> staff = lilypond_file["Staff"]
-            >>> abjad.override(staff).TextScript.staff_padding = 7
-            >>> groups = abjad.select(staff).leaves().group_by_measure()
-            >>> for group, label in zip(groups, labels):
-            ...     markup = abjad.Markup(label, direction=abjad.Up, literal=True)
-            ...     abjad.attach(markup, group[0])
-            ...
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> staff = lilypond_file["Staff"]
+                >>> abjad.override(staff).TextScript.staff_padding = 7
+                >>> groups = abjad.select(staff).leaves().group_by_measure()
+                >>> for group, label in zip(groups, labels):
+                ...     markup = abjad.Markup(label, direction=abjad.Up, literal=True)
+                ...     abjad.attach(markup, group[0])
+                ...
 
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5371,43 +5223,15 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
                     \with
                     {
+                        \override Clef.stencil = ##f
                         \override TextScript.staff-padding = 7
                     }
                     {
+                        \time 6/16
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ^ \markup {   0 becomes  0 }
                         [
                         c'16
@@ -5419,6 +5243,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {   1 becomes  1 }
                             [
@@ -5433,6 +5258,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {   2 becomes  2 }
                             [
@@ -5447,6 +5273,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 6/9
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {   3 becomes  3 }
                             [
@@ -5463,6 +5290,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/10
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {   4 becomes  4 }
                             [
@@ -5480,6 +5308,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/11
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {   5 becomes  5 }
                             [
@@ -5495,6 +5324,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
+                        \time 6/16
                         c'16
                         ^ \markup {   6 becomes  0 }
                         [
@@ -5507,6 +5337,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {   7 becomes  1 }
                             [
@@ -5521,6 +5352,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {   8 becomes  2 }
                             [
@@ -5535,6 +5367,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         }
                         \times 6/9
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {   9 becomes  3 }
                             [
@@ -5551,6 +5384,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/10
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {  10 becomes  4 }
                             [
@@ -5568,6 +5402,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/11
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {  11 becomes  5 }
                             [
@@ -5581,9 +5416,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             c'16
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -5624,16 +5456,19 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = 9 * [(6, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> staff = lilypond_file["Staff"]
-            >>> abjad.override(staff).TextScript.staff_padding = 8
-            >>> groups = abjad.select(staff).leaves().group_by_measure()
-            >>> for group, label in zip(groups, labels):
-            ...     markup = abjad.Markup(label, direction=abjad.Up, literal=True)
-            ...     abjad.attach(markup, group[0])
-            ...
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> staff = lilypond_file["Staff"]
+                >>> abjad.override(staff).TextScript.staff_padding = 8
+                >>> groups = abjad.select(staff).leaves().group_by_measure()
+                >>> for group, label in zip(groups, labels):
+                ...     markup = abjad.Markup(label, direction=abjad.Up, literal=True)
+                ...     abjad.attach(markup, group[0])
+                ...
 
             >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5644,37 +5479,15 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                        \time 6/16
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
                     \with
                     {
+                        \override Clef.stencil = ##f
                         \override TextScript.staff-padding = 8
                     }
                     {
+                        \time 6/16
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ^ \markup {   0 becomes  0 }
                         [
                         c'16
@@ -5686,6 +5499,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {  -1 becomes -1 }
                             [
@@ -5698,6 +5512,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {  -2 becomes -2 }
                             [
@@ -5706,6 +5521,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
+                        \time 6/16
                         c'16
                         ^ \markup {  -3 becomes  0 }
                         [
@@ -5718,6 +5534,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {  -4 becomes -1 }
                             [
@@ -5730,6 +5547,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {  -5 becomes -2 }
                             [
@@ -5738,6 +5556,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
+                        \time 6/16
                         c'16
                         ^ \markup {  -6 becomes  0 }
                         [
@@ -5750,6 +5569,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {  -7 becomes -1 }
                             [
@@ -5762,15 +5582,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4
                         {
+                            \time 6/16
                             c'16
                             ^ \markup {  -8 becomes -2 }
                             [
                             c'16
                             c'16
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -5801,10 +5619,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -5813,25 +5634,14 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 2/8
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16
                         c'16
@@ -5839,15 +5649,18 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                         \times 2/3
                         {
+                            \time 2/8
                             c'8
                             [
                             c'8
                             c'8
                             ]
                         }
+                        \time 2/8
                         c'4
                         \times 4/5
                         {
+                            \time 2/8
                             c'16
                             [
                             c'16
@@ -5856,6 +5669,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                             c'16
                             ]
                         }
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -5876,10 +5690,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
             Advances 5 divisions; then consumes another 5 divisions:
 
             >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-            >>> selection = stack(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions, previous_state=state)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -5888,25 +5705,15 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                        \time 2/8
-                        s1 * 1/4
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 2/8
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \time 2/8
                         c'16
                         [
                         c'16
@@ -5915,15 +5722,18 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         ]
                         \times 2/3
                         {
+                            \time 2/8
                             c'8
                             [
                             c'8
                             c'8
                             ]
                         }
+                        \time 2/8
                         c'4
                         \times 4/5
                         {
+                            \time 2/8
                             c'16
                             [
                             c'16
@@ -5973,10 +5783,13 @@ class IncisedRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -5985,33 +5798,24 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     r16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     r4..
+                    \time 3/8
                     c'4.
+                    \time 4/8
                     r2
+                    \time 3/8
                     c'4
                     ~
                     c'16
                     r16
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -6037,10 +5841,13 @@ class IncisedRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -6049,32 +5856,24 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \time 8/8
-                    s1 * 1
-                    \time 4/8
-                    s1 * 1/2
-                    \time 6/8
-                    s1 * 3/4
-                }
-                \context RhythmicStaff = "Staff"
-                {
                     r8
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     c'2..
                     ~
+                    \time 4/8
                     c'2
                     ~
+                    \time 6/8
                     c'2
                     ~
                     c'8
                     r8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -6100,10 +5899,13 @@ class IncisedRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -6112,32 +5914,24 @@ class IncisedRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \time 8/8
-                    s1 * 1
-                    \time 4/8
-                    s1 * 1/2
-                    \time 6/8
-                    s1 * 3/4
-                }
-                \context RhythmicStaff = "Staff"
-                {
                     r8
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     c'2..
+                    \time 4/8
                     c'2
                     \repeatTie
+                    \time 6/8
                     c'2
                     \repeatTie
                     ~
                     c'8
                     r8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -6436,10 +6230,13 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -6448,29 +6245,23 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 8/8
-                        s1 * 1
-                        \time 4/8
-                        s1 * 1/2
-                        \time 6/8
-                        s1 * 3/4
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 16/9
                         {
+                            \time 8/8
                             r16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             c'2
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 8/5
                         {
+                            \time 4/8
                             c'4
                             ~
                             c'16
@@ -6478,11 +6269,9 @@ class IncisedRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 12/7
                         {
+                            \time 6/8
                             c'4.
                             r16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                         }
                     }
                 >>
@@ -6512,10 +6301,13 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = 4 * [(5, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -6524,29 +6316,23 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 5/16
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         r16
+                        \time 5/16
                         r16
                         c'8.
                         r16
+                        \time 5/16
                         c'4
                         r16
+                        \time 5/16
                         r16
                         c'8.
                         r16
@@ -6570,10 +6356,13 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -6582,38 +6371,30 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 5/8
                         r4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         r8..
                         c'8
                         ~
                         [
                         c'32
                         ]
+                        \time 5/8
                         c'2
                         ~
                         c'8
+                        \time 5/8
                         c'4
                         r16.
                         r16.
                         r16.
                         r16.
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -6635,10 +6416,13 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -6647,35 +6431,27 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 5/8
                         c'8..
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4
                         r8
                         r32
+                        \time 5/8
                         r2
                         r8
+                        \time 5/8
                         r4
                         c'16.
                         [
                         c'16.
                         c'16.
                         c'16.
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 >>
@@ -6705,10 +6481,13 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -6717,30 +6496,22 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 8/8
-                        s1 * 1
-                        \time 4/8
-                        s1 * 1/2
-                        \time 6/8
-                        s1 * 3/4
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         r8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'2..
+                        \time 4/8
                         c'2
+                        \time 6/8
                         c'2
                         ~
                         c'8
                         r8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -6763,10 +6534,13 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -6775,38 +6549,30 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 8/8
-                        s1 * 1
-                        \time 4/8
-                        s1 * 1/2
-                        \time 6/8
-                        s1 * 3/4
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         r8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4
                         ~
                         c'4
                         ~
                         c'4.
+                        \time 4/8
                         c'4
                         ~
                         c'4
+                        \time 6/8
                         c'4
                         ~
                         c'4
                         ~
                         c'8
                         r8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -6828,10 +6594,13 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     rmakers.rewrite_meter(),
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections= stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -6840,30 +6609,22 @@ class IncisedRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 8/8
-                        s1 * 1
-                        \time 4/8
-                        s1 * 1/2
-                        \time 6/8
-                        s1 * 3/4
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         r8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'2..
+                        \time 4/8
                         c'2
+                        \time 6/8
                         c'4.
                         ~
                         c'4
                         r8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -6894,72 +6655,69 @@ class IncisedRhythmMaker(RhythmMaker):
             ...     tag=abjad.Tag("INCISED_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(8, 8), (4, 8), (6, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 8/8
-                    s1 * 1
-                    \time 4/8
-                    s1 * 1/2
-                    \time 6/8
-                    s1 * 3/4
-                }
-                \context RhythmicStaff = "Staff"
-                {
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 16/9
-                    %! INCISED_RHYTHM_MAKER
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score, tags=True)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         %! INCISED_RHYTHM_MAKER
-                        r16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \tweak text #tuplet-number::calc-fraction-text
                         %! INCISED_RHYTHM_MAKER
-                        c'2
-                    %! INCISED_RHYTHM_MAKER
+                        \times 16/9
+                        %! INCISED_RHYTHM_MAKER
+                        {
+                            \time 8/8
+                            %! INCISED_RHYTHM_MAKER
+                            r16
+                            %! INCISED_RHYTHM_MAKER
+                            c'2
+                        %! INCISED_RHYTHM_MAKER
+                        }
+                        %! INCISED_RHYTHM_MAKER
+                        \tweak text #tuplet-number::calc-fraction-text
+                        %! INCISED_RHYTHM_MAKER
+                        \times 8/5
+                        %! INCISED_RHYTHM_MAKER
+                        {
+                            \time 4/8
+                            %! INCISED_RHYTHM_MAKER
+                            c'4
+                            ~
+                            %! INCISED_RHYTHM_MAKER
+                            c'16
+                        %! INCISED_RHYTHM_MAKER
+                        }
+                        %! INCISED_RHYTHM_MAKER
+                        \tweak text #tuplet-number::calc-fraction-text
+                        %! INCISED_RHYTHM_MAKER
+                        \times 12/7
+                        %! INCISED_RHYTHM_MAKER
+                        {
+                            \time 6/8
+                            %! INCISED_RHYTHM_MAKER
+                            c'4.
+                            %! INCISED_RHYTHM_MAKER
+                            r16
+                        %! INCISED_RHYTHM_MAKER
+                        }
                     }
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 8/5
-                    %! INCISED_RHYTHM_MAKER
-                    {
-                        %! INCISED_RHYTHM_MAKER
-                        c'4
-                        ~
-                        %! INCISED_RHYTHM_MAKER
-                        c'16
-                    %! INCISED_RHYTHM_MAKER
-                    }
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 12/7
-                    %! INCISED_RHYTHM_MAKER
-                    {
-                        %! INCISED_RHYTHM_MAKER
-                        c'4.
-                        %! INCISED_RHYTHM_MAKER
-                        r16
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
-                    %! INCISED_RHYTHM_MAKER
-                    }
-                }
-            >>
+                >>
 
         """
         return super().tag
@@ -6974,9 +6732,12 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -6985,26 +6746,20 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \time 1/4
-                    s1 * 1/4
+                    c'1 * 1/4
                     \time 3/16
-                    s1 * 3/16
+                    c'1 * 3/16
                     \time 5/8
-                    s1 * 5/8
+                    c'1 * 5/8
                     #(ly:expect-warning "strange time signature found")
                     \time 1/3
-                    s1 * 1/3
-                }
-                \context RhythmicStaff = "Staff"
-                {
-                    c'1 * 1/4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    c'1 * 3/16
-                    c'1 * 5/8
                     c'1 * 1/3
                 }
             >>
@@ -7079,9 +6834,12 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration()
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -7090,26 +6848,20 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 1/4
-                        s1 * 1/4
+                        c'1 * 1/4
                         \time 3/16
-                        s1 * 3/16
+                        c'1 * 3/16
                         \time 5/8
-                        s1 * 5/8
+                        c'1 * 5/8
                         #(ly:expect-warning "strange time signature found")
                         \time 1/3
-                        s1 * 1/3
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
-                        c'1 * 1/4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        c'1 * 3/16
-                        c'1 * 5/8
                         c'1 * 1/3
                     }
                 >>
@@ -7119,9 +6871,12 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 2))
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -7130,26 +6885,20 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 1/4
-                        s1 * 1/4
+                        c'2 * 2/4
                         \time 3/16
-                        s1 * 3/16
+                        c'2 * 6/16
                         \time 5/8
-                        s1 * 5/8
+                        c'2 * 10/8
                         #(ly:expect-warning "strange time signature found")
                         \time 1/3
-                        s1 * 1/3
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
-                        c'2 * 2/4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        c'2 * 6/16
-                        c'2 * 10/8
                         c'2 * 2/3
                     }
                 >>
@@ -7159,9 +6908,12 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 4))
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -7170,26 +6922,20 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 1/4
-                        s1 * 1/4
+                        c'4 * 4/4
                         \time 3/16
-                        s1 * 3/16
+                        c'4 * 12/16
                         \time 5/8
-                        s1 * 5/8
+                        c'4 * 20/8
                         #(ly:expect-warning "strange time signature found")
                         \time 1/3
-                        s1 * 1/3
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
-                        c'4 * 4/4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        c'4 * 12/16
-                        c'4 * 20/8
                         c'4 * 4/3
                     }
                 >>
@@ -7209,9 +6955,12 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration()
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -7220,26 +6969,20 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 1/4
-                        s1 * 1/4
+                        c'1 * 1/4
                         \time 3/16
-                        s1 * 3/16
+                        c'1 * 3/16
                         \time 5/8
-                        s1 * 5/8
+                        c'1 * 5/8
                         #(ly:expect-warning "strange time signature found")
                         \time 1/3
-                        s1 * 1/3
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
-                        c'1 * 1/4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        c'1 * 3/16
-                        c'1 * 5/8
                         c'1 * 1/3
                     }
                 >>
@@ -7251,9 +6994,12 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration(abjad.Rest)
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -7262,26 +7008,20 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 1/4
-                        s1 * 1/4
+                        r1 * 1/4
                         \time 3/16
-                        s1 * 3/16
+                        r1 * 3/16
                         \time 5/8
-                        s1 * 5/8
+                        r1 * 5/8
                         #(ly:expect-warning "strange time signature found")
                         \time 1/3
-                        s1 * 1/3
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
-                        r1 * 1/4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        r1 * 3/16
-                        r1 * 5/8
                         r1 * 1/3
                     }
                 >>
@@ -7296,9 +7036,12 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             ... )
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -7307,26 +7050,20 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 1/4
-                        s1 * 1/4
+                        R1 * 1/4
                         \time 3/16
-                        s1 * 3/16
+                        R1 * 3/16
                         \time 5/8
-                        s1 * 5/8
+                        R1 * 5/8
                         #(ly:expect-warning "strange time signature found")
                         \time 1/3
-                        s1 * 1/3
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
-                        R1 * 1/4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        R1 * 3/16
-                        R1 * 5/8
                         R1 * 1/3
                     }
                 >>
@@ -7338,9 +7075,12 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             >>> rhythm_maker = rmakers.multiplied_duration(abjad.Skip)
             >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
             >>> selections = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selections, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -7349,7 +7089,11 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 1/4
                         s1 * 1/4
@@ -7359,16 +7103,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                         s1 * 5/8
                         #(ly:expect-warning "strange time signature found")
                         \time 1/3
-                        s1 * 1/3
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
-                        s1 * 1/4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        s1 * 3/16
-                        s1 * 5/8
                         s1 * 1/3
                     }
                 >>
@@ -7392,10 +7126,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     ),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7404,29 +7141,20 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     r2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     c'4.
+                    \time 4/8
                     r2
+                    \time 3/8
                     c'4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -7440,10 +7168,13 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (5, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7452,30 +7183,21 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 5/8
-                    s1 * 5/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     r2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     r4.
+                    \time 4/8
                     r2
+                    \time 5/8
                     r2
                     r8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -7490,10 +7212,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     ),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7502,32 +7227,22 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     c'4.
+                    \time 4/8
                     r2
+                    \time 3/8
                     c'4.
+                    \time 2/8
                     c'4
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -7540,10 +7255,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     rmakers.beam(lambda _: abjad.select(_).logical_ties(pitched=True)),
         ... )
         >>> divisions = [(5, 32), (5, 32)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7552,23 +7270,19 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/32
-                    s1 * 5/32
-                    \time 5/32
-                    s1 * 5/32
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/32
                     c'8
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ~
                     [
                     c'32
                     ]
+                    \time 5/32
                     c'8
                     ~
                     [
@@ -7586,10 +7300,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     rmakers.beam_groups(lambda _: abjad.select(_).logical_ties()),
         ... )
         >>> divisions = [(5, 32), (5, 32)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7598,21 +7315,16 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/32
-                    s1 * 5/32
-                    \time 5/32
-                    s1 * 5/32
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \set stemLeftBeamCount = 0
                     \set stemRightBeamCount = 1
+                    \time 5/32
                     c'8
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ~
                     [
                     \set stemLeftBeamCount = 3
@@ -7620,6 +7332,7 @@ class NoteRhythmMaker(RhythmMaker):
                     c'32
                     \set stemLeftBeamCount = 1
                     \set stemRightBeamCount = 1
+                    \time 5/32
                     c'8
                     ~
                     \set stemLeftBeamCount = 3
@@ -7635,10 +7348,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         >>> stack = rmakers.NoteRhythmMaker()
         >>> divisions = [(5, 32), (5, 32)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7647,21 +7363,17 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/32
-                    s1 * 5/32
-                    \time 5/32
-                    s1 * 5/32
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/32
                     c'8
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ~
                     c'32
+                    \time 5/32
                     c'8
                     ~
                     c'32
@@ -7675,10 +7387,13 @@ class NoteRhythmMaker(RhythmMaker):
         >>> stack = rmakers.NoteRhythmMaker()
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7687,29 +7402,20 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 3/8
                     c'4.
+                    \time 4/8
                     c'2
+                    \time 3/8
                     c'4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -7726,10 +7432,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     rmakers.tie(selector),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7738,32 +7447,23 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    c'2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    ~
-                    c'4.
-                    ~
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'2
                     ~
+                    \time 3/8
                     c'4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    ~
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 3/8
+                    c'4.
                 }
             >>
 
@@ -7780,10 +7480,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     rmakers.tie(selector),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7792,31 +7495,22 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    c'2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    ~
-                    c'4.
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'2
                     ~
+                    \time 3/8
                     c'4.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 3/8
+                    c'4.
                 }
             >>
 
@@ -7829,10 +7523,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     rmakers.untie(),
         ... )
         >>> divisions = [(7, 16), (1, 4), (5, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7841,22 +7538,17 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \time 7/16
-                    s1 * 7/16
-                    \time 1/4
-                    s1 * 1/4
-                    \time 5/16
-                    s1 * 5/16
-                }
-                \context RhythmicStaff = "Staff"
-                {
                     c'4..
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 1/4
                     c'4
+                    \time 5/16
                     c'4
                     c'16
                 }
@@ -7868,10 +7560,13 @@ class NoteRhythmMaker(RhythmMaker):
 
         >>> stack = rmakers.NoteRhythmMaker()
         >>> divisions = [(5, 14), (3, 7)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7880,30 +7575,26 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    #(ly:expect-warning "strange time signature found")
-                    \time 5/14
-                    s1 * 5/14
-                    #(ly:expect-warning "strange time signature found")
-                    \time 3/7
-                    s1 * 3/7
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak edge-height #'(0.7 . 0)
                     \times 8/14
                     {
+                        #(ly:expect-warning "strange time signature found")
+                        \time 5/14
                         c'2
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         c'8
                     }
                     \tweak edge-height #'(0.7 . 0)
                     \times 4/7
                     {
+                        #(ly:expect-warning "strange time signature found")
+                        \time 3/7
                         c'2.
                     }
                 }
@@ -7918,10 +7609,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     rmakers.force_augmentation(),
         ... )
         >>> divisions = [(5, 14), (3, 7)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7930,25 +7624,19 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    #(ly:expect-warning "strange time signature found")
-                    \time 5/14
-                    s1 * 5/14
-                    #(ly:expect-warning "strange time signature found")
-                    \time 3/7
-                    s1 * 3/7
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \tweak edge-height #'(0.7 . 0)
                     \times 16/14
                     {
+                        #(ly:expect-warning "strange time signature found")
+                        \time 5/14
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         c'16
                     }
@@ -7956,6 +7644,8 @@ class NoteRhythmMaker(RhythmMaker):
                     \tweak edge-height #'(0.7 . 0)
                     \times 8/7
                     {
+                        #(ly:expect-warning "strange time signature found")
+                        \time 3/7
                         c'4.
                     }
                 }
@@ -7970,10 +7660,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     rmakers.force_rest(lambda _: abjad.select(_).logical_ties()[0]),
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -7982,32 +7675,23 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 5/8
-                    s1 * 5/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/8
                     r2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     r8
+                    \time 2/8
                     c'4
+                    \time 2/8
                     c'4
+                    \time 5/8
                     c'2
                     ~
                     c'8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -8020,10 +7704,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     rmakers.force_rest(lambda _: abjad.select(_).logical_ties()[:2]),
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8032,32 +7719,23 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 5/8
-                    s1 * 5/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/8
                     r2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     r8
+                    \time 2/8
                     r4
+                    \time 2/8
                     c'4
+                    \time 5/8
                     c'2
                     ~
                     c'8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -8072,10 +7750,13 @@ class NoteRhythmMaker(RhythmMaker):
         ...     ),
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8084,31 +7765,22 @@ class NoteRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 5/8
-                    s1 * 5/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    r2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    r8
-                    c'4
-                    c'4
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/8
                     r2
                     r8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    \time 2/8
+                    c'4
+                    \time 2/8
+                    c'4
+                    \time 5/8
+                    r2
+                    r8
                 }
             >>
 
@@ -8156,10 +7828,13 @@ class NoteRhythmMaker(RhythmMaker):
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker()
             >>> divisions = [(5, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = rhythm_maker(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -8168,21 +7843,17 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         c'2
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         c'8
+                        \time 3/8
                         c'4.
                     }
                 >>
@@ -8196,10 +7867,13 @@ class NoteRhythmMaker(RhythmMaker):
             ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 2))
             ... )
             >>> divisions = [(5, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = rhythm_maker(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -8208,23 +7882,19 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 5/8
-                        s1 * 5/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         c'4
                         ~
                         c'8
+                        \time 3/8
                         c'4.
                     }
                 >>
@@ -8238,10 +7908,13 @@ class NoteRhythmMaker(RhythmMaker):
             ...     rmakers.rewrite_meter(),
             ... )
             >>> divisions = [(3, 4), (6, 16), (9, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -8250,28 +7923,20 @@ class NoteRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \time 3/4
-                        s1 * 3/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 9/16
-                        s1 * 9/16
-                    }
-                    \context RhythmicStaff = "Staff"
-                    {
                         c'2.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \time 6/16
                         c'4.
+                        \time 9/16
                         c'4.
                         ~
                         c'8.
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -8289,37 +7954,38 @@ class NoteRhythmMaker(RhythmMaker):
             ...     tag=abjad.Tag("NOTE_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(5, 8), (3, 8)]
-            >>> selection = rhythm_maker(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = rhythm_maker(divisions)
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 3/8
-                    s1 * 3/8
-                }
-                \context RhythmicStaff = "Staff"
-                {
-                    %! NOTE_RHYTHM_MAKER
-                    c'2
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    ~
-                    %! NOTE_RHYTHM_MAKER
-                    c'8
-                    %! NOTE_RHYTHM_MAKER
-                    c'4.
-                }
-            >>
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score, tags=True)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 5/8
+                        %! NOTE_RHYTHM_MAKER
+                        c'2
+                        ~
+                        %! NOTE_RHYTHM_MAKER
+                        c'8
+                        \time 3/8
+                        %! NOTE_RHYTHM_MAKER
+                        c'4.
+                    }
+                >>
 
         """
         return super().tag
@@ -8339,10 +8005,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8351,27 +8020,19 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     c'8
                     c'8.
                     ]
+                    \time 4/8
                     c'4
                     c'16
                     [
@@ -8379,16 +8040,15 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ~
                     ]
+                    \time 3/8
                     c'8
                     c'4
+                    \time 4/8
                     c'16
                     [
                     c'8
                     c'8.
                     c'8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ]
                 }
             >>
@@ -8406,10 +8066,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8418,27 +8081,19 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     r16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     c'8
                     [
                     c'8.
                     ]
+                    \time 4/8
                     c'4
                     c'16
                     [
@@ -8446,17 +8101,16 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ~
                     ]
+                    \time 3/8
                     c'8
                     c'4
+                    \time 4/8
                     c'16
                     [
                     c'8
                     c'8.
                     ]
                     r8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -8475,10 +8129,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8487,38 +8144,29 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     r8
                     r8.
+                    \time 4/8
                     r4
                     r16
                     r8
                     r16
+                    \time 3/8
                     r8
                     r4
+                    \time 4/8
                     r16
                     r8
                     r8.
                     c'8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -8537,10 +8185,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = command(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = command(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8549,27 +8200,19 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     r4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     c'8
                     ~
                     \times 8/9
                     {
+                        \time 4/8
                         c'8
                         r4
                         c'8.
@@ -8578,17 +8221,16 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 3/8
                         c'16
                         c'4
                         c'8.
                         ~
                     }
+                    \time 4/8
                     c'16
                     c'4
                     c'8.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -8615,10 +8257,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8627,26 +8272,17 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/7
                     {
+                        \time 3/8
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8.
@@ -8656,6 +8292,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \times 8/9
                     {
+                        \time 4/8
                         c'8.
                         [
                         c'16
@@ -8666,6 +8303,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/8
                     {
+                        \time 3/8
                         c'4
                         c'16
                         [
@@ -8676,15 +8314,13 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \times 8/10
                     {
+                        \time 4/8
                         c'8
                         c'4
                         c'16
                         [
                         c'8
                         c'16
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -8700,10 +8336,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8712,40 +8351,13 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
                     [
                     c'16
@@ -8754,6 +8366,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     c'16
                     ]
+                    \time 4/8
                     c'16
                     [
                     c'16
@@ -8763,9 +8376,26 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     c'16
                     c'16
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
                     ]
                 }
             >>
@@ -8780,10 +8410,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8792,25 +8425,16 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \set stemLeftBeamCount = 0
                     \set stemRightBeamCount = 2
+                    \time 3/8
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     \set stemLeftBeamCount = 2
                     \set stemRightBeamCount = 2
@@ -8829,6 +8453,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     \set stemLeftBeamCount = 1
                     \set stemRightBeamCount = 2
+                    \time 4/8
                     c'16
                     \set stemLeftBeamCount = 2
                     \set stemRightBeamCount = 2
@@ -8853,6 +8478,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     \set stemLeftBeamCount = 1
                     \set stemRightBeamCount = 2
+                    \time 3/8
                     c'16
                     \set stemLeftBeamCount = 2
                     \set stemRightBeamCount = 2
@@ -8871,6 +8497,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     \set stemLeftBeamCount = 1
                     \set stemRightBeamCount = 2
+                    \time 4/8
                     c'16
                     \set stemLeftBeamCount = 2
                     \set stemRightBeamCount = 2
@@ -8893,9 +8520,6 @@ class TaleaRhythmMaker(RhythmMaker):
                     \set stemLeftBeamCount = 2
                     \set stemRightBeamCount = 0
                     c'16
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ]
                 }
             >>
@@ -8909,10 +8533,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8921,32 +8548,20 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    c'16
-                    c'16
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
                     c'16
                     c'16
                     c'16
                     c'16
                     c'16
-                    c'16
+                    \time 4/8
                     c'16
                     c'16
                     c'16
@@ -8955,6 +8570,14 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     c'16
                     c'16
+                    \time 3/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    \time 4/8
                     c'16
                     c'16
                     c'16
@@ -8963,11 +8586,6 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     c'16
                     c'16
-                    c'16
-                    c'16
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -8981,10 +8599,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -8993,34 +8614,13 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    ]
-                    c'16
-                    r16
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
                     [
                     c'16
@@ -9031,6 +8631,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     [
                     c'16
                     ]
+                    \time 4/8
                     c'16
                     r16
                     c'16
@@ -9042,6 +8643,20 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     [
                     c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
                     c'16
                     ]
                     r16
@@ -9051,9 +8666,6 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ]
                     r16
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -9067,10 +8679,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9079,23 +8694,14 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     c'16
                     c'16
@@ -9103,6 +8709,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     c'16
                     ]
+                    \time 4/8
                     c'16
                     [
                     r16
@@ -9113,6 +8720,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     c'16
                     ]
+                    \time 3/8
                     c'16
                     [
                     r16
@@ -9121,6 +8729,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     r16
                     ]
+                    \time 4/8
                     c'16
                     [
                     c'16
@@ -9130,9 +8739,6 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     c'16
                     r16
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ]
                 }
             >>
@@ -9150,10 +8756,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9162,24 +8771,15 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     \override Staff.Stem.stemlet-length = 0.75
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     c'16
                     c'16
@@ -9188,6 +8788,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \revert Staff.Stem.stemlet-length
                     c'16
                     ]
+                    \time 4/8
                     \override Staff.Stem.stemlet-length = 0.75
                     c'16
                     [
@@ -9200,6 +8801,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \revert Staff.Stem.stemlet-length
                     c'16
                     ]
+                    \time 3/8
                     \override Staff.Stem.stemlet-length = 0.75
                     c'16
                     [
@@ -9210,6 +8812,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \revert Staff.Stem.stemlet-length
                     r16
                     ]
+                    \time 4/8
                     \override Staff.Stem.stemlet-length = 0.75
                     c'16
                     [
@@ -9221,9 +8824,6 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     \revert Staff.Stem.stemlet-length
                     r16
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ]
                 }
             >>
@@ -9238,10 +8838,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9250,44 +8853,35 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    c'4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    c'8.
-                    [
-                    c'8.
-                    ]
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'4
                     ~
                     c'16
                     [
                     c'8.
                     ]
+                    \time 3/8
                     c'8.
                     [
                     c'8.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    ]
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
                     ]
                 }
             >>
@@ -9307,10 +8901,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9319,34 +8916,13 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    c'4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ~
-                    ]
-                    c'8.
-                    [
-                    c'8.
-                    ~
-                    ]
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'4
                     ~
                     c'16
@@ -9354,12 +8930,24 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'8.
                     ~
                     ]
+                    \time 3/8
                     c'8.
                     [
                     c'8.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    ~
+                    ]
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
                     ]
                 }
             >>
@@ -9379,10 +8967,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9391,33 +8982,13 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
-                    c'4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ~
-                    ]
-                    c'8.
-                    [
-                    c'8.
-                    ]
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'4
                     ~
                     c'16
@@ -9425,12 +8996,23 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'8.
                     ~
                     ]
+                    \time 3/8
                     c'8.
                     [
                     c'8.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
+                    ]
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ~
+                    ]
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
                     ]
                 }
             >>
@@ -9451,10 +9033,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9463,43 +9048,34 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
                     c'4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ~
                     c'16
                     r8.
+                    \time 3/8
                     c'8.
                     ~
                     [
                     c'8.
                     ~
                     ]
+                    \time 4/8
                     c'4
                     ~
                     c'16
                     r8.
+                    \time 3/8
                     c'8.
                     ~
                     [
                     c'8.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ]
                 }
             >>
@@ -9540,10 +9116,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9552,26 +9131,17 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/7
                     {
+                        \time 3/8
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8.
@@ -9581,6 +9151,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \times 8/9
                     {
+                        \time 4/8
                         c'8.
                         [
                         c'16
@@ -9591,6 +9162,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 3/8
                         c'4
                         c'16
                         [
@@ -9601,15 +9173,13 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \times 4/5
                     {
+                        \time 4/8
                         c'8
                         c'4
                         c'16
                         [
                         c'8
                         c'16
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -9624,10 +9194,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9636,26 +9209,17 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/7
                     {
+                        \time 3/8
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8.
@@ -9665,6 +9229,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \times 8/9
                     {
+                        \time 4/8
                         c'8.
                         [
                         c'16
@@ -9675,6 +9240,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/8
                     {
+                        \time 3/8
                         c'4
                         c'16
                         [
@@ -9685,15 +9251,13 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \times 8/10
                     {
+                        \time 4/8
                         c'8
                         c'4
                         c'16
                         [
                         c'8
                         c'16
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -9712,10 +9276,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9724,27 +9291,14 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     c'16
                     c'16
@@ -9753,12 +9307,14 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
+                        \time 1/4
                         c'16
                         [
                         c'16
                         c'16
                         ]
                     }
+                    \time 1/4
                     c'16
                     [
                     c'16
@@ -9768,12 +9324,14 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
+                        \time 1/4
                         c'16
                         [
                         c'16
                         c'16
                         ]
                     }
+                    \time 1/4
                     c'16
                     [
                     c'16
@@ -9783,6 +9341,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
+                        \time 1/4
                         c'16
                         [
                         c'16
@@ -9801,10 +9360,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9813,27 +9375,14 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                    \time 1/4
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     c'16
                     c'16
@@ -9842,12 +9391,14 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
+                        \time 1/4
                         c'16
                         [
                         c'16
                         c'16
                         ]
                     }
+                    \time 1/4
                     c'16
                     [
                     c'16
@@ -9857,12 +9408,14 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
+                        \time 1/4
                         c'16
                         [
                         c'16
                         c'16
                         ]
                     }
+                    \time 1/4
                     c'16
                     [
                     c'16
@@ -9872,6 +9425,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
+                        \time 1/4
                         c'16
                         [
                         c'16
@@ -9894,10 +9448,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9906,38 +9463,31 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8.
                         ]
                     }
                     \times 2/3
                     {
+                        \time 4/8
                         c'4.
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'8.
                         [
                         c'8.
@@ -9945,11 +9495,9 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                     \times 2/3
                     {
+                        \time 4/8
                         c'4.
                         c'4.
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 }
             >>
@@ -9963,10 +9511,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -9975,39 +9526,16 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'4
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
+                        \time 3/8
                         c'8.
                         [
                         c'8.
@@ -10016,11 +9544,25 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/8
                         c'4
                         c'4
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        c'4
                     }
                 }
             >>
@@ -10039,10 +9581,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10051,41 +9596,16 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'4
-                        c'4
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
+                        \time 3/8
                         c'8.
                         [
                         c'8.
@@ -10095,11 +9615,27 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/8
                         c'4
                         c'4
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        c'4
                     }
                 }
             >>
@@ -10114,10 +9650,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10126,43 +9665,16 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        ~
-                        [
-                        c'8.
-                        ~
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'4
-                        ~
-                        c'4
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
+                        \time 3/8
                         c'8.
                         ~
                         [
@@ -10173,12 +9685,30 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/8
                         c'4
                         ~
                         c'4
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        ~
+                        [
+                        c'8.
+                        ~
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        ~
+                        c'4
                     }
                 }
             >>
@@ -10195,10 +9725,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10207,26 +9740,17 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/7
                     {
+                        \time 3/8
                         c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8.
                         ]
@@ -10235,6 +9759,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/8
                         r4
                         r16
                         r8.
@@ -10242,6 +9767,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/7
                     {
+                        \time 3/8
                         r8.
                         c'8.
                         [
@@ -10252,11 +9778,9 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/8
                         c'8
                         r4.
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 }
             >>
@@ -10269,10 +9793,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.rewrite_rest_filled(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10281,26 +9808,17 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/7
                     {
+                        \time 3/8
                         c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8.
                         ]
@@ -10309,11 +9827,13 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/8
                         r2
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 6/7
                     {
+                        \time 3/8
                         r8.
                         c'8.
                         [
@@ -10324,11 +9844,9 @@ class TaleaRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 4/8
                         c'8
                         r4.
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 }
             >>
@@ -10343,10 +9861,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10355,27 +9876,19 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     c'8
                     c'8.
                     ]
+                    \time 4/8
                     c'4
                     c'16
                     [
@@ -10383,16 +9896,15 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ~
                     ]
+                    \time 3/8
                     c'8
                     c'4
+                    \time 4/8
                     c'16
                     [
                     c'8
                     c'8.
                     c'8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ]
                 }
             >>
@@ -10411,10 +9923,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10423,34 +9938,25 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     c'8
                     c'8.
                     ]
+                    \time 4/8
                     r2
+                    \time 3/8
                     c'8
                     c'4
+                    \time 4/8
                     r2
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -10470,10 +9976,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10482,35 +9991,26 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     [
                     c'8
                     c'8.
                     ]
+                    \time 4/8
                     c'2
                     ~
+                    \time 3/8
                     c'8
                     c'4
+                    \time 4/8
                     c'2
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -10535,10 +10035,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10547,36 +10050,27 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     r4.
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     \times 8/9
                     {
+                        \time 4/8
                         c'8
                         c'4
                         c'8.
                     }
+                    \time 3/8
                     r4.
+                    \time 4/8
                     c'16
                     c'4
                     c'8.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -10606,10 +10100,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10618,38 +10115,29 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     c'4
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     c'8
                     ~
                     \times 8/9
                     {
+                        \time 4/8
                         c'8
                         c'4
                         c'8.
                     }
+                    \time 3/8
                     r4.
+                    \time 4/8
                     c'16
                     c'4
                     c'8.
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -10678,10 +10166,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10690,27 +10181,19 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     r16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     c'8
                     [
                     c'8.
                     ]
+                    \time 4/8
                     c'4
                     c'16
                     [
@@ -10718,17 +10201,16 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     ~
                     ]
+                    \time 3/8
                     c'8
                     c'4
+                    \time 4/8
                     c'16
                     [
                     c'8
                     ]
                     r8.
                     r8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -10747,10 +10229,13 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -10759,43 +10244,34 @@ class TaleaRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
                 {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
                     r16
-                    - \tweak staff-padding 11
-                    - \tweak transparent ##t
-                    ^ \markup I
                     c'8
                     [
                     c'8.
                     ]
+                    \time 4/8
                     r4
                     c'16
                     [
                     c'8
                     c'16
                     ]
+                    \time 3/8
                     r8
                     c'4
+                    \time 4/8
                     r16
                     c'8
                     [
                     c'8.
                     c'8
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                     ]
                 }
             >>
@@ -11130,10 +10606,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11142,41 +10621,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
-                        c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        ~
-                        c'16
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 5/8
                         c'4
                         ~
                         c'16
                         c'4
                         ~
                         c'16
+                        \time 5/8
                         c'4
                         ~
                         c'16
                         c'4
                         ~
                         c'16
+                        \time 5/8
                         c'4
                         ~
                         c'16
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        c'4
+                        ~
+                        c'16
                     }
                 >>
 
@@ -11194,10 +10665,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(5, 8), (5, 8), (5, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11206,41 +10680,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                        \time 5/8
-                        s1 * 5/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
-                        c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        ~
-                        c'4
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 5/8
                         c'16
                         ~
                         c'4
                         c'16
                         ~
                         c'4
+                        \time 5/8
                         c'16
                         ~
                         c'4
                         c'16
                         ~
                         c'4
+                        \time 5/8
                         c'16
                         ~
                         c'4
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        c'16
+                        ~
+                        c'4
                     }
                 >>
 
@@ -11254,10 +10720,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 4), (3, 4)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11266,19 +10735,14 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/4
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16
                         c'16
@@ -11286,6 +10750,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                         c'4
                         c'4
+                        \time 3/4
                         c'16
                         [
                         c'16
@@ -11310,10 +10775,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 4), (3, 4)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11322,19 +10790,14 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/4
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'16
                         c'16
@@ -11346,6 +10809,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         ~
                         c'8
                         ]
+                        \time 3/4
                         c'16
                         [
                         c'16
@@ -11374,10 +10838,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.rewrite_meter(),
             ... )
             >>> divisions = [(3, 4), (3, 4), (3, 4)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11386,21 +10853,14 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                        \time 3/4
-                        s1 * 3/4
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/4
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         c'16
                         [
@@ -11412,6 +10872,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         ~
                         ]
+                        \time 3/4
                         c'8
                         [
                         c'8
@@ -11427,6 +10888,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'16
                         ~
                         ]
+                        \time 3/4
                         c'8.
                         [
                         c'16
@@ -11434,9 +10896,6 @@ class TaleaRhythmMaker(RhythmMaker):
                         ]
                         c'4
                         c'4
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -11458,10 +10917,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11470,27 +10932,19 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8.
                         ]
+                        \time 4/8
                         c'4
                         c'16
                         [
@@ -11498,16 +10952,15 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'16
                         ~
                         ]
+                        \time 3/8
                         c'8
                         c'4
+                        \time 4/8
                         c'16
                         [
                         c'8
                         c'8.
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 >>
@@ -11521,10 +10974,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11533,26 +10989,17 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 3/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             c'8.
@@ -11560,6 +11007,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         }
                         \times 8/9
                         {
+                            \time 4/8
                             c'4
                             c'16
                             [
@@ -11571,20 +11019,19 @@ class TaleaRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 3/8
                             c'16
                             c'4
                             c'16
                         }
                         \times 8/9
                         {
+                            \time 4/8
                             c'8
                             [
                             c'8.
                             ]
                             c'4
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                         }
                     }
                 >>
@@ -11599,10 +11046,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11611,26 +11061,17 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 3/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             c'8.
@@ -11638,6 +11079,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         }
                         \times 4/5
                         {
+                            \time 4/8
                             c'4
                             c'16
                             [
@@ -11648,6 +11090,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 3/8
                             c'4
                             c'16
                             [
@@ -11657,6 +11100,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         }
                         \times 4/5
                         {
+                            \time 4/8
                             c'16
                             [
                             c'8.
@@ -11665,9 +11109,6 @@ class TaleaRhythmMaker(RhythmMaker):
                             c'16
                             [
                             c'16
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -11686,10 +11127,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11698,26 +11142,17 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 3/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             c'8.
@@ -11726,6 +11161,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 8/7
                         {
+                            \time 4/8
                             c'4
                             c'16
                             [
@@ -11735,6 +11171,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 3/8
                             c'8.
                             [
                             c'8.
@@ -11744,14 +11181,12 @@ class TaleaRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 8/7
                         {
+                            \time 4/8
                             c'16
                             [
                             c'16
                             c'8
                             c'8.
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                             ]
                         }
                     }
@@ -11779,10 +11214,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     )
 
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11791,39 +11229,33 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
                         c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         c'8.
                         ]
+                        \time 3/8
                         c'4
                         c'16
                         [
                         c'16
                         ~
                         ]
+                        \time 3/8
                         c'16
                         [
                         c'8.
                         c'8
                         ~
                         ]
+                        \time 3/8
                         c'8
                         [
                         c'16
@@ -11878,10 +11310,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = command(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = command(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11890,27 +11325,19 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'8
                         ~
                         \times 8/9
                         {
+                            \time 4/8
                             c'8
                             c'4
                             c'8.
@@ -11919,17 +11346,16 @@ class TaleaRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/4
                         {
+                            \time 3/8
                             c'16
                             c'4
                             c'8.
                             ~
                         }
+                        \time 4/8
                         c'16
                         c'4
                         c'8.
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -11949,10 +11375,13 @@ class TaleaRhythmMaker(RhythmMaker):
             divisions and 31 counts:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = command(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = command(divisions, previous_state=state)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -11961,47 +11390,38 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
+                            \time 3/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             c'4
                             c'8
                             ~
                         }
                         \times 4/5
                         {
+                            \time 4/8
                             c'8
                             c'4
                             c'4
                         }
+                        \time 3/8
                         c'4
                         c'8
                         ~
                         \times 8/9
                         {
+                            \time 4/8
                             c'8
                             c'4
                             c'8.
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                         }
                     }
                 >>
@@ -12022,10 +11442,13 @@ class TaleaRhythmMaker(RhythmMaker):
             31 counts:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = command(divisions, previous_state=state)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = command(divisions, previous_state=state)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -12034,30 +11457,22 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/4
                         {
+                            \time 3/8
                             c'16
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             c'4
                             c'8.
                             ~
                         }
+                        \time 4/8
                         c'16
                         c'4
                         c'8.
@@ -12065,6 +11480,7 @@ class TaleaRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
+                            \time 3/8
                             c'16
                             c'4
                             c'8
@@ -12072,12 +11488,10 @@ class TaleaRhythmMaker(RhythmMaker):
                         }
                         \times 4/5
                         {
+                            \time 4/8
                             c'8
                             c'4
                             c'4
-                            - \tweak staff-padding 18
-                            - \tweak transparent ##t
-                            ^ \markup I
                         }
                     }
                 >>
@@ -12111,104 +11525,100 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     tag=abjad.Tag("TALEA_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
-                \context RhythmicStaff = "Staff"
-                {
-                    %! TALEA_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! TALEA_RHYTHM_MAKER
-                    \times 1/1
-                    %! TALEA_RHYTHM_MAKER
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score, tags=True)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         %! TALEA_RHYTHM_MAKER
-                        c'16
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \tweak text #tuplet-number::calc-fraction-text
                         %! TALEA_RHYTHM_MAKER
-                        [
+                        \times 1/1
                         %! TALEA_RHYTHM_MAKER
-                        c'8
+                        {
+                            \time 3/8
+                            %! TALEA_RHYTHM_MAKER
+                            c'16
+                            %! TALEA_RHYTHM_MAKER
+                            [
+                            %! TALEA_RHYTHM_MAKER
+                            c'8
+                            %! TALEA_RHYTHM_MAKER
+                            c'8.
+                            %! TALEA_RHYTHM_MAKER
+                            ]
                         %! TALEA_RHYTHM_MAKER
-                        c'8.
+                        }
                         %! TALEA_RHYTHM_MAKER
-                        ]
-                    %! TALEA_RHYTHM_MAKER
+                        \times 8/9
+                        %! TALEA_RHYTHM_MAKER
+                        {
+                            \time 4/8
+                            %! TALEA_RHYTHM_MAKER
+                            c'4
+                            %! TALEA_RHYTHM_MAKER
+                            c'16
+                            %! TALEA_RHYTHM_MAKER
+                            [
+                            %! TALEA_RHYTHM_MAKER
+                            c'8
+                            %! TALEA_RHYTHM_MAKER
+                            c'8
+                            ~
+                            %! TALEA_RHYTHM_MAKER
+                            ]
+                        %! TALEA_RHYTHM_MAKER
+                        }
+                        %! TALEA_RHYTHM_MAKER
+                        \tweak text #tuplet-number::calc-fraction-text
+                        %! TALEA_RHYTHM_MAKER
+                        \times 1/1
+                        %! TALEA_RHYTHM_MAKER
+                        {
+                            \time 3/8
+                            %! TALEA_RHYTHM_MAKER
+                            c'16
+                            %! TALEA_RHYTHM_MAKER
+                            c'4
+                            %! TALEA_RHYTHM_MAKER
+                            c'16
+                        %! TALEA_RHYTHM_MAKER
+                        }
+                        %! TALEA_RHYTHM_MAKER
+                        \times 8/9
+                        %! TALEA_RHYTHM_MAKER
+                        {
+                            \time 4/8
+                            %! TALEA_RHYTHM_MAKER
+                            c'8
+                            %! TALEA_RHYTHM_MAKER
+                            [
+                            %! TALEA_RHYTHM_MAKER
+                            c'8.
+                            %! TALEA_RHYTHM_MAKER
+                            ]
+                            %! TALEA_RHYTHM_MAKER
+                            c'4
+                        %! TALEA_RHYTHM_MAKER
+                        }
                     }
-                    %! TALEA_RHYTHM_MAKER
-                    \times 8/9
-                    %! TALEA_RHYTHM_MAKER
-                    {
-                        %! TALEA_RHYTHM_MAKER
-                        c'4
-                        %! TALEA_RHYTHM_MAKER
-                        c'16
-                        %! TALEA_RHYTHM_MAKER
-                        [
-                        %! TALEA_RHYTHM_MAKER
-                        c'8
-                        %! TALEA_RHYTHM_MAKER
-                        c'8
-                        ~
-                        %! TALEA_RHYTHM_MAKER
-                        ]
-                    %! TALEA_RHYTHM_MAKER
-                    }
-                    %! TALEA_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! TALEA_RHYTHM_MAKER
-                    \times 1/1
-                    %! TALEA_RHYTHM_MAKER
-                    {
-                        %! TALEA_RHYTHM_MAKER
-                        c'16
-                        %! TALEA_RHYTHM_MAKER
-                        c'4
-                        %! TALEA_RHYTHM_MAKER
-                        c'16
-                    %! TALEA_RHYTHM_MAKER
-                    }
-                    %! TALEA_RHYTHM_MAKER
-                    \times 8/9
-                    %! TALEA_RHYTHM_MAKER
-                    {
-                        %! TALEA_RHYTHM_MAKER
-                        c'8
-                        %! TALEA_RHYTHM_MAKER
-                        [
-                        %! TALEA_RHYTHM_MAKER
-                        c'8.
-                        %! TALEA_RHYTHM_MAKER
-                        ]
-                        %! TALEA_RHYTHM_MAKER
-                        c'4
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
-                    %! TALEA_RHYTHM_MAKER
-                    }
-                }
-            >>
+                >>
 
         """
         return super().tag
@@ -12234,10 +11644,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -12246,43 +11659,34 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
                         c'32
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'32
                         c'32
                         c'32
                         ]
                         c'4
+                        \time 4/8
                         r8
                         c'4
                         c'8
                         ~
+                        \time 3/8
                         c'8
                         r8
                         c'8
                         ~
+                        \time 4/8
                         c'8
                         c'4
                         r8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -12298,10 +11702,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -12310,33 +11717,24 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
                         c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
+                        \time 4/8
                         c'2
                         ~
+                        \time 3/8
                         c'8
                         c'4
                         ~
+                        \time 4/8
                         c'2
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 >>
 
@@ -12354,10 +11752,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -12366,28 +11767,22 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 4/8
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
-                        c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        r8
-                        c'4
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
                         c'4
                         r8
+                        \time 4/8
                         c'4
+                        c'4
+                        \time 3/8
+                        r8
+                        c'4
+                        \time 4/8
                         c'4
                         r8
                         c'32
@@ -12395,9 +11790,6 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'32
                         c'32
                         c'32
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 >>
@@ -12416,10 +11808,13 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.extract_trivial(),
             ... )
             >>> divisions = [(3, 8), (3, 8)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -12428,19 +11823,15 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 3/8
-                        s1 * 3/8
-                        \time 3/8
-                        s1 * 3/8
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
                         c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \time 3/8
                         c'4
                         ~
                         c'16
@@ -12467,10 +11858,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -12479,36 +11873,29 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 1/2
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 1/2
                         c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4.
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 5/16
                         c'8.
                         [
                         c'8
@@ -12517,6 +11904,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 5/16
                         c'8.
                         [
                         c'8
@@ -12534,10 +11922,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -12546,43 +11937,37 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 1/2
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 1/2
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         r4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 3/8
                         c'4.
                         c'8
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
+                        \time 5/16
                         c'8.
                         r8.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/4
                     {
+                        \time 5/16
                         c'8.
                         [
                         c'16
@@ -12600,10 +11985,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file)  # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -12612,45 +12000,16 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 6/8
-                    s1 * 3/4
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
-                        c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'16.
-                        [
-                        c'16.
-                        c'16.
-                        c'16.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
+                        \time 5/8
                         c'8.
                         [
                         c'8.
@@ -12661,14 +12020,34 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
+                        c'16.
+                        [
+                        c'16.
+                        c'16.
+                        c'16.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 6/8
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
                         c'8
                         [
                         c'8
                         c'8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -12683,10 +12062,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file)  # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -12695,45 +12077,16 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 6/8
-                    s1 * 3/4
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
-                        c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'16.
-                        [
-                        c'16.
-                        c'16.
-                        c'16.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
+                        \time 5/8
                         c'8.
                         [
                         c'8.
@@ -12744,14 +12097,34 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
+                        c'16.
+                        [
+                        c'16.
+                        c'16.
+                        c'16.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 6/8
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
                         c'8
                         [
                         c'8
                         c'8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -12766,10 +12139,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam_groups(lambda _: abjad.select(_).tuplets()),
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file)  # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -12778,28 +12154,19 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 6/8
-                    s1 * 3/4
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/9
                     {
                         \set stemLeftBeamCount = 0
                         \set stemRightBeamCount = 1
+                        \time 5/8
                         c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 0
@@ -12818,6 +12185,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4.
                         \set stemLeftBeamCount = 0
                         \set stemRightBeamCount = 1
@@ -12832,6 +12200,7 @@ class TupletRhythmMaker(RhythmMaker):
                     {
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 1
+                        \time 6/8
                         c'8
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 0
@@ -12849,6 +12218,7 @@ class TupletRhythmMaker(RhythmMaker):
                     }
                     \times 4/5
                     {
+                        \time 4/8
                         c'4.
                         \set stemLeftBeamCount = 0
                         \set stemRightBeamCount = 1
@@ -12857,9 +12227,6 @@ class TupletRhythmMaker(RhythmMaker):
                         \set stemLeftBeamCount = 1
                         \set stemRightBeamCount = 0
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ]
                     }
                 }
@@ -12871,10 +12238,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> rhythm_maker = rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)])
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file)  # doctest: +SKIP
+        >>> selections = rhythm_maker(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -12883,26 +12253,17 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 5/8
-                    s1 * 5/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 6/8
-                    s1 * 3/4
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/9
                     {
+                        \time 5/8
                         c'8.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'8.
                         c'4.
                         c'8.
@@ -12911,6 +12272,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4.
                         c'8
                         c'8
@@ -12918,6 +12280,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 6/8
                         c'8
                         c'8
                         c'4
@@ -12926,12 +12289,10 @@ class TupletRhythmMaker(RhythmMaker):
                     }
                     \times 4/5
                     {
+                        \time 4/8
                         c'4.
                         c'8
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
                     }
                 }
             >>
@@ -12945,10 +12306,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -12957,28 +12321,22 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 1/2
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 1/2
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'16.
                         r8.
                         c'16.
@@ -12986,6 +12344,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 5/16
                         c'8
                         [
                         c'8.
@@ -13008,10 +12367,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13020,29 +12382,23 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 1/2
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 1/2
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4.
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'16.
                         r8.
                         c'16.
@@ -13051,6 +12407,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 5/16
                         c'8
                         [
                         c'8.
@@ -13073,10 +12430,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13085,31 +12445,23 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 1/2
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 1/2
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4.
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'16.
                         r8.
                         c'16.
@@ -13117,6 +12469,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 5/16
                         c'8
                         [
                         c'8.
@@ -13126,6 +12479,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
+                        \time 5/16
                         c'16.
                         r8.
                         c'16.
@@ -13143,10 +12497,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(2, 8), (2, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13155,32 +12512,27 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 2/3
                     {
-                        c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        c'8
-                    }
-                    \times 2/3
-                    {
+                        \time 2/8
                         c'4
                         c'8
                     }
                     \times 2/3
                     {
+                        \time 2/8
+                        c'4
+                        c'8
+                    }
+                    \times 2/3
+                    {
+                        \time 4/8
                         c'2
                         c'4
                     }
@@ -13197,10 +12549,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(2, 8), (2, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13209,31 +12564,16 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 2/8
-                    s1 * 1/4
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
-                        c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
+                        \time 2/8
                         c'8
                         [
                         c'16
@@ -13242,6 +12582,16 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
+                        \time 2/8
+                        c'8
+                        [
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 4/8
                         c'4
                         c'8
                     }
@@ -13258,10 +12608,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.force_diminution(),
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13270,24 +12623,17 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 2/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
@@ -13295,6 +12641,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'8.
                         [
                         c'8.
@@ -13303,6 +12650,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 7/16
                         c'8..
                         [
                         c'8..
@@ -13322,10 +12670,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13334,24 +12685,17 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 2/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
@@ -13359,12 +12703,14 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
+                        \time 3/8
                         c'4
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 7/8
                     {
+                        \time 7/16
                         c'4
                         c'4
                     }
@@ -13381,10 +12727,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.force_augmentation(),
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13393,24 +12742,17 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 2/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
@@ -13418,6 +12760,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'8.
                         [
                         c'8.
@@ -13426,6 +12769,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 7/16
                         c'8..
                         [
                         c'8..
@@ -13445,10 +12789,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.force_augmentation(),
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13457,24 +12804,17 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 2/8
-                    s1 * 1/4
-                    \time 3/8
-                    s1 * 3/8
-                    \time 7/16
-                    s1 * 7/16
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 2/8
                         c'8
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         [
                         c'8
                         ]
@@ -13482,6 +12822,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
@@ -13490,6 +12831,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 7/4
                     {
+                        \time 7/16
                         c'8
                         [
                         c'8
@@ -13508,10 +12850,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.rewrite_dots(),
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13520,42 +12865,36 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         r4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
+                        \time 3/8
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
@@ -13577,10 +12916,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.trivialize(),
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13589,42 +12931,36 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         r4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 3/8
                         c'8.
                         [
                         c'8.
@@ -13646,10 +12982,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.rewrite_dots(),
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13658,42 +12997,36 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                    \time 3/8
-                    s1 * 3/8
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         r4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
+                        \time 3/8
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
+                        \time 3/8
                         c'8
                         [
                         c'8
@@ -13717,10 +13050,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13729,32 +13065,24 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 2/8
-                    s1 * 1/4
-                    \time 3/8
-                    s1 * 3/8
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4.
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -13764,6 +13092,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4
                         c'4.
                         ~
@@ -13771,6 +13100,7 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
+                        \time 2/8
                         c'8
                         [
                         c'8
@@ -13796,10 +13126,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13808,29 +13141,21 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 2/8
-                    s1 * 1/4
-                    \time 3/8
-                    s1 * 3/8
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'4.
                         ~
                     }
+                    \time 2/8
                     c'8
                     [
                     c'8
@@ -13839,10 +13164,12 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4
                         c'4.
                         ~
                     }
+                    \time 2/8
                     c'8
                     [
                     c'8
@@ -13865,10 +13192,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.tie(lambda _: abjad.select(_).notes()[:-1]),
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13877,30 +13207,22 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 2/8
-                    s1 * 1/4
-                    \time 3/8
-                    s1 * 3/8
-                    \time 2/8
-                    s1 * 1/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         ~
                         c'4.
                         ~
                     }
+                    \time 2/8
                     c'8
                     [
                     ~
@@ -13910,11 +13232,13 @@ class TupletRhythmMaker(RhythmMaker):
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
+                        \time 3/8
                         c'4
                         ~
                         c'4.
                         ~
                     }
+                    \time 2/8
                     c'8
                     [
                     ~
@@ -13929,10 +13253,13 @@ class TupletRhythmMaker(RhythmMaker):
 
         >>> rhythm_maker = rmakers.tuplet([(4, 1)])
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = rhythm_maker(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = rhythm_maker(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -13941,44 +13268,35 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
-                        c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
-                        c'16.
-                    }
-                    \times 4/5
-                    {
-                        c'2
-                        c'8
-                    }
-                    \times 4/5
-                    {
+                        \time 3/8
                         c'4.
                         c'16.
                     }
                     \times 4/5
                     {
+                        \time 4/8
                         c'2
                         c'8
-                        - \tweak staff-padding 18
-                        - \tweak transparent ##t
-                        ^ \markup I
+                    }
+                    \times 4/5
+                    {
+                        \time 3/8
+                        c'4.
+                        c'16.
+                    }
+                    \times 4/5
+                    {
+                        \time 4/8
+                        c'2
+                        c'8
                     }
                 }
             >>
@@ -13998,10 +13316,13 @@ class TupletRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selection = stack(divisions)
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = stack(divisions)
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -14010,37 +13331,28 @@ class TupletRhythmMaker(RhythmMaker):
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 4/8
-                    s1 * 1/2
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \times 4/5
                     {
+                        \time 3/8
                         c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
                         c'16.
                     }
+                    \time 4/8
                     r2
                     \times 4/5
                     {
+                        \time 3/8
                         c'4.
                         c'16.
                     }
+                    \time 4/8
                     r2
-                    - \tweak staff-padding 18
-                    - \tweak transparent ##t
-                    ^ \markup I
                 }
             >>
 
@@ -14107,10 +13419,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.rewrite_dots(),
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14119,42 +13434,36 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 4/5
                         {
+                            \time 2/16
                             c'32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             ]
                         }
                         \times 4/5
                         {
+                            \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
+                            \time 6/16
                             c'16
                             c'4
                         }
                         \times 4/5
                         {
+                            \time 8/16
                             c'8
                             c'2
                         }
@@ -14174,10 +13483,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.denominator((1, 16)),
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14186,42 +13498,36 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 4/5
                         {
+                            \time 2/16
                             c'32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             ]
                         }
                         \times 4/5
                         {
+                            \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
+                            \time 6/16
                             c'16
                             c'4
                         }
                         \times 8/10
                         {
+                            \time 8/16
                             c'8
                             c'2
                         }
@@ -14240,10 +13546,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.denominator((1, 32)),
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14252,42 +13561,36 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 4/5
                         {
+                            \time 2/16
                             c'32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             ]
                         }
                         \times 8/10
                         {
+                            \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 12/10
                         {
+                            \time 6/16
                             c'16
                             c'4
                         }
                         \times 16/20
                         {
+                            \time 8/16
                             c'8
                             c'2
                         }
@@ -14306,10 +13609,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.denominator((1, 64)),
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14318,42 +13624,36 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 8/10
                         {
+                            \time 2/16
                             c'32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             ]
                         }
                         \times 16/20
                         {
+                            \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 24/20
                         {
+                            \time 6/16
                             c'16
                             c'4
                         }
                         \times 32/40
                         {
+                            \time 8/16
                             c'8
                             c'2
                         }
@@ -14374,10 +13674,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.denominator(8),
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14386,42 +13689,36 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 8/10
                         {
+                            \time 2/16
                             c'32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             ]
                         }
                         \times 8/10
                         {
+                            \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
+                            \time 6/16
                             c'16
                             c'4
                         }
                         \times 8/10
                         {
+                            \time 8/16
                             c'8
                             c'2
                         }
@@ -14440,10 +13737,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.denominator(12),
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14452,42 +13752,36 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 12/15
                         {
+                            \time 2/16
                             c'32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             ]
                         }
                         \times 12/15
                         {
+                            \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 12/10
                         {
+                            \time 6/16
                             c'16
                             c'4
                         }
                         \times 12/15
                         {
+                            \time 8/16
                             c'8
                             c'2
                         }
@@ -14506,10 +13800,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.denominator(13),
             ... )
             >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14518,42 +13815,36 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 2/16
-                        s1 * 1/8
-                        \time 4/16
-                        s1 * 1/4
-                        \time 6/16
-                        s1 * 3/8
-                        \time 8/16
-                        s1 * 1/2
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 4/5
                         {
+                            \time 2/16
                             c'32
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             [
                             c'8
                             ]
                         }
                         \times 4/5
                         {
+                            \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
+                            \time 6/16
                             c'16
                             c'4
                         }
                         \times 4/5
                         {
+                            \time 8/16
                             c'8
                             c'2
                         }
@@ -14577,88 +13868,87 @@ class TupletRhythmMaker(RhythmMaker):
             ...     tag=abjad.Tag("TUPLET_RHYTHM_MAKER"),
             ... )
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 1/2
-                    s1 * 1/2
-                    \time 3/8
-                    s1 * 3/8
-                    \time 5/16
-                    s1 * 5/16
-                    \time 5/16
-                    s1 * 5/16
-                }
-                \context RhythmicStaff = "Staff"
-                {
-                    %! TUPLET_RHYTHM_MAKER
-                    \times 4/5
-                    %! TUPLET_RHYTHM_MAKER
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score, tags=True)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         %! TUPLET_RHYTHM_MAKER
-                        c'4.
-                        - \tweak staff-padding 11
-                        - \tweak transparent ##t
-                        ^ \markup I
+                        \times 4/5
                         %! TUPLET_RHYTHM_MAKER
-                        c'4
-                    %! TUPLET_RHYTHM_MAKER
+                        {
+                            \time 1/2
+                            %! TUPLET_RHYTHM_MAKER
+                            c'4.
+                            %! TUPLET_RHYTHM_MAKER
+                            c'4
+                        %! TUPLET_RHYTHM_MAKER
+                        }
+                        %! TUPLET_RHYTHM_MAKER
+                        \tweak text #tuplet-number::calc-fraction-text
+                        %! TUPLET_RHYTHM_MAKER
+                        \times 3/5
+                        %! TUPLET_RHYTHM_MAKER
+                        {
+                            \time 3/8
+                            %! TUPLET_RHYTHM_MAKER
+                            c'4.
+                            %! TUPLET_RHYTHM_MAKER
+                            c'4
+                        %! TUPLET_RHYTHM_MAKER
+                        }
+                        %! TUPLET_RHYTHM_MAKER
+                        \tweak text #tuplet-number::calc-fraction-text
+                        %! TUPLET_RHYTHM_MAKER
+                        \times 1/1
+                        %! TUPLET_RHYTHM_MAKER
+                        {
+                            \time 5/16
+                            %! TUPLET_RHYTHM_MAKER
+                            c'8.
+                            %! TUPLET_RHYTHM_MAKER
+                            [
+                            %! TUPLET_RHYTHM_MAKER
+                            c'8
+                            %! TUPLET_RHYTHM_MAKER
+                            ]
+                        %! TUPLET_RHYTHM_MAKER
+                        }
+                        %! TUPLET_RHYTHM_MAKER
+                        \tweak text #tuplet-number::calc-fraction-text
+                        %! TUPLET_RHYTHM_MAKER
+                        \times 1/1
+                        %! TUPLET_RHYTHM_MAKER
+                        {
+                            \time 5/16
+                            %! TUPLET_RHYTHM_MAKER
+                            c'8.
+                            %! TUPLET_RHYTHM_MAKER
+                            [
+                            %! TUPLET_RHYTHM_MAKER
+                            c'8
+                            %! TUPLET_RHYTHM_MAKER
+                            ]
+                        %! TUPLET_RHYTHM_MAKER
+                        }
                     }
-                    %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
-                    \times 3/5
-                    %! TUPLET_RHYTHM_MAKER
-                    {
-                        %! TUPLET_RHYTHM_MAKER
-                        c'4.
-                        %! TUPLET_RHYTHM_MAKER
-                        c'4
-                    %! TUPLET_RHYTHM_MAKER
-                    }
-                    %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
-                    \times 1/1
-                    %! TUPLET_RHYTHM_MAKER
-                    {
-                        %! TUPLET_RHYTHM_MAKER
-                        c'8.
-                        %! TUPLET_RHYTHM_MAKER
-                        [
-                        %! TUPLET_RHYTHM_MAKER
-                        c'8
-                        %! TUPLET_RHYTHM_MAKER
-                        ]
-                    %! TUPLET_RHYTHM_MAKER
-                    }
-                    %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
-                    \times 1/1
-                    %! TUPLET_RHYTHM_MAKER
-                    {
-                        %! TUPLET_RHYTHM_MAKER
-                        c'8.
-                        %! TUPLET_RHYTHM_MAKER
-                        [
-                        %! TUPLET_RHYTHM_MAKER
-                        c'8
-                        %! TUPLET_RHYTHM_MAKER
-                        ]
-                    %! TUPLET_RHYTHM_MAKER
-                    }
-                }
-            >>
+                >>
 
         """
         return super().tag
@@ -14677,10 +13967,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14689,36 +13982,29 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 1/2
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \times 4/5
                         {
+                            \time 1/2
                             c'4.
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/8
                             c'4.
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 5/16
                             c'8.
                             [
                             c'8
@@ -14727,6 +14013,7 @@ class TupletRhythmMaker(RhythmMaker):
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 5/16
                             c'8.
                             [
                             c'8
@@ -14744,10 +14031,13 @@ class TupletRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
             >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14756,43 +14046,37 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        \time 1/2
-                        s1 * 1/2
-                        \time 3/8
-                        s1 * 3/8
-                        \time 5/16
-                        s1 * 5/16
-                        \time 5/16
-                        s1 * 5/16
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 1/2
                             c'4
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             r4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/4
                         {
+                            \time 3/8
                             c'4.
                             c'8
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 5/6
                         {
+                            \time 5/16
                             c'8.
                             r8.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 5/4
                         {
+                            \time 5/16
                             c'8.
                             [
                             c'16
@@ -14807,10 +14091,13 @@ class TupletRhythmMaker(RhythmMaker):
 
             >>> stack = rmakers.stack(rmakers.tuplet([(1,)]))
             >>> divisions = [(1, 5), (1, 4), (1, 6), (7, 9)]
-            >>> selection = stack(divisions)
-            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> selections = stack(divisions)
+
+            ..  book::
+                :lilypond/no-stylesheet:
+
+                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+                >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -14819,43 +14106,37 @@ class TupletRhythmMaker(RhythmMaker):
                 >>> print(string)
                 \context Score = "Score"
                 <<
-                    \context GlobalContext = "Global_Context"
-                    {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 1/5
-                        s1 * 1/5
-                        \time 1/4
-                        s1 * 1/4
-                        #(ly:expect-warning "strange time signature found")
-                        \time 1/6
-                        s1 * 1/6
-                        #(ly:expect-warning "strange time signature found")
-                        \time 7/9
-                        s1 * 7/9
-                    }
                     \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
                     {
                         \tweak edge-height #'(0.7 . 0)
                         \times 4/5
                         {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 1/5
                             c'4
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 1/1
                         {
+                            \time 1/4
                             c'4
                         }
                         \tweak edge-height #'(0.7 . 0)
                         \times 2/3
                         {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 1/6
                             c'4
                         }
                         \tweak edge-height #'(0.7 . 0)
                         \times 8/9
                         {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 7/9
                             c'2..
                         }
                     }
