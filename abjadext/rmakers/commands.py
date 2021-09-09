@@ -2969,17 +2969,19 @@ def on_beat_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> music_voice = abjad.Voice(
-        ...     selections, name="Rhythm_Maker_Music_Voice"
-        ... )
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     abjad.select(music_voice), divisions, pitched_staff=False
-        ... )
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file["Staff"]
-        >>> abjad.override(staff).TupletBracket.direction = abjad.Up
-        >>> abjad.override(staff).TupletBracket.staff_padding = 5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> music_voice = abjad.Voice(selections, name="Rhythm_Maker_Music_Voice")
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> selections = abjad.select(music_voice)
+            >>> lilypond_file = rmakers.helpers.example(
+            ...     selections, divisions, includes=["abjad.ily"]
+            ... )
+            >>> staff = lilypond_file["Staff"]
+            >>> abjad.override(staff).TupletBracket.direction = abjad.Up
+            >>> abjad.override(staff).TupletBracket.staff_padding = 5
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2988,16 +2990,10 @@ def on_beat_grace_container(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/4
-                    s1 * 3/4
-                    \time 3/4
-                    s1 * 3/4
-                }
                 \context RhythmicStaff = "Staff"
                 \with
                 {
+                    \override Clef.stencil = ##f
                     \override TupletBracket.direction = #up
                     \override TupletBracket.staff-padding = 5
                 }
@@ -3007,10 +3003,8 @@ def on_beat_grace_container(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/4
                             c'4
-                            - \tweak staff-padding 11
-                            - \tweak transparent ##t
-                            ^ \markup I
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
@@ -3088,6 +3082,7 @@ def on_beat_grace_container(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
                         {
+                            \time 3/4
                             c'4
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
@@ -3183,15 +3178,16 @@ def on_beat_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> music_voice = abjad.Voice(
-        ...     selections, name="Rhythm_Maker_Music_Voice"
-        ... )
-        >>> lilypond_file = abjad.LilyPondFile.rhythm(
-        ...     abjad.select(music_voice), divisions, pitched_staff=False
-        ... )
-        >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-        >>> staff = lilypond_file["Staff"]
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> music_voice = abjad.Voice(selections, name="Rhythm_Maker_Music_Voice")
+
+        ..  book::
+            :lilypond/no-stylesheet:
+
+            >>> selections = abjad.select(music_voice)
+            >>> lilypond_file = rmakers.helpers.example(
+            ...     selections, divisions, includes=["abjad.ily"]
+            ... )
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3200,14 +3196,11 @@ def on_beat_grace_container(
             >>> print(string)
             \context Score = "Score"
             <<
-                \context GlobalContext = "Global_Context"
-                {
-                    \time 3/4
-                    s1 * 3/4
-                    \time 3/4
-                    s1 * 3/4
-                }
                 \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
                 {
                     \context Voice = "Rhythm_Maker_Music_Voice"
                     {
@@ -3222,9 +3215,6 @@ def on_beat_grace_container(
                                     \tweak transparent ##t
                                     c'
                                 >8 * 2/7
-                                - \tweak staff-padding 11
-                                - \tweak transparent ##t
-                                ^ \markup I
                                 [
                                 (
                                 c'8 * 2/7
@@ -3237,6 +3227,7 @@ def on_beat_grace_container(
                             }
                             \context Voice = "Rhythm_Maker_Music_Voice"
                             {
+                                \time 3/4
                                 \voiceTwo
                                 c'4
                                 ~
@@ -3294,6 +3285,7 @@ def on_beat_grace_container(
                                 \voiceTwo
                                 c'8
                                 ~
+                                \time 3/4
                                 c'8.
                             }
                         >>

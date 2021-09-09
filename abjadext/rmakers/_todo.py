@@ -2,9 +2,13 @@
 #            Only logical tie 12 is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = command(divisions, previous_segment_stop_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> selections = command(divisions, previous_segment_stop_state=state)
+#
+#            ..  book::
+#                :lilypond/no-stylesheet:
+#
+#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#                >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -60,7 +64,7 @@
 #                    ('talea_weight_consumed', 63),
 #                    ]
 #                )
-
+#
 #        ..  container:: example
 #
 #            REGRESSION. Periodic rest commands also respect state.
@@ -77,9 +81,13 @@
 #            Incomplete last note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = stack(divisions)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> selections = stack(divisions)
+#
+#            ..  book::
+#                :lilypond/no-stylesheet:
+#
+#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#                >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -137,9 +145,13 @@
 #            Incomplete first note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = stack(divisions, previous_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> selections = stack(divisions, previous_state=state)
+#
+#            ..  book::
+#                :lilypond/no-stylesheet:
+#
+#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#                >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -201,9 +213,13 @@
 #            Only tuplet 7 is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = stack(divisions, previous_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> selections = stack(divisions, previous_state=state)
+#
+#            ..  book::
+#                :lilypond/no-stylesheet:
+#
+#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#                >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -260,9 +276,13 @@
 #            Incomplete first note is rested here:
 #
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selection = stack(divisions, previous_state=state)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> selections = stack(divisions, previous_state=state)
+#
+#            ..  book::
+#                :lilypond/no-stylesheet:
+#
+#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#                >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -331,10 +351,13 @@
 #            >>> divisions = divisions.flatten(depth=-1)
 #            >>> stack = rmakers.stack(rmakers.note(), preprocessor=divisions)
 #            >>> divisions = [(4, 4), (4, 4)]
-#            >>> selection = stack(divisions)
-#            >>> lilypond_file = abjad.LilyPondFile.rhythm(selection, divisions)
-#            >>> abjad.illustrators.attach_markup_struts(lilypond_file)
-#            >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> selections = stack(divisions)
+#
+#            ..  book::
+#                :lilypond/no-stylesheet:
+#
+#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#                >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
