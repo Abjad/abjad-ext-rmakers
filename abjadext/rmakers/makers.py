@@ -121,7 +121,7 @@ class RhythmMaker:
         return _specifiers.Spelling()
 
     def _get_format_specification(self):
-        return abjad.FormatSpecification(self)
+        return abjad.FormatSpecification()
 
     @staticmethod
     def _make_leaves_from_talea(

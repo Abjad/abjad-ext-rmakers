@@ -152,7 +152,7 @@ class Stack:
         values = []
         values.append(self.maker)
         values.extend(self.commands)
-        return abjad.FormatSpecification(self, storage_format_args_values=values)
+        return abjad.FormatSpecification(storage_format_args_values=values)
 
     ### PUBLIC PROPERTIES ###
 
@@ -476,9 +476,7 @@ class Bind:
     ### PRIVATE METHODS ###
 
     def _get_format_specification(self):
-        return abjad.FormatSpecification(
-            self, storage_format_args_values=self.assignments
-        )
+        return abjad.FormatSpecification(storage_format_args_values=self.assignments)
 
     ### PUBLIC PROPERTIES ###
 
