@@ -1331,7 +1331,7 @@ class RewriteMeterCommand(Command):
 
             preferred_meters.append(meter)
             nontupletted_leaves = []
-            for leaf in abjad.iterate(selection).leaves():
+            for leaf in abjad.iterate.leaves(selection):
                 if not abjad.get.parentage(leaf).count(abjad.Tuplet):
                     nontupletted_leaves.append(leaf)
             unbeam()(nontupletted_leaves)

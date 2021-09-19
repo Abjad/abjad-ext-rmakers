@@ -225,7 +225,7 @@ class RhythmMaker:
         )
 
     def _validate_tuplets(self, selections):
-        for tuplet in abjad.iterate(selections).components(abjad.Tuplet):
+        for tuplet in abjad.iterate.components(selections, abjad.Tuplet):
             assert abjad.Multiplier(tuplet.multiplier).normalized(), repr(tuplet)
             assert len(tuplet), repr(tuplet)
 
@@ -10449,7 +10449,7 @@ class TaleaRhythmMaker(RhythmMaker):
             self._apply_ties_to_split_notes(
                 tuplets, unscaled_end_counts, unscaled_preamble, unscaled_talea
             )
-        for tuplet in abjad.iterate(tuplets).components(abjad.Tuplet):
+        for tuplet in abjad.iterate.components(tuplets, abjad.Tuplet):
             tuplet.normalize_multiplier()
         if "+" in talea or "-" in talea:
             pass
