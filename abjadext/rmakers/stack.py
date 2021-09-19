@@ -85,7 +85,7 @@ class Stack:
         """
         Delegates to format manager.
         """
-        if abjad.StorageFormatManager.compare_objects(self, argument):
+        if abjad.format.compare_objects(self, argument):
             return self.commands == argument.commands
         return False
 
@@ -249,7 +249,7 @@ class Match:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager.compare_objects(self, argument)
+        return abjad.format.compare_objects(self, argument)
 
     def __hash__(self) -> int:
         """
@@ -319,7 +319,7 @@ class Assignment:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager.compare_objects(self, argument)
+        return abjad.format.compare_objects(self, argument)
 
     def __hash__(self) -> int:
         """
@@ -454,7 +454,7 @@ class Bind:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager.compare_objects(self, argument)
+        return abjad.format.compare_objects(self, argument)
 
     def __hash__(self) -> int:
         """
