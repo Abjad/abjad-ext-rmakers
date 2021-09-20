@@ -113,7 +113,7 @@ class Stack:
             Stack(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), ForceFractionCommand())
 
         """
-        return abjad.StorageFormatManager(self).get_repr_format()
+        return abjad.format.make_repr(self)
 
     ### PRIVATE METHODS ###
 
@@ -266,7 +266,7 @@ class Match:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager(self).get_repr_format()
+        return abjad.format.make_repr(self)
 
     ### PUBLIC PROPERTIES ###
 
@@ -336,7 +336,7 @@ class Assignment:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager(self).get_repr_format()
+        return abjad.format.make_repr(self)
 
     ### PUBLIC PROPERTIES ###
 
@@ -471,7 +471,7 @@ class Bind:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager(self).get_repr_format()
+        return abjad.format.make_repr(self)
 
     ### PRIVATE METHODS ###
 

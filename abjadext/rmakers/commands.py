@@ -58,7 +58,7 @@ class Command:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager(self).get_repr_format()
+        return abjad.format.make_repr(self)
 
     ### PUBLIC PROPERTIES ###
 

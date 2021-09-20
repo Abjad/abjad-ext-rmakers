@@ -340,7 +340,7 @@ class Interpolation:
             Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
 
         """
-        return abjad.StorageFormatManager(self).get_repr_format()
+        return abjad.format.make_repr(self)
 
     ### PUBLIC METHODS ###
 
@@ -465,7 +465,7 @@ class Spelling:
             Spelling()
 
         """
-        return abjad.StorageFormatManager(self).get_repr_format()
+        return abjad.format.make_repr(self)
 
     ### PUBLIC PROPERTIES ###
 
@@ -976,7 +976,7 @@ class Talea:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager(self).get_repr_format()
+        return abjad.format.make_repr(self)
 
     ### PRIVATE METHODS ###
 
