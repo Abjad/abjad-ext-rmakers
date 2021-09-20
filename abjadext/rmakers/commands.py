@@ -47,7 +47,7 @@ class Command:
         """
         Delegates to storage format manager.
         """
-        hash_values = abjad.StorageFormatManager(self).get_hash_values()
+        hash_values = abjad.format.get_hash_values(self)
         try:
             result = hash(hash_values)
         except TypeError:
