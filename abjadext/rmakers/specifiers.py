@@ -118,7 +118,7 @@ class Incise:
         """
         Delegates to storage format manager.
         """
-        return abjad.StorageFormatManager(self).get_storage_format()
+        return abjad.storage(self)
 
     ### PRIVATE METHODS ###
 
