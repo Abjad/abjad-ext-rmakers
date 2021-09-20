@@ -93,7 +93,7 @@ class RhythmMaker:
         """
         Delegates to storage format manager.
         """
-        return abjad.format.make_repr(self)
+        return abjad.format.get_repr(self)
 
     ### PRIVATE METHODS ###
 
