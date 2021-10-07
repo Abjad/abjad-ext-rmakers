@@ -25,7 +25,8 @@ if __name__ == "__main__":
         classifiers=[
             "Development Status :: 3 - Alpha",
             "License :: OSI Approved :: GNU General Public License (GPL)",
-            "Programming Language :: Python :: 3.6",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: Implementation :: CPython",
             "Topic :: Artistic Software",
         ],
