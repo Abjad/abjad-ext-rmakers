@@ -53,7 +53,7 @@ class Stack:
     def __call__(
         self,
         time_signatures: typing.Sequence[abjad.IntegerPair],
-        previous_state: abjad.OrderedDict = None,
+        previous_state: dict = None,
     ) -> abjad.Selection:
         """
         Calls stack.
@@ -214,7 +214,7 @@ class Stack:
         return self._preprocessor
 
     @property
-    def state(self) -> abjad.OrderedDict:
+    def state(self) -> dict:
         """
         Gets state.
         """
@@ -385,16 +385,14 @@ class Bind:
                 raise Exception(message)
         assignments_ = tuple(assignments)
         self._assignments = assignments_
-        self._state = abjad.OrderedDict()
+        self._state = dict()
         if tag is not None:
             assert isinstance(tag, abjad.Tag), repr(tag)
         self._tag = tag
 
     ### SPECIAL METHODS ###
 
-    def __call__(
-        self, divisions, previous_state: abjad.OrderedDict = None
-    ) -> abjad.Selection:
+    def __call__(self, divisions, previous_state: dict = None) -> abjad.Selection:
         """
         Calls bind.
         """
@@ -422,7 +420,7 @@ class Bind:
             lambda match: match.assignment.rhythm_maker
         )
         components: typing.List[abjad.Component] = []
-        maker_to_previous_state = abjad.OrderedDict()
+        maker_to_previous_state = dict()
         pp = (RhythmMaker, Stack)
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
@@ -488,7 +486,7 @@ class Bind:
         return list(self._assignments)
 
     @property
-    def state(self) -> abjad.OrderedDict:
+    def state(self) -> dict:
         """
         Gets state.
         """

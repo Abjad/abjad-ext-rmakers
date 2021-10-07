@@ -56,7 +56,7 @@
 #            >>> state = command.state
 #            >>> string = abjad.storage(state)
 #            >>> print(string)
-#            abjad.OrderedDict(
+#            dict(
 #                [
 #                    ('divisions_consumed', 8),
 #                    ('incomplete_last_note', True),
@@ -133,7 +133,7 @@
 #            >>> state = stack.maker.state
 #            >>> string = abjad.storage(state)
 #            >>> print(string)
-#            abjad.OrderedDict(
+#            dict(
 #                [
 #                    ('divisions_consumed', 4),
 #                    ('incomplete_last_note', True),
@@ -199,7 +199,7 @@
 #            >>> state = stack.maker.state
 #            >>> string = abjad.storage(state)
 #            >>> print(string)
-#            abjad.OrderedDict(
+#            dict(
 #                [
 #                    ('divisions_consumed', 8),
 #                    ('incomplete_last_note', True),
@@ -262,7 +262,7 @@
 #            >>> state = stack.maker.state
 #            >>> string = abjad.storage(state)
 #            >>> print(string)
-#            abjad.OrderedDict(
+#            dict(
 #                [
 #                    ('divisions_consumed', 8),
 #                    ('incomplete_last_note', True),
@@ -325,7 +325,7 @@
 #            >>> state = stack.maker.state
 #            >>> string = abjad.storage(state)
 #            >>> print(string)
-#            abjad.OrderedDict(
+#            dict(
 #                [
 #                    ('divisions_consumed', 8),
 #                    ('incomplete_last_note', True),
