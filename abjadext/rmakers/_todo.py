@@ -337,7 +337,7 @@
 
 # TODO: integrate tests
 #    @property
-#    def preprocessor(self) -> typing.Optional[abjad.Expression]:
+#    def preprocessor(self):
 #        r"""
 #        Gets division preprocessor.
 #

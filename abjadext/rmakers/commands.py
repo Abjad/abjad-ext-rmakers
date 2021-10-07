@@ -23,10 +23,9 @@ class Command:
 
     ### INITIALIZER ###
 
-    def __init__(self, selector: abjad.Expression = None) -> None:
+    def __init__(self, selector=None) -> None:
         if isinstance(selector, str):
             selector = eval(selector)
-            assert isinstance(selector, abjad.Expression)
         self._selector = selector
 
     ### SPECIAL METHODS ###
@@ -63,7 +62,7 @@ class Command:
     ### PUBLIC PROPERTIES ###
 
     @property
-    def selector(self) -> typing.Optional[abjad.Expression]:
+    def selector(self):
         """
         Gets selector.
         """
@@ -83,7 +82,7 @@ class BeamCommand(Command):
 
     def __init__(
         self,
-        selector: abjad.Expression = None,
+        selector=None,
         *,
         beam_lone_notes: bool = None,
         beam_rests: bool = None,
@@ -159,7 +158,7 @@ class BeamGroupsCommand(Command):
 
     def __init__(
         self,
-        selector: abjad.Expression = None,
+        selector=None,
         *,
         beam_lone_notes: bool = None,
         beam_rests: bool = None,
@@ -284,7 +283,7 @@ class DenominatorCommand(Command):
     def __init__(
         self,
         denominator: typing.Union[int, abjad.DurationTyping] = None,
-        selector: abjad.Expression = None,
+        selector=None,
     ) -> None:
         super().__init__(selector)
         if isinstance(denominator, tuple):
@@ -454,7 +453,7 @@ class FeatherBeamCommand(Command):
 
     def __init__(
         self,
-        selector: abjad.Expression = None,
+        selector=None,
         *,
         beam_rests: bool = None,
         stemlet_length: abjad.Number = None,
@@ -734,7 +733,7 @@ class ForceRepeatTieCommand(Command):
 
     def __init__(
         self,
-        selector: abjad.Expression = None,
+        selector=None,
         *,
         threshold: typing.Union[
             bool, abjad.IntegerPair, abjad.DurationInequality
@@ -1022,7 +1021,7 @@ class GraceContainerCommand(Command):
     def __init__(
         self,
         counts: abjad.IntegerSequence,
-        selector: abjad.Expression = None,
+        selector=None,
         *,
         class_: typing.Type = abjad.BeforeGraceContainer,
         beam_and_slash: bool = None,
@@ -1141,7 +1140,7 @@ class OnBeatGraceContainerCommand(Command):
     def __init__(
         self,
         counts: abjad.IntegerSequence,
-        selector: abjad.Expression = None,
+        selector=None,
         *,
         leaf_duration: abjad.DurationTyping = None,
         talea: _specifiers.Talea = _specifiers.Talea([1], 8),
@@ -1434,7 +1433,7 @@ class RewriteRestFilledCommand(Command):
 
     def __init__(
         self,
-        selector: abjad.Expression = None,
+        selector=None,
         *,
         spelling: _specifiers.Spelling = None,
     ) -> None:
@@ -1593,7 +1592,7 @@ class TremoloContainerCommand(Command):
 
     ### INITIALIZER ###
 
-    def __init__(self, count: int, selector: abjad.Expression = None) -> None:
+    def __init__(self, count: int, selector=None) -> None:
         super().__init__(selector)
         assert isinstance(count, int), repr(count)
         assert 0 < count, repr(count)
@@ -1720,7 +1719,7 @@ def nongrace_leaves_in_each_tuplet(level=None):
 
 def after_grace_container(
     counts: abjad.IntegerSequence,
-    selector: abjad.Expression = None,
+    selector=None,
     *,
     beam_and_slash: bool = None,
     talea: _specifiers.Talea = _specifiers.Talea([1], 8),
@@ -1945,7 +1944,7 @@ def beam_groups(
 
 def before_grace_container(
     counts: abjad.IntegerSequence,
-    selector: abjad.Expression = None,
+    selector=None,
     *,
     talea: _specifiers.Talea = _specifiers.Talea([1], 8),
 ) -> GraceContainerCommand:
@@ -2588,7 +2587,7 @@ def denominator(
 
 
 def duration_bracket(
-    selector: abjad.Expression = None,
+    selector=None,
 ) -> DurationBracketCommand:
     """
     Makes duration bracket command.
@@ -2597,7 +2596,7 @@ def duration_bracket(
 
 
 def extract_trivial(
-    selector: abjad.Expression = None,
+    selector=None,
 ) -> ExtractTrivialCommand:
     r"""
     Makes extract trivial command.
@@ -2687,7 +2686,7 @@ def feather_beam(
 
 
 def force_augmentation(
-    selector: abjad.Expression = None,
+    selector=None,
 ) -> ForceAugmentationCommand:
     r"""
     Makes force augmentation command.
@@ -2892,7 +2891,7 @@ def force_augmentation(
 
 
 def force_diminution(
-    selector: abjad.Expression = None,
+    selector=None,
 ) -> ForceDiminutionCommand:
     """
     Makes force diminution command.
@@ -2901,7 +2900,7 @@ def force_diminution(
 
 
 def force_fraction(
-    selector: abjad.Expression = None,
+    selector=None,
 ) -> ForceFractionCommand:
     """
     Makes force fraction command.
@@ -2910,7 +2909,7 @@ def force_fraction(
 
 
 def force_note(
-    selector: abjad.Expression,
+    selector=None,
 ) -> ForceNoteCommand:
     """
     Makes force note command.
@@ -2918,23 +2917,21 @@ def force_note(
     return ForceNoteCommand(selector)
 
 
-def force_repeat_tie(
-    threshold=True, selector: abjad.Expression = None
-) -> ForceRepeatTieCommand:
+def force_repeat_tie(threshold=True, selector=None) -> ForceRepeatTieCommand:
     """
     Makes force repeat-ties command.
     """
     return ForceRepeatTieCommand(selector, threshold=threshold)
 
 
-def force_rest(selector: abjad.Expression) -> ForceRestCommand:
+def force_rest(selector) -> ForceRestCommand:
     """
     Makes force rest command.
     """
     return ForceRestCommand(selector)
 
 
-def invisible_music(selector: abjad.Expression) -> InvisibleMusicCommand:
+def invisible_music(selector) -> InvisibleMusicCommand:
     """
     Makes invisible music command.
     """
@@ -2943,7 +2940,7 @@ def invisible_music(selector: abjad.Expression) -> InvisibleMusicCommand:
 
 def on_beat_grace_container(
     counts: abjad.IntegerSequence,
-    selector: abjad.Expression = None,
+    selector=None,
     *,
     leaf_duration: abjad.DurationTyping = None,
     talea: _specifiers.Talea = _specifiers.Talea([1], 8),
@@ -3351,7 +3348,7 @@ def on_beat_grace_container(
     )
 
 
-def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
+def repeat_tie(selector=None) -> RepeatTieCommand:
     r"""
     Makes repeat-tie command.
 
@@ -3551,7 +3548,7 @@ def repeat_tie(selector: abjad.Expression = None) -> RepeatTieCommand:
 
 
 def reduce_multiplier(
-    selector: abjad.Expression = None,
+    selector=None,
 ) -> ReduceMultiplierCommand:
     """
     Makes reduce multiplier command.
@@ -3559,7 +3556,7 @@ def reduce_multiplier(
     return ReduceMultiplierCommand(selector)
 
 
-def rewrite_dots(selector: abjad.Expression = None) -> RewriteDotsCommand:
+def rewrite_dots(selector=None) -> RewriteDotsCommand:
     """
     Makes rewrite dots command.
     """
@@ -3578,7 +3575,7 @@ def rewrite_meter(
 
 
 def rewrite_rest_filled(
-    selector: abjad.Expression = None, spelling: _specifiers.Spelling = None
+    selector=None, spelling: _specifiers.Spelling = None
 ) -> RewriteRestFilledCommand:
     r"""
     Makes rewrite rest-filled command.
@@ -4104,7 +4101,7 @@ def split_measures() -> SplitMeasuresCommand:
     return SplitMeasuresCommand()
 
 
-def tie(selector: abjad.Expression = None) -> TieCommand:
+def tie(selector=None) -> TieCommand:
     r"""
     Makes tie command.
 
@@ -4665,9 +4662,7 @@ def tie(selector: abjad.Expression = None) -> TieCommand:
     return TieCommand(selector=selector)
 
 
-def tremolo_container(
-    count: int, selector: abjad.Expression = None
-) -> TremoloContainerCommand:
+def tremolo_container(count: int, selector=None) -> TremoloContainerCommand:
     r"""
     Makes tremolo container command.
 
@@ -4817,7 +4812,7 @@ def tremolo_container(
     return TremoloContainerCommand(count, selector=selector)
 
 
-def trivialize(selector: abjad.Expression = None) -> TrivializeCommand:
+def trivialize(selector=None) -> TrivializeCommand:
     """
     Makes trivialize command.
     """
@@ -4833,7 +4828,7 @@ def unbeam(
     return UnbeamCommand(selector)
 
 
-def untie(selector: abjad.Expression = None) -> UntieCommand:
+def untie(selector=None) -> UntieCommand:
     r"""
     Makes untie command.
 

@@ -32,7 +32,7 @@ class Stack:
         self,
         maker,
         *commands,
-        preprocessor: abjad.Expression = None,
+        preprocessor=None,
         tag: abjad.Tag = None,
     ) -> None:
         prototype = (RhythmMaker, Stack, Bind)
@@ -207,7 +207,7 @@ class Stack:
         return self._maker
 
     @property
-    def preprocessor(self) -> typing.Optional[abjad.Expression]:
+    def preprocessor(self):
         """
         Gets preprocessor.
         """
