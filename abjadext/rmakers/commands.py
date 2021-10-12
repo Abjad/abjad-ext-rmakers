@@ -351,10 +351,7 @@ class DurationBracketCommand(Command):
             duration_ = abjad.get.duration(tuplet)
             notes = abjad.LeafMaker()([0], [duration_])
             string = abjad.illustrators.selection_to_score_markup_string(notes)
-            markup = abjad.Markup(
-                rf"\markup \scale #'(0.75 . 0.75) {string}",
-                literal=True,
-            )
+            markup = abjad.Markup(rf"\markup \scale #'(0.75 . 0.75) {string}")
             abjad.override(tuplet).TupletNumber.text = markup
 
 

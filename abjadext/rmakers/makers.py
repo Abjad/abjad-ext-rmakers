@@ -5210,7 +5210,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> abjad.override(staff).TextScript.staff_padding = 7
                 >>> groups = abjad.select(staff).leaves().group_by_measure()
                 >>> for group, label in zip(groups, labels):
-                ...     markup = abjad.Markup(label, direction=abjad.Up, literal=True)
+                ...     markup = abjad.Markup(label, direction=abjad.Up)
                 ...     abjad.attach(markup, group[0])
                 ...
 
@@ -5466,7 +5466,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>> abjad.override(staff).TextScript.staff_padding = 8
                 >>> groups = abjad.select(staff).leaves().group_by_measure()
                 >>> for group, label in zip(groups, labels):
-                ...     markup = abjad.Markup(label, direction=abjad.Up, literal=True)
+                ...     markup = abjad.Markup(label, direction=abjad.Up)
                 ...     abjad.attach(markup, group[0])
                 ...
 
