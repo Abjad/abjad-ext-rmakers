@@ -12,7 +12,7 @@ def example(selection, time_signatures=None, *, includes=None):
         selection,
         time_signatures,
     )
-    includes = [r'\include "{_}"' for _ in includes or []]
+    includes = [rf'\include "{_}"' for _ in includes or []]
     lilypond_file.items[0:0] = includes
     staff = lilypond_file["Staff"]
     staff.lilypond_type = "RhythmicStaff"
