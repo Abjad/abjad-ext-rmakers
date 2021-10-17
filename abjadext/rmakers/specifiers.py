@@ -170,11 +170,8 @@ class Incise:
             >>> divisions = 4 * [(5, 16)]
             >>> selections = stack(divisions)
 
-            ..  book::
-                :lilypond/no-stylesheet:
-
-                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-                >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -491,11 +488,8 @@ class Spelling:
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
 
-            ..  book::
-                :lilypond/no-stylesheet:
-
-                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-                >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -546,11 +540,8 @@ class Spelling:
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
 
-            ..  book::
-                :lilypond/no-stylesheet:
-
-                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-                >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -609,11 +600,8 @@ class Spelling:
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
 
-            ..  book::
-                :lilypond/no-stylesheet:
-
-                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-                >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 
@@ -677,11 +665,8 @@ class Spelling:
             >>> divisions = [(3, 4), (3, 4)]
             >>> selections = stack(divisions)
 
-            ..  book::
-                :lilypond/no-stylesheet:
-
-                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-                >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
             ..  docs::
 

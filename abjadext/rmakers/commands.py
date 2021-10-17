@@ -613,11 +613,8 @@ class ForceNoteCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -656,11 +653,8 @@ class ForceNoteCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -807,11 +801,8 @@ class ForceRestCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -848,11 +839,8 @@ class ForceRestCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -889,11 +877,8 @@ class ForceRestCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -933,11 +918,8 @@ class ForceRestCommand(Command):
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -1742,15 +1724,12 @@ def after_grace_container(
         >>> lilypond_file = rmakers.helpers.example(selections, divisions)
         >>> staff = lilypond_file["Staff"]
 
-        ..  book::
-            :lilypond/no-stylesheet:
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
+        ...     return [abjad.select(_).with_next_leaf() for _ in result]
 
-            >>> def selector(argument):
-            ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
-            ...     return [abjad.select(_).with_next_leaf() for _ in result]
-
-            >>> result = [abjad.slur(_) for _ in selector(staff)]
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> result = [abjad.slur(_) for _ in selector(staff)]
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -1822,16 +1801,13 @@ def after_grace_container(
         ...     selections, divisions, includes=["abjad.ily"]
         ... )
 
-        ..  book::
-            :lilypond/no-stylesheet:
+        >>> def selector(argument):
+        ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
+        ...     return [abjad.select(_).with_next_leaf() for _ in result]
 
-            >>> def selector(argument):
-            ...     result = abjad.select(argument).components(abjad.AfterGraceContainer)
-            ...     return [abjad.select(_).with_next_leaf() for _ in result]
-
-            >>> staff = lilypond_file["Staff"]
-            >>> result = [abjad.slur(_) for _ in selector(staff)]
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> staff = lilypond_file["Staff"]
+        >>> result = [abjad.slur(_) for _ in selector(staff)]
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -1979,10 +1955,7 @@ def before_grace_container(
         >>> slash = abjad.LilyPondLiteral(r"\slash")
         >>> result = [abjad.attach(slash, _[0]) for _ in containers(staff)]
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2112,13 +2085,10 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> score = lilypond_file["Score"]
-            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2181,13 +2151,10 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> score = lilypond_file["Score"]
-            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2249,13 +2216,10 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> score = lilypond_file["Score"]
-            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2317,13 +2281,10 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> score = lilypond_file["Score"]
-            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2387,13 +2348,10 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> score = lilypond_file["Score"]
-            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2455,14 +2413,11 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> score = lilypond_file["Score"]
-            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-            >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+        >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2525,13 +2480,10 @@ def denominator(
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> score = lilypond_file["Score"]
-            >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2610,11 +2562,8 @@ def extract_trivial(
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2704,11 +2653,8 @@ def force_augmentation(
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2763,14 +2709,11 @@ def force_augmentation(
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> staff = lilypond_file["Staff"]
-            >>> string = '#tuplet-number::calc-denominator-text'
-            >>> abjad.override(staff).TupletNumber.text = string
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> staff = lilypond_file["Staff"]
+        >>> string = '#tuplet-number::calc-denominator-text'
+        >>> abjad.override(staff).TupletNumber.text = string
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2827,14 +2770,11 @@ def force_augmentation(
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> staff = lilypond_file["Staff"]
-            >>> string = '#tuplet-number::calc-denominator-text'
-            >>> abjad.override(staff).TupletNumber.text = string
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> staff = lilypond_file["Staff"]
+        >>> string = '#tuplet-number::calc-denominator-text'
+        >>> abjad.override(staff).TupletNumber.text = string
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -2965,17 +2905,14 @@ def on_beat_grace_container(
         >>> selections = stack(divisions)
         >>> music_voice = abjad.Voice(selections, name="Rhythm_Maker_Music_Voice")
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> selections = abjad.select(music_voice)
-            >>> lilypond_file = rmakers.helpers.example(
-            ...     selections, divisions, includes=["abjad.ily"]
-            ... )
-            >>> staff = lilypond_file["Staff"]
-            >>> abjad.override(staff).TupletBracket.direction = abjad.Up
-            >>> abjad.override(staff).TupletBracket.staff_padding = 5
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = abjad.select(music_voice)
+        >>> lilypond_file = rmakers.helpers.example(
+        ...     selections, divisions, includes=["abjad.ily"]
+        ... )
+        >>> staff = lilypond_file["Staff"]
+        >>> abjad.override(staff).TupletBracket.direction = abjad.Up
+        >>> abjad.override(staff).TupletBracket.staff_padding = 5
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3174,14 +3111,11 @@ def on_beat_grace_container(
         >>> selections = stack(divisions)
         >>> music_voice = abjad.Voice(selections, name="Rhythm_Maker_Music_Voice")
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> selections = abjad.select(music_voice)
-            >>> lilypond_file = rmakers.helpers.example(
-            ...     selections, divisions, includes=["abjad.ily"]
-            ... )
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> selections = abjad.select(music_voice)
+        >>> lilypond_file = rmakers.helpers.example(
+        ...     selections, divisions, includes=["abjad.ily"]
+        ... )
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3366,11 +3300,8 @@ def repeat_tie(selector=None) -> RepeatTieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3461,11 +3392,8 @@ def repeat_tie(selector=None) -> RepeatTieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3588,11 +3516,8 @@ def rewrite_rest_filled(
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3660,11 +3585,8 @@ def rewrite_rest_filled(
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3704,11 +3626,8 @@ def rewrite_rest_filled(
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3748,11 +3667,8 @@ def rewrite_rest_filled(
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3824,11 +3740,8 @@ def rewrite_sustained(
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3909,11 +3822,8 @@ def rewrite_sustained(
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -3976,11 +3886,8 @@ def rewrite_sustained(
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4031,11 +3938,8 @@ def rewrite_sustained(
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4114,11 +4018,8 @@ def tie(selector=None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4217,11 +4118,8 @@ def tie(selector=None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4312,11 +4210,8 @@ def tie(selector=None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4406,11 +4301,8 @@ def tie(selector=None) -> TieCommand:
         >>> divisions = [(4, 8), (4, 8), (4, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4471,11 +4363,8 @@ def tie(selector=None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4573,11 +4462,8 @@ def tie(selector=None) -> TieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4684,11 +4570,8 @@ def tremolo_container(count: int, selector=None) -> TremoloContainerCommand:
 
         >>> result = [abjad.slur(_) for _ in selector(selections)]
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4754,11 +4637,8 @@ def tremolo_container(count: int, selector=None) -> TremoloContainerCommand:
 
         >>> result = [abjad.slur(_) for _ in selector(selections)]
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4843,11 +4723,8 @@ def untie(selector=None) -> UntieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 
@@ -4945,11 +4822,8 @@ def untie(selector=None) -> UntieCommand:
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
 
-        ..  book::
-            :lilypond/no-stylesheet:
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
 

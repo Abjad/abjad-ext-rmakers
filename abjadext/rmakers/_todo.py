@@ -4,11 +4,9 @@
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selections = command(divisions, previous_segment_stop_state=state)
 #
-#            ..  book::
-#                :lilypond/no-stylesheet:
 #
-#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-#                >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -83,11 +81,8 @@
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selections = stack(divisions)
 #
-#            ..  book::
-#                :lilypond/no-stylesheet:
-#
-#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-#                >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -147,11 +142,8 @@
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selections = stack(divisions, previous_state=state)
 #
-#            ..  book::
-#                :lilypond/no-stylesheet:
-#
-#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-#                >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -215,11 +207,8 @@
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selections = stack(divisions, previous_state=state)
 #
-#            ..  book::
-#                :lilypond/no-stylesheet:
-#
-#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-#                >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -278,11 +267,8 @@
 #            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
 #            >>> selections = stack(divisions, previous_state=state)
 #
-#            ..  book::
-#                :lilypond/no-stylesheet:
-#
-#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-#                >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
@@ -353,11 +339,8 @@
 #            >>> divisions = [(4, 4), (4, 4)]
 #            >>> selections = stack(divisions)
 #
-#            ..  book::
-#                :lilypond/no-stylesheet:
-#
-#                >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-#                >>> abjad.show(lilypond_file) # doctest: +SKIP
+#            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+#            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
 #
