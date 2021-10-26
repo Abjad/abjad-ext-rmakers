@@ -11,9 +11,6 @@ from .makers import RhythmMaker
 RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 
 
-### CLASSES ###
-
-
 class Stack:
     """
     Stack.
@@ -498,9 +495,6 @@ class Bind:
         Gets tag.
         """
         return self._tag
-
-
-### FACTORY FUNCTIONS ###
 
 
 def assign(

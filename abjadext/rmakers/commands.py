@@ -7,8 +7,6 @@ import abjad
 
 from . import specifiers as _specifiers
 
-### CLASSES ###
-
 
 class Command:
     """
@@ -642,8 +640,7 @@ class ForceNoteCommand(Command):
 
     ..  container:: example
 
-        Changes patterned selection of leave to notes. Works inverted composite
-        pattern:
+        Changes patterned selection of leave to notes. Works inverted composite pattern:
 
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
@@ -906,8 +903,8 @@ class ForceRestCommand(Command):
 
     ..  container:: example
 
-        Changes patterned selection of logical ties to rests. Works with
-        inverted composite pattern:
+        Changes patterned selection of logical ties to rests. Works with inverted
+        composite pattern:
 
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
@@ -1678,9 +1675,6 @@ class UntieCommand(Command):
             abjad.detach(abjad.RepeatTie, leaf)
 
 
-### DEFAULT SELECTORS ###
-
-
 def nongrace_leaves_in_each_tuplet(level=None):
     """
     Makes nongrace leaves in each tuplet command.
@@ -1691,9 +1685,6 @@ def nongrace_leaves_in_each_tuplet(level=None):
         return abjad.select(abjad.select(_).leaves(grace=False) for _ in result)
 
     return selector
-
-
-### FACTORY FUNCTIONS ###
 
 
 def after_grace_container(
@@ -2073,9 +2064,9 @@ def denominator(
 
     ..  container:: example
 
-        Tuplet numerators and denominators are reduced to numbers that are
-        relatively prime when ``denominator`` is set to none. This
-        means that ratios like ``6:4`` and ``10:8`` do not arise:
+        Tuplet numerators and denominators are reduced to numbers that are relatively
+        prime when ``denominator`` is set to none. This means that ratios like ``6:4``
+        and ``10:8`` do not arise:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
@@ -2138,9 +2129,9 @@ def denominator(
 
     ..  container:: example
 
-        The preferred denominator of each tuplet is set in terms of a unit
-        duration when ``denominator`` is set to a duration. The
-        setting does not affect the first tuplet:
+        The preferred denominator of each tuplet is set in terms of a unit duration when
+        ``denominator`` is set to a duration. The setting does not affect the first
+        tuplet:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
@@ -2204,8 +2195,8 @@ def denominator(
 
     ..  container:: example
 
-        Sets the preferred denominator of each tuplet in terms 32nd notes.
-        The setting affects all tuplets:
+        Sets the preferred denominator of each tuplet in terms 32nd notes. The setting
+        affects all tuplets:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
@@ -2269,8 +2260,8 @@ def denominator(
 
     ..  container:: example
 
-        Sets the preferred denominator each tuplet in terms 64th notes. The
-        setting affects all tuplets:
+        Sets the preferred denominator each tuplet in terms 64th notes. The setting
+        affects all tuplets:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
@@ -2334,10 +2325,9 @@ def denominator(
 
     ..  container:: example
 
-        The preferred denominator of each tuplet is set directly when
-        ``denominator`` is set to a positive integer. This example
-        sets the preferred denominator of each tuplet to ``8``. Setting
-        does not affect the third tuplet:
+        The preferred denominator of each tuplet is set directly when ``denominator`` is
+        set to a positive integer. This example sets the preferred denominator of each
+        tuplet to ``8``. Setting does not affect the third tuplet:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
@@ -2401,8 +2391,8 @@ def denominator(
 
     ..  container:: example
 
-        Sets the preferred denominator of each tuplet to ``12``. Setting
-        affects all tuplets:
+        Sets the preferred denominator of each tuplet to ``12``. Setting affects all
+        tuplets:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
@@ -2468,8 +2458,8 @@ def denominator(
 
     ..  container:: example
 
-        Sets the preferred denominator of each tuplet to ``13``. Setting
-        does not affect any tuplet:
+        Sets the preferred denominator of each tuplet to ``13``. Setting does not affect
+        any tuplet:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(1, 4)]),
@@ -2639,128 +2629,7 @@ def force_augmentation(
 
     ..  container:: example
 
-        The ``default.ily`` stylesheet included in all Abjad API examples
-        includes the following:
-
-        ``\override TupletNumber.text = #tuplet-number::calc-fraction-text``
-
-        This means that even simple tuplets format as explicit fractions:
-
-        >>> stack = rmakers.stack(
-        ...     rmakers.even_division([8], extra_counts=[1]),
-        ...     rmakers.beam(),
-        ... )
-        >>> divisions = [(2, 8), (2, 8), (2, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        We can temporarily restore LilyPond's default tuplet numbering like
-        this:
-
-        >>> stack = rmakers.stack(
-        ...     rmakers.even_division([8], extra_counts=[1]),
-        ...     rmakers.beam(),
-        ... )
-        >>> divisions = [(2, 8), (2, 8), (2, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-        >>> staff = lilypond_file["Staff"]
-        >>> string = '#tuplet-number::calc-denominator-text'
-        >>> abjad.override(staff).TupletNumber.text = string
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                    \override TupletNumber.text = #tuplet-number::calc-denominator-text
-                }
-                {
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        Which then makes it possible to show that the force fraction
-        property cancels LilyPond's default tuplet numbering once again:
+        Without forced augmentation:
 
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
@@ -2771,9 +2640,6 @@ def force_augmentation(
         >>> selections = stack(divisions)
 
         >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-        >>> staff = lilypond_file["Staff"]
-        >>> string = '#tuplet-number::calc-denominator-text'
-        >>> abjad.override(staff).TupletNumber.text = string
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2787,7 +2653,6 @@ def force_augmentation(
                 \with
                 {
                     \override Clef.stencil = ##f
-                    \override TupletNumber.text = #tuplet-number::calc-denominator-text
                 }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
@@ -2818,6 +2683,66 @@ def force_augmentation(
                         [
                         c'8
                         c'8
+                        ]
+                    }
+                }
+            >>
+
+        With forced augmentation:
+
+        >>> stack = rmakers.stack(
+        ...     rmakers.even_division([8], extra_counts=[1]),
+        ...     rmakers.force_augmentation(),
+        ...     rmakers.force_fraction(),
+        ...     rmakers.beam(),
+        ... )
+        >>> divisions = [(2, 8), (2, 8), (2, 8)]
+        >>> selections = stack(divisions)
+
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 2/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 2/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 2/8
+                        c'16
+                        [
+                        c'16
+                        c'16
                         ]
                     }
                 }
@@ -3285,8 +3210,8 @@ def repeat_tie(selector=None) -> RepeatTieCommand:
 
     ..  container:: example
 
-        TIE-ACROSS-DIVISIONS RECIPE. Attaches repeat-ties to first note in
-        nonfirst tuplets:
+        TIE-ACROSS-DIVISIONS RECIPE. Attaches repeat-ties to first note in nonfirst
+        tuplets:
 
         >>> def selector(argument):
         ...     result = abjad.select(argument).tuplets()[1:]
@@ -3710,8 +3635,8 @@ def rewrite_rest_filled(
                 }
             >>
 
-        Note that nonassignable divisions necessitate multiple rests
-        even after rewriting.
+        Note that nonassignable divisions necessitate multiple rests even after
+        rewriting.
 
     """
     return RewriteRestFilledCommand(selector, spelling=spelling)
@@ -3725,8 +3650,7 @@ def rewrite_sustained(
 
     ..  container:: example
 
-        Sustained tuplets generalize a class of rhythms composers are
-        likely to rewrite:
+        Sustained tuplets generalize a class of rhythms composers are likely to rewrite:
 
         >>> def selector(argument):
         ...     result = abjad.select(argument).tuplets()[1:3]
@@ -3797,13 +3721,11 @@ def rewrite_sustained(
             True
             False
 
-        Tuplets 0 and 1 each contain only a single **tuplet-initial**
-        attack. Tuplet 2 contains no attack at all. All three fill their
-        duration completely.
+        Tuplets 0 and 1 each contain only a single **tuplet-initial** attack. Tuplet 2
+        contains no attack at all. All three fill their duration completely.
 
-        Tuplet 3 contains a **nonintial** attack that rearticulates the
-        tuplet's duration midway through the course of the figure. Tuplet 3
-        does not qualify as sustained.
+        Tuplet 3 contains a **nonintial** attack that rearticulates the tuplet's duration
+        midway through the course of the figure. Tuplet 3 does not qualify as sustained.
 
     ..  container:: example
 
@@ -3869,8 +3791,8 @@ def rewrite_sustained(
 
     ..  container:: example
 
-        Rewrite sustained tuplets -- and then extract the trivial tuplets
-        that result -- like this:
+        Rewrite sustained tuplets -- and then extract the trivial tuplets that result --
+        like this:
 
         >>> def selector(argument):
         ...     result = abjad.select(argument).tuplets()[1:3]
@@ -4103,8 +4025,7 @@ def tie(selector=None) -> TieCommand:
 
     ..  container:: example
 
-        TIE-ACROSS-DIVISIONS RECIPE. Attaches ties to last note in nonlast
-        tuplets:
+        TIE-ACROSS-DIVISIONS RECIPE. Attaches ties to last note in nonlast tuplets:
 
         >>> def selector(argument):
         ...     result = abjad.select(argument).tuplets()[:-1]
@@ -4711,8 +4632,7 @@ def untie(selector=None) -> UntieCommand:
 
     ..  container:: example
 
-        Attaches ties to nonlast notes; then detaches ties from select
-        notes:
+        Attaches ties to nonlast notes; then detaches ties from select notes:
 
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),
@@ -4810,8 +4730,7 @@ def untie(selector=None) -> UntieCommand:
 
     ..  container:: example
 
-        Attaches repeat-ties to nonfirst notes; then detaches ties from
-        select notes:
+        Attaches repeat-ties to nonfirst notes; then detaches ties from select notes:
 
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([8], extra_counts=[1]),

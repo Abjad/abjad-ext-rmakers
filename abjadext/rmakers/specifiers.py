@@ -8,17 +8,13 @@ import abjad
 ClassTyping = typing.Union[int, type]
 
 
-### CLASSES ###
-
-
 class Incise:
     """
     Incise specifier.
 
     ..  container:: example
 
-        Specifies one sixteenth rest cut out of the beginning of every
-        division:
+        Specifies one sixteenth rest cut out of the beginning of every division:
 
         >>> specifier = rmakers.Incise(
         ...     prefix_talea=[-1],
@@ -28,8 +24,7 @@ class Incise:
 
     ..  container:: example
 
-        Specifies sixteenth rests cut out of the beginning and end of each
-        division:
+        Specifies sixteenth rests cut out of the beginning and end of each division:
 
         >>> specifier = rmakers.Incise(
         ...     prefix_talea=[-1],
@@ -231,8 +226,8 @@ class Incise:
     @property
     def outer_divisions_only(self) -> typing.Optional[bool]:
         """
-        Is true when rhythm-maker incises outer divisions only.
-        Is false when rhythm-maker incises all divisions.
+        Is true when rhythm-maker incises outer divisions only. Is false when
+        rhythm-maker incises all divisions.
 
         ..  todo:: Add examples.
 
@@ -469,8 +464,8 @@ class Spelling:
     @property
     def increase_monotonic(self) -> typing.Optional[bool]:
         r"""
-        Is true when all durations spell as a tied series of monotonically
-        increasing values.
+        Is true when all durations spell as a tied series of monotonically increasing
+        values.
 
         ..  container:: example
 
@@ -1236,9 +1231,6 @@ class Talea:
             denominator=self.denominator,
             preamble=preamble_,
         )
-
-
-### FACTORY FUNCTIONS ###
 
 
 def interpolate(

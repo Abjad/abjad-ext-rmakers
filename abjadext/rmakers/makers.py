@@ -8,8 +8,6 @@ import abjad
 
 from . import specifiers as _specifiers
 
-### CLASSES ###
-
 
 class RhythmMaker:
     """
@@ -1218,8 +1216,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 }
             >>
 
-        Leave feathering turned off here because LilyPond feathers conjoint
-        beams poorly.
+        Leave feathering turned off here because LilyPond feathers conjoint beams poorly.
 
     ..  container:: example
 
@@ -2078,8 +2075,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 }
             >>
 
-    Set interpolations' ``written_duration`` to ``1/16`` or less for multiple
-    beams.
+    Set interpolations' ``written_duration`` to ``1/16`` or less for multiple beams.
     """
 
     ### CLASS VARIABLES ###
@@ -2134,8 +2130,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
     @staticmethod
     def _interpolate_cosine(y1, y2, mu) -> float:
         """
-        Performs cosine interpolation of ``y1`` and ``y2`` with ``mu``
-        ``[0, 1]`` normalized.
+        Performs cosine interpolation of ``y1`` and ``y2`` with ``mu`` ``[0, 1]``
+        normalized.
 
         ..  container:: example
 
@@ -2155,8 +2151,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
         total_duration, start_duration, stop_duration, exponent="cosine"
     ) -> typing.Union[str, typing.List[float]]:
         """
-        Divides ``total_duration`` into durations computed from interpolating
-        between ``start_duration`` and ``stop_duration``.
+        Divides ``total_duration`` into durations computed from interpolating between
+        ``start_duration`` and ``stop_duration``.
 
         ..  container:: example
 
@@ -2184,8 +2180,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         Set ``exponent`` to a numeric value for exponential interpolation with
         ``exponent`` as the exponent.
 
-        Scales resulting durations so that their sum equals ``total_duration``
-        exactly.
+        Scales resulting durations so that their sum equals ``total_duration`` exactly.
         """
         if total_duration <= 0:
             message = "Total duration must be positive."
@@ -2222,8 +2217,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
         total_durations, reference_durations, exponent="cosine"
     ) -> typing.List[float]:
         """
-        Interpolates ``reference_durations`` such that the sum of the
-        resulting interpolated values equals the given ``total_durations``.
+        Interpolates ``reference_durations`` such that the sum of the resulting
+        interpolated values equals the given ``total_durations``.
 
         ..  container:: example
 
@@ -2246,14 +2241,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
             13.073...
             16.991...
 
-        The operation is the same as the interpolate_divide() method
         implemented on this class. But this function takes multiple
         total durations and multiple reference durations at one time.
 
         Precondition: ``len(totals_durations) == len(reference_durations)-1``.
 
-        Set ``exponent`` to ``cosine`` for cosine interpolation. Set
-        ``exponent`` to a number for exponential interpolation.
+        Set ``exponent`` to ``cosine`` for cosine interpolation. Set ``exponent`` to a
+        number for exponential interpolation.
         """
         assert len(total_durations) == len(reference_durations) - 1
         durations = []
@@ -2323,17 +2317,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
 
-        Total number of notes not specified: total duration is specified
-        instead.
+        Total number of notes not specified: total duration is specified instead.
 
-        Selects interpolation specifier at ``index`` in
-        ``interpolations``.
+        Selects interpolation specifier at ``index`` in ``interpolations``.
 
-        Computes duration multipliers interpolated from interpolation specifier
-        start to stop.
+        Computes duration multipliers interpolated from interpolation specifier start to
+        stop.
 
-        Sets note written durations according to interpolation specifier.
-        multipliers.
+        Sets note written durations according to interpolation specifier. multipliers.
         """
         total_duration = abjad.Duration(total_duration)
         interpolation = interpolations[index]
@@ -3964,8 +3955,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 }
             >>
 
-        (Forcing rests at the fourth logical tie produces two rests.
-        Forcing rests at the eighth logical tie produces only one rest.)
+        (Forcing rests at the fourth logical tie produces two rests. Forcing rests at the
+        eighth logical tie produces only one rest.)
 
         Forces rest at leaf 0 of every tuplet:
 
@@ -4366,8 +4357,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            Expresses tuplet ratios in the usual way with numerator and
-            denominator relatively prime.
+            Expresses tuplet ratios in the usual way with numerator and denominator
+            relatively prime.
 
         ..  container:: example
 
@@ -4887,8 +4878,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            (Fills tuplets less than twice the duration of an eighth note with
-            a single attack.)
+            (Fills tuplets less than twice the duration of an eighth note with a single
+            attack.)
 
             Fills tuplets with quarter notes:
 
@@ -4927,8 +4918,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            (Fills tuplets less than twice the duration of a quarter note with
-            a single attack.)
+            (Fills tuplets less than twice the duration of a quarter note with a single
+            attack.)
 
             Fills tuplets with half notes:
 
@@ -4965,8 +4956,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            (Fills tuplets less than twice the duration of a half note with a
-            single attack.)
+            (Fills tuplets less than twice the duration of a half note with a single
+            attack.)
 
         """
         if self._denominators:
@@ -4980,8 +4971,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Adds extra counts to tuplets according to a pattern of three
-            elements:
+            Adds extra counts to tuplets according to a pattern of three elements:
 
             >>> stack = rmakers.stack(
             ...     rmakers.even_division([16], extra_counts=[0, 1, 2]),
@@ -5073,18 +5063,16 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            **Modular handling of positive values.** Denote by
-            ``unprolated_note_count`` the number counts included in a tuplet
-            when ``extra_counts`` is set to zero. Then extra
-            counts equals ``extra_counts %
-            unprolated_note_count`` when ``extra_counts`` is
-            positive.
+            **Modular handling of positive values.** Denote by ``unprolated_note_count``
+            the number counts included in a tuplet when ``extra_counts`` is set to zero.
+            Then extra counts equals ``extra_counts % unprolated_note_count`` when
+            ``extra_counts`` is positive.
 
-            This is likely to be intuitive; compare with the handling of
-            negative values, below.
+            This is likely to be intuitive; compare with the handling of negative values,
+            below.
 
-            For positive extra counts, the modulus of transformation of a
-            tuplet with six notes is six:
+            For positive extra counts, the modulus of transformation of a tuplet with six
+            notes is six:
 
             >>> import math
             >>> unprolated_note_count = 6
@@ -5322,22 +5310,20 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            This modular formula ensures that rhythm-maker ``denominators`` are
-            always respected: a very large number of extra counts never causes
-            a ``16``-denominated tuplet to result in 32nd- or 64th-note
-            rhythms.
+            This modular formula ensures that rhythm-maker ``denominators`` are always
+            respected: a very large number of extra counts never causes a
+            ``16``-denominated tuplet to result in 32nd- or 64th-note rhythms.
 
         ..  container:: example
 
-            **Modular handling of negative values.** Denote by
-            ``unprolated_note_count`` the number of counts included in a tuplet
-            when ``extra_counts`` is set to zero. Further, let
-            ``modulus = ceiling(unprolated_note_count / 2)``. Then extra counts
-            equals ``-(abs(extra_counts) % modulus)`` when
-            ``extra_counts`` is negative.
+            **Modular handling of negative values.** Denote by ``unprolated_note_count``
+            the number of counts included in a tuplet when ``extra_counts`` is set to
+            zero. Further, let ``modulus = ceiling(unprolated_note_count / 2)``. Then
+            extra counts equals ``-(abs(extra_counts) % modulus)`` when ``extra_counts``
+            is negative.
 
-            For negative extra counts, the modulus of transformation of a
-            tuplet with six notes is three:
+            For negative extra counts, the modulus of transformation of a tuplet with six
+            notes is three:
 
             >>> import math
             >>> unprolated_note_count = 6
@@ -5492,10 +5478,9 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            This modular formula ensures that rhythm-maker ``denominators`` are
-            always respected: a very small number of extra counts never causes
-            a ``16``-denominated tuplet to result in 8th- or quarter-note
-            rhythms.
+            This modular formula ensures that rhythm-maker ``denominators`` are always
+            respected: a very small number of extra counts never causes a
+            ``16``-denominated tuplet to result in 8th- or quarter-note rhythms.
 
         """
         if self._extra_counts:
@@ -6385,8 +6370,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Forbids notes with written duration greater than or equal to
-            ``1/2``:
+            Forbids notes with written duration greater than or equal to ``1/2``:
 
             >>> stack = rmakers.stack(
             ...     rmakers.incised(
@@ -7647,8 +7631,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Forbids notes with written duration greater than or equal to
-            ``1/2``:
+            Forbids notes with written duration greater than or equal to ``1/2``:
 
             >>> rhythm_maker = rmakers.NoteRhythmMaker(
             ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 2))
@@ -7888,8 +7871,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        Silences all logical ties. Then sustains first and last logical
-        ties:
+        Silences all logical ties. Then sustains first and last logical ties:
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16),
@@ -8014,8 +7996,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        REGRESSION. Spells tuplet denominator in terms of duration when
-        denominator is given as a duration:
+        REGRESSION. Spells tuplet denominator in terms of duration when denominator is
+        given as a duration:
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
@@ -8841,8 +8823,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Working with ``denominator``.
 
-        Reduces terms in tuplet ratio to relative primes when no tuplet
-        command is given:
+        Reduces terms in tuplet ratio to relative primes when no tuplet command is given:
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
@@ -8915,8 +8896,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        REGRESSION. Spells tuplet denominator in terms of duration when
-        denominator is given as a duration:
+        REGRESSION. Spells tuplet denominator in terms of duration when denominator is
+        given as a duration:
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]),
@@ -8994,8 +8975,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Working with ``diminution``.
 
-        Makes diminished tuplets when ``diminution`` is true (or when no
-        tuplet command is given):
+        Makes diminished tuplets when ``diminution`` is true (or when no tuplet command
+        is given):
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1], 16, extra_counts=[0, -1]),
@@ -9160,9 +9141,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Working with ``trivialize``.
 
-        Leaves trivializable tuplets as-is when no tuplet command is
-        given. The tuplets in measures 2 and 4 can be written as trivial
-        tuplets, but they are not:
+        Leaves trivializable tuplets as-is when no tuplet command is given. The tuplets
+        in measures 2 and 4 can be written as trivial tuplets, but they are not:
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
@@ -9220,8 +9200,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        Rewrites trivializable tuplets as trivial (1:1) tuplets when
-        ``trivialize`` is true:
+        Rewrites trivializable tuplets as trivial (1:1) tuplets when ``trivialize`` is
+        true:
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
@@ -9282,8 +9262,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        REGRESSION #907a. Rewrites trivializable tuplets even when
-        tuplets contain multiple ties:
+        REGRESSION #907a. Rewrites trivializable tuplets even when tuplets contain
+        multiple ties:
 
         >>> def selector(argument):
         ...     result = abjad.select(argument).tuplets()[:-1]
@@ -9352,8 +9332,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        REGRESSION #907b. Rewrites trivializable tuplets even when
-        tuplets contain very long ties:
+        REGRESSION #907b. Rewrites trivializable tuplets even when tuplets contain very
+        long ties:
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, 6, 6], 16, extra_counts=[0, 4]),
@@ -9426,8 +9406,8 @@ class TaleaRhythmMaker(RhythmMaker):
 
         Working with ``rewrite_rest_filled``.
 
-        Makes rest-filled tuplets when ``rewrite_rest_filled`` is false (or
-        when no tuplet command is given):
+        Makes rest-filled tuplets when ``rewrite_rest_filled`` is false (or when no
+        tuplet command is given):
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea([3, 3, -6, -6], 16, extra_counts=[1, 0]),
@@ -9712,10 +9692,9 @@ class TaleaRhythmMaker(RhythmMaker):
 
         REGRESSION. Nonperiodic rest commands respect state.
 
-        TODO: change TUPLET selector to GROUP_BY_MEASURE selector and allow
-        to be statal with divisions_produced. Possibly also allow tuplet
-        selectors to be statal by tallying tuplet_produced in state
-        metadata.
+        TODO: change TUPLET selector to GROUP_BY_MEASURE selector and allow to be statal
+        with divisions_produced. Possibly also allow tuplet selectors to be statal by
+        tallying tuplet_produced in state metadata.
 
         Only tuplets 0 and 2 are rested here:
 
@@ -10275,8 +10254,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Spells nonassignable durations with monontonically decreasing
-            durations:
+            Spells nonassignable durations with monontonically decreasing durations:
 
             >>> stack = rmakers.stack(
             ...     rmakers.talea(
@@ -10332,8 +10310,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Spells nonassignable durations with monontonically increasing
-            durations:
+            Spells nonassignable durations with monontonically increasing durations:
 
             >>> stack = rmakers.stack(
             ...     rmakers.talea(
@@ -10772,8 +10749,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 >>
 
-            The duration of each added count equals the duration
-            of each count in the rhythm-maker's input talea.
+            The duration of each added count equals the duration of each count in the
+            rhythm-maker's input talea.
 
         ..  container:: example
 
@@ -10930,8 +10907,8 @@ class TaleaRhythmMaker(RhythmMaker):
             ...     rmakers.beam(),
             ... )
 
-            Calling stack on these divisions raises an exception because talea
-            is too short to read once only:
+            Calling stack on these divisions raises an exception because talea is too
+            short to read once only:
 
             >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
             >>> stack(divisions)
@@ -10939,11 +10916,11 @@ class TaleaRhythmMaker(RhythmMaker):
                 ...
             Exception: () + (1, 2, 3, 4) is too short to read [6, 6, 6, 6] once.
 
-        Set to true to ensure talea is long enough to cover all divisions
-        without repeating.
+        Set to true to ensure talea is long enough to cover all divisions without
+        repeating.
 
-        Provides way of using talea noncyclically when, for example,
-        interpolating from short durations to long durations.
+        Provides way of using talea noncyclically when, for example, interpolating from
+        short durations to long durations.
         """
         return self._read_talea_once_only
 
@@ -11020,8 +10997,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 )
 
-            Advances 4 divisions and 31 counts; then consumes another 4
-            divisions and 31 counts:
+            Advances 4 divisions and 31 counts; then consumes another 4 divisions and 31
+            counts:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selections = command(divisions, previous_state=state)
@@ -11084,8 +11061,7 @@ class TaleaRhythmMaker(RhythmMaker):
                     }
                 )
 
-            Advances 8 divisions and 62 counts; then consumes 4 divisions and
-            31 counts:
+            Advances 8 divisions and 62 counts; then consumes 4 divisions and 31 counts:
 
             >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
             >>> selections = command(divisions, previous_state=state)
@@ -12485,10 +12461,9 @@ class TupletRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        Rewrites trivializable tuplets when ``trivialize`` is true.
-        Measures 2 and 4 contain trivial tuplets with 1:1 ratios. To remove
-        these trivial tuplets, set ``extract_trivial`` as shown in the next
-        example:
+        Rewrites trivializable tuplets when ``trivialize`` is true. Measures 2 and 4
+        contain trivial tuplets with 1:1 ratios. To remove these trivial tuplets, set
+        ``extract_trivial`` as shown in the next example:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
@@ -12546,11 +12521,10 @@ class TupletRhythmMaker(RhythmMaker):
                 }
             >>
 
-        REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when
-        both are true. Measures 2 and 4 are first rewritten as trivial but
-        then supplied again with nontrivial prolation when removing dots.
-        The result is that measures 2 and 4 carry nontrivial prolation with
-        no dots:
+        REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when both are
+        true. Measures 2 and 4 are first rewritten as trivial but then supplied again
+        with nontrivial prolation when removing dots. The result is that measures 2 and 4
+        carry nontrivial prolation with no dots:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(3, -2), (1,), (-2, 3), (1, 1)]),
@@ -12611,8 +12585,7 @@ class TupletRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        Leaves trivial tuplets as-is when ``extract_trivial`` is
-        false:
+        Leaves trivial tuplets as-is when ``extract_trivial`` is false:
 
         >>> def selector(argument):
         ...     result = abjad.select(argument).tuplets()[:-1]
@@ -12682,9 +12655,8 @@ class TupletRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        Extracts trivial tuplets when ``extract_trivial`` is true.
-        Measures 2 and 4 in the example below now contain only a flat list
-        of notes:
+        Extracts trivial tuplets when ``extract_trivial`` is true. Measures 2 and 4 in
+        the example below now contain only a flat list of notes:
 
         >>> def selector(argument):
         ...     result = abjad.select(argument).tuplets()[:-1]
@@ -12750,8 +12722,7 @@ class TupletRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        REGRESSION: Very long ties are preserved when ``extract_trivial``
-        is true:
+        REGRESSION: Very long ties are preserved when ``extract_trivial`` is true:
 
         >>> stack = rmakers.stack(
         ...     rmakers.tuplet([(2, 3), (1, 1)]),
@@ -12968,9 +12939,9 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Tuplet numerators and denominators are reduced to numbers that are
-            relatively prime when ``denominator`` is set to none. This
-            means that ratios like ``6:4`` and ``10:8`` do not arise:
+            Tuplet numerators and denominators are reduced to numbers that are relatively
+            prime when ``denominator`` is set to none. This means that ratios like
+            ``6:4`` and ``10:8`` do not arise:
 
             >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
@@ -13028,9 +12999,9 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            The preferred denominator of each tuplet is set in terms of a unit
-            duration when ``denominator`` is set to a duration. The
-            setting does not affect the first tuplet:
+            The preferred denominator of each tuplet is set in terms of a unit duration
+            when ``denominator`` is set to a duration. The setting does not affect the
+            first tuplet:
 
             >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
@@ -13089,8 +13060,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Sets the preferred denominator of each tuplet in terms 32nd notes.
-            The setting affects all tuplets:
+            Sets the preferred denominator of each tuplet in terms 32nd notes. The
+            setting affects all tuplets:
 
             >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
@@ -13149,8 +13120,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Sets the preferred denominator each tuplet in terms 64th notes. The
-            setting affects all tuplets:
+            Sets the preferred denominator each tuplet in terms 64th notes. The setting
+            affects all tuplets:
 
             >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
@@ -13209,10 +13180,9 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            The preferred denominator of each tuplet is set directly when
-            ``denominator`` is set to a positive integer. This example
-            sets the preferred denominator of each tuplet to ``8``. Setting
-            does not affect the third tuplet:
+            The preferred denominator of each tuplet is set directly when ``denominator``
+            is set to a positive integer. This example sets the preferred denominator of
+            each tuplet to ``8``. Setting does not affect the third tuplet:
 
             >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
@@ -13271,8 +13241,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Sets the preferred denominator of each tuplet to ``12``. Setting
-            affects all tuplets:
+            Sets the preferred denominator of each tuplet to ``12``. Setting affects all
+            tuplets:
 
             >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
@@ -13331,8 +13301,8 @@ class TupletRhythmMaker(RhythmMaker):
 
         ..  container:: example
 
-            Sets the preferred denominator of each tuplet to ``13``. Setting
-            does not affect any tuplet:
+            Sets the preferred denominator of each tuplet to ``13``. Setting does not
+            affect any tuplet:
 
             >>> stack = rmakers.stack(
             ...     rmakers.tuplet([(1, 4)]),
@@ -13673,9 +13643,6 @@ class TupletRhythmMaker(RhythmMaker):
             return list(self._tuplet_ratios)
         else:
             return None
-
-
-### FACTORY FUNCTIONS ###
 
 
 def accelerando(
