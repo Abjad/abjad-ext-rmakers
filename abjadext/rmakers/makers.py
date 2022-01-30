@@ -2307,7 +2307,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             200.0
 
         """
-        result = y1 * (1 - mu ** exponent) + y2 * mu ** exponent
+        result = y1 * (1 - mu**exponent) + y2 * mu**exponent
         return result
 
     @classmethod
@@ -2339,7 +2339,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
             selection = abjad.select([tuplet])
             return selection
-        durations = class_._round_durations(durations, 2 ** 10)
+        durations = class_._round_durations(durations, 2**10)
         notes = []
         for i, duration in enumerate(durations):
             written_duration = interpolation.written_duration
