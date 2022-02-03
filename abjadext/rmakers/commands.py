@@ -36,9 +36,11 @@ class Command:
 
     def __eq__(self, argument) -> bool:
         """
-        Delegates to storage format manager.
+        Compares ``selector``.
         """
-        return abjad.format.compare_objects(self, argument)
+        if isinstance(argument, type(self)):
+            return self.selector == argument.selector
+        return False
 
     def __hash__(self) -> int:
         """

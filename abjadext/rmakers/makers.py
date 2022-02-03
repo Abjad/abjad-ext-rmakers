@@ -72,9 +72,11 @@ class RhythmMaker:
 
     def __eq__(self, argument) -> bool:
         """
-        Delegates to storage format manager.
+        Compares string formats.
         """
-        return abjad.format.compare_objects(self, argument)
+        if isinstance(argument, type(self)):
+            return str(self) == str(argument)
+        return False
 
     def __hash__(self) -> int:
         """

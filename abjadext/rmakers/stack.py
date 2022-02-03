@@ -80,10 +80,10 @@ class Stack:
 
     def __eq__(self, argument) -> bool:
         """
-        Delegates to format manager.
+        Compares string formats.
         """
-        if abjad.format.compare_objects(self, argument):
-            return self.commands == argument.commands
+        if isinstance(argument, type(self)):
+            return str(self) == str(argument)
         return False
 
     def __hash__(self) -> int:
@@ -244,9 +244,14 @@ class Match:
 
     def __eq__(self, argument) -> bool:
         """
-        Delegates to storage format manager.
+        Compares ``assignment``, ``payload``.
         """
-        return abjad.format.compare_objects(self, argument)
+        if isinstance(argument, type(self)):
+            return (
+                self.assignment == argument.assignment
+                and self.payload == argument.payload
+            )
+        return False
 
     def __hash__(self) -> int:
         """
@@ -314,9 +319,14 @@ class Assignment:
 
     def __eq__(self, argument) -> bool:
         """
-        Delegates to storage format manager.
+        Compares ``rhythm_maker``, ``predicate``.
         """
-        return abjad.format.compare_objects(self, argument)
+        if isinstance(argument, type(self)):
+            return (
+                self.rhythm_maker == argument.rhythm_maker
+                and self.predicate == argument.predicate
+            )
+        return False
 
     def __hash__(self) -> int:
         """
@@ -447,9 +457,11 @@ class Bind:
 
     def __eq__(self, argument) -> bool:
         """
-        Delegates to storage format manager.
+        Compares ``assignment``.
         """
-        return abjad.format.compare_objects(self, argument)
+        if isinstance(argument, type(self)):
+            return self.assignments == argument.assignments
+        return False
 
     def __hash__(self) -> int:
         """

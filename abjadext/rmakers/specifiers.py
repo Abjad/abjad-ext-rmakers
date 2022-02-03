@@ -822,9 +822,16 @@ class Talea:
 
     def __eq__(self, argument) -> bool:
         """
-        Delegates to storage format manager.
+        Compares ``counts``, ``denominator``, ``end_counts``, ``preamble``.
         """
-        return abjad.format.compare_objects(self, argument)
+        if isinstance(argument, type(self)):
+            return (
+                self.counts == argument.counts
+                and self.denominator == argument.denominator
+                and self.end_counts == argument.end_counts
+                and self.preamble == argument.preamble
+            )
+        return False
 
     def __getitem__(
         self, argument
