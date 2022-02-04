@@ -142,8 +142,8 @@ class Incise:
             if not abjad.math.is_nonnegative_integer_power_of_two(
                 self.talea_denominator
             ):
-                message = f"talea denominator {talea_denominator!r} must be nonnegative"
-                message += " integer power of 2."
+                message = f"talea denominator {self.talea_denominator!r}"
+                message += " must be nonnegative integer power of 2."
                 raise Exception(message)
         if self.prefix_talea or self.suffix_talea:
             assert self.talea_denominator is not None

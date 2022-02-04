@@ -102,7 +102,7 @@ class Stack:
             ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
-            Stack(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), ForceFractionCommand())
+            Stack(TupletRhythmMaker(tuplet_ratios=(Ratio((1, 2)),)), ForceFractionCommand())
 
         """
         return abjad.format.get_repr(self)
@@ -164,10 +164,10 @@ class Stack:
             >>> command_2 = abjad.new(command_1)
 
             >>> command_1
-            Stack(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), ForceFractionCommand())
+            Stack(TupletRhythmMaker(tuplet_ratios=(Ratio((1, 2)),)), ForceFractionCommand())
 
             >>> command_2
-            Stack(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), ForceFractionCommand())
+            Stack(TupletRhythmMaker(tuplet_ratios=(Ratio((1, 2)),)), ForceFractionCommand())
 
             >>> command_1 == command_2
             True
