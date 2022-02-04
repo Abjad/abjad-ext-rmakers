@@ -80,14 +80,9 @@ class RhythmMaker:
 
     def __hash__(self) -> int:
         """
-        Delegates to storage format manager.
+        Hashes object.
         """
-        hash_values = abjad.format.get_hash_values(self)
-        try:
-            result = hash(hash_values)
-        except TypeError:
-            raise TypeError(f"unhashable type: {self}")
-        return result
+        return hash(str(self))
 
     def __repr__(self) -> str:
         """
