@@ -1,6 +1,7 @@
 """
 Rhythm-maker commands.
 """
+import dataclasses
 import typing
 
 import abjad
@@ -8,25 +9,19 @@ import abjad
 from . import specifiers as _specifiers
 
 
+@dataclasses.dataclass(slots=True)
 class Command:
     """
     Command baseclass.
     """
 
-    ### CLASS VARIABLES ###
+    selector: typing.Any | str | None = None
 
     __documentation_section__ = "Commands"
 
-    __slots__ = ("_selector",)
-
-    ### INITIALIZER ###
-
-    def __init__(self, selector=None) -> None:
-        if isinstance(selector, str):
-            selector = eval(selector)
-        self._selector = selector
-
-    ### SPECIAL METHODS ###
+    def __post_init__(self) -> None:
+        if isinstance(self.selector, str):
+            self.selector = eval(self.selector)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -34,46 +29,13 @@ class Command:
         """
         pass
 
-    def __eq__(self, argument) -> bool:
-        """
-        Compares ``selector``.
-        """
-        if isinstance(argument, type(self)):
-            return self.selector == argument.selector
-        return False
-
-    def __hash__(self) -> int:
-        """
-        Hashes object.
-        """
-        return hash(str(self))
-
-    def __repr__(self) -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.format.get_repr(self)
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def selector(self):
-        """
-        Gets selector.
-        """
-        return self._selector
-
 
 class BeamCommand(Command):
     """
     Beam command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length")
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -94,8 +56,6 @@ class BeamCommand(Command):
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
 
-    ### SPECIAL METHODS ###
-
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
         Calls beam command on ``voice``.
@@ -115,8 +75,6 @@ class BeamCommand(Command):
                 stemlet_length=self.stemlet_length,
                 tag=tag,
             )
-
-    ### PUBLIC PROPERTIES ###
 
     @property
     def beam_lone_notes(self) -> typing.Optional[bool]:
@@ -145,11 +103,7 @@ class BeamGroupsCommand(Command):
     Beam groups command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length", "_tag")
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -173,8 +127,6 @@ class BeamGroupsCommand(Command):
         if tag is not None:
             assert isinstance(tag, abjad.Tag), repr(tag)
         self._tag = tag
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -218,8 +170,6 @@ class BeamGroupsCommand(Command):
             tag=tag,
         )
 
-    ### PUBLIC PROPERTIES ###
-
     @property
     def beam_lone_notes(self) -> typing.Optional[bool]:
         """
@@ -254,11 +204,7 @@ class CacheStateCommand(Command):
     Cache state command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### INITIALIZER ###
 
     def __init__(self) -> None:
         pass
@@ -269,11 +215,7 @@ class DenominatorCommand(Command):
     Denominator command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_denominator",)
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -287,8 +229,6 @@ class DenominatorCommand(Command):
             prototype = (int, abjad.Duration)
             assert isinstance(denominator, prototype), repr(denominator)
         self._denominator = denominator
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -314,8 +254,6 @@ class DenominatorCommand(Command):
                 message = f"invalid preferred denominator: {denominator!r}."
                 raise Exception(message)
 
-    ### PUBLIC PROPERTIES ###
-
     @property
     def denominator(self) -> typing.Union[int, abjad.Duration, None]:
         r"""
@@ -329,11 +267,7 @@ class DurationBracketCommand(Command):
     Duration bracket command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -355,11 +289,7 @@ class WrittenDurationCommand(Command):
     Written duration command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_duration",)
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -370,8 +300,6 @@ class WrittenDurationCommand(Command):
         super().__init__(selector)
         duration_ = abjad.Duration(duration)
         self._duration = duration_
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -385,8 +313,6 @@ class WrittenDurationCommand(Command):
         for leaf in leaves:
             self._set_written_duration(leaf, self.duration)
 
-    ### PRIVATE METHODS ###
-
     @staticmethod
     def _set_written_duration(leaf, written_duration):
         if written_duration is None:
@@ -397,8 +323,6 @@ class WrittenDurationCommand(Command):
         leaf.written_duration = written_duration
         multiplier = old_duration / written_duration
         leaf.multiplier = multiplier
-
-    ### PUBLIC PROPERTIES ###
 
     @property
     def duration(self) -> typing.Optional[abjad.Duration]:
@@ -413,11 +337,7 @@ class ExtractTrivialCommand(Command):
     Extract trivial command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -437,11 +357,7 @@ class FeatherBeamCommand(Command):
     Feather beam command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_beam_rests", "_selector", "_stemlet_length")
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -457,8 +373,6 @@ class FeatherBeamCommand(Command):
         if stemlet_length is not None:
             assert isinstance(stemlet_length, (int, float))
         self._stemlet_length = stemlet_length
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -485,8 +399,6 @@ class FeatherBeamCommand(Command):
             elif self._is_ritardando(selection):
                 abjad.override(first_leaf).Beam.grow_direction = abjad.Left
 
-    ### PRIVATE METHODS ###
-
     @staticmethod
     def _is_accelerando(selection):
         first_leaf = abjad.select(selection).leaf(0)
@@ -506,8 +418,6 @@ class FeatherBeamCommand(Command):
         if first_duration < last_duration:
             return True
         return False
-
-    ### PUBLIC PROPERTIES ###
 
     @property
     def beam_rests(self) -> typing.Optional[bool]:
@@ -529,11 +439,7 @@ class ForceAugmentationCommand(Command):
     Force augmentation command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -552,11 +458,7 @@ class ForceDiminutionCommand(Command):
     Force diminution command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -575,11 +477,7 @@ class ForceFractionCommand(Command):
     Force fraction command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -676,11 +574,7 @@ class ForceNoteCommand(Command):
 
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag=None):
         selection = voice
@@ -710,11 +604,7 @@ class ForceRepeatTieCommand(Command):
     Force repeat-tie command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_threshold",)
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -733,8 +623,6 @@ class ForceRepeatTieCommand(Command):
         if threshold_ is not None:
             assert isinstance(threshold_, (bool, abjad.DurationInequality))
         self._threshold = threshold_
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -769,8 +657,6 @@ class ForceRepeatTieCommand(Command):
         for leaf in attach_repeat_ties:
             repeat_tie = abjad.RepeatTie()
             abjad.attach(repeat_tie, leaf)
-
-    ### PUBLIC PROPERTIES ###
 
     @property
     def threshold(self) -> typing.Union[bool, abjad.DurationInequality, None]:
@@ -941,11 +827,7 @@ class ForceRestCommand(Command):
 
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, previous_logical_ties_produced=None, tag=None):
         selection = voice
@@ -983,13 +865,9 @@ class GraceContainerCommand(Command):
     Grace container command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_beam_and_slash", "_class_", "_counts", "_talea")
 
     _classes = (abjad.BeforeGraceContainer, abjad.AfterGraceContainer)
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -1010,8 +888,6 @@ class GraceContainerCommand(Command):
         self._beam_and_slash = beam_and_slash
         assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1037,8 +913,6 @@ class GraceContainerCommand(Command):
                 abjad.attach(literal, notes[0])
             container = self.class_(notes)
             abjad.attach(container, leaf)
-
-    ### PUBLIC PROPERTIES ###
 
     @property
     def class_(self) -> typing.Type:
@@ -1075,11 +949,7 @@ class InvisibleMusicCommand(Command):
     Invisible music command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1104,11 +974,7 @@ class OnBeatGraceContainerCommand(Command):
     On-beat grace container command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_counts", "_grace_leaf_duration", "_talea")
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -1126,8 +992,6 @@ class OnBeatGraceContainerCommand(Command):
         self._grace_leaf_duration = leaf_duration
         assert isinstance(talea, _specifiers.Talea), repr(talea)
         self._talea = talea
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1153,8 +1017,6 @@ class OnBeatGraceContainerCommand(Command):
                 grace_voice_number=1,
                 leaf_duration=self.leaf_duration,
             )
-
-    ### PUBLIC PROPERTIES ###
 
     @property
     def counts(self) -> typing.Tuple[int, ...]:
@@ -1183,11 +1045,7 @@ class ReduceMultiplierCommand(Command):
     Reduce multiplier command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1205,11 +1063,7 @@ class RepeatTieCommand(Command):
     Repeat-tie command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1228,11 +1082,7 @@ class RewriteDotsCommand(Command):
     Rewrite dots command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1250,11 +1100,7 @@ class RewriteMeterCommand(Command):
     Rewrite meter command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_boundary_depth", "_reference_meters")
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -1273,8 +1119,6 @@ class RewriteMeterCommand(Command):
                 raise Exception(message)
             reference_meters_ = tuple(reference_meters)
         self._reference_meters = reference_meters_
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1331,8 +1175,6 @@ class RewriteMeterCommand(Command):
                     tag=abjad.Tag("rmakers.RewriteMeterCommand.__call__"),
                 )
 
-    ### PRIVATE METHODS ###
-
     @staticmethod
     def _make_beamable_groups(components, durations):
         music_duration = abjad.get.duration(components)
@@ -1374,8 +1216,6 @@ class RewriteMeterCommand(Command):
                 beamable_groups.append(abjad.select([]))
         return beamable_groups
 
-    ### PUBLIC PROPERTIES ###
-
     @property
     def boundary_depth(self) -> typing.Optional[int]:
         """
@@ -1398,11 +1238,7 @@ class RewriteRestFilledCommand(Command):
     Rewrite rest-filled command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_spelling",)
-
-    ### INITIALIZER ###
 
     def __init__(
         self,
@@ -1414,8 +1250,6 @@ class RewriteRestFilledCommand(Command):
         if spelling is not None:
             assert isinstance(spelling, _specifiers.Spelling)
         self._spelling = spelling
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1446,8 +1280,6 @@ class RewriteRestFilledCommand(Command):
             abjad.mutate.replace(tuplet[:], rests)
             tuplet.multiplier = abjad.Multiplier(1)
 
-    ### PUBLIC PROPERTIES ###
-
     @property
     def spelling(self) -> typing.Optional[_specifiers.Spelling]:
         """
@@ -1461,11 +1293,7 @@ class RewriteSustainedCommand(Command):
     Rewrite sustained command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1498,11 +1326,7 @@ class SplitMeasuresCommand(Command):
     Split measures command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(
         self,
@@ -1536,11 +1360,7 @@ class TieCommand(Command):
     Tie command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1559,19 +1379,13 @@ class TremoloContainerCommand(Command):
     Tremolo container command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_count",)
-
-    ### INITIALIZER ###
 
     def __init__(self, count: int, selector=None) -> None:
         super().__init__(selector)
         assert isinstance(count, int), repr(count)
         assert 0 < count, repr(count)
         self._count = count
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1590,8 +1404,6 @@ class TremoloContainerCommand(Command):
             )
             abjad.mutate.replace(note, container)
 
-    ### PUBLIC PROPERTIES ###
-
     @property
     def count(self) -> int:
         """
@@ -1605,11 +1417,7 @@ class TrivializeCommand(Command):
     Trivialize command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1627,11 +1435,7 @@ class UnbeamCommand(Command):
     Unbeam command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -1654,11 +1458,7 @@ class UntieCommand(Command):
     Untie command.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ()
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """

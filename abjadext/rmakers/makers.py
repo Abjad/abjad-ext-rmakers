@@ -672,7 +672,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
 
         >>> abjad.new(stack).commands
-        [ForceFractionCommand()]
+        [ForceFractionCommand(selector=None)]
 
     ..  container:: example
 
@@ -8491,7 +8491,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
         >>> new_command = abjad.new(command)
         >>> new_command
-        Stack(TaleaRhythmMaker(talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=None, preamble=None)), ExtractTrivialCommand())
+        Stack(maker=TaleaRhythmMaker(spelling=None, tag=None, extra_counts=None, read_talea_once_only=None, talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=None, preamble=None)), commands=[ExtractTrivialCommand(selector=None)], preprocessor=None, tag=None)
 
         >>> command == new_command
         True

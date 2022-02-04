@@ -1,6 +1,7 @@
 """
 Rhythm-maker stack class and collaborators.
 """
+import dataclasses
 import typing
 
 import abjad
@@ -102,10 +103,10 @@ class Stack:
             ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
-            Stack(TupletRhythmMaker(tuplet_ratios=(Ratio((1, 2)),)), ForceFractionCommand())
+            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio((1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
 
         """
-        return abjad.format.get_repr(self)
+        return f"Stack(maker={self.maker}, commands={self.commands}, preprocessor={self.preprocessor}, tag={self.tag})"
 
     ### PRIVATE METHODS ###
 
@@ -140,12 +141,6 @@ class Stack:
             raise Exception(message)
         return divisions
 
-    def _get_format_specification(self):
-        values = []
-        values.append(self.maker)
-        values.extend(self.commands)
-        return abjad.FormatSpecification(storage_format_args_values=values)
-
     ### PUBLIC PROPERTIES ###
 
     @property
@@ -164,10 +159,10 @@ class Stack:
             >>> command_2 = abjad.new(command_1)
 
             >>> command_1
-            Stack(TupletRhythmMaker(tuplet_ratios=(Ratio((1, 2)),)), ForceFractionCommand())
+            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio((1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
 
             >>> command_2
-            Stack(TupletRhythmMaker(tuplet_ratios=(Ratio((1, 2)),)), ForceFractionCommand())
+            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio((1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
 
             >>> command_1 == command_2
             True
@@ -204,138 +199,33 @@ class Stack:
         return self._tag
 
 
+@dataclasses.dataclass(slots=True)
 class Match:
     """
     Match.
     """
 
-    ### CLASS VARIABLES ###
-
-    __slots__ = ("_assignment", "_payload")
-
-    ### INITIALIZER ###
-
-    def __init__(self, assignment, payload) -> None:
-        self._assignment = assignment
-        self._payload = payload
-
-    ### SPECIAL METHODS ###
-
-    def __eq__(self, argument) -> bool:
-        """
-        Compares ``assignment``, ``payload``.
-        """
-        if isinstance(argument, type(self)):
-            return (
-                self.assignment == argument.assignment
-                and self.payload == argument.payload
-            )
-        return False
-
-    def __hash__(self) -> int:
-        """
-        Hashes object.
-        """
-        return hash(str(self))
-
-    def __repr__(self) -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.format.get_repr(self)
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def assignment(self):
-        """
-        Gets assignment.
-        """
-        return self._assignment
-
-    @property
-    def payload(self) -> typing.Any:
-        """
-        Gets payload.
-        """
-        return self._payload
+    assignment: typing.Any
+    payload: typing.Any
 
 
+@dataclasses.dataclass(slots=True)
 class Assignment:
     """
     Assignment.
     """
 
-    ### CLASS VARIABLES ###
+    rhythm_maker: typing.Union[RhythmMaker, Stack]
+    predicate: typing.Union[typing.Callable, abjad.Pattern] = None
+    remember_state_across_gaps: bool = None
 
-    __slots__ = ("_predicate", "_remember_state_across_gaps", "_rhythm_maker")
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        rhythm_maker: typing.Union[RhythmMaker, Stack],
-        predicate: typing.Union[typing.Callable, abjad.Pattern] = None,
-        *,
-        remember_state_across_gaps: bool = None,
-    ) -> None:
-        if predicate is not None and not isinstance(predicate, abjad.Pattern):
-            assert callable(predicate)
-        self._predicate = predicate
+    def __post_init__(self):
+        if self.predicate is not None and not isinstance(self.predicate, abjad.Pattern):
+            assert callable(self.predicate)
         prototype = (RhythmMaker, Stack)
-        assert isinstance(rhythm_maker, prototype), repr(rhythm_maker)
-        self._rhythm_maker = rhythm_maker
-        if remember_state_across_gaps is None:
-            remember_state_across_gaps = bool(remember_state_across_gaps)
-        self._remember_state_across_gaps = remember_state_across_gaps
-
-    ### SPECIAL METHODS ###
-
-    def __eq__(self, argument) -> bool:
-        """
-        Compares ``rhythm_maker``, ``predicate``.
-        """
-        if isinstance(argument, type(self)):
-            return (
-                self.rhythm_maker == argument.rhythm_maker
-                and self.predicate == argument.predicate
-            )
-        return False
-
-    def __hash__(self) -> int:
-        """
-        Hashes object.
-        """
-        return hash(str(self))
-
-    def __repr__(self) -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.format.get_repr(self)
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def predicate(self) -> typing.Union[typing.Callable, abjad.Pattern, None]:
-        """
-        Gets predicate.
-        """
-        return self._predicate
-
-    @property
-    def remember_state_across_gaps(self) -> typing.Optional[bool]:
-        """
-        Is true when assignment remembers rhythm-maker state across gaps.
-        """
-        return self._remember_state_across_gaps
-
-    @property
-    def rhythm_maker(self) -> typing.Union[RhythmMaker, Stack]:
-        """
-        Gets rhythm-maker.
-        """
-        return self._rhythm_maker
+        assert isinstance(self.rhythm_maker, prototype), repr(self.rhythm_maker)
+        if self.remember_state_across_gaps is None:
+            self.remember_state_across_gaps = bool(self.remember_state_across_gaps)
 
 
 class Bind:
@@ -343,14 +233,10 @@ class Bind:
     Bind.
     """
 
-    ### CLASS VARIABLES ###
-
     __slots__ = ("_assignments", "_state", "_tag")
 
     # to make sure abjad.new() copies sassignments
     _positional_arguments_name = "assignments"
-
-    ### INITIALIZER ###
 
     def __init__(self, *assignments: Assignment, tag: abjad.Tag = None) -> None:
         assignments = assignments or ()
@@ -365,8 +251,6 @@ class Bind:
         if tag is not None:
             assert isinstance(tag, abjad.Tag), repr(tag)
         self._tag = tag
-
-    ### SPECIAL METHODS ###
 
     def __call__(self, divisions, previous_state: dict = None) -> abjad.Selection:
         """
@@ -440,16 +324,9 @@ class Bind:
 
     def __repr__(self) -> str:
         """
-        Delegates to storage format manager.
+        Gets repr.
         """
-        return abjad.format.get_repr(self)
-
-    ### PRIVATE METHODS ###
-
-    def _get_format_specification(self):
-        return abjad.FormatSpecification(storage_format_args_values=self.assignments)
-
-    ### PUBLIC PROPERTIES ###
+        return f"Bind(assignments={self.assignments}, tag={self.tag})"
 
     @property
     def assignments(self) -> typing.List[Assignment]:
