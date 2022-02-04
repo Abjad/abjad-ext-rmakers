@@ -2939,14 +2939,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>
 
             >>> state = stack.maker.state
-            >>> string = abjad.storage(state)
-            >>> print(string)
-            dict(
-                {
-                    'divisions_consumed': 3,
-                    'logical_ties_produced': 17,
-                    }
-                )
+            >>> state
+            {'divisions_consumed': 3, 'logical_ties_produced': 17}
 
             Advances 3 divisions; then consumes another 3 divisions:
 
@@ -3124,14 +3118,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>
 
             >>> state = stack.maker.state
-            >>> string = abjad.storage(state)
-            >>> print(string)
-            dict(
-                {
-                    'divisions_consumed': 6,
-                    'logical_ties_produced': 36,
-                    }
-                )
+            >>> state
+            {'divisions_consumed': 6, 'logical_ties_produced': 36}
 
             Advances 6 divisions; then consumes another 3 divisions:
 
@@ -3307,14 +3295,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 >>
 
             >>> state = stack.maker.state
-            >>> string = abjad.storage(state)
-            >>> print(string)
-            dict(
-                {
-                    'divisions_consumed': 9,
-                    'logical_ties_produced': 53,
-                    }
-                )
+            >>> state
+            {'divisions_consumed': 9, 'logical_ties_produced': 53}
 
         """
         return super().state
@@ -5555,14 +5537,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>
 
             >>> state = stack.maker.state
-            >>> string = abjad.storage(state)
-            >>> print(string)
-            dict(
-                {
-                    'divisions_consumed': 5,
-                    'logical_ties_produced': 15,
-                    }
-                )
+            >>> state
+            {'divisions_consumed': 5, 'logical_ties_produced': 15}
 
             Advances 5 divisions; then consumes another 5 divisions:
 
@@ -5620,14 +5596,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 >>
 
             >>> state = stack.maker.state
-            >>> string = abjad.storage(state)
-            >>> print(string)
-            dict(
-                {
-                    'divisions_consumed': 10,
-                    'logical_ties_produced': 29,
-                    }
-                )
+            >>> state
+            {'divisions_consumed': 10, 'logical_ties_produced': 29}
 
         """
         return super().state
@@ -6604,12 +6574,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
     ..  container:: example
 
         >>> rhythm_maker = rmakers.multiplied_duration()
-        >>> string = abjad.storage(rhythm_maker)
-        >>> print(string)
-        rmakers.MultipliedDurationRhythmMaker(
-            prototype=abjad.Note,
-            duration=abjad.Duration(1, 1),
-            )
+        >>> rhythm_maker
+        MultipliedDurationRhythmMaker(prototype=Note, duration=Duration(1, 1))
 
     """
 
@@ -7980,16 +7946,8 @@ class TaleaRhythmMaker(RhythmMaker):
             >>
 
         >>> state = command.maker.state
-        >>> string = abjad.storage(state)
-        >>> print(string)
-        dict(
-            {
-                'divisions_consumed': 4,
-                'incomplete_last_note': True,
-                'logical_ties_produced': 8,
-                'talea_weight_consumed': 31,
-                }
-            )
+        >>> state
+        {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
     ..  container:: example
 
@@ -8801,17 +8759,8 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.extract_trivial(),
         ...     )
         >>> new_command = abjad.new(command)
-        >>> string = abjad.storage(command)
-        >>> print(string)
-        rmakers.Stack(
-            rmakers.TaleaRhythmMaker(
-                talea=rmakers.Talea(
-                    [5, -3, 3, 3],
-                    16
-                    ),
-                ),
-            ExtractTrivialCommand()
-            )
+        >>> new_command
+        Stack(TaleaRhythmMaker(talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=None, preamble=None)), ExtractTrivialCommand())
 
         >>> command == new_command
         True
@@ -9742,16 +9691,8 @@ class TaleaRhythmMaker(RhythmMaker):
             >>
 
         >>> state = stack.maker.state
-        >>> string = abjad.storage(state)
-        >>> print(string)
-        dict(
-            {
-                'divisions_consumed': 4,
-                'incomplete_last_note': True,
-                'logical_ties_produced': 8,
-                'talea_weight_consumed': 31,
-                }
-            )
+        >>> state
+        {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
     ..  container:: example
 
@@ -9806,16 +9747,8 @@ class TaleaRhythmMaker(RhythmMaker):
             >>
 
         >>> state = stack.maker.state
-        >>> string = abjad.storage(state)
-        >>> print(string)
-        dict(
-            {
-                'divisions_consumed': 4,
-                'incomplete_last_note': True,
-                'logical_ties_produced': 8,
-                'talea_weight_consumed': 31,
-                }
-            )
+        >>> state
+        {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
     ..  container:: example
 
@@ -10983,16 +10916,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
             >>> state = command.maker.state
-            >>> string = abjad.storage(state)
-            >>> print(string)
-            dict(
-                {
-                    'divisions_consumed': 4,
-                    'incomplete_last_note': True,
-                    'logical_ties_produced': 8,
-                    'talea_weight_consumed': 31,
-                    }
-                )
+            >>> state
+            {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
             Advances 4 divisions and 31 counts; then consumes another 4 divisions and 31
             counts:
@@ -11047,16 +10972,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
             >>> state = command.maker.state
-            >>> string = abjad.storage(state)
-            >>> print(string)
-            dict(
-                {
-                    'divisions_consumed': 8,
-                    'incomplete_last_note': True,
-                    'logical_ties_produced': 16,
-                    'talea_weight_consumed': 63,
-                    }
-                )
+            >>> state
+            {'divisions_consumed': 8, 'incomplete_last_note': True, 'logical_ties_produced': 16, 'talea_weight_consumed': 63}
 
             Advances 8 divisions and 62 counts; then consumes 4 divisions and 31 counts:
 
@@ -11113,17 +11030,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 >>
 
             >>> state = command.maker.state
-            >>> string = abjad.storage(state)
-            >>> print(string)
-            dict(
-                {
-                    'divisions_consumed': 12,
-                    'incomplete_last_note': True,
-                    'logical_ties_produced': 24,
-                    'talea_weight_consumed': 96,
-                    }
-                )
-
+            >>> state
+            {'divisions_consumed': 12, 'incomplete_last_note': True, 'logical_ties_produced': 24, 'talea_weight_consumed': 96}
 
         """
         return super().state

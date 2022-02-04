@@ -1,6 +1,7 @@
 """
 Rhythm-maker specifiers.
 """
+import dataclasses
 import typing
 
 import abjad
@@ -8,8 +9,9 @@ import abjad
 ClassTyping = typing.Union[int, type]
 
 
+@dataclasses.dataclass(slots=True)
 class Incise:
-    """
+    r"""
     Incise specifier.
 
     ..  container:: example
@@ -34,88 +36,123 @@ class Incise:
         ...     talea_denominator=16,
         ... )
 
+    ..  container:: example
+
+        Divides middle part of every division ``1:1``:
+
+        >>> stack = rmakers.stack(
+        ...     rmakers.incised(
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[0, 1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=16,
+        ...         body_ratio=abjad.Ratio((1, 1)),
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = 4 * [(5, 16)]
+        >>> selections = stack(divisions)
+
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/16
+                    c'8
+                    [
+                    c'8
+                    ]
+                    r16
+                    \time 5/16
+                    r16
+                    c'16.
+                    [
+                    c'16.
+                    ]
+                    r16
+                    \time 5/16
+                    c'8
+                    [
+                    c'8
+                    ]
+                    r16
+                    \time 5/16
+                    r16
+                    c'16.
+                    [
+                    c'16.
+                    ]
+                    r16
+                }
+            >>
+
     """
 
-    ### CLASS VARIABLES ###
+    body_ratio: abjad.RatioTyping = None
+    fill_with_rests: bool = None
+    outer_divisions_only: bool = None
+    prefix_counts: typing.Sequence[int] = None
+    prefix_talea: typing.Sequence[int] = None
+    suffix_counts: typing.Sequence[int] = None
+    suffix_talea: typing.Sequence[int] = None
+    talea_denominator: int = None
 
     __documentation_section__ = "Specifiers"
 
-    __slots__ = (
-        "_body_ratio",
-        "_fill_with_rests",
-        "_outer_divisions_only",
-        "_prefix_counts",
-        "_prefix_talea",
-        "_suffix_counts",
-        "_suffix_talea",
-        "_talea_denominator",
-    )
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        *,
-        body_ratio: abjad.RatioTyping = None,
-        fill_with_rests: bool = None,
-        outer_divisions_only: bool = None,
-        prefix_counts: typing.Sequence[int] = None,
-        prefix_talea: typing.Sequence[int] = None,
-        suffix_counts: typing.Sequence[int] = None,
-        suffix_talea: typing.Sequence[int] = None,
-        talea_denominator: int = None,
-    ) -> None:
-        prefix_talea = prefix_talea or ()
+    def __post_init__(self):
+        prefix_talea = self.prefix_talea or ()
         prefix_talea = tuple(prefix_talea)
         assert self._is_integer_tuple(prefix_talea)
-        self._prefix_talea: typing.Tuple[int, ...] = prefix_talea
-        prefix_counts = prefix_counts or ()
+        self.prefix_talea: typing.Tuple[int, ...] = prefix_talea
+        prefix_counts = self.prefix_counts or ()
         prefix_counts = tuple(prefix_counts)
         assert self._is_length_tuple(prefix_counts)
-        self._prefix_counts: typing.Tuple[int, ...] = prefix_counts
-        if prefix_talea:
-            assert prefix_counts
-        suffix_talea = suffix_talea or ()
+        self.prefix_counts: typing.Tuple[int, ...] = prefix_counts
+        if self.prefix_talea:
+            assert self.prefix_counts
+        suffix_talea = self.suffix_talea or ()
         suffix_talea = tuple(suffix_talea)
         assert self._is_integer_tuple(suffix_talea)
         if suffix_talea is not None:
             assert isinstance(suffix_talea, tuple)
-        self._suffix_talea: typing.Tuple[int, ...] = suffix_talea
-        assert self._is_length_tuple(suffix_counts)
-        suffix_counts = suffix_counts or ()
+        self.suffix_talea: typing.Tuple[int, ...] = suffix_talea
+        suffix_counts = self.suffix_counts or ()
         suffix_counts = tuple(suffix_counts)
         if suffix_counts is not None:
             assert isinstance(suffix_counts, tuple)
-        self._suffix_counts: typing.Tuple[int, ...] = suffix_counts
-        if suffix_talea:
-            assert suffix_counts
-        if talea_denominator is not None:
-            if not abjad.math.is_nonnegative_integer_power_of_two(talea_denominator):
+            assert self._is_length_tuple(suffix_counts)
+        self.suffix_counts: typing.Tuple[int, ...] = suffix_counts
+        if self.suffix_talea:
+            assert self.suffix_counts
+        if self.talea_denominator is not None:
+            if not abjad.math.is_nonnegative_integer_power_of_two(
+                self.talea_denominator
+            ):
                 message = f"talea denominator {talea_denominator!r} must be nonnegative"
                 message += " integer power of 2."
                 raise Exception(message)
-        self._talea_denominator: typing.Optional[int] = talea_denominator
-        if prefix_talea or suffix_talea:
-            assert talea_denominator is not None
-        if body_ratio is not None:
-            body_ratio = abjad.Ratio(body_ratio)
-        self._body_ratio: typing.Optional[abjad.Ratio] = body_ratio
-        if fill_with_rests is not None:
-            fill_with_rests = bool(fill_with_rests)
-        self._fill_with_rests: typing.Optional[bool] = fill_with_rests
-        if outer_divisions_only is not None:
-            outer_divisions_only = bool(outer_divisions_only)
-        self._outer_divisions_only: typing.Optional[bool] = outer_divisions_only
-
-    ### SPECIAL METHODS ###
-
-    def __repr__(self) -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.storage(self)
-
-    ### PRIVATE METHODS ###
+        if self.prefix_talea or self.suffix_talea:
+            assert self.talea_denominator is not None
+        if self.body_ratio is not None:
+            self.body_ratio = abjad.Ratio(self.body_ratio)
+        if self.fill_with_rests is not None:
+            self.fill_with_rests = bool(self.fill_with_rests)
+        if self.outer_divisions_only is not None:
+            self.outer_divisions_only = bool(self.outer_divisions_only)
 
     @staticmethod
     def _is_integer_tuple(argument):
@@ -139,202 +176,33 @@ class Incise:
         if argument is not None:
             return tuple(reversed(argument))
 
-    ### PUBLIC PROPERTIES ###
 
-    @property
-    def body_ratio(self) -> typing.Optional[abjad.Ratio]:
-        r"""
-        Gets body ratio.
-
-        ..  container:: example
-
-            Divides middle part of every division ``1:1``:
-
-            >>> stack = rmakers.stack(
-            ...     rmakers.incised(
-            ...         prefix_talea=[-1],
-            ...         prefix_counts=[0, 1],
-            ...         suffix_talea=[-1],
-            ...         suffix_counts=[1],
-            ...         talea_denominator=16,
-            ...         body_ratio=abjad.Ratio((1, 1)),
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-            >>> divisions = 4 * [(5, 16)]
-            >>> selections = stack(divisions)
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> score = lilypond_file["Score"]
-                >>> string = abjad.lilypond(score)
-                >>> print(string)
-                \context Score = "Score"
-                <<
-                    \context RhythmicStaff = "Staff"
-                    \with
-                    {
-                        \override Clef.stencil = ##f
-                    }
-                    {
-                        \time 5/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r16
-                        \time 5/16
-                        r16
-                        c'16.
-                        [
-                        c'16.
-                        ]
-                        r16
-                        \time 5/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r16
-                        \time 5/16
-                        r16
-                        c'16.
-                        [
-                        c'16.
-                        ]
-                        r16
-                    }
-                >>
-
-        """
-        return self._body_ratio
-
-    @property
-    def fill_with_rests(self) -> typing.Optional[bool]:
-        """
-        Is true when rhythm-maker fills divisions with rests instead of notes.
-
-        ..  todo:: Add examples.
-
-        """
-        return self._fill_with_rests
-
-    @property
-    def outer_divisions_only(self) -> typing.Optional[bool]:
-        """
-        Is true when rhythm-maker incises outer divisions only. Is false when
-        rhythm-maker incises all divisions.
-
-        ..  todo:: Add examples.
-
-        """
-        return self._outer_divisions_only
-
-    @property
-    def prefix_counts(self) -> typing.Optional[typing.List[int]]:
-        """
-        Gets prefix counts.
-
-        ..  todo:: Add examples.
-
-        """
-        if self._prefix_counts:
-            return list(self._prefix_counts)
-        return None
-
-    @property
-    def prefix_talea(self) -> typing.Optional[typing.List[int]]:
-        """
-        Gets prefix talea.
-
-        ..  todo:: Add examples.
-
-        """
-        if self._prefix_talea:
-            return list(self._prefix_talea)
-        return None
-
-    @property
-    def suffix_counts(self) -> typing.Optional[typing.List[int]]:
-        """
-        Gets suffix counts.
-
-        ..  todo:: Add examples.
-
-        """
-        if self._suffix_counts:
-            return list(self._suffix_counts)
-        return None
-
-    @property
-    def suffix_talea(self) -> typing.Optional[typing.List[int]]:
-        """
-        Gets suffix talea.
-
-        ..  todo:: Add examples.
-
-        """
-        if self._suffix_talea:
-            return list(self._suffix_talea)
-        return None
-
-    @property
-    def talea_denominator(self) -> typing.Optional[int]:
-        """
-        Gets talea denominator.
-
-        ..  todo:: Add examples.
-
-        """
-        return self._talea_denominator
-
-
+@dataclasses.dataclass(slots=True)
 class Interpolation:
     """
     Interpolation specifier.
+
+    ..  container:: example
+
+        >>> rmakers.Interpolation(
+        ...     start_duration=(1, 4),
+        ...     stop_duration=(1, 16),
+        ...     written_duration=(1, 16),
+        ... )
+        Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
+
     """
 
-    ### CLASS VARIABLES ###
+    start_duration: typing.Tuple[int, int] = (1, 8)
+    stop_duration: typing.Tuple[int, int] = (1, 16)
+    written_duration: typing.Tuple[int, int] = (1, 16)
 
     __documentation_section__ = "Specifiers"
 
-    __slots__ = ("_start_duration", "_stop_duration", "_written_duration")
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        start_duration: typing.Tuple[int, int] = (1, 8),
-        stop_duration: typing.Tuple[int, int] = (1, 16),
-        written_duration: typing.Tuple[int, int] = (1, 16),
-    ) -> None:
-        self._start_duration = abjad.Duration(start_duration)
-        self._stop_duration = abjad.Duration(stop_duration)
-        self._written_duration = abjad.Duration(written_duration)
-
-    ### SPECIAL METHODS ###
-
-    def __repr__(self) -> str:
-        """
-        Delegates to storage format manager.
-
-        ..  container:: example
-
-            >>> rmakers.Interpolation(
-            ...     start_duration=(1, 4),
-            ...     stop_duration=(1, 16),
-            ...     written_duration=(1, 16),
-            ... )
-            Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
-
-        """
-        return abjad.format.get_repr(self)
-
-    ### PUBLIC METHODS ###
+    def __post_init__(self) -> None:
+        self.start_duration = abjad.Duration(self.start_duration)
+        self.stop_duration = abjad.Duration(self.stop_duration)
+        self.written_duration = abjad.Duration(self.written_duration)
 
     def reverse(self) -> "Interpolation":
         """
@@ -349,14 +217,8 @@ class Interpolation:
             ...     stop_duration=(1, 16),
             ...     written_duration=(1, 16),
             ... )
-            >>> specifier = specifier.reverse()
-            >>> string = abjad.storage(specifier)
-            >>> print(string)
-            rmakers.Interpolation(
-                start_duration=abjad.Duration(1, 16),
-                stop_duration=abjad.Duration(1, 4),
-                written_duration=abjad.Duration(1, 16),
-                )
+            >>> specifier.reverse()
+            Interpolation(start_duration=Duration(1, 16), stop_duration=Duration(1, 4), written_duration=Duration(1, 16))
 
         ..  container:: example
 
@@ -367,14 +229,8 @@ class Interpolation:
             ...     stop_duration=(1, 4),
             ...     written_duration=(1, 16),
             ... )
-            >>> specifier = specifier.reverse()
-            >>> string = abjad.storage(specifier)
-            >>> print(string)
-            rmakers.Interpolation(
-                start_duration=abjad.Duration(1, 4),
-                stop_duration=abjad.Duration(1, 16),
-                written_duration=abjad.Duration(1, 16),
-                )
+            >>> specifier.reverse()
+            Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
 
         """
         return type(self)(
@@ -383,326 +239,246 @@ class Interpolation:
             written_duration=self.written_duration,
         )
 
-    ### PUBLIC PROPERTIES ###
 
-    @property
-    def start_duration(self) -> abjad.Duration:
-        """
-        Gets start duration.
-        """
-        return self._start_duration
-
-    @property
-    def stop_duration(self) -> abjad.Duration:
-        """
-        Gets stop duration.
-        """
-        return self._stop_duration
-
-    @property
-    def written_duration(self) -> abjad.Duration:
-        """
-        Gets written duration.
-        """
-        return self._written_duration
-
-
+@dataclasses.dataclass(slots=True)
 class Spelling:
-    """
+    r"""
     Duration spelling specifier.
+
+    ..  container:: example
+
+        Decreases monotically:
+
+        >>> stack = rmakers.stack(
+        ...     rmakers.talea(
+        ...         [5],
+        ...         16,
+        ...         spelling=rmakers.Spelling(increase_monotonic=False),
+        ...         ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/4
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8
+                    ~
+                    ]
+                    \time 3/4
+                    c'8.
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                }
+            >>
+
+    ..  container:: example
+
+        Increases monotically:
+
+        >>> stack = rmakers.stack(
+        ...     rmakers.talea(
+        ...         [5],
+        ...         16,
+        ...         spelling=rmakers.Spelling(increase_monotonic=True),
+        ...         ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/4
+                    c'16
+                    ~
+                    c'4
+                    c'16
+                    ~
+                    c'4
+                    c'8
+                    ~
+                    \time 3/4
+                    c'8.
+                    [
+                    c'16
+                    ~
+                    ]
+                    c'4
+                    c'4
+                }
+            >>
+
+    ..  container:: example
+
+        Forbids note durations equal to ``1/4`` or greater:
+
+        >>> stack = rmakers.stack(
+        ...     rmakers.talea(
+        ...         [1, 1, 1, 1, 4, -4],
+        ...         16,
+        ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 4)),
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'8
+                    ~
+                    c'8
+                    ]
+                    r4
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'8
+                    ~
+                    c'8
+                    ]
+                    r4
+                }
+            >>
+
+    ..  container:: example
+
+        Forbids rest durations equal to ``1/4`` or greater:
+
+        >>> stack = rmakers.stack(
+        ...     rmakers.talea(
+        ...         [1, 1, 1, 1, 4, -4],
+        ...         16,
+        ...         spelling=rmakers.Spelling(forbidden_rest_duration=(1, 4)),
+        ...     ),
+        ...     rmakers.beam(),
+        ...     rmakers.extract_trivial(),
+        ... )
+        >>> divisions = [(3, 4), (3, 4)]
+        >>> selections = stack(divisions)
+
+        >>> lilypond_file = rmakers.helpers.example(selections, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'4
+                    r8
+                    r8
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    c'4
+                    r8
+                    r8
+                }
+            >>
+
     """
 
-    ### CLASS VARIABLES ###
+    forbidden_note_duration: abjad.DurationTyping = None
+    forbidden_rest_duration: abjad.DurationTyping = None
+    increase_monotonic: bool = None
 
     __documentation_section__ = "Specifiers"
 
-    __slots__ = (
-        "_forbidden_note_duration",
-        "_forbidden_rest_duration",
-        "_increase_monotonic",
-    )
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        *,
-        forbidden_note_duration: abjad.DurationTyping = None,
-        forbidden_rest_duration: abjad.DurationTyping = None,
-        increase_monotonic: bool = None,
-    ) -> None:
-        if forbidden_note_duration is None:
-            forbidden_note_duration_ = None
-        else:
-            forbidden_note_duration_ = abjad.Duration(forbidden_note_duration)
-        self._forbidden_note_duration = forbidden_note_duration_
-        if forbidden_rest_duration is None:
-            forbidden_rest_duration_ = None
-        else:
-            forbidden_rest_duration_ = abjad.Duration(forbidden_rest_duration)
-        self._forbidden_rest_duration = forbidden_rest_duration_
-        if increase_monotonic is not None:
-            increase_monotonic = bool(increase_monotonic)
-        self._increase_monotonic = increase_monotonic
-
-    ### SPECIAL METHODS ###
-
-    def __repr__(self) -> str:
-        """
-        Gets interpreter representation.
-
-        ..  container:: example
-
-            >>> rmakers.Spelling()
-            Spelling()
-
-        """
-        return abjad.format.get_repr(self)
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def increase_monotonic(self) -> typing.Optional[bool]:
-        r"""
-        Is true when all durations spell as a tied series of monotonically increasing
-        values.
-
-        ..  container:: example
-
-            Decreases monotically:
-
-            >>> stack = rmakers.stack(
-            ...     rmakers.talea(
-            ...         [5],
-            ...         16,
-            ...         spelling=rmakers.Spelling(increase_monotonic=False),
-            ...         ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-            >>> divisions = [(3, 4), (3, 4)]
-            >>> selections = stack(divisions)
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> score = lilypond_file["Score"]
-                >>> string = abjad.lilypond(score)
-                >>> print(string)
-                \context Score = "Score"
-                <<
-                    \context RhythmicStaff = "Staff"
-                    \with
-                    {
-                        \override Clef.stencil = ##f
-                    }
-                    {
-                        \time 3/4
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'8
-                        ~
-                        ]
-                        \time 3/4
-                        c'8.
-                        c'4
-                        ~
-                        c'16
-                        c'4
-                    }
-                >>
-
-        ..  container:: example
-
-            Increases monotically:
-
-            >>> stack = rmakers.stack(
-            ...     rmakers.talea(
-            ...         [5],
-            ...         16,
-            ...         spelling=rmakers.Spelling(increase_monotonic=True),
-            ...         ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-            >>> divisions = [(3, 4), (3, 4)]
-            >>> selections = stack(divisions)
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> score = lilypond_file["Score"]
-                >>> string = abjad.lilypond(score)
-                >>> print(string)
-                \context Score = "Score"
-                <<
-                    \context RhythmicStaff = "Staff"
-                    \with
-                    {
-                        \override Clef.stencil = ##f
-                    }
-                    {
-                        \time 3/4
-                        c'16
-                        ~
-                        c'4
-                        c'16
-                        ~
-                        c'4
-                        c'8
-                        ~
-                        \time 3/4
-                        c'8.
-                        [
-                        c'16
-                        ~
-                        ]
-                        c'4
-                        c'4
-                    }
-                >>
-
-        """
-        return self._increase_monotonic
-
-    @property
-    def forbidden_note_duration(self) -> typing.Optional[abjad.Duration]:
-        r"""
-        Gets forbidden note duration.
-
-        ..  container:: example
-
-            Forbids note durations equal to ``1/4`` or greater:
-
-            >>> stack = rmakers.stack(
-            ...     rmakers.talea(
-            ...         [1, 1, 1, 1, 4, -4],
-            ...         16,
-            ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 4)),
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-            >>> divisions = [(3, 4), (3, 4)]
-            >>> selections = stack(divisions)
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> score = lilypond_file["Score"]
-                >>> string = abjad.lilypond(score)
-                >>> print(string)
-                \context Score = "Score"
-                <<
-                    \context RhythmicStaff = "Staff"
-                    \with
-                    {
-                        \override Clef.stencil = ##f
-                    }
-                    {
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'8
-                        ~
-                        c'8
-                        ]
-                        r4
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'8
-                        ~
-                        c'8
-                        ]
-                        r4
-                    }
-                >>
-
-        """
-        return self._forbidden_note_duration
-
-    @property
-    def forbidden_rest_duration(self) -> typing.Optional[abjad.Duration]:
-        r"""
-        Gets forbidden rest duration.
-
-        ..  container:: example
-
-            Forbids rest durations equal to ``1/4`` or greater:
-
-            >>> stack = rmakers.stack(
-            ...     rmakers.talea(
-            ...         [1, 1, 1, 1, 4, -4],
-            ...         16,
-            ...         spelling=rmakers.Spelling(forbidden_rest_duration=(1, 4)),
-            ...     ),
-            ...     rmakers.beam(),
-            ...     rmakers.extract_trivial(),
-            ... )
-            >>> divisions = [(3, 4), (3, 4)]
-            >>> selections = stack(divisions)
-
-            >>> lilypond_file = rmakers.helpers.example(selections, divisions)
-            >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-            ..  docs::
-
-                >>> score = lilypond_file["Score"]
-                >>> string = abjad.lilypond(score)
-                >>> print(string)
-                \context Score = "Score"
-                <<
-                    \context RhythmicStaff = "Staff"
-                    \with
-                    {
-                        \override Clef.stencil = ##f
-                    }
-                    {
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'4
-                        r8
-                        r8
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        c'4
-                        r8
-                        r8
-                    }
-                >>
-
-        """
-        return self._forbidden_rest_duration
+    def __post_init__(self):
+        if self.forbidden_note_duration is not None:
+            self.forbidden_note_duration = abjad.Duration(self.forbidden_note_duration)
+        if self.forbidden_rest_duration is not None:
+            self.forbidden_rest_duration = abjad.Duration(self.forbidden_rest_duration)
+        if self.increase_monotonic is not None:
+            self.increase_monotonic = bool(self.increase_monotonic)
 
 
+@dataclasses.dataclass(slots=True)
 class Talea:
     """
     Talea specifier.
@@ -715,49 +491,83 @@ class Talea:
         ...     preamble=[1, 1, 1, 1],
         ... )
 
-        >>> string = abjad.storage(talea)
-        >>> print(string)
-        rmakers.Talea(
-            [2, 1, 3, 2, 4, 1, 1],
-            16,
-            preamble=[1, 1, 1, 1],
-            )
+    ..  container:: example
+
+        Equal to weight of counts:
+
+        >>> rmakers.Talea([1, 2, 3, 4], 16).period
+        10
+
+        Rests make no difference:
+
+        >>> rmakers.Talea([1, 2, -3, 4], 16).period
+        10
+
+        Denominator makes no difference:
+
+        >>> rmakers.Talea([1, 2, -3, 4], 32).period
+        10
+
+        Preamble makes no difference:
+
+        >>> talea = rmakers.Talea(
+        ...     [1, 2, -3, 4],
+        ...     32,
+        ...     preamble=[1, 1, 1],
+        ... )
+
+        >>> talea.period
+        10
+
+    ..  container:: example
+
+        >>> talea = rmakers.Talea(
+        ...     [2, 1, 3, 2, 4, 1, 1],
+        ...     16,
+        ...     preamble=[1, 1, 1, 1],
+        ... )
+
+        >>> talea.preamble
+        [1, 1, 1, 1]
+
+    ..  container:: example
+
+        >>> talea = rmakers.Talea(
+        ...     [16, -4, 16],
+        ...     16,
+        ...     preamble=[1],
+        ... )
+
+        >>> for i, duration in enumerate(talea):
+        ...     duration
+        ...
+        Duration(1, 16)
+        Duration(1, 1)
+        Duration(-1, 4)
+        Duration(1, 1)
 
     """
 
-    ### CLASS VARIABLES ###
+    counts: typing.Any
+    denominator: int
+    end_counts: abjad.IntegerSequence = None
+    preamble: abjad.IntegerSequence = None
 
     __documentation_section__ = "Specifiers"
 
-    __slots__ = ("_counts", "_end_counts", "_denominator", "_preamble")
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        counts,
-        denominator,
-        *,
-        end_counts: abjad.IntegerSequence = None,
-        preamble: abjad.IntegerSequence = None,
-    ) -> None:
-        for count in counts:
+    def __post_init__(self):
+        for count in self.counts:
             assert isinstance(count, int) or count in "+-", repr(count)
-        self._counts = counts
-        if not abjad.math.is_nonnegative_integer_power_of_two(denominator):
-            message = f"denominator {denominator} must be integer power of 2."
+        if not abjad.math.is_nonnegative_integer_power_of_two(self.denominator):
+            message = f"denominator {self.denominator} must be integer power of 2."
             raise Exception(message)
-        self._denominator = denominator
         end_counts_ = None
-        if end_counts is not None:
-            assert all(isinstance(_, int) for _ in end_counts)
-            end_counts_ = tuple(end_counts)
-        self._end_counts = end_counts_
-        if preamble is not None:
-            assert all(isinstance(_, int) for _ in preamble), repr(preamble)
-        self._preamble = preamble
-
-    ### SPECIAL METHODS ###
+        if self.end_counts is not None:
+            assert all(isinstance(_, int) for _ in self.end_counts)
+            end_counts_ = tuple(self.end_counts)
+        self.end_counts = end_counts_
+        if self.preamble is not None:
+            assert all(isinstance(_, int) for _ in self.preamble), repr(self.preamble)
 
     def __contains__(self, argument: int) -> bool:
         """
@@ -819,19 +629,6 @@ class Talea:
         argument -= preamble_weight
         argument %= self.period
         return argument in cumulative
-
-    def __eq__(self, argument) -> bool:
-        """
-        Compares ``counts``, ``denominator``, ``end_counts``, ``preamble``.
-        """
-        if isinstance(argument, type(self)):
-            return (
-                self.counts == argument.counts
-                and self.denominator == argument.denominator
-                and self.end_counts == argument.end_counts
-                and self.preamble == argument.preamble
-            )
-        return False
 
     def __getitem__(
         self, argument
@@ -900,12 +697,6 @@ class Talea:
             return result
         raise ValueError(argument)
 
-    def __hash__(self) -> int:
-        """
-        Hashes object.
-        """
-        return hash(str(self))
-
     def __iter__(self) -> typing.Generator:
         """
         Iterates talea.
@@ -954,73 +745,6 @@ class Talea:
         """
         return len(self.counts or [])
 
-    def __repr__(self) -> str:
-        """
-        Delegates to storage format manager.
-        """
-        return abjad.format.get_repr(self)
-
-    ### PRIVATE METHODS ###
-
-    def _get_format_specification(self):
-        return abjad.FormatSpecification()
-
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def counts(self):
-        """
-        Gets counts.
-
-        ..  container:: example
-
-            >>> rmakers.Talea([2, 1, 3, 2, 4, 1, 1], 16).counts
-            [2, 1, 3, 2, 4, 1, 1]
-
-        """
-        if self._counts:
-            return list(self._counts)
-        else:
-            return None
-
-    @property
-    def denominator(self) -> int:
-        """
-        Gets denominator.
-
-        ..  container:: example
-
-            >>> rmakers.Talea([2, 1, 3, 2, 4, 1, 1], 16).denominator
-            16
-
-        Set to nonnegative integer power of two.
-
-        Defaults to 16.
-        """
-        return self._denominator
-
-    @property
-    def end_counts(self) -> typing.Optional[typing.List[int]]:
-        """
-        Gets counts.
-
-        ..  container:: example
-
-            >>> talea = rmakers.Talea(
-            ...     [3, 4],
-            ...     16,
-            ...     end_counts=[1, 1],
-            ... )
-
-            >>> talea.end_counts
-            [1, 1]
-
-        """
-        if self._end_counts:
-            return list(self._end_counts)
-        else:
-            return None
-
     @property
     def period(self) -> int:
         """
@@ -1057,46 +781,6 @@ class Talea:
         """
         return abjad.Sequence(self.counts).weight()
 
-    @property
-    def preamble(self) -> typing.Optional[typing.List[int]]:
-        """
-        Gets preamble.
-
-        ..  container:: example
-
-            >>> talea = rmakers.Talea(
-            ...     [2, 1, 3, 2, 4, 1, 1],
-            ...     16,
-            ...     preamble=[1, 1, 1, 1],
-            ... )
-
-            >>> talea.preamble
-            [1, 1, 1, 1]
-
-        ..  container:: example
-
-            >>> talea = rmakers.Talea(
-            ...     [16, -4, 16],
-            ...     16,
-            ...     preamble=[1],
-            ... )
-
-            >>> for i, duration in enumerate(talea):
-            ...     duration
-            ...
-            Duration(1, 16)
-            Duration(1, 1)
-            Duration(-1, 4)
-            Duration(1, 1)
-
-        """
-        if self._preamble:
-            return list(self._preamble)
-        else:
-            return None
-
-    ### PUBLIC METHODS ###
-
     def advance(self, weight: int) -> "Talea":
         """
         Advances talea by ``weight``.
@@ -1109,96 +793,46 @@ class Talea:
             ...     preamble=[1, 1, 1, 1],
             ... )
 
-            >>> string = abjad.storage(talea.advance(0))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16,
-                preamble=[1, 1, 1, 1],
-                )
+            >>> talea.advance(0)
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=None, preamble=[1, 1, 1, 1])
 
-            >>> string = abjad.storage(talea.advance(1))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16,
-                preamble=[1, 1, 1],
-                )
+            >>> talea.advance(1)
+            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1, 1, 1]))
 
-            >>> string = abjad.storage(talea.advance(2))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16,
-                preamble=[1, 1],
-                )
+            >>> talea.advance(2)
+            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1, 1]))
 
-            >>> string = abjad.storage(talea.advance(3))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16,
-                preamble=[1],
-                )
+            >>> talea.advance(3)
+            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1]))
 
-            >>> string = abjad.storage(talea.advance(4))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16
-                )
+            >>> talea.advance(4)
+            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=None)
 
-            >>> string = abjad.storage(talea.advance(5))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16,
-                preamble=[1, 1, 3, 2, 4, 1, 1],
-                )
+            >>> talea.advance(5)
+            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1, 1, 3, 2, 4, 1, 1]))
 
-            >>> string = abjad.storage(talea.advance(6))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16,
-                preamble=[1, 3, 2, 4, 1, 1],
-                )
+            >>> talea.advance(6)
+            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1, 3, 2, 4, 1, 1]))
 
-            >>> string = abjad.storage(talea.advance(7))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16,
-                preamble=[3, 2, 4, 1, 1],
-                )
+            >>> talea.advance(7)
+            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([3, 2, 4, 1, 1]))
 
-            >>> string = abjad.storage(talea.advance(8))
-            >>> print(string)
-            rmakers.Talea(
-                [2, 1, 3, 2, 4, 1, 1],
-                16,
-                preamble=[2, 2, 4, 1, 1],
-                )
+            >>> talea.advance(8)
+            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([2, 2, 4, 1, 1]))
 
         ..  container:: example
 
             REGRESSION. Works when talea advances by period of talea:
 
             >>> talea = rmakers.Talea([1, 2, 3, 4], 16)
+            >>> talea
+            Talea(counts=[1, 2, 3, 4], denominator=16, end_counts=None, preamble=None)
 
-            >>> string = abjad.storage(talea.advance(10))
-            >>> print(string)
-            rmakers.Talea(
-                [1, 2, 3, 4],
-                16
-                )
+            >>> talea.advance(10)
+            Talea(counts=Sequence([1, 2, 3, 4]), denominator=16, end_counts=None, preamble=None)
 
-            >>> string = abjad.storage(talea.advance(20))
-            >>> print(string)
-            rmakers.Talea(
-                [1, 2, 3, 4],
-                16
-                )
+            >>> talea.advance(20)
+            Talea(counts=Sequence([1, 2, 3, 4]), denominator=16, end_counts=None, preamble=None)
 
         """
         assert isinstance(weight, int), repr(weight)

@@ -51,9 +51,7 @@
 #                    }
 #                >>
 #
-#            >>> state = command.state
-#            >>> string = abjad.storage(state)
-#            >>> print(string)
+#            >>> command.state
 #            dict(
 #                [
 #                    ('divisions_consumed', 8),
@@ -125,9 +123,7 @@
 #                    }
 #                >>
 #
-#            >>> state = stack.maker.state
-#            >>> string = abjad.storage(state)
-#            >>> print(string)
+#            >>> stack.maker.state
 #            dict(
 #                [
 #                    ('divisions_consumed', 4),
@@ -188,9 +184,7 @@
 #                    }
 #                >>
 #
-#            >>> state = stack.maker.state
-#            >>> string = abjad.storage(state)
-#            >>> print(string)
+#            >>> stack.maker.state
 #            dict(
 #                [
 #                    ('divisions_consumed', 8),
@@ -248,9 +242,7 @@
 #                    }
 #                >>
 #
-#            >>> state = stack.maker.state
-#            >>> string = abjad.storage(state)
-#            >>> print(string)
+#            >>> stack.maker.state
 #            dict(
 #                [
 #                    ('divisions_consumed', 8),
@@ -308,9 +300,7 @@
 #                    }
 #                >>
 #
-#            >>> state = stack.maker.state
-#            >>> string = abjad.storage(state)
-#            >>> print(string)
+#            >>> stack.maker.state
 #            dict(
 #                [
 #                    ('divisions_consumed', 8),

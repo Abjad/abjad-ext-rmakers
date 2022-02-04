@@ -163,27 +163,11 @@ class Stack:
             ... )
             >>> command_2 = abjad.new(command_1)
 
-            >>> string = abjad.storage(command_1)
-            >>> print(string)
-            rmakers.Stack(
-                rmakers.TupletRhythmMaker(
-                    tuplet_ratios=[
-                        abjad.Ratio((1, 2)),
-                        ],
-                    ),
-                ForceFractionCommand()
-                )
+            >>> command_1
+            Stack(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), ForceFractionCommand())
 
-            >>> string = abjad.storage(command_2)
-            >>> print(string)
-            rmakers.Stack(
-                rmakers.TupletRhythmMaker(
-                    tuplet_ratios=[
-                        abjad.Ratio((1, 2)),
-                        ],
-                    ),
-                ForceFractionCommand()
-                )
+            >>> command_2
+            Stack(TupletRhythmMaker(tuplet_ratios=[Ratio((1, 2))]), ForceFractionCommand())
 
             >>> command_1 == command_2
             True
