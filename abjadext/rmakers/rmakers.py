@@ -18919,7 +18919,7 @@ class Stack:
             ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
-            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio((1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
+            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
 
         """
         return f"Stack(maker={self.maker}, commands={self.commands}, preprocessor={self.preprocessor}, tag={self.tag})"
@@ -18975,10 +18975,10 @@ class Stack:
             >>> command_2 = abjad.new(command_1)
 
             >>> command_1
-            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio((1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
+            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
 
             >>> command_2
-            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio((1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
+            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
 
             >>> command_1 == command_2
             True
