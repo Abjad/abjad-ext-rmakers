@@ -853,7 +853,7 @@ class Talea:
         if weight < 0:
             raise Exception(f"weight {weight} must be nonnegative.")
         if weight == 0:
-            return dataclasses.replace(self)
+            return abjad.new(self)
         preamble = abjad.Sequence(self.preamble or ())
         counts = abjad.Sequence(self.counts or ())
         preamble_: typing.Optional[abjad.Sequence]
@@ -875,7 +875,7 @@ class Talea:
             else:
                 consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
-        return dataclasses.replace(
+        return abjad.new(
             self,
             counts=counts,
             denominator=self.denominator,
@@ -1545,6 +1545,18 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \revert TupletNumber.text
                 }
             >>
+
+    ..  container:: example
+
+        REGRESSION. ``abjad.new()`` preserves commands:
+
+        >>> stack = rmakers.stack(
+        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
+        ...     rmakers.force_fraction()
+        ... )
+
+        >>> abjad.new(stack).commands
+        [ForceFractionCommand(selector=None)]
 
     ..  container:: example
 
@@ -9355,21 +9367,17 @@ class TaleaRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        REGRESSION. Commands survive copy:
+        REGRESSION. Commands survive new:
 
-        >>> import copy
         >>> command = rmakers.stack(
         ...     rmakers.talea([5, -3, 3, 3], 16),
         ...     rmakers.extract_trivial(),
         ...     )
-        >>> command
+        >>> new_command = abjad.new(command)
+        >>> new_command
         Stack(maker=TaleaRhythmMaker(spelling=None, tag=None, extra_counts=None, read_talea_once_only=None, talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=None, preamble=None)), commands=[ExtractTrivialCommand(selector=None)], preprocessor=None, tag=None)
 
-        >>> copied_command = copy.copy(command)
-        >>> copied_command
-        Stack(maker=TaleaRhythmMaker(spelling=None, tag=None, extra_counts=None, read_talea_once_only=None, talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=None, preamble=None)), commands=[ExtractTrivialCommand(selector=None)], preprocessor=None, tag=None)
-
-        >>> command == copied_command
+        >>> command == new_command
         True
 
     ..  container:: example
@@ -18823,29 +18831,13 @@ RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 class Stack:
     """
     Stack.
-
-    ..  container:: example
-
-        REGRESSION. Copy preserves commands:
-
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.force_fraction()
-        ... )
-        >>> stack
-        Stack(maker=AccelerandoRhythmMaker(spelling=None, tag=None, interpolations=(Interpolation(start_duration=Duration(1, 8), stop_duration=Duration(1, 20), written_duration=Duration(1, 16)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
-
-        >>> import copy
-        >>> copy.copy(stack)
-        Stack(maker=AccelerandoRhythmMaker(spelling=None, tag=None, interpolations=(Interpolation(start_duration=Duration(1, 8), stop_duration=Duration(1, 20), written_duration=Duration(1, 16)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
-
     """
 
     ### CLASS ATTRIBUTES ###
 
     __slots__ = ("_commands", "_maker", "_preprocessor", "_tag")
 
-    # can be removed about new() is removed:
+    # to make sure abjad.new() copies commands
     _positional_arguments_name = "commands"
 
     ### INITIALIZER ###
@@ -18860,7 +18852,7 @@ class Stack:
         prototype = (RhythmMaker, Stack, Bind)
         assert isinstance(maker, prototype), repr(maker)
         if tag is not None:
-            maker = dataclasses.replace(maker, tag=tag)
+            maker = abjad.new(maker, tag=tag)
         self._maker = maker
         commands = commands or ()
         commands_ = tuple(commands)
@@ -18974,14 +18966,13 @@ class Stack:
 
         ..  container:: example
 
-            REGRESSION. Copy preserves commands:
+            REGRESSION. ``abjad.new()`` copies commands:
 
-            >>> import copy
             >>> command_1 = rmakers.stack(
             ...     rmakers.tuplet([(1, 2)]),
             ...     rmakers.force_fraction(),
             ... )
-            >>> command_2 = copy.copy(command_1)
+            >>> command_2 = abjad.new(command_1)
 
             >>> command_1
             Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
@@ -19060,7 +19051,7 @@ class Bind:
 
     __slots__ = ("_assignments", "_state", "_tag")
 
-    # can be removed after new() is removed:
+    # to make sure abjad.new() copies sassignments
     _positional_arguments_name = "assignments"
 
     def __init__(self, *assignments: Assignment, tag: abjad.Tag = None) -> None:
@@ -19110,7 +19101,7 @@ class Bind:
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
             if self.tag is not None:
-                rhythm_maker = dataclasses.replace(rhythm_maker, tag=self.tag)
+                rhythm_maker = abjad.new(rhythm_maker, tag=self.tag)
             assert isinstance(rhythm_maker, pp), repr(rhythm_maker)
             divisions_ = [match.payload for match in group]
             previous_state_ = previous_state
