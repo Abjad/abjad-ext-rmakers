@@ -894,7 +894,7 @@ def interpolate(
     return Interpolation(start_duration, stop_duration, written_duration)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=True, unsafe_hash=True)
 class RhythmMaker:
     """
     Rhythm-maker baseclass.
@@ -1079,7 +1079,7 @@ class RhythmMaker:
             assert len(tuplet), repr(tuplet)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=True, unsafe_hash=True)
 class AccelerandoRhythmMaker(RhythmMaker):
     r"""
     Accelerando rhythm-maker.
@@ -1548,15 +1548,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        REGRESSION. ``abjad.new()`` preserves commands:
+        REGRESSION. Copy preserves commands:
 
+        >>> import dataclasses
         >>> stack = rmakers.stack(
         ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
         ...     rmakers.force_fraction()
         ... )
 
-        >>> abjad.new(stack).commands
-        [ForceFractionCommand(selector=None)]
+        >>> dataclasses.replace(stack).commands
+        (ForceFractionCommand(selector=None),)
 
     ..  container:: example
 
@@ -4365,7 +4366,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return durations_
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=True, unsafe_hash=True)
 class EvenDivisionRhythmMaker(RhythmMaker):
     r"""
     Even division rhythm-maker.
@@ -6329,7 +6330,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return tuplets
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=True, unsafe_hash=True)
 class IncisedRhythmMaker(RhythmMaker):
     r"""
     Incised rhythm-maker.
@@ -7210,7 +7211,7 @@ class IncisedRhythmMaker(RhythmMaker):
         )
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=True, unsafe_hash=True)
 class MultipliedDurationRhythmMaker(RhythmMaker):
     r"""
     Multiplied-duration rhythm-maker.
@@ -7540,7 +7541,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         return [selection]
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=True, unsafe_hash=True)
 class NoteRhythmMaker(RhythmMaker):
     r"""
     Note rhtyhm-maker.
@@ -8330,7 +8331,7 @@ class NoteRhythmMaker(RhythmMaker):
         return selections
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=True, unsafe_hash=True)
 class TaleaRhythmMaker(RhythmMaker):
     r"""
     Talea rhythm-maker.
@@ -9370,13 +9371,14 @@ class TaleaRhythmMaker(RhythmMaker):
 
         REGRESSION. Commands survive new:
 
+        >>> import dataclasses
         >>> command = rmakers.stack(
         ...     rmakers.talea([5, -3, 3, 3], 16),
         ...     rmakers.extract_trivial(),
         ...     )
-        >>> new_command = abjad.new(command)
+        >>> new_command = dataclasses.replace(command)
         >>> new_command
-        Stack(maker=TaleaRhythmMaker(spelling=None, tag=None, extra_counts=None, read_talea_once_only=None, talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=None, preamble=None)), commands=[ExtractTrivialCommand(selector=None)], preprocessor=None, tag=None)
+        Stack(maker=TaleaRhythmMaker(spelling=None, tag=None, extra_counts=None, read_talea_once_only=None, talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=None, preamble=None)), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=None)
 
         >>> command == new_command
         True
@@ -11902,7 +11904,7 @@ class TaleaRhythmMaker(RhythmMaker):
         return talea
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=True, unsafe_hash=True)
 class TupletRhythmMaker(RhythmMaker):
     r"""
     Tuplet rhythm-maker.
@@ -18587,41 +18589,57 @@ def written_duration(
 RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
 
 
+@dataclasses.dataclass
 class Stack:
     """
     Stack.
+
+    ..  container:: example
+
+        Repr looks like this:
+
+        >>> rmakers.stack(
+        ...     rmakers.tuplet([(1, 2)]),
+        ...     rmakers.force_fraction(),
+        ... )
+        Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+
+    ..  container:: example
+
+        REGRESSION. Copy preserves commands:
+
+        >>> import dataclasses
+        >>> command_1 = rmakers.stack(
+        ...     rmakers.tuplet([(1, 2)]),
+        ...     rmakers.force_fraction(),
+        ... )
+        >>> command_2 = dataclasses.replace(command_1)
+
+        >>> command_1
+        Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+
+        >>> command_2
+        Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+
+        >>> command_1 == command_2
+        True
+
     """
 
-    ### CLASS ATTRIBUTES ###
+    maker: typing.Any
+    commands: typing.Any = ()
+    preprocessor: typing.Any = None
+    tag: abjad.Tag = None
 
-    __slots__ = ("_commands", "_maker", "_preprocessor", "_tag")
-
-    # remove after removal of new:
-    _positional_arguments_name = "commands"
-
-    ### INITIALIZER ###
-
-    def __init__(
-        self,
-        maker,
-        *commands,
-        preprocessor=None,
-        tag: abjad.Tag = None,
-    ) -> None:
+    def __post_init__(self):
         prototype = (RhythmMaker, Stack, Bind)
-        assert isinstance(maker, prototype), repr(maker)
-        if tag is not None:
-            maker = abjad.new(maker, tag=tag)
-        self._maker = maker
-        commands = commands or ()
-        commands_ = tuple(commands)
-        self._commands = commands_
-        self._preprocessor = preprocessor
-        if tag is not None:
-            assert isinstance(tag, abjad.Tag), repr(tag)
-        self._tag = tag
-
-    ### SPECIAL METHODS ###
+        assert isinstance(self.maker, prototype), repr(self.maker)
+        if self.tag is not None:
+            self.maker = dataclasses.replace(self.maker, tag=self.tag)
+        self.commands = self.commands or ()
+        self.commands = tuple(self.commands)
+        if self.tag is not None:
+            assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
     def __call__(
         self,
@@ -18654,36 +18672,11 @@ class Stack:
         music_voice[:] = []
         return result
 
-    def __eq__(self, argument) -> bool:
+    def __hash__(self):
         """
-        Compares string formats.
+        Gets hash.
         """
-        if isinstance(argument, type(self)):
-            return str(self) == str(argument)
-        return False
-
-    def __hash__(self) -> int:
-        """
-        Hashes object.
-        """
-        return hash(str(self))
-
-    def __repr__(self) -> str:
-        """
-        Delegates to format manager.
-
-        ..  container:: example
-
-            >>> rmakers.stack(
-            ...     rmakers.tuplet([(1, 2)]),
-            ...     rmakers.force_fraction(),
-            ... )
-            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
-
-        """
-        return f"Stack(maker={self.maker}, commands={self.commands}, preprocessor={self.preprocessor}, tag={self.tag})"
-
-    ### PRIVATE METHODS ###
+        return hash(repr(self))
 
     def _apply_division_expression(self, divisions) -> abjad.Sequence:
         prototype = abjad.NonreducedFraction
@@ -18716,62 +18709,12 @@ class Stack:
             raise Exception(message)
         return divisions
 
-    ### PUBLIC PROPERTIES ###
-
-    @property
-    def commands(self):
-        """
-        Gets commands.
-
-        ..  container:: example
-
-            REGRESSION. ``abjad.new()`` copies commands:
-
-            >>> command_1 = rmakers.stack(
-            ...     rmakers.tuplet([(1, 2)]),
-            ...     rmakers.force_fraction(),
-            ... )
-            >>> command_2 = abjad.new(command_1)
-
-            >>> command_1
-            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
-
-            >>> command_2
-            Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=[ForceFractionCommand(selector=None)], preprocessor=None, tag=None)
-
-            >>> command_1 == command_2
-            True
-
-        """
-        return list(self._commands)
-
-    @property
-    def maker(self) -> typing.Union[RhythmMaker, "Stack", "Bind"]:
-        """
-        Gets maker.
-        """
-        return self._maker
-
-    @property
-    def preprocessor(self):
-        """
-        Gets preprocessor.
-        """
-        return self._preprocessor
-
     @property
     def state(self) -> dict:
         """
         Gets state.
         """
         return self.maker.state
-
-    @property
-    def tag(self) -> typing.Optional[abjad.Tag]:
-        """
-        Gets tag.
-        """
-        return self._tag
 
 
 @dataclasses.dataclass(slots=True)
@@ -18803,29 +18746,26 @@ class Assignment:
             self.remember_state_across_gaps = bool(self.remember_state_across_gaps)
 
 
+@dataclasses.dataclass(unsafe_hash=True)
 class Bind:
     """
     Bind.
     """
 
-    __slots__ = ("_assignments", "_state", "_tag")
+    assignments: typing.Any = None
+    tag: abjad.Tag = None
 
-    # remove after removal of new:
-    _positional_arguments_name = "assignments"
-
-    def __init__(self, *assignments: Assignment, tag: abjad.Tag = None) -> None:
-        assignments = assignments or ()
-        for assignment in assignments:
+    def __post_init__(self):
+        self.assignments = self.assignments or ()
+        for assignment in self.assignments:
             if not isinstance(assignment, Assignment):
                 message = "must be assignment:\n"
                 message += f"   {repr(assignment)}"
                 raise Exception(message)
-        assignments_ = tuple(assignments)
-        self._assignments = assignments_
+        self.assignments = tuple(self.assignments)
         self._state = dict()
-        if tag is not None:
-            assert isinstance(tag, abjad.Tag), repr(tag)
-        self._tag = tag
+        if self.tag is not None:
+            assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
     def __call__(self, divisions, previous_state: dict = None) -> abjad.Selection:
         """
@@ -18860,7 +18800,7 @@ class Bind:
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
             if self.tag is not None:
-                rhythm_maker = abjad.new(rhythm_maker, tag=self.tag)
+                rhythm_maker = dataclasses.replace(rhythm_maker, tag=self.tag)
             assert isinstance(rhythm_maker, pp), repr(rhythm_maker)
             divisions_ = [match.payload for match in group]
             previous_state_ = previous_state
@@ -18883,46 +18823,12 @@ class Bind:
         selection = abjad.select(components)
         return selection
 
-    def __eq__(self, argument) -> bool:
-        """
-        Compares ``assignment``.
-        """
-        if isinstance(argument, type(self)):
-            return self.assignments == argument.assignments
-        return False
-
-    def __hash__(self) -> int:
-        """
-        Hashes object.
-        """
-        return hash(str(self))
-
-    def __repr__(self) -> str:
-        """
-        Gets repr.
-        """
-        return f"Bind(assignments={self.assignments}, tag={self.tag})"
-
-    @property
-    def assignments(self) -> typing.List[Assignment]:
-        """
-        Gets assignments.
-        """
-        return list(self._assignments)
-
     @property
     def state(self) -> dict:
         """
         Gets state.
         """
         return self._state
-
-    @property
-    def tag(self) -> typing.Optional[abjad.Tag]:
-        """
-        Gets tag.
-        """
-        return self._tag
 
 
 def assign(
@@ -18945,7 +18851,8 @@ def bind(*assignments: Assignment, tag: abjad.Tag = None) -> Bind:
     """
     Makes bind.
     """
-    return Bind(*assignments, tag=tag)
+    assert isinstance(assignments, tuple)
+    return Bind(assignments, tag=tag)
 
 
 def stack(
@@ -18957,4 +18864,5 @@ def stack(
     """
     Makes stack.
     """
-    return Stack(maker, *commands, preprocessor=preprocessor, tag=tag)
+    assert isinstance(commands, tuple)
+    return Stack(maker, commands, preprocessor=preprocessor, tag=tag)
