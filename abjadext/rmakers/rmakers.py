@@ -853,7 +853,7 @@ class Talea:
         if weight < 0:
             raise Exception(f"weight {weight} must be nonnegative.")
         if weight == 0:
-            return abjad.new(self)
+            return dataclasses.replace(self)
         preamble = abjad.Sequence(self.preamble or ())
         counts = abjad.Sequence(self.counts or ())
         preamble_: typing.Optional[abjad.Sequence]
@@ -875,7 +875,7 @@ class Talea:
             else:
                 consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
-        return abjad.new(
+        return dataclasses.replace(
             self,
             counts=counts,
             denominator=self.denominator,
@@ -7540,6 +7540,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         return [selection]
 
 
+@dataclasses.dataclass(slots=True)
 class NoteRhythmMaker(RhythmMaker):
     r"""
     Note rhtyhm-maker.
@@ -14195,17 +14196,19 @@ def tuplet(
     )
 
 
+@dataclasses.dataclass(slots=True)
 class Command:
     """
     Command baseclass.
     """
 
+    selector: typing.Any = None
+
     __documentation_section__ = "Commands"
 
-    def __init__(self, selector=None):
-        if isinstance(selector, str):
-            selector = eval(selector)
-        self.selector = selector
+    def __post_init__(self):
+        if isinstance(self.selector, str):
+            self.selector = eval(self.selector)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14213,38 +14216,25 @@ class Command:
         """
         pass
 
-    def __repr__(self):
-        """
-        Gets repr.
-        """
-        return f"{type(self).__name__}(selector={self.selector})"
 
-
+@dataclasses.dataclass(slots=True)
 class BeamCommand(Command):
     """
     Beam command.
     """
 
-    __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length")
+    beam_lone_notes: bool = None
+    beam_rests: bool = None
+    stemlet_length: abjad.Number = None
 
-    def __init__(
-        self,
-        selector=None,
-        *,
-        beam_lone_notes: bool = None,
-        beam_rests: bool = None,
-        stemlet_length: abjad.Number = None,
-    ) -> None:
-        super().__init__(selector)
-        if beam_lone_notes is not None:
-            beam_lone_notes = bool(beam_lone_notes)
-        self._beam_lone_notes = beam_lone_notes
-        if beam_rests is not None:
-            beam_rests = bool(beam_rests)
-        self._beam_rests = beam_rests
-        if stemlet_length is not None:
-            assert isinstance(stemlet_length, (int, float))
-        self._stemlet_length = stemlet_length
+    def __post_init__(self):
+        Command.__post_init__(self)
+        if self.beam_lone_notes is not None:
+            self.beam_lone_notes = bool(self.beam_lone_notes)
+        if self.beam_rests is not None:
+            self.beam_rests = bool(self.beam_rests)
+        if self.stemlet_length is not None:
+            assert isinstance(self.stemlet_length, (int, float))
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14266,57 +14256,28 @@ class BeamCommand(Command):
                 tag=tag,
             )
 
-    @property
-    def beam_lone_notes(self) -> typing.Optional[bool]:
-        """
-        Is true when command beams lone notes.
-        """
-        return self._beam_lone_notes
 
-    @property
-    def beam_rests(self) -> typing.Optional[bool]:
-        r"""
-        Is true when beams include rests.
-        """
-        return self._beam_rests
-
-    @property
-    def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
-        r"""
-        Gets stemlet length.
-        """
-        return self._stemlet_length
-
-
+@dataclasses.dataclass(slots=True)
 class BeamGroupsCommand(Command):
     """
     Beam groups command.
     """
 
-    __slots__ = ("_beam_lone_notes", "_beam_rests", "_stemlet_length", "_tag")
+    beam_lone_notes: bool = None
+    beam_rests: bool = None
+    stemlet_length: abjad.Number = None
+    tag: abjad.Tag = None
 
-    def __init__(
-        self,
-        selector=None,
-        *,
-        beam_lone_notes: bool = None,
-        beam_rests: bool = None,
-        stemlet_length: abjad.Number = None,
-        tag: abjad.Tag = None,
-    ) -> None:
-        super().__init__(selector)
-        if beam_lone_notes is not None:
-            beam_lone_notes = bool(beam_lone_notes)
-        self._beam_lone_notes = beam_lone_notes
-        if beam_rests is not None:
-            beam_rests = bool(beam_rests)
-        self._beam_rests = beam_rests
-        if stemlet_length is not None:
-            assert isinstance(stemlet_length, (int, float))
-        self._stemlet_length = stemlet_length
-        if tag is not None:
-            assert isinstance(tag, abjad.Tag), repr(tag)
-        self._tag = tag
+    def __post_init__(self):
+        Command.__post_init__(self)
+        if self.beam_lone_notes is not None:
+            self.beam_lone_notes = bool(self.beam_lone_notes)
+        if self.beam_rests is not None:
+            self.beam_rests = bool(self.beam_rests)
+        if self.stemlet_length is not None:
+            assert isinstance(self.stemlet_length, (int, float))
+        if self.tag is not None:
+            assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14360,62 +14321,31 @@ class BeamGroupsCommand(Command):
             tag=tag,
         )
 
-    @property
-    def beam_lone_notes(self) -> typing.Optional[bool]:
-        """
-        Is true when command beams lone notes.
-        """
-        return self._beam_lone_notes
 
-    @property
-    def beam_rests(self) -> typing.Optional[bool]:
-        r"""
-        Is true when beams include rests.
-        """
-        return self._beam_rests
-
-    @property
-    def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
-        r"""
-        Gets stemlet length.
-        """
-        return self._stemlet_length
-
-    @property
-    def tag(self) -> typing.Optional[abjad.Tag]:
-        """
-        Gets tag.
-        """
-        return self._tag
-
-
+@dataclasses.dataclass(slots=True)
 class CacheStateCommand(Command):
     """
     Cache state command.
     """
 
-    __slots__ = ()
+    pass
 
 
+@dataclasses.dataclass(slots=True)
 class DenominatorCommand(Command):
     """
     Denominator command.
     """
 
-    __slots__ = ("_denominator",)
+    denominator: typing.Union[int, abjad.DurationTyping] = None
 
-    def __init__(
-        self,
-        denominator: typing.Union[int, abjad.DurationTyping] = None,
-        selector=None,
-    ) -> None:
-        super().__init__(selector)
-        if isinstance(denominator, tuple):
-            denominator = abjad.Duration(denominator)
-        if denominator is not None:
+    def __post_init__(self):
+        Command.__post_init__(self)
+        if isinstance(self.denominator, tuple):
+            self.denominator = abjad.Duration(self.denominator)
+        if self.denominator is not None:
             prototype = (int, abjad.Duration)
-            assert isinstance(denominator, prototype), repr(denominator)
-        self._denominator = denominator
+            assert isinstance(self.denominator, prototype), repr(self.denominator)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14441,20 +14371,12 @@ class DenominatorCommand(Command):
                 message = f"invalid preferred denominator: {denominator!r}."
                 raise Exception(message)
 
-    @property
-    def denominator(self) -> typing.Union[int, abjad.Duration, None]:
-        r"""
-        Gets preferred denominator.
-        """
-        return self._denominator
 
-
+@dataclasses.dataclass(slots=True)
 class DurationBracketCommand(Command):
     """
     Duration bracket command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14471,22 +14393,18 @@ class DurationBracketCommand(Command):
             abjad.override(tuplet).TupletNumber.text = markup
 
 
+@dataclasses.dataclass(slots=True)
 class WrittenDurationCommand(Command):
     """
     Written duration command.
     """
 
-    __slots__ = ("_duration",)
+    selector: typing.Any = lambda _: abjad.select(_).leaf(0)
+    duration: abjad.DurationTyping = None
 
-    def __init__(
-        self,
-        duration: abjad.DurationTyping,
-        *,
-        selector=lambda _: abjad.select(_).leaf(0),
-    ) -> None:
-        super().__init__(selector)
-        duration_ = abjad.Duration(duration)
-        self._duration = duration_
+    def __post_init__(self):
+        Command.__post_init__(self)
+        self.duration = abjad.Duration(self.duration)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14511,20 +14429,12 @@ class WrittenDurationCommand(Command):
         multiplier = old_duration / written_duration
         leaf.multiplier = multiplier
 
-    @property
-    def duration(self) -> typing.Optional[abjad.Duration]:
-        """
-        Gets written duration.
-        """
-        return self._duration
 
-
+@dataclasses.dataclass(slots=True)
 class ExtractTrivialCommand(Command):
     """
     Extract trivial command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14539,27 +14449,21 @@ class ExtractTrivialCommand(Command):
                 abjad.mutate.extract(tuplet)
 
 
+@dataclasses.dataclass(slots=True)
 class FeatherBeamCommand(Command):
     """
     Feather beam command.
     """
 
-    __slots__ = ("_beam_rests", "_selector", "_stemlet_length")
+    beam_rests: bool = None
+    stemlet_length: abjad.Number = None
 
-    def __init__(
-        self,
-        selector=None,
-        *,
-        beam_rests: bool = None,
-        stemlet_length: abjad.Number = None,
-    ) -> None:
-        super().__init__(selector)
-        if beam_rests is not None:
-            beam_rests = bool(beam_rests)
-        self._beam_rests = beam_rests
-        if stemlet_length is not None:
-            assert isinstance(stemlet_length, (int, float))
-        self._stemlet_length = stemlet_length
+    def __post_init__(self):
+        Command.__post_init__(self)
+        if self.beam_rests is not None:
+            self.beam_rests = bool(self.beam_rests)
+        if self.stemlet_length is not None:
+            assert isinstance(self.stemlet_length, (int, float))
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14606,27 +14510,12 @@ class FeatherBeamCommand(Command):
             return True
         return False
 
-    @property
-    def beam_rests(self) -> typing.Optional[bool]:
-        r"""
-        Is true when feather beams include rests.
-        """
-        return self._beam_rests
 
-    @property
-    def stemlet_length(self) -> typing.Optional[typing.Union[int, float]]:
-        r"""
-        Gets stemlet length.
-        """
-        return self._stemlet_length
-
-
+@dataclasses.dataclass(slots=True)
 class ForceAugmentationCommand(Command):
     """
     Force augmentation command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14640,12 +14529,11 @@ class ForceAugmentationCommand(Command):
                 tuplet.toggle_prolation()
 
 
+@dataclasses.dataclass(slots=True)
 class ForceDiminutionCommand(Command):
     """
     Force diminution command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14659,12 +14547,11 @@ class ForceDiminutionCommand(Command):
                 tuplet.toggle_prolation()
 
 
+@dataclasses.dataclass(slots=True)
 class ForceFractionCommand(Command):
     """
     Force fraction command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14677,6 +14564,7 @@ class ForceFractionCommand(Command):
             tuplet.force_fraction = True
 
 
+@dataclasses.dataclass(slots=True)
 class ForceNoteCommand(Command):
     r"""
     Note command.
@@ -14761,8 +14649,6 @@ class ForceNoteCommand(Command):
 
     """
 
-    __slots__ = ()
-
     def __call__(self, voice, *, tag=None):
         selection = voice
         if self.selector is not None:
@@ -14786,30 +14672,24 @@ class ForceNoteCommand(Command):
             abjad.mutate.replace(leaf, [note])
 
 
+@dataclasses.dataclass(slots=True)
 class ForceRepeatTieCommand(Command):
     """
     Force repeat-tie command.
     """
 
-    __slots__ = ("_threshold",)
+    threshold: typing.Union[bool, abjad.IntegerPair, abjad.DurationInequality] = None
 
-    def __init__(
-        self,
-        selector=None,
-        *,
-        threshold: typing.Union[
-            bool, abjad.IntegerPair, abjad.DurationInequality
-        ] = None,
-    ) -> None:
-        super().__init__(selector)
-        threshold_ = threshold
-        if isinstance(threshold, tuple) and len(threshold) == 2:
+    def __post_init__(self):
+        Command.__post_init__(self)
+        threshold_ = self.threshold
+        if isinstance(self.threshold, tuple) and len(self.threshold) == 2:
             threshold_ = abjad.DurationInequality(
-                operator_string=">=", duration=threshold
+                operator_string=">=", duration=self.threshold
             )
         if threshold_ is not None:
             assert isinstance(threshold_, (bool, abjad.DurationInequality))
-        self._threshold = threshold_
+        self.threshold = threshold_
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -14845,14 +14725,8 @@ class ForceRepeatTieCommand(Command):
             repeat_tie = abjad.RepeatTie()
             abjad.attach(repeat_tie, leaf)
 
-    @property
-    def threshold(self) -> typing.Union[bool, abjad.DurationInequality, None]:
-        """
-        Gets threshold.
-        """
-        return self._threshold
 
-
+@dataclasses.dataclass(slots=True)
 class ForceRestCommand(Command):
     r"""
     Rest command.
@@ -15014,8 +14888,6 @@ class ForceRestCommand(Command):
 
     """
 
-    __slots__ = ()
-
     def __call__(self, voice, *, previous_logical_ties_produced=None, tag=None):
         selection = voice
         if self.selector is not None:
@@ -15047,34 +14919,27 @@ class ForceRestCommand(Command):
                 abjad.detach(abjad.RepeatTie, next_leaf)
 
 
+@dataclasses.dataclass(slots=True)
 class GraceContainerCommand(Command):
     """
     Grace container command.
     """
 
-    __slots__ = ("_beam_and_slash", "_class_", "_counts", "_talea")
+    counts: abjad.IntegerSequence = None
+    class_: typing.Type = abjad.BeforeGraceContainer
+    beam_and_slash: bool = None
+    talea: Talea = Talea([1], 8)
 
     _classes = (abjad.BeforeGraceContainer, abjad.AfterGraceContainer)
 
-    def __init__(
-        self,
-        counts: abjad.IntegerSequence,
-        selector=None,
-        *,
-        class_: typing.Type = abjad.BeforeGraceContainer,
-        beam_and_slash: bool = None,
-        talea: Talea = Talea([1], 8),
-    ) -> None:
-        super().__init__(selector)
-        assert all(isinstance(_, int) for _ in counts), repr(counts)
-        self._counts = tuple(counts)
-        assert class_ in self._classes, repr(class_)
-        self._class_ = class_
-        if beam_and_slash is not None:
-            beam_and_slash = bool(beam_and_slash)
-        self._beam_and_slash = beam_and_slash
-        assert isinstance(talea, Talea), repr(talea)
-        self._talea = talea
+    def __post_init__(self):
+        Command.__post_init__(self)
+        assert all(isinstance(_, int) for _ in self.counts), repr(self.counts)
+        self.counts = tuple(self.counts)
+        assert self.class_ in self._classes, repr(self.class_)
+        if self.beam_and_slash is not None:
+            self.beam_and_slash = bool(self.beam_and_slash)
+        assert isinstance(self.talea, Talea), repr(talea)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15101,42 +14966,12 @@ class GraceContainerCommand(Command):
             container = self.class_(notes)
             abjad.attach(container, leaf)
 
-    @property
-    def class_(self) -> typing.Type:
-        """
-        Gets class.
-        """
-        return self._class_
 
-    @property
-    def counts(self) -> typing.Tuple[int, ...]:
-        """
-        Gets counts.
-        """
-        return self._counts
-
-    @property
-    def beam_and_slash(self) -> typing.Optional[bool]:
-        r"""
-        Is true when command beams notes and attaches Nalesnik ``\slash``
-        command to first note.
-        """
-        return self._beam_and_slash
-
-    @property
-    def talea(self) -> Talea:
-        """
-        Gets talea.
-        """
-        return self._talea
-
-
+@dataclasses.dataclass(slots=True)
 class InvisibleMusicCommand(Command):
     """
     Invisible music command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15156,29 +14991,23 @@ class InvisibleMusicCommand(Command):
             abjad.attach(literal_2, leaf, tag=tag_2)
 
 
+@dataclasses.dataclass(slots=True)
 class OnBeatGraceContainerCommand(Command):
     """
     On-beat grace container command.
     """
 
-    __slots__ = ("_counts", "_grace_leaf_duration", "_talea")
+    counts: abjad.IntegerSequence = None
+    leaf_duration: abjad.DurationTyping = None
+    talea: Talea = Talea([1], 8)
 
-    def __init__(
-        self,
-        counts: abjad.IntegerSequence,
-        selector=None,
-        *,
-        leaf_duration: abjad.DurationTyping = None,
-        talea: Talea = Talea([1], 8),
-    ) -> None:
-        super().__init__(selector)
-        assert all(isinstance(_, int) for _ in counts), repr(counts)
-        self._counts = tuple(counts)
-        if leaf_duration is not None:
-            leaf_duration = abjad.Duration(leaf_duration)
-        self._grace_leaf_duration = leaf_duration
-        assert isinstance(talea, Talea), repr(talea)
-        self._talea = talea
+    def __post_init__(self):
+        Command.__post_init__(self)
+        assert all(isinstance(_, int) for _ in self.counts), repr(self.counts)
+        if self.leaf_duration is not None:
+            self.leaf_duration = abjad.Duration(self.leaf_duration)
+        self.leaf_duration = self.leaf_duration
+        assert isinstance(self.talea, Talea), repr(self.talea)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15205,34 +15034,12 @@ class OnBeatGraceContainerCommand(Command):
                 leaf_duration=self.leaf_duration,
             )
 
-    @property
-    def counts(self) -> typing.Tuple[int, ...]:
-        """
-        Gets counts.
-        """
-        return self._counts
 
-    @property
-    def leaf_duration(self) -> typing.Optional[abjad.Duration]:
-        """
-        Gets grace leaf duration.
-        """
-        return self._grace_leaf_duration
-
-    @property
-    def talea(self) -> Talea:
-        """
-        Gets talea.
-        """
-        return self._talea
-
-
+@dataclasses.dataclass(slots=True)
 class ReduceMultiplierCommand(Command):
     """
     Reduce multiplier command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15245,12 +15052,11 @@ class ReduceMultiplierCommand(Command):
             tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
 
 
+@dataclasses.dataclass(slots=True)
 class RepeatTieCommand(Command):
     """
     Repeat-tie command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15264,12 +15070,11 @@ class RepeatTieCommand(Command):
             abjad.attach(tie, note, tag=tag)
 
 
+@dataclasses.dataclass(slots=True)
 class RewriteDotsCommand(Command):
     """
     Rewrite dots command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15282,30 +15087,26 @@ class RewriteDotsCommand(Command):
             tuplet.rewrite_dots()
 
 
+@dataclasses.dataclass(slots=True)
 class RewriteMeterCommand(Command):
     """
     Rewrite meter command.
     """
 
-    __slots__ = ("_boundary_depth", "_reference_meters")
+    boundary_depth: int = None
+    reference_meters: typing.Sequence[abjad.Meter] = None
 
-    def __init__(
-        self,
-        *,
-        boundary_depth: int = None,
-        reference_meters: typing.Sequence[abjad.Meter] = None,
-    ) -> None:
-        if boundary_depth is not None:
-            assert isinstance(boundary_depth, int)
-        self._boundary_depth = boundary_depth
+    def __post_init__(self):
+        if self.boundary_depth is not None:
+            assert isinstance(self.boundary_depth, int)
         reference_meters_ = None
-        if reference_meters is not None:
-            if not all(isinstance(_, abjad.Meter) for _ in reference_meters):
+        if self.reference_meters is not None:
+            if not all(isinstance(_, abjad.Meter) for _ in self.reference_meters):
                 message = "must be sequence of meters:\n"
-                message += f"   {repr(reference_meters)}"
+                message += f"   {repr(self.reference_meters)}"
                 raise Exception(message)
-            reference_meters_ = tuple(reference_meters)
-        self._reference_meters = reference_meters_
+            reference_meters_ = tuple(self.reference_meters)
+        self.reference_meters = reference_meters_
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15331,7 +15132,6 @@ class RewriteMeterCommand(Command):
                 if str(reference_meter) == str(meter):
                     meter = reference_meter
                     break
-
             preferred_meters.append(meter)
             nontupletted_leaves = []
             for leaf in abjad.iterate.leaves(selection):
@@ -15403,40 +15203,19 @@ class RewriteMeterCommand(Command):
                 beamable_groups.append(abjad.select([]))
         return beamable_groups
 
-    @property
-    def boundary_depth(self) -> typing.Optional[int]:
-        """
-        Gets boundary depth.
-        """
-        return self._boundary_depth
 
-    @property
-    def reference_meters(
-        self,
-    ) -> typing.Optional[typing.Tuple[abjad.Meter, ...]]:
-        """
-        Gets reference meters.
-        """
-        return self._reference_meters
-
-
+@dataclasses.dataclass(slots=True)
 class RewriteRestFilledCommand(Command):
     """
     Rewrite rest-filled command.
     """
 
-    __slots__ = ("_spelling",)
+    spelling: Spelling = None
 
-    def __init__(
-        self,
-        selector=None,
-        *,
-        spelling: Spelling = None,
-    ) -> None:
-        super().__init__(selector)
-        if spelling is not None:
-            assert isinstance(spelling, Spelling)
-        self._spelling = spelling
+    def __post_init__(self):
+        Command.__post_init__(self)
+        if self.spelling is not None:
+            assert isinstance(self.spelling, Spelling)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15467,20 +15246,12 @@ class RewriteRestFilledCommand(Command):
             abjad.mutate.replace(tuplet[:], rests)
             tuplet.multiplier = abjad.Multiplier(1)
 
-    @property
-    def spelling(self) -> typing.Optional[Spelling]:
-        """
-        Gets spelling specifier.
-        """
-        return self._spelling
 
-
+@dataclasses.dataclass(slots=True)
 class RewriteSustainedCommand(Command):
     """
     Rewrite sustained command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15508,12 +15279,11 @@ class RewriteSustainedCommand(Command):
             tuplet.multiplier = abjad.Multiplier(1)
 
 
+@dataclasses.dataclass(slots=True)
 class SplitMeasuresCommand(Command):
     """
     Split measures command.
     """
-
-    __slots__ = ()
 
     def __call__(
         self,
@@ -15542,12 +15312,11 @@ class SplitMeasuresCommand(Command):
         abjad.mutate.split(voice[:], durations=durations)
 
 
+@dataclasses.dataclass(slots=True)
 class TieCommand(Command):
     """
     Tie command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15561,18 +15330,18 @@ class TieCommand(Command):
             abjad.attach(tie, note, tag=tag)
 
 
+@dataclasses.dataclass(slots=True)
 class TremoloContainerCommand(Command):
     """
     Tremolo container command.
     """
 
-    __slots__ = ("_count",)
+    count: int = None
 
-    def __init__(self, count: int, selector=None) -> None:
-        super().__init__(selector)
-        assert isinstance(count, int), repr(count)
-        assert 0 < count, repr(count)
-        self._count = count
+    def __post_init__(self):
+        Command.__post_init__(self)
+        assert isinstance(self.count, int), repr(self.count)
+        assert 0 < self.count, repr(self.count)
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15591,20 +15360,12 @@ class TremoloContainerCommand(Command):
             )
             abjad.mutate.replace(note, container)
 
-    @property
-    def count(self) -> int:
-        """
-        Gets count.
-        """
-        return self._count
 
-
+@dataclasses.dataclass(slots=True)
 class TrivializeCommand(Command):
     """
     Trivialize command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15617,12 +15378,11 @@ class TrivializeCommand(Command):
             tuplet.trivialize()
 
 
+@dataclasses.dataclass(slots=True)
 class UnbeamCommand(Command):
     """
     Unbeam command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15640,12 +15400,11 @@ class UnbeamCommand(Command):
             abjad.detach(abjad.StopBeam, leaf)
 
 
+@dataclasses.dataclass(slots=True)
 class UntieCommand(Command):
     """
     Untie command.
     """
-
-    __slots__ = ()
 
     def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
         """
@@ -15844,8 +15603,8 @@ def after_grace_container(
 
     """
     return GraceContainerCommand(
-        counts,
-        selector,
+        selector=selector,
+        counts=counts,
         beam_and_slash=beam_and_slash,
         class_=abjad.AfterGraceContainer,
         talea=talea,
@@ -15863,7 +15622,7 @@ def beam(
     Makes beam command.
     """
     return BeamCommand(
-        selector,
+        selector=selector,
         beam_rests=beam_rests,
         beam_lone_notes=beam_lone_notes,
         stemlet_length=stemlet_length,
@@ -15882,7 +15641,7 @@ def beam_groups(
     Makes beam-groups command.
     """
     return BeamGroupsCommand(
-        selector,
+        selector=selector,
         beam_lone_notes=beam_lone_notes,
         beam_rests=beam_rests,
         stemlet_length=stemlet_length,
@@ -16029,7 +15788,7 @@ def before_grace_container(
             >>
 
     """
-    return GraceContainerCommand(counts, selector, talea=talea)
+    return GraceContainerCommand(selector=selector, counts=counts, talea=talea)
 
 
 def cache_state() -> CacheStateCommand:
@@ -16506,7 +16265,7 @@ def denominator(
             >>
 
     """
-    return DenominatorCommand(denominator, selector)
+    return DenominatorCommand(selector=selector, denominator=denominator)
 
 
 def duration_bracket(
@@ -16515,7 +16274,7 @@ def duration_bracket(
     """
     Makes duration bracket command.
     """
-    return DurationBracketCommand(selector)
+    return DurationBracketCommand(selector=selector)
 
 
 def extract_trivial(
@@ -16588,7 +16347,7 @@ def extract_trivial(
             >>
 
     """
-    return ExtractTrivialCommand(selector)
+    return ExtractTrivialCommand(selector=selector)
 
 
 def feather_beam(
@@ -16601,7 +16360,7 @@ def feather_beam(
     Makes feather beam command.
     """
     return FeatherBeamCommand(
-        selector, beam_rests=beam_rests, stemlet_length=stemlet_length
+        selector=selector, beam_rests=beam_rests, stemlet_length=stemlet_length
     )
 
 
@@ -16733,7 +16492,7 @@ def force_augmentation(
             >>
 
     """
-    return ForceAugmentationCommand(selector)
+    return ForceAugmentationCommand(selector=selector)
 
 
 def force_diminution(
@@ -16742,7 +16501,7 @@ def force_diminution(
     """
     Makes force diminution command.
     """
-    return ForceDiminutionCommand(selector)
+    return ForceDiminutionCommand(selector=selector)
 
 
 def force_fraction(
@@ -16751,7 +16510,7 @@ def force_fraction(
     """
     Makes force fraction command.
     """
-    return ForceFractionCommand(selector)
+    return ForceFractionCommand(selector=selector)
 
 
 def force_note(
@@ -16760,21 +16519,21 @@ def force_note(
     """
     Makes force note command.
     """
-    return ForceNoteCommand(selector)
+    return ForceNoteCommand(selector=selector)
 
 
 def force_repeat_tie(threshold=True, selector=None) -> ForceRepeatTieCommand:
     """
     Makes force repeat-ties command.
     """
-    return ForceRepeatTieCommand(selector, threshold=threshold)
+    return ForceRepeatTieCommand(selector=selector, threshold=threshold)
 
 
 def force_rest(selector) -> ForceRestCommand:
     """
     Makes force rest command.
     """
-    return ForceRestCommand(selector)
+    return ForceRestCommand(selector=selector)
 
 
 def invisible_music(selector) -> InvisibleMusicCommand:
@@ -17184,7 +16943,7 @@ def on_beat_grace_container(
 
     """
     return OnBeatGraceContainerCommand(
-        counts, selector, leaf_duration=leaf_duration, talea=talea
+        selector=selector, counts=counts, leaf_duration=leaf_duration, talea=talea
     )
 
 
@@ -17378,7 +17137,7 @@ def repeat_tie(selector=None) -> RepeatTieCommand:
             >>
 
     """
-    return RepeatTieCommand(selector)
+    return RepeatTieCommand(selector=selector)
 
 
 def reduce_multiplier(
@@ -17387,14 +17146,14 @@ def reduce_multiplier(
     """
     Makes reduce multiplier command.
     """
-    return ReduceMultiplierCommand(selector)
+    return ReduceMultiplierCommand(selector=selector)
 
 
 def rewrite_dots(selector=None) -> RewriteDotsCommand:
     """
     Makes rewrite dots command.
     """
-    return RewriteDotsCommand(selector)
+    return RewriteDotsCommand(selector=selector)
 
 
 def rewrite_meter(
@@ -17623,7 +17382,7 @@ def rewrite_rest_filled(
         rewriting.
 
     """
-    return RewriteRestFilledCommand(selector, spelling=spelling)
+    return RewriteRestFilledCommand(selector=selector, spelling=spelling)
 
 
 def rewrite_sustained(
@@ -17898,7 +17657,7 @@ def rewrite_sustained(
             >>
 
     """
-    return RewriteSustainedCommand(selector)
+    return RewriteSustainedCommand(selector=selector)
 
 
 def split_measures() -> SplitMeasuresCommand:
@@ -18591,14 +18350,14 @@ def tremolo_container(count: int, selector=None) -> TremoloContainerCommand:
             >>
 
     """
-    return TremoloContainerCommand(count, selector=selector)
+    return TremoloContainerCommand(selector=selector, count=count)
 
 
 def trivialize(selector=None) -> TrivializeCommand:
     """
     Makes trivialize command.
     """
-    return TrivializeCommand(selector)
+    return TrivializeCommand(selector=selector)
 
 
 def unbeam(
@@ -18607,7 +18366,7 @@ def unbeam(
     """
     Makes unbeam command.
     """
-    return UnbeamCommand(selector)
+    return UnbeamCommand(selector=selector)
 
 
 def untie(selector=None) -> UntieCommand:
@@ -18822,7 +18581,7 @@ def written_duration(
     """
     Makes written duration command.
     """
-    return WrittenDurationCommand(duration, selector=selector)
+    return WrittenDurationCommand(selector=selector, duration=duration)
 
 
 RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
@@ -18837,7 +18596,7 @@ class Stack:
 
     __slots__ = ("_commands", "_maker", "_preprocessor", "_tag")
 
-    # to make sure abjad.new() copies commands
+    # remove after removal of new:
     _positional_arguments_name = "commands"
 
     ### INITIALIZER ###
@@ -19051,7 +18810,7 @@ class Bind:
 
     __slots__ = ("_assignments", "_state", "_tag")
 
-    # to make sure abjad.new() copies sassignments
+    # remove after removal of new:
     _positional_arguments_name = "assignments"
 
     def __init__(self, *assignments: Assignment, tag: abjad.Tag = None) -> None:
