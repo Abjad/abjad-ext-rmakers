@@ -114,27 +114,27 @@ class Incise:
 
     """
 
-    body_ratio: abjad.RatioTyping = abjad.Ratio((1,))
+    body_ratio: abjad.RatioTyping = (1,)
     fill_with_rests: bool = False
     outer_divisions_only: bool = False
-    prefix_counts: typing.Sequence[int] = ()
-    prefix_talea: typing.Sequence[int] = ()
-    suffix_counts: typing.Sequence[int] = ()
-    suffix_talea: typing.Sequence[int] = ()
+    prefix_counts: abjad.IntegerSequence = ()
+    prefix_talea: abjad.IntegerSequence = ()
+    suffix_counts: abjad.IntegerSequence = ()
+    suffix_talea: abjad.IntegerSequence = ()
     talea_denominator: int | None = None
 
     __documentation_section__ = "Specifiers"
 
     def __post_init__(self):
-        self.prefix_talea = tuple(self.prefix_talea)
+        self.prefix_talea = tuple(self.prefix_talea or ())
         assert self._is_integer_tuple(self.prefix_talea)
-        self.prefix_counts = tuple(self.prefix_counts)
+        self.prefix_counts = tuple(self.prefix_counts or ())
         assert self._is_length_tuple(self.prefix_counts)
         if self.prefix_talea:
             assert self.prefix_counts
-        self.suffix_talea = tuple(self.suffix_talea)
+        self.suffix_talea = tuple(self.suffix_talea or ())
         assert self._is_integer_tuple(self.suffix_talea)
-        self.suffix_counts = tuple(self.suffix_counts)
+        self.suffix_counts = tuple(self.suffix_counts or ())
         assert self._is_length_tuple(self.suffix_counts)
         if self.suffix_talea:
             assert self.suffix_counts
@@ -553,9 +553,9 @@ class Talea:
         for count in self.counts:
             assert isinstance(count, int) or count in "+-", repr(count)
         assert abjad.math.is_nonnegative_integer_power_of_two(self.denominator)
-        self.end_counts = tuple(self.end_counts)
+        self.end_counts = tuple(self.end_counts or ())
         assert all(isinstance(_, int) for _ in self.end_counts)
-        self.preamble = tuple(self.preamble)
+        self.preamble = tuple(self.preamble or ())
         assert all(isinstance(_, int) for _ in self.preamble)
 
     def __contains__(self, argument: int) -> bool:
@@ -621,7 +621,7 @@ class Talea:
 
     def __getitem__(
         self, argument
-    ) -> typing.Union[abjad.NonreducedFraction, typing.List[abjad.NonreducedFraction]]:
+    ) -> abjad.NonreducedFraction | list[abjad.NonreducedFraction]:
         """
         Gets item or slice identified by ``argument``.
 
@@ -875,7 +875,7 @@ class RhythmMaker:
     previous_state: dict = dataclasses.field(
         default_factory=dict, init=False, repr=False
     )
-    spelling: Spelling | None = None
+    spelling: Spelling = Spelling()
     state: dict = dataclasses.field(default_factory=dict, init=False, repr=False)
     tag: abjad.Tag = abjad.Tag()
 
@@ -883,10 +883,10 @@ class RhythmMaker:
 
     def __post_init__(self):
         self.already_cached_state = False
-        if self.spelling is not None:
-            assert isinstance(self.spelling, Spelling), repr(self.spelling)
-        if self.tag is not None:
-            assert isinstance(self.tag, abjad.Tag), repr(self.tag)
+        assert isinstance(self.previous_state, dict), repr(self.previous_state)
+        assert isinstance(self.spelling, Spelling), repr(self.spelling)
+        assert isinstance(self.state, dict), repr(self.state)
+        assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
     def __call__(
         self,
@@ -930,9 +930,6 @@ class RhythmMaker:
         state = dict(sorted(items))
         self.state = state
 
-    def _get_spelling_specifier(self):
-        return self.spelling or Spelling()
-
     @staticmethod
     def _make_leaves_from_talea(
         talea,
@@ -940,17 +937,17 @@ class RhythmMaker:
         increase_monotonic=None,
         forbidden_note_duration=None,
         forbidden_rest_duration=None,
-        tag: abjad.Tag = None,
+        tag: abjad.Tag = abjad.Tag(),
     ):
         assert all(_ != 0 for _ in talea), repr(talea)
-        result: typing.List[abjad.Leaf] = []
+        result: list[abjad.Leaf] = []
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=increase_monotonic,
             forbidden_note_duration=forbidden_note_duration,
             forbidden_rest_duration=forbidden_rest_duration,
             tag=tag,
         )
-        pitches: typing.List[typing.Union[int, None]]
+        pitches: list[int | None]
         for note_value in talea:
             if 0 < note_value:
                 pitches = [0]
@@ -3238,7 +3235,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ...     rmakers.accelerando(
         ...         [(1, 8), (1, 20), (1, 16)],
         ...         [(1, 20), (1, 8), (1, 16)],
-        ...         ),
+        ...     ),
         ...     rmakers.feather_beam(),
         ...     rmakers.duration_bracket(),
         ... )
@@ -4085,7 +4082,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
     @staticmethod
     def _interpolate_divide(
         total_duration, start_duration, stop_duration, exponent="cosine"
-    ) -> typing.Union[str, typing.List[float]]:
+    ) -> str | list[float]:
         """
         Divides ``total_duration`` into durations computed from interpolating between
         ``start_duration`` and ``stop_duration``.
@@ -4097,7 +4094,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     start_duration=1,
             ...     stop_duration=1,
             ...     exponent=1,
-            ...     )
+            ... )
             [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
             >>> sum(_)
             10.0
@@ -4106,7 +4103,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             ...     total_duration=10,
             ...     start_duration=5,
             ...     stop_duration=1,
-            ...     )
+            ... )
             [4.798..., 2.879..., 1.326..., 0.995...]
             >>> sum(_)
             10.0
@@ -4150,7 +4147,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
     @staticmethod
     def _interpolate_divide_multiple(
         total_durations, reference_durations, exponent="cosine"
-    ) -> typing.List[float]:
+    ) -> list[float]:
         """
         Interpolates ``reference_durations`` such that the sum of the resulting
         interpolated values equals the given ``total_durations``.
@@ -4161,7 +4158,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             >>> durations = class_._interpolate_divide_multiple(
             ...     total_durations=[100, 50],
             ...     reference_durations=[20, 10, 20],
-            ...     )
+            ... )
             >>> for duration in durations:
             ...     duration
             19.448...
@@ -4286,7 +4283,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         tuplet = abjad.Tuplet((1, 1), selection, tag=tag)
         return tuplet
 
-    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
+    def _make_music(self, divisions) -> list[abjad.Tuplet]:
         tuplets = []
         interpolations = self._get_interpolations()
         for i, division in enumerate(divisions):
@@ -6202,21 +6199,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     """
 
     denominator: str | int = "from_counts"
-    denominators: typing.Sequence[int] | None = None
-    extra_counts: typing.Sequence[int] | None = None
+    denominators: abjad.IntegerSequence = (8,)
+    extra_counts: abjad.IntegerSequence = (0,)
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
         assert abjad.math.all_are_nonnegative_integer_powers_of_two(self.denominators)
-        self.denominators = tuple(self.denominators or [8])
-        if self.extra_counts is not None:
-            if not abjad.math.all_are_integer_equivalent(self.extra_counts):
-                raise Exception("must be integer sequence:\n    {repr(extra_counts)}")
-            self.extra_counts = [int(_) for _ in self.extra_counts]
-            self.extra_counts = tuple(self.extra_counts)
-        self.extra_counts = self.extra_counts or (0,)
+        self.denominators = tuple(self.denominators or ())
+        self.extra_counts = tuple(self.extra_counts or ())
+        assert all(isinstance(_, int) for _ in self.extra_counts)
 
-    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
+    def _make_music(self, divisions) -> list[abjad.Tuplet]:
         tuplets = []
         assert isinstance(self.previous_state, dict)
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
@@ -6343,7 +6336,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
-        ...         ),
+        ...     ),
         ...     rmakers.tie(selector),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
@@ -6398,7 +6391,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
-        ...         ),
+        ...     ),
         ...     rmakers.repeat_tie(selector),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
@@ -6450,7 +6443,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
-        ...         ),
+        ...     ),
         ...     rmakers.force_augmentation(),
         ...     rmakers.beam(),
         ... )
@@ -6507,7 +6500,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=16,
-        ...         ),
+        ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -6670,7 +6663,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
-        ...         ),
+        ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -6719,7 +6712,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
         ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 2)),
-        ...         ),
+        ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -6775,7 +6768,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
-        ...         ),
+        ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ...     rmakers.rewrite_meter(),
@@ -6825,7 +6818,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
-        ...         ),
+        ...     ),
         ...     rmakers.force_augmentation(),
         ...     rmakers.beam(),
         ...     tag=abjad.Tag("INCISED_RHYTHM_MAKER"),
@@ -6894,26 +6887,16 @@ class IncisedRhythmMaker(RhythmMaker):
 
     """
 
-    extra_counts: typing.Sequence[int] | None = None
-    incise: Incise | None = None
+    extra_counts: abjad.IntegerSequence = ()
+    incise: Incise = Incise()
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
-        prototype = (Incise, type(None))
-        assert isinstance(self.incise, prototype)
-        if self.extra_counts is not None:
-            self.extra_counts = tuple(self.extra_counts)
-        assert (
-            self.extra_counts is None
-            or abjad.math.all_are_nonnegative_integer_equivalent_numbers(
-                self.extra_counts
-            )
-        ), self.extra_counts
-
-    def _get_incise_specifier(self):
-        if self.incise is not None:
-            return self.incise
-        return Incise()
+        self.extra_counts = tuple(self.extra_counts or ())
+        assert abjad.math.all_are_nonnegative_integer_equivalent_numbers(
+            self.extra_counts
+        )
+        assert isinstance(self.incise, Incise), repr(self.incise)
 
     def _make_division_incised_numeric_map(
         self,
@@ -6948,18 +6931,17 @@ class IncisedRhythmMaker(RhythmMaker):
         return numeric_map
 
     def _make_middle_of_numeric_map_part(self, middle):
-        incise = self._get_incise_specifier()
-        if not (incise.fill_with_rests):
-            if not incise.outer_divisions_only:
+        if not (self.incise.fill_with_rests):
+            if not self.incise.outer_divisions_only:
                 if 0 < middle:
-                    if incise.body_ratio is not None:
-                        shards = middle / incise.body_ratio
+                    if self.incise.body_ratio is not None:
+                        shards = middle / self.incise.body_ratio
                         return tuple(shards)
                     else:
                         return (middle,)
                 else:
                     return ()
-            elif incise.outer_divisions_only:
+            elif self.incise.outer_divisions_only:
                 if 0 < middle:
                     return (middle,)
                 else:
@@ -6967,12 +6949,12 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 raise Exception("must incise divisions or output.")
         else:
-            if not incise.outer_divisions_only:
+            if not self.incise.outer_divisions_only:
                 if 0 < middle:
                     return (-abs(middle),)
                 else:
                     return ()
-            elif incise.outer_divisions_only:
+            elif self.incise.outer_divisions_only:
                 if 0 < middle:
                     return (-abs(middle),)
                 else:
@@ -6980,7 +6962,7 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 raise Exception("must incise divisions or output.")
 
-    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
+    def _make_music(self, divisions) -> list[abjad.Tuplet]:
         input_ = self._prepare_input()
         prefix_talea = input_[0]
         prefix_counts = input_[1]
@@ -7000,8 +6982,7 @@ class IncisedRhythmMaker(RhythmMaker):
         divisions = result["divisions"]
         lcd = result["lcd"]
         counts = result["counts"]
-        incise = self._get_incise_specifier()
-        if not incise.outer_divisions_only:
+        if not self.incise.outer_divisions_only:
             numeric_map = self._make_division_incised_numeric_map(
                 divisions,
                 counts["prefix_talea"],
@@ -7011,7 +6992,7 @@ class IncisedRhythmMaker(RhythmMaker):
                 counts["extra_counts"],
             )
         else:
-            assert incise.outer_divisions_only
+            assert self.incise.outer_divisions_only
             numeric_map = self._make_output_incised_numeric_map(
                 divisions,
                 counts["prefix_talea"],
@@ -7106,7 +7087,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     def _numeric_map_to_leaf_selections(self, numeric_map, lcd):
         selections = []
-        specifier = self._get_spelling_specifier()
+        specifier = self.spelling
         for numeric_map_part in numeric_map:
             numeric_map_part = [_ for _ in numeric_map_part if _ != abjad.Duration(0)]
             selection = self._make_leaves_from_talea(
@@ -7121,26 +7102,11 @@ class IncisedRhythmMaker(RhythmMaker):
         return selections
 
     def _prepare_input(self):
-        #
-        incise = self._get_incise_specifier()
-        prefix_talea = incise.prefix_talea or ()
-        prefix_talea = abjad.CyclicTuple(prefix_talea)
-        #
-        prefix_counts = incise.prefix_counts or (0,)
-        prefix_counts = abjad.CyclicTuple(prefix_counts)
-        #
-        suffix_talea = incise.suffix_talea or ()
-        suffix_talea = abjad.CyclicTuple(suffix_talea)
-        #
-        suffix_counts = incise.suffix_counts or (0,)
-        suffix_counts = abjad.CyclicTuple(suffix_counts)
-        #
-        extra_counts = self.extra_counts or ()
-        if extra_counts:
-            extra_counts = abjad.CyclicTuple(extra_counts)
-        else:
-            extra_counts = abjad.CyclicTuple([0])
-        #
+        prefix_talea = abjad.CyclicTuple(self.incise.prefix_talea)
+        prefix_counts = abjad.CyclicTuple(self.incise.prefix_counts or (0,))
+        suffix_talea = abjad.CyclicTuple(self.incise.suffix_talea)
+        suffix_counts = abjad.CyclicTuple(self.incise.suffix_counts or (0,))
+        extra_counts = abjad.CyclicTuple(self.extra_counts or (0,))
         return (
             prefix_talea,
             prefix_counts,
@@ -7193,7 +7159,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> rhythm_maker
-        MultipliedDurationRhythmMaker(spelling=None, tag=Tag(), prototype=<class 'abjad.score.Note'>, duration=Duration(1, 1))
+        MultipliedDurationRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), prototype=<class 'abjad.score.Note'>, duration=Duration(1, 1))
 
     ..  container:: example
 
@@ -7448,7 +7414,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
     """
 
-    prototype: typing.Type = abjad.Note
+    prototype: type = abjad.Note
     duration: abjad.DurationTyping = (1, 1)
 
     _prototypes = (abjad.MultimeasureRest, abjad.Note, abjad.Rest, abjad.Skip)
@@ -7461,8 +7427,8 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             raise Exception(message)
         self.duration = abjad.Duration(self.duration)
 
-    def _make_music(self, divisions) -> typing.List[abjad.Selection]:
-        component: typing.Union[abjad.MultimeasureRest, abjad.Skip]
+    def _make_music(self, divisions) -> list[abjad.Selection]:
+        component: abjad.MultimeasureRest | abjad.Skip
         components = []
         for division in divisions:
             assert isinstance(division, abjad.NonreducedFraction)
@@ -8255,9 +8221,9 @@ class NoteRhythmMaker(RhythmMaker):
 
     """
 
-    def _make_music(self, divisions) -> typing.List[abjad.Selection]:
+    def _make_music(self, divisions) -> list[abjad.Selection]:
         selections = []
-        spelling = self._get_spelling_specifier()
+        spelling = self.spelling
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=spelling.increase_monotonic,
             forbidden_note_duration=spelling.forbidden_note_duration,
@@ -8993,7 +8959,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(
         ...         beam_rests=True,
         ...         stemlet_length=0.75,
-        ...         ),
+        ...     ),
         ...     rmakers.extract_trivial(),
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -9314,10 +9280,10 @@ class TaleaRhythmMaker(RhythmMaker):
         >>> command = rmakers.stack(
         ...     rmakers.talea([5, -3, 3, 3], 16),
         ...     rmakers.extract_trivial(),
-        ...     )
+        ... )
         >>> new_command = dataclasses.replace(command)
         >>> new_command
-        Stack(maker=TaleaRhythmMaker(spelling=None, tag=Tag(), extra_counts=(), read_talea_once_only=False, talea=Talea(counts=(5, -3, 3, 3), denominator=16, end_counts=(), preamble=())), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=None)
+        Stack(maker=TaleaRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), extra_counts=(), read_talea_once_only=False, talea=Talea(counts=(5, -3, 3, 3), denominator=16, end_counts=(), preamble=())), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=Tag())
 
         >>> command == new_command
         True
@@ -10845,7 +10811,7 @@ class TaleaRhythmMaker(RhythmMaker):
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[0, 2]),
         ...     rmakers.beam(),
-        ...     )
+        ... )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
@@ -10923,7 +10889,7 @@ class TaleaRhythmMaker(RhythmMaker):
         >>> stack = rmakers.stack(
         ...     rmakers.talea([1, 2, 3, 4], 16, extra_counts=[0, -1]),
         ...     rmakers.beam(),
-        ...     )
+        ... )
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
@@ -10996,7 +10962,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.talea([1, 2, 3, 4], 16),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
-        ...     )
+        ... )
 
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
@@ -11415,7 +11381,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...         [8, -4, 8],
         ...         32,
         ...         preamble=[32, 32, 32, 32],
-        ...         ),
+        ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
         ... )
@@ -11552,19 +11518,19 @@ class TaleaRhythmMaker(RhythmMaker):
 
     """
 
-    extra_counts: abjad.IntegerSequence | None = None
+    extra_counts: abjad.IntegerSequence = ()
     read_talea_once_only: bool = False
-    spelling: Spelling | None = None
+    spelling: Spelling = Spelling()
     talea: Talea = Talea(counts=[1], denominator=16)
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
-        if self.talea is not None:
-            assert isinstance(self.talea, Talea), repr(self.talea)
-        if self.extra_counts is not None:
-            assert abjad.math.all_are_integer_equivalent_numbers(self.extra_counts)
-        if self.read_talea_once_only is not None:
-            self.read_talea_once_only = bool(self.read_talea_once_only)
+        self.extra_counts = tuple(self.extra_counts or ())
+        assert abjad.math.all_are_integer_equivalent_numbers(self.extra_counts), repr(
+            self.extra_counts
+        )
+        self.read_talea_once_only = bool(self.read_talea_once_only)
+        assert isinstance(self.talea, Talea), repr(self.talea)
 
     def _apply_ties_to_split_notes(
         self, tuplets, unscaled_end_counts, unscaled_preamble, unscaled_talea
@@ -11631,14 +11597,9 @@ class TaleaRhythmMaker(RhythmMaker):
                 if previous_leaf is not None:
                     abjad.detach(abjad.Tie, previous_leaf)
 
-    def _get_talea(self):
-        if self.talea is not None:
-            return self.talea
-        return Talea()
-
     def _make_leaf_lists(self, numeric_map, talea_denominator):
         leaf_lists = []
-        specifier = self._get_spelling_specifier()
+        specifier = self.spelling
         for map_division in numeric_map:
             leaf_list = self._make_leaves_from_talea(
                 map_division,
@@ -11651,7 +11612,7 @@ class TaleaRhythmMaker(RhythmMaker):
             leaf_lists.append(leaf_list)
         return leaf_lists
 
-    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
+    def _make_music(self, divisions) -> list[abjad.Tuplet]:
         input_ = self._prepare_input()
         end_counts = input_["end_counts"]
         preamble = input_["preamble"]
@@ -13969,8 +13930,8 @@ class TupletRhythmMaker(RhythmMaker):
 
     """
 
-    denominator: typing.Union[int, abjad.DurationTyping] | None = None
-    tuplet_ratios: abjad.RatioSequenceTyping | None = None
+    denominator: int | abjad.DurationTyping | None = None
+    tuplet_ratios: abjad.RatioSequenceTyping = ()
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
@@ -13981,12 +13942,9 @@ class TupletRhythmMaker(RhythmMaker):
             assert self.denominator == "divisions" or isinstance(
                 self.denominator, prototype
             )
-        tuplet_ratios_ = None
-        if self.tuplet_ratios is not None:
-            tuplet_ratios_ = tuple([abjad.Ratio(_) for _ in self.tuplet_ratios])
-        self.tuplet_ratios = tuplet_ratios_
+        self.tuplet_ratios = tuple([abjad.Ratio(_) for _ in self.tuplet_ratios])
 
-    def _make_music(self, divisions) -> typing.List[abjad.Tuplet]:
+    def _make_music(self, divisions) -> list[abjad.Tuplet]:
         tuplets = []
         assert self.tuplet_ratios is not None
         tuplet_ratios = abjad.CyclicTuple(self.tuplet_ratios)
@@ -14000,8 +13958,8 @@ class TupletRhythmMaker(RhythmMaker):
 
 
 def accelerando(
-    *interpolations,
-    spelling: Spelling = None,
+    *interpolations: typing.Sequence[abjad.DurationTyping],
+    spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> AccelerandoRhythmMaker:
     """
@@ -14017,11 +13975,11 @@ def accelerando(
 
 
 def even_division(
-    denominators: typing.Sequence[int],
+    denominators: abjad.IntegerSequence,
     *,
-    denominator: typing.Union[str, int] = "from_counts",
-    extra_counts: typing.Sequence[int] = None,
-    spelling: Spelling = None,
+    denominator: str | int = "from_counts",
+    extra_counts: abjad.IntegerSequence = (0,),
+    spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> EvenDivisionRhythmMaker:
     """
@@ -14037,16 +13995,16 @@ def even_division(
 
 
 def incised(
-    extra_counts: typing.Sequence[int] = (),
+    extra_counts: abjad.IntegerSequence = (),
     body_ratio: abjad.RatioTyping = abjad.Ratio((1,)),
     fill_with_rests: bool = False,
     outer_divisions_only: bool = False,
-    prefix_talea: typing.Sequence[int] = (),
-    prefix_counts: typing.Sequence[int] = (),
-    suffix_talea: typing.Sequence[int] = (),
-    suffix_counts: typing.Sequence[int] = (),
+    prefix_talea: abjad.IntegerSequence = (),
+    prefix_counts: abjad.IntegerSequence = (),
+    suffix_talea: abjad.IntegerSequence = (),
+    suffix_counts: abjad.IntegerSequence = (),
     talea_denominator: int = None,
-    spelling: Spelling = None,
+    spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> IncisedRhythmMaker:
     """
@@ -14070,7 +14028,7 @@ def incised(
 
 
 def multiplied_duration(
-    prototype: typing.Type = abjad.Note,
+    prototype: type = abjad.Note,
     *,
     duration: abjad.DurationTyping = (1, 1),
     tag: abjad.Tag = abjad.Tag(),
@@ -14083,7 +14041,9 @@ def multiplied_duration(
     )
 
 
-def note(spelling: Spelling = None, tag: abjad.Tag = abjad.Tag()) -> NoteRhythmMaker:
+def note(
+    spelling: Spelling = Spelling(), tag: abjad.Tag = abjad.Tag()
+) -> NoteRhythmMaker:
     """
     Makes note rhythm-maker.
     """
@@ -14091,14 +14051,14 @@ def note(spelling: Spelling = None, tag: abjad.Tag = abjad.Tag()) -> NoteRhythmM
 
 
 def talea(
-    counts,
-    denominator,
-    advance: int = None,
+    counts: abjad.IntegerSequence,
+    denominator: int,
+    advance: int = 0,
     end_counts: abjad.IntegerSequence = (),
     extra_counts: abjad.IntegerSequence = (),
     preamble: abjad.IntegerSequence = (),
     read_talea_once_only: bool = False,
-    spelling: Spelling = None,
+    spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> TaleaRhythmMaker:
     """
@@ -14110,8 +14070,7 @@ def talea(
         end_counts=end_counts,
         preamble=preamble,
     )
-    if advance is not None:
-        talea = talea.advance(advance)
+    talea = talea.advance(advance)
     return TaleaRhythmMaker(
         extra_counts=extra_counts,
         read_talea_once_only=read_talea_once_only,
@@ -14124,8 +14083,8 @@ def talea(
 def tuplet(
     tuplet_ratios: abjad.RatioSequenceTyping,
     # TODO: remove in favor of dedicated denominator control commands:
-    denominator: typing.Union[int, abjad.DurationTyping] = None,
-    spelling: Spelling = None,
+    denominator: int | abjad.DurationTyping | None = None,
+    spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> TupletRhythmMaker:
     """
@@ -14145,15 +14104,15 @@ class Command:
     Command baseclass.
     """
 
-    selector: typing.Any = None
+    selector: typing.Callable | None = None
 
     __documentation_section__ = "Commands"
 
     def __post_init__(self):
-        if isinstance(self.selector, str):
-            self.selector = eval(self.selector)
+        if self.selector is not None:
+            assert callable(self.selector), repr(self.selector)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls command on ``voice``.
         """
@@ -14168,18 +14127,16 @@ class BeamCommand(Command):
 
     beam_lone_notes: bool = False
     beam_rests: bool = False
-    stemlet_length: abjad.Number | None = None
+    stemlet_length: int | float | None = None
 
     def __post_init__(self):
         Command.__post_init__(self)
-        if self.beam_lone_notes is not None:
-            self.beam_lone_notes = bool(self.beam_lone_notes)
-        if self.beam_rests is not None:
-            self.beam_rests = bool(self.beam_rests)
+        self.beam_lone_notes = bool(self.beam_lone_notes)
+        self.beam_rests = bool(self.beam_rests)
         if self.stemlet_length is not None:
             assert isinstance(self.stemlet_length, (int, float))
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls beam command on ``voice``.
         """
@@ -14208,25 +14165,22 @@ class BeamGroupsCommand(Command):
 
     beam_lone_notes: bool = False
     beam_rests: bool = False
-    stemlet_length: abjad.Number | None = None
-    tag: abjad.Tag | None = None
+    stemlet_length: int | float | None = None
+    tag: abjad.Tag = abjad.Tag()
 
     def __post_init__(self):
         Command.__post_init__(self)
-        if self.beam_lone_notes is not None:
-            self.beam_lone_notes = bool(self.beam_lone_notes)
-        if self.beam_rests is not None:
-            self.beam_rests = bool(self.beam_rests)
+        self.beam_lone_notes = bool(self.beam_lone_notes)
+        self.beam_rests = bool(self.beam_rests)
         if self.stemlet_length is not None:
             assert isinstance(self.stemlet_length, (int, float))
-        if self.tag is not None:
-            assert isinstance(self.tag, abjad.Tag), repr(self.tag)
+        assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls beam groups command on ``voice``.
         """
-        components: typing.List[abjad.Component] = []
+        components: list[abjad.Component] = []
         if not isinstance(voice, abjad.Voice):
             selections = voice
             if self.selector is not None:
@@ -14248,9 +14202,9 @@ class BeamGroupsCommand(Command):
                 raise TypeError(selection)
         leaves = abjad.select(components).leaves()
         parts = []
-        if tag is not None:
+        if tag:
             parts.append(str(tag))
-        if self.tag is not None:
+        if self.tag:
             parts.append(str(self.tag))
         string = ":".join(parts)
         tag = abjad.Tag(string)
@@ -14290,7 +14244,7 @@ class DenominatorCommand(Command):
             prototype = (int, abjad.Duration)
             assert isinstance(self.denominator, prototype), repr(self.denominator)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls denominator command.
         """
@@ -14311,8 +14265,7 @@ class DenominatorCommand(Command):
             elif abjad.math.is_positive_integer(denominator):
                 tuplet.denominator = denominator
             else:
-                message = f"invalid preferred denominator: {denominator!r}."
-                raise Exception(message)
+                raise Exception(f"invalid preferred denominator: {denominator!r}.")
 
 
 @dataclasses.dataclass(slots=True)
@@ -14321,7 +14274,7 @@ class DurationBracketCommand(Command):
     Duration bracket command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls duration bracket command.
         """
@@ -14342,14 +14295,14 @@ class WrittenDurationCommand(Command):
     Written duration command.
     """
 
-    selector: typing.Any = lambda _: abjad.select(_).leaf(0)
+    selector: typing.Callable | None = lambda _: abjad.select(_).leaf(0)
     duration: abjad.DurationTyping | None = None
 
     def __post_init__(self):
         Command.__post_init__(self)
         self.duration = abjad.Duration(self.duration)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls duration multiplier command.
         """
@@ -14379,7 +14332,7 @@ class ExtractTrivialCommand(Command):
     Extract trivial command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls extract trivial command.
         """
@@ -14408,7 +14361,7 @@ class FeatherBeamCommand(Command):
         if self.stemlet_length is not None:
             assert isinstance(self.stemlet_length, (int, float))
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls feather beam command.
         """
@@ -14460,7 +14413,7 @@ class ForceAugmentationCommand(Command):
     Force augmentation command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls force augmentation command.
         """
@@ -14478,7 +14431,7 @@ class ForceDiminutionCommand(Command):
     Force diminution command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls force diminution command.
         """
@@ -14496,7 +14449,7 @@ class ForceFractionCommand(Command):
     Force fraction command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls force fraction command.
         """
@@ -14592,7 +14545,7 @@ class ForceNoteCommand(Command):
 
     """
 
-    def __call__(self, voice, *, tag=None):
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14634,7 +14587,7 @@ class ForceRepeatTieCommand(Command):
             assert isinstance(threshold_, (bool, abjad.DurationInequality))
         self.threshold = threshold_
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls force repeat-tie command.
         """
@@ -14831,7 +14784,13 @@ class ForceRestCommand(Command):
 
     """
 
-    def __call__(self, voice, *, previous_logical_ties_produced=None, tag=None):
+    def __call__(
+        self,
+        voice,
+        *,
+        previous_logical_ties_produced=None,
+        tag: abjad.Tag = abjad.Tag(),
+    ):
         selection = voice
         if self.selector is not None:
             selection = abjad.Selection(
@@ -14869,7 +14828,7 @@ class GraceContainerCommand(Command):
     """
 
     counts: abjad.IntegerSequence | None = None
-    class_: typing.Type = abjad.BeforeGraceContainer
+    class_: type = abjad.BeforeGraceContainer
     beam_and_slash: bool = False
     talea: Talea = Talea([1], 8)
 
@@ -14884,7 +14843,7 @@ class GraceContainerCommand(Command):
             self.beam_and_slash = bool(self.beam_and_slash)
         assert isinstance(self.talea, Talea), repr(talea)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls grace container command.
         """
@@ -14917,15 +14876,13 @@ class InvisibleMusicCommand(Command):
     Invisible music command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls invisible music command.
         """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        if tag is None:
-            tag = abjad.Tag()
         tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
         literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
         tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
@@ -14953,7 +14910,7 @@ class OnBeatGraceContainerCommand(Command):
         self.leaf_duration = self.leaf_duration
         assert isinstance(self.talea, Talea), repr(self.talea)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls on-beat grace container command.
         """
@@ -14986,7 +14943,7 @@ class ReduceMultiplierCommand(Command):
     Reduce multiplier command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls reduce multiplier command.
         """
@@ -15003,7 +14960,7 @@ class RepeatTieCommand(Command):
     Repeat-tie command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls tie command.
         """
@@ -15021,7 +14978,7 @@ class RewriteDotsCommand(Command):
     Rewrite dots command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls rewrite dots command.
         """
@@ -15039,21 +14996,18 @@ class RewriteMeterCommand(Command):
     """
 
     boundary_depth: int | None = None
-    reference_meters: typing.Sequence[abjad.Meter] | None = None
+    reference_meters: typing.Sequence[abjad.Meter] = ()
 
     def __post_init__(self):
         if self.boundary_depth is not None:
             assert isinstance(self.boundary_depth, int)
-        reference_meters_ = None
-        if self.reference_meters is not None:
-            if not all(isinstance(_, abjad.Meter) for _ in self.reference_meters):
-                message = "must be sequence of meters:\n"
-                message += f"   {repr(self.reference_meters)}"
-                raise Exception(message)
-            reference_meters_ = tuple(self.reference_meters)
-        self.reference_meters = reference_meters_
+        self.reference_meters = tuple(self.reference_meters or ())
+        if not all(isinstance(_, abjad.Meter) for _ in self.reference_meters):
+            message = "must be sequence of meters:\n"
+            message += f"   {repr(self.reference_meters)}"
+            raise Exception(message)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls rewrite meter command.
         """
@@ -15155,14 +15109,13 @@ class RewriteRestFilledCommand(Command):
     Rewrite rest-filled command.
     """
 
-    spelling: Spelling | None = None
+    spelling: Spelling = Spelling()
 
     def __post_init__(self):
         Command.__post_init__(self)
-        if self.spelling is not None:
-            assert isinstance(self.spelling, Spelling)
+        assert isinstance(self.spelling, Spelling)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls rewrite rest-filled command.
         """
@@ -15198,7 +15151,7 @@ class RewriteSustainedCommand(Command):
     Rewrite sustained command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls rewrite sustained command.
         """
@@ -15234,13 +15187,13 @@ class SplitMeasuresCommand(Command):
         self,
         voice,
         *,
-        durations: typing.Sequence[abjad.DurationTyping] = None,
-        tag: abjad.Tag = None,
+        durations: typing.Sequence[abjad.DurationTyping] = (),
+        tag: abjad.Tag = abjad.Tag(),
     ) -> None:
         """
         Calls split measures command.
         """
-        if durations is None:
+        if not durations:
             # TODO: implement abjad.get() method for measure durations
             staff = abjad.get.parentage(voice).parent
             assert isinstance(staff, abjad.Staff)
@@ -15263,7 +15216,7 @@ class TieCommand(Command):
     Tie command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls tie command.
         """
@@ -15281,14 +15234,14 @@ class TremoloContainerCommand(Command):
     Tremolo container command.
     """
 
-    count: int | None = None
+    count: int = 0
 
     def __post_init__(self):
         Command.__post_init__(self)
         assert isinstance(self.count, int), repr(self.count)
         assert 0 < self.count, repr(self.count)
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls tremolo container command.
         """
@@ -15313,7 +15266,7 @@ class TrivializeCommand(Command):
     Trivialize command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls trivialize command.
         """
@@ -15330,7 +15283,7 @@ class UnbeamCommand(Command):
     Unbeam command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls unbeam command.
         """
@@ -15352,7 +15305,7 @@ class UntieCommand(Command):
     Untie command.
     """
 
-    def __call__(self, voice, *, tag: abjad.Tag = None) -> None:
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         """
         Calls untie command.
         """
@@ -15378,7 +15331,7 @@ def nongrace_leaves_in_each_tuplet(level=None):
 
 def after_grace_container(
     counts: abjad.IntegerSequence,
-    selector=None,
+    selector: typing.Callable | None = None,
     *,
     beam_and_slash: bool = False,
     talea: Talea = Talea([1], 8),
@@ -15558,11 +15511,11 @@ def after_grace_container(
 
 
 def beam(
-    selector=nongrace_leaves_in_each_tuplet(),
+    selector: typing.Callable | None = nongrace_leaves_in_each_tuplet(),
     *,
     beam_lone_notes: bool = False,
     beam_rests: bool = False,
-    stemlet_length: abjad.Number = None,
+    stemlet_length: int | float | None = None,
 ) -> BeamCommand:
     """
     Makes beam command.
@@ -15576,12 +15529,12 @@ def beam(
 
 
 def beam_groups(
-    selector=nongrace_leaves_in_each_tuplet(level=-1),
+    selector: typing.Callable | None = nongrace_leaves_in_each_tuplet(level=-1),
     *,
     beam_lone_notes: bool = False,
     beam_rests: bool = False,
-    stemlet_length: abjad.Number = None,
-    tag: abjad.Tag = None,
+    stemlet_length: int | float | None = None,
+    tag: abjad.Tag = abjad.Tag(),
 ) -> BeamGroupsCommand:
     """
     Makes beam-groups command.
@@ -15597,7 +15550,7 @@ def beam_groups(
 
 def before_grace_container(
     counts: abjad.IntegerSequence,
-    selector=None,
+    selector: typing.Callable | None = None,
     *,
     talea: Talea = Talea([1], 8),
 ) -> GraceContainerCommand:
@@ -15745,8 +15698,8 @@ def cache_state() -> CacheStateCommand:
 
 
 def denominator(
-    denominator: typing.Union[int, abjad.DurationTyping],
-    selector=lambda _: abjad.select(_).tuplets(),
+    denominator: int | abjad.DurationTyping,
+    selector: typing.Callable | None = lambda _: abjad.select(_).tuplets(),
 ) -> DenominatorCommand:
     r"""
     Makes tuplet denominator command.
@@ -16215,7 +16168,7 @@ def denominator(
 
 
 def duration_bracket(
-    selector=None,
+    selector: typing.Callable | None = None,
 ) -> DurationBracketCommand:
     """
     Makes duration bracket command.
@@ -16224,7 +16177,7 @@ def duration_bracket(
 
 
 def extract_trivial(
-    selector=None,
+    selector: typing.Callable | None = None,
 ) -> ExtractTrivialCommand:
     r"""
     Makes extract trivial command.
@@ -16297,10 +16250,10 @@ def extract_trivial(
 
 
 def feather_beam(
-    selector=nongrace_leaves_in_each_tuplet(),
+    selector: typing.Callable | None = nongrace_leaves_in_each_tuplet(),
     *,
     beam_rests: bool = False,
-    stemlet_length: abjad.Number = None,
+    stemlet_length: int | float | None = None,
 ) -> FeatherBeamCommand:
     """
     Makes feather beam command.
@@ -16311,7 +16264,7 @@ def feather_beam(
 
 
 def force_augmentation(
-    selector=None,
+    selector: typing.Callable | None = None,
 ) -> ForceAugmentationCommand:
     r"""
     Makes force augmentation command.
@@ -16442,7 +16395,7 @@ def force_augmentation(
 
 
 def force_diminution(
-    selector=None,
+    selector: typing.Callable | None = None,
 ) -> ForceDiminutionCommand:
     """
     Makes force diminution command.
@@ -16451,7 +16404,7 @@ def force_diminution(
 
 
 def force_fraction(
-    selector=None,
+    selector: typing.Callable | None = None,
 ) -> ForceFractionCommand:
     """
     Makes force fraction command.
@@ -16460,7 +16413,7 @@ def force_fraction(
 
 
 def force_note(
-    selector=None,
+    selector: typing.Callable | None = None,
 ) -> ForceNoteCommand:
     """
     Makes force note command.
@@ -16468,21 +16421,24 @@ def force_note(
     return ForceNoteCommand(selector=selector)
 
 
-def force_repeat_tie(threshold=True, selector=None) -> ForceRepeatTieCommand:
+def force_repeat_tie(
+    threshold: bool | abjad.IntegerPair | abjad.DurationInequality | None = True,
+    selector: typing.Callable | None = None,
+) -> ForceRepeatTieCommand:
     """
     Makes force repeat-ties command.
     """
     return ForceRepeatTieCommand(selector=selector, threshold=threshold)
 
 
-def force_rest(selector) -> ForceRestCommand:
+def force_rest(selector: typing.Callable | None) -> ForceRestCommand:
     """
     Makes force rest command.
     """
     return ForceRestCommand(selector=selector)
 
 
-def invisible_music(selector) -> InvisibleMusicCommand:
+def invisible_music(selector: typing.Callable | None) -> InvisibleMusicCommand:
     """
     Makes invisible music command.
     """
@@ -16491,7 +16447,7 @@ def invisible_music(selector) -> InvisibleMusicCommand:
 
 def on_beat_grace_container(
     counts: abjad.IntegerSequence,
-    selector=None,
+    selector: typing.Callable | None = None,
     *,
     leaf_duration: abjad.DurationTyping = None,
     talea: Talea = Talea([1], 8),
@@ -16893,7 +16849,7 @@ def on_beat_grace_container(
     )
 
 
-def repeat_tie(selector=None) -> RepeatTieCommand:
+def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
     r"""
     Makes repeat-tie command.
 
@@ -17087,7 +17043,7 @@ def repeat_tie(selector=None) -> RepeatTieCommand:
 
 
 def reduce_multiplier(
-    selector=None,
+    selector: typing.Callable | None = None,
 ) -> ReduceMultiplierCommand:
     """
     Makes reduce multiplier command.
@@ -17095,7 +17051,7 @@ def reduce_multiplier(
     return ReduceMultiplierCommand(selector=selector)
 
 
-def rewrite_dots(selector=None) -> RewriteDotsCommand:
+def rewrite_dots(selector: typing.Callable | None = None) -> RewriteDotsCommand:
     """
     Makes rewrite dots command.
     """
@@ -17103,7 +17059,7 @@ def rewrite_dots(selector=None) -> RewriteDotsCommand:
 
 
 def rewrite_meter(
-    *, boundary_depth: int = None, reference_meters=None
+    *, boundary_depth: int = None, reference_meters: typing.Sequence[abjad.Meter] = ()
 ) -> RewriteMeterCommand:
     """
     Makes rewrite meter command.
@@ -17114,7 +17070,7 @@ def rewrite_meter(
 
 
 def rewrite_rest_filled(
-    selector=None, spelling: Spelling = None
+    selector: typing.Callable | None = None, spelling: Spelling = Spelling()
 ) -> RewriteRestFilledCommand:
     r"""
     Makes rewrite rest-filled command.
@@ -17332,7 +17288,7 @@ def rewrite_rest_filled(
 
 
 def rewrite_sustained(
-    selector=lambda _: abjad.select(_).tuplets(),
+    selector: typing.Callable | None = lambda _: abjad.select(_).tuplets(),
 ) -> RewriteSustainedCommand:
     r"""
     Makes tuplet command.
@@ -17613,7 +17569,7 @@ def split_measures() -> SplitMeasuresCommand:
     return SplitMeasuresCommand()
 
 
-def tie(selector=None) -> TieCommand:
+def tie(selector: typing.Callable | None = None) -> TieCommand:
     r"""
     Makes tie command.
 
@@ -18155,7 +18111,9 @@ def tie(selector=None) -> TieCommand:
     return TieCommand(selector=selector)
 
 
-def tremolo_container(count: int, selector=None) -> TremoloContainerCommand:
+def tremolo_container(
+    count: int, selector: typing.Callable | None = None
+) -> TremoloContainerCommand:
     r"""
     Makes tremolo container command.
 
@@ -18299,7 +18257,7 @@ def tremolo_container(count: int, selector=None) -> TremoloContainerCommand:
     return TremoloContainerCommand(selector=selector, count=count)
 
 
-def trivialize(selector=None) -> TrivializeCommand:
+def trivialize(selector: typing.Callable | None = None) -> TrivializeCommand:
     """
     Makes trivialize command.
     """
@@ -18307,7 +18265,7 @@ def trivialize(selector=None) -> TrivializeCommand:
 
 
 def unbeam(
-    selector=lambda _: abjad.select(_).leaves(),
+    selector: typing.Callable | None = lambda _: abjad.select(_).leaves(),
 ) -> UnbeamCommand:
     """
     Makes unbeam command.
@@ -18315,7 +18273,7 @@ def unbeam(
     return UnbeamCommand(selector=selector)
 
 
-def untie(selector=None) -> UntieCommand:
+def untie(selector: typing.Callable | None = None) -> UntieCommand:
     r"""
     Makes untie command.
 
@@ -18522,7 +18480,7 @@ def untie(selector=None) -> UntieCommand:
 
 def written_duration(
     duration: abjad.DurationTyping,
-    selector=lambda _: abjad.select(_).leaves(),
+    selector: typing.Callable | None = lambda _: abjad.select(_).leaves(),
 ) -> WrittenDurationCommand:
     """
     Makes written duration command.
@@ -18531,6 +18489,101 @@ def written_duration(
 
 
 RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
+
+
+@dataclasses.dataclass(slots=True)
+class Match:
+    """
+    Match.
+    """
+
+    assignment: typing.Any
+    payload: typing.Any
+
+
+@dataclasses.dataclass(unsafe_hash=True)
+class Bind:
+    """
+    Bind.
+    """
+
+    assignments: typing.Any = None
+    tag: abjad.Tag = abjad.Tag()
+
+    def __post_init__(self):
+        self.assignments = self.assignments or ()
+        for assignment in self.assignments:
+            if not isinstance(assignment, Assignment):
+                message = "must be assignment:\n"
+                message += f"   {repr(assignment)}"
+                raise Exception(message)
+        self.assignments = tuple(self.assignments)
+        self._state = dict()
+        if self.tag:
+            assert isinstance(self.tag, abjad.Tag), repr(self.tag)
+
+    def __call__(self, divisions, previous_state: dict = None) -> abjad.Selection:
+        """
+        Calls bind.
+        """
+        division_count = len(divisions)
+        matches = []
+        for i, division in enumerate(divisions):
+            for assignment in self.assignments:
+                if assignment.predicate is None:
+                    match = Match(assignment, division)
+                    matches.append(match)
+                    break
+                elif isinstance(assignment.predicate, abjad.Pattern):
+                    if assignment.predicate.matches_index(i, division_count):
+                        match = Match(assignment, division)
+                        matches.append(match)
+                        break
+                elif assignment.predicate(division):
+                    match = Match(assignment, division)
+                    matches.append(match)
+                    break
+            else:
+                raise Exception(f"no match for division {i}.")
+        assert len(divisions) == len(matches)
+        groups = abjad.Sequence(matches).group_by(
+            lambda match: match.assignment.rhythm_maker
+        )
+        components: list[abjad.Component] = []
+        maker_to_previous_state: dict = dict()
+        pp = (RhythmMaker, Stack)
+        for group in groups:
+            rhythm_maker = group[0].assignment.rhythm_maker
+            if self.tag:
+                rhythm_maker = dataclasses.replace(rhythm_maker, tag=self.tag)
+            assert isinstance(rhythm_maker, pp), repr(rhythm_maker)
+            divisions_ = [match.payload for match in group]
+            previous_state_ = previous_state
+            if (
+                previous_state_ is None
+                and group[0].assignment.remember_state_across_gaps
+            ):
+                previous_state_ = maker_to_previous_state.get(rhythm_maker, None)
+            if isinstance(rhythm_maker, (RhythmMaker, Stack)):
+                selection = rhythm_maker(divisions_, previous_state=previous_state_)
+            else:
+                selection = rhythm_maker(
+                    divisions_, previous_segment_stop_state=previous_state_
+                )
+            assert isinstance(selection, abjad.Selection), repr(selection)
+            components.extend(selection)
+            maker_to_previous_state[rhythm_maker] = rhythm_maker.state
+        assert isinstance(rhythm_maker, (RhythmMaker, Stack)), repr(rhythm_maker)
+        self._state = rhythm_maker.state
+        selection = abjad.select(components)
+        return selection
+
+    @property
+    def state(self) -> dict:
+        """
+        Gets state.
+        """
+        return self._state
 
 
 @dataclasses.dataclass
@@ -18546,7 +18599,7 @@ class Stack:
         ...     rmakers.tuplet([(1, 2)]),
         ...     rmakers.force_fraction(),
         ... )
-        Stack(maker=TupletRhythmMaker(spelling=None, tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag())
 
     ..  container:: example
 
@@ -18560,30 +18613,28 @@ class Stack:
         >>> command_2 = dataclasses.replace(command_1)
 
         >>> command_1
-        Stack(maker=TupletRhythmMaker(spelling=None, tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag())
 
         >>> command_2
-        Stack(maker=TupletRhythmMaker(spelling=None, tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag())
 
         >>> command_1 == command_2
         True
 
     """
 
-    maker: typing.Any
-    commands: typing.Any = ()
-    preprocessor: typing.Any = None
-    tag: abjad.Tag | None = None
+    maker: typing.Union[RhythmMaker, "Stack", Bind]
+    commands: typing.Sequence[Command] = ()
+    preprocessor: typing.Callable | None = None
+    tag: abjad.Tag = abjad.Tag()
 
     def __post_init__(self):
         prototype = (RhythmMaker, Stack, Bind)
         assert isinstance(self.maker, prototype), repr(self.maker)
-        if self.tag is not None:
+        assert isinstance(self.tag, abjad.Tag), repr(self.tag)
+        if self.tag:
             self.maker = dataclasses.replace(self.maker, tag=self.tag)
-        self.commands = self.commands or ()
-        self.commands = tuple(self.commands)
-        if self.tag is not None:
-            assert isinstance(self.tag, abjad.Tag), repr(self.tag)
+        self.commands = tuple(self.commands or ())
 
     def __call__(
         self,
@@ -18662,122 +18713,29 @@ class Stack:
 
 
 @dataclasses.dataclass(slots=True)
-class Match:
-    """
-    Match.
-    """
-
-    assignment: typing.Any
-    payload: typing.Any
-
-
-@dataclasses.dataclass(slots=True)
 class Assignment:
     """
     Assignment.
     """
 
-    rhythm_maker: typing.Union[RhythmMaker, Stack]
-    predicate: typing.Union[typing.Callable, abjad.Pattern] | None = None
+    rhythm_maker: RhythmMaker | Stack
+    predicate: typing.Callable | abjad.Pattern | None = None
     remember_state_across_gaps: bool = False
 
     def __post_init__(self):
-        if self.predicate is not None and not isinstance(self.predicate, abjad.Pattern):
-            assert callable(self.predicate)
+        assert (
+            self.predicate is None
+            or isinstance(self.predicate, abjad.Pattern)
+            or callable(self.predicate)
+        )
         prototype = (RhythmMaker, Stack)
         assert isinstance(self.rhythm_maker, prototype), repr(self.rhythm_maker)
-        if self.remember_state_across_gaps is None:
-            self.remember_state_across_gaps = bool(self.remember_state_across_gaps)
-
-
-@dataclasses.dataclass(unsafe_hash=True)
-class Bind:
-    """
-    Bind.
-    """
-
-    assignments: typing.Any = None
-    tag: abjad.Tag | None = None
-
-    def __post_init__(self):
-        self.assignments = self.assignments or ()
-        for assignment in self.assignments:
-            if not isinstance(assignment, Assignment):
-                message = "must be assignment:\n"
-                message += f"   {repr(assignment)}"
-                raise Exception(message)
-        self.assignments = tuple(self.assignments)
-        self._state = dict()
-        if self.tag is not None:
-            assert isinstance(self.tag, abjad.Tag), repr(self.tag)
-
-    def __call__(self, divisions, previous_state: dict = None) -> abjad.Selection:
-        """
-        Calls bind.
-        """
-        division_count = len(divisions)
-        matches = []
-        for i, division in enumerate(divisions):
-            for assignment in self.assignments:
-                if assignment.predicate is None:
-                    match = Match(assignment, division)
-                    matches.append(match)
-                    break
-                elif isinstance(assignment.predicate, abjad.Pattern):
-                    if assignment.predicate.matches_index(i, division_count):
-                        match = Match(assignment, division)
-                        matches.append(match)
-                        break
-                elif assignment.predicate(division):
-                    match = Match(assignment, division)
-                    matches.append(match)
-                    break
-            else:
-                raise Exception(f"no match for division {i}.")
-        assert len(divisions) == len(matches)
-        groups = abjad.Sequence(matches).group_by(
-            lambda match: match.assignment.rhythm_maker
-        )
-        components: typing.List[abjad.Component] = []
-        maker_to_previous_state: dict = dict()
-        pp = (RhythmMaker, Stack)
-        for group in groups:
-            rhythm_maker = group[0].assignment.rhythm_maker
-            if self.tag is not None:
-                rhythm_maker = dataclasses.replace(rhythm_maker, tag=self.tag)
-            assert isinstance(rhythm_maker, pp), repr(rhythm_maker)
-            divisions_ = [match.payload for match in group]
-            previous_state_ = previous_state
-            if (
-                previous_state_ is None
-                and group[0].assignment.remember_state_across_gaps
-            ):
-                previous_state_ = maker_to_previous_state.get(rhythm_maker, None)
-            if isinstance(rhythm_maker, (RhythmMaker, Stack)):
-                selection = rhythm_maker(divisions_, previous_state=previous_state_)
-            else:
-                selection = rhythm_maker(
-                    divisions_, previous_segment_stop_state=previous_state_
-                )
-            assert isinstance(selection, abjad.Selection), repr(selection)
-            components.extend(selection)
-            maker_to_previous_state[rhythm_maker] = rhythm_maker.state
-        assert isinstance(rhythm_maker, (RhythmMaker, Stack)), repr(rhythm_maker)
-        self._state = rhythm_maker.state
-        selection = abjad.select(components)
-        return selection
-
-    @property
-    def state(self) -> dict:
-        """
-        Gets state.
-        """
-        return self._state
+        self.remember_state_across_gaps = bool(self.remember_state_across_gaps)
 
 
 def assign(
-    rhythm_maker,
-    predicate: typing.Union[typing.Callable, abjad.Pattern] = None,
+    rhythm_maker: RhythmMaker | Stack,
+    predicate: typing.Callable | abjad.Pattern | None = None,
     *,
     remember_state_across_gaps: bool = False,
 ) -> Assignment:
@@ -18791,7 +18749,7 @@ def assign(
     )
 
 
-def bind(*assignments: Assignment, tag: abjad.Tag = None) -> Bind:
+def bind(*assignments: Assignment, tag: abjad.Tag = abjad.Tag()) -> Bind:
     """
     Makes bind.
     """
@@ -18800,10 +18758,10 @@ def bind(*assignments: Assignment, tag: abjad.Tag = None) -> Bind:
 
 
 def stack(
-    maker,
-    *commands,
-    preprocessor=None,
-    tag: abjad.Tag = None,
+    maker: RhythmMaker | Stack | Bind,
+    *commands: Command,
+    preprocessor: typing.Callable | None = None,
+    tag: abjad.Tag = abjad.Tag(),
 ) -> Stack:
     """
     Makes stack.
