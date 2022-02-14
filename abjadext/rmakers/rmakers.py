@@ -4,8 +4,6 @@ import typing
 
 import abjad
 
-ClassTyping = typing.Union[int, type]
-
 
 def example(selection, time_signatures=None, *, includes=None):
     """
@@ -116,63 +114,45 @@ class Incise:
 
     """
 
-    body_ratio: abjad.RatioTyping | None = None
-    fill_with_rests: bool | None = None
-    outer_divisions_only: bool | None = None
-    prefix_counts: typing.Sequence[int] | None = None
-    prefix_talea: typing.Sequence[int] | None = None
-    suffix_counts: typing.Sequence[int] | None = None
-    suffix_talea: typing.Sequence[int] | None = None
+    body_ratio: abjad.RatioTyping = abjad.Ratio((1,))
+    fill_with_rests: bool = False
+    outer_divisions_only: bool = False
+    prefix_counts: typing.Sequence[int] = ()
+    prefix_talea: typing.Sequence[int] = ()
+    suffix_counts: typing.Sequence[int] = ()
+    suffix_talea: typing.Sequence[int] = ()
     talea_denominator: int | None = None
 
     __documentation_section__ = "Specifiers"
 
     def __post_init__(self):
-        prefix_talea = self.prefix_talea or ()
-        prefix_talea = tuple(prefix_talea)
-        assert self._is_integer_tuple(prefix_talea)
-        self.prefix_talea: typing.Tuple[int, ...] = prefix_talea
-        prefix_counts = self.prefix_counts or ()
-        prefix_counts = tuple(prefix_counts)
-        assert self._is_length_tuple(prefix_counts)
-        self.prefix_counts: typing.Tuple[int, ...] = prefix_counts
+        self.prefix_talea = tuple(self.prefix_talea)
+        assert self._is_integer_tuple(self.prefix_talea)
+        self.prefix_counts = tuple(self.prefix_counts)
+        assert self._is_length_tuple(self.prefix_counts)
         if self.prefix_talea:
             assert self.prefix_counts
-        suffix_talea = self.suffix_talea or ()
-        suffix_talea = tuple(suffix_talea)
-        assert self._is_integer_tuple(suffix_talea)
-        if suffix_talea is not None:
-            assert isinstance(suffix_talea, tuple)
-        self.suffix_talea: typing.Tuple[int, ...] = suffix_talea
-        suffix_counts = self.suffix_counts or ()
-        suffix_counts = tuple(suffix_counts)
-        if suffix_counts is not None:
-            assert isinstance(suffix_counts, tuple)
-            assert self._is_length_tuple(suffix_counts)
-        self.suffix_counts: typing.Tuple[int, ...] = suffix_counts
+        self.suffix_talea = tuple(self.suffix_talea)
+        assert self._is_integer_tuple(self.suffix_talea)
+        self.suffix_counts = tuple(self.suffix_counts)
+        assert self._is_length_tuple(self.suffix_counts)
         if self.suffix_talea:
             assert self.suffix_counts
         if self.talea_denominator is not None:
-            if not abjad.math.is_nonnegative_integer_power_of_two(
+            assert abjad.math.is_nonnegative_integer_power_of_two(
                 self.talea_denominator
-            ):
-                message = f"talea denominator {self.talea_denominator!r}"
-                message += " must be nonnegative integer power of 2."
-                raise Exception(message)
+            )
         if self.prefix_talea or self.suffix_talea:
             assert self.talea_denominator is not None
-        if self.body_ratio is not None:
-            self.body_ratio = abjad.Ratio(self.body_ratio)
-        if self.fill_with_rests is not None:
-            self.fill_with_rests = bool(self.fill_with_rests)
-        if self.outer_divisions_only is not None:
-            self.outer_divisions_only = bool(self.outer_divisions_only)
+        self.body_ratio = abjad.Ratio(self.body_ratio)
+        self.fill_with_rests = bool(self.fill_with_rests)
+        self.outer_divisions_only = bool(self.outer_divisions_only)
 
     @staticmethod
     def _is_integer_tuple(argument):
         if argument is None:
             return True
-        if all(isinstance(x, int) for x in argument):
+        if all(isinstance(_, int) for _ in argument):
             return True
         return False
 
@@ -207,9 +187,9 @@ class Interpolation:
 
     """
 
-    start_duration: typing.Tuple[int, int] = (1, 8)
-    stop_duration: typing.Tuple[int, int] = (1, 16)
-    written_duration: typing.Tuple[int, int] = (1, 16)
+    start_duration: abjad.DurationTyping = (1, 8)
+    stop_duration: abjad.DurationTyping = (1, 16)
+    written_duration: abjad.DurationTyping = (1, 16)
 
     __documentation_section__ = "Specifiers"
 
@@ -479,7 +459,7 @@ class Spelling:
 
     forbidden_note_duration: abjad.DurationTyping | None = None
     forbidden_rest_duration: abjad.DurationTyping | None = None
-    increase_monotonic: bool | None = None
+    increase_monotonic: bool = False
 
     __documentation_section__ = "Specifiers"
 
@@ -488,8 +468,7 @@ class Spelling:
             self.forbidden_note_duration = abjad.Duration(self.forbidden_note_duration)
         if self.forbidden_rest_duration is not None:
             self.forbidden_rest_duration = abjad.Duration(self.forbidden_rest_duration)
-        if self.increase_monotonic is not None:
-            self.increase_monotonic = bool(self.increase_monotonic)
+        self.increase_monotonic = bool(self.increase_monotonic)
 
 
 @dataclasses.dataclass(slots=True)
@@ -542,7 +521,7 @@ class Talea:
         ... )
 
         >>> talea.preamble
-        [1, 1, 1, 1]
+        (1, 1, 1, 1)
 
     ..  container:: example
 
@@ -562,26 +541,22 @@ class Talea:
 
     """
 
-    counts: typing.Any
+    counts: typing.Sequence[int | str]
     denominator: int
-    end_counts: abjad.IntegerSequence | None = None
-    preamble: abjad.IntegerSequence | None = None
+    end_counts: abjad.IntegerSequence = ()
+    preamble: abjad.IntegerSequence = ()
 
     __documentation_section__ = "Specifiers"
 
     def __post_init__(self):
+        self.counts = tuple(self.counts)
         for count in self.counts:
             assert isinstance(count, int) or count in "+-", repr(count)
-        if not abjad.math.is_nonnegative_integer_power_of_two(self.denominator):
-            message = f"denominator {self.denominator} must be integer power of 2."
-            raise Exception(message)
-        end_counts_ = None
-        if self.end_counts is not None:
-            assert all(isinstance(_, int) for _ in self.end_counts)
-            end_counts_ = tuple(self.end_counts)
-        self.end_counts = end_counts_
-        if self.preamble is not None:
-            assert all(isinstance(_, int) for _ in self.preamble), repr(self.preamble)
+        assert abjad.math.is_nonnegative_integer_power_of_two(self.denominator)
+        self.end_counts = tuple(self.end_counts)
+        assert all(isinstance(_, int) for _ in self.end_counts)
+        self.preamble = tuple(self.preamble)
+        assert all(isinstance(_, int) for _ in self.preamble)
 
     def __contains__(self, argument: int) -> bool:
         """
@@ -691,14 +666,8 @@ class Talea:
             NonreducedFraction(2, 16)
 
         """
-        if self.preamble:
-            preamble = self.preamble
-        else:
-            preamble = []
-        if self.counts:
-            counts = self.counts
-        else:
-            counts = []
+        preamble: list[int | str] = list(self.preamble)
+        counts = list(self.counts)
         counts_ = abjad.CyclicTuple(preamble + counts)
         if isinstance(argument, int):
             count = counts_.__getitem__(argument)
@@ -742,8 +711,9 @@ class Talea:
         for count in self.preamble or []:
             duration = abjad.Duration(count, self.denominator)
             yield duration
-        for count in self.counts or []:
-            duration = abjad.Duration(count, self.denominator)
+        for item in self.counts or []:
+            assert isinstance(item, int)
+            duration = abjad.Duration(item, self.denominator)
             yield duration
 
     def __len__(self) -> int:
@@ -808,31 +778,31 @@ class Talea:
             ... )
 
             >>> talea.advance(0)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=None, preamble=[1, 1, 1, 1])
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 1, 1, 1))
 
             >>> talea.advance(1)
-            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1, 1, 1]))
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 1, 1))
 
             >>> talea.advance(2)
-            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1, 1]))
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 1))
 
             >>> talea.advance(3)
-            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1]))
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1,))
 
             >>> talea.advance(4)
-            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=None)
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=())
 
             >>> talea.advance(5)
-            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1, 1, 3, 2, 4, 1, 1]))
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 1, 3, 2, 4, 1, 1))
 
             >>> talea.advance(6)
-            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([1, 3, 2, 4, 1, 1]))
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 3, 2, 4, 1, 1))
 
             >>> talea.advance(7)
-            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([3, 2, 4, 1, 1]))
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(3, 2, 4, 1, 1))
 
             >>> talea.advance(8)
-            Talea(counts=Sequence([2, 1, 3, 2, 4, 1, 1]), denominator=16, end_counts=None, preamble=Sequence([2, 2, 4, 1, 1]))
+            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(2, 2, 4, 1, 1))
 
         ..  container:: example
 
@@ -840,13 +810,13 @@ class Talea:
 
             >>> talea = rmakers.Talea([1, 2, 3, 4], 16)
             >>> talea
-            Talea(counts=[1, 2, 3, 4], denominator=16, end_counts=None, preamble=None)
+            Talea(counts=(1, 2, 3, 4), denominator=16, end_counts=(), preamble=())
 
             >>> talea.advance(10)
-            Talea(counts=Sequence([1, 2, 3, 4]), denominator=16, end_counts=None, preamble=None)
+            Talea(counts=(1, 2, 3, 4), denominator=16, end_counts=(), preamble=())
 
             >>> talea.advance(20)
-            Talea(counts=Sequence([1, 2, 3, 4]), denominator=16, end_counts=None, preamble=None)
+            Talea(counts=(1, 2, 3, 4), denominator=16, end_counts=(), preamble=())
 
         """
         assert isinstance(weight, int), repr(weight)
@@ -854,14 +824,13 @@ class Talea:
             raise Exception(f"weight {weight} must be nonnegative.")
         if weight == 0:
             return dataclasses.replace(self)
-        preamble = abjad.Sequence(self.preamble or ())
-        counts = abjad.Sequence(self.counts or ())
-        preamble_: typing.Optional[abjad.Sequence]
+        preamble = abjad.Sequence(self.preamble)
+        counts = abjad.Sequence(self.counts)
         if weight < preamble.weight():
             consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
         elif weight == preamble.weight():
-            preamble_ = None
+            preamble_ = ()
         else:
             assert preamble.weight() < weight
             weight -= preamble.weight()
@@ -871,7 +840,7 @@ class Talea:
                     break
                 preamble += counts
             if preamble.weight() == weight:
-                consumed, remaining = preamble[:], None
+                consumed, remaining = preamble[:], ()
             else:
                 consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
@@ -903,19 +872,19 @@ class RhythmMaker:
     already_cached_state: bool = dataclasses.field(
         init=False, repr=False, compare=False
     )
-    previous_state: dict | None = dataclasses.field(init=False, repr=False)
+    previous_state: dict = dataclasses.field(
+        default_factory=dict, init=False, repr=False
+    )
     spelling: Spelling | None = None
-    state: dict | None = dataclasses.field(init=False, repr=False)
-    tag: abjad.Tag | None = None
+    state: dict = dataclasses.field(default_factory=dict, init=False, repr=False)
+    tag: abjad.Tag = abjad.Tag()
 
     __documentation_section__ = "Rhythm-makers"
 
     def __post_init__(self):
         self.already_cached_state = False
-        self.previous_state = dict()
         if self.spelling is not None:
             assert isinstance(self.spelling, Spelling), repr(self.spelling)
-        self.state = dict()
         if self.tag is not None:
             assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
@@ -961,16 +930,8 @@ class RhythmMaker:
         state = dict(sorted(items))
         self.state = state
 
-    def _call_commands(self, voice, divisions_consumed):
-        pass
-
     def _get_spelling_specifier(self):
-        if self.spelling is not None:
-            return self.spelling
-        return Spelling()
-
-    def _get_format_specification(self):
-        return abjad.FormatSpecification()
+        return self.spelling or Spelling()
 
     @staticmethod
     def _make_leaves_from_talea(
@@ -981,7 +942,7 @@ class RhythmMaker:
         forbidden_rest_duration=None,
         tag: abjad.Tag = None,
     ):
-        assert all(x != 0 for x in talea), repr(talea)
+        assert all(_ != 0 for _ in talea), repr(talea)
         result: typing.List[abjad.Leaf] = []
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=increase_monotonic,
@@ -4087,17 +4048,12 @@ class AccelerandoRhythmMaker(RhythmMaker):
     Set interpolations' ``written_duration`` to ``1/16`` or less for multiple beams.
     """
 
-    interpolations: Interpolation | typing.Sequence[Interpolation] | None = None
+    interpolations: typing.Sequence[Interpolation] = (Interpolation(),)
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
-        if isinstance(self.interpolations, Interpolation):
-            self.interpolations = (self.interpolations,)
-        if self.interpolations is not None:
-            for interpolation in self.interpolations:
-                if not isinstance(interpolation, Interpolation):
-                    raise TypeError(interpolation)
-            self.interpolations = tuple(self.interpolations)
+        self.interpolations = tuple(self.interpolations)
+        assert all(isinstance(_, Interpolation) for _ in self.interpolations)
 
     @staticmethod
     def _fix_rounding_error(selection, total_duration, interpolation):
@@ -4123,20 +4079,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @staticmethod
     def _interpolate_cosine(y1, y2, mu) -> float:
-        """
-        Performs cosine interpolation of ``y1`` and ``y2`` with ``mu`` ``[0, 1]``
-        normalized.
-
-        ..  container:: example
-
-            >>> rmakers.AccelerandoRhythmMaker._interpolate_cosine(
-            ...     y1=0,
-            ...     y2=1,
-            ...     mu=0.5,
-            ...     )
-            0.49999999999999994
-
-        """
         mu2 = (1 - math.cos(mu * math.pi)) / 2
         return y1 * (1 - mu2) + y2 * mu2
 
@@ -4202,7 +4144,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 )
             durations.append(duration)
             partial_sum += duration
-        # scale result to fit total exaclty
         durations = [_ * total_duration / sum(durations) for _ in durations]
         return durations
 
@@ -4306,7 +4247,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     @classmethod
     def _make_accelerando(
-        class_, total_duration, interpolations, index, *, tag: abjad.Tag = None
+        class_, total_duration, interpolations, index, *, tag: abjad.Tag = abjad.Tag()
     ) -> abjad.Tuplet:
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
@@ -7252,7 +7193,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> rhythm_maker
-        MultipliedDurationRhythmMaker(spelling=None, tag=None, prototype=<class 'abjad.score.Note'>, duration=Duration(1, 1))
+        MultipliedDurationRhythmMaker(spelling=None, tag=Tag(), prototype=<class 'abjad.score.Note'>, duration=Duration(1, 1))
 
     ..  container:: example
 
@@ -9367,7 +9308,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        REGRESSION. Commands survive new:
+        REGRESSION. Commands survive copy:
 
         >>> import dataclasses
         >>> command = rmakers.stack(
@@ -9376,7 +9317,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     )
         >>> new_command = dataclasses.replace(command)
         >>> new_command
-        Stack(maker=TaleaRhythmMaker(spelling=None, tag=None, extra_counts=None, read_talea_once_only=None, talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=None, preamble=None)), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=None)
+        Stack(maker=TaleaRhythmMaker(spelling=None, tag=Tag(), extra_counts=(), read_talea_once_only=False, talea=Talea(counts=(5, -3, 3, 3), denominator=16, end_counts=(), preamble=())), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=None)
 
         >>> command == new_command
         True
@@ -11612,9 +11553,8 @@ class TaleaRhythmMaker(RhythmMaker):
     """
 
     extra_counts: abjad.IntegerSequence | None = None
-    read_talea_once_only: bool | None = None
+    read_talea_once_only: bool = False
     spelling: Spelling | None = None
-    tag: abjad.Tag | None = None
     talea: Talea = Talea(counts=[1], denominator=16)
 
     def __post_init__(self):
@@ -14062,7 +14002,7 @@ class TupletRhythmMaker(RhythmMaker):
 def accelerando(
     *interpolations,
     spelling: Spelling = None,
-    tag: abjad.Tag = None,
+    tag: abjad.Tag = abjad.Tag(),
 ) -> AccelerandoRhythmMaker:
     """
     Makes accelerando rhythm-maker.
@@ -14082,7 +14022,7 @@ def even_division(
     denominator: typing.Union[str, int] = "from_counts",
     extra_counts: typing.Sequence[int] = None,
     spelling: Spelling = None,
-    tag: abjad.Tag = None,
+    tag: abjad.Tag = abjad.Tag(),
 ) -> EvenDivisionRhythmMaker:
     """
     Makes even-division rhythm-maker.
@@ -14097,17 +14037,17 @@ def even_division(
 
 
 def incised(
-    extra_counts: typing.Sequence[int] = None,
-    body_ratio: abjad.RatioTyping = None,
-    fill_with_rests: bool = None,
-    outer_divisions_only: bool = None,
-    prefix_talea: typing.Sequence[int] = None,
-    prefix_counts: typing.Sequence[int] = None,
-    suffix_talea: typing.Sequence[int] = None,
-    suffix_counts: typing.Sequence[int] = None,
+    extra_counts: typing.Sequence[int] = (),
+    body_ratio: abjad.RatioTyping = abjad.Ratio((1,)),
+    fill_with_rests: bool = False,
+    outer_divisions_only: bool = False,
+    prefix_talea: typing.Sequence[int] = (),
+    prefix_counts: typing.Sequence[int] = (),
+    suffix_talea: typing.Sequence[int] = (),
+    suffix_counts: typing.Sequence[int] = (),
     talea_denominator: int = None,
     spelling: Spelling = None,
-    tag: abjad.Tag = None,
+    tag: abjad.Tag = abjad.Tag(),
 ) -> IncisedRhythmMaker:
     """
     Makes incised rhythm-maker
@@ -14133,7 +14073,7 @@ def multiplied_duration(
     prototype: typing.Type = abjad.Note,
     *,
     duration: abjad.DurationTyping = (1, 1),
-    tag: abjad.Tag = None,
+    tag: abjad.Tag = abjad.Tag(),
 ) -> MultipliedDurationRhythmMaker:
     """
     Makes multiplied-duration rhythm-maker.
@@ -14143,7 +14083,7 @@ def multiplied_duration(
     )
 
 
-def note(spelling: Spelling = None, tag: abjad.Tag = None) -> NoteRhythmMaker:
+def note(spelling: Spelling = None, tag: abjad.Tag = abjad.Tag()) -> NoteRhythmMaker:
     """
     Makes note rhythm-maker.
     """
@@ -14154,12 +14094,12 @@ def talea(
     counts,
     denominator,
     advance: int = None,
-    end_counts: abjad.IntegerSequence = None,
-    extra_counts: abjad.IntegerSequence = None,
-    preamble=None,
-    read_talea_once_only: bool = None,
+    end_counts: abjad.IntegerSequence = (),
+    extra_counts: abjad.IntegerSequence = (),
+    preamble: abjad.IntegerSequence = (),
+    read_talea_once_only: bool = False,
     spelling: Spelling = None,
-    tag: abjad.Tag = None,
+    tag: abjad.Tag = abjad.Tag(),
 ) -> TaleaRhythmMaker:
     """
     Makes talea rhythm-maker.
@@ -14186,7 +14126,7 @@ def tuplet(
     # TODO: remove in favor of dedicated denominator control commands:
     denominator: typing.Union[int, abjad.DurationTyping] = None,
     spelling: Spelling = None,
-    tag: abjad.Tag = None,
+    tag: abjad.Tag = abjad.Tag(),
 ) -> TupletRhythmMaker:
     """
     Makes tuplet rhythm-maker.
@@ -14226,8 +14166,8 @@ class BeamCommand(Command):
     Beam command.
     """
 
-    beam_lone_notes: bool | None = None
-    beam_rests: bool | None = None
+    beam_lone_notes: bool = False
+    beam_rests: bool = False
     stemlet_length: abjad.Number | None = None
 
     def __post_init__(self):
@@ -14266,8 +14206,8 @@ class BeamGroupsCommand(Command):
     Beam groups command.
     """
 
-    beam_lone_notes: bool | None = None
-    beam_rests: bool | None = None
+    beam_lone_notes: bool = False
+    beam_rests: bool = False
     stemlet_length: abjad.Number | None = None
     tag: abjad.Tag | None = None
 
@@ -14458,7 +14398,7 @@ class FeatherBeamCommand(Command):
     Feather beam command.
     """
 
-    beam_rests: bool | None = None
+    beam_rests: bool = False
     stemlet_length: abjad.Number | None = None
 
     def __post_init__(self):
@@ -14930,7 +14870,7 @@ class GraceContainerCommand(Command):
 
     counts: abjad.IntegerSequence | None = None
     class_: typing.Type = abjad.BeforeGraceContainer
-    beam_and_slash: bool | None = None
+    beam_and_slash: bool = False
     talea: Talea = Talea([1], 8)
 
     _classes = (abjad.BeforeGraceContainer, abjad.AfterGraceContainer)
@@ -15440,7 +15380,7 @@ def after_grace_container(
     counts: abjad.IntegerSequence,
     selector=None,
     *,
-    beam_and_slash: bool = None,
+    beam_and_slash: bool = False,
     talea: Talea = Talea([1], 8),
 ) -> GraceContainerCommand:
     r"""
@@ -15620,8 +15560,8 @@ def after_grace_container(
 def beam(
     selector=nongrace_leaves_in_each_tuplet(),
     *,
-    beam_lone_notes: bool = None,
-    beam_rests: bool = None,
+    beam_lone_notes: bool = False,
+    beam_rests: bool = False,
     stemlet_length: abjad.Number = None,
 ) -> BeamCommand:
     """
@@ -15638,8 +15578,8 @@ def beam(
 def beam_groups(
     selector=nongrace_leaves_in_each_tuplet(level=-1),
     *,
-    beam_lone_notes: bool = None,
-    beam_rests: bool = None,
+    beam_lone_notes: bool = False,
+    beam_rests: bool = False,
     stemlet_length: abjad.Number = None,
     tag: abjad.Tag = None,
 ) -> BeamGroupsCommand:
@@ -16359,7 +16299,7 @@ def extract_trivial(
 def feather_beam(
     selector=nongrace_leaves_in_each_tuplet(),
     *,
-    beam_rests: bool = None,
+    beam_rests: bool = False,
     stemlet_length: abjad.Number = None,
 ) -> FeatherBeamCommand:
     """
@@ -18606,7 +18546,7 @@ class Stack:
         ...     rmakers.tuplet([(1, 2)]),
         ...     rmakers.force_fraction(),
         ... )
-        Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+        Stack(maker=TupletRhythmMaker(spelling=None, tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
 
     ..  container:: example
 
@@ -18620,10 +18560,10 @@ class Stack:
         >>> command_2 = dataclasses.replace(command_1)
 
         >>> command_1
-        Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+        Stack(maker=TupletRhythmMaker(spelling=None, tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
 
         >>> command_2
-        Stack(maker=TupletRhythmMaker(spelling=None, tag=None, denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
+        Stack(maker=TupletRhythmMaker(spelling=None, tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=None)
 
         >>> command_1 == command_2
         True
@@ -18739,7 +18679,7 @@ class Assignment:
 
     rhythm_maker: typing.Union[RhythmMaker, Stack]
     predicate: typing.Union[typing.Callable, abjad.Pattern] | None = None
-    remember_state_across_gaps: bool | None = None
+    remember_state_across_gaps: bool = False
 
     def __post_init__(self):
         if self.predicate is not None and not isinstance(self.predicate, abjad.Pattern):
@@ -18839,7 +18779,7 @@ def assign(
     rhythm_maker,
     predicate: typing.Union[typing.Callable, abjad.Pattern] = None,
     *,
-    remember_state_across_gaps: bool = None,
+    remember_state_across_gaps: bool = False,
 ) -> Assignment:
     """
     Makes assignment.
