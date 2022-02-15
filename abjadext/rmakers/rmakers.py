@@ -893,9 +893,6 @@ class RhythmMaker:
         divisions: typing.Sequence[abjad.IntegerPair],
         previous_state: dict = None,
     ) -> abjad.Selection:
-        """
-        Calls rhythm-maker.
-        """
         self.previous_state = dict(previous_state or [])
         time_signatures = [abjad.TimeSignature(_) for _ in divisions]
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
@@ -14113,9 +14110,6 @@ class Command:
             assert callable(self.selector), repr(self.selector)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls command on ``voice``.
-        """
         pass
 
 
@@ -14137,9 +14131,6 @@ class BeamCommand(Command):
             assert isinstance(self.stemlet_length, (int, float))
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls beam command on ``voice``.
-        """
         selection = voice
         if self.selector is not None:
             selections = self.selector(selection)
@@ -14177,9 +14168,6 @@ class BeamGroupsCommand(Command):
         assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls beam groups command on ``voice``.
-        """
         components: list[abjad.Component] = []
         if not isinstance(voice, abjad.Voice):
             selections = voice
@@ -14245,9 +14233,6 @@ class DenominatorCommand(Command):
             assert isinstance(self.denominator, prototype), repr(self.denominator)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls denominator command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14275,9 +14260,6 @@ class DurationBracketCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls duration bracket command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14303,9 +14285,6 @@ class WrittenDurationCommand(Command):
         self.duration = abjad.Duration(self.duration)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls duration multiplier command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14333,9 +14312,6 @@ class ExtractTrivialCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls extract trivial command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14362,9 +14338,6 @@ class FeatherBeamCommand(Command):
             assert isinstance(self.stemlet_length, (int, float))
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls feather beam command.
-        """
         selection = voice
         if self.selector is not None:
             selections = self.selector(selection)
@@ -14414,9 +14387,6 @@ class ForceAugmentationCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls force augmentation command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14432,9 +14402,6 @@ class ForceDiminutionCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls force diminution command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14450,9 +14417,6 @@ class ForceFractionCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls force fraction command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14574,34 +14538,38 @@ class ForceRepeatTieCommand(Command):
     Force repeat-tie command.
     """
 
-    threshold: bool | abjad.IntegerPair | abjad.DurationInequality | None = None
+    threshold: bool | abjad.IntegerPair | typing.Callable | None = None
+    inequality: typing.Callable = dataclasses.field(init=False, repr=False)
 
     def __post_init__(self):
         Command.__post_init__(self)
-        threshold_ = self.threshold
-        if isinstance(self.threshold, tuple) and len(self.threshold) == 2:
-            threshold_ = abjad.DurationInequality(
-                operator_string=">=", duration=self.threshold
+        if callable(self.threshold):
+            inequality = self.threshold
+        elif self.threshold in (None, False):
+
+            def inequality(item):
+                return item < 0
+
+        elif self.threshold is True:
+
+            def inequality(item):
+                return item >= 0
+
+        else:
+            assert isinstance(self.threshold, tuple) and len(self.threshold) == 2, repr(
+                self.threshold
             )
-        if threshold_ is not None:
-            assert isinstance(threshold_, (bool, abjad.DurationInequality))
-        self.threshold = threshold_
+
+            def inequality(item):
+                return item >= abjad.Duration(self.threshold)
+
+        self.inequality = inequality
+        assert callable(self.inequality)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls force repeat-tie command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        if isinstance(self.threshold, abjad.DurationInequality):
-            inequality = self.threshold
-        elif self.threshold is True:
-            inequality = abjad.DurationInequality(">=", 0)
-        else:
-            duration = abjad.Duration(self.threshold)
-            inequality = abjad.DurationInequality(">=", duration)
-        assert isinstance(inequality, abjad.DurationInequality)
         attach_repeat_ties = []
         for leaf in abjad.select(selection).leaves():
             if abjad.get.has_indicator(leaf, abjad.Tie):
@@ -14613,7 +14581,7 @@ class ForceRepeatTieCommand(Command):
                 if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
                     continue
                 duration = abjad.get.duration(leaf)
-                if not inequality(duration):
+                if not self.inequality(duration):
                     continue
                 attach_repeat_ties.append(next_leaf)
                 abjad.detach(abjad.Tie, leaf)
@@ -14844,9 +14812,6 @@ class GraceContainerCommand(Command):
         assert isinstance(self.talea, Talea), repr(talea)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls grace container command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14877,9 +14842,6 @@ class InvisibleMusicCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls invisible music command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14911,9 +14873,6 @@ class OnBeatGraceContainerCommand(Command):
         assert isinstance(self.talea, Talea), repr(self.talea)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls on-beat grace container command.
-        """
         selections = voice
         if self.selector is not None:
             selections = self.selector(selections)
@@ -14944,9 +14903,6 @@ class ReduceMultiplierCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls reduce multiplier command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14961,9 +14917,6 @@ class RepeatTieCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls tie command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -14979,9 +14932,6 @@ class RewriteDotsCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls rewrite dots command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -15008,9 +14958,6 @@ class RewriteMeterCommand(Command):
             raise Exception(message)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls rewrite meter command.
-        """
         assert isinstance(voice, abjad.Voice), repr(voice)
         staff = abjad.get.parentage(voice).parent
         assert isinstance(staff, abjad.Staff), repr(staff)
@@ -15116,9 +15063,6 @@ class RewriteRestFilledCommand(Command):
         assert isinstance(self.spelling, Spelling)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls rewrite rest-filled command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -15152,9 +15096,6 @@ class RewriteSustainedCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls rewrite sustained command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -15190,9 +15131,6 @@ class SplitMeasuresCommand(Command):
         durations: typing.Sequence[abjad.DurationTyping] = (),
         tag: abjad.Tag = abjad.Tag(),
     ) -> None:
-        """
-        Calls split measures command.
-        """
         if not durations:
             # TODO: implement abjad.get() method for measure durations
             staff = abjad.get.parentage(voice).parent
@@ -15217,9 +15155,6 @@ class TieCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls tie command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -15242,9 +15177,6 @@ class TremoloContainerCommand(Command):
         assert 0 < self.count, repr(self.count)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls tremolo container command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -15267,9 +15199,6 @@ class TrivializeCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls trivialize command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -15284,9 +15213,6 @@ class UnbeamCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls unbeam command.
-        """
         selection = voice
         if self.selector is not None:
             selections = self.selector(selection)
@@ -15306,9 +15232,6 @@ class UntieCommand(Command):
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        """
-        Calls untie command.
-        """
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
@@ -16422,7 +16345,7 @@ def force_note(
 
 
 def force_repeat_tie(
-    threshold: bool | abjad.IntegerPair | abjad.DurationInequality | None = True,
+    threshold: bool | abjad.IntegerPair | typing.Callable | None = True,
     selector: typing.Callable | None = None,
 ) -> ForceRepeatTieCommand:
     """
@@ -18523,9 +18446,6 @@ class Bind:
             assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
     def __call__(self, divisions, previous_state: dict = None) -> abjad.Selection:
-        """
-        Calls bind.
-        """
         division_count = len(divisions)
         matches = []
         for i, division in enumerate(divisions):
@@ -18641,9 +18561,6 @@ class Stack:
         time_signatures: typing.Sequence[abjad.IntegerPair],
         previous_state: dict = None,
     ) -> abjad.Selection:
-        """
-        Calls stack.
-        """
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
         divisions_ = [abjad.NonreducedFraction(_) for _ in time_signatures]
         staff = RhythmMaker._make_staff(time_signatures_)
