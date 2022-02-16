@@ -14760,10 +14760,7 @@ class ForceRestCommand(Command):
     ):
         selection = voice
         if self.selector is not None:
-            selection = abjad.Selection(
-                selection,
-                previous=previous_logical_ties_produced,
-            )
+            selection = abjad.Selection(selection)
             selections = self.selector(selection)
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.Selection(selections).logical_ties()
