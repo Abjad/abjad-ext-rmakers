@@ -936,7 +936,7 @@ class RhythmMaker:
         tag: abjad.Tag = abjad.Tag(),
     ):
         assert all(_ != 0 for _ in talea), repr(talea)
-        result: list[abjad.Leaf] = []
+        result: list[abjad.Leaf | abjad.Tuplet] = []
         leaf_maker = abjad.LeafMaker(
             increase_monotonic=increase_monotonic,
             forbidden_note_duration=forbidden_note_duration,
@@ -8241,7 +8241,7 @@ class NoteRhythmMaker(RhythmMaker):
 
     """
 
-    def _make_music(self, divisions) -> list[list[abjad.Note]]:
+    def _make_music(self, divisions) -> list[list[abjad.Leaf | abjad.Tuplet]]:
         selections = []
         spelling = self.spelling
         leaf_maker = abjad.LeafMaker(
