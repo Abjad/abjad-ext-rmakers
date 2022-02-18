@@ -892,16 +892,15 @@ class RhythmMaker:
         self,
         divisions: typing.Sequence[abjad.IntegerPair],
         previous_state: dict = None,
-    ) -> abjad.Selection:
+    ) -> list[abjad.Component]:
         self.previous_state = dict(previous_state or [])
         time_signatures = [abjad.TimeSignature(_) for _ in divisions]
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         staff = self._make_staff(time_signatures)
         music = self._make_music(divisions)
+        music = list(abjad.Sequence(music).flatten(depth=-1))
+        assert all(isinstance(_, abjad.Component) for _ in music), repr(music)
         assert isinstance(music, list), repr(music)
-        prototype = (abjad.Tuplet, abjad.Selection)
-        for item in music:
-            assert isinstance(item, prototype), repr(item)
         music_voice = staff["Rhythm_Maker_Music_Voice"]
         music_voice.extend(music)
         divisions_consumed = len(divisions)
@@ -910,7 +909,7 @@ class RhythmMaker:
         self._validate_tuplets(music_voice)
         selection = music_voice[:]
         music_voice[:] = []
-        return selection
+        return list(selection)
 
     def _cache_state(self, voice, divisions_consumed):
         previous_logical_ties_produced = self._previous_logical_ties_produced()
@@ -960,8 +959,7 @@ class RhythmMaker:
             ):
                 abjad.tie(leaves)
             result.extend(leaves)
-        selection = abjad.Selection(result)
-        return selection
+        return result
 
     def _make_music(self, divisions):
         return []
@@ -4284,9 +4282,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
             multiplier = duration / written_duration
             note = abjad.Note(0, written_duration, multiplier=multiplier, tag=tag)
             notes.append(note)
-        selection = abjad.Selection(notes)
-        class_._fix_rounding_error(selection, total_duration, interpolation)
-        tuplet = abjad.Tuplet((1, 1), selection, tag=tag)
+        class_._fix_rounding_error(notes, total_duration, interpolation)
+        tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
         return tuplet
 
     def _make_music(self, divisions) -> list[abjad.Tuplet]:
@@ -7444,7 +7441,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             raise Exception(message)
         self.duration = abjad.Duration(self.duration)
 
-    def _make_music(self, divisions) -> list[abjad.Selection]:
+    def _make_music(self, divisions) -> list[abjad.MultimeasureRest | abjad.Skip]:
         component: abjad.MultimeasureRest | abjad.Skip
         components = []
         for division in divisions:
@@ -7459,8 +7456,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
                     self.duration, multiplier=multiplier, tag=self.tag
                 )
             components.append(component)
-        selection = abjad.Selection(components)
-        return [selection]
+        return components
 
 
 @dataclasses.dataclass(slots=True, unsafe_hash=True)
@@ -7516,7 +7512,7 @@ class NoteRhythmMaker(RhythmMaker):
 
         >>> stack = rmakers.stack(
         ...     rmakers.note(),
-        ...     rmakers.force_rest(lambda _: abjad.Selection(_)),
+        ...     rmakers.force_rest(lambda _: abjad.select.logical_ties(_)),
         ... )
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (5, 8)]
@@ -8245,7 +8241,7 @@ class NoteRhythmMaker(RhythmMaker):
 
     """
 
-    def _make_music(self, divisions) -> list[abjad.Selection]:
+    def _make_music(self, divisions) -> list[list[abjad.Note]]:
         selections = []
         spelling = self.spelling
         leaf_maker = abjad.LeafMaker(
@@ -8256,7 +8252,7 @@ class NoteRhythmMaker(RhythmMaker):
         )
         for division in divisions:
             selection = leaf_maker(pitches=0, durations=[division])
-            selections.append(selection)
+            selections.append(list(selection))
         return selections
 
 
@@ -11579,7 +11575,7 @@ class TaleaRhythmMaker(RhythmMaker):
     def _apply_ties_to_split_notes(
         self, tuplets, unscaled_end_counts, unscaled_preamble, unscaled_talea
     ):
-        leaves = abjad.Selection(tuplets).leaves()
+        leaves = abjad.select.leaves(tuplets)
         written_durations = [leaf.written_duration for leaf in leaves]
         written_durations = abjad.Sequence(written_durations)
         total_duration = written_durations.weight()
@@ -14230,12 +14226,10 @@ class BeamGroupsCommand(Command):
             duration = abjad.get.duration(selection)
             durations.append(duration)
         for selection in selections:
-            if isinstance(selection, (list, abjad.Selection)):
-                components.extend(selection)
-            elif isinstance(selection, abjad.Tuplet):
+            if isinstance(selection, abjad.Tuplet):
                 components.append(selection)
             else:
-                raise TypeError(selection)
+                components.extend(selection)
         leaves = abjad.select.leaves(components)
         parts = []
         if tag:
@@ -14814,8 +14808,7 @@ class ForceRestCommand(Command):
     ):
         selection = voice
         if self.selector is not None:
-            selection = abjad.Selection(selection)
-            selections = self.selector(selection)
+            selections = self.selector([selection])
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select.logical_ties(selections)
         # logical_ties = list(logical_ties)
@@ -15086,8 +15079,7 @@ class RewriteMeterCommand(Command):
             for component, component_timespan in component_to_timespan:
                 if component_timespan.happens_during_timespan(group_timespan):
                     group.append(component)
-            selection = abjad.Selection(group)
-            pair = (selection, target_duration)
+            pair = ([group], target_duration)
             group_to_target_duration.append(pair)
         beamable_groups = []
         for group, target_duration in group_to_target_duration:
@@ -15096,7 +15088,7 @@ class RewriteMeterCommand(Command):
             if group_duration == target_duration:
                 beamable_groups.append(group)
             else:
-                beamable_groups.append(abjad.Selection([]))
+                beamable_groups.append([])
         return beamable_groups
 
 
@@ -16437,7 +16429,7 @@ def on_beat_grace_container(
         ...     result = [abjad.select.notes(_) for _ in result]
         ...     result = [abjad.select.exclude(_, [0, -1]) for _ in result]
         ...     result = abjad.select.notes(result)
-        ...     return [abjad.Selection(_) for _ in result]
+        ...     return [[_] for _ in result]
         >>> stack = rmakers.stack(
         ...     rmakers.even_division([4], extra_counts=[2]),
         ...     rmakers.on_beat_grace_container(
@@ -16448,9 +16440,8 @@ def on_beat_grace_container(
         >>> selections = stack(divisions)
         >>> music_voice = abjad.Voice(selections, name="Rhythm_Maker_Music_Voice")
 
-        >>> selections = abjad.Selection(music_voice)
         >>> lilypond_file = rmakers.example(
-        ...     selections, divisions, includes=["abjad.ily"]
+        ...     [music_voice], divisions, includes=["abjad.ily"]
         ... )
         >>> staff = lilypond_file["Staff"]
         >>> abjad.override(staff).TupletBracket.direction = abjad.Up
@@ -16651,9 +16642,8 @@ def on_beat_grace_container(
         >>> selections = stack(divisions)
         >>> music_voice = abjad.Voice(selections, name="Rhythm_Maker_Music_Voice")
 
-        >>> selections = abjad.Selection(music_voice)
         >>> lilypond_file = rmakers.example(
-        ...     selections, divisions, includes=["abjad.ily"]
+        ...     [music_voice], divisions, includes=["abjad.ily"]
         ... )
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18501,7 +18491,7 @@ class Bind:
         if self.tag:
             assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
-    def __call__(self, divisions, previous_state: dict = None) -> abjad.Selection:
+    def __call__(self, divisions, previous_state: dict = None) -> list[abjad.Component]:
         division_count = len(divisions)
         matches = []
         for i, division in enumerate(divisions):
@@ -18546,13 +18536,12 @@ class Bind:
                 selection = rhythm_maker(
                     divisions_, previous_segment_stop_state=previous_state_
                 )
-            assert isinstance(selection, abjad.Selection), repr(selection)
+            assert isinstance(selection, list), repr(selection)
             components.extend(selection)
             maker_to_previous_state[rhythm_maker] = rhythm_maker.state
         assert isinstance(rhythm_maker, (RhythmMaker, Stack)), repr(rhythm_maker)
         self._state = rhythm_maker.state
-        selection = abjad.Selection(components)
-        return selection
+        return components
 
     @property
     def state(self) -> dict:
@@ -18616,7 +18605,7 @@ class Stack:
         self,
         time_signatures: typing.Sequence[abjad.IntegerPair],
         previous_state: dict = None,
-    ) -> abjad.Selection:
+    ) -> list[abjad.Component]:
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
         divisions_ = [abjad.NonreducedFraction(_) for _ in time_signatures]
         staff = RhythmMaker._make_staff(time_signatures_)
@@ -18636,9 +18625,8 @@ class Stack:
                 message += f"   {format(command)}"
                 raise Exception(message)
         result = music_voice[:]
-        assert isinstance(result, abjad.Selection)
         music_voice[:] = []
-        return result
+        return list(result)
 
     def __hash__(self):
         """
