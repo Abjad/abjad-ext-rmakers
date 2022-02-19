@@ -18594,7 +18594,7 @@ class Stack:
     tag: abjad.Tag = abjad.Tag()
 
     def __post_init__(self):
-        prototype = (RhythmMaker, Stack, Bind)
+        prototype = (list, RhythmMaker, Stack, Bind)
         assert isinstance(self.maker, prototype), repr(self.maker)
         assert isinstance(self.tag, abjad.Tag), repr(self.tag)
         if self.tag:
