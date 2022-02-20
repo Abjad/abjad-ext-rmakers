@@ -18643,8 +18643,8 @@ class Stack:
         original_duration = abjad.Duration(sum(divisions))
         if self.preprocessor is not None:
             result = self.preprocessor(divisions)
-            if not isinstance(result, abjad.Sequence):
-                message = "division preprocessor must return sequence:\n"
+            if not isinstance(result, (list, abjad.Sequence)):
+                message = "division preprocessor must return list or sequence:\n"
                 message += "  Input divisions:\n"
                 message += f"    {divisions}\n"
                 message += "  Division preprocessor:\n"
