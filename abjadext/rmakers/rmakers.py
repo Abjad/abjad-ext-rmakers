@@ -11836,12 +11836,12 @@ class TaleaRhythmMaker(RhythmMaker):
             raise Exception(message)
         if weight <= preamble_weight:
             talea = abjad.Sequence(preamble)
-            talea = talea.truncate(weight=weight)
+            talea = abjad.sequence.truncate(talea, weight=weight)
         else:
             weight -= preamble_weight
-            talea = abjad.Sequence(talea).repeat_to_weight(weight)
-            talea = preamble + talea
-        talea = talea.split(weights, cyclic=True)
+            talea = abjad.sequence.repeat_to_weight(talea, weight)
+            talea = list(preamble) + list(talea)
+        talea = abjad.Sequence(talea).split(weights, cyclic=True)
         return talea
 
 
@@ -18512,8 +18512,8 @@ class Bind:
             else:
                 raise Exception(f"no match for division {i}.")
         assert len(divisions) == len(matches)
-        groups = abjad.Sequence(matches).group_by(
-            lambda match: match.assignment.rhythm_maker
+        groups = abjad.sequence.group_by(
+            matches, lambda match: match.assignment.rhythm_maker
         )
         components: list[abjad.Component] = []
         maker_to_previous_state: dict = dict()
