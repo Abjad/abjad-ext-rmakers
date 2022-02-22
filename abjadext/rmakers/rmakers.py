@@ -607,7 +607,7 @@ class Talea:
             cumulative = abjad.math.cumulative_sums(preamble)[1:]
             if argument in cumulative:
                 return True
-            preamble_weight = preamble.weight()
+            preamble_weight = abjad.sequence.weight(preamble)
         else:
             preamble_weight = 0
         if self.counts is not None:
@@ -763,7 +763,7 @@ class Talea:
             10
 
         """
-        return abjad.Sequence(self.counts).weight()
+        return abjad.sequence.weight(self.counts)
 
     def advance(self, weight: int) -> "Talea":
         """
@@ -826,20 +826,20 @@ class Talea:
             return dataclasses.replace(self)
         preamble = abjad.Sequence(self.preamble)
         counts = abjad.Sequence(self.counts)
-        if weight < preamble.weight():
+        if weight < abjad.sequence.weight(preamble):
             consumed, remaining = preamble.split([weight], overhang=True)
             preamble_ = remaining
-        elif weight == preamble.weight():
+        elif weight == abjad.sequence.weight(preamble):
             preamble_ = ()
         else:
-            assert preamble.weight() < weight
-            weight -= preamble.weight()
+            assert abjad.sequence.weight(preamble) < weight
+            weight -= abjad.sequence.weight(preamble)
             preamble = counts[:]
             while True:
-                if weight <= preamble.weight():
+                if weight <= abjad.sequence.weight(preamble):
                     break
                 preamble += counts
-            if preamble.weight() == weight:
+            if abjad.sequence.weight(preamble) == weight:
                 consumed, remaining = preamble[:], ()
             else:
                 consumed, remaining = preamble.split([weight], overhang=True)
@@ -898,7 +898,7 @@ class RhythmMaker:
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         staff = self._make_staff(time_signatures)
         music = self._make_music(divisions)
-        music = list(abjad.Sequence(music).flatten(depth=-1))
+        music = list(abjad.sequence.flatten(music, depth=-1))
         assert all(isinstance(_, abjad.Component) for _ in music), repr(music)
         assert isinstance(music, list), repr(music)
         music_voice = staff["Rhythm_Maker_Music_Voice"]
@@ -4075,7 +4075,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             specifiers_ = abjad.CyclicTuple(specifiers_)
         string = "divisions_consumed"
         divisions_consumed = self.previous_state.get(string, 0)
-        specifiers_ = abjad.Sequence(specifiers_).rotate(n=-divisions_consumed)
+        specifiers_ = abjad.sequence.rotate(specifiers_, n=-divisions_consumed)
         specifiers_ = abjad.CyclicTuple(specifiers_)
         return specifiers_
 
@@ -6227,11 +6227,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
         denominators_ = abjad.Sequence(self.denominators)
-        denominators_ = denominators_.rotate(-divisions_consumed)
+        denominators_ = abjad.sequence.rotate(denominators_, -divisions_consumed)
         denominators = abjad.CyclicTuple(denominators_)
         extra_counts_ = self.extra_counts or [0]
         extra_counts__ = abjad.Sequence(extra_counts_)
-        extra_counts__ = extra_counts__.rotate(-divisions_consumed)
+        extra_counts__ = abjad.sequence.rotate(extra_counts__, -divisions_consumed)
         extra_counts = abjad.CyclicTuple(extra_counts__)
         for i, division in enumerate(divisions):
             if not abjad.math.is_positive_integer_power_of_two(division.denominator):
@@ -11578,7 +11578,7 @@ class TaleaRhythmMaker(RhythmMaker):
         leaves = abjad.select.leaves(tuplets)
         written_durations = [leaf.written_duration for leaf in leaves]
         written_durations = abjad.Sequence(written_durations)
-        total_duration = written_durations.weight()
+        total_duration = abjad.sequence.weight(written_durations)
         preamble_weights = []
         if unscaled_preamble:
             preamble_weights = []
@@ -11609,7 +11609,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 pair = (numerator, self.talea.denominator)
                 weight = abs(abjad.Duration(*pair))
                 talea_weights.append(weight)
-            preamble_length = len(preamble_parts.flatten())
+            preamble_length = len(abjad.sequence.flatten(preamble_parts))
             talea_written_durations = written_durations[preamble_length:]
             talea_parts = talea_written_durations.partition_by_weights(
                 weights=talea_weights,
@@ -11618,7 +11618,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 overhang=True,
             )
         parts = preamble_parts + talea_parts
-        part_durations = parts.flatten()
+        part_durations = abjad.sequence.flatten(parts)
         assert part_durations == abjad.Sequence(written_durations)
         counts = [len(part) for part in parts]
         parts = abjad.Sequence(leaves).partition_by_counts(counts)
@@ -11691,7 +11691,7 @@ class TaleaRhythmMaker(RhythmMaker):
             )
             if expanded_talea is not None:
                 unscaled_talea = expanded_talea
-            talea_weight_consumed = sum(_.weight() for _ in numeric_map)
+            talea_weight_consumed = sum(abjad.sequence.weight(_) for _ in numeric_map)
             leaf_lists = self._make_leaf_lists(numeric_map, lcd)
             if not counts["extra_counts"]:
                 tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
@@ -11757,16 +11757,16 @@ class TaleaRhythmMaker(RhythmMaker):
         )
         if end_counts:
             end_counts = abjad.Sequence(end_counts)
-            end_weight = end_counts.weight()
-            division_weights = [_.weight() for _ in result]
-            counts = result.flatten()
-            counts_weight = counts.weight()
+            end_weight = abjad.sequence.weight(end_counts)
+            division_weights = [abjad.sequence.weight(_) for _ in result]
+            counts = abjad.sequence.flatten(result)
+            counts_weight = abjad.sequence.weight(counts)
             assert end_weight <= counts_weight, repr(end_counts)
             left = counts_weight - end_weight
             right = end_weight
             counts = counts.split([left, right])
             counts = counts[0] + end_counts
-            assert counts.weight() == counts_weight
+            assert abjad.sequence.weight(counts) == counts_weight
             result = counts.partition_by_weights(division_weights)
         for sequence in result:
             assert all(isinstance(_, int) for _ in sequence), repr(sequence)
@@ -11816,7 +11816,7 @@ class TaleaRhythmMaker(RhythmMaker):
         extra_counts = self.extra_counts or ()
         extra_counts = abjad.Sequence(extra_counts)
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
-        extra_counts = extra_counts.rotate(-divisions_consumed)
+        extra_counts = abjad.sequence.rotate(extra_counts, -divisions_consumed)
         extra_counts = abjad.CyclicTuple(extra_counts)
         return {
             "end_counts": end_counts,
@@ -15038,7 +15038,7 @@ class RewriteMeterCommand(Command):
             leaves = abjad.select.leaves(selection, grace=False)
             beat_durations = []
             beat_offsets = meter.depthwise_offset_inventory[1]
-            for start, stop in abjad.Sequence(beat_offsets).nwise():
+            for start, stop in abjad.sequence.nwise(beat_offsets):
                 beat_duration = stop - start
                 beat_durations.append(beat_duration)
             beamable_groups = self._make_beamable_groups(leaves, beat_durations)
@@ -18654,7 +18654,7 @@ class Stack:
                 raise Exception(message)
             divisions = result
         divisions = abjad.Sequence(divisions)
-        divisions = divisions.flatten(depth=-1)
+        divisions = abjad.sequence.flatten(divisions, depth=-1)
         transformed_duration = abjad.Duration(sum(divisions))
         if transformed_duration != original_duration:
             message = "original duration ...\n"
