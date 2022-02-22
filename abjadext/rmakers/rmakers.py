@@ -603,7 +603,7 @@ class Talea:
         assert isinstance(argument, int), repr(argument)
         assert 0 < argument, repr(argument)
         if self.preamble:
-            preamble = abjad.Sequence([abs(_) for _ in self.preamble])
+            preamble = [abs(_) for _ in self.preamble]
             cumulative = abjad.math.cumulative_sums(preamble)[1:]
             if argument in cumulative:
                 return True
@@ -824,10 +824,12 @@ class Talea:
             raise Exception(f"weight {weight} must be nonnegative.")
         if weight == 0:
             return dataclasses.replace(self)
-        preamble = abjad.Sequence(self.preamble)
-        counts = abjad.Sequence(self.counts)
+        preamble: list[int | str] = list(self.preamble)
+        counts = list(self.counts)
         if weight < abjad.sequence.weight(preamble):
-            consumed, remaining = preamble.split([weight], overhang=True)
+            consumed, remaining = abjad.sequence.split(
+                preamble, [weight], overhang=True
+            )
             preamble_ = remaining
         elif weight == abjad.sequence.weight(preamble):
             preamble_ = ()
@@ -842,7 +844,9 @@ class Talea:
             if abjad.sequence.weight(preamble) == weight:
                 consumed, remaining = preamble[:], ()
             else:
-                consumed, remaining = preamble.split([weight], overhang=True)
+                consumed, remaining = abjad.sequence.split(
+                    preamble, [weight], overhang=True
+                )
             preamble_ = remaining
         return dataclasses.replace(
             self,
@@ -6226,11 +6230,11 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         assert isinstance(self.previous_state, dict)
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
         divisions = [abjad.NonreducedFraction(_) for _ in divisions]
-        denominators_ = abjad.Sequence(self.denominators)
+        denominators_ = list(self.denominators)
         denominators_ = abjad.sequence.rotate(denominators_, -divisions_consumed)
         denominators = abjad.CyclicTuple(denominators_)
         extra_counts_ = self.extra_counts or [0]
-        extra_counts__ = abjad.Sequence(extra_counts_)
+        extra_counts__ = list(extra_counts_)
         extra_counts__ = abjad.sequence.rotate(extra_counts__, -divisions_consumed)
         extra_counts = abjad.CyclicTuple(extra_counts__)
         for i, division in enumerate(divisions):
@@ -7026,17 +7030,21 @@ class IncisedRhythmMaker(RhythmMaker):
         middle = numerator - prefix_weight - suffix_weight
         if numerator < prefix_weight:
             weights = [numerator]
-            prefix = abjad.Sequence(prefix)
-            prefix = prefix.split(weights, cyclic=False, overhang=False)[0]
+            prefix = list(prefix)
+            prefix = abjad.sequence.split(
+                prefix, weights, cyclic=False, overhang=False
+            )[0]
         middle = self._make_middle_of_numeric_map_part(middle)
         suffix_space = numerator - prefix_weight
         if suffix_space <= 0:
             suffix = ()
         elif suffix_space < suffix_weight:
             weights = [suffix_space]
-            suffix = abjad.Sequence(suffix)
-            suffix = suffix.split(weights, cyclic=False, overhang=False)[0]
-        numeric_map_part = prefix + middle + suffix
+            suffix = list(suffix)
+            suffix = abjad.sequence.split(
+                suffix, weights, cyclic=False, overhang=False
+            )[0]
+        numeric_map_part = list(prefix) + list(middle) + list(suffix)
         return [abjad.Duration(_) for _ in numeric_map_part]
 
     def _make_output_incised_numeric_map(
@@ -11577,7 +11585,7 @@ class TaleaRhythmMaker(RhythmMaker):
     ):
         leaves = abjad.select.leaves(tuplets)
         written_durations = [leaf.written_duration for leaf in leaves]
-        written_durations = abjad.Sequence(written_durations)
+        written_durations = list(written_durations)
         total_duration = abjad.sequence.weight(written_durations)
         preamble_weights = []
         if unscaled_preamble:
@@ -11589,7 +11597,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 preamble_weights.append(weight)
         preamble_duration = sum(preamble_weights)
         if total_duration <= preamble_duration:
-            preamble_parts = written_durations.partition_by_weights(
+            preamble_parts = abjad.sequence.partition_by_weights(
+                written_durations,
                 weights=preamble_weights,
                 allow_part_weights=abjad.More,
                 cyclic=True,
@@ -11598,7 +11607,8 @@ class TaleaRhythmMaker(RhythmMaker):
             talea_parts = []
         else:
             assert preamble_duration < total_duration
-            preamble_parts = written_durations.partition_by_weights(
+            preamble_parts = abjad.sequence.partition_by_weights(
+                written_durations,
                 weights=preamble_weights,
                 allow_part_weights=abjad.Exact,
                 cyclic=False,
@@ -11611,7 +11621,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 talea_weights.append(weight)
             preamble_length = len(abjad.sequence.flatten(preamble_parts))
             talea_written_durations = written_durations[preamble_length:]
-            talea_parts = talea_written_durations.partition_by_weights(
+            talea_parts = abjad.sequence.partition_by_weights(
+                talea_written_durations,
                 weights=talea_weights,
                 allow_part_weights=abjad.More,
                 cyclic=True,
@@ -11619,9 +11630,9 @@ class TaleaRhythmMaker(RhythmMaker):
             )
         parts = preamble_parts + talea_parts
         part_durations = abjad.sequence.flatten(parts)
-        assert part_durations == abjad.Sequence(written_durations)
+        assert part_durations == list(written_durations)
         counts = [len(part) for part in parts]
-        parts = abjad.Sequence(leaves).partition_by_counts(counts)
+        parts = abjad.sequence.partition_by_counts(leaves, counts)
         for i, part in enumerate(parts):
             if any(isinstance(_, abjad.Rest) for _ in part):
                 continue
@@ -11756,7 +11767,7 @@ class TaleaRhythmMaker(RhythmMaker):
             preamble, talea, prolated_numerators
         )
         if end_counts:
-            end_counts = abjad.Sequence(end_counts)
+            end_counts = list(end_counts)
             end_weight = abjad.sequence.weight(end_counts)
             division_weights = [abjad.sequence.weight(_) for _ in result]
             counts = abjad.sequence.flatten(result)
@@ -11764,10 +11775,10 @@ class TaleaRhythmMaker(RhythmMaker):
             assert end_weight <= counts_weight, repr(end_counts)
             left = counts_weight - end_weight
             right = end_weight
-            counts = counts.split([left, right])
+            counts = abjad.sequence.split(counts, [left, right])
             counts = counts[0] + end_counts
             assert abjad.sequence.weight(counts) == counts_weight
-            result = counts.partition_by_weights(division_weights)
+            result = abjad.sequence.partition_by_weights(counts, division_weights)
         for sequence in result:
             assert all(isinstance(_, int) for _ in sequence), repr(sequence)
         return result, expanded_talea
@@ -11814,7 +11825,7 @@ class TaleaRhythmMaker(RhythmMaker):
             talea = talea.counts or ()
         talea = abjad.CyclicTuple(talea)
         extra_counts = self.extra_counts or ()
-        extra_counts = abjad.Sequence(extra_counts)
+        extra_counts = list(extra_counts)
         divisions_consumed = self.previous_state.get("divisions_consumed", 0)
         extra_counts = abjad.sequence.rotate(extra_counts, -divisions_consumed)
         extra_counts = abjad.CyclicTuple(extra_counts)
@@ -11835,13 +11846,13 @@ class TaleaRhythmMaker(RhythmMaker):
             message += f" to read {weights} once."
             raise Exception(message)
         if weight <= preamble_weight:
-            talea = abjad.Sequence(preamble)
+            talea = list(preamble)
             talea = abjad.sequence.truncate(talea, weight=weight)
         else:
             weight -= preamble_weight
             talea = abjad.sequence.repeat_to_weight(talea, weight)
             talea = list(preamble) + list(talea)
-        talea = abjad.Sequence(talea).split(weights, cyclic=True)
+        talea = abjad.sequence.split(talea, weights, cyclic=True)
         return talea
 
 
@@ -18634,7 +18645,7 @@ class Stack:
         """
         return hash(repr(self))
 
-    def _apply_division_expression(self, divisions) -> abjad.Sequence:
+    def _apply_division_expression(self, divisions):
         prototype = abjad.NonreducedFraction
         if not all(isinstance(_, prototype) for _ in divisions):
             message = "must be nonreduced fractions:\n"
@@ -18643,8 +18654,8 @@ class Stack:
         original_duration = abjad.Duration(sum(divisions))
         if self.preprocessor is not None:
             result = self.preprocessor(divisions)
-            if not isinstance(result, (list, abjad.Sequence)):
-                message = "division preprocessor must return list or sequence:\n"
+            if not isinstance(result, list):
+                message = "division preprocessor must return list:\n"
                 message += "  Input divisions:\n"
                 message += f"    {divisions}\n"
                 message += "  Division preprocessor:\n"
@@ -18653,7 +18664,6 @@ class Stack:
                 message += f"    {result}"
                 raise Exception(message)
             divisions = result
-        divisions = abjad.Sequence(divisions)
         divisions = abjad.sequence.flatten(divisions, depth=-1)
         transformed_duration = abjad.Duration(sum(divisions))
         if transformed_duration != original_duration:
