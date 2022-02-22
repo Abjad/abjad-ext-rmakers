@@ -320,7 +320,7 @@
 #        ..  container:: example
 #
 #            >>> weights = [abjad.NonreducedFraction(3, 8)]
-#            >>> divisions = abjad.Sequence().join()
+#            >>> divisions = []
 #            >>> divisions = divisions.split(
 #            ...     weights, cyclic=True, overhang=True,
 #            ... )
