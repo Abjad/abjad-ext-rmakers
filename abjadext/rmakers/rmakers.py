@@ -14594,7 +14594,7 @@ class ForceRepeatTieCommand(Command):
     Force repeat-tie command.
     """
 
-    threshold: bool | abjad.IntegerPair | typing.Callable | None = None
+    threshold: bool | abjad.IntegerPair | typing.Callable = False
     inequality: typing.Callable = dataclasses.field(init=False, repr=False)
 
     def __post_init__(self):
@@ -16400,7 +16400,7 @@ def force_note(
 
 
 def force_repeat_tie(
-    threshold: bool | abjad.IntegerPair | typing.Callable | None = True,
+    threshold: bool | abjad.IntegerPair | typing.Callable = True,
     selector: typing.Callable | None = None,
 ) -> ForceRepeatTieCommand:
     """
