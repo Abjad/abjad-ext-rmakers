@@ -680,7 +680,7 @@ class Talea:
             return result
         raise ValueError(argument)
 
-    def __iter__(self) -> typing.Generator:
+    def __iter__(self) -> typing.Iterator[abjad.Duration]:
         """
         Iterates talea.
 
