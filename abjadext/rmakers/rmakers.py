@@ -18469,7 +18469,9 @@ def written_duration(
     return WrittenDurationCommand(selector=selector, duration=duration)
 
 
-RhythmMakerTyping = typing.Union["Assignment", RhythmMaker, "Stack", "Bind"]
+RhythmMakerTyping: typing.TypeAlias = typing.Union[
+    "Assignment", RhythmMaker, "Stack", "Bind"
+]
 
 
 @dataclasses.dataclass(slots=True)
