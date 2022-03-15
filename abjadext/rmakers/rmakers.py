@@ -161,7 +161,7 @@ class Incise:
         if argument is None:
             return True
         if abjad.math.all_are_nonnegative_integer_equivalent_numbers(argument):
-            if isinstance(argument, (tuple, list)):
+            if isinstance(argument, tuple | list):
                 return True
         return False
 
@@ -14183,7 +14183,7 @@ class BeamCommand(Command):
         self.beam_lone_notes = bool(self.beam_lone_notes)
         self.beam_rests = bool(self.beam_rests)
         if self.stemlet_length is not None:
-            assert isinstance(self.stemlet_length, (int, float))
+            assert isinstance(self.stemlet_length, int | float)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         selection = voice
@@ -14219,7 +14219,7 @@ class BeamGroupsCommand(Command):
         self.beam_lone_notes = bool(self.beam_lone_notes)
         self.beam_rests = bool(self.beam_rests)
         if self.stemlet_length is not None:
-            assert isinstance(self.stemlet_length, (int, float))
+            assert isinstance(self.stemlet_length, int | float)
         assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
@@ -14387,7 +14387,7 @@ class FeatherBeamCommand(Command):
         if self.beam_rests is not None:
             self.beam_rests = bool(self.beam_rests)
         if self.stemlet_length is not None:
-            assert isinstance(self.stemlet_length, (int, float))
+            assert isinstance(self.stemlet_length, int | float)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         selection = voice
@@ -14632,7 +14632,7 @@ class ForceRepeatTieCommand(Command):
                 next_leaf = abjad.get.leaf(leaf, 1)
                 if next_leaf is None:
                     continue
-                if not isinstance(next_leaf, (abjad.Chord, abjad.Note)):
+                if not isinstance(next_leaf, abjad.Chord | abjad.Note):
                     continue
                 if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
                     continue
@@ -18544,7 +18544,7 @@ class Bind:
                 and group[0].assignment.remember_state_across_gaps
             ):
                 previous_state_ = maker_to_previous_state.get(rhythm_maker, None)
-            if isinstance(rhythm_maker, (RhythmMaker, Stack)):
+            if isinstance(rhythm_maker, RhythmMaker | Stack):
                 selection = rhythm_maker(divisions_, previous_state=previous_state_)
             else:
                 selection = rhythm_maker(
@@ -18553,7 +18553,7 @@ class Bind:
             assert isinstance(selection, list), repr(selection)
             components.extend(selection)
             maker_to_previous_state[rhythm_maker] = rhythm_maker.state
-        assert isinstance(rhythm_maker, (RhythmMaker, Stack)), repr(rhythm_maker)
+        assert isinstance(rhythm_maker, RhythmMaker | Stack), repr(rhythm_maker)
         self._state = rhythm_maker.state
         return components
 
