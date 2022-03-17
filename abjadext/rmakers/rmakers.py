@@ -5701,7 +5701,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         >>> groups = abjad.select.group_by_measure(leaves)
         >>> for group, label in zip(groups, labels):
         ...     markup = abjad.Markup(label)
-        ...     abjad.attach(markup, group[0], direction=abjad.Up)
+        ...     abjad.attach(markup, group[0], direction=abjad.UP)
         ...
 
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -5953,7 +5953,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         >>> groups = abjad.select.group_by_measure(leaves)
         >>> for group, label in zip(groups, labels):
         ...     markup = abjad.Markup(label)
-        ...     abjad.attach(markup, group[0], direction=abjad.Up)
+        ...     abjad.attach(markup, group[0], direction=abjad.UP)
         ...
 
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -11600,7 +11600,7 @@ class TaleaRhythmMaker(RhythmMaker):
             preamble_parts = abjad.sequence.partition_by_weights(
                 written_durations,
                 weights=preamble_weights,
-                allow_part_weights=abjad.More,
+                allow_part_weights=abjad.MORE,
                 cyclic=True,
                 overhang=True,
             )
@@ -11610,7 +11610,7 @@ class TaleaRhythmMaker(RhythmMaker):
             preamble_parts = abjad.sequence.partition_by_weights(
                 written_durations,
                 weights=preamble_weights,
-                allow_part_weights=abjad.Exact,
+                allow_part_weights=abjad.EXACT,
                 cyclic=False,
                 overhang=False,
             )
@@ -11624,7 +11624,7 @@ class TaleaRhythmMaker(RhythmMaker):
             talea_parts = abjad.sequence.partition_by_weights(
                 talea_written_durations,
                 weights=talea_weights,
-                allow_part_weights=abjad.More,
+                allow_part_weights=abjad.MORE,
                 cyclic=True,
                 overhang=True,
             )
@@ -14407,9 +14407,9 @@ class FeatherBeamCommand(Command):
         for selection in selections:
             first_leaf = abjad.select.leaf(selection, 0)
             if self._is_accelerando(selection):
-                abjad.override(first_leaf).Beam.grow_direction = abjad.Right
+                abjad.override(first_leaf).Beam.grow_direction = abjad.RIGHT
             elif self._is_ritardando(selection):
-                abjad.override(first_leaf).Beam.grow_direction = abjad.Left
+                abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
 
     @staticmethod
     def _is_accelerando(selection):
@@ -16456,7 +16456,7 @@ def on_beat_grace_container(
         ...     [music_voice], divisions, includes=["abjad.ily"]
         ... )
         >>> staff = lilypond_file["Staff"]
-        >>> abjad.override(staff).TupletBracket.direction = abjad.Up
+        >>> abjad.override(staff).TupletBracket.direction = abjad.UP
         >>> abjad.override(staff).TupletBracket.staff_padding = 5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
