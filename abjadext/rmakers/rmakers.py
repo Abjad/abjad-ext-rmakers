@@ -5700,8 +5700,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         >>> leaves = abjad.select.leaves(staff)
         >>> groups = abjad.select.group_by_measure(leaves)
         >>> for group, label in zip(groups, labels):
-        ...     markup = abjad.Markup(label, direction=abjad.Up)
-        ...     abjad.attach(markup, group[0])
+        ...     markup = abjad.Markup(label)
+        ...     abjad.attach(markup, group[0], direction=abjad.Up)
         ...
 
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -5952,8 +5952,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         >>> leaves = abjad.select.leaves(staff)
         >>> groups = abjad.select.group_by_measure(leaves)
         >>> for group, label in zip(groups, labels):
-        ...     markup = abjad.Markup(label, direction=abjad.Up)
-        ...     abjad.attach(markup, group[0])
+        ...     markup = abjad.Markup(label)
+        ...     abjad.attach(markup, group[0], direction=abjad.Up)
         ...
 
         >>> abjad.show(lilypond_file) # doctest: +SKIP
