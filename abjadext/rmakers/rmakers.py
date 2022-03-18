@@ -7181,7 +7181,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
 
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> rhythm_maker
-        MultipliedDurationRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), prototype=<class 'abjad.score.Note'>, duration=Duration(1, 1))
+        MultipliedDurationRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(''), prototype=<class 'abjad.score.Note'>, duration=Duration(1, 1))
 
     ..  container:: example
 
@@ -9318,7 +9318,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> new_command = dataclasses.replace(command)
         >>> new_command
-        Stack(maker=TaleaRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), extra_counts=(), read_talea_once_only=False, talea=Talea(counts=(5, -3, 3, 3), denominator=16, end_counts=(), preamble=())), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=Tag())
+        Stack(maker=TaleaRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(''), extra_counts=(), read_talea_once_only=False, talea=Talea(counts=(5, -3, 3, 3), denominator=16, end_counts=(), preamble=())), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=Tag(''))
 
         >>> command == new_command
         True
@@ -18578,7 +18578,7 @@ class Stack:
         ...     rmakers.tuplet([(1, 2)]),
         ...     rmakers.force_fraction(),
         ... )
-        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag())
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(''), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(''))
 
     ..  container:: example
 
@@ -18592,10 +18592,10 @@ class Stack:
         >>> command_2 = dataclasses.replace(command_1)
 
         >>> command_1
-        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag())
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(''), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(''))
 
         >>> command_2
-        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag())
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(''), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(''))
 
         >>> command_1 == command_2
         True
