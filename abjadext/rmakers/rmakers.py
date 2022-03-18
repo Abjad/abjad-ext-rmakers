@@ -15029,7 +15029,7 @@ class RewriteMeterCommand(Command):
         selections = abjad.select.group_by_measure(voice[:])
         for meter, selection in zip(meters, selections):
             for reference_meter in reference_meters:
-                if str(reference_meter) == str(meter):
+                if reference_meter == meter:
                     meter = reference_meter
                     break
             preferred_meters.append(meter)
