@@ -11081,7 +11081,7 @@ class TaleaRhythmMaker(RhythmMaker):
         >>> stack(divisions)
         Traceback (most recent call last):
             ...
-        Exception: () + (1, 2, 3, 4) is too short to read [6, 6, 6, 6] once.
+        Exception: CyclicTuple(items=()) + CyclicTuple(items=(1, 2, 3, 4)) is too short to read [6, 6, 6, 6] once.
 
         Set to true to ensure talea is long enough to cover all divisions without
         repeating.
