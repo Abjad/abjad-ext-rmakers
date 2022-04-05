@@ -6441,8 +6441,8 @@ class IncisedRhythmMaker(RhythmMaker):
                     \repeatTie
                     \time 6/8
                     c'2
-                    \repeatTie
                     ~
+                    \repeatTie
                     c'8
                     r8
                 }
