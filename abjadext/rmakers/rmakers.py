@@ -280,8 +280,8 @@ class Spelling:
                     c'16
                     [
                     c'8
-                    ~
                     ]
+                    ~
                     \time 3/4
                     c'8.
                     c'4
@@ -336,8 +336,8 @@ class Spelling:
                     c'8.
                     [
                     c'16
-                    ~
                     ]
+                    ~
                     c'4
                     c'4
                 }
@@ -2078,8 +2078,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         c'16 * 35/32
                         c'16 * 29/32
                         c'16 * 13/16
-                        ~
                         ]
+                        ~
                     }
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
@@ -2128,8 +2128,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         c'16 * 69/64
                         c'16 * 13/16
                         c'16 * 47/64
-                        ~
                         ]
+                        ~
                     }
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
@@ -2179,8 +2179,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         c'16 * 35/32
                         c'16 * 29/32
                         c'16 * 13/16
-                        ~
                         ]
+                        ~
                     }
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
@@ -2316,8 +2316,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         c'16 * 35/32
                         c'16 * 29/32
                         c'16 * 13/16
-                        ~
                         ]
+                        ~
                     }
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
@@ -2416,8 +2416,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                         c'16 * 35/32
                         c'16 * 29/32
                         c'16 * 13/16
-                        ~
                         ]
+                        ~
                     }
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
@@ -4467,8 +4467,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'8
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
@@ -4478,8 +4478,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         [
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
@@ -4490,8 +4490,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'8
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
@@ -4637,8 +4637,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                         c'8
                         [
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/4
@@ -6597,8 +6597,8 @@ class IncisedRhythmMaker(RhythmMaker):
                     r4
                     r8..
                     c'8
-                    ~
                     [
+                    ~
                     c'32
                     ]
                     \time 5/8
@@ -7627,14 +7627,14 @@ class NoteRhythmMaker(RhythmMaker):
                 {
                     \time 5/32
                     c'8
-                    ~
                     [
+                    ~
                     c'32
                     ]
                     \time 5/32
                     c'8
-                    ~
                     [
+                    ~
                     c'32
                     ]
                 }
@@ -7671,8 +7671,8 @@ class NoteRhythmMaker(RhythmMaker):
                     \set stemRightBeamCount = 1
                     \time 5/32
                     c'8
-                    ~
                     [
+                    ~
                     \set stemLeftBeamCount = 3
                     \set stemRightBeamCount = 1
                     c'32
@@ -8309,8 +8309,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     [
                     c'8
                     c'16
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8
                     c'4
@@ -8369,8 +8369,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     [
                     c'8
                     c'16
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8
                     c'4
@@ -8543,8 +8543,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8
                         c'8.
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \times 8/9
                     {
@@ -8565,8 +8565,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         [
                         c'8
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \times 8/10
                     {
@@ -9160,22 +9160,22 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     [
                     c'8.
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8.
                     [
                     c'8.
-                    ~
                     ]
+                    ~
                     \time 4/8
                     c'4
                     ~
                     c'16
                     [
                     c'8.
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8.
                     [
@@ -9224,8 +9224,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     [
                     c'8.
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8.
                     [
@@ -9237,8 +9237,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     [
                     c'8.
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8.
                     [
@@ -9288,11 +9288,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     r8.
                     \time 3/8
                     c'8.
-                    ~
                     [
-                    c'8.
                     ~
+                    c'8.
                     ]
+                    ~
                     \time 4/8
                     c'4
                     ~
@@ -9300,8 +9300,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     r8.
                     \time 3/8
                     c'8.
-                    ~
                     [
+                    ~
                     c'8.
                     ]
                 }
@@ -9361,8 +9361,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8
                         c'8.
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \times 8/9
                     {
@@ -9383,8 +9383,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         [
                         c'8
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \times 4/5
                     {
@@ -9436,8 +9436,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8
                         c'8.
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \times 8/9
                     {
@@ -9458,8 +9458,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         [
                         c'8
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \times 8/10
                     {
@@ -9805,8 +9805,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         [
                         c'8.
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
@@ -9823,8 +9823,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         [
                         c'8.
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
@@ -9869,11 +9869,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     {
                         \time 3/8
                         c'8.
-                        ~
                         [
-                        c'8.
                         ~
+                        c'8.
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
@@ -9889,11 +9889,11 @@ class TaleaRhythmMaker(RhythmMaker):
                     {
                         \time 3/8
                         c'8.
-                        ~
                         [
-                        c'8.
                         ~
+                        c'8.
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
@@ -9962,8 +9962,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         [
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
@@ -10025,8 +10025,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         [
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
@@ -10078,8 +10078,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     [
                     c'8
                     c'16
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8
                     c'4
@@ -10364,8 +10364,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     [
                     c'8
                     c'16
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8
                     c'4
@@ -10695,35 +10695,35 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     [
                     c'8.
-                    ~
                     ]
+                    ~
                     c'16
                     [
                     c'8.
-                    ~
                     ]
+                    ~
                     \time 3/4
                     c'8
                     [
                     c'8
-                    ~
                     ]
+                    ~
                     c'8
                     [
                     c'8
-                    ~
                     ]
+                    ~
                     c'8.
                     [
                     c'16
-                    ~
                     ]
+                    ~
                     \time 3/4
                     c'8.
                     [
                     c'16
-                    ~
                     ]
+                    ~
                     c'4
                     c'4
                 }
@@ -10769,8 +10769,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     [
                     c'8
                     c'16
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8
                     c'4
@@ -10829,8 +10829,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         [
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
@@ -10908,8 +10908,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'16
                         [
                         c'16
-                        ~
                         ]
+                        ~
                     }
                     \times 4/5
                     {
@@ -10985,8 +10985,8 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8.
                         [
                         c'8.
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 8/7
@@ -11042,15 +11042,15 @@ class TaleaRhythmMaker(RhythmMaker):
                     c'16
                     [
                     c'16
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'16
                     [
                     c'8.
                     c'8
-                    ~
                     ]
+                    ~
                     \time 3/8
                     c'8
                     [
@@ -11323,9 +11323,9 @@ class TaleaRhythmMaker(RhythmMaker):
                         c'8
                         %! TALEA_RHYTHM_MAKER
                         c'8
-                        ~
                         %! TALEA_RHYTHM_MAKER
                         ]
+                        ~
                     %! TALEA_RHYTHM_MAKER
                     }
                     %! TALEA_RHYTHM_MAKER
@@ -12459,8 +12459,8 @@ class TupletRhythmMaker(RhythmMaker):
                         c'8
                         [
                         c'8.
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
@@ -13039,8 +13039,8 @@ class TupletRhythmMaker(RhythmMaker):
                         c'8
                         [
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
@@ -13108,8 +13108,8 @@ class TupletRhythmMaker(RhythmMaker):
                     c'8
                     [
                     c'8
-                    ~
                     ]
+                    ~
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
@@ -16871,8 +16871,8 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
                     {
                         \time 2/8
                         c'8
-                        \repeatTie
                         [
+                        \repeatTie
                         c'8
                         c'8
                         ]
@@ -16881,8 +16881,8 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
                     {
                         \time 2/8
                         c'8
-                        \repeatTie
                         [
+                        \repeatTie
                         c'8
                         c'8
                         ]
@@ -16891,8 +16891,8 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
                     {
                         \time 2/8
                         c'8
-                        \repeatTie
                         [
+                        \repeatTie
                         c'8
                         c'8
                         ]
@@ -16901,8 +16901,8 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
                     {
                         \time 2/8
                         c'8
-                        \repeatTie
                         [
+                        \repeatTie
                         c'8
                         c'8
                         ]
@@ -16911,8 +16911,8 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
                     {
                         \time 2/8
                         c'8
-                        \repeatTie
                         [
+                        \repeatTie
                         c'8
                         c'8
                         ]
@@ -16964,8 +16964,8 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
                     {
                         \time 2/8
                         c'8
+                        [
                         \repeatTie
-                        [
                         c'8
                         c'8
                         ]
@@ -16983,8 +16983,8 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
                     {
                         \time 2/8
                         c'8
+                        [
                         \repeatTie
-                        [
                         c'8
                         c'8
                         ]
@@ -17002,8 +17002,8 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
                     {
                         \time 2/8
                         c'8
+                        [
                         \repeatTie
-                        [
                         c'8
                         c'8
                         ]
@@ -17495,8 +17495,8 @@ def rewrite_sustained(
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
                         c'8
                         ~
                         c'8
@@ -17506,8 +17506,8 @@ def rewrite_sustained(
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
                         c'8
                         ~
                         c'8
@@ -17587,44 +17587,44 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
-                        c'8
                         ~
                         c'8
                         ~
+                        c'8
                         ]
+                        ~
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
-                        c'8
                         ~
                         c'8
                         ~
+                        c'8
                         ]
+                        ~
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
-                        c'8
                         ~
                         c'8
                         ~
+                        c'8
                         ]
+                        ~
                     }
                     \times 2/3
                     {
@@ -17677,8 +17677,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \times 2/3
                     {
@@ -17687,8 +17687,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \times 2/3
                     {
@@ -17697,8 +17697,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \times 2/3
                     {
@@ -17707,8 +17707,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \times 2/3
                     {
@@ -17717,8 +17717,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \times 2/3
                     {
@@ -17770,8 +17770,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
+                        ]
                         ~
-                        ]
                     }
                     \times 2/3
                     {
@@ -17789,8 +17789,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
+                        ]
                         ~
-                        ]
                     }
                     \times 2/3
                     {
@@ -17808,8 +17808,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                         [
                         c'8
                         c'8
+                        ]
                         ~
-                        ]
                     }
                     \times 2/3
                     {
@@ -17920,8 +17920,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
                         c'8
                         ~
                         c'8
@@ -17931,8 +17931,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
                         c'8
                         ~
                         c'8
@@ -17942,8 +17942,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
                         c'8
                         ~
                         c'8
@@ -17953,8 +17953,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
                         c'8
                         ~
                         c'8
@@ -17964,8 +17964,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
                         c'8
                         ~
                         c'8
@@ -17975,8 +17975,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
                         c'8
                         ~
                         c'8
@@ -18020,28 +18020,8 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
-                        c'8
                         ~
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        ~
-                        [
                         c'8
                         ~
                         c'8
@@ -18060,8 +18040,28 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        ~
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        ~
                         c'8
                         ~
                         c'8
@@ -18291,41 +18291,29 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
                         c'8
                         ~
                         c'8
-                        ~
                         ]
+                        ~
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
-                        c'8
-                        c'8
                         ~
+                        c'8
+                        c'8
                         ]
+                        ~
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        ~
-                        [
-                        c'8
                         ~
                         c'8
                         ~
+                        c'8
                         ]
                     }
                     \times 2/3
@@ -18333,18 +18321,30 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
                         \time 2/8
                         c'8
                         [
-                        c'8
                         ~
                         c'8
                         ~
+                        c'8
                         ]
+                        ~
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        ~
                         [
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        ~
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        ~
                         c'8
                         c'8
                         ]
@@ -18393,41 +18393,29 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
                         c'8
                         \repeatTie
                         c'8
-                        \repeatTie
                         ]
+                        \repeatTie
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        \repeatTie
                         [
-                        c'8
-                        c'8
                         \repeatTie
+                        c'8
+                        c'8
                         ]
+                        \repeatTie
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        \repeatTie
                         [
-                        c'8
-                        \repeatTie
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        \repeatTie
-                        [
-                        c'8
                         \repeatTie
                         c'8
                         \repeatTie
+                        c'8
                         ]
                     }
                     \times 2/3
@@ -18435,22 +18423,34 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
                         \time 2/8
                         c'8
                         [
-                        c'8
                         \repeatTie
                         c'8
                         \repeatTie
+                        c'8
                         ]
+                        \repeatTie
                     }
                     \times 2/3
                     {
                         \time 2/8
                         c'8
-                        \repeatTie
                         [
                         c'8
-                        c'8
                         \repeatTie
+                        c'8
                         ]
+                        \repeatTie
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        \repeatTie
+                        c'8
+                        c'8
+                        ]
+                        \repeatTie
                     }
                 }
             >>
