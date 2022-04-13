@@ -114,13 +114,13 @@ class Incise:
 
     """
 
-    body_ratio: abjad.RatioTyping = (1,)
+    body_ratio: abjad.typings.Ratio = (1,)
     fill_with_rests: bool = False
     outer_divisions_only: bool = False
-    prefix_counts: abjad.IntegerSequence = ()
-    prefix_talea: abjad.IntegerSequence = ()
-    suffix_counts: abjad.IntegerSequence = ()
-    suffix_talea: abjad.IntegerSequence = ()
+    prefix_counts: typing.Sequence[int] = ()
+    prefix_talea: typing.Sequence[int] = ()
+    suffix_counts: typing.Sequence[int] = ()
+    suffix_talea: typing.Sequence[int] = ()
     talea_denominator: int | None = None
 
     __documentation_section__ = "Specifiers"
@@ -187,9 +187,9 @@ class Interpolation:
 
     """
 
-    start_duration: abjad.DurationTyping = (1, 8)
-    stop_duration: abjad.DurationTyping = (1, 16)
-    written_duration: abjad.DurationTyping = (1, 16)
+    start_duration: abjad.typings.Duration = (1, 8)
+    stop_duration: abjad.typings.Duration = (1, 16)
+    written_duration: abjad.typings.Duration = (1, 16)
 
     __documentation_section__ = "Specifiers"
 
@@ -457,8 +457,8 @@ class Spelling:
 
     """
 
-    forbidden_note_duration: abjad.DurationTyping | None = None
-    forbidden_rest_duration: abjad.DurationTyping | None = None
+    forbidden_note_duration: abjad.typings.Duration | None = None
+    forbidden_rest_duration: abjad.typings.Duration | None = None
     increase_monotonic: bool = False
 
     __documentation_section__ = "Specifiers"
@@ -543,8 +543,8 @@ class Talea:
 
     counts: typing.Sequence[int | str]
     denominator: int
-    end_counts: abjad.IntegerSequence = ()
-    preamble: abjad.IntegerSequence = ()
+    end_counts: typing.Sequence[int] = ()
+    preamble: typing.Sequence[int] = ()
 
     __documentation_section__ = "Specifiers"
 
@@ -857,9 +857,9 @@ class Talea:
 
 
 def interpolate(
-    start_duration: abjad.DurationTyping,
-    stop_duration: abjad.DurationTyping,
-    written_duration: abjad.DurationTyping,
+    start_duration: abjad.typings.Duration,
+    stop_duration: abjad.typings.Duration,
+    written_duration: abjad.typings.Duration,
 ) -> Interpolation:
     """
     Makes interpolation.
@@ -894,7 +894,7 @@ class RhythmMaker:
 
     def __call__(
         self,
-        divisions: typing.Sequence[abjad.IntegerPair],
+        divisions: typing.Sequence[tuple[int, int]],
         previous_state: dict = None,
     ) -> list[abjad.Component]:
         self.previous_state = dict(previous_state or [])
@@ -6215,8 +6215,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     """
 
     denominator: str | int = "from_counts"
-    denominators: abjad.IntegerSequence = (8,)
-    extra_counts: abjad.IntegerSequence = (0,)
+    denominators: typing.Sequence[int] = (8,)
+    extra_counts: typing.Sequence[int] = (0,)
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
@@ -6905,7 +6905,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     """
 
-    extra_counts: abjad.IntegerSequence = ()
+    extra_counts: typing.Sequence[int] = ()
     incise: Incise = Incise()
 
     def __post_init__(self):
@@ -7437,7 +7437,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
     """
 
     prototype: type = abjad.Note
-    duration: abjad.DurationTyping = (1, 1)
+    duration: abjad.typings.Duration = (1, 1)
 
     _prototypes = (abjad.MultimeasureRest, abjad.Note, abjad.Rest, abjad.Skip)
 
@@ -11566,7 +11566,7 @@ class TaleaRhythmMaker(RhythmMaker):
 
     """
 
-    extra_counts: abjad.IntegerSequence = ()
+    extra_counts: typing.Sequence[int] = ()
     read_talea_once_only: bool = False
     spelling: Spelling = Spelling()
     talea: Talea = Talea(counts=[1], denominator=16)
@@ -13982,8 +13982,8 @@ class TupletRhythmMaker(RhythmMaker):
 
     """
 
-    denominator: int | abjad.DurationTyping | None = None
-    tuplet_ratios: abjad.RatioSequenceTyping = ()
+    denominator: int | abjad.typings.Duration | None = None
+    tuplet_ratios: typing.Sequence[abjad.typings.Ratio] = ()
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
@@ -14010,7 +14010,7 @@ class TupletRhythmMaker(RhythmMaker):
 
 
 def accelerando(
-    *interpolations: typing.Sequence[abjad.DurationTyping],
+    *interpolations: typing.Sequence[abjad.typings.Duration],
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> AccelerandoRhythmMaker:
@@ -14027,10 +14027,10 @@ def accelerando(
 
 
 def even_division(
-    denominators: abjad.IntegerSequence,
+    denominators: typing.Sequence[int],
     *,
     denominator: str | int = "from_counts",
-    extra_counts: abjad.IntegerSequence = (0,),
+    extra_counts: typing.Sequence[int] = (0,),
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> EvenDivisionRhythmMaker:
@@ -14047,14 +14047,14 @@ def even_division(
 
 
 def incised(
-    extra_counts: abjad.IntegerSequence = (),
-    body_ratio: abjad.RatioTyping = abjad.Ratio((1,)),
+    extra_counts: typing.Sequence[int] = (),
+    body_ratio: abjad.typings.Ratio = abjad.Ratio((1,)),
     fill_with_rests: bool = False,
     outer_divisions_only: bool = False,
-    prefix_talea: abjad.IntegerSequence = (),
-    prefix_counts: abjad.IntegerSequence = (),
-    suffix_talea: abjad.IntegerSequence = (),
-    suffix_counts: abjad.IntegerSequence = (),
+    prefix_talea: typing.Sequence[int] = (),
+    prefix_counts: typing.Sequence[int] = (),
+    suffix_talea: typing.Sequence[int] = (),
+    suffix_counts: typing.Sequence[int] = (),
     talea_denominator: int = None,
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
@@ -14082,7 +14082,7 @@ def incised(
 def multiplied_duration(
     prototype: type = abjad.Note,
     *,
-    duration: abjad.DurationTyping = (1, 1),
+    duration: abjad.typings.Duration = (1, 1),
     tag: abjad.Tag = abjad.Tag(),
 ) -> MultipliedDurationRhythmMaker:
     """
@@ -14103,12 +14103,12 @@ def note(
 
 
 def talea(
-    counts: abjad.IntegerSequence,
+    counts: typing.Sequence[int],
     denominator: int,
     advance: int = 0,
-    end_counts: abjad.IntegerSequence = (),
-    extra_counts: abjad.IntegerSequence = (),
-    preamble: abjad.IntegerSequence = (),
+    end_counts: typing.Sequence[int] = (),
+    extra_counts: typing.Sequence[int] = (),
+    preamble: typing.Sequence[int] = (),
     read_talea_once_only: bool = False,
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
@@ -14133,9 +14133,9 @@ def talea(
 
 
 def tuplet(
-    tuplet_ratios: abjad.RatioSequenceTyping,
+    tuplet_ratios: typing.Sequence[abjad.typings.Ratio],
     # TODO: remove in favor of dedicated denominator control commands:
-    denominator: int | abjad.DurationTyping | None = None,
+    denominator: int | abjad.typings.Duration | None = None,
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> TupletRhythmMaker:
@@ -14275,7 +14275,7 @@ class DenominatorCommand(Command):
     Denominator command.
     """
 
-    denominator: int | abjad.DurationTyping | None = None
+    denominator: int | abjad.typings.Duration | None = None
 
     def __post_init__(self):
         Command.__post_init__(self)
@@ -14331,7 +14331,7 @@ class WrittenDurationCommand(Command):
     """
 
     selector: typing.Callable | None = lambda _: abjad.select.leaf(_, 0)
-    duration: abjad.DurationTyping | None = None
+    duration: abjad.typings.Duration | None = None
 
     def __post_init__(self):
         Command.__post_init__(self)
@@ -14380,7 +14380,7 @@ class FeatherBeamCommand(Command):
     """
 
     beam_rests: bool = False
-    stemlet_length: abjad.Number | None = None
+    stemlet_length: int | float | None = None
 
     def __post_init__(self):
         Command.__post_init__(self)
@@ -14594,7 +14594,7 @@ class ForceRepeatTieCommand(Command):
     Force repeat-tie command.
     """
 
-    threshold: bool | abjad.IntegerPair | typing.Callable = False
+    threshold: bool | tuple[int, int] | typing.Callable = False
     inequality: typing.Callable = dataclasses.field(init=False, repr=False)
 
     def __post_init__(self):
@@ -14849,7 +14849,7 @@ class GraceContainerCommand(Command):
     Grace container command.
     """
 
-    counts: abjad.IntegerSequence | None = None
+    counts: typing.Sequence[int] | None = None
     class_: type = abjad.BeforeGraceContainer
     beam_and_slash: bool = False
     talea: Talea = Talea([1], 8)
@@ -14914,8 +14914,8 @@ class OnBeatGraceContainerCommand(Command):
     On-beat grace container command.
     """
 
-    counts: abjad.IntegerSequence | None = None
-    leaf_duration: abjad.DurationTyping | None = None
+    counts: typing.Sequence[int] | None = None
+    leaf_duration: abjad.typings.Duration | None = None
     talea: Talea = Talea([1], 8)
 
     def __post_init__(self):
@@ -15181,7 +15181,7 @@ class SplitMeasuresCommand(Command):
         self,
         voice,
         *,
-        durations: typing.Sequence[abjad.DurationTyping] = (),
+        durations: typing.Sequence[abjad.typings.Duration] = (),
         tag: abjad.Tag = abjad.Tag(),
     ) -> None:
         if not durations:
@@ -15307,7 +15307,7 @@ def nongrace_leaves_in_each_tuplet(level=None):
 
 
 def after_grace_container(
-    counts: abjad.IntegerSequence,
+    counts: typing.Sequence[int],
     selector: typing.Callable | None = None,
     *,
     beam_and_slash: bool = False,
@@ -15526,7 +15526,7 @@ def beam_groups(
 
 
 def before_grace_container(
-    counts: abjad.IntegerSequence,
+    counts: typing.Sequence[int],
     selector: typing.Callable | None = None,
     *,
     talea: Talea = Talea([1], 8),
@@ -15677,7 +15677,7 @@ def cache_state() -> CacheStateCommand:
 
 
 def denominator(
-    denominator: int | abjad.DurationTyping,
+    denominator: int | abjad.typings.Duration,
     selector: typing.Callable | None = lambda _: abjad.select.tuplets(_),
 ) -> DenominatorCommand:
     r"""
@@ -16401,7 +16401,7 @@ def force_note(
 
 
 def force_repeat_tie(
-    threshold: bool | abjad.IntegerPair | typing.Callable = True,
+    threshold: bool | tuple[int, int] | typing.Callable = True,
     selector: typing.Callable | None = None,
 ) -> ForceRepeatTieCommand:
     """
@@ -16425,10 +16425,10 @@ def invisible_music(selector: typing.Callable | None) -> InvisibleMusicCommand:
 
 
 def on_beat_grace_container(
-    counts: abjad.IntegerSequence,
+    counts: typing.Sequence[int],
     selector: typing.Callable | None = None,
     *,
-    leaf_duration: abjad.DurationTyping = None,
+    leaf_duration: abjad.typings.Duration = None,
     talea: Talea = Talea([1], 8),
 ) -> OnBeatGraceContainerCommand:
     r"""
@@ -18460,7 +18460,7 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
 
 
 def written_duration(
-    duration: abjad.DurationTyping,
+    duration: abjad.typings.Duration,
     selector: typing.Callable | None = lambda _: abjad.select.leaves(_),
 ) -> WrittenDurationCommand:
     """
@@ -18617,7 +18617,7 @@ class Stack:
 
     def __call__(
         self,
-        time_signatures: typing.Sequence[abjad.IntegerPair],
+        time_signatures: typing.Sequence[tuple[int, int]],
         previous_state: dict = None,
     ) -> list[abjad.Component]:
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
