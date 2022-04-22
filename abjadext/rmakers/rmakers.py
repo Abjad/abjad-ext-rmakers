@@ -2551,8 +2551,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
-                        \time 4/8
                         \override Staff.Stem.stemlet-length = 0.75
+                        \time 4/8
                         r16 * 63/32
                         [
                         c'16 * 115/64
@@ -2603,8 +2603,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #left
-                        \time 3/8
                         \override Staff.Stem.stemlet-length = 0.75
+                        \time 3/8
                         c'16 * 5/8
                         [
                         c'16 * 43/64
@@ -2655,8 +2655,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
-                        \time 4/8
                         \override Staff.Stem.stemlet-length = 0.75
+                        \time 4/8
                         c'16 * 63/32
                         [
                         c'16 * 115/64
@@ -2707,8 +2707,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #left
-                        \time 3/8
                         \override Staff.Stem.stemlet-length = 0.75
+                        \time 3/8
                         c'16 * 5/8
                         [
                         c'16 * 43/64
@@ -9015,8 +9015,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     \override Clef.stencil = ##f
                 }
                 {
+                    \override Staff.Stem.stemlet-length = 0.75
                     \time 3/8
-                    \override Staff.Stem.stemlet-length = 0.75
                     c'16
                     [
                     c'16
@@ -9026,8 +9026,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     \revert Staff.Stem.stemlet-length
                     c'16
                     ]
+                    \override Staff.Stem.stemlet-length = 0.75
                     \time 4/8
-                    \override Staff.Stem.stemlet-length = 0.75
                     c'16
                     [
                     r16
@@ -9039,8 +9039,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     \revert Staff.Stem.stemlet-length
                     c'16
                     ]
+                    \override Staff.Stem.stemlet-length = 0.75
                     \time 3/8
-                    \override Staff.Stem.stemlet-length = 0.75
                     c'16
                     [
                     r16
@@ -9050,8 +9050,8 @@ class TaleaRhythmMaker(RhythmMaker):
                     \revert Staff.Stem.stemlet-length
                     r16
                     ]
-                    \time 4/8
                     \override Staff.Stem.stemlet-length = 0.75
+                    \time 4/8
                     c'16
                     [
                     c'16
