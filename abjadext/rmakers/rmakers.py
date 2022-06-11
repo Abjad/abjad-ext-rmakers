@@ -905,7 +905,7 @@ class RhythmMaker:
         music = list(abjad.sequence.flatten(music, depth=-1))
         assert all(isinstance(_, abjad.Component) for _ in music), repr(music)
         assert isinstance(music, list), repr(music)
-        music_voice = staff["RhythmMakerMusicVoice"]
+        music_voice = staff["RhythmMaker.Music"]
         music_voice.extend(music)
         divisions_consumed = len(divisions)
         if self.already_cached_state is not True:
@@ -979,7 +979,7 @@ class RhythmMaker:
             time_signature_voice.append(skip)
             abjad.attach(time_signature, skip, context="Staff")
         staff.append(time_signature_voice)
-        staff.append(abjad.Voice(name="RhythmMakerMusicVoice"))
+        staff.append(abjad.Voice(name="RhythmMaker.Music"))
         return staff
 
     def _make_tuplets(self, divisions, leaf_lists):
@@ -16450,7 +16450,7 @@ def on_beat_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> music_voice = abjad.Voice(selections, name="RhythmMakerMusicVoice")
+        >>> music_voice = abjad.Voice(selections, name="RhythmMaker.Music")
 
         >>> lilypond_file = rmakers.example(
         ...     [music_voice], divisions, includes=["abjad.ily"]
@@ -16475,7 +16475,7 @@ def on_beat_grace_container(
                     \override TupletBracket.staff-padding = 5
                 }
                 {
-                    \context Voice = "RhythmMakerMusicVoice"
+                    \context Voice = "RhythmMaker.Music"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 3/5
@@ -16499,7 +16499,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "RhythmMakerMusicVoice"
+                                \context Voice = "RhythmMaker.Music"
                                 {
                                     \voiceTwo
                                     c'4
@@ -16524,7 +16524,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "RhythmMakerMusicVoice"
+                                \context Voice = "RhythmMaker.Music"
                                 {
                                     \voiceTwo
                                     c'4
@@ -16547,7 +16547,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "RhythmMakerMusicVoice"
+                                \context Voice = "RhythmMaker.Music"
                                 {
                                     \voiceTwo
                                     c'4
@@ -16580,7 +16580,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "RhythmMakerMusicVoice"
+                                \context Voice = "RhythmMaker.Music"
                                 {
                                     \voiceTwo
                                     c'4
@@ -16603,7 +16603,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "RhythmMakerMusicVoice"
+                                \context Voice = "RhythmMaker.Music"
                                 {
                                     \voiceTwo
                                     c'4
@@ -16628,7 +16628,7 @@ def on_beat_grace_container(
                                     )
                                     ]
                                 }
-                                \context Voice = "RhythmMakerMusicVoice"
+                                \context Voice = "RhythmMaker.Music"
                                 {
                                     \voiceTwo
                                     c'4
@@ -16652,7 +16652,7 @@ def on_beat_grace_container(
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-        >>> music_voice = abjad.Voice(selections, name="RhythmMakerMusicVoice")
+        >>> music_voice = abjad.Voice(selections, name="RhythmMaker.Music")
 
         >>> lilypond_file = rmakers.example(
         ...     [music_voice], divisions, includes=["abjad.ily"]
@@ -16672,7 +16672,7 @@ def on_beat_grace_container(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \context Voice = "RhythmMakerMusicVoice"
+                    \context Voice = "RhythmMaker.Music"
                     {
                         <<
                             \context Voice = "On_Beat_Grace_Container"
@@ -16695,7 +16695,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "RhythmMakerMusicVoice"
+                            \context Voice = "RhythmMaker.Music"
                             {
                                 \time 3/4
                                 \voiceTwo
@@ -16721,7 +16721,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "RhythmMakerMusicVoice"
+                            \context Voice = "RhythmMaker.Music"
                             {
                                 \voiceTwo
                                 c'4
@@ -16750,7 +16750,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "RhythmMakerMusicVoice"
+                            \context Voice = "RhythmMaker.Music"
                             {
                                 \voiceTwo
                                 c'8
@@ -16776,7 +16776,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "RhythmMakerMusicVoice"
+                            \context Voice = "RhythmMaker.Music"
                             {
                                 \voiceTwo
                                 c'4
@@ -16805,7 +16805,7 @@ def on_beat_grace_container(
                                 )
                                 ]
                             }
-                            \context Voice = "RhythmMakerMusicVoice"
+                            \context Voice = "RhythmMaker.Music"
                             {
                                 \voiceTwo
                                 c'4
@@ -18623,7 +18623,7 @@ class Stack:
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
         divisions_ = [abjad.NonreducedFraction(_) for _ in time_signatures]
         staff = RhythmMaker._make_staff(time_signatures_)
-        music_voice = staff["RhythmMakerMusicVoice"]
+        music_voice = staff["RhythmMaker.Music"]
         divisions = self._apply_division_expression(divisions_)
         selection = self.maker(divisions, previous_state=previous_state)
         music_voice.extend(selection)
