@@ -14917,6 +14917,7 @@ class OnBeatGraceContainerCommand(Command):
     counts: typing.Sequence[int] | None = None
     leaf_duration: abjad.typings.Duration | None = None
     talea: Talea = Talea([1], 8)
+    voice_name: str = ""
 
     def __post_init__(self):
         Command.__post_init__(self)
@@ -14925,8 +14926,12 @@ class OnBeatGraceContainerCommand(Command):
             self.leaf_duration = abjad.Duration(self.leaf_duration)
         self.leaf_duration = self.leaf_duration
         assert isinstance(self.talea, Talea), repr(self.talea)
+        assert isinstance(self.voice_name, str), repr(self.voice_name)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
+        assert isinstance(voice, abjad.Voice), repr(voice)
+        if self.voice_name:
+            voice.name = self.voice_name
         selections = voice
         if self.selector is not None:
             selections = self.selector(selections)
@@ -16430,6 +16435,7 @@ def on_beat_grace_container(
     *,
     leaf_duration: abjad.typings.Duration = None,
     talea: Talea = Talea([1], 8),
+    voice_name: str = "",
 ) -> OnBeatGraceContainerCommand:
     r"""
     Makes on-beat grace container command.
@@ -16817,7 +16823,11 @@ def on_beat_grace_container(
 
     """
     return OnBeatGraceContainerCommand(
-        selector=selector, counts=counts, leaf_duration=leaf_duration, talea=talea
+        selector=selector,
+        counts=counts,
+        leaf_duration=leaf_duration,
+        talea=talea,
+        voice_name=voice_name,
     )
 
 
