@@ -18543,27 +18543,40 @@ class Bind:
         maker_to_previous_state: dict = dict()
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
+            assert callable(rhythm_maker), repr(rhythm_maker)
             if self.tag and hasattr(rhythm_maker, "tag"):
                 rhythm_maker = dataclasses.replace(rhythm_maker, tag=self.tag)
-            assert callable(rhythm_maker), repr(rhythm_maker)
             divisions_ = [match.payload for match in group]
             previous_state_ = previous_state
-            if (
-                previous_state_ is None
-                and group[0].assignment.remember_state_across_gaps
-            ):
+            if previous_state_ is None:
                 previous_state_ = maker_to_previous_state.get(rhythm_maker, None)
+            state = None
             if isinstance(rhythm_maker, RhythmMaker | Stack):
                 selection = rhythm_maker(divisions_, previous_state=previous_state_)
+            elif previous_state_ is not None:
+                result = rhythm_maker(divisions_, previous_state=previous_state_)
+                assert isinstance(result, tuple), repr(result)
+                assert len(result) == 2
+                selection, state = result
             else:
-                selection = rhythm_maker(divisions_)
+                result = rhythm_maker(divisions_)
+                if isinstance(result, tuple):
+                    assert len(result) == 2
+                    selection, state = result
+                else:
+                    assert isinstance(result, list)
+                    selection = result
             assert isinstance(selection, list), repr(selection)
             components.extend(selection)
             if hasattr(rhythm_maker, "state"):
                 maker_to_previous_state[rhythm_maker] = rhythm_maker.state
+            elif state is not None:
+                maker_to_previous_state[rhythm_maker] = state
         assert callable(rhythm_maker), repr(rhythm_maker)
         if hasattr(rhythm_maker, "state"):
             self._state = rhythm_maker.state
+        elif state is not None:
+            self._state = state
         return components
 
     @property
@@ -18703,7 +18716,6 @@ class Assignment:
 
     rhythm_maker: RhythmMaker | Stack
     predicate: typing.Callable | abjad.Pattern | None = None
-    remember_state_across_gaps: bool = False
 
     def __post_init__(self):
         assert (
@@ -18712,14 +18724,11 @@ class Assignment:
             or callable(self.predicate)
         )
         assert callable(self.rhythm_maker), repr(self.rhythm_maker)
-        self.remember_state_across_gaps = bool(self.remember_state_across_gaps)
 
 
 def assign(
     rhythm_maker: RhythmMaker | Stack,
     predicate: typing.Callable | abjad.Pattern | None = None,
-    *,
-    remember_state_across_gaps: bool = False,
 ) -> Assignment:
     """
     Makes assignment.
@@ -18727,7 +18736,6 @@ def assign(
     return Assignment(
         rhythm_maker,
         predicate,
-        remember_state_across_gaps=remember_state_across_gaps,
     )
 
 
