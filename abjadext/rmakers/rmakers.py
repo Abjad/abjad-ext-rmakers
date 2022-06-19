@@ -18541,12 +18541,11 @@ class Bind:
         )
         components: list[abjad.Component] = []
         maker_to_previous_state: dict = dict()
-        pp = (RhythmMaker, Stack)
         for group in groups:
             rhythm_maker = group[0].assignment.rhythm_maker
-            if self.tag:
+            if self.tag and hasattr(rhythm_maker, "tag"):
                 rhythm_maker = dataclasses.replace(rhythm_maker, tag=self.tag)
-            assert isinstance(rhythm_maker, pp), repr(rhythm_maker)
+            assert callable(rhythm_maker), repr(rhythm_maker)
             divisions_ = [match.payload for match in group]
             previous_state_ = previous_state
             if (
@@ -18557,14 +18556,14 @@ class Bind:
             if isinstance(rhythm_maker, RhythmMaker | Stack):
                 selection = rhythm_maker(divisions_, previous_state=previous_state_)
             else:
-                selection = rhythm_maker(
-                    divisions_, previous_segment_stop_state=previous_state_
-                )
+                selection = rhythm_maker(divisions_)
             assert isinstance(selection, list), repr(selection)
             components.extend(selection)
-            maker_to_previous_state[rhythm_maker] = rhythm_maker.state
-        assert isinstance(rhythm_maker, RhythmMaker | Stack), repr(rhythm_maker)
-        self._state = rhythm_maker.state
+            if hasattr(rhythm_maker, "state"):
+                maker_to_previous_state[rhythm_maker] = rhythm_maker.state
+        assert callable(rhythm_maker), repr(rhythm_maker)
+        if hasattr(rhythm_maker, "state"):
+            self._state = rhythm_maker.state
         return components
 
     @property
@@ -18712,8 +18711,7 @@ class Assignment:
             or isinstance(self.predicate, abjad.Pattern)
             or callable(self.predicate)
         )
-        prototype = (RhythmMaker, Stack)
-        assert isinstance(self.rhythm_maker, prototype), repr(self.rhythm_maker)
+        assert callable(self.rhythm_maker), repr(self.rhythm_maker)
         self.remember_state_across_gaps = bool(self.remember_state_across_gaps)
 
 
