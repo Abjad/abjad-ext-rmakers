@@ -14349,7 +14349,7 @@ class WrittenDurationCommand(Command):
 
     def __post_init__(self):
         Command.__post_init__(self)
-        self.duration = abjad.Duration(self.duration)
+        assert isinstance(self.duration, abjad.Duration), repr(self.duration)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         selection = voice
@@ -18504,7 +18504,8 @@ def written_duration(
     """
     Makes written duration command.
     """
-    return WrittenDurationCommand(selector=selector, duration=duration)
+    duration_ = abjad.Duration(duration)
+    return WrittenDurationCommand(selector=selector, duration=duration_)
 
 
 RhythmMakerTyping: typing.TypeAlias = typing.Union[
