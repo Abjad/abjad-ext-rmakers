@@ -14150,7 +14150,7 @@ def tuplet(
     )
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Command:
     """
     Command baseclass.
@@ -14168,7 +14168,7 @@ class Command:
         pass
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class BeamCommand(Command):
     """
     Beam command.
@@ -14180,8 +14180,8 @@ class BeamCommand(Command):
 
     def __post_init__(self):
         Command.__post_init__(self)
-        self.beam_lone_notes = bool(self.beam_lone_notes)
-        self.beam_rests = bool(self.beam_rests)
+        assert isinstance(self.beam_lone_notes, bool), repr(self.beam_lone_notes)
+        assert isinstance(self.beam_rests, bool), repr(self.beam_rests)
         if self.stemlet_length is not None:
             assert isinstance(self.stemlet_length, int | float)
 
@@ -14192,10 +14192,8 @@ class BeamCommand(Command):
         else:
             selections = [selection]
         for selection in selections:
-            unbeam()(selection)
-            leaves = abjad.select.leaves(selection)
-            abjad.beam(
-                leaves,
+            _do_beam_command(
+                selection,
                 beam_lone_notes=self.beam_lone_notes,
                 beam_rests=self.beam_rests,
                 stemlet_length=self.stemlet_length,
@@ -14203,7 +14201,25 @@ class BeamCommand(Command):
             )
 
 
-@dataclasses.dataclass(slots=True)
+def _do_beam_command(
+    argument,
+    beam_lone_notes: bool = False,
+    beam_rests: bool = False,
+    stemlet_length: int | float | None = None,
+    tag: abjad.Tag = None,
+):
+    unbeam()(argument)
+    leaves = abjad.select.leaves(argument)
+    abjad.beam(
+        leaves,
+        beam_lone_notes=beam_lone_notes,
+        beam_rests=beam_rests,
+        stemlet_length=stemlet_length,
+        tag=tag,
+    )
+
+
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class BeamGroupsCommand(Command):
     """
     Beam groups command.
@@ -14216,8 +14232,8 @@ class BeamGroupsCommand(Command):
 
     def __post_init__(self):
         Command.__post_init__(self)
-        self.beam_lone_notes = bool(self.beam_lone_notes)
-        self.beam_rests = bool(self.beam_rests)
+        assert isinstance(self.beam_lone_notes, bool), repr(self.beam_lone_notes)
+        assert isinstance(self.beam_rests, bool), repr(self.beam_rests)
         if self.stemlet_length is not None:
             assert isinstance(self.stemlet_length, int | float)
         assert isinstance(self.tag, abjad.Tag), repr(self.tag)
@@ -14260,7 +14276,7 @@ class BeamGroupsCommand(Command):
         )
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class CacheStateCommand(Command):
     """
     Cache state command.
@@ -14269,7 +14285,7 @@ class CacheStateCommand(Command):
     pass
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class DenominatorCommand(Command):
     """
     Denominator command.
@@ -14279,8 +14295,6 @@ class DenominatorCommand(Command):
 
     def __post_init__(self):
         Command.__post_init__(self)
-        if isinstance(self.denominator, tuple):
-            self.denominator = abjad.Duration(self.denominator)
         if self.denominator is not None:
             prototype = (int, abjad.Duration)
             assert isinstance(self.denominator, prototype), repr(self.denominator)
@@ -14306,7 +14320,7 @@ class DenominatorCommand(Command):
                 raise Exception(f"invalid preferred denominator: {denominator!r}.")
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class DurationBracketCommand(Command):
     """
     Duration bracket command.
@@ -14324,7 +14338,7 @@ class DurationBracketCommand(Command):
             abjad.override(tuplet).TupletNumber.text = string
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class WrittenDurationCommand(Command):
     """
     Written duration command.
@@ -14357,7 +14371,7 @@ class WrittenDurationCommand(Command):
         leaf.multiplier = multiplier
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class ExtractTrivialCommand(Command):
     """
     Extract trivial command.
@@ -14373,7 +14387,7 @@ class ExtractTrivialCommand(Command):
                 abjad.mutate.extract(tuplet)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class FeatherBeamCommand(Command):
     """
     Feather beam command.
@@ -14384,8 +14398,7 @@ class FeatherBeamCommand(Command):
 
     def __post_init__(self):
         Command.__post_init__(self)
-        if self.beam_rests is not None:
-            self.beam_rests = bool(self.beam_rests)
+        assert isinstance(self.beam_rests, bool), repr(self.beam_rests)
         if self.stemlet_length is not None:
             assert isinstance(self.stemlet_length, int | float)
 
@@ -14432,7 +14445,7 @@ class FeatherBeamCommand(Command):
         return False
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class ForceAugmentationCommand(Command):
     """
     Force augmentation command.
@@ -14447,7 +14460,7 @@ class ForceAugmentationCommand(Command):
                 tuplet.toggle_prolation()
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class ForceDiminutionCommand(Command):
     """
     Force diminution command.
@@ -14462,7 +14475,7 @@ class ForceDiminutionCommand(Command):
                 tuplet.toggle_prolation()
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class ForceFractionCommand(Command):
     """
     Force fraction command.
@@ -14476,7 +14489,7 @@ class ForceFractionCommand(Command):
             tuplet.force_fraction = True
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class ForceNoteCommand(Command):
     r"""
     Note command.
@@ -14588,7 +14601,7 @@ class ForceNoteCommand(Command):
             abjad.mutate.replace(leaf, [note])
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class ForceRepeatTieCommand(Command):
     """
     Force repeat-tie command.
@@ -14646,7 +14659,7 @@ class ForceRepeatTieCommand(Command):
             abjad.attach(repeat_tie, leaf)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class ForceRestCommand(Command):
     r"""
     Rest command.
@@ -14843,7 +14856,7 @@ class ForceRestCommand(Command):
                 abjad.detach(abjad.RepeatTie, next_leaf)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class GraceContainerCommand(Command):
     """
     Grace container command.
@@ -14859,10 +14872,8 @@ class GraceContainerCommand(Command):
     def __post_init__(self):
         Command.__post_init__(self)
         assert all(isinstance(_, int) for _ in self.counts), repr(self.counts)
-        self.counts = tuple(self.counts)
         assert self.class_ in self._classes, repr(self.class_)
-        if self.beam_and_slash is not None:
-            self.beam_and_slash = bool(self.beam_and_slash)
+        assert isinstance(self.beam_and_slash, bool), repr(self.beam_and_slash)
         assert isinstance(self.talea, Talea), repr(talea)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
@@ -14889,7 +14900,7 @@ class GraceContainerCommand(Command):
             abjad.attach(container, leaf)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class InvisibleMusicCommand(Command):
     """
     Invisible music command.
@@ -14908,7 +14919,7 @@ class InvisibleMusicCommand(Command):
             abjad.attach(literal_2, leaf, tag=tag_2)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class OnBeatGraceContainerCommand(Command):
     """
     On-beat grace container command.
@@ -14923,8 +14934,9 @@ class OnBeatGraceContainerCommand(Command):
         Command.__post_init__(self)
         assert all(isinstance(_, int) for _ in self.counts), repr(self.counts)
         if self.leaf_duration is not None:
-            self.leaf_duration = abjad.Duration(self.leaf_duration)
-        self.leaf_duration = self.leaf_duration
+            assert isinstance(self.leaf_duration, abjad.Duration), repr(
+                self.leaf_duration
+            )
         assert isinstance(self.talea, Talea), repr(self.talea)
         assert isinstance(self.voice_name, str), repr(self.voice_name)
 
@@ -14955,7 +14967,7 @@ class OnBeatGraceContainerCommand(Command):
             )
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class ReduceMultiplierCommand(Command):
     """
     Reduce multiplier command.
@@ -14969,7 +14981,7 @@ class ReduceMultiplierCommand(Command):
             tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RepeatTieCommand(Command):
     """
     Repeat-tie command.
@@ -14984,7 +14996,7 @@ class RepeatTieCommand(Command):
             abjad.attach(tie, note, tag=tag)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RewriteDotsCommand(Command):
     """
     Rewrite dots command.
@@ -14998,7 +15010,7 @@ class RewriteDotsCommand(Command):
             tuplet.rewrite_dots()
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RewriteMeterCommand(Command):
     """
     Rewrite meter command.
@@ -15010,7 +15022,6 @@ class RewriteMeterCommand(Command):
     def __post_init__(self):
         if self.boundary_depth is not None:
             assert isinstance(self.boundary_depth, int)
-        self.reference_meters = tuple(self.reference_meters or ())
         if not all(isinstance(_, abjad.Meter) for _ in self.reference_meters):
             message = "must be sequence of meters:\n"
             message += f"   {repr(self.reference_meters)}"
@@ -15108,7 +15119,7 @@ class RewriteMeterCommand(Command):
         return beamable_groups
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RewriteRestFilledCommand(Command):
     """
     Rewrite rest-filled command.
@@ -15147,7 +15158,7 @@ class RewriteRestFilledCommand(Command):
             tuplet.multiplier = abjad.Multiplier(1)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RewriteSustainedCommand(Command):
     """
     Rewrite sustained command.
@@ -15176,7 +15187,7 @@ class RewriteSustainedCommand(Command):
             tuplet.multiplier = abjad.Multiplier(1)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class SplitMeasuresCommand(Command):
     """
     Split measures command.
@@ -15207,7 +15218,7 @@ class SplitMeasuresCommand(Command):
         abjad.mutate.split(voice[:], durations=durations)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class TieCommand(Command):
     """
     Tie command.
@@ -15222,7 +15233,7 @@ class TieCommand(Command):
             abjad.attach(tie, note, tag=tag)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class TremoloContainerCommand(Command):
     """
     Tremolo container command.
@@ -15251,7 +15262,7 @@ class TremoloContainerCommand(Command):
             abjad.mutate.replace(note, container)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class TrivializeCommand(Command):
     """
     Trivialize command.
@@ -15265,7 +15276,7 @@ class TrivializeCommand(Command):
             tuplet.trivialize()
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class UnbeamCommand(Command):
     """
     Unbeam command.
@@ -15284,7 +15295,7 @@ class UnbeamCommand(Command):
             abjad.detach(abjad.StopBeam, leaf)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class UntieCommand(Command):
     """
     Untie command.
@@ -15507,6 +15518,26 @@ def beam(
         beam_rests=beam_rests,
         beam_lone_notes=beam_lone_notes,
         stemlet_length=stemlet_length,
+    )
+
+
+def beam_function(
+    argument,
+    *,
+    beam_lone_notes: bool = False,
+    beam_rests: bool = False,
+    stemlet_length: int | float | None = None,
+    tag: abjad.Tag = abjad.Tag("rmakers.beam()"),
+) -> None:
+    """
+    Beams ``argument``.
+    """
+    _do_beam_command(
+        argument,
+        beam_lone_notes=beam_lone_notes,
+        beam_rests=beam_rests,
+        stemlet_length=stemlet_length,
+        tag=tag,
     )
 
 
@@ -16148,6 +16179,8 @@ def denominator(
             >>
 
     """
+    if isinstance(denominator, tuple):
+        denominator = abjad.Duration(denominator)
     return DenominatorCommand(selector=selector, denominator=denominator)
 
 
@@ -16825,7 +16858,7 @@ def on_beat_grace_container(
     return OnBeatGraceContainerCommand(
         selector=selector,
         counts=counts,
-        leaf_duration=leaf_duration,
+        leaf_duration=abjad.Duration(leaf_duration),
         talea=talea,
         voice_name=voice_name,
     )
@@ -18484,7 +18517,7 @@ RhythmMakerTyping: typing.TypeAlias = typing.Union[
 ]
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Match:
     """
     Match.
