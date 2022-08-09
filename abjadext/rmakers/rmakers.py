@@ -14610,8 +14610,10 @@ class ForceRepeatTieCommand(Command):
     threshold: bool | tuple[int, int] | typing.Callable = False
     inequality: typing.Callable = dataclasses.field(init=False, repr=False)
 
-    def __post_init__(self):
-        Command.__post_init__(self)
+    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
+        selection = voice
+        if self.selector is not None:
+            selection = self.selector(selection)
         if callable(self.threshold):
             inequality = self.threshold
         elif self.threshold in (None, False):
@@ -14632,13 +14634,6 @@ class ForceRepeatTieCommand(Command):
             def inequality(item):
                 return item >= abjad.Duration(self.threshold)
 
-        self.inequality = inequality
-        assert callable(self.inequality)
-
-    def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        selection = voice
-        if self.selector is not None:
-            selection = self.selector(selection)
         attach_repeat_ties = []
         for leaf in abjad.select.leaves(selection):
             if abjad.get.has_indicator(leaf, abjad.Tie):
@@ -14650,7 +14645,7 @@ class ForceRepeatTieCommand(Command):
                 if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
                     continue
                 duration = abjad.get.duration(leaf)
-                if not self.inequality(duration):
+                if not inequality(duration):
                     continue
                 attach_repeat_ties.append(next_leaf)
                 abjad.detach(abjad.Tie, leaf)
