@@ -15202,7 +15202,7 @@ class SplitMeasuresCommand(Command):
             voice_ = staff["TimeSignatureVoice"]
             assert isinstance(voice_, abjad.Voice)
             durations = [abjad.get.duration(_) for _ in voice_]
-        total_duration = sum(durations)
+        total_duration = abjad.sequence.sum(durations)
         music_duration = abjad.get.duration(voice)
         if total_duration != music_duration:
             message = f"Total duration of splits is {total_duration!s}"
