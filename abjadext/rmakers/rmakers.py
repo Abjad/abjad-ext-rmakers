@@ -14191,14 +14191,13 @@ class BeamCommand(Command):
             selections = self.selector(selection)
         else:
             selections = [selection]
-        for selection in selections:
-            _do_beam_command(
-                selection,
-                beam_lone_notes=self.beam_lone_notes,
-                beam_rests=self.beam_rests,
-                stemlet_length=self.stemlet_length,
-                tag=tag,
-            )
+        _do_beam_command(
+            selections,
+            beam_lone_notes=self.beam_lone_notes,
+            beam_rests=self.beam_rests,
+            stemlet_length=self.stemlet_length,
+            tag=tag,
+        )
 
 
 def _do_beam_command(
@@ -14208,15 +14207,16 @@ def _do_beam_command(
     stemlet_length: int | float | None = None,
     tag: abjad.Tag = None,
 ):
-    unbeam()(argument)
-    leaves = abjad.select.leaves(argument)
-    abjad.beam(
-        leaves,
-        beam_lone_notes=beam_lone_notes,
-        beam_rests=beam_rests,
-        stemlet_length=stemlet_length,
-        tag=tag,
-    )
+    for selection in argument:
+        unbeam()(selection)
+        leaves = abjad.select.leaves(selection)
+        abjad.beam(
+            leaves,
+            beam_lone_notes=beam_lone_notes,
+            beam_rests=beam_rests,
+            stemlet_length=stemlet_length,
+            tag=tag,
+        )
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
