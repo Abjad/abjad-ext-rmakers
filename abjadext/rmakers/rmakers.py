@@ -14239,7 +14239,6 @@ class BeamGroupsCommand(Command):
         assert isinstance(self.tag, abjad.Tag), repr(self.tag)
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
-        components: list[abjad.Component] = []
         if not isinstance(voice, abjad.Voice):
             selections = voice
             if self.selector is not None:
@@ -14247,33 +14246,43 @@ class BeamGroupsCommand(Command):
         else:
             assert self.selector is not None
             selections = self.selector(voice)
-        unbeam()(selections)
-        durations = []
-        for selection in selections:
-            duration = abjad.get.duration(selection)
-            durations.append(duration)
-        for selection in selections:
-            if isinstance(selection, abjad.Tuplet):
-                components.append(selection)
-            else:
-                components.extend(selection)
-        leaves = abjad.select.leaves(components)
-        parts = []
-        if tag.string:
-            parts.append(str(tag))
-        if self.tag.string:
-            parts.append(str(self.tag))
-        string = ":".join(parts)
-        tag = abjad.Tag(string)
-        abjad.beam(
-            leaves,
+        _do_beam_groups_command(
+            selections,
             beam_lone_notes=self.beam_lone_notes,
             beam_rests=self.beam_rests,
-            durations=durations,
-            span_beam_count=1,
             stemlet_length=self.stemlet_length,
-            tag=tag,
+            tag=self.tag,
         )
+
+
+def _do_beam_groups_command(
+    argument,
+    beam_lone_notes: bool = False,
+    beam_rests: bool = False,
+    stemlet_length: int | float | None = None,
+    tag: abjad.Tag = None,
+):
+    unbeam()(argument)
+    durations = []
+    components: list[abjad.Component] = []
+    for selection in argument:
+        duration = abjad.get.duration(selection)
+        durations.append(duration)
+    for selection in argument:
+        if isinstance(selection, abjad.Tuplet):
+            components.append(selection)
+        else:
+            components.extend(selection)
+    leaves = abjad.select.leaves(components)
+    abjad.beam(
+        leaves,
+        beam_lone_notes=beam_lone_notes,
+        beam_rests=beam_rests,
+        durations=durations,
+        span_beam_count=1,
+        stemlet_length=stemlet_length,
+        tag=tag,
+    )
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15549,6 +15558,26 @@ def beam_groups(
     """
     return BeamGroupsCommand(
         selector=selector,
+        beam_lone_notes=beam_lone_notes,
+        beam_rests=beam_rests,
+        stemlet_length=stemlet_length,
+        tag=tag,
+    )
+
+
+def beam_groups_function(
+    argument,
+    *,
+    beam_lone_notes: bool = False,
+    beam_rests: bool = False,
+    stemlet_length: int | float | None = None,
+    tag: abjad.Tag = abjad.Tag("rmakers.beam_groups()"),
+) -> None:
+    """
+    Beams ``argument`` groups.
+    """
+    _do_beam_groups_command(
+        argument,
         beam_lone_notes=beam_lone_notes,
         beam_rests=beam_rests,
         stemlet_length=stemlet_length,
