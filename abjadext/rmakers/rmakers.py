@@ -14150,6 +14150,82 @@ def tuplet(
     )
 
 
+# COMMANDS
+
+
+def _do_beam_command(
+    argument,
+    beam_lone_notes: bool = False,
+    beam_rests: bool = False,
+    stemlet_length: int | float | None = None,
+    tag: abjad.Tag = None,
+):
+    for selection in argument:
+        unbeam()(selection)
+        leaves = abjad.select.leaves(selection)
+        abjad.beam(
+            leaves,
+            beam_lone_notes=beam_lone_notes,
+            beam_rests=beam_rests,
+            stemlet_length=stemlet_length,
+            tag=tag,
+        )
+
+
+def _do_beam_groups_command(
+    argument,
+    beam_lone_notes: bool = False,
+    beam_rests: bool = False,
+    stemlet_length: int | float | None = None,
+    tag: abjad.Tag = None,
+):
+    unbeam()(argument)
+    durations = []
+    components: list[abjad.Component] = []
+    for selection in argument:
+        duration = abjad.get.duration(selection)
+        durations.append(duration)
+    for selection in argument:
+        if isinstance(selection, abjad.Tuplet):
+            components.append(selection)
+        else:
+            components.extend(selection)
+    leaves = abjad.select.leaves(components)
+    abjad.beam(
+        leaves,
+        beam_lone_notes=beam_lone_notes,
+        beam_rests=beam_rests,
+        durations=durations,
+        span_beam_count=1,
+        stemlet_length=stemlet_length,
+        tag=tag,
+    )
+
+
+def _do_force_rest_command(selections, previous_logical_ties_produced=None, tag=None):
+    # will need to restore for statal rhythm-makers:
+    # logical_ties = abjad.select.logical_ties(selections)
+    # logical_ties = list(logical_ties)
+    # total_logical_ties = len(logical_ties)
+    # previous_logical_ties_produced = self._previous_logical_ties_produced()
+    # if self._previous_incomplete_last_note():
+    #    previous_logical_ties_produced -= 1
+    leaves = abjad.select.leaves(selections)
+    for leaf in leaves:
+        rest = abjad.Rest(leaf.written_duration, tag=tag)
+        if leaf.multiplier is not None:
+            rest.multiplier = leaf.multiplier
+        previous_leaf = abjad.get.leaf(leaf, -1)
+        next_leaf = abjad.get.leaf(leaf, 1)
+        abjad.mutate.replace(leaf, [rest])
+        if previous_leaf is not None:
+            abjad.detach(abjad.Tie, previous_leaf)
+        abjad.detach(abjad.Tie, rest)
+        abjad.detach(abjad.RepeatTie, rest)
+        if next_leaf is not None:
+            abjad.detach(abjad.RepeatTie, next_leaf)
+
+
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Command:
     """
@@ -14200,25 +14276,6 @@ class BeamCommand(Command):
         )
 
 
-def _do_beam_command(
-    argument,
-    beam_lone_notes: bool = False,
-    beam_rests: bool = False,
-    stemlet_length: int | float | None = None,
-    tag: abjad.Tag = None,
-):
-    for selection in argument:
-        unbeam()(selection)
-        leaves = abjad.select.leaves(selection)
-        abjad.beam(
-            leaves,
-            beam_lone_notes=beam_lone_notes,
-            beam_rests=beam_rests,
-            stemlet_length=stemlet_length,
-            tag=tag,
-        )
-
-
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class BeamGroupsCommand(Command):
     """
@@ -14253,36 +14310,6 @@ class BeamGroupsCommand(Command):
             stemlet_length=self.stemlet_length,
             tag=self.tag,
         )
-
-
-def _do_beam_groups_command(
-    argument,
-    beam_lone_notes: bool = False,
-    beam_rests: bool = False,
-    stemlet_length: int | float | None = None,
-    tag: abjad.Tag = None,
-):
-    unbeam()(argument)
-    durations = []
-    components: list[abjad.Component] = []
-    for selection in argument:
-        duration = abjad.get.duration(selection)
-        durations.append(duration)
-    for selection in argument:
-        if isinstance(selection, abjad.Tuplet):
-            components.append(selection)
-        else:
-            components.extend(selection)
-    leaves = abjad.select.leaves(components)
-    abjad.beam(
-        leaves,
-        beam_lone_notes=beam_lone_notes,
-        beam_rests=beam_rests,
-        durations=durations,
-        span_beam_count=1,
-        stemlet_length=stemlet_length,
-        tag=tag,
-    )
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -14837,27 +14864,7 @@ class ForceRestCommand(Command):
         selection = voice
         if self.selector is not None:
             selections = self.selector([selection])
-        # will need to restore for statal rhythm-makers:
-        # logical_ties = abjad.select.logical_ties(selections)
-        # logical_ties = list(logical_ties)
-        # total_logical_ties = len(logical_ties)
-        # previous_logical_ties_produced = self._previous_logical_ties_produced()
-        # if self._previous_incomplete_last_note():
-        #    previous_logical_ties_produced -= 1
-        leaves = abjad.select.leaves(selections)
-        for leaf in leaves:
-            rest = abjad.Rest(leaf.written_duration, tag=tag)
-            if leaf.multiplier is not None:
-                rest.multiplier = leaf.multiplier
-            previous_leaf = abjad.get.leaf(leaf, -1)
-            next_leaf = abjad.get.leaf(leaf, 1)
-            abjad.mutate.replace(leaf, [rest])
-            if previous_leaf is not None:
-                abjad.detach(abjad.Tie, previous_leaf)
-            abjad.detach(abjad.Tie, rest)
-            abjad.detach(abjad.RepeatTie, rest)
-            if next_leaf is not None:
-                abjad.detach(abjad.RepeatTie, next_leaf)
+        _do_force_rest_command(selections, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16477,6 +16484,13 @@ def force_rest(selector: typing.Callable | None) -> ForceRestCommand:
     Makes force rest command.
     """
     return ForceRestCommand(selector=selector)
+
+
+def force_rest_function(argument) -> None:
+    """
+    Forces rests in ``argument``.
+    """
+    _do_force_rest_command(argument)
 
 
 def invisible_music(selector: typing.Callable | None) -> InvisibleMusicCommand:
