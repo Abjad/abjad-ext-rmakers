@@ -14339,21 +14339,8 @@ class DenominatorCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        denominator = self.denominator
-        if isinstance(denominator, tuple):
-            denominator = abjad.Duration(denominator)
-        for tuplet in abjad.select.tuplets(selection):
-            if isinstance(denominator, abjad.Duration):
-                unit_duration = denominator
-                assert unit_duration.numerator == 1
-                duration = abjad.get.duration(tuplet)
-                denominator_ = unit_duration.denominator
-                nonreduced_fraction = duration.with_denominator(denominator_)
-                tuplet.denominator = nonreduced_fraction.numerator
-            elif abjad.math.is_positive_integer(denominator):
-                tuplet.denominator = denominator
-            else:
-                raise Exception(f"invalid preferred denominator: {denominator!r}.")
+        assert self.denominator is not None
+        denominator_function(selection, self.denominator)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16213,6 +16200,26 @@ def denominator(
     if isinstance(denominator, tuple):
         denominator = abjad.Duration(denominator)
     return DenominatorCommand(selector=selector, denominator=denominator)
+
+
+def denominator_function(argument, denominator: int | abjad.typings.Duration) -> None:
+    r"""
+    Sets denominator of every tuplet in ``argument`` to ``denominator``.
+    """
+    if isinstance(denominator, tuple):
+        denominator = abjad.Duration(denominator)
+    for tuplet in abjad.select.tuplets(argument):
+        if isinstance(denominator, abjad.Duration):
+            unit_duration = denominator
+            assert unit_duration.numerator == 1
+            duration = abjad.get.duration(tuplet)
+            denominator_ = unit_duration.denominator
+            nonreduced_fraction = duration.with_denominator(denominator_)
+            tuplet.denominator = nonreduced_fraction.numerator
+        elif abjad.math.is_positive_integer(denominator):
+            tuplet.denominator = denominator
+        else:
+            raise Exception(f"invalid preferred denominator: {denominator!r}.")
 
 
 def duration_bracket(
