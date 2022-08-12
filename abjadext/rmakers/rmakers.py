@@ -15299,11 +15299,7 @@ class UnbeamCommand(Command):
             selections = self.selector(selection)
         else:
             selections = selection
-        leaves = abjad.select.leaves(selections)
-        for leaf in leaves:
-            abjad.detach(abjad.BeamCount, leaf)
-            abjad.detach(abjad.StartBeam, leaf)
-            abjad.detach(abjad.StopBeam, leaf)
+        unbeam_function(selections)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -18329,6 +18325,17 @@ def unbeam(
     Makes unbeam command.
     """
     return UnbeamCommand(selector=selector)
+
+
+def unbeam_function(argument) -> None:
+    """
+    Unbeams leaves in ``argument``.
+    """
+    leaves = abjad.select.leaves(argument)
+    for leaf in leaves:
+        abjad.detach(abjad.BeamCount, leaf)
+        abjad.detach(abjad.StartBeam, leaf)
+        abjad.detach(abjad.StopBeam, leaf)
 
 
 def untie(selector: typing.Callable | None = None) -> UntieCommand:

@@ -80,6 +80,7 @@ from .rmakers import (
     trivialize,
     tuplet,
     unbeam,
+    unbeam_function,
     untie,
     written_duration,
 )
@@ -138,6 +139,7 @@ __all__ = [
     "tremolo_container",
     "trivialize",
     "unbeam",
+    "unbeam_function",
     "untie",
     "written_duration",
     # makers:
