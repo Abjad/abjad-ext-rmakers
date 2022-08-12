@@ -15303,14 +15303,14 @@ class UntieCommand(Command):
             abjad.detach(abjad.RepeatTie, leaf)
 
 
-def nongrace_leaves_in_each_tuplet(level: int = None):
+def nongrace_leaves_in_each_tuplet(level: int = -1):
     """
     Makes nongrace leaves in each tuplet selector.
     """
     return lambda _: nongrace_leaves_in_each_tuplet_function(_, level=level)
 
 
-def nongrace_leaves_in_each_tuplet_function(argument, level: int = None):
+def nongrace_leaves_in_each_tuplet_function(argument, level: int = -1):
     """
     Selects nongrace leaves in each tuplet.
     """
