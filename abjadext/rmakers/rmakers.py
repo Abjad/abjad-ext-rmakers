@@ -15321,16 +15321,20 @@ class UntieCommand(Command):
             abjad.detach(abjad.RepeatTie, leaf)
 
 
-def nongrace_leaves_in_each_tuplet(level=None):
+def nongrace_leaves_in_each_tuplet(level: int = None):
     """
-    Makes nongrace leaves in each tuplet command.
+    Makes nongrace leaves in each tuplet selector.
     """
+    return lambda _: nongrace_leaves_in_each_tuplet_function(_, level=level)
 
-    def selector(argument):
-        result = abjad.select.tuplets(argument, level=level)
-        return [abjad.select.leaves(_, grace=False) for _ in result]
 
-    return selector
+def nongrace_leaves_in_each_tuplet_function(argument, level: int = None):
+    """
+    Selects nongrace leaves in each tuplet.
+    """
+    tuplets = abjad.select.tuplets(argument, level=level)
+    leaves = [abjad.select.leaves(_, grace=False) for _ in tuplets]
+    return leaves
 
 
 def after_grace_container(
