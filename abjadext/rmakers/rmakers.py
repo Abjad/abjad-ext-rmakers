@@ -14508,8 +14508,7 @@ class ForceFractionCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for tuplet in abjad.select.tuplets(selection):
-            tuplet.force_fraction = True
+        force_fraction_function(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16465,6 +16464,14 @@ def force_fraction(
     Makes force fraction command.
     """
     return ForceFractionCommand(selector=selector)
+
+
+def force_fraction_function(argument) -> None:
+    """
+    Sets ``force_fraction=True`` on all tuplets in ``argument``.
+    """
+    for tuplet in abjad.select.tuplets(argument):
+        tuplet.force_fraction = True
 
 
 def force_note(
