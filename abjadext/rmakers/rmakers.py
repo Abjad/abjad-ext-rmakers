@@ -14664,7 +14664,8 @@ class ForceRepeatTieCommand(Command):
         _do_force_repeat_tie_command(selection, threshold=self.threshold)
 
 
-def _do_force_repeat_tie_command(selection, *, threshold=None) -> None:
+def _do_force_repeat_tie_command(container, *, threshold=None) -> None:
+    assert isinstance(container, abjad.Container), container
     if callable(threshold):
         inequality = threshold
     elif threshold in (None, False):
@@ -14684,7 +14685,7 @@ def _do_force_repeat_tie_command(selection, *, threshold=None) -> None:
             return item >= abjad.Duration(threshold)
 
     attach_repeat_ties = []
-    for leaf in abjad.select.leaves(selection):
+    for leaf in abjad.select.leaves(container):
         if abjad.get.has_indicator(leaf, abjad.Tie):
             next_leaf = abjad.get.leaf(leaf, 1)
             if next_leaf is None:
