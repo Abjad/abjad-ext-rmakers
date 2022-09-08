@@ -14340,7 +14340,7 @@ class DenominatorCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         assert self.denominator is not None
-        denominator_function(selection, self.denominator)
+        denominator_rfunction(selection, self.denominator)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -14508,7 +14508,7 @@ class ForceFractionCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        force_fraction_function(selection)
+        force_fraction_rfunction(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15285,7 +15285,7 @@ class UnbeamCommand(Command):
             selections = self.selector(selection)
         else:
             selections = selection
-        unbeam_function(selections)
+        unbeam_rfunction(selections)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15307,10 +15307,10 @@ def nongrace_leaves_in_each_tuplet(level: int = -1):
     """
     Makes nongrace leaves in each tuplet selector.
     """
-    return lambda _: nongrace_leaves_in_each_tuplet_function(_, level=level)
+    return lambda _: nongrace_leaves_in_each_tuplet_rfunction(_, level=level)
 
 
-def nongrace_leaves_in_each_tuplet_function(argument, level: int = -1):
+def nongrace_leaves_in_each_tuplet_rfunction(argument, level: int = -1):
     """
     Selects nongrace leaves in each tuplet.
     """
@@ -15518,7 +15518,7 @@ def beam(
     )
 
 
-def beam_function(
+def beam_rfunction(
     argument,
     *,
     beam_lone_notes: bool = False,
@@ -15558,7 +15558,7 @@ def beam_groups(
     )
 
 
-def beam_groups_function(
+def beam_groups_rfunction(
     argument,
     *,
     beam_lone_notes: bool = False,
@@ -16201,7 +16201,7 @@ def denominator(
     return DenominatorCommand(selector=selector, denominator=denominator)
 
 
-def denominator_function(argument, denominator: int | abjad.typings.Duration) -> None:
+def denominator_rfunction(argument, denominator: int | abjad.typings.Duration) -> None:
     r"""
     Sets denominator of every tuplet in ``argument`` to ``denominator``.
     """
@@ -16466,7 +16466,7 @@ def force_fraction(
     return ForceFractionCommand(selector=selector)
 
 
-def force_fraction_function(argument) -> None:
+def force_fraction_rfunction(argument) -> None:
     """
     Sets ``force_fraction=True`` on all tuplets in ``argument``.
     """
@@ -16500,7 +16500,7 @@ def force_rest(selector: typing.Callable | None) -> ForceRestCommand:
     return ForceRestCommand(selector=selector)
 
 
-def force_rest_function(argument) -> None:
+def force_rest_rfunction(argument) -> None:
     """
     Forces rests in ``argument``.
     """
@@ -18341,7 +18341,7 @@ def unbeam(
     return UnbeamCommand(selector=selector)
 
 
-def unbeam_function(argument) -> None:
+def unbeam_rfunction(argument) -> None:
     """
     Unbeams leaves in ``argument``.
     """
