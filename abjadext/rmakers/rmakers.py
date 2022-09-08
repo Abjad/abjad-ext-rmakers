@@ -898,19 +898,11 @@ class RhythmMaker:
         previous_state: dict = None,
     ) -> list[abjad.Component]:
         self.previous_state = dict(previous_state or [])
-        time_signatures = [abjad.TimeSignature(_) for _ in divisions]
-        divisions = [abjad.NonreducedFraction(_) for _ in divisions]
-        staff = self._make_staff(time_signatures)
         music = self._make_music(divisions)
-        music = list(abjad.sequence.flatten(music, depth=-1))
-        assert all(isinstance(_, abjad.Component) for _ in music), repr(music)
-        assert isinstance(music, list), repr(music)
-        music_voice = staff["RhythmMaker.Music"]
-        music_voice.extend(music)
+        music_voice = _wrap_music_in_time_signature_staff(music, divisions)
         divisions_consumed = len(divisions)
         if self.already_cached_state is not True:
             self._cache_state(music_voice, divisions_consumed)
-        self._validate_tuplets(music_voice)
         selection = music_voice[:]
         music_voice[:] = []
         return list(selection)
@@ -968,20 +960,6 @@ class RhythmMaker:
     def _make_music(self, divisions):
         return []
 
-    @staticmethod
-    def _make_staff(time_signatures):
-        assert time_signatures, repr(time_signatures)
-        staff = abjad.Staff(simultaneous=True)
-        time_signature_voice = abjad.Voice(name="TimeSignatureVoice")
-        for time_signature in time_signatures:
-            duration = time_signature.pair
-            skip = abjad.Skip(1, multiplier=duration)
-            time_signature_voice.append(skip)
-            abjad.attach(time_signature, skip, context="Staff")
-        staff.append(time_signature_voice)
-        staff.append(abjad.Voice(name="RhythmMaker.Music"))
-        return staff
-
     def _make_tuplets(self, divisions, leaf_lists):
         assert len(divisions) == len(leaf_lists)
         tuplets = []
@@ -1030,10 +1008,37 @@ class RhythmMaker:
             {"divisions": scaled_divisions, "lcd": lcd, "counts": scaled_counts}
         )
 
-    def _validate_tuplets(self, selections):
-        for tuplet in abjad.iterate.components(selections, abjad.Tuplet):
-            assert abjad.Multiplier(tuplet.multiplier).normalized(), repr(tuplet)
-            assert len(tuplet), repr(tuplet)
+
+def _make_time_signature_staff(time_signatures):
+    assert time_signatures, repr(time_signatures)
+    staff = abjad.Staff(simultaneous=True)
+    time_signature_voice = abjad.Voice(name="TimeSignatureVoice")
+    for time_signature in time_signatures:
+        duration = time_signature.pair
+        skip = abjad.Skip(1, multiplier=duration)
+        time_signature_voice.append(skip)
+        abjad.attach(time_signature, skip, context="Staff")
+    staff.append(time_signature_voice)
+    staff.append(abjad.Voice(name="RhythmMaker.Music"))
+    return staff
+
+
+def _validate_tuplets(selections):
+    for tuplet in abjad.iterate.components(selections, abjad.Tuplet):
+        assert abjad.Multiplier(tuplet.multiplier).normalized(), repr(tuplet)
+        assert len(tuplet), repr(tuplet)
+
+
+def _wrap_music_in_time_signature_staff(music, divisions):
+    music = abjad.sequence.flatten(music, depth=-1)
+    assert all(isinstance(_, abjad.Component) for _ in music), repr(music)
+    assert isinstance(music, list), repr(music)
+    time_signatures = [abjad.TimeSignature(_) for _ in divisions]
+    staff = _make_time_signature_staff(time_signatures)
+    music_voice = staff["RhythmMaker.Music"]
+    music_voice.extend(music)
+    _validate_tuplets(music_voice)
+    return music_voice
 
 
 @dataclasses.dataclass(slots=True, unsafe_hash=True)
@@ -7453,6 +7458,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         component: abjad.MultimeasureRest | abjad.Skip
         components = []
         for division in divisions:
+            division = abjad.NonreducedFraction(division)
             assert isinstance(division, abjad.NonreducedFraction)
             multiplier = division / self.duration
             if self.prototype is abjad.Note:
@@ -8250,18 +8256,30 @@ class NoteRhythmMaker(RhythmMaker):
     """
 
     def _make_music(self, divisions) -> list[list[abjad.Leaf | abjad.Tuplet]]:
-        selections = []
-        spelling = self.spelling
-        leaf_maker = abjad.LeafMaker(
-            increase_monotonic=spelling.increase_monotonic,
-            forbidden_note_duration=spelling.forbidden_note_duration,
-            forbidden_rest_duration=spelling.forbidden_rest_duration,
+        return _make_note_rhythm_maker_music(
+            divisions,
+            spelling=self.spelling,
             tag=self.tag,
         )
-        for division in divisions:
-            selection = leaf_maker(pitches=0, durations=[division])
-            selections.append(list(selection))
-        return selections
+
+
+def _make_note_rhythm_maker_music(
+    divisions,
+    *,
+    spelling=None,
+    tag=None,
+) -> list[list[abjad.Leaf | abjad.Tuplet]]:
+    selections = []
+    leaf_maker = abjad.LeafMaker(
+        increase_monotonic=spelling.increase_monotonic,
+        forbidden_note_duration=spelling.forbidden_note_duration,
+        forbidden_rest_duration=spelling.forbidden_rest_duration,
+        tag=tag,
+    )
+    for division in divisions:
+        selection = leaf_maker(pitches=0, durations=[division])
+        selections.append(list(selection))
+    return selections
 
 
 @dataclasses.dataclass(slots=True, unsafe_hash=True)
@@ -14102,6 +14120,12 @@ def note(
     return NoteRhythmMaker(spelling=spelling, tag=tag)
 
 
+def note_function(
+    divisions, *, spelling: Spelling = Spelling(), tag: abjad.Tag = abjad.Tag()
+) -> list[list[abjad.Leaf | abjad.Tuplet]]:
+    return _make_note_rhythm_maker_music(divisions, spelling=spelling, tag=tag)
+
+
 def talea(
     counts: typing.Sequence[int],
     denominator: int,
@@ -14161,7 +14185,7 @@ def _do_beam_command(
     tag: abjad.Tag = None,
 ):
     for selection in argument:
-        unbeam()(selection)
+        unbeam_function(selection)
         leaves = abjad.select.leaves(selection)
         abjad.beam(
             leaves,
@@ -14237,6 +14261,7 @@ class Command:
     __documentation_section__ = "Commands"
 
     def __post_init__(self):
+        # raise Exception("ASDF")
         if self.selector is not None:
             assert callable(self.selector), repr(self.selector)
 
@@ -14636,44 +14661,46 @@ class ForceRepeatTieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        if callable(self.threshold):
-            inequality = self.threshold
-        elif self.threshold in (None, False):
+        _do_force_repeat_tie_command(selection, threshold=self.threshold)
 
-            def inequality(item):
-                return item < 0
 
-        elif self.threshold is True:
+def _do_force_repeat_tie_command(selection, *, threshold=None) -> None:
+    if callable(threshold):
+        inequality = threshold
+    elif threshold in (None, False):
 
-            def inequality(item):
-                return item >= 0
+        def inequality(item):
+            return item < 0
 
-        else:
-            assert isinstance(self.threshold, tuple) and len(self.threshold) == 2, repr(
-                self.threshold
-            )
+    elif threshold is True:
 
-            def inequality(item):
-                return item >= abjad.Duration(self.threshold)
+        def inequality(item):
+            return item >= 0
 
-        attach_repeat_ties = []
-        for leaf in abjad.select.leaves(selection):
-            if abjad.get.has_indicator(leaf, abjad.Tie):
-                next_leaf = abjad.get.leaf(leaf, 1)
-                if next_leaf is None:
-                    continue
-                if not isinstance(next_leaf, abjad.Chord | abjad.Note):
-                    continue
-                if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
-                    continue
-                duration = abjad.get.duration(leaf)
-                if not inequality(duration):
-                    continue
-                attach_repeat_ties.append(next_leaf)
-                abjad.detach(abjad.Tie, leaf)
-        for leaf in attach_repeat_ties:
-            repeat_tie = abjad.RepeatTie()
-            abjad.attach(repeat_tie, leaf)
+    else:
+        assert isinstance(threshold, tuple) and len(threshold) == 2, repr(threshold)
+
+        def inequality(item):
+            return item >= abjad.Duration(threshold)
+
+    attach_repeat_ties = []
+    for leaf in abjad.select.leaves(selection):
+        if abjad.get.has_indicator(leaf, abjad.Tie):
+            next_leaf = abjad.get.leaf(leaf, 1)
+            if next_leaf is None:
+                continue
+            if not isinstance(next_leaf, abjad.Chord | abjad.Note):
+                continue
+            if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
+                continue
+            duration = abjad.get.duration(leaf)
+            if not inequality(duration):
+                continue
+            attach_repeat_ties.append(next_leaf)
+            abjad.detach(abjad.Tie, leaf)
+    for leaf in attach_repeat_ties:
+        repeat_tie = abjad.RepeatTie()
+        abjad.attach(repeat_tie, leaf)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -14988,9 +15015,13 @@ class RepeatTieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for note in abjad.select.notes(selection):
-            tie = abjad.RepeatTie()
-            abjad.attach(tie, note, tag=tag)
+        _do_repeat_tie_command(selection, tag=tag)
+
+
+def _do_repeat_tie_command(argument, *, tag):
+    for note in abjad.select.notes(argument):
+        tie = abjad.RepeatTie()
+        abjad.attach(tie, note, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15026,94 +15057,104 @@ class RewriteMeterCommand(Command):
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         assert isinstance(voice, abjad.Voice), repr(voice)
-        staff = abjad.get.parentage(voice).parent
-        assert isinstance(staff, abjad.Staff), repr(staff)
-        time_signature_voice = staff["TimeSignatureVoice"]
-        assert isinstance(time_signature_voice, abjad.Voice)
-        meters, preferred_meters = [], []
-        for skip in time_signature_voice:
-            time_signature = abjad.get.indicator(skip, abjad.TimeSignature)
-            meter = abjad.Meter(time_signature)
-            meters.append(meter)
-        durations = [abjad.Duration(_) for _ in meters]
-        reference_meters = self.reference_meters or ()
-        command = SplitMeasuresCommand()
-        command(voice, durations=durations)
-        selections = abjad.select.group_by_measure(voice[:])
-        for meter, selection in zip(meters, selections):
-            for reference_meter in reference_meters:
-                if reference_meter == meter:
-                    meter = reference_meter
-                    break
-            preferred_meters.append(meter)
-            nontupletted_leaves = []
-            for leaf in abjad.iterate.leaves(selection):
-                if not abjad.get.parentage(leaf).count(abjad.Tuplet):
-                    nontupletted_leaves.append(leaf)
-            unbeam()(nontupletted_leaves)
-            abjad.Meter.rewrite_meter(
-                selection,
-                meter,
-                boundary_depth=self.boundary_depth,
-                rewrite_tuplets=False,
-            )
-        selections = abjad.select.group_by_measure(voice[:])
-        for meter, selection in zip(preferred_meters, selections):
-            leaves = abjad.select.leaves(selection, grace=False)
-            beat_durations = []
-            beat_offsets = meter.depthwise_offset_inventory[1]
-            for start, stop in abjad.sequence.nwise(beat_offsets):
-                beat_duration = stop - start
-                beat_durations.append(beat_duration)
-            beamable_groups = self._make_beamable_groups(leaves, beat_durations)
-            for beamable_group in beamable_groups:
-                if not beamable_group:
-                    continue
-                abjad.beam(
-                    beamable_group,
-                    beam_rests=False,
-                    tag=abjad.Tag("rmakers.RewriteMeterCommand.__call__"),
-                )
+        _do_rewrite_meter_command(
+            voice,
+            boundary_depth=self.boundary_depth,
+            reference_meters=self.reference_meters,
+            tag=tag,
+        )
 
-    @staticmethod
-    def _make_beamable_groups(components, durations):
-        music_duration = abjad.get.duration(components)
-        if music_duration != sum(durations):
-            message = f"music duration {music_duration} does not equal"
-            message += f" total duration {sum(durations)}:\n"
-            message += f"   {components}\n"
-            message += f"   {durations}"
-            raise Exception(message)
-        component_to_timespan = []
-        start_offset = abjad.Offset(0)
-        for component in components:
-            duration = abjad.get.duration(component)
-            stop_offset = start_offset + duration
-            timespan = abjad.Timespan(start_offset, stop_offset)
-            pair = (component, timespan)
-            component_to_timespan.append(pair)
-            start_offset = stop_offset
-        group_to_target_duration = []
-        start_offset = abjad.Offset(0)
-        for target_duration in durations:
-            stop_offset = start_offset + target_duration
-            group_timespan = abjad.Timespan(start_offset, stop_offset)
-            start_offset = stop_offset
-            group = []
-            for component, component_timespan in component_to_timespan:
-                if component_timespan.happens_during_timespan(group_timespan):
-                    group.append(component)
-            pair = ([group], target_duration)
-            group_to_target_duration.append(pair)
-        beamable_groups = []
-        for group, target_duration in group_to_target_duration:
-            group_duration = abjad.get.duration(group)
-            assert group_duration <= target_duration
-            if group_duration == target_duration:
-                beamable_groups.append(group)
-            else:
-                beamable_groups.append([])
-        return beamable_groups
+
+def _do_rewrite_meter_command(
+    voice, *, boundary_depth=None, reference_meters=None, tag=None
+):
+    staff = abjad.get.parentage(voice).parent
+    assert isinstance(staff, abjad.Staff), repr(staff)
+    time_signature_voice = staff["TimeSignatureVoice"]
+    assert isinstance(time_signature_voice, abjad.Voice)
+    meters, preferred_meters = [], []
+    for skip in time_signature_voice:
+        time_signature = abjad.get.indicator(skip, abjad.TimeSignature)
+        meter = abjad.Meter(time_signature)
+        meters.append(meter)
+    durations = [abjad.Duration(_) for _ in meters]
+    reference_meters = reference_meters or ()
+    split_measures_function(voice, durations=durations)
+    selections = abjad.select.group_by_measure(voice[:])
+    for meter, selection in zip(meters, selections):
+        for reference_meter in reference_meters:
+            if reference_meter == meter:
+                meter = reference_meter
+                break
+        preferred_meters.append(meter)
+        nontupletted_leaves = []
+        for leaf in abjad.iterate.leaves(selection):
+            if not abjad.get.parentage(leaf).count(abjad.Tuplet):
+                nontupletted_leaves.append(leaf)
+        unbeam_function(nontupletted_leaves)
+        abjad.Meter.rewrite_meter(
+            selection,
+            meter,
+            boundary_depth=boundary_depth,
+            rewrite_tuplets=False,
+        )
+    selections = abjad.select.group_by_measure(voice[:])
+    for meter, selection in zip(preferred_meters, selections):
+        leaves = abjad.select.leaves(selection, grace=False)
+        beat_durations = []
+        beat_offsets = meter.depthwise_offset_inventory[1]
+        for start, stop in abjad.sequence.nwise(beat_offsets):
+            beat_duration = stop - start
+            beat_durations.append(beat_duration)
+        beamable_groups = _make_beamable_groups(leaves, beat_durations)
+        for beamable_group in beamable_groups:
+            if not beamable_group:
+                continue
+            abjad.beam(
+                beamable_group,
+                beam_rests=False,
+                tag=abjad.Tag("rmakers.RewriteMeterCommand.__call__"),
+            )
+
+
+def _make_beamable_groups(components, durations):
+    music_duration = abjad.get.duration(components)
+    if music_duration != sum(durations):
+        message = f"music duration {music_duration} does not equal"
+        message += f" total duration {sum(durations)}:\n"
+        message += f"   {components}\n"
+        message += f"   {durations}"
+        raise Exception(message)
+    component_to_timespan = []
+    start_offset = abjad.Offset(0)
+    for component in components:
+        duration = abjad.get.duration(component)
+        stop_offset = start_offset + duration
+        timespan = abjad.Timespan(start_offset, stop_offset)
+        pair = (component, timespan)
+        component_to_timespan.append(pair)
+        start_offset = stop_offset
+    group_to_target_duration = []
+    start_offset = abjad.Offset(0)
+    for target_duration in durations:
+        stop_offset = start_offset + target_duration
+        group_timespan = abjad.Timespan(start_offset, stop_offset)
+        start_offset = stop_offset
+        group = []
+        for component, component_timespan in component_to_timespan:
+            if component_timespan.happens_during_timespan(group_timespan):
+                group.append(component)
+        pair = ([group], target_duration)
+        group_to_target_duration.append(pair)
+    beamable_groups = []
+    for group, target_duration in group_to_target_duration:
+        group_duration = abjad.get.duration(group)
+        assert group_duration <= target_duration
+        if group_duration == target_duration:
+            beamable_groups.append(group)
+        else:
+            beamable_groups.append([])
+    return beamable_groups
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15197,22 +15238,26 @@ class SplitMeasuresCommand(Command):
         durations: typing.Sequence[abjad.typings.Duration] = (),
         tag: abjad.Tag = abjad.Tag(),
     ) -> None:
-        if not durations:
-            # TODO: implement abjad.get() method for measure durations
-            staff = abjad.get.parentage(voice).parent
-            assert isinstance(staff, abjad.Staff)
-            voice_ = staff["TimeSignatureVoice"]
-            assert isinstance(voice_, abjad.Voice)
-            durations = [abjad.get.duration(_) for _ in voice_]
-        total_duration = abjad.sequence.sum(durations)
-        music_duration = abjad.get.duration(voice)
-        if total_duration != music_duration:
-            message = f"Total duration of splits is {total_duration!s}"
-            message += f" but duration of music is {music_duration!s}:"
-            message += f"\ndurations: {durations}."
-            message += f"\nvoice: {voice[:]}."
-            raise Exception(message)
-        abjad.mutate.split(voice[:], durations=durations)
+        _do_split_measures_command(voice, durations=durations, tag=tag)
+
+
+def _do_split_measures_command(voice, *, durations=None, tag=None):
+    if not durations:
+        # TODO: implement abjad.get() method for measure durations
+        staff = abjad.get.parentage(voice).parent
+        assert isinstance(staff, abjad.Staff)
+        voice_ = staff["TimeSignatureVoice"]
+        assert isinstance(voice_, abjad.Voice)
+        durations = [abjad.get.duration(_) for _ in voice_]
+    total_duration = abjad.sequence.sum(durations)
+    music_duration = abjad.get.duration(voice)
+    if total_duration != music_duration:
+        message = f"Total duration of splits is {total_duration!s}"
+        message += f" but duration of music is {music_duration!s}:"
+        message += f"\ndurations: {durations}."
+        message += f"\nvoice: {voice[:]}."
+        raise Exception(message)
+    abjad.mutate.split(voice[:], durations=durations)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16493,6 +16538,14 @@ def force_repeat_tie(
     return ForceRepeatTieCommand(selector=selector, threshold=threshold)
 
 
+def force_repeat_tie_function(
+    argument,
+    *,
+    threshold: bool | tuple[int, int] | typing.Callable = True,
+) -> None:
+    _do_force_repeat_tie_command(argument, threshold=threshold)
+
+
 def force_rest(selector: typing.Callable | None) -> ForceRestCommand:
     """
     Makes force rest command.
@@ -17110,6 +17163,10 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
     return RepeatTieCommand(selector=selector)
 
 
+def repeat_tie_function(argument, *, tag=None) -> None:
+    _do_repeat_tie_command(argument, tag=tag)
+
+
 def reduce_multiplier(
     selector: typing.Callable | None = None,
 ) -> ReduceMultiplierCommand:
@@ -17134,6 +17191,17 @@ def rewrite_meter(
     """
     return RewriteMeterCommand(
         boundary_depth=boundary_depth, reference_meters=reference_meters
+    )
+
+
+def rewrite_meter_function(
+    argument,
+    *,
+    boundary_depth: int = None,
+    reference_meters: typing.Sequence[abjad.Meter] = (),
+) -> None:
+    _do_rewrite_meter_command(
+        argument, boundary_depth=boundary_depth, reference_meters=reference_meters
     )
 
 
@@ -17632,6 +17700,10 @@ def split_measures() -> SplitMeasuresCommand:
     Makes split measures command.
     """
     return SplitMeasuresCommand()
+
+
+def split_measures_function(argument, *, durations=None, tag=None) -> None:
+    _do_split_measures_command(argument, durations=durations, tag=tag)
 
 
 def tie(selector: typing.Callable | None = None) -> TieCommand:
@@ -18741,7 +18813,7 @@ class Stack:
     ) -> list[abjad.Component]:
         time_signatures_ = [abjad.TimeSignature(_) for _ in time_signatures]
         divisions_ = [abjad.NonreducedFraction(_) for _ in time_signatures]
-        staff = RhythmMaker._make_staff(time_signatures_)
+        staff = _make_time_signature_staff(time_signatures_)
         music_voice = staff["RhythmMaker.Music"]
         divisions = self._apply_division_expression(divisions_)
         selection = self.maker(divisions, previous_state=previous_state)
