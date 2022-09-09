@@ -22,7 +22,7 @@ def example(selection, time_signatures=None, *, includes=None):
     return lilypond_file
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Incise:
     r"""
     Incise specifier.
@@ -115,7 +115,7 @@ class Incise:
 
     """
 
-    body_ratio: abjad.typings.Ratio = (1,)
+    body_ratio: abjad.typings.Ratio = abjad.Ratio([1])
     fill_with_rests: bool = False
     outer_divisions_only: bool = False
     prefix_counts: typing.Sequence[int] = ()
@@ -127,15 +127,15 @@ class Incise:
     __documentation_section__ = "Specifiers"
 
     def __post_init__(self):
-        self.prefix_talea = tuple(self.prefix_talea or ())
+        assert isinstance(self.prefix_talea, typing.Sequence), repr(self.prefix_talea)
         assert self._is_integer_tuple(self.prefix_talea)
-        self.prefix_counts = tuple(self.prefix_counts or ())
+        assert isinstance(self.prefix_counts, typing.Sequence), repr(self.prefix_counts)
         assert self._is_length_tuple(self.prefix_counts)
         if self.prefix_talea:
             assert self.prefix_counts
-        self.suffix_talea = tuple(self.suffix_talea or ())
+        assert isinstance(self.suffix_talea, typing.Sequence), repr(self.suffix_talea)
         assert self._is_integer_tuple(self.suffix_talea)
-        self.suffix_counts = tuple(self.suffix_counts or ())
+        assert isinstance(self.suffix_counts, typing.Sequence), repr(self.suffix_counts)
         assert self._is_length_tuple(self.suffix_counts)
         if self.suffix_talea:
             assert self.suffix_counts
@@ -145,9 +145,11 @@ class Incise:
             )
         if self.prefix_talea or self.suffix_talea:
             assert self.talea_denominator is not None
-        self.body_ratio = abjad.Ratio(self.body_ratio)
-        self.fill_with_rests = bool(self.fill_with_rests)
-        self.outer_divisions_only = bool(self.outer_divisions_only)
+        assert isinstance(self.body_ratio, abjad.Ratio), repr(self.body_ratio)
+        assert isinstance(self.fill_with_rests, bool), repr(self.fill_with_rests)
+        assert isinstance(self.outer_divisions_only, bool), repr(
+            self.outer_divisions_only
+        )
 
     @staticmethod
     def _is_integer_tuple(argument):
@@ -172,7 +174,7 @@ class Incise:
             return tuple(reversed(argument))
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Interpolation:
     """
     Interpolation specifier.
@@ -180,24 +182,28 @@ class Interpolation:
     ..  container:: example
 
         >>> rmakers.Interpolation(
-        ...     start_duration=(1, 4),
-        ...     stop_duration=(1, 16),
-        ...     written_duration=(1, 16),
+        ...     start_duration=abjad.Duration(1, 4),
+        ...     stop_duration=abjad.Duration(1, 16),
+        ...     written_duration=abjad.Duration(1, 16),
         ... )
         Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
 
     """
 
-    start_duration: abjad.typings.Duration = (1, 8)
-    stop_duration: abjad.typings.Duration = (1, 16)
-    written_duration: abjad.typings.Duration = (1, 16)
+    start_duration: abjad.Duration = abjad.Duration(1, 8)
+    stop_duration: abjad.Duration = abjad.Duration(1, 16)
+    written_duration: abjad.Duration = abjad.Duration(1, 16)
 
     __documentation_section__ = "Specifiers"
 
     def __post_init__(self) -> None:
-        self.start_duration = abjad.Duration(self.start_duration)
-        self.stop_duration = abjad.Duration(self.stop_duration)
-        self.written_duration = abjad.Duration(self.written_duration)
+        assert isinstance(self.start_duration, abjad.Duration), repr(
+            self.start_duration
+        )
+        assert isinstance(self.stop_duration, abjad.Duration), repr(self.stop_duration)
+        assert isinstance(self.written_duration, abjad.Duration), repr(
+            self.written_duration
+        )
 
     def reverse(self) -> "Interpolation":
         """
@@ -208,9 +214,9 @@ class Interpolation:
             Changes accelerando specifier to ritardando specifier:
 
             >>> specifier = rmakers.Interpolation(
-            ...     start_duration=(1, 4),
-            ...     stop_duration=(1, 16),
-            ...     written_duration=(1, 16),
+            ...     start_duration=abjad.Duration(1, 4),
+            ...     stop_duration=abjad.Duration(1, 16),
+            ...     written_duration=abjad.Duration(1, 16),
             ... )
             >>> specifier.reverse()
             Interpolation(start_duration=Duration(1, 16), stop_duration=Duration(1, 4), written_duration=Duration(1, 16))
@@ -220,9 +226,9 @@ class Interpolation:
             Changes ritardando specifier to accelerando specifier:
 
             >>> specifier = rmakers.Interpolation(
-            ...     start_duration=(1, 16),
-            ...     stop_duration=(1, 4),
-            ...     written_duration=(1, 16),
+            ...     start_duration=abjad.Duration(1, 16),
+            ...     stop_duration=abjad.Duration(1, 4),
+            ...     written_duration=abjad.Duration(1, 16),
             ... )
             >>> specifier.reverse()
             Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
@@ -235,7 +241,7 @@ class Interpolation:
         )
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Spelling:
     r"""
     Duration spelling specifier.
@@ -352,7 +358,7 @@ class Spelling:
         ...     rmakers.talea(
         ...         [1, 1, 1, 1, 4, -4],
         ...         16,
-        ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 4)),
+        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 4)),
         ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
@@ -409,7 +415,7 @@ class Spelling:
         ...     rmakers.talea(
         ...         [1, 1, 1, 1, 4, -4],
         ...         16,
-        ...         spelling=rmakers.Spelling(forbidden_rest_duration=(1, 4)),
+        ...         spelling=rmakers.Spelling(forbidden_rest_duration=abjad.Duration(1, 4)),
         ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
@@ -458,21 +464,25 @@ class Spelling:
 
     """
 
-    forbidden_note_duration: abjad.typings.Duration | None = None
-    forbidden_rest_duration: abjad.typings.Duration | None = None
+    forbidden_note_duration: abjad.Duration | None = None
+    forbidden_rest_duration: abjad.Duration | None = None
     increase_monotonic: bool = False
 
     __documentation_section__ = "Specifiers"
 
     def __post_init__(self):
         if self.forbidden_note_duration is not None:
-            self.forbidden_note_duration = abjad.Duration(self.forbidden_note_duration)
+            assert isinstance(self.forbidden_note_duration, abjad.Duration), repr(
+                self.forbidden_note_duration
+            )
         if self.forbidden_rest_duration is not None:
-            self.forbidden_rest_duration = abjad.Duration(self.forbidden_rest_duration)
-        self.increase_monotonic = bool(self.increase_monotonic)
+            assert isinstance(self.forbidden_rest_duration, abjad.Duration), repr(
+                self.forbidden_rest_duration
+            )
+        assert isinstance(self.increase_monotonic, bool), repr(self.increase_monotonic)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Talea:
     """
     Talea specifier.
@@ -522,7 +532,7 @@ class Talea:
         ... )
 
         >>> talea.preamble
-        (1, 1, 1, 1)
+        [1, 1, 1, 1]
 
     ..  container:: example
 
@@ -550,13 +560,13 @@ class Talea:
     __documentation_section__ = "Specifiers"
 
     def __post_init__(self):
-        self.counts = tuple(self.counts)
+        assert isinstance(self.counts, typing.Sequence), repr(self.counts)
         for count in self.counts:
             assert isinstance(count, int) or count in "+-", repr(count)
         assert abjad.math.is_nonnegative_integer_power_of_two(self.denominator)
-        self.end_counts = tuple(self.end_counts or ())
+        assert isinstance(self.end_counts, typing.Sequence), repr(self.end_counts)
         assert all(isinstance(_, int) for _ in self.end_counts)
-        self.preamble = tuple(self.preamble or ())
+        assert isinstance(self.preamble, typing.Sequence), repr(self.preamble)
         assert all(isinstance(_, int) for _ in self.preamble)
 
     def __contains__(self, argument: int) -> bool:
@@ -779,31 +789,31 @@ class Talea:
             ... )
 
             >>> talea.advance(0)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 1, 1, 1))
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 1, 1, 1])
 
             >>> talea.advance(1)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 1, 1))
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 1, 1])
 
             >>> talea.advance(2)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 1))
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 1])
 
             >>> talea.advance(3)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1,))
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1])
 
             >>> talea.advance(4)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=())
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=())
 
             >>> talea.advance(5)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 1, 3, 2, 4, 1, 1))
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 1, 3, 2, 4, 1, 1])
 
             >>> talea.advance(6)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(1, 3, 2, 4, 1, 1))
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 3, 2, 4, 1, 1])
 
             >>> talea.advance(7)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(3, 2, 4, 1, 1))
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[3, 2, 4, 1, 1])
 
             >>> talea.advance(8)
-            Talea(counts=(2, 1, 3, 2, 4, 1, 1), denominator=16, end_counts=(), preamble=(2, 2, 4, 1, 1))
+            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[2, 2, 4, 1, 1])
 
         ..  container:: example
 
@@ -811,13 +821,13 @@ class Talea:
 
             >>> talea = rmakers.Talea([1, 2, 3, 4], 16)
             >>> talea
-            Talea(counts=(1, 2, 3, 4), denominator=16, end_counts=(), preamble=())
+            Talea(counts=[1, 2, 3, 4], denominator=16, end_counts=(), preamble=())
 
             >>> talea.advance(10)
-            Talea(counts=(1, 2, 3, 4), denominator=16, end_counts=(), preamble=())
+            Talea(counts=[1, 2, 3, 4], denominator=16, end_counts=(), preamble=())
 
             >>> talea.advance(20)
-            Talea(counts=(1, 2, 3, 4), denominator=16, end_counts=(), preamble=())
+            Talea(counts=[1, 2, 3, 4], denominator=16, end_counts=(), preamble=())
 
         """
         assert isinstance(weight, int), repr(weight)
@@ -865,17 +875,21 @@ def interpolate(
     """
     Makes interpolation.
     """
-    return Interpolation(start_duration, stop_duration, written_duration)
+    return Interpolation(
+        abjad.Duration(start_duration),
+        abjad.Duration(stop_duration),
+        abjad.Duration(written_duration),
+    )
 
 
-@dataclasses.dataclass(slots=True, unsafe_hash=True)
+@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
 class RhythmMaker:
     """
     Rhythm-maker baseclass.
     """
 
     already_cached_state: bool = dataclasses.field(
-        init=False, repr=False, compare=False
+        default=False, init=False, repr=False, compare=False
     )
     previous_state: dict = dataclasses.field(
         default_factory=dict, init=False, repr=False
@@ -887,7 +901,7 @@ class RhythmMaker:
     __documentation_section__ = "Rhythm-makers"
 
     def __post_init__(self):
-        self.already_cached_state = False
+        assert isinstance(self.already_cached_state, bool)
         assert isinstance(self.previous_state, dict), repr(self.previous_state)
         assert isinstance(self.spelling, Spelling), repr(self.spelling)
         assert isinstance(self.state, dict), repr(self.state)
@@ -1044,7 +1058,7 @@ def _wrap_music_in_time_signature_staff(music, divisions):
     return music_voice
 
 
-@dataclasses.dataclass(slots=True, unsafe_hash=True)
+@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
 class AccelerandoRhythmMaker(RhythmMaker):
     r"""
     Accelerando rhythm-maker.
@@ -4066,7 +4080,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
-        self.interpolations = tuple(self.interpolations)
+        assert isinstance(self.interpolations, typing.Sequence), repr(
+            self.interpolations
+        )
         assert all(isinstance(_, Interpolation) for _ in self.interpolations)
 
     @staticmethod
@@ -4316,7 +4332,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         return durations_
 
 
-@dataclasses.dataclass(slots=True, unsafe_hash=True)
+@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
 class EvenDivisionRhythmMaker(RhythmMaker):
     r"""
     Even division rhythm-maker.
@@ -6229,8 +6245,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
         assert abjad.math.all_are_nonnegative_integer_powers_of_two(self.denominators)
-        self.denominators = tuple(self.denominators or ())
-        self.extra_counts = tuple(self.extra_counts or ())
+        assert isinstance(self.denominators, typing.Sequence), repr(self.denominators)
+        assert isinstance(self.extra_counts, typing.Sequence), repr(self.extra_counts)
         assert all(isinstance(_, int) for _ in self.extra_counts)
 
     def _make_music(self, divisions) -> list[abjad.Tuplet]:
@@ -6286,7 +6302,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         return tuplets
 
 
-@dataclasses.dataclass(slots=True, unsafe_hash=True)
+@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
 class IncisedRhythmMaker(RhythmMaker):
     r"""
     Incised rhythm-maker.
@@ -6737,7 +6753,7 @@ class IncisedRhythmMaker(RhythmMaker):
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=8,
-        ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 2)),
+        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 2)),
         ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
@@ -6918,7 +6934,7 @@ class IncisedRhythmMaker(RhythmMaker):
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
-        self.extra_counts = tuple(self.extra_counts or ())
+        assert isinstance(self.extra_counts, typing.Sequence), repr(self.extra_counts)
         assert abjad.math.all_are_nonnegative_integer_equivalent_numbers(
             self.extra_counts
         )
@@ -7145,7 +7161,7 @@ class IncisedRhythmMaker(RhythmMaker):
         )
 
 
-@dataclasses.dataclass(slots=True, unsafe_hash=True)
+@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
 class MultipliedDurationRhythmMaker(RhythmMaker):
     r"""
     Multiplied-duration rhythm-maker.
@@ -7444,7 +7460,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
     """
 
     prototype: type = abjad.Note
-    duration: abjad.typings.Duration = (1, 1)
+    duration: abjad.Duration = abjad.Duration(1, 1)
 
     _prototypes = (abjad.MultimeasureRest, abjad.Note, abjad.Rest, abjad.Skip)
 
@@ -7454,7 +7470,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             message = "must be note, (multimeasure) rest, skip:\n"
             message += f"   {repr(self.prototype)}"
             raise Exception(message)
-        self.duration = abjad.Duration(self.duration)
+        assert isinstance(self.duration, abjad.Duration), repr(self.duration)
 
     def _make_music(self, divisions) -> list[abjad.MultimeasureRest | abjad.Skip]:
         component: abjad.MultimeasureRest | abjad.Skip
@@ -7475,7 +7491,7 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         return components
 
 
-@dataclasses.dataclass(slots=True, unsafe_hash=True)
+@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
 class NoteRhythmMaker(RhythmMaker):
     r"""
     Note rhtyhm-maker.
@@ -8149,7 +8165,7 @@ class NoteRhythmMaker(RhythmMaker):
         Forbids notes with written duration greater than or equal to ``1/2``:
 
         >>> rhythm_maker = rmakers.NoteRhythmMaker(
-        ...     spelling=rmakers.Spelling(forbidden_note_duration=(1, 2))
+        ...     spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 2))
         ... )
         >>> divisions = [(5, 8), (3, 8)]
         >>> selections = rhythm_maker(divisions)
@@ -8284,7 +8300,7 @@ def _make_note_rhythm_maker_music(
     return selections
 
 
-@dataclasses.dataclass(slots=True, unsafe_hash=True)
+@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
 class TaleaRhythmMaker(RhythmMaker):
     r"""
     Talea rhythm-maker.
@@ -9338,7 +9354,7 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> new_command = dataclasses.replace(command)
         >>> new_command
-        Stack(maker=TaleaRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), extra_counts=(), read_talea_once_only=False, talea=Talea(counts=(5, -3, 3, 3), denominator=16, end_counts=(), preamble=())), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=Tag(string=''))
+        Stack(maker=TaleaRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), extra_counts=(), read_talea_once_only=False, talea=Talea(counts=[5, -3, 3, 3], denominator=16, end_counts=(), preamble=())), commands=(ExtractTrivialCommand(selector=None),), preprocessor=None, tag=Tag(string=''))
 
         >>> command == new_command
         True
@@ -10625,7 +10641,7 @@ class TaleaRhythmMaker(RhythmMaker):
         >>> stack = rmakers.stack(
         ...     rmakers.talea(
         ...         [1, 1, 1, 1, 4, 4], 16,
-        ...         spelling=rmakers.Spelling(forbidden_note_duration=(1, 4)),
+        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 4)),
         ...     ),
         ...     rmakers.beam(),
         ...     rmakers.extract_trivial(),
@@ -11876,7 +11892,7 @@ def _split_talea_extended_to_weights(preamble, read_talea_once_only, talea, weig
     return talea
 
 
-@dataclasses.dataclass(slots=True, unsafe_hash=True)
+@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
 class TupletRhythmMaker(RhythmMaker):
     r"""
     Tuplet rhythm-maker.
@@ -14002,19 +14018,20 @@ class TupletRhythmMaker(RhythmMaker):
 
     """
 
-    denominator: int | abjad.typings.Duration | None = None
-    tuplet_ratios: typing.Sequence[abjad.typings.Ratio] = ()
+    denominator: int | abjad.Duration | str | None = None
+    tuplet_ratios: typing.Sequence[abjad.Ratio] = ()
 
     def __post_init__(self):
         RhythmMaker.__post_init__(self)
         if self.denominator is not None:
-            if isinstance(self.denominator, tuple):
-                self.denominator = abjad.Duration(self.denominator)
             prototype = (abjad.Duration, int)
             assert self.denominator == "divisions" or isinstance(
                 self.denominator, prototype
             )
-        self.tuplet_ratios = tuple([abjad.Ratio(_) for _ in self.tuplet_ratios])
+        assert isinstance(self.tuplet_ratios, typing.Sequence), repr(self.tuplet_ratios)
+        assert all(isinstance(_, abjad.Ratio) for _ in self.tuplet_ratios), repr(
+            self.tuplet_ratios
+        )
 
     def _make_music(self, divisions) -> list[abjad.Tuplet]:
         tuplets = []
@@ -14039,7 +14056,8 @@ def accelerando(
     """
     interpolations_ = []
     for interpolation in interpolations:
-        interpolation_ = Interpolation(*interpolation)
+        interpolation_durations = [abjad.Duration(_) for _ in interpolation]
+        interpolation_ = Interpolation(*interpolation_durations)
         interpolations_.append(interpolation_)
     return AccelerandoRhythmMaker(
         interpolations=interpolations_, spelling=spelling, tag=tag
@@ -14108,8 +14126,9 @@ def multiplied_duration(
     """
     Makes multiplied-duration rhythm-maker.
     """
+    duration_ = abjad.Duration(duration)
     return MultipliedDurationRhythmMaker(
-        prototype=prototype, duration=duration, tag=tag
+        prototype=prototype, duration=duration_, tag=tag
     )
 
 
@@ -14194,18 +14213,19 @@ def talea_function(
 def tuplet(
     tuplet_ratios: typing.Sequence[abjad.typings.Ratio],
     # TODO: remove in favor of dedicated denominator control commands:
-    denominator: int | abjad.typings.Duration | None = None,
+    denominator: int | abjad.Duration | str | None = None,
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> TupletRhythmMaker:
     """
     Makes tuplet rhythm-maker.
     """
+    tuplet_ratios_ = [abjad.Ratio(_) for _ in tuplet_ratios]
     return TupletRhythmMaker(
         denominator=denominator,
         spelling=spelling,
         tag=tag,
-        tuplet_ratios=tuplet_ratios,
+        tuplet_ratios=tuplet_ratios_,
     )
 
 
@@ -18805,7 +18825,7 @@ class Stack:
         ...     rmakers.tuplet([(1, 2)]),
         ...     rmakers.force_fraction(),
         ... )
-        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(string=''))
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), denominator=None, tuplet_ratios=[Ratio(numbers=(1, 2))]), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(string=''))
 
     ..  container:: example
 
@@ -18819,10 +18839,10 @@ class Stack:
         >>> command_2 = dataclasses.replace(command_1)
 
         >>> command_1
-        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(string=''))
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), denominator=None, tuplet_ratios=[Ratio(numbers=(1, 2))]), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(string=''))
 
         >>> command_2
-        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), denominator=None, tuplet_ratios=(Ratio(numbers=(1, 2)),)), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(string=''))
+        Stack(maker=TupletRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), denominator=None, tuplet_ratios=[Ratio(numbers=(1, 2))]), commands=(ForceFractionCommand(selector=None),), preprocessor=None, tag=Tag(string=''))
 
         >>> command_1 == command_2
         True
@@ -18913,7 +18933,7 @@ class Stack:
         return self.maker.state
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Assignment:
     """
     Assignment.
