@@ -11614,72 +11614,85 @@ class TaleaRhythmMaker(RhythmMaker):
         assert isinstance(self.talea, Talea), repr(self.talea)
 
     def _make_music(self, divisions) -> list[abjad.Tuplet]:
-        prepared = _prepare_talea_rhythm_maker_input(
-            self.extra_counts, self.previous_state, self.talea
+        tuplets = _make_talea_rhythm_maker_music(
+            divisions,
+            self.extra_counts,
+            self.previous_state,
+            self.read_talea_once_only,
+            self.spelling,
+            self.state,
+            self.talea,
+            self.tag,
         )
-        scaled = _scale_rhythm_maker_input(divisions, self.talea.denominator, prepared)
-        assert scaled.counts.talea
-        if scaled.counts.talea:
-            numeric_map, expanded_talea = _make_numeric_map(
-                scaled.divisions,
-                scaled.counts.preamble,
-                scaled.counts.talea,
-                scaled.counts.extra_counts,
-                scaled.counts.end_counts,
-                self.read_talea_once_only,
-            )
-            if expanded_talea is not None:
-                unscaled_talea = expanded_talea
-            else:
-                unscaled_talea = prepared.talea
-            talea_weight_consumed = sum(abjad.sequence.weight(_) for _ in numeric_map)
-            leaf_lists = _make_talea_rhythm_make_leaf_lists(
-                numeric_map, scaled.lcd, self.spelling, self.tag
-            )
-            if not scaled.counts.extra_counts:
-                tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
-            else:
-                tuplets = _make_talea_rhythm_maker_tuplets(
-                    scaled.divisions, leaf_lists, self.tag
-                )
-            _apply_ties_to_split_notes(
-                tuplets,
-                prepared.end_counts,
-                prepared.preamble,
-                unscaled_talea,
-                self.talea,
-            )
-        else:
-            raise Exception("REMOVE?")
-            talea_weight_consumed = 0
-            leaf_maker = abjad.LeafMaker(tag=self.tag)
-            selections = []
-            for division in scaled.divisions:
-                selection = leaf_maker([0], [division])
-                selections.append(selection)
-            tuplets = _make_talea_rhythm_maker_tuplets(
-                scaled.divisions, selections, self.tag
-            )
-        for tuplet in abjad.iterate.components(tuplets, abjad.Tuplet):
-            tuplet.normalize_multiplier()
-        assert isinstance(self.state, dict)
-        advanced_talea = Talea(
-            counts=prepared.talea,
-            denominator=self.talea.denominator,
-            end_counts=prepared.end_counts,
-            preamble=prepared.preamble,
-        )
-        if "+" in prepared.talea or "-" in prepared.talea:
-            pass
-        elif talea_weight_consumed not in advanced_talea:
-            last_leaf = abjad.get.leaf(tuplets, -1)
-            if isinstance(last_leaf, abjad.Note):
-                self.state["incomplete_last_note"] = True
-        string = "talea_weight_consumed"
-        assert isinstance(self.previous_state, dict)
-        self.state[string] = self.previous_state.get(string, 0)
-        self.state[string] += talea_weight_consumed
         return tuplets
+
+
+def _make_talea_rhythm_maker_music(
+    divisions,
+    self_extra_counts,
+    self_previous_state,
+    self_read_talea_once_only,
+    self_spelling,
+    self_state,
+    self_talea,
+    self_tag,
+):
+    prepared = _prepare_talea_rhythm_maker_input(
+        self_extra_counts, self_previous_state, self_talea
+    )
+    divisions = list(divisions)
+    scaled = _scale_rhythm_maker_input(divisions, self_talea.denominator, prepared)
+    assert scaled.counts.talea
+    if scaled.counts.talea:
+        numeric_map, expanded_talea = _make_numeric_map(
+            scaled.divisions,
+            scaled.counts.preamble,
+            scaled.counts.talea,
+            scaled.counts.extra_counts,
+            scaled.counts.end_counts,
+            self_read_talea_once_only,
+        )
+        if expanded_talea is not None:
+            unscaled_talea = expanded_talea
+        else:
+            unscaled_talea = prepared.talea
+        talea_weight_consumed = sum(abjad.sequence.weight(_) for _ in numeric_map)
+        leaf_lists = _make_talea_rhythm_make_leaf_lists(
+            numeric_map, scaled.lcd, self_spelling, self_tag
+        )
+        if not scaled.counts.extra_counts:
+            tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
+        else:
+            tuplets = _make_talea_rhythm_maker_tuplets(
+                scaled.divisions, leaf_lists, self_tag
+            )
+        _apply_ties_to_split_notes(
+            tuplets,
+            prepared.end_counts,
+            prepared.preamble,
+            unscaled_talea,
+            self_talea,
+        )
+    for tuplet in abjad.iterate.components(tuplets, abjad.Tuplet):
+        tuplet.normalize_multiplier()
+    assert isinstance(self_state, dict)
+    advanced_talea = Talea(
+        counts=prepared.talea,
+        denominator=self_talea.denominator,
+        end_counts=prepared.end_counts,
+        preamble=prepared.preamble,
+    )
+    if "+" in prepared.talea or "-" in prepared.talea:
+        pass
+    elif talea_weight_consumed not in advanced_talea:
+        last_leaf = abjad.get.leaf(tuplets, -1)
+        if isinstance(last_leaf, abjad.Note):
+            self_state["incomplete_last_note"] = True
+    string = "talea_weight_consumed"
+    assert isinstance(self_previous_state, dict)
+    self_state[string] = self_previous_state.get(string, 0)
+    self_state[string] += talea_weight_consumed
+    return tuplets
 
 
 def _apply_ties_to_split_notes(
@@ -14186,11 +14199,12 @@ def talea_function(
     end_counts: typing.Sequence[int] = (),
     extra_counts: typing.Sequence[int] = (),
     preamble: typing.Sequence[int] = (),
+    previous_state: dict = None,
     read_talea_once_only: bool = False,
     spelling: Spelling = Spelling(),
+    state: dict = None,
     tag: abjad.Tag = abjad.Tag(),
-    # ) -> list[list[abjad.Leaf | abjad.Tuplet]]:
-) -> None:
+) -> list[abjad.Tuplet]:
     talea = Talea(
         counts=counts,
         denominator=denominator,
@@ -14198,16 +14212,19 @@ def talea_function(
         preamble=preamble,
     )
     talea = talea.advance(advance)
-    """
-    return _make_talea_rhythm_music(
+    previous_state = previous_state or {}
+    state = state or {}
+    tuplets = _make_talea_rhythm_maker_music(
         divisions,
-        extra_counts=extra_counts,
-        read_talea_once_only=read_talea_once_only,
-        spelling=spelling,
-        tag=tag,
-        talea=talea,
+        extra_counts,
+        previous_state,
+        read_talea_once_only,
+        spelling,
+        state,
+        talea,
+        tag,
     )
-    """
+    return tuplets
 
 
 def tuplet(
@@ -14484,10 +14501,14 @@ class ExtractTrivialCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        tuplets = abjad.select.tuplets(selection)
-        for tuplet in tuplets:
-            if tuplet.trivial():
-                abjad.mutate.extract(tuplet)
+        _do_extract_trivial_command(selection)
+
+
+def _do_extract_trivial_command(argument):
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if tuplet.trivial():
+            abjad.mutate.extract(tuplet)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16404,6 +16425,13 @@ def extract_trivial(
     return ExtractTrivialCommand(selector=selector)
 
 
+def extract_trivial_function(argument) -> None:
+    """
+    Extracts trivial tuplets in ``argument``.
+    """
+    _do_extract_trivial_command(argument)
+
+
 def feather_beam(
     selector: typing.Callable | None = nongrace_leaves_in_each_tuplet(),
     *,
@@ -16609,11 +16637,11 @@ def force_rest(selector: typing.Callable | None) -> ForceRestCommand:
     return ForceRestCommand(selector=selector)
 
 
-def force_rest_function(argument) -> None:
+def force_rest_function(argument, *, tag=None) -> None:
     """
     Forces rests in ``argument``.
     """
-    _do_force_rest_command(argument)
+    _do_force_rest_command(argument, tag=tag)
 
 
 def invisible_music(selector: typing.Callable | None) -> InvisibleMusicCommand:
@@ -18458,6 +18486,14 @@ def trivialize(selector: typing.Callable | None = None) -> TrivializeCommand:
     Makes trivialize command.
     """
     return TrivializeCommand(selector=selector)
+
+
+def trivialize_function(argument) -> None:
+    """
+    Trivializes tuplets in ``argument``.
+    """
+    for tuplet in abjad.select.tuplets(argument):
+        tuplet.trivialize()
 
 
 def unbeam(
