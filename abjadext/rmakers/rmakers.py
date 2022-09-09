@@ -15250,27 +15250,31 @@ class RewriteRestFilledCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        if self.spelling is not None:
-            increase_monotonic = self.spelling.increase_monotonic
-            forbidden_note_duration = self.spelling.forbidden_note_duration
-            forbidden_rest_duration = self.spelling.forbidden_rest_duration
-        else:
-            increase_monotonic = None
-            forbidden_note_duration = None
-            forbidden_rest_duration = None
-        maker = abjad.LeafMaker(
-            increase_monotonic=increase_monotonic,
-            forbidden_note_duration=forbidden_note_duration,
-            forbidden_rest_duration=forbidden_rest_duration,
-            tag=tag,
-        )
-        for tuplet in abjad.select.tuplets(selection):
-            if not tuplet.rest_filled():
-                continue
-            duration = abjad.get.duration(tuplet)
-            rests = maker([None], [duration])
-            abjad.mutate.replace(tuplet[:], rests)
-            tuplet.multiplier = abjad.Multiplier(1)
+        _do_rewrite_rest_filled_command(selection, spelling=self.spelling, tag=tag)
+
+
+def _do_rewrite_rest_filled_command(selection, *, spelling=None, tag=None):
+    if spelling is not None:
+        increase_monotonic = spelling.increase_monotonic
+        forbidden_note_duration = spelling.forbidden_note_duration
+        forbidden_rest_duration = spelling.forbidden_rest_duration
+    else:
+        increase_monotonic = None
+        forbidden_note_duration = None
+        forbidden_rest_duration = None
+    maker = abjad.LeafMaker(
+        increase_monotonic=increase_monotonic,
+        forbidden_note_duration=forbidden_note_duration,
+        forbidden_rest_duration=forbidden_rest_duration,
+        tag=tag,
+    )
+    for tuplet in abjad.select.tuplets(selection):
+        if not tuplet.rest_filled():
+            continue
+        duration = abjad.get.duration(tuplet)
+        rests = maker([None], [duration])
+        abjad.mutate.replace(tuplet[:], rests)
+        tuplet.multiplier = abjad.Multiplier(1)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -17503,6 +17507,13 @@ def rewrite_rest_filled(
 
     """
     return RewriteRestFilledCommand(selector=selector, spelling=spelling)
+
+
+def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
+    """
+    Rewrites rest-filled tuplets in ``argument``.
+    """
+    _do_rewrite_rest_filled_command(argument, spelling=spelling, tag=tag)
 
 
 def rewrite_sustained(
