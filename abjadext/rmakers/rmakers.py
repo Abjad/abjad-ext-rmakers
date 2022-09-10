@@ -14615,7 +14615,7 @@ def _do_feather_beam_command(
     argument, *, beam_rests: bool = False, stemlet_length=None, tag=None
 ):
     for selection in argument:
-        unbeam()(selection)
+        unbeam_function(selection)
         leaves = abjad.select.leaves(selection)
         abjad.beam(
             leaves,
