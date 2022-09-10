@@ -4093,8 +4093,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
             multiplier = needed_duration / interpolation.written_duration
             selection[-1].multiplier = multiplier
 
-    def _get_interpolations(self):
-        specifiers_ = self.interpolations
+    @staticmethod
+    def _get_interpolations(self_interpolations, self_previous_state):
+        specifiers_ = self_interpolations
         if specifiers_ is None:
             specifiers_ = abjad.CyclicTuple([Interpolation()])
         elif isinstance(specifiers_, Interpolation):
@@ -4102,7 +4103,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
         else:
             specifiers_ = abjad.CyclicTuple(specifiers_)
         string = "divisions_consumed"
-        divisions_consumed = self.previous_state.get(string, 0)
+        divisions_consumed = self_previous_state.get(string, 0)
         specifiers_ = abjad.sequence.rotate(specifiers_, n=-divisions_consumed)
         specifiers_ = abjad.CyclicTuple(specifiers_)
         return specifiers_
@@ -4275,9 +4276,9 @@ class AccelerandoRhythmMaker(RhythmMaker):
         result = y1 * (1 - mu**exponent) + y2 * mu**exponent
         return result
 
-    @classmethod
+    @staticmethod
     def _make_accelerando(
-        class_, total_duration, interpolations, index, *, tag: abjad.Tag = abjad.Tag()
+        total_duration, interpolations, index, *, tag: abjad.Tag = abjad.Tag()
     ) -> abjad.Tuplet:
         """
         Makes notes with LilyPond multipliers equal to ``total_duration``.
@@ -4303,23 +4304,25 @@ class AccelerandoRhythmMaker(RhythmMaker):
             notes = list(maker([0], [total_duration]))
             tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
             return tuplet
-        durations = class_._round_durations(durations, 2**10)
+        durations = AccelerandoRhythmMaker._round_durations(durations, 2**10)
         notes = []
         for i, duration in enumerate(durations):
             written_duration = interpolation.written_duration
             multiplier = duration / written_duration
             note = abjad.Note(0, written_duration, multiplier=multiplier, tag=tag)
             notes.append(note)
-        class_._fix_rounding_error(notes, total_duration, interpolation)
+        AccelerandoRhythmMaker._fix_rounding_error(notes, total_duration, interpolation)
         tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
         return tuplet
 
     def _make_music(self, divisions) -> list[abjad.Tuplet]:
-        tuplets = []
-        interpolations = self._get_interpolations()
-        for i, division in enumerate(divisions):
-            tuplet = self._make_accelerando(division, interpolations, i, tag=self.tag)
-            tuplets.append(tuplet)
+        tuplets = _make_accelerando_rhythm_maker_music(
+            divisions,
+            *self.interpolations,
+            self_previous_state=self.previous_state,
+            self_spelling=self.spelling,
+            self_tag=self.tag,
+        )
         return tuplets
 
     @staticmethod
@@ -4330,6 +4333,25 @@ class AccelerandoRhythmMaker(RhythmMaker):
             duration_ = abjad.Duration(numerator, denominator)
             durations_.append(duration_)
         return durations_
+
+
+def _make_accelerando_rhythm_maker_music(
+    divisions,
+    *self_interpolations,
+    self_previous_state,
+    self_spelling,
+    self_tag,
+):
+    interpolations = AccelerandoRhythmMaker._get_interpolations(
+        self_interpolations, self_previous_state
+    )
+    tuplets = []
+    for i, division in enumerate(divisions):
+        tuplet = AccelerandoRhythmMaker._make_accelerando(
+            division, interpolations, i, tag=self_tag
+        )
+        tuplets.append(tuplet)
+    return tuplets
 
 
 @dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
@@ -14077,6 +14099,31 @@ def accelerando(
     )
 
 
+def accelerando_function(
+    divisions,
+    *interpolations: typing.Sequence[abjad.typings.Duration],
+    previous_state: dict = None,
+    spelling: Spelling = Spelling(),
+    tag: abjad.Tag = abjad.Tag(),
+):
+    """
+    Makes accelerandi in ``divisions``.
+    """
+    interpolations_ = []
+    for interpolation in interpolations:
+        interpolation_durations = [abjad.Duration(_) for _ in interpolation]
+        interpolation_ = Interpolation(*interpolation_durations)
+        interpolations_.append(interpolation_)
+    previous_state = previous_state or {}
+    return _make_accelerando_rhythm_maker_music(
+        divisions,
+        *interpolations_,
+        self_previous_state=previous_state,
+        self_spelling=spelling,
+        self_tag=tag,
+    )
+
+
 def even_division(
     denominators: typing.Sequence[int],
     *,
@@ -14450,12 +14497,16 @@ class DurationBracketCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for tuplet in abjad.select.tuplets(selection):
-            duration_ = abjad.get.duration(tuplet)
-            notes = abjad.LeafMaker()([0], [duration_])
-            string = abjad.illustrators.selection_to_score_markup_string(notes)
-            string = rf"\markup \scale #'(0.75 . 0.75) {string}"
-            abjad.override(tuplet).TupletNumber.text = string
+        _do_duration_bracket_command(selection)
+
+
+def _do_duration_bracket_command(argument):
+    for tuplet in abjad.select.tuplets(argument):
+        duration_ = abjad.get.duration(tuplet)
+        notes = abjad.LeafMaker()([0], [duration_])
+        string = abjad.illustrators.selection_to_score_markup_string(notes)
+        string = rf"\markup \scale #'(0.75 . 0.75) {string}"
+        abjad.override(tuplet).TupletNumber.text = string
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -14532,21 +14583,12 @@ class FeatherBeamCommand(Command):
             selections = self.selector(selection)
         else:
             selections = [selection]
-        for selection in selections:
-            unbeam()(selection)
-            leaves = abjad.select.leaves(selection)
-            abjad.beam(
-                leaves,
-                beam_rests=self.beam_rests,
-                stemlet_length=self.stemlet_length,
-                tag=tag,
-            )
-        for selection in selections:
-            first_leaf = abjad.select.leaf(selection, 0)
-            if self._is_accelerando(selection):
-                abjad.override(first_leaf).Beam.grow_direction = abjad.RIGHT
-            elif self._is_ritardando(selection):
-                abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
+        _do_feather_beam_command(
+            selections,
+            beam_rests=self.beam_rests,
+            stemlet_length=self.stemlet_length,
+            tag=tag,
+        )
 
     @staticmethod
     def _is_accelerando(selection):
@@ -14567,6 +14609,26 @@ class FeatherBeamCommand(Command):
         if first_duration < last_duration:
             return True
         return False
+
+
+def _do_feather_beam_command(
+    argument, *, beam_rests: bool = False, stemlet_length=None, tag=None
+):
+    for selection in argument:
+        unbeam()(selection)
+        leaves = abjad.select.leaves(selection)
+        abjad.beam(
+            leaves,
+            beam_rests=beam_rests,
+            stemlet_length=stemlet_length,
+            tag=tag,
+        )
+    for selection in argument:
+        first_leaf = abjad.select.leaf(selection, 0)
+        if FeatherBeamCommand._is_accelerando(selection):
+            abjad.override(first_leaf).Beam.grow_direction = abjad.RIGHT
+        elif FeatherBeamCommand._is_ritardando(selection):
+            abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16356,6 +16418,13 @@ def duration_bracket(
     return DurationBracketCommand(selector=selector)
 
 
+def duration_bracket_function(argument) -> None:
+    """
+    Applies durtaion bracket to tuplets in ``argument``.
+    """
+    _do_duration_bracket_command(argument)
+
+
 def extract_trivial(
     selector: typing.Callable | None = None,
 ) -> ExtractTrivialCommand:
@@ -16447,6 +16516,22 @@ def feather_beam(
     """
     return FeatherBeamCommand(
         selector=selector, beam_rests=beam_rests, stemlet_length=stemlet_length
+    )
+
+
+def feather_beam_function(
+    argument,
+    # selector: typing.Callable | None = nongrace_leaves_in_each_tuplet(),
+    *,
+    beam_rests: bool = False,
+    stemlet_length: int | float | None = None,
+    tag: abjad.Tag = abjad.Tag(),
+) -> None:
+    _do_feather_beam_command(
+        argument,
+        beam_rests=beam_rests,
+        stemlet_length=stemlet_length,
+        tag=tag,
     )
 
 
