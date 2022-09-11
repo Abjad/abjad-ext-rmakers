@@ -14384,6 +14384,82 @@ def _do_beam_groups_command(
     )
 
 
+def _do_duration_bracket_command(argument):
+    for tuplet in abjad.select.tuplets(argument):
+        duration_ = abjad.get.duration(tuplet)
+        notes = abjad.LeafMaker()([0], [duration_])
+        string = abjad.illustrators.selection_to_score_markup_string(notes)
+        string = rf"\markup \scale #'(0.75 . 0.75) {string}"
+        abjad.override(tuplet).TupletNumber.text = string
+
+
+def _do_extract_trivial_command(argument):
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if tuplet.trivial():
+            abjad.mutate.extract(tuplet)
+
+
+def _do_feather_beam_command(
+    argument, *, beam_rests: bool = False, stemlet_length=None, tag=None
+):
+    for selection in argument:
+        unbeam_function(selection)
+        leaves = abjad.select.leaves(selection)
+        abjad.beam(
+            leaves,
+            beam_rests=beam_rests,
+            stemlet_length=stemlet_length,
+            tag=tag,
+        )
+    for selection in argument:
+        first_leaf = abjad.select.leaf(selection, 0)
+        if FeatherBeamCommand._is_accelerando(selection):
+            abjad.override(first_leaf).Beam.grow_direction = abjad.RIGHT
+        elif FeatherBeamCommand._is_ritardando(selection):
+            abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
+
+
+def _do_force_repeat_tie_command(container, *, threshold=None) -> None:
+    assert isinstance(container, abjad.Container), container
+    if callable(threshold):
+        inequality = threshold
+    elif threshold in (None, False):
+
+        def inequality(item):
+            return item < 0
+
+    elif threshold is True:
+
+        def inequality(item):
+            return item >= 0
+
+    else:
+        assert isinstance(threshold, tuple) and len(threshold) == 2, repr(threshold)
+
+        def inequality(item):
+            return item >= abjad.Duration(threshold)
+
+    attach_repeat_ties = []
+    for leaf in abjad.select.leaves(container):
+        if abjad.get.has_indicator(leaf, abjad.Tie):
+            next_leaf = abjad.get.leaf(leaf, 1)
+            if next_leaf is None:
+                continue
+            if not isinstance(next_leaf, abjad.Chord | abjad.Note):
+                continue
+            if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
+                continue
+            duration = abjad.get.duration(leaf)
+            if not inequality(duration):
+                continue
+            attach_repeat_ties.append(next_leaf)
+            abjad.detach(abjad.Tie, leaf)
+    for leaf in attach_repeat_ties:
+        repeat_tie = abjad.RepeatTie()
+        abjad.attach(repeat_tie, leaf)
+
+
 def _do_force_rest_command(selections, previous_logical_ties_produced=None, tag=None):
     # will need to restore for statal rhythm-makers:
     # logical_ties = abjad.select.logical_ties(selections)
@@ -14406,6 +14482,112 @@ def _do_force_rest_command(selections, previous_logical_ties_produced=None, tag=
         abjad.detach(abjad.RepeatTie, rest)
         if next_leaf is not None:
             abjad.detach(abjad.RepeatTie, next_leaf)
+
+
+def _do_reduce_multiplier_command(argument):
+    for tuplet in abjad.select.tuplets(argument):
+        tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
+
+
+def _do_repeat_tie_command(argument, *, tag):
+    for note in abjad.select.notes(argument):
+        tie = abjad.RepeatTie()
+        abjad.attach(tie, note, tag=tag)
+
+
+def _do_rewrite_meter_command(
+    voice, *, boundary_depth=None, reference_meters=None, tag=None
+):
+    staff = abjad.get.parentage(voice).parent
+    assert isinstance(staff, abjad.Staff), repr(staff)
+    time_signature_voice = staff["TimeSignatureVoice"]
+    assert isinstance(time_signature_voice, abjad.Voice)
+    meters, preferred_meters = [], []
+    for skip in time_signature_voice:
+        time_signature = abjad.get.indicator(skip, abjad.TimeSignature)
+        meter = abjad.Meter(time_signature)
+        meters.append(meter)
+    durations = [abjad.Duration(_) for _ in meters]
+    reference_meters = reference_meters or ()
+    split_measures_function(voice, durations=durations)
+    selections = abjad.select.group_by_measure(voice[:])
+    for meter, selection in zip(meters, selections):
+        for reference_meter in reference_meters:
+            if reference_meter == meter:
+                meter = reference_meter
+                break
+        preferred_meters.append(meter)
+        nontupletted_leaves = []
+        for leaf in abjad.iterate.leaves(selection):
+            if not abjad.get.parentage(leaf).count(abjad.Tuplet):
+                nontupletted_leaves.append(leaf)
+        unbeam_function(nontupletted_leaves)
+        abjad.Meter.rewrite_meter(
+            selection,
+            meter,
+            boundary_depth=boundary_depth,
+            rewrite_tuplets=False,
+        )
+    selections = abjad.select.group_by_measure(voice[:])
+    for meter, selection in zip(preferred_meters, selections):
+        leaves = abjad.select.leaves(selection, grace=False)
+        beat_durations = []
+        beat_offsets = meter.depthwise_offset_inventory[1]
+        for start, stop in abjad.sequence.nwise(beat_offsets):
+            beat_duration = stop - start
+            beat_durations.append(beat_duration)
+        beamable_groups = _make_beamable_groups(leaves, beat_durations)
+        for beamable_group in beamable_groups:
+            if not beamable_group:
+                continue
+            abjad.beam(
+                beamable_group,
+                beam_rests=False,
+                tag=abjad.Tag("rmakers.RewriteMeterCommand.__call__"),
+            )
+
+
+def _do_rewrite_rest_filled_command(selection, *, spelling=None, tag=None):
+    if spelling is not None:
+        increase_monotonic = spelling.increase_monotonic
+        forbidden_note_duration = spelling.forbidden_note_duration
+        forbidden_rest_duration = spelling.forbidden_rest_duration
+    else:
+        increase_monotonic = None
+        forbidden_note_duration = None
+        forbidden_rest_duration = None
+    maker = abjad.LeafMaker(
+        increase_monotonic=increase_monotonic,
+        forbidden_note_duration=forbidden_note_duration,
+        forbidden_rest_duration=forbidden_rest_duration,
+        tag=tag,
+    )
+    for tuplet in abjad.select.tuplets(selection):
+        if not tuplet.rest_filled():
+            continue
+        duration = abjad.get.duration(tuplet)
+        rests = maker([None], [duration])
+        abjad.mutate.replace(tuplet[:], rests)
+        tuplet.multiplier = abjad.Multiplier(1)
+
+
+def _do_split_measures_command(voice, *, durations=None, tag=None):
+    if not durations:
+        # TODO: implement abjad.get() method for measure durations
+        staff = abjad.get.parentage(voice).parent
+        assert isinstance(staff, abjad.Staff)
+        voice_ = staff["TimeSignatureVoice"]
+        assert isinstance(voice_, abjad.Voice)
+        durations = [abjad.get.duration(_) for _ in voice_]
+    total_duration = abjad.sequence.sum(durations)
+    music_duration = abjad.get.duration(voice)
+    if total_duration != music_duration:
+        message = f"Total duration of splits is {total_duration!s}"
+        message += f" but duration of music is {music_duration!s}:"
+        message += f"\ndurations: {durations}."
+        message += f"\nvoice: {voice[:]}."
+        raise Exception(message)
+    abjad.mutate.split(voice[:], durations=durations)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -14539,15 +14721,6 @@ class DurationBracketCommand(Command):
         _do_duration_bracket_command(selection)
 
 
-def _do_duration_bracket_command(argument):
-    for tuplet in abjad.select.tuplets(argument):
-        duration_ = abjad.get.duration(tuplet)
-        notes = abjad.LeafMaker()([0], [duration_])
-        string = abjad.illustrators.selection_to_score_markup_string(notes)
-        string = rf"\markup \scale #'(0.75 . 0.75) {string}"
-        abjad.override(tuplet).TupletNumber.text = string
-
-
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class WrittenDurationCommand(Command):
     """
@@ -14592,13 +14765,6 @@ class ExtractTrivialCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         _do_extract_trivial_command(selection)
-
-
-def _do_extract_trivial_command(argument):
-    tuplets = abjad.select.tuplets(argument)
-    for tuplet in tuplets:
-        if tuplet.trivial():
-            abjad.mutate.extract(tuplet)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -14648,26 +14814,6 @@ class FeatherBeamCommand(Command):
         if first_duration < last_duration:
             return True
         return False
-
-
-def _do_feather_beam_command(
-    argument, *, beam_rests: bool = False, stemlet_length=None, tag=None
-):
-    for selection in argument:
-        unbeam_function(selection)
-        leaves = abjad.select.leaves(selection)
-        abjad.beam(
-            leaves,
-            beam_rests=beam_rests,
-            stemlet_length=stemlet_length,
-            tag=tag,
-        )
-    for selection in argument:
-        first_leaf = abjad.select.leaf(selection, 0)
-        if FeatherBeamCommand._is_accelerando(selection):
-            abjad.override(first_leaf).Beam.grow_direction = abjad.RIGHT
-        elif FeatherBeamCommand._is_ritardando(selection):
-            abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -14839,46 +14985,6 @@ class ForceRepeatTieCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         _do_force_repeat_tie_command(selection, threshold=self.threshold)
-
-
-def _do_force_repeat_tie_command(container, *, threshold=None) -> None:
-    assert isinstance(container, abjad.Container), container
-    if callable(threshold):
-        inequality = threshold
-    elif threshold in (None, False):
-
-        def inequality(item):
-            return item < 0
-
-    elif threshold is True:
-
-        def inequality(item):
-            return item >= 0
-
-    else:
-        assert isinstance(threshold, tuple) and len(threshold) == 2, repr(threshold)
-
-        def inequality(item):
-            return item >= abjad.Duration(threshold)
-
-    attach_repeat_ties = []
-    for leaf in abjad.select.leaves(container):
-        if abjad.get.has_indicator(leaf, abjad.Tie):
-            next_leaf = abjad.get.leaf(leaf, 1)
-            if next_leaf is None:
-                continue
-            if not isinstance(next_leaf, abjad.Chord | abjad.Note):
-                continue
-            if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
-                continue
-            duration = abjad.get.duration(leaf)
-            if not inequality(duration):
-                continue
-            attach_repeat_ties.append(next_leaf)
-            abjad.detach(abjad.Tie, leaf)
-    for leaf in attach_repeat_ties:
-        repeat_tie = abjad.RepeatTie()
-        abjad.attach(repeat_tie, leaf)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15179,8 +15285,7 @@ class ReduceMultiplierCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for tuplet in abjad.select.tuplets(selection):
-            tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
+        _do_reduce_multiplier_command(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15194,12 +15299,6 @@ class RepeatTieCommand(Command):
         if self.selector is not None:
             selection = self.selector(selection)
         _do_repeat_tie_command(selection, tag=tag)
-
-
-def _do_repeat_tie_command(argument, *, tag):
-    for note in abjad.select.notes(argument):
-        tie = abjad.RepeatTie()
-        abjad.attach(tie, note, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15241,58 +15340,6 @@ class RewriteMeterCommand(Command):
             reference_meters=self.reference_meters,
             tag=tag,
         )
-
-
-def _do_rewrite_meter_command(
-    voice, *, boundary_depth=None, reference_meters=None, tag=None
-):
-    staff = abjad.get.parentage(voice).parent
-    assert isinstance(staff, abjad.Staff), repr(staff)
-    time_signature_voice = staff["TimeSignatureVoice"]
-    assert isinstance(time_signature_voice, abjad.Voice)
-    meters, preferred_meters = [], []
-    for skip in time_signature_voice:
-        time_signature = abjad.get.indicator(skip, abjad.TimeSignature)
-        meter = abjad.Meter(time_signature)
-        meters.append(meter)
-    durations = [abjad.Duration(_) for _ in meters]
-    reference_meters = reference_meters or ()
-    split_measures_function(voice, durations=durations)
-    selections = abjad.select.group_by_measure(voice[:])
-    for meter, selection in zip(meters, selections):
-        for reference_meter in reference_meters:
-            if reference_meter == meter:
-                meter = reference_meter
-                break
-        preferred_meters.append(meter)
-        nontupletted_leaves = []
-        for leaf in abjad.iterate.leaves(selection):
-            if not abjad.get.parentage(leaf).count(abjad.Tuplet):
-                nontupletted_leaves.append(leaf)
-        unbeam_function(nontupletted_leaves)
-        abjad.Meter.rewrite_meter(
-            selection,
-            meter,
-            boundary_depth=boundary_depth,
-            rewrite_tuplets=False,
-        )
-    selections = abjad.select.group_by_measure(voice[:])
-    for meter, selection in zip(preferred_meters, selections):
-        leaves = abjad.select.leaves(selection, grace=False)
-        beat_durations = []
-        beat_offsets = meter.depthwise_offset_inventory[1]
-        for start, stop in abjad.sequence.nwise(beat_offsets):
-            beat_duration = stop - start
-            beat_durations.append(beat_duration)
-        beamable_groups = _make_beamable_groups(leaves, beat_durations)
-        for beamable_group in beamable_groups:
-            if not beamable_group:
-                continue
-            abjad.beam(
-                beamable_group,
-                beam_rests=False,
-                tag=abjad.Tag("rmakers.RewriteMeterCommand.__call__"),
-            )
 
 
 def _make_beamable_groups(components, durations):
@@ -15354,30 +15401,6 @@ class RewriteRestFilledCommand(Command):
         _do_rewrite_rest_filled_command(selection, spelling=self.spelling, tag=tag)
 
 
-def _do_rewrite_rest_filled_command(selection, *, spelling=None, tag=None):
-    if spelling is not None:
-        increase_monotonic = spelling.increase_monotonic
-        forbidden_note_duration = spelling.forbidden_note_duration
-        forbidden_rest_duration = spelling.forbidden_rest_duration
-    else:
-        increase_monotonic = None
-        forbidden_note_duration = None
-        forbidden_rest_duration = None
-    maker = abjad.LeafMaker(
-        increase_monotonic=increase_monotonic,
-        forbidden_note_duration=forbidden_note_duration,
-        forbidden_rest_duration=forbidden_rest_duration,
-        tag=tag,
-    )
-    for tuplet in abjad.select.tuplets(selection):
-        if not tuplet.rest_filled():
-            continue
-        duration = abjad.get.duration(tuplet)
-        rests = maker([None], [duration])
-        abjad.mutate.replace(tuplet[:], rests)
-        tuplet.multiplier = abjad.Multiplier(1)
-
-
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RewriteSustainedCommand(Command):
     """
@@ -15421,25 +15444,6 @@ class SplitMeasuresCommand(Command):
         tag: abjad.Tag = abjad.Tag(),
     ) -> None:
         _do_split_measures_command(voice, durations=durations, tag=tag)
-
-
-def _do_split_measures_command(voice, *, durations=None, tag=None):
-    if not durations:
-        # TODO: implement abjad.get() method for measure durations
-        staff = abjad.get.parentage(voice).parent
-        assert isinstance(staff, abjad.Staff)
-        voice_ = staff["TimeSignatureVoice"]
-        assert isinstance(voice_, abjad.Voice)
-        durations = [abjad.get.duration(_) for _ in voice_]
-    total_duration = abjad.sequence.sum(durations)
-    music_duration = abjad.get.duration(voice)
-    if total_duration != music_duration:
-        message = f"Total duration of splits is {total_duration!s}"
-        message += f" but duration of music is {music_duration!s}:"
-        message += f"\ndurations: {durations}."
-        message += f"\nvoice: {voice[:]}."
-        raise Exception(message)
-    abjad.mutate.split(voice[:], durations=durations)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -17386,6 +17390,13 @@ def reduce_multiplier(
     Makes reduce multiplier command.
     """
     return ReduceMultiplierCommand(selector=selector)
+
+
+def reduce_multiplier_function(argument) -> None:
+    """
+    Reduces multipliers of tuplets in ``argument``.
+    """
+    _do_reduce_multiplier_command(argument)
 
 
 def rewrite_dots(selector: typing.Callable | None = None) -> RewriteDotsCommand:
