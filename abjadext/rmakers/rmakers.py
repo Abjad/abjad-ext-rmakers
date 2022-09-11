@@ -6272,56 +6272,75 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         assert all(isinstance(_, int) for _ in self.extra_counts)
 
     def _make_music(self, divisions) -> list[abjad.Tuplet]:
-        tuplets = []
-        assert isinstance(self.previous_state, dict)
-        divisions_consumed = self.previous_state.get("divisions_consumed", 0)
-        divisions = [abjad.NonreducedFraction(_) for _ in divisions]
-        denominators_ = list(self.denominators)
-        denominators_ = abjad.sequence.rotate(denominators_, -divisions_consumed)
-        denominators = abjad.CyclicTuple(denominators_)
-        extra_counts_ = self.extra_counts or [0]
-        extra_counts__ = list(extra_counts_)
-        extra_counts__ = abjad.sequence.rotate(extra_counts__, -divisions_consumed)
-        extra_counts = abjad.CyclicTuple(extra_counts__)
-        for i, division in enumerate(divisions):
-            if not abjad.math.is_positive_integer_power_of_two(division.denominator):
-                message = "non-power-of-two divisions not implemented:"
-                message += f" {division}."
-                raise Exception(message)
-            denominator_ = denominators[i]
-            extra_count = extra_counts[i]
-            basic_duration = abjad.Duration(1, denominator_)
-            unprolated_note_count = None
-            maker = abjad.NoteMaker(tag=self.tag)
-            if division < 2 * basic_duration:
-                notes = maker([0], [division])
-            else:
-                unprolated_note_count = division / basic_duration
-                unprolated_note_count = int(unprolated_note_count)
-                unprolated_note_count = unprolated_note_count or 1
-                if 0 < extra_count:
-                    modulus = unprolated_note_count
-                    extra_count = extra_count % modulus
-                elif extra_count < 0:
-                    modulus = int(math.ceil(unprolated_note_count / 2.0))
-                    extra_count = abs(extra_count) % modulus
-                    extra_count *= -1
-                note_count = unprolated_note_count + extra_count
-                durations = note_count * [basic_duration]
-                notes = maker([0], durations)
-                assert all(
-                    _.written_duration.denominator == denominator_ for _ in notes
-                )
-            tuplet_duration = abjad.Duration(division)
-            tuplet = abjad.Tuplet.from_duration(tuplet_duration, notes, tag=self.tag)
-            if self.denominator == "from_counts" and unprolated_note_count is not None:
-                denominator = unprolated_note_count
-                tuplet.denominator = denominator
-            elif isinstance(self.denominator, int):
-                tuplet.denominator = self.denominator
-            tuplets.append(tuplet)
-        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
-        return tuplets
+        return _make_even_division_rhythm_maker_music(
+            divisions,
+            self.denominators,
+            self_denominator=self.denominator,
+            self_extra_counts=self.extra_counts,
+            self_previous_state=self.previous_state,
+            self_spelling=self.spelling,
+            self_tag=self.tag,
+        )
+
+
+def _make_even_division_rhythm_maker_music(
+    divisions,
+    self_denominators,
+    *,
+    self_denominator=None,
+    self_extra_counts=None,
+    self_previous_state=None,
+    self_spelling=None,
+    self_tag=None,
+):
+    tuplets = []
+    assert isinstance(self_previous_state, dict)
+    divisions_consumed = self_previous_state.get("divisions_consumed", 0)
+    divisions = [abjad.NonreducedFraction(_) for _ in divisions]
+    denominators_ = list(self_denominators)
+    denominators_ = abjad.sequence.rotate(denominators_, -divisions_consumed)
+    denominators = abjad.CyclicTuple(denominators_)
+    extra_counts_ = self_extra_counts or [0]
+    extra_counts__ = list(extra_counts_)
+    extra_counts__ = abjad.sequence.rotate(extra_counts__, -divisions_consumed)
+    extra_counts = abjad.CyclicTuple(extra_counts__)
+    for i, division in enumerate(divisions):
+        if not abjad.math.is_positive_integer_power_of_two(division.denominator):
+            message = "non-power-of-two divisions not implemented:"
+            message += f" {division}."
+            raise Exception(message)
+        denominator_ = denominators[i]
+        extra_count = extra_counts[i]
+        basic_duration = abjad.Duration(1, denominator_)
+        unprolated_note_count = None
+        maker = abjad.NoteMaker(tag=self_tag)
+        if division < 2 * basic_duration:
+            notes = maker([0], [division])
+        else:
+            unprolated_note_count = division / basic_duration
+            unprolated_note_count = int(unprolated_note_count)
+            unprolated_note_count = unprolated_note_count or 1
+            if 0 < extra_count:
+                modulus = unprolated_note_count
+                extra_count = extra_count % modulus
+            elif extra_count < 0:
+                modulus = int(math.ceil(unprolated_note_count / 2.0))
+                extra_count = abs(extra_count) % modulus
+                extra_count *= -1
+            note_count = unprolated_note_count + extra_count
+            durations = note_count * [basic_duration]
+            notes = maker([0], durations)
+            assert all(_.written_duration.denominator == denominator_ for _ in notes)
+        tuplet_duration = abjad.Duration(division)
+        tuplet = abjad.Tuplet.from_duration(tuplet_duration, notes, tag=self_tag)
+        if self_denominator == "from_counts" and unprolated_note_count is not None:
+            denominator = unprolated_note_count
+            tuplet.denominator = denominator
+        elif isinstance(self_denominator, int):
+            tuplet.denominator = self_denominator
+        tuplets.append(tuplet)
+    assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
+    return tuplets
 
 
 @dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
@@ -14153,6 +14172,31 @@ def even_division(
         extra_counts=extra_counts,
         spelling=spelling,
         tag=tag,
+    )
+
+
+def even_division_function(
+    divisions,
+    denominators: typing.Sequence[int],
+    *,
+    denominator: str | int = "from_counts",
+    extra_counts: typing.Sequence[int] = (0,),
+    previous_state: dict = None,
+    spelling: Spelling = Spelling(),
+    tag: abjad.Tag = abjad.Tag(),
+):
+    """
+    Makes even-division tuplets in ``divisions``.
+    """
+    previous_state = previous_state or {}
+    return _make_even_division_rhythm_maker_music(
+        divisions,
+        denominators,
+        self_denominator=denominator,
+        self_extra_counts=extra_counts,
+        self_previous_state=previous_state,
+        self_spelling=spelling,
+        self_tag=tag,
     )
 
 
