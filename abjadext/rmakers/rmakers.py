@@ -14615,6 +14615,26 @@ def _do_rewrite_rest_filled_command(selection, *, spelling=None, tag=None):
         tuplet.multiplier = abjad.Multiplier(1)
 
 
+def _do_rewrite_sustained_command(argument):
+    for tuplet in abjad.select.tuplets(argument):
+        if not abjad.get.sustained(tuplet):
+            continue
+        duration = abjad.get.duration(tuplet)
+        leaves = abjad.select.leaves(tuplet)
+        last_leaf = leaves[-1]
+        if abjad.get.has_indicator(last_leaf, abjad.Tie):
+            last_leaf_has_tie = True
+        else:
+            last_leaf_has_tie = False
+        for leaf in leaves[1:]:
+            tuplet.remove(leaf)
+        assert len(tuplet) == 1, repr(tuplet)
+        if not last_leaf_has_tie:
+            abjad.detach(abjad.Tie, tuplet[-1])
+        abjad.mutate._set_leaf_duration(tuplet[0], duration)
+        tuplet.multiplier = abjad.Multiplier(1)
+
+
 def _do_split_measures_command(voice, *, durations=None, tag=None):
     if not durations:
         # TODO: implement abjad.get() method for measure durations
@@ -15461,23 +15481,7 @@ class RewriteSustainedCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for tuplet in abjad.select.tuplets(selection):
-            if not abjad.get.sustained(tuplet):
-                continue
-            duration = abjad.get.duration(tuplet)
-            leaves = abjad.select.leaves(tuplet)
-            last_leaf = leaves[-1]
-            if abjad.get.has_indicator(last_leaf, abjad.Tie):
-                last_leaf_has_tie = True
-            else:
-                last_leaf_has_tie = False
-            for leaf in leaves[1:]:
-                tuplet.remove(leaf)
-            assert len(tuplet) == 1, repr(tuplet)
-            if not last_leaf_has_tie:
-                abjad.detach(abjad.Tie, tuplet[-1])
-            abjad.mutate._set_leaf_duration(tuplet[0], duration)
-            tuplet.multiplier = abjad.Multiplier(1)
+        _do_rewrite_sustained_command(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -17971,6 +17975,13 @@ def rewrite_sustained(
 
     """
     return RewriteSustainedCommand(selector=selector)
+
+
+def rewrite_sustained_function(argument) -> None:
+    """
+    Rewrite sustained tuplets in ``argument``.
+    """
+    _do_rewrite_sustained_command(argument)
 
 
 def split_measures() -> SplitMeasuresCommand:
