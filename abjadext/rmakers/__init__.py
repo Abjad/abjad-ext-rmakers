@@ -93,6 +93,7 @@ from .rmakers import (
     trivialize,
     trivialize_function,
     tuplet,
+    tuplet_function,
     unbeam,
     unbeam_function,
     untie,
@@ -186,6 +187,7 @@ __all__ = [
     "note_function",
     "talea",
     "tuplet",
+    "tuplet_function",
     # specifiers:
     "Incise",
     "Interpolation",

@@ -14053,6 +14053,7 @@ class TupletRhythmMaker(RhythmMaker):
 
     """
 
+    # TODO: is 'denominator' unused?
     denominator: int | abjad.Duration | str | None = None
     tuplet_ratios: typing.Sequence[abjad.Ratio] = ()
 
@@ -14069,16 +14070,27 @@ class TupletRhythmMaker(RhythmMaker):
         )
 
     def _make_music(self, divisions) -> list[abjad.Tuplet]:
-        tuplets = []
         assert self.tuplet_ratios is not None
-        tuplet_ratios = abjad.CyclicTuple(self.tuplet_ratios)
-        for i, division in enumerate(divisions):
-            ratio = tuplet_ratios[i]
-            tuplet = abjad.makers.tuplet_from_duration_and_ratio(
-                division, ratio, tag=self.tag
-            )
-            tuplets.append(tuplet)
-        return tuplets
+        return _make_tuplet_rhythm_maker_music(
+            divisions, self.tuplet_ratios, self_tag=self.tag
+        )
+
+
+def _make_tuplet_rhythm_maker_music(
+    divisions,
+    self_tuplet_ratios,
+    *,
+    self_tag=None,
+):
+    tuplets = []
+    tuplet_ratios = abjad.CyclicTuple(self_tuplet_ratios)
+    for i, division in enumerate(divisions):
+        ratio = tuplet_ratios[i]
+        tuplet = abjad.makers.tuplet_from_duration_and_ratio(
+            division, ratio, tag=self_tag
+        )
+        tuplets.append(tuplet)
+    return tuplets
 
 
 def accelerando(
@@ -14276,8 +14288,11 @@ def talea_function(
 
 def tuplet(
     tuplet_ratios: typing.Sequence[abjad.typings.Ratio],
+    *,
+    # TODO: is 'denominator' unused?
     # TODO: remove in favor of dedicated denominator control commands:
     denominator: int | abjad.Duration | str | None = None,
+    # TODO: is 'spelling' unused?
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> TupletRhythmMaker:
@@ -14290,6 +14305,30 @@ def tuplet(
         spelling=spelling,
         tag=tag,
         tuplet_ratios=tuplet_ratios_,
+    )
+
+
+def tuplet_function(
+    divisions,
+    tuplet_ratios: typing.Sequence[abjad.typings.Ratio],
+    *,
+    # TODO: is 'denominator' unused?
+    # TODO: remove in favor of dedicated denominator control commands:
+    denominator: int | abjad.Duration | str | None = None,
+    # TODO: is 'spelling' unused?
+    spelling: Spelling = Spelling(),
+    tag: abjad.Tag = abjad.Tag(),
+) -> TupletRhythmMaker:
+    """
+    Makes tuplets in ``divisions``.
+    """
+    tuplet_ratios_ = [abjad.Ratio(_) for _ in tuplet_ratios]
+    return _make_tuplet_rhythm_maker_music(
+        divisions,
+        tuplet_ratios_,
+        # denominator=denominator,
+        # spelling=spelling,
+        self_tag=tag,
     )
 
 
