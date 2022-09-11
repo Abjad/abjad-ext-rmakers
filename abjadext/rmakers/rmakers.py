@@ -14542,6 +14542,8 @@ def _do_repeat_tie_command(argument, *, tag):
 def _do_rewrite_meter_command(
     voice, *, boundary_depth=None, reference_meters=None, tag=None
 ):
+    tag = tag or abjad.Tag()
+    tag = tag.append(abjad.Tag("rmakers.RewriteMeterCommand.__call__"))
     staff = abjad.get.parentage(voice).parent
     assert isinstance(staff, abjad.Staff), repr(staff)
     time_signature_voice = staff["TimeSignatureVoice"]
@@ -14587,7 +14589,7 @@ def _do_rewrite_meter_command(
             abjad.beam(
                 beamable_group,
                 beam_rests=False,
-                tag=abjad.Tag("rmakers.RewriteMeterCommand.__call__"),
+                tag=tag,
             )
 
 
@@ -17474,9 +17476,13 @@ def rewrite_meter_function(
     *,
     boundary_depth: int = None,
     reference_meters: typing.Sequence[abjad.Meter] = (),
+    tag=None,
 ) -> None:
     _do_rewrite_meter_command(
-        argument, boundary_depth=boundary_depth, reference_meters=reference_meters
+        argument,
+        boundary_depth=boundary_depth,
+        reference_meters=reference_meters,
+        tag=tag,
     )
 
 
