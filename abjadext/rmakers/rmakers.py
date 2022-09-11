@@ -14590,6 +14590,12 @@ def _do_split_measures_command(voice, *, durations=None, tag=None):
     abjad.mutate.split(voice[:], durations=durations)
 
 
+def _do_untie_command(argument):
+    for leaf in abjad.select.leaves(argument):
+        abjad.detach(abjad.Tie, leaf)
+        abjad.detach(abjad.RepeatTie, leaf)
+
+
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Command:
     """
@@ -15529,9 +15535,7 @@ class UntieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for leaf in abjad.select.leaves(selection):
-            abjad.detach(abjad.Tie, leaf)
-            abjad.detach(abjad.RepeatTie, leaf)
+        _do_untie_command(selection)
 
 
 def nongrace_leaves_in_each_tuplet(level: int = -1):
@@ -18873,6 +18877,13 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
 
     """
     return UntieCommand(selector=selector)
+
+
+def untie_function(argument) -> None:
+    """
+    Removes ties in ``argument``.
+    """
+    _do_untie_command(argument)
 
 
 def written_duration(

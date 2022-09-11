@@ -98,6 +98,7 @@ from .rmakers import (
     unbeam,
     unbeam_function,
     untie,
+    untie_function,
     written_duration,
 )
 
@@ -169,6 +170,7 @@ __all__ = [
     "unbeam",
     "unbeam_function",
     "untie",
+    "untie_function",
     "written_duration",
     # makers:
     "AccelerandoRhythmMaker",
