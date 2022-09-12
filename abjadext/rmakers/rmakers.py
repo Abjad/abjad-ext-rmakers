@@ -14524,6 +14524,12 @@ def _do_feather_beam_command(
             abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
 
 
+def _do_force_augmentation_command(argument):
+    for tuplet in abjad.select.tuplets(argument):
+        if not tuplet.augmentation():
+            tuplet.toggle_prolation()
+
+
 def _do_force_repeat_tie_command(container, *, threshold=None) -> None:
     assert isinstance(container, abjad.Container), container
     if callable(threshold):
@@ -14969,9 +14975,7 @@ class ForceAugmentationCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for tuplet in abjad.select.tuplets(selection):
-            if not tuplet.augmentation():
-                tuplet.toggle_prolation()
+        _do_force_augmentation_command(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16829,6 +16833,13 @@ def force_augmentation(
 
     """
     return ForceAugmentationCommand(selector=selector)
+
+
+def force_augmentation_function(argument) -> None:
+    """
+    Forces each tuplet in ``argument`` to notate as an augmentation.
+    """
+    _do_force_augmentation_command(argument)
 
 
 def force_diminution(
