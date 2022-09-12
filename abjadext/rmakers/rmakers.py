@@ -914,7 +914,7 @@ class RhythmMaker:
     ) -> list[abjad.Component]:
         self.previous_state = dict(previous_state or [])
         music = self._make_music(divisions)
-        music_voice = _wrap_music_in_time_signature_staff(music, divisions)
+        music_voice = wrap_in_time_signature_staff(music, divisions)
         divisions_consumed = len(divisions)
         if self.already_cached_state is not True:
             self._cache_state(music_voice, divisions_consumed)
@@ -1046,7 +1046,7 @@ def _validate_tuplets(selections):
         assert len(tuplet), repr(tuplet)
 
 
-def _wrap_music_in_time_signature_staff(music, divisions):
+def wrap_in_time_signature_staff(music, divisions):
     music = abjad.sequence.flatten(music, depth=-1)
     assert all(isinstance(_, abjad.Component) for _ in music), repr(music)
     assert isinstance(music, list), repr(music)
@@ -6981,14 +6981,15 @@ class IncisedRhythmMaker(RhythmMaker):
         )
         assert isinstance(self.incise, Incise), repr(self.incise)
 
+    @staticmethod
     def _make_division_incised_numeric_map(
-        self,
-        divisions=None,
-        prefix_talea=None,
-        prefix_counts=None,
-        suffix_talea=None,
-        suffix_counts=None,
-        extra_counts=None,
+        divisions,
+        prefix_talea,
+        prefix_counts,
+        suffix_talea,
+        suffix_counts,
+        extra_counts,
+        incise,
     ):
         numeric_map, prefix_talea_index, suffix_talea_index = [], 0, 0
         for pair_index, division in enumerate(divisions):
@@ -7009,22 +7010,26 @@ class IncisedRhythmMaker(RhythmMaker):
                 numerator = division.numerator + (
                     prolation_addendum % division.numerator
                 )
-            numeric_map_part = self._make_numeric_map_part(numerator, prefix, suffix)
+            numeric_map_part = IncisedRhythmMaker._make_numeric_map_part(
+                numerator, prefix, suffix, incise
+            )
             numeric_map.append(numeric_map_part)
         return numeric_map
 
-    def _make_middle_of_numeric_map_part(self, middle):
-        if not (self.incise.fill_with_rests):
-            if not self.incise.outer_divisions_only:
+    @staticmethod
+    def _make_middle_of_numeric_map_part(middle, incise):
+        assert isinstance(incise, Incise), repr(incise)
+        if not (incise.fill_with_rests):
+            if not incise.outer_divisions_only:
                 if 0 < middle:
-                    if self.incise.body_ratio is not None:
-                        shards = middle / self.incise.body_ratio
+                    if incise.body_ratio is not None:
+                        shards = middle / incise.body_ratio
                         return tuple(shards)
                     else:
                         return (middle,)
                 else:
                     return ()
-            elif self.incise.outer_divisions_only:
+            elif incise.outer_divisions_only:
                 if 0 < middle:
                     return (middle,)
                 else:
@@ -7032,12 +7037,12 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 raise Exception("must incise divisions or output.")
         else:
-            if not self.incise.outer_divisions_only:
+            if not incise.outer_divisions_only:
                 if 0 < middle:
                     return (-abs(middle),)
                 else:
                     return ()
-            elif self.incise.outer_divisions_only:
+            elif incise.outer_divisions_only:
                 if 0 < middle:
                     return (-abs(middle),)
                 else:
@@ -7046,49 +7051,19 @@ class IncisedRhythmMaker(RhythmMaker):
                 raise Exception("must incise divisions or output.")
 
     def _make_music(self, divisions) -> list[abjad.Tuplet]:
-        prepared = self._prepare_input()
-        prefix_talea = prepared[0]
-        prefix_counts = prepared[1]
-        suffix_talea = prepared[2]
-        suffix_counts = prepared[3]
-        extra_counts = prepared[4]
-        counts = types.SimpleNamespace(
-            prefix_talea=prefix_talea,
-            suffix_talea=suffix_talea,
-            extra_counts=extra_counts,
+        tuplets = _make_incised_rhythm_maker_music(
+            divisions,
+            extra_counts=self.extra_counts,
+            incise=self.incise,
+            spelling=self.spelling,
+            tag=self.tag,
         )
-        if self.incise is not None:
-            talea_denominator = self.incise.talea_denominator
-        else:
-            talea_denominator = None
-        scaled = _scale_rhythm_maker_input(divisions, talea_denominator, counts)
-        if not self.incise.outer_divisions_only:
-            numeric_map = self._make_division_incised_numeric_map(
-                scaled.divisions,
-                scaled.counts.prefix_talea,
-                prefix_counts,
-                scaled.counts.suffix_talea,
-                suffix_counts,
-                scaled.counts.extra_counts,
-            )
-        else:
-            assert self.incise.outer_divisions_only
-            numeric_map = self._make_output_incised_numeric_map(
-                scaled.divisions,
-                scaled.counts.prefix_talea,
-                prefix_counts,
-                scaled.counts.suffix_talea,
-                suffix_counts,
-                scaled.counts.extra_counts,
-            )
-        selections = self._numeric_map_to_leaf_selections(numeric_map, scaled.lcd)
-        tuplets = _make_talea_rhythm_maker_tuplets(
-            scaled.divisions, selections, self.tag
-        )
-        assert all(isinstance(_, abjad.Tuplet) for _ in tuplets)
         return tuplets
 
-    def _make_numeric_map_part(self, numerator, prefix, suffix, is_note_filled=True):
+    @staticmethod
+    def _make_numeric_map_part(
+        numerator, prefix, suffix, incise, *, is_note_filled=True
+    ):
         prefix_weight = abjad.math.weight(prefix)
         suffix_weight = abjad.math.weight(suffix)
         middle = numerator - prefix_weight - suffix_weight
@@ -7098,7 +7073,7 @@ class IncisedRhythmMaker(RhythmMaker):
             prefix = abjad.sequence.split(
                 prefix, weights, cyclic=False, overhang=False
             )[0]
-        middle = self._make_middle_of_numeric_map_part(middle)
+        middle = IncisedRhythmMaker._make_middle_of_numeric_map_part(middle, incise)
         suffix_space = numerator - prefix_weight
         if suffix_space <= 0:
             suffix = ()
@@ -7111,14 +7086,15 @@ class IncisedRhythmMaker(RhythmMaker):
         numeric_map_part = list(prefix) + list(middle) + list(suffix)
         return [abjad.Duration(_) for _ in numeric_map_part]
 
+    @staticmethod
     def _make_output_incised_numeric_map(
-        self,
         divisions,
         prefix_talea,
         prefix_counts,
         suffix_talea,
         suffix_counts,
         extra_counts,
+        incise,
     ):
         numeric_map, prefix_talea_index, suffix_talea_index = [], 0, 0
         prefix_length, suffix_length = prefix_counts[0], suffix_counts[0]
@@ -7135,7 +7111,9 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 numerator = divisions[0][0]
             numerator += prolation_addendum % numerator
-            numeric_map_part = self._make_numeric_map_part(numerator, prefix, suffix)
+            numeric_map_part = IncisedRhythmMaker._make_numeric_map_part(
+                numerator, prefix, suffix, incise
+            )
             numeric_map.append(numeric_map_part)
         else:
             prolation_addendum = extra_counts[0]
@@ -7144,7 +7122,9 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 numerator = divisions[0].numerator
             numerator += prolation_addendum % numerator
-            numeric_map_part = self._make_numeric_map_part(numerator, prefix, ())
+            numeric_map_part = IncisedRhythmMaker._make_numeric_map_part(
+                numerator, prefix, (), incise
+            )
             numeric_map.append(numeric_map_part)
             for i, division in enumerate(divisions[1:-1]):
                 index = i + 1
@@ -7154,7 +7134,9 @@ class IncisedRhythmMaker(RhythmMaker):
                 else:
                     numerator = division.numerator
                 numerator += prolation_addendum % numerator
-                numeric_map_part = self._make_numeric_map_part(numerator, (), ())
+                numeric_map_part = IncisedRhythmMaker._make_numeric_map_part(
+                    numerator, (), (), incise
+                )
                 numeric_map.append(numeric_map_part)
             try:
                 index = i + 2
@@ -7167,39 +7149,82 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 numerator = divisions[-1].numerator
             numerator += prolation_addendum % numerator
-            numeric_map_part = self._make_numeric_map_part(numerator, (), suffix)
+            numeric_map_part = IncisedRhythmMaker._make_numeric_map_part(
+                numerator, (), suffix, incise
+            )
             numeric_map.append(numeric_map_part)
         return numeric_map
 
-    def _numeric_map_to_leaf_selections(self, numeric_map, lcd):
+    @staticmethod
+    def _numeric_map_to_leaf_selections(numeric_map, lcd, *, spelling=None, tag=None):
         selections = []
-        specifier = self.spelling
         for numeric_map_part in numeric_map:
             numeric_map_part = [_ for _ in numeric_map_part if _ != abjad.Duration(0)]
             selection = _make_leaves_from_talea(
                 numeric_map_part,
                 lcd,
-                forbidden_note_duration=specifier.forbidden_note_duration,
-                forbidden_rest_duration=specifier.forbidden_rest_duration,
-                increase_monotonic=specifier.increase_monotonic,
-                tag=self.tag,
+                forbidden_note_duration=spelling.forbidden_note_duration,
+                forbidden_rest_duration=spelling.forbidden_rest_duration,
+                increase_monotonic=spelling.increase_monotonic,
+                tag=tag,
             )
             selections.append(selection)
         return selections
 
-    def _prepare_input(self):
-        prefix_talea = abjad.CyclicTuple(self.incise.prefix_talea)
-        prefix_counts = abjad.CyclicTuple(self.incise.prefix_counts or (0,))
-        suffix_talea = abjad.CyclicTuple(self.incise.suffix_talea)
-        suffix_counts = abjad.CyclicTuple(self.incise.suffix_counts or (0,))
-        extra_counts = abjad.CyclicTuple(self.extra_counts or (0,))
-        return (
-            prefix_talea,
-            prefix_counts,
-            suffix_talea,
-            suffix_counts,
-            extra_counts,
+    @staticmethod
+    def _prepare_input(incise, extra_counts):
+        cyclic_prefix_talea = abjad.CyclicTuple(incise.prefix_talea)
+        cyclic_prefix_counts = abjad.CyclicTuple(incise.prefix_counts or (0,))
+        cyclic_suffix_talea = abjad.CyclicTuple(incise.suffix_talea)
+        cyclic_suffix_counts = abjad.CyclicTuple(incise.suffix_counts or (0,))
+        cyclic_extra_counts = abjad.CyclicTuple(extra_counts or (0,))
+        return types.SimpleNamespace(
+            prefix_talea=cyclic_prefix_talea,
+            prefix_counts=cyclic_prefix_counts,
+            suffix_talea=cyclic_suffix_talea,
+            suffix_counts=cyclic_suffix_counts,
+            extra_counts=cyclic_extra_counts,
         )
+
+
+def _make_incised_rhythm_maker_music(
+    divisions, *, extra_counts, incise, spelling, tag
+) -> list[abjad.Tuplet]:
+    prepared = IncisedRhythmMaker._prepare_input(incise, extra_counts)
+    counts = types.SimpleNamespace(
+        prefix_talea=prepared.prefix_talea,
+        suffix_talea=prepared.suffix_talea,
+        extra_counts=prepared.extra_counts,
+    )
+    talea_denominator = incise.talea_denominator
+    scaled = _scale_rhythm_maker_input(divisions, talea_denominator, counts)
+    if not incise.outer_divisions_only:
+        numeric_map = IncisedRhythmMaker._make_division_incised_numeric_map(
+            scaled.divisions,
+            scaled.counts.prefix_talea,
+            prepared.prefix_counts,
+            scaled.counts.suffix_talea,
+            prepared.suffix_counts,
+            scaled.counts.extra_counts,
+            incise,
+        )
+    else:
+        assert incise.outer_divisions_only
+        numeric_map = IncisedRhythmMaker._make_output_incised_numeric_map(
+            scaled.divisions,
+            scaled.counts.prefix_talea,
+            prepared.prefix_counts,
+            scaled.counts.suffix_talea,
+            prepared.suffix_counts,
+            scaled.counts.extra_counts,
+            incise,
+        )
+    selections = IncisedRhythmMaker._numeric_map_to_leaf_selections(
+        numeric_map, scaled.lcd, spelling=spelling, tag=tag
+    )
+    tuplets = _make_talea_rhythm_maker_tuplets(scaled.divisions, selections, tag)
+    assert all(isinstance(_, abjad.Tuplet) for _ in tuplets)
+    return tuplets
 
 
 @dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
@@ -14202,6 +14227,7 @@ def even_division_function(
 
 def incised(
     extra_counts: typing.Sequence[int] = (),
+    *,
     body_ratio: abjad.typings.Ratio = abjad.Ratio((1,)),
     fill_with_rests: bool = False,
     outer_divisions_only: bool = False,
@@ -14217,6 +14243,40 @@ def incised(
     Makes incised rhythm-maker
     """
     return IncisedRhythmMaker(
+        extra_counts=extra_counts,
+        incise=Incise(
+            body_ratio=body_ratio,
+            fill_with_rests=fill_with_rests,
+            outer_divisions_only=outer_divisions_only,
+            prefix_talea=prefix_talea,
+            prefix_counts=prefix_counts,
+            suffix_talea=suffix_talea,
+            suffix_counts=suffix_counts,
+            talea_denominator=talea_denominator,
+        ),
+        spelling=spelling,
+        tag=tag,
+    )
+
+
+def incised_function(
+    divisions,
+    extra_counts: typing.Sequence[int] = (),
+    *,
+    body_ratio: abjad.typings.Ratio = abjad.Ratio((1,)),
+    fill_with_rests: bool = False,
+    outer_divisions_only: bool = False,
+    prefix_talea: typing.Sequence[int] = (),
+    prefix_counts: typing.Sequence[int] = (),
+    suffix_talea: typing.Sequence[int] = (),
+    suffix_counts: typing.Sequence[int] = (),
+    talea_denominator: int = None,
+    spelling: Spelling = Spelling(),
+    tag: abjad.Tag = abjad.Tag(),
+):
+    divisions_ = [abjad.NonreducedFraction(_) for _ in divisions]
+    return _make_incised_rhythm_maker_music(
+        divisions_,
         extra_counts=extra_counts,
         incise=Incise(
             body_ratio=body_ratio,
