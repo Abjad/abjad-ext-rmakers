@@ -14599,6 +14599,11 @@ def _do_repeat_tie_command(argument, *, tag):
         abjad.attach(tie, note, tag=tag)
 
 
+def _do_rewrite_dots_command(argument, *, tag=None):
+    for tuplet in abjad.select.tuplets(argument):
+        tuplet.rewrite_dots()
+
+
 def _do_rewrite_meter_command(
     voice, *, boundary_depth=None, reference_meters=None, tag=None
 ):
@@ -14714,6 +14719,12 @@ def _do_split_measures_command(voice, *, durations=None, tag=None):
         message += f"\nvoice: {voice[:]}."
         raise Exception(message)
     abjad.mutate.split(voice[:], durations=durations)
+
+
+def _do_tie_command(argument, *, tag=None):
+    for note in abjad.select.notes(argument):
+        tie = abjad.Tie()
+        abjad.attach(tie, note, tag=tag)
 
 
 def _do_untie_command(argument):
@@ -15443,8 +15454,7 @@ class RewriteDotsCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for tuplet in abjad.select.tuplets(selection):
-            tuplet.rewrite_dots()
+        _do_rewrite_dots_command(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15572,9 +15582,7 @@ class TieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        for note in abjad.select.notes(selection):
-            tie = abjad.Tie()
-            abjad.attach(tie, note, tag=tag)
+        _do_tie_command(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -17520,6 +17528,13 @@ def rewrite_dots(selector: typing.Callable | None = None) -> RewriteDotsCommand:
     return RewriteDotsCommand(selector=selector)
 
 
+def rewrite_dots_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+    """
+    Rewrites dots of tuplets in ``argument``.
+    """
+    _do_rewrite_dots_command(argument, tag=tag)
+
+
 def rewrite_meter(
     *, boundary_depth: int = None, reference_meters: typing.Sequence[abjad.Meter] = ()
 ) -> RewriteMeterCommand:
@@ -18603,6 +18618,13 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
 
     """
     return TieCommand(selector=selector)
+
+
+def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+    """
+    Attaches ties to notes in ``argument``.
+    """
+    _do_tie_command(argument, tag=tag)
 
 
 def tremolo_container(
