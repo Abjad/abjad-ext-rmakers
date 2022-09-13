@@ -14705,7 +14705,7 @@ def _do_rewrite_rest_filled_command(selection, *, spelling=None, tag=None):
         tuplet.multiplier = abjad.Multiplier(1)
 
 
-def _do_rewrite_sustained_command(argument):
+def _do_rewrite_sustained_command(argument, *, tag=None):
     for tuplet in abjad.select.tuplets(argument):
         if not abjad.get.sustained(tuplet):
             continue
@@ -14721,7 +14721,7 @@ def _do_rewrite_sustained_command(argument):
         assert len(tuplet) == 1, repr(tuplet)
         if not last_leaf_has_tie:
             abjad.detach(abjad.Tie, tuplet[-1])
-        abjad.mutate._set_leaf_duration(tuplet[0], duration)
+        abjad.mutate._set_leaf_duration(tuplet[0], duration, tag=tag)
         tuplet.multiplier = abjad.Multiplier(1)
 
 
@@ -18084,11 +18084,11 @@ def rewrite_sustained(
     return RewriteSustainedCommand(selector=selector)
 
 
-def rewrite_sustained_function(argument) -> None:
+def rewrite_sustained_function(argument, *, tag=None) -> None:
     """
     Rewrite sustained tuplets in ``argument``.
     """
-    _do_rewrite_sustained_command(argument)
+    _do_rewrite_sustained_command(argument, tag=tag)
 
 
 def split_measures() -> SplitMeasuresCommand:
