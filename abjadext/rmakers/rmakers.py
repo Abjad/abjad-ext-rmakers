@@ -14536,6 +14536,17 @@ def _do_force_diminution_command(argument):
             tuplet.toggle_prolation()
 
 
+def _do_force_note_command(argument, *, tag=None):
+    leaves = abjad.select.leaves(argument)
+    for leaf in leaves:
+        if isinstance(leaf, abjad.Note):
+            continue
+        note = abjad.Note("C4", leaf.written_duration, tag=tag)
+        if leaf.multiplier is not None:
+            note.multiplier = leaf.multiplier
+        abjad.mutate.replace(leaf, [note])
+
+
 def _do_force_repeat_tie_command(container, *, threshold=None) -> None:
     assert isinstance(container, abjad.Container), container
     if callable(threshold):
@@ -15101,7 +15112,6 @@ class ForceNoteCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-
         # will need to restore for statal rhythm-makers:
         # logical_ties = abjad.select.logical_ties(selections)
         # logical_ties = list(logical_ties)
@@ -15109,15 +15119,7 @@ class ForceNoteCommand(Command):
         # previous_logical_ties_produced = self._previous_logical_ties_produced()
         # if self._previous_incomplete_last_note():
         #    previous_logical_ties_produced -= 1
-
-        leaves = abjad.select.leaves(selection)
-        for leaf in leaves:
-            if isinstance(leaf, abjad.Note):
-                continue
-            note = abjad.Note("C4", leaf.written_duration, tag=tag)
-            if leaf.multiplier is not None:
-                note.multiplier = leaf.multiplier
-            abjad.mutate.replace(leaf, [note])
+        _do_force_note_command(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16884,6 +16886,10 @@ def force_note(
     Makes force note command.
     """
     return ForceNoteCommand(selector=selector)
+
+
+def force_note_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+    _do_force_note_command(argument, tag=tag)
 
 
 def force_repeat_tie(
