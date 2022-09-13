@@ -107,6 +107,7 @@ from .rmakers import (
     untie_function,
     wrap_in_time_signature_staff,
     written_duration,
+    written_duration_function,
 )
 
 __all__ = [
@@ -183,6 +184,7 @@ __all__ = [
     "untie",
     "untie_function",
     "written_duration",
+    "written_duration_function",
     # makers:
     "AccelerandoRhythmMaker",
     "EvenDivisionRhythmMaker",

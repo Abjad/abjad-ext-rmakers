@@ -14465,7 +14465,7 @@ def _do_beam_groups_command(
     stemlet_length: int | float | None = None,
     tag: abjad.Tag = None,
 ):
-    unbeam()(argument)
+    unbeam_function(argument)
     durations = []
     components: list[abjad.Component] = []
     for selection in argument:
@@ -14739,6 +14739,17 @@ def _do_untie_command(argument):
         abjad.detach(abjad.RepeatTie, leaf)
 
 
+def _do_written_duration_command(argument, written_duration):
+    leaves = abjad.select.leaves(argument)
+    for leaf in leaves:
+        old_duration = leaf.written_duration
+        if written_duration == old_duration:
+            continue
+        leaf.written_duration = written_duration
+        multiplier = old_duration / written_duration
+        leaf.multiplier = multiplier
+
+
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Command:
     """
@@ -14887,20 +14898,7 @@ class WrittenDurationCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        leaves = abjad.select.leaves(selection)
-        for leaf in leaves:
-            self._set_written_duration(leaf, self.duration)
-
-    @staticmethod
-    def _set_written_duration(leaf, written_duration):
-        if written_duration is None:
-            return
-        old_duration = leaf.written_duration
-        if written_duration == old_duration:
-            return
-        leaf.written_duration = written_duration
-        multiplier = old_duration / written_duration
-        leaf.multiplier = multiplier
+        _do_written_duration_command(selection, self.duration)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -19049,6 +19047,14 @@ def written_duration(
     """
     duration_ = abjad.Duration(duration)
     return WrittenDurationCommand(selector=selector, duration=duration_)
+
+
+def written_duration_function(argument, duration: abjad.typings.Duration) -> None:
+    """
+    Sets written duration of each leaf in ``argument`` to ``duration``.
+    """
+    duration_ = abjad.Duration(duration)
+    _do_written_duration_command(argument, duration_)
 
 
 RhythmMakerTyping: typing.TypeAlias = typing.Union[
