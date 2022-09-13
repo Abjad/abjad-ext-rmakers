@@ -14547,7 +14547,7 @@ def _do_force_note_command(argument, *, tag=None):
         abjad.mutate.replace(leaf, [note])
 
 
-def _do_force_repeat_tie_command(container, *, threshold=None) -> None:
+def _do_force_repeat_tie_command(container, *, tag=None, threshold=None) -> None:
     assert isinstance(container, abjad.Container), container
     if callable(threshold):
         inequality = threshold
@@ -14584,7 +14584,7 @@ def _do_force_repeat_tie_command(container, *, threshold=None) -> None:
             abjad.detach(abjad.Tie, leaf)
     for leaf in attach_repeat_ties:
         repeat_tie = abjad.RepeatTie()
-        abjad.attach(repeat_tie, leaf)
+        abjad.attach(repeat_tie, leaf, tag=tag)
 
 
 def _do_force_rest_command(selections, previous_logical_ties_produced=None, tag=None):
@@ -15135,7 +15135,7 @@ class ForceRepeatTieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_force_repeat_tie_command(selection, threshold=self.threshold)
+        _do_force_repeat_tie_command(selection, tag=tag, threshold=self.threshold)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -16905,9 +16905,10 @@ def force_repeat_tie(
 def force_repeat_tie_function(
     argument,
     *,
+    tag: abjad.Tag = None,
     threshold: bool | tuple[int, int] | typing.Callable = True,
 ) -> None:
-    _do_force_repeat_tie_command(argument, threshold=threshold)
+    _do_force_repeat_tie_command(argument, tag=tag, threshold=threshold)
 
 
 def force_rest(selector: typing.Callable | None) -> ForceRestCommand:
