@@ -889,9 +889,6 @@ class RhythmMaker:
     Rhythm-maker baseclass.
     """
 
-    previous_state: dict = dataclasses.field(
-        default_factory=dict, init=False, repr=False
-    )
     spelling: Spelling = Spelling()
     state: dict = dataclasses.field(default_factory=dict, init=False, repr=False)
     tag: abjad.Tag = abjad.Tag()
@@ -899,11 +896,9 @@ class RhythmMaker:
     __documentation_section__ = "Rhythm-makers"
 
     def __post_init__(self):
-        assert isinstance(self.previous_state, dict), repr(self.previous_state)
         assert isinstance(self.spelling, Spelling), repr(self.spelling)
         assert isinstance(self.state, dict), repr(self.state)
         assert isinstance(self.tag, abjad.Tag), repr(self.tag)
-        assert self.previous_state == {}
         assert self.state == {}
 
     def __call__(
@@ -937,8 +932,6 @@ class RhythmMaker:
         music = voice[:]
         voice[:] = []
         assert previous_state == previous_state_copy
-        self.previous_state.clear()
-        self.previous_state.update(previous_state)
         self.state.clear()
         self.state.update(state)
         return music
@@ -19250,7 +19243,11 @@ class Stack:
         staff = _make_time_signature_staff(time_signatures_)
         music_voice = staff["RhythmMaker.Music"]
         divisions = self._apply_division_expression(divisions_)
+        previous_state = dict(previous_state or [])
+        previous_state_deepcopy = copy.deepcopy(previous_state)
         selection = self.maker(divisions, previous_state=previous_state)
+        if previous_state != previous_state_deepcopy:
+            raise Exception(previous_state_deepcopy, previous_state)
         music_voice.extend(selection)
         already_cached_makers = set()
         for command in self.commands:
@@ -19258,18 +19255,17 @@ class Stack:
                 assert isinstance(self.maker, RhythmMaker), repr(self.maker)
                 if repr(self.maker) in already_cached_makers:
                     continue
-                divisions_consumed = len(divisions)
                 logical_ties_produced = len(abjad.select.logical_ties(music_voice))
                 state = _make_state_dictionary(
-                    divisions_consumed=divisions_consumed,
+                    divisions_consumed=len(divisions),
                     logical_ties_produced=logical_ties_produced,
-                    previous_divisions_consumed=self.maker.previous_state.get(
+                    previous_divisions_consumed=previous_state.get(
                         "divisions_consumed", 0
                     ),
-                    previous_incomplete_last_note=self.maker.previous_state.get(
+                    previous_incomplete_last_note=previous_state.get(
                         "incomplete_last_note", False
                     ),
-                    previous_logical_ties_produced=self.maker.previous_state.get(
+                    previous_logical_ties_produced=previous_state.get(
                         "logical_ties_produced", 0
                     ),
                     state=self.maker.state,
