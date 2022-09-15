@@ -1,3 +1,4 @@
+import copy
 import dataclasses
 import math
 import types
@@ -882,15 +883,12 @@ def interpolate(
     )
 
 
-@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RhythmMaker:
     """
     Rhythm-maker baseclass.
     """
 
-    already_cached_state: bool = dataclasses.field(
-        default=False, init=False, repr=False, compare=False
-    )
     previous_state: dict = dataclasses.field(
         default_factory=dict, init=False, repr=False
     )
@@ -901,62 +899,71 @@ class RhythmMaker:
     __documentation_section__ = "Rhythm-makers"
 
     def __post_init__(self):
-        assert isinstance(self.already_cached_state, bool)
         assert isinstance(self.previous_state, dict), repr(self.previous_state)
         assert isinstance(self.spelling, Spelling), repr(self.spelling)
         assert isinstance(self.state, dict), repr(self.state)
         assert isinstance(self.tag, abjad.Tag), repr(self.tag)
+        assert self.previous_state == {}
+        assert self.state == {}
 
     def __call__(
         self,
         divisions: typing.Sequence[tuple[int, int]],
+        *,
         previous_state: dict = None,
     ) -> list[abjad.Component]:
-        self.previous_state = dict(previous_state or [])
-        music = self._make_music(divisions)
-        music_voice = wrap_in_time_signature_staff(music, divisions)
-        divisions_consumed = len(divisions)
-        if self.already_cached_state is not True:
-            logical_ties_produced = len(abjad.select.logical_ties(music_voice))
-            self.state = self._make_state_dictionary(
-                divisions_consumed=divisions_consumed,
-                logical_ties_produced=logical_ties_produced,
-                previous_divisions_consumed=self.previous_state.get(
-                    "divisions_consumed", 0
-                ),
-                previous_incomplete_last_note=self.previous_state.get(
-                    "incomplete_last_note", False
-                ),
-                previous_logical_ties_produced=self.previous_state.get(
-                    "logical_ties_produced", 0
-                ),
-                state=self.state,
-            )
-        selection = music_voice[:]
-        music_voice[:] = []
-        return list(selection)
+        previous_state = dict(previous_state or [])
+        previous_state_copy = copy.deepcopy(previous_state)
+        music = self._make_music(
+            divisions,
+            previous_state=previous_state,
+            spelling=self.spelling,
+            tag=self.tag,
+        )
+        voice = wrap_in_time_signature_staff(music, divisions)
+        logical_ties_produced = len(abjad.select.logical_ties(voice))
+        state = _make_state_dictionary(
+            divisions_consumed=len(divisions),
+            logical_ties_produced=logical_ties_produced,
+            previous_divisions_consumed=previous_state.get("divisions_consumed", 0),
+            previous_incomplete_last_note=previous_state.get(
+                "incomplete_last_note", False
+            ),
+            previous_logical_ties_produced=previous_state.get(
+                "logical_ties_produced", 0
+            ),
+            state=self.state,
+        )
+        music = voice[:]
+        voice[:] = []
+        assert previous_state == previous_state_copy
+        self.previous_state.clear()
+        self.previous_state.update(previous_state)
+        self.state.clear()
+        self.state.update(state)
+        return music
 
-    @staticmethod
-    def _make_state_dictionary(
-        *,
-        divisions_consumed,
-        logical_ties_produced,
-        previous_divisions_consumed,
-        previous_incomplete_last_note,
-        previous_logical_ties_produced,
-        state,
-    ):
-        divisions_consumed_ = previous_divisions_consumed + divisions_consumed
-        state["divisions_consumed"] = divisions_consumed_
-        logical_ties_produced_ = previous_logical_ties_produced + logical_ties_produced
-        if previous_incomplete_last_note:
-            logical_ties_produced_ -= 1
-        state["logical_ties_produced"] = logical_ties_produced_
-        state = dict(sorted(state.items()))
-        return state
-
-    def _make_music(self, divisions):
+    def _make_music(self, divisions, *, previous_state=None, spelling=None, tag=None):
         return []
+
+
+def _make_state_dictionary(
+    *,
+    divisions_consumed,
+    logical_ties_produced,
+    previous_divisions_consumed,
+    previous_incomplete_last_note,
+    previous_logical_ties_produced,
+    state,
+):
+    divisions_consumed_ = previous_divisions_consumed + divisions_consumed
+    state["divisions_consumed"] = divisions_consumed_
+    logical_ties_produced_ = previous_logical_ties_produced + logical_ties_produced
+    if previous_incomplete_last_note:
+        logical_ties_produced_ -= 1
+    state["logical_ties_produced"] = logical_ties_produced_
+    state = dict(sorted(state.items()))
+    return state
 
 
 def _make_talea_rhythm_maker_tuplets(divisions, leaf_lists, tag):
@@ -1061,7 +1068,7 @@ def wrap_in_time_signature_staff(music, divisions):
     return music_voice
 
 
-@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class AccelerandoRhythmMaker(RhythmMaker):
     r"""
     Accelerando rhythm-maker.
@@ -4318,13 +4325,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
         tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
         return tuplet
 
-    def _make_music(self, divisions) -> list[abjad.Tuplet]:
+    def _make_music(
+        self, divisions, *, previous_state=None, spelling=None, tag=None
+    ) -> list[abjad.Tuplet]:
         tuplets = _make_accelerando_rhythm_maker_music(
             divisions,
             *self.interpolations,
-            self_previous_state=self.previous_state,
-            self_spelling=self.spelling,
-            self_tag=self.tag,
+            self_previous_state=previous_state,
+            self_spelling=spelling,
+            self_tag=tag,
         )
         return tuplets
 
@@ -4357,7 +4366,7 @@ def _make_accelerando_rhythm_maker_music(
     return tuplets
 
 
-@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class EvenDivisionRhythmMaker(RhythmMaker):
     r"""
     Even division rhythm-maker.
@@ -6274,15 +6283,17 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         assert isinstance(self.extra_counts, typing.Sequence), repr(self.extra_counts)
         assert all(isinstance(_, int) for _ in self.extra_counts)
 
-    def _make_music(self, divisions) -> list[abjad.Tuplet]:
+    def _make_music(
+        self, divisions, *, previous_state=None, spelling=None, tag=None
+    ) -> list[abjad.Tuplet]:
         return _make_even_division_rhythm_maker_music(
             divisions,
             self.denominators,
             self_denominator=self.denominator,
             self_extra_counts=self.extra_counts,
-            self_previous_state=self.previous_state,
-            self_spelling=self.spelling,
-            self_tag=self.tag,
+            self_previous_state=previous_state,
+            self_spelling=spelling,
+            self_tag=tag,
         )
 
 
@@ -6346,7 +6357,7 @@ def _make_even_division_rhythm_maker_music(
     return tuplets
 
 
-@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class IncisedRhythmMaker(RhythmMaker):
     r"""
     Incised rhythm-maker.
@@ -7053,13 +7064,15 @@ class IncisedRhythmMaker(RhythmMaker):
             else:
                 raise Exception("must incise divisions or output.")
 
-    def _make_music(self, divisions) -> list[abjad.Tuplet]:
+    def _make_music(
+        self, divisions, *, previous_state=None, spelling=None, tag=None
+    ) -> list[abjad.Tuplet]:
         tuplets = _make_incised_rhythm_maker_music(
             divisions,
             extra_counts=self.extra_counts,
             incise=self.incise,
-            spelling=self.spelling,
-            tag=self.tag,
+            spelling=spelling,
+            tag=tag,
         )
         return tuplets
 
@@ -7230,7 +7243,7 @@ def _make_incised_rhythm_maker_music(
     return tuplets
 
 
-@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class MultipliedDurationRhythmMaker(RhythmMaker):
     r"""
     Multiplied-duration rhythm-maker.
@@ -7541,7 +7554,9 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             raise Exception(message)
         assert isinstance(self.duration, abjad.Duration), repr(self.duration)
 
-    def _make_music(self, divisions) -> list[abjad.MultimeasureRest | abjad.Skip]:
+    def _make_music(
+        self, divisions, *, previous_state=None, spelling=None, tag=None
+    ) -> list[abjad.MultimeasureRest | abjad.Skip]:
         component: abjad.MultimeasureRest | abjad.Skip
         components = []
         for division in divisions:
@@ -7550,17 +7565,17 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
             multiplier = division / self.duration
             if self.prototype is abjad.Note:
                 component = self.prototype(
-                    "c'", self.duration, multiplier=multiplier, tag=self.tag
+                    "c'", self.duration, multiplier=multiplier, tag=tag
                 )
             else:
                 component = self.prototype(
-                    self.duration, multiplier=multiplier, tag=self.tag
+                    self.duration, multiplier=multiplier, tag=tag
                 )
             components.append(component)
         return components
 
 
-@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class NoteRhythmMaker(RhythmMaker):
     r"""
     Note rhtyhm-maker.
@@ -8342,12 +8357,10 @@ class NoteRhythmMaker(RhythmMaker):
 
     """
 
-    def _make_music(self, divisions) -> list[list[abjad.Leaf | abjad.Tuplet]]:
-        return _make_note_rhythm_maker_music(
-            divisions,
-            spelling=self.spelling,
-            tag=self.tag,
-        )
+    def _make_music(
+        self, divisions, *, previous_state=None, spelling=None, tag=None
+    ) -> list[list[abjad.Leaf | abjad.Tuplet]]:
+        return _make_note_rhythm_maker_music(divisions, spelling=spelling, tag=tag)
 
 
 def _make_note_rhythm_maker_music(
@@ -8369,7 +8382,7 @@ def _make_note_rhythm_maker_music(
     return selections
 
 
-@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class TaleaRhythmMaker(RhythmMaker):
     r"""
     Talea rhythm-maker.
@@ -11682,16 +11695,18 @@ class TaleaRhythmMaker(RhythmMaker):
         assert isinstance(self.read_talea_once_only, bool)
         assert isinstance(self.talea, Talea), repr(self.talea)
 
-    def _make_music(self, divisions) -> list[abjad.Tuplet]:
+    def _make_music(
+        self, divisions, *, previous_state=None, spelling=None, tag=None
+    ) -> list[abjad.Tuplet]:
         tuplets = _make_talea_rhythm_maker_music(
             divisions,
             self.extra_counts,
-            self.previous_state,
+            previous_state,
             self.read_talea_once_only,
-            self.spelling,
+            spelling,
             self.state,
             self.talea,
-            self.tag,
+            tag,
         )
         return tuplets
 
@@ -11974,7 +11989,7 @@ def _split_talea_extended_to_weights(preamble, read_talea_once_only, talea, weig
     return talea
 
 
-@dataclasses.dataclass(order=True, slots=True, unsafe_hash=True)
+@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class TupletRhythmMaker(RhythmMaker):
     r"""
     Tuplet rhythm-maker.
@@ -14116,10 +14131,12 @@ class TupletRhythmMaker(RhythmMaker):
             self.tuplet_ratios
         )
 
-    def _make_music(self, divisions) -> list[abjad.Tuplet]:
+    def _make_music(
+        self, divisions, *, previous_state=None, spelling=None, tag=None
+    ) -> list[abjad.Tuplet]:
         assert self.tuplet_ratios is not None
         return _make_tuplet_rhythm_maker_music(
-            divisions, self.tuplet_ratios, self_tag=self.tag
+            divisions, self.tuplet_ratios, self_tag=tag
         )
 
 
@@ -14379,7 +14396,8 @@ def talea_function(
     )
     talea = talea.advance(advance)
     previous_state = previous_state or {}
-    state = state or {}
+    if state is None:
+        state = {}
     tuplets = _make_talea_rhythm_maker_music(
         divisions,
         extra_counts,
@@ -14591,13 +14609,6 @@ def _do_force_repeat_tie_command(container, *, tag=None, threshold=None) -> None
 
 
 def _do_force_rest_command(selections, previous_logical_ties_produced=None, tag=None):
-    # will need to restore for statal rhythm-makers:
-    # logical_ties = abjad.select.logical_ties(selections)
-    # logical_ties = list(logical_ties)
-    # total_logical_ties = len(logical_ties)
-    # previous_logical_ties_produced = self.previous_state.get("logical_ties_produced", 0)
-    # if self.previous_state.get("incomplete_last_note", False):
-    #    previous_logical_ties_produced -= 1
     leaves = abjad.select.leaves(selections)
     for leaf in leaves:
         rest = abjad.Rest(leaf.written_duration, tag=tag)
@@ -15115,13 +15126,6 @@ class ForceNoteCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        # will need to restore for statal rhythm-makers:
-        # logical_ties = abjad.select.logical_ties(selections)
-        # logical_ties = list(logical_ties)
-        # total_logical_ties = len(logical_ties)
-        # previous_logical_ties_produced = self.previous_state.get("logical_ties_produced", 0)
-        # if self.previous_state.get("incomplete_last_note", False):
-        #    previous_logical_ties_produced -= 1
         _do_force_note_command(selection, tag=tag)
 
 
@@ -19248,12 +19252,15 @@ class Stack:
         divisions = self._apply_division_expression(divisions_)
         selection = self.maker(divisions, previous_state=previous_state)
         music_voice.extend(selection)
+        already_cached_makers = set()
         for command in self.commands:
             if isinstance(command, CacheStateCommand):
                 assert isinstance(self.maker, RhythmMaker), repr(self.maker)
+                if repr(self.maker) in already_cached_makers:
+                    continue
                 divisions_consumed = len(divisions)
                 logical_ties_produced = len(abjad.select.logical_ties(music_voice))
-                self.maker.state = self.maker._make_state_dictionary(
+                state = _make_state_dictionary(
                     divisions_consumed=divisions_consumed,
                     logical_ties_produced=logical_ties_produced,
                     previous_divisions_consumed=self.maker.previous_state.get(
@@ -19267,7 +19274,9 @@ class Stack:
                     ),
                     state=self.maker.state,
                 )
-                self.maker.already_cached_state = True
+                self.maker.state.clear()
+                self.maker.state.update(state)
+                already_cached_makers.add(repr(self.maker))
             try:
                 command(music_voice, tag=self.tag)
             except Exception:
