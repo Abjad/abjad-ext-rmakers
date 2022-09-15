@@ -917,43 +917,46 @@ class RhythmMaker:
         music_voice = wrap_in_time_signature_staff(music, divisions)
         divisions_consumed = len(divisions)
         if self.already_cached_state is not True:
-            self._cache_state(music_voice, divisions_consumed)
+            logical_ties_produced = len(abjad.select.logical_ties(music_voice))
+            self.state = self._make_state_dictionary(
+                divisions_consumed=divisions_consumed,
+                logical_ties_produced=logical_ties_produced,
+                previous_divisions_consumed=self.previous_state.get(
+                    "divisions_consumed", 0
+                ),
+                previous_incomplete_last_note=self.previous_state.get(
+                    "incomplete_last_note", False
+                ),
+                previous_logical_ties_produced=self.previous_state.get(
+                    "logical_ties_produced", 0
+                ),
+                state=self.state,
+            )
         selection = music_voice[:]
         music_voice[:] = []
         return list(selection)
 
-    def _cache_state(self, voice, divisions_consumed):
-        previous_logical_ties_produced = self._previous_logical_ties_produced()
-        logical_ties_produced = len(abjad.select.logical_ties(voice))
-        logical_ties_produced += previous_logical_ties_produced
-        if self._previous_incomplete_last_note():
-            logical_ties_produced -= 1
-        self.state["divisions_consumed"] = self.previous_state.get(
-            "divisions_consumed", 0
-        )
-        self.state["divisions_consumed"] += divisions_consumed
-        self.state["logical_ties_produced"] = logical_ties_produced
-        items = self.state.items()
-        state = dict(sorted(items))
-        self.state = state
+    @staticmethod
+    def _make_state_dictionary(
+        *,
+        divisions_consumed,
+        logical_ties_produced,
+        previous_divisions_consumed,
+        previous_incomplete_last_note,
+        previous_logical_ties_produced,
+        state,
+    ):
+        divisions_consumed_ = previous_divisions_consumed + divisions_consumed
+        state["divisions_consumed"] = divisions_consumed_
+        logical_ties_produced_ = previous_logical_ties_produced + logical_ties_produced
+        if previous_incomplete_last_note:
+            logical_ties_produced_ -= 1
+        state["logical_ties_produced"] = logical_ties_produced_
+        state = dict(sorted(state.items()))
+        return state
 
     def _make_music(self, divisions):
         return []
-
-    def _previous_divisions_consumed(self):
-        if not self.previous_state:
-            return 0
-        return self.previous_state.get("divisions_consumed", 0)
-
-    def _previous_incomplete_last_note(self):
-        if not self.previous_state:
-            return False
-        return self.previous_state.get("incomplete_last_note", False)
-
-    def _previous_logical_ties_produced(self):
-        if not self.previous_state:
-            return 0
-        return self.previous_state.get("logical_ties_produced", 0)
 
 
 def _make_talea_rhythm_maker_tuplets(divisions, leaf_lists, tag):
@@ -14592,8 +14595,8 @@ def _do_force_rest_command(selections, previous_logical_ties_produced=None, tag=
     # logical_ties = abjad.select.logical_ties(selections)
     # logical_ties = list(logical_ties)
     # total_logical_ties = len(logical_ties)
-    # previous_logical_ties_produced = self._previous_logical_ties_produced()
-    # if self._previous_incomplete_last_note():
+    # previous_logical_ties_produced = self.previous_state.get("logical_ties_produced", 0)
+    # if self.previous_state.get("incomplete_last_note", False):
     #    previous_logical_ties_produced -= 1
     leaves = abjad.select.leaves(selections)
     for leaf in leaves:
@@ -15116,8 +15119,8 @@ class ForceNoteCommand(Command):
         # logical_ties = abjad.select.logical_ties(selections)
         # logical_ties = list(logical_ties)
         # total_logical_ties = len(logical_ties)
-        # previous_logical_ties_produced = self._previous_logical_ties_produced()
-        # if self._previous_incomplete_last_note():
+        # previous_logical_ties_produced = self.previous_state.get("logical_ties_produced", 0)
+        # if self.previous_state.get("incomplete_last_note", False):
         #    previous_logical_ties_produced -= 1
         _do_force_note_command(selection, tag=tag)
 
@@ -19248,7 +19251,22 @@ class Stack:
         for command in self.commands:
             if isinstance(command, CacheStateCommand):
                 assert isinstance(self.maker, RhythmMaker), repr(self.maker)
-                self.maker._cache_state(music_voice, len(divisions))
+                divisions_consumed = len(divisions)
+                logical_ties_produced = len(abjad.select.logical_ties(music_voice))
+                self.maker.state = self.maker._make_state_dictionary(
+                    divisions_consumed=divisions_consumed,
+                    logical_ties_produced=logical_ties_produced,
+                    previous_divisions_consumed=self.maker.previous_state.get(
+                        "divisions_consumed", 0
+                    ),
+                    previous_incomplete_last_note=self.maker.previous_state.get(
+                        "incomplete_last_note", False
+                    ),
+                    previous_logical_ties_produced=self.maker.previous_state.get(
+                        "logical_ties_produced", 0
+                    ),
+                    state=self.maker.state,
+                )
                 self.maker.already_cached_state = True
             try:
                 command(music_voice, tag=self.tag)
