@@ -909,6 +909,7 @@ class RhythmMaker:
     ) -> list[abjad.Component]:
         previous_state = dict(previous_state or [])
         previous_state_copy = copy.deepcopy(previous_state)
+        self.state.clear()
         music = self._make_music(
             divisions,
             previous_state=previous_state,
@@ -3444,14 +3445,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = stack.maker.state
-        >>> state
+        >>> stack.maker.state
         {'divisions_consumed': 3, 'logical_ties_produced': 17}
 
         Advances 3 divisions; then consumes another 3 divisions:
 
         >>> divisions = [(4, 8), (3, 8), (4, 8)]
-        >>> selections = stack(divisions, previous_state=state)
+        >>> selections = stack(divisions, previous_state=stack.maker.state)
 
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3623,14 +3623,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = stack.maker.state
-        >>> state
+        >>> stack.maker.state
         {'divisions_consumed': 6, 'logical_ties_produced': 36}
 
         Advances 6 divisions; then consumes another 3 divisions:
 
         >>> divisions = [(3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions, previous_state=state)
+        >>> selections = stack(divisions, previous_state=stack.maker.state)
 
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3800,8 +3799,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = stack.maker.state
-        >>> state
+        >>> stack.maker.state
         {'divisions_consumed': 9, 'logical_ties_produced': 53}
 
     ..  container:: example
@@ -6200,14 +6198,13 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = stack.maker.state
-        >>> state
+        >>> stack.maker.state
         {'divisions_consumed': 5, 'logical_ties_produced': 15}
 
         Advances 5 divisions; then consumes another 5 divisions:
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-        >>> selections = stack(divisions, previous_state=state)
+        >>> selections = stack(divisions, previous_state=stack.maker.state)
 
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -6259,8 +6256,7 @@ class EvenDivisionRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = stack.maker.state
-        >>> state
+        >>> stack.maker.state
         {'divisions_consumed': 10, 'logical_ties_produced': 29}
 
     """
@@ -8612,8 +8608,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = command.maker.state
-        >>> state
+        >>> command.maker.state
         {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
     ..  container:: example
@@ -10368,8 +10363,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = stack.maker.state
-        >>> state
+        >>> stack.maker.state
         {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
     ..  container:: example
@@ -10426,8 +10420,7 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = stack.maker.state
-        >>> state
+        >>> stack.maker.state
         {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
     ..  container:: example
@@ -11174,7 +11167,10 @@ class TaleaRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        Reads talea once only:
+        **Reading talea once only.** Set ``read_talea_once_only=True`` to
+        ensure talea is long enough to cover all divisions without repeating.
+        Provides way of using talea noncyclically when, for example,
+        interpolating from short durations to long durations:
 
         >>> stack = rmakers.stack(
         ...     rmakers.talea(
@@ -11185,8 +11181,8 @@ class TaleaRhythmMaker(RhythmMaker):
         ...     rmakers.beam(),
         ... )
 
-        Calling stack on these divisions raises an exception because talea is too
-        short to read once only:
+        Code below raises an exception because talea would need to be read
+        multiple times to handle all divisions:
 
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> stack(divisions)
@@ -11194,15 +11190,9 @@ class TaleaRhythmMaker(RhythmMaker):
             ...
         Exception: CyclicTuple(items=()) + CyclicTuple(items=(1, 2, 3, 4)) is too short to read [6, 6, 6, 6] once.
 
-        Set to true to ensure talea is long enough to cover all divisions without
-        repeating.
-
-        Provides way of using talea noncyclically when, for example, interpolating from
-        short durations to long durations.
-
     ..  container:: example
 
-        Consumes 4 divisions and 31 counts:
+        **Examples showing state.** Consumes 4 divisions and 31 counts:
 
         >>> command = rmakers.stack(
         ...     rmakers.talea([4], 16, extra_counts=[0, 1, 2]),
@@ -11211,7 +11201,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = command(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11256,16 +11245,14 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = command.maker.state
-        >>> state
+        >>> command.maker.state
         {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
         Advances 4 divisions and 31 counts; then consumes another 4 divisions and 31
         counts:
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selections = command(divisions, previous_state=state)
-
+        >>> selections = command(divisions, previous_state=command.maker.state)
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11312,14 +11299,13 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = command.maker.state
-        >>> state
+        >>> command.maker.state
         {'divisions_consumed': 8, 'incomplete_last_note': True, 'logical_ties_produced': 16, 'talea_weight_consumed': 63}
 
         Advances 8 divisions and 62 counts; then consumes 4 divisions and 31 counts:
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> selections = command(divisions, previous_state=state)
+        >>> selections = command(divisions, previous_state=command.maker.state)
 
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -11370,9 +11356,8 @@ class TaleaRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> state = command.maker.state
-        >>> state
-        {'divisions_consumed': 12, 'incomplete_last_note': True, 'logical_ties_produced': 24, 'talea_weight_consumed': 96}
+        >>> command.maker.state
+        {'divisions_consumed': 12, 'logical_ties_produced': 24, 'talea_weight_consumed': 96}
 
     ..  container:: example
 
