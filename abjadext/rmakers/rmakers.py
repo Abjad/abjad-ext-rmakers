@@ -14401,6 +14401,19 @@ def talea_function(
         talea,
         tag,
     )
+    voice = abjad.Voice(tuplets)
+    logical_ties_produced = len(abjad.select.logical_ties(voice))
+    new_state = _make_state_dictionary(
+        divisions_consumed=len(divisions),
+        logical_ties_produced=logical_ties_produced,
+        previous_divisions_consumed=previous_state.get("divisions_consumed", 0),
+        previous_incomplete_last_note=previous_state.get("incomplete_last_note", False),
+        previous_logical_ties_produced=previous_state.get("logical_ties_produced", 0),
+        state=state,
+    )
+    tuplets = abjad.mutate.eject_contents(voice)
+    state.clear()
+    state.update(new_state)
     return tuplets
 
 
