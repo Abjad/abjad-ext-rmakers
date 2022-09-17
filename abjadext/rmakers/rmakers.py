@@ -14158,6 +14158,7 @@ def accelerando_function(
     *interpolations: typing.Sequence[abjad.typings.Duration],
     previous_state: dict = None,
     spelling: Spelling = Spelling(),
+    state: dict = None,
     tag: abjad.Tag = abjad.Tag(),
 ):
     """
@@ -14169,13 +14170,29 @@ def accelerando_function(
         interpolation_ = Interpolation(*interpolation_durations)
         interpolations_.append(interpolation_)
     previous_state = previous_state or {}
-    return _make_accelerando_rhythm_maker_music(
+    if state is None:
+        state = {}
+    tuplets = _make_accelerando_rhythm_maker_music(
         divisions,
         *interpolations_,
         self_previous_state=previous_state,
         self_spelling=spelling,
         self_tag=tag,
     )
+    voice = abjad.Voice(tuplets)
+    logical_ties_produced = len(abjad.select.logical_ties(voice))
+    new_state = _make_state_dictionary(
+        divisions_consumed=len(divisions),
+        logical_ties_produced=logical_ties_produced,
+        previous_divisions_consumed=previous_state.get("divisions_consumed", 0),
+        previous_incomplete_last_note=previous_state.get("incomplete_last_note", False),
+        previous_logical_ties_produced=previous_state.get("logical_ties_produced", 0),
+        state=state,
+    )
+    tuplets = abjad.mutate.eject_contents(voice)
+    state.clear()
+    state.update(new_state)
+    return tuplets
 
 
 def even_division(
