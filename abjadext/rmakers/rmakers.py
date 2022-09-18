@@ -14633,6 +14633,63 @@ def _do_force_rest_command(selections, previous_logical_ties_produced=None, tag=
             abjad.detach(abjad.RepeatTie, next_leaf)
 
 
+def _do_grace_container_command(
+    argument,
+    counts,
+    beam_and_slash=False,
+    class_=None,
+    talea=None,
+):
+    leaves = abjad.select.leaves(argument, grace=False)
+    assert counts is not None
+    cyclic_counts = abjad.CyclicTuple(counts)
+    maker = abjad.LeafMaker()
+    start = 0
+    for i, leaf in enumerate(leaves):
+        count = cyclic_counts[i]
+        if not count:
+            continue
+        stop = start + count
+        durations = talea[start:stop]
+        notes = maker([0], durations)
+        if beam_and_slash:
+            abjad.beam(notes)
+            literal = abjad.LilyPondLiteral(r"\slash")
+            abjad.attach(literal, notes[0])
+        container = class_(notes)
+        abjad.attach(container, leaf)
+
+
+def _do_on_beat_grace_container_command(
+    argument,
+    counts,
+    *,
+    leaf_duration=None,
+    # TODO: activate tag
+    tag=None,
+    talea=None,
+    voice_name=None,
+):
+    assert talea is not None
+    cyclic_counts = abjad.CyclicTuple(counts)
+    maker = abjad.LeafMaker()
+    start = 0
+    for i, selection in enumerate(argument):
+        count = cyclic_counts[i]
+        if not count:
+            continue
+        stop = start + count
+        durations = talea[start:stop]
+        notes = maker([0], durations)
+        abjad.on_beat_grace_container(
+            notes,
+            selection,
+            anchor_voice_number=2,
+            grace_voice_number=1,
+            leaf_duration=leaf_duration,
+        )
+
+
 def _do_reduce_multiplier_command(argument):
     for tuplet in abjad.select.tuplets(argument):
         tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
@@ -15354,24 +15411,13 @@ class GraceContainerCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        leaves = abjad.select.leaves(selection, grace=False)
-        assert self.counts is not None
-        counts = abjad.CyclicTuple(self.counts)
-        maker = abjad.LeafMaker()
-        start = 0
-        for i, leaf in enumerate(leaves):
-            count = counts[i]
-            if not count:
-                continue
-            stop = start + count
-            durations = self.talea[start:stop]
-            notes = maker([0], durations)
-            if self.beam_and_slash:
-                abjad.beam(notes)
-                literal = abjad.LilyPondLiteral(r"\slash")
-                abjad.attach(literal, notes[0])
-            container = self.class_(notes)
-            abjad.attach(container, leaf)
+        _do_grace_container_command(
+            selection,
+            counts=self.counts,
+            beam_and_slash=self.beam_and_slash,
+            class_=self.class_,
+            talea=self.talea,
+        )
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15422,23 +15468,13 @@ class OnBeatGraceContainerCommand(Command):
         if self.selector is not None:
             selections = self.selector(selections)
         assert self.counts is not None
-        counts = abjad.CyclicTuple(self.counts)
-        maker = abjad.LeafMaker()
-        start = 0
-        for i, selection in enumerate(selections):
-            count = counts[i]
-            if not count:
-                continue
-            stop = start + count
-            durations = self.talea[start:stop]
-            notes = maker([0], durations)
-            abjad.on_beat_grace_container(
-                notes,
-                selection,
-                anchor_voice_number=2,
-                grace_voice_number=1,
-                leaf_duration=self.leaf_duration,
-            )
+        _do_on_beat_grace_container_command(
+            selections,
+            self.counts,
+            leaf_duration=self.leaf_duration,
+            talea=self.talea,
+            voice_name=self.voice_name,
+        )
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15869,6 +15905,22 @@ def after_grace_container(
     """
     return GraceContainerCommand(
         selector=selector,
+        counts=counts,
+        beam_and_slash=beam_and_slash,
+        class_=abjad.AfterGraceContainer,
+        talea=talea,
+    )
+
+
+def after_grace_container_function(
+    argument,
+    counts: typing.Sequence[int],
+    *,
+    beam_and_slash: bool = False,
+    talea: Talea = Talea([1], 8),
+):
+    _do_grace_container_command(
+        argument,
         counts=counts,
         beam_and_slash=beam_and_slash,
         class_=abjad.AfterGraceContainer,
@@ -17344,6 +17396,25 @@ def on_beat_grace_container(
         selector=selector,
         counts=counts,
         leaf_duration=abjad.Duration(leaf_duration),
+        talea=talea,
+        voice_name=voice_name,
+    )
+
+
+def on_beat_grace_container_function(
+    argument,
+    counts: typing.Sequence[int],
+    *,
+    leaf_duration: abjad.typings.Duration = None,
+    tag: abjad.Tag = None,
+    talea: Talea = Talea([1], 8),
+    voice_name: str = "",
+):
+    _do_on_beat_grace_container_command(
+        argument,
+        counts,
+        leaf_duration=leaf_duration,
+        tag=tag,
         talea=talea,
         voice_name=voice_name,
     )
