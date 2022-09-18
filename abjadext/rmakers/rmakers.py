@@ -14660,7 +14660,19 @@ def _do_grace_container_command(
         abjad.attach(container, leaf)
 
 
+def _do_invisible_music_command(argument, *, tag: abjad.Tag = abjad.Tag()):
+    tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
+    literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
+    tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
+    literal_2 = abjad.LilyPondLiteral(r"\abjad-invisible-music-coloring")
+    for leaf in abjad.select.leaves(argument):
+        abjad.attach(literal_1, leaf, tag=tag_1, deactivate=True)
+        abjad.attach(literal_2, leaf, tag=tag_2)
+
+
 def _do_on_beat_grace_container_command(
+    voice,
+    voice_name,
     argument,
     counts,
     *,
@@ -14668,9 +14680,12 @@ def _do_on_beat_grace_container_command(
     # TODO: activate tag
     tag=None,
     talea=None,
-    voice_name=None,
 ):
-    assert talea is not None
+    assert isinstance(voice, abjad.Voice), repr(voice)
+    assert isinstance(voice_name, str), repr(voice_name)
+    if voice_name:
+        voice.name = voice_name
+    assert isinstance(talea, Talea), repr(talea)
     cyclic_counts = abjad.CyclicTuple(counts)
     maker = abjad.LeafMaker()
     start = 0
@@ -15430,13 +15445,7 @@ class InvisibleMusicCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
-        literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
-        tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
-        literal_2 = abjad.LilyPondLiteral(r"\abjad-invisible-music-coloring")
-        for leaf in abjad.select.leaves(selection):
-            abjad.attach(literal_1, leaf, tag=tag_1, deactivate=True)
-            abjad.attach(literal_2, leaf, tag=tag_2)
+        _do_invisible_music_command(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15462,18 +15471,16 @@ class OnBeatGraceContainerCommand(Command):
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         assert isinstance(voice, abjad.Voice), repr(voice)
-        if self.voice_name:
-            voice.name = self.voice_name
         selections = voice
         if self.selector is not None:
             selections = self.selector(selections)
-        assert self.counts is not None
         _do_on_beat_grace_container_command(
+            voice,
+            self.voice_name,
             selections,
             self.counts,
             leaf_duration=self.leaf_duration,
             talea=self.talea,
-            voice_name=self.voice_name,
         )
 
 
@@ -16999,6 +17006,13 @@ def invisible_music(selector: typing.Callable | None) -> InvisibleMusicCommand:
     return InvisibleMusicCommand(selector=selector)
 
 
+def invisible_music_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+    """
+    Makes ``argument`` invisible.
+    """
+    _do_invisible_music_command(argument, tag=tag)
+
+
 def on_beat_grace_container(
     counts: typing.Sequence[int],
     selector: typing.Callable | None = None,
@@ -17402,21 +17416,27 @@ def on_beat_grace_container(
 
 
 def on_beat_grace_container_function(
+    voice: abjad.Voice,
+    voice_name: str,
     argument,
     counts: typing.Sequence[int],
     *,
     leaf_duration: abjad.typings.Duration = None,
+    # TODO: activate tag
     tag: abjad.Tag = None,
     talea: Talea = Talea([1], 8),
-    voice_name: str = "",
 ):
+    assert isinstance(voice, abjad.Voice), repr(voice)
+    assert isinstance(voice_name, str), repr(voice_name)
+    assert isinstance(talea, Talea), repr(talea)
     _do_on_beat_grace_container_command(
+        voice,
+        voice_name,
         argument,
         counts,
         leaf_duration=leaf_duration,
         tag=tag,
         talea=talea,
-        voice_name=voice_name,
     )
 
 
