@@ -14476,401 +14476,6 @@ def wrap_in_time_signature_staff(music, divisions):
     return music_voice
 
 
-# COMMAND HELPER FUNCTIONS (PRIVATE)
-
-
-def _do_beam_command(
-    argument,
-    beam_lone_notes: bool = False,
-    beam_rests: bool = False,
-    stemlet_length: int | float | None = None,
-    tag: abjad.Tag = None,
-):
-    for selection in argument:
-        unbeam_function(selection)
-        leaves = abjad.select.leaves(selection)
-        abjad.beam(
-            leaves,
-            beam_lone_notes=beam_lone_notes,
-            beam_rests=beam_rests,
-            stemlet_length=stemlet_length,
-            tag=tag,
-        )
-
-
-def _do_beam_groups_command(
-    argument,
-    beam_lone_notes: bool = False,
-    beam_rests: bool = False,
-    stemlet_length: int | float | None = None,
-    tag: abjad.Tag = None,
-):
-    unbeam_function(argument)
-    durations = []
-    components: list[abjad.Component] = []
-    for selection in argument:
-        duration = abjad.get.duration(selection)
-        durations.append(duration)
-    for selection in argument:
-        if isinstance(selection, abjad.Tuplet):
-            components.append(selection)
-        else:
-            components.extend(selection)
-    leaves = abjad.select.leaves(components)
-    abjad.beam(
-        leaves,
-        beam_lone_notes=beam_lone_notes,
-        beam_rests=beam_rests,
-        durations=durations,
-        span_beam_count=1,
-        stemlet_length=stemlet_length,
-        tag=tag,
-    )
-
-
-def _do_duration_bracket_command(argument):
-    for tuplet in abjad.select.tuplets(argument):
-        duration_ = abjad.get.duration(tuplet)
-        notes = abjad.makers.make_leaves([0], [duration_])
-        string = abjad.illustrators.selection_to_score_markup_string(notes)
-        string = rf"\markup \scale #'(0.75 . 0.75) {string}"
-        abjad.override(tuplet).TupletNumber.text = string
-
-
-def _do_extract_trivial_command(argument):
-    tuplets = abjad.select.tuplets(argument)
-    for tuplet in tuplets:
-        if tuplet.trivial():
-            abjad.mutate.extract(tuplet)
-
-
-def _do_feather_beam_command(
-    argument, *, beam_rests: bool = False, stemlet_length=None, tag=None
-):
-    for selection in argument:
-        unbeam_function(selection)
-        leaves = abjad.select.leaves(selection)
-        abjad.beam(
-            leaves,
-            beam_rests=beam_rests,
-            stemlet_length=stemlet_length,
-            tag=tag,
-        )
-    for selection in argument:
-        first_leaf = abjad.select.leaf(selection, 0)
-        if FeatherBeamCommand._is_accelerando(selection):
-            abjad.override(first_leaf).Beam.grow_direction = abjad.RIGHT
-        elif FeatherBeamCommand._is_ritardando(selection):
-            abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
-
-
-def _do_force_augmentation_command(argument):
-    for tuplet in abjad.select.tuplets(argument):
-        if not tuplet.augmentation():
-            tuplet.toggle_prolation()
-
-
-def _do_force_diminution_command(argument):
-    for tuplet in abjad.select.tuplets(argument):
-        if not tuplet.diminution():
-            tuplet.toggle_prolation()
-
-
-def _do_force_note_command(argument, *, tag=None):
-    leaves = abjad.select.leaves(argument)
-    for leaf in leaves:
-        if isinstance(leaf, abjad.Note):
-            continue
-        note = abjad.Note("C4", leaf.written_duration, tag=tag)
-        if leaf.multiplier is not None:
-            note.multiplier = leaf.multiplier
-        abjad.mutate.replace(leaf, [note])
-
-
-def _do_force_repeat_tie_command(container, *, tag=None, threshold=None) -> None:
-    assert isinstance(container, abjad.Container), container
-    if callable(threshold):
-        inequality = threshold
-    elif threshold in (None, False):
-
-        def inequality(item):
-            return item < 0
-
-    elif threshold is True:
-
-        def inequality(item):
-            return item >= 0
-
-    else:
-        assert isinstance(threshold, tuple) and len(threshold) == 2, repr(threshold)
-
-        def inequality(item):
-            return item >= abjad.Duration(threshold)
-
-    attach_repeat_ties = []
-    for leaf in abjad.select.leaves(container):
-        if abjad.get.has_indicator(leaf, abjad.Tie):
-            next_leaf = abjad.get.leaf(leaf, 1)
-            if next_leaf is None:
-                continue
-            if not isinstance(next_leaf, abjad.Chord | abjad.Note):
-                continue
-            if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
-                continue
-            duration = abjad.get.duration(leaf)
-            if not inequality(duration):
-                continue
-            attach_repeat_ties.append(next_leaf)
-            abjad.detach(abjad.Tie, leaf)
-    for leaf in attach_repeat_ties:
-        repeat_tie = abjad.RepeatTie()
-        abjad.attach(repeat_tie, leaf, tag=tag)
-
-
-def _do_force_rest_command(selections, previous_logical_ties_produced=None, tag=None):
-    leaves = abjad.select.leaves(selections)
-    for leaf in leaves:
-        rest = abjad.Rest(leaf.written_duration, tag=tag)
-        if leaf.multiplier is not None:
-            rest.multiplier = leaf.multiplier
-        previous_leaf = abjad.get.leaf(leaf, -1)
-        next_leaf = abjad.get.leaf(leaf, 1)
-        abjad.mutate.replace(leaf, [rest])
-        if previous_leaf is not None:
-            abjad.detach(abjad.Tie, previous_leaf)
-        abjad.detach(abjad.Tie, rest)
-        abjad.detach(abjad.RepeatTie, rest)
-        if next_leaf is not None:
-            abjad.detach(abjad.RepeatTie, next_leaf)
-
-
-def _do_grace_container_command(
-    argument,
-    counts,
-    beam_and_slash=False,
-    class_=None,
-    talea=None,
-):
-    leaves = abjad.select.leaves(argument, grace=False)
-    assert counts is not None
-    cyclic_counts = abjad.CyclicTuple(counts)
-    start = 0
-    for i, leaf in enumerate(leaves):
-        count = cyclic_counts[i]
-        if not count:
-            continue
-        stop = start + count
-        durations = talea[start:stop]
-        notes = abjad.makers.make_leaves([0], durations)
-        if beam_and_slash:
-            abjad.beam(notes)
-            literal = abjad.LilyPondLiteral(r"\slash")
-            abjad.attach(literal, notes[0])
-        container = class_(notes)
-        abjad.attach(container, leaf)
-
-
-def _do_invisible_music_command(argument, *, tag: abjad.Tag = abjad.Tag()):
-    tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
-    literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
-    tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
-    literal_2 = abjad.LilyPondLiteral(r"\abjad-invisible-music-coloring")
-    for leaf in abjad.select.leaves(argument):
-        abjad.attach(literal_1, leaf, tag=tag_1, deactivate=True)
-        abjad.attach(literal_2, leaf, tag=tag_2)
-
-
-def _do_on_beat_grace_container_command(
-    voice,
-    voice_name,
-    argument,
-    counts,
-    *,
-    leaf_duration=None,
-    # TODO: activate tag
-    tag=None,
-    talea=None,
-):
-    assert isinstance(voice, abjad.Voice), repr(voice)
-    assert isinstance(voice_name, str), repr(voice_name)
-    if voice_name:
-        voice.name = voice_name
-    assert isinstance(talea, Talea), repr(talea)
-    cyclic_counts = abjad.CyclicTuple(counts)
-    start = 0
-    for i, selection in enumerate(argument):
-        count = cyclic_counts[i]
-        if not count:
-            continue
-        stop = start + count
-        durations = talea[start:stop]
-        notes = abjad.makers.make_leaves([0], durations)
-        abjad.on_beat_grace_container(
-            notes,
-            selection,
-            anchor_voice_number=2,
-            grace_voice_number=1,
-            leaf_duration=leaf_duration,
-        )
-
-
-def _do_reduce_multiplier_command(argument):
-    for tuplet in abjad.select.tuplets(argument):
-        tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
-
-
-def _do_repeat_tie_command(argument, *, tag):
-    for note in abjad.select.notes(argument):
-        tie = abjad.RepeatTie()
-        abjad.attach(tie, note, tag=tag)
-
-
-def _do_rewrite_dots_command(argument, *, tag=None):
-    for tuplet in abjad.select.tuplets(argument):
-        tuplet.rewrite_dots()
-
-
-def _do_rewrite_meter_command(
-    voice, *, boundary_depth=None, reference_meters=None, tag=None
-):
-    tag = tag or abjad.Tag()
-    tag = tag.append(abjad.Tag("rmakers.RewriteMeterCommand.__call__"))
-    staff = abjad.get.parentage(voice).parent
-    assert isinstance(staff, abjad.Staff), repr(staff)
-    time_signature_voice = staff["TimeSignatureVoice"]
-    assert isinstance(time_signature_voice, abjad.Voice)
-    meters, preferred_meters = [], []
-    for skip in time_signature_voice:
-        time_signature = abjad.get.indicator(skip, abjad.TimeSignature)
-        meter = abjad.Meter(time_signature)
-        meters.append(meter)
-    durations = [abjad.Duration(_) for _ in meters]
-    reference_meters = reference_meters or ()
-    split_measures_function(voice, durations=durations)
-    selections = abjad.select.group_by_measure(voice[:])
-    for meter, selection in zip(meters, selections):
-        for reference_meter in reference_meters:
-            if reference_meter == meter:
-                meter = reference_meter
-                break
-        preferred_meters.append(meter)
-        nontupletted_leaves = []
-        for leaf in abjad.iterate.leaves(selection):
-            if not abjad.get.parentage(leaf).count(abjad.Tuplet):
-                nontupletted_leaves.append(leaf)
-        unbeam_function(nontupletted_leaves)
-        abjad.Meter.rewrite_meter(
-            selection,
-            meter,
-            boundary_depth=boundary_depth,
-            rewrite_tuplets=False,
-        )
-    selections = abjad.select.group_by_measure(voice[:])
-    for meter, selection in zip(preferred_meters, selections):
-        leaves = abjad.select.leaves(selection, grace=False)
-        beat_durations = []
-        beat_offsets = meter.depthwise_offset_inventory[1]
-        for start, stop in abjad.sequence.nwise(beat_offsets):
-            beat_duration = stop - start
-            beat_durations.append(beat_duration)
-        beamable_groups = _make_beamable_groups(leaves, beat_durations)
-        for beamable_group in beamable_groups:
-            if not beamable_group:
-                continue
-            abjad.beam(
-                beamable_group,
-                beam_rests=False,
-                tag=tag,
-            )
-
-
-def _do_rewrite_rest_filled_command(selection, *, spelling=None, tag=None):
-    if spelling is not None:
-        increase_monotonic = spelling.increase_monotonic
-        forbidden_note_duration = spelling.forbidden_note_duration
-        forbidden_rest_duration = spelling.forbidden_rest_duration
-    else:
-        increase_monotonic = None
-        forbidden_note_duration = None
-        forbidden_rest_duration = None
-    for tuplet in abjad.select.tuplets(selection):
-        if not tuplet.rest_filled():
-            continue
-        duration = abjad.get.duration(tuplet)
-        rests = abjad.makers.make_leaves(
-            [None],
-            [duration],
-            increase_monotonic=increase_monotonic,
-            forbidden_note_duration=forbidden_note_duration,
-            forbidden_rest_duration=forbidden_rest_duration,
-            tag=tag,
-        )
-        abjad.mutate.replace(tuplet[:], rests)
-        tuplet.multiplier = abjad.Multiplier(1)
-
-
-def _do_rewrite_sustained_command(argument, *, tag=None):
-    for tuplet in abjad.select.tuplets(argument):
-        if not abjad.get.sustained(tuplet):
-            continue
-        duration = abjad.get.duration(tuplet)
-        leaves = abjad.select.leaves(tuplet)
-        last_leaf = leaves[-1]
-        if abjad.get.has_indicator(last_leaf, abjad.Tie):
-            last_leaf_has_tie = True
-        else:
-            last_leaf_has_tie = False
-        for leaf in leaves[1:]:
-            tuplet.remove(leaf)
-        assert len(tuplet) == 1, repr(tuplet)
-        if not last_leaf_has_tie:
-            abjad.detach(abjad.Tie, tuplet[-1])
-        abjad.mutate._set_leaf_duration(tuplet[0], duration, tag=tag)
-        tuplet.multiplier = abjad.Multiplier(1)
-
-
-def _do_split_measures_command(voice, *, durations=None, tag=None):
-    if not durations:
-        # TODO: implement abjad.get() method for measure durations
-        staff = abjad.get.parentage(voice).parent
-        assert isinstance(staff, abjad.Staff)
-        voice_ = staff["TimeSignatureVoice"]
-        assert isinstance(voice_, abjad.Voice)
-        durations = [abjad.get.duration(_) for _ in voice_]
-    total_duration = abjad.sequence.sum(durations)
-    music_duration = abjad.get.duration(voice)
-    if total_duration != music_duration:
-        message = f"Total duration of splits is {total_duration!s}"
-        message += f" but duration of music is {music_duration!s}:"
-        message += f"\ndurations: {durations}."
-        message += f"\nvoice: {voice[:]}."
-        raise Exception(message)
-    abjad.mutate.split(voice[:], durations=durations)
-
-
-def _do_tie_command(argument, *, tag=None):
-    for note in abjad.select.notes(argument):
-        tie = abjad.Tie()
-        abjad.attach(tie, note, tag=tag)
-
-
-def _do_untie_command(argument):
-    for leaf in abjad.select.leaves(argument):
-        abjad.detach(abjad.Tie, leaf)
-        abjad.detach(abjad.RepeatTie, leaf)
-
-
-def _do_written_duration_command(argument, written_duration):
-    leaves = abjad.select.leaves(argument)
-    for leaf in leaves:
-        old_duration = leaf.written_duration
-        if written_duration == old_duration:
-            continue
-        leaf.written_duration = written_duration
-        multiplier = old_duration / written_duration
-        leaf.multiplier = multiplier
-
-
 # DEPRECATED COMMAND CLASSES:
 
 
@@ -14916,7 +14521,7 @@ class BeamCommand(Command):
             selections = self.selector(selection)
         else:
             selections = [selection]
-        _do_beam_command(
+        beam_function(
             selections,
             beam_lone_notes=self.beam_lone_notes,
             beam_rests=self.beam_rests,
@@ -14952,7 +14557,7 @@ class BeamGroupsCommand(Command):
         else:
             assert self.selector is not None
             selections = self.selector(voice)
-        _do_beam_groups_command(
+        beam_groups_function(
             selections,
             beam_lone_notes=self.beam_lone_notes,
             beam_rests=self.beam_rests,
@@ -15002,7 +14607,7 @@ class DurationBracketCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_duration_bracket_command(selection)
+        duration_bracket_function(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15012,7 +14617,7 @@ class WrittenDurationCommand(Command):
     """
 
     selector: typing.Callable | None = lambda _: abjad.select.leaf(_, 0)
-    duration: abjad.typings.Duration | None = None
+    duration: abjad.typings.Duration = (1, 4)
 
     def __post_init__(self):
         Command.__post_init__(self)
@@ -15022,7 +14627,7 @@ class WrittenDurationCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_written_duration_command(selection, self.duration)
+        written_duration_function(selection, self.duration)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15035,7 +14640,7 @@ class ExtractTrivialCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_extract_trivial_command(selection)
+        extract_trivial_function(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15059,7 +14664,7 @@ class FeatherBeamCommand(Command):
             selections = self.selector(selection)
         else:
             selections = [selection]
-        _do_feather_beam_command(
+        feather_beam_function(
             selections,
             beam_rests=self.beam_rests,
             stemlet_length=self.stemlet_length,
@@ -15097,7 +14702,7 @@ class ForceAugmentationCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_force_augmentation_command(selection)
+        force_augmentation_function(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15110,7 +14715,7 @@ class ForceDiminutionCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_force_diminution_command(selection)
+        force_diminution_function(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15219,7 +14824,7 @@ class ForceNoteCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_force_note_command(selection, tag=tag)
+        force_note_function(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15235,7 +14840,7 @@ class ForceRepeatTieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_force_repeat_tie_command(selection, tag=tag, threshold=self.threshold)
+        force_repeat_tie_function(selection, tag=tag, threshold=self.threshold)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15412,7 +15017,7 @@ class ForceRestCommand(Command):
         selection = voice
         if self.selector is not None:
             selections = self.selector([selection])
-        _do_force_rest_command(selections, tag=tag)
+        force_rest_function(selections, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15458,7 +15063,7 @@ class InvisibleMusicCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_invisible_music_command(selection, tag=tag)
+        invisible_music_function(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15467,7 +15072,7 @@ class OnBeatGraceContainerCommand(Command):
     On-beat grace container command.
     """
 
-    counts: typing.Sequence[int] | None = None
+    counts: typing.Sequence[int] = ()
     leaf_duration: abjad.typings.Duration | None = None
     talea: Talea = Talea([1], 8)
     voice_name: str = ""
@@ -15487,7 +15092,7 @@ class OnBeatGraceContainerCommand(Command):
         selections = voice
         if self.selector is not None:
             selections = self.selector(selections)
-        _do_on_beat_grace_container_command(
+        on_beat_grace_container_function(
             voice,
             self.voice_name,
             selections,
@@ -15507,7 +15112,7 @@ class ReduceMultiplierCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_reduce_multiplier_command(selection)
+        reduce_multiplier_function(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15520,7 +15125,7 @@ class RepeatTieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_repeat_tie_command(selection, tag=tag)
+        repeat_tie_function(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15533,7 +15138,7 @@ class RewriteDotsCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_rewrite_dots_command(selection, tag=tag)
+        rewrite_dots_function(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15555,7 +15160,7 @@ class RewriteMeterCommand(Command):
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()) -> None:
         assert isinstance(voice, abjad.Voice), repr(voice)
-        _do_rewrite_meter_command(
+        rewrite_meter_function(
             voice,
             boundary_depth=self.boundary_depth,
             reference_meters=self.reference_meters,
@@ -15619,7 +15224,7 @@ class RewriteRestFilledCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_rewrite_rest_filled_command(selection, spelling=self.spelling, tag=tag)
+        rewrite_rest_filled_function(selection, spelling=self.spelling, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15632,7 +15237,7 @@ class RewriteSustainedCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_rewrite_sustained_command(selection)
+        rewrite_sustained_function(selection)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15648,7 +15253,7 @@ class SplitMeasuresCommand(Command):
         durations: typing.Sequence[abjad.typings.Duration] = (),
         tag: abjad.Tag = abjad.Tag(),
     ) -> None:
-        _do_split_measures_command(voice, durations=durations, tag=tag)
+        split_measures_function(voice, durations=durations, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15661,7 +15266,7 @@ class TieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_tie_command(selection, tag=tag)
+        tie_function(selection, tag=tag)
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -15732,10 +15337,36 @@ class UntieCommand(Command):
         selection = voice
         if self.selector is not None:
             selection = self.selector(selection)
-        _do_untie_command(selection)
+        untie_function(selection)
 
 
-# COMMAND FUNCTIONS (PUBLIC)
+# COMMAND FUNCTIONS
+
+
+def _do_grace_container_command(
+    argument,
+    counts,
+    beam_and_slash=False,
+    class_=None,
+    talea=None,
+):
+    leaves = abjad.select.leaves(argument, grace=False)
+    assert counts is not None
+    cyclic_counts = abjad.CyclicTuple(counts)
+    start = 0
+    for i, leaf in enumerate(leaves):
+        count = cyclic_counts[i]
+        if not count:
+            continue
+        stop = start + count
+        durations = talea[start:stop]
+        notes = abjad.makers.make_leaves([0], durations)
+        if beam_and_slash:
+            abjad.beam(notes)
+            literal = abjad.LilyPondLiteral(r"\slash")
+            abjad.attach(literal, notes[0])
+        container = class_(notes)
+        abjad.attach(container, leaf)
 
 
 def nongrace_leaves_in_each_tuplet(level: int = -1):
@@ -15980,13 +15611,16 @@ def beam_function(
     """
     Beams ``argument``.
     """
-    _do_beam_command(
-        argument,
-        beam_lone_notes=beam_lone_notes,
-        beam_rests=beam_rests,
-        stemlet_length=stemlet_length,
-        tag=tag,
-    )
+    for selection in argument:
+        unbeam_function(selection)
+        leaves = abjad.select.leaves(selection)
+        abjad.beam(
+            leaves,
+            beam_lone_notes=beam_lone_notes,
+            beam_rests=beam_rests,
+            stemlet_length=stemlet_length,
+            tag=tag,
+        )
 
 
 def beam_groups(
@@ -16020,10 +15654,24 @@ def beam_groups_function(
     """
     Beams ``argument`` groups.
     """
-    _do_beam_groups_command(
-        argument,
+    unbeam_function(argument)
+    durations = []
+    components: list[abjad.Component] = []
+    for selection in argument:
+        duration = abjad.get.duration(selection)
+        durations.append(duration)
+    for selection in argument:
+        if isinstance(selection, abjad.Tuplet):
+            components.append(selection)
+        else:
+            components.extend(selection)
+    leaves = abjad.select.leaves(components)
+    abjad.beam(
+        leaves,
         beam_lone_notes=beam_lone_notes,
         beam_rests=beam_rests,
+        durations=durations,
+        span_beam_count=1,
         stemlet_length=stemlet_length,
         tag=tag,
     )
@@ -16685,7 +16333,12 @@ def duration_bracket_function(argument) -> None:
     """
     Applies durtaion bracket to tuplets in ``argument``.
     """
-    _do_duration_bracket_command(argument)
+    for tuplet in abjad.select.tuplets(argument):
+        duration_ = abjad.get.duration(tuplet)
+        notes = abjad.makers.make_leaves([0], [duration_])
+        string = abjad.illustrators.selection_to_score_markup_string(notes)
+        string = rf"\markup \scale #'(0.75 . 0.75) {string}"
+        abjad.override(tuplet).TupletNumber.text = string
 
 
 def extract_trivial(
@@ -16765,7 +16418,10 @@ def extract_trivial_function(argument) -> None:
     """
     Extracts trivial tuplets in ``argument``.
     """
-    _do_extract_trivial_command(argument)
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if tuplet.trivial():
+            abjad.mutate.extract(tuplet)
 
 
 def feather_beam(
@@ -16784,18 +16440,26 @@ def feather_beam(
 
 def feather_beam_function(
     argument,
-    # selector: typing.Callable | None = nongrace_leaves_in_each_tuplet(),
     *,
     beam_rests: bool = False,
     stemlet_length: int | float | None = None,
     tag: abjad.Tag = abjad.Tag(),
 ) -> None:
-    _do_feather_beam_command(
-        argument,
-        beam_rests=beam_rests,
-        stemlet_length=stemlet_length,
-        tag=tag,
-    )
+    for selection in argument:
+        unbeam_function(selection)
+        leaves = abjad.select.leaves(selection)
+        abjad.beam(
+            leaves,
+            beam_rests=beam_rests,
+            stemlet_length=stemlet_length,
+            tag=tag,
+        )
+    for selection in argument:
+        first_leaf = abjad.select.leaf(selection, 0)
+        if FeatherBeamCommand._is_accelerando(selection):
+            abjad.override(first_leaf).Beam.grow_direction = abjad.RIGHT
+        elif FeatherBeamCommand._is_ritardando(selection):
+            abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
 
 
 def force_augmentation(
@@ -16933,7 +16597,9 @@ def force_augmentation_function(argument) -> None:
     """
     Forces each tuplet in ``argument`` to notate as an augmentation.
     """
-    _do_force_augmentation_command(argument)
+    for tuplet in abjad.select.tuplets(argument):
+        if not tuplet.augmentation():
+            tuplet.toggle_prolation()
 
 
 def force_diminution(
@@ -16949,7 +16615,9 @@ def force_diminution_function(argument) -> None:
     """
     Forces each tuplet in ``argument`` to notate as a diminution.
     """
-    _do_force_diminution_command(argument)
+    for tuplet in abjad.select.tuplets(argument):
+        if not tuplet.diminution():
+            tuplet.toggle_prolation()
 
 
 def force_fraction(
@@ -16979,7 +16647,14 @@ def force_note(
 
 
 def force_note_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
-    _do_force_note_command(argument, tag=tag)
+    leaves = abjad.select.leaves(argument)
+    for leaf in leaves:
+        if isinstance(leaf, abjad.Note):
+            continue
+        note = abjad.Note("C4", leaf.written_duration, tag=tag)
+        if leaf.multiplier is not None:
+            note.multiplier = leaf.multiplier
+        abjad.mutate.replace(leaf, [note])
 
 
 def force_repeat_tie(
@@ -16998,7 +16673,43 @@ def force_repeat_tie_function(
     tag: abjad.Tag = None,
     threshold: bool | tuple[int, int] | typing.Callable = True,
 ) -> None:
-    _do_force_repeat_tie_command(argument, tag=tag, threshold=threshold)
+    assert isinstance(argument, abjad.Container), argument
+    if callable(threshold):
+        inequality = threshold
+    elif threshold in (None, False):
+
+        def inequality(item):
+            return item < 0
+
+    elif threshold is True:
+
+        def inequality(item):
+            return item >= 0
+
+    else:
+        assert isinstance(threshold, tuple) and len(threshold) == 2, repr(threshold)
+
+        def inequality(item):
+            return item >= abjad.Duration(threshold)
+
+    attach_repeat_ties = []
+    for leaf in abjad.select.leaves(argument):
+        if abjad.get.has_indicator(leaf, abjad.Tie):
+            next_leaf = abjad.get.leaf(leaf, 1)
+            if next_leaf is None:
+                continue
+            if not isinstance(next_leaf, abjad.Chord | abjad.Note):
+                continue
+            if abjad.get.has_indicator(next_leaf, abjad.RepeatTie):
+                continue
+            duration = abjad.get.duration(leaf)
+            if not inequality(duration):
+                continue
+            attach_repeat_ties.append(next_leaf)
+            abjad.detach(abjad.Tie, leaf)
+    for leaf in attach_repeat_ties:
+        repeat_tie = abjad.RepeatTie()
+        abjad.attach(repeat_tie, leaf, tag=tag)
 
 
 def force_rest(selector: typing.Callable | None) -> ForceRestCommand:
@@ -17012,7 +16723,20 @@ def force_rest_function(argument, *, tag=None) -> None:
     """
     Forces rests in ``argument``.
     """
-    _do_force_rest_command(argument, tag=tag)
+    leaves = abjad.select.leaves(argument)
+    for leaf in leaves:
+        rest = abjad.Rest(leaf.written_duration, tag=tag)
+        if leaf.multiplier is not None:
+            rest.multiplier = leaf.multiplier
+        previous_leaf = abjad.get.leaf(leaf, -1)
+        next_leaf = abjad.get.leaf(leaf, 1)
+        abjad.mutate.replace(leaf, [rest])
+        if previous_leaf is not None:
+            abjad.detach(abjad.Tie, previous_leaf)
+        abjad.detach(abjad.Tie, rest)
+        abjad.detach(abjad.RepeatTie, rest)
+        if next_leaf is not None:
+            abjad.detach(abjad.RepeatTie, next_leaf)
 
 
 def invisible_music(selector: typing.Callable | None) -> InvisibleMusicCommand:
@@ -17026,7 +16750,13 @@ def invisible_music_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     """
     Makes ``argument`` invisible.
     """
-    _do_invisible_music_command(argument, tag=tag)
+    tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
+    literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
+    tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
+    literal_2 = abjad.LilyPondLiteral(r"\abjad-invisible-music-coloring")
+    for leaf in abjad.select.leaves(argument):
+        abjad.attach(literal_1, leaf, tag=tag_1, deactivate=True)
+        abjad.attach(literal_2, leaf, tag=tag_2)
 
 
 def on_beat_grace_container(
@@ -17445,15 +17175,27 @@ def on_beat_grace_container_function(
     assert isinstance(voice, abjad.Voice), repr(voice)
     assert isinstance(voice_name, str), repr(voice_name)
     assert isinstance(talea, Talea), repr(talea)
-    _do_on_beat_grace_container_command(
-        voice,
-        voice_name,
-        argument,
-        counts,
-        leaf_duration=leaf_duration,
-        tag=tag,
-        talea=talea,
-    )
+    assert isinstance(voice, abjad.Voice), repr(voice)
+    assert isinstance(voice_name, str), repr(voice_name)
+    if voice_name:
+        voice.name = voice_name
+    assert isinstance(talea, Talea), repr(talea)
+    cyclic_counts = abjad.CyclicTuple(counts)
+    start = 0
+    for i, selection in enumerate(argument):
+        count = cyclic_counts[i]
+        if not count:
+            continue
+        stop = start + count
+        durations = talea[start:stop]
+        notes = abjad.makers.make_leaves([0], durations)
+        abjad.on_beat_grace_container(
+            notes,
+            selection,
+            anchor_voice_number=2,
+            grace_voice_number=1,
+            leaf_duration=leaf_duration,
+        )
 
 
 def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
@@ -17651,7 +17393,9 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
 
 
 def repeat_tie_function(argument, *, tag=None) -> None:
-    _do_repeat_tie_command(argument, tag=tag)
+    for note in abjad.select.notes(argument):
+        tie = abjad.RepeatTie()
+        abjad.attach(tie, note, tag=tag)
 
 
 def reduce_multiplier(
@@ -17667,7 +17411,8 @@ def reduce_multiplier_function(argument) -> None:
     """
     Reduces multipliers of tuplets in ``argument``.
     """
-    _do_reduce_multiplier_command(argument)
+    for tuplet in abjad.select.tuplets(argument):
+        tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
 
 
 def rewrite_dots(selector: typing.Callable | None = None) -> RewriteDotsCommand:
@@ -17681,7 +17426,8 @@ def rewrite_dots_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     """
     Rewrites dots of tuplets in ``argument``.
     """
-    _do_rewrite_dots_command(argument, tag=tag)
+    for tuplet in abjad.select.tuplets(argument):
+        tuplet.rewrite_dots()
 
 
 def rewrite_meter(
@@ -17696,18 +17442,62 @@ def rewrite_meter(
 
 
 def rewrite_meter_function(
-    argument,
+    voice: abjad.Voice,
     *,
     boundary_depth: int = None,
     reference_meters: typing.Sequence[abjad.Meter] = (),
     tag=None,
 ) -> None:
-    _do_rewrite_meter_command(
-        argument,
-        boundary_depth=boundary_depth,
-        reference_meters=reference_meters,
-        tag=tag,
-    )
+    assert isinstance(voice, abjad.Container), repr(voice)
+    tag = tag or abjad.Tag()
+    tag = tag.append(abjad.Tag("rmakers.RewriteMeterCommand.__call__"))
+    staff = abjad.get.parentage(voice).parent
+    assert isinstance(staff, abjad.Staff), repr(staff)
+    time_signature_voice = staff["TimeSignatureVoice"]
+    assert isinstance(time_signature_voice, abjad.Voice)
+    meters, preferred_meters = [], []
+    for skip in time_signature_voice:
+        time_signature = abjad.get.indicator(skip, abjad.TimeSignature)
+        meter = abjad.Meter(time_signature)
+        meters.append(meter)
+    durations = [abjad.Duration(_) for _ in meters]
+    reference_meters = reference_meters or ()
+    split_measures_function(voice, durations=durations)
+    selections = abjad.select.group_by_measure(voice[:])
+    for meter, selection in zip(meters, selections):
+        for reference_meter in reference_meters:
+            if reference_meter == meter:
+                meter = reference_meter
+                break
+        preferred_meters.append(meter)
+        nontupletted_leaves = []
+        for leaf in abjad.iterate.leaves(selection):
+            if not abjad.get.parentage(leaf).count(abjad.Tuplet):
+                nontupletted_leaves.append(leaf)
+        unbeam_function(nontupletted_leaves)
+        abjad.Meter.rewrite_meter(
+            selection,
+            meter,
+            boundary_depth=boundary_depth,
+            rewrite_tuplets=False,
+        )
+    selections = abjad.select.group_by_measure(voice[:])
+    for meter, selection in zip(preferred_meters, selections):
+        leaves = abjad.select.leaves(selection, grace=False)
+        beat_durations = []
+        beat_offsets = meter.depthwise_offset_inventory[1]
+        for start, stop in abjad.sequence.nwise(beat_offsets):
+            beat_duration = stop - start
+            beat_durations.append(beat_duration)
+        beamable_groups = _make_beamable_groups(leaves, beat_durations)
+        for beamable_group in beamable_groups:
+            if not beamable_group:
+                continue
+            abjad.beam(
+                beamable_group,
+                beam_rests=False,
+                tag=tag,
+            )
 
 
 def rewrite_rest_filled(
@@ -17930,7 +17720,28 @@ def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
     """
     Rewrites rest-filled tuplets in ``argument``.
     """
-    _do_rewrite_rest_filled_command(argument, spelling=spelling, tag=tag)
+    if spelling is not None:
+        increase_monotonic = spelling.increase_monotonic
+        forbidden_note_duration = spelling.forbidden_note_duration
+        forbidden_rest_duration = spelling.forbidden_rest_duration
+    else:
+        increase_monotonic = None
+        forbidden_note_duration = None
+        forbidden_rest_duration = None
+    for tuplet in abjad.select.tuplets(argument):
+        if not tuplet.rest_filled():
+            continue
+        duration = abjad.get.duration(tuplet)
+        rests = abjad.makers.make_leaves(
+            [None],
+            [duration],
+            increase_monotonic=increase_monotonic,
+            forbidden_note_duration=forbidden_note_duration,
+            forbidden_rest_duration=forbidden_rest_duration,
+            tag=tag,
+        )
+        abjad.mutate.replace(tuplet[:], rests)
+        tuplet.multiplier = abjad.Multiplier(1)
 
 
 def rewrite_sustained(
@@ -18211,7 +18022,23 @@ def rewrite_sustained_function(argument, *, tag=None) -> None:
     """
     Rewrite sustained tuplets in ``argument``.
     """
-    _do_rewrite_sustained_command(argument, tag=tag)
+    for tuplet in abjad.select.tuplets(argument):
+        if not abjad.get.sustained(tuplet):
+            continue
+        duration = abjad.get.duration(tuplet)
+        leaves = abjad.select.leaves(tuplet)
+        last_leaf = leaves[-1]
+        if abjad.get.has_indicator(last_leaf, abjad.Tie):
+            last_leaf_has_tie = True
+        else:
+            last_leaf_has_tie = False
+        for leaf in leaves[1:]:
+            tuplet.remove(leaf)
+        assert len(tuplet) == 1, repr(tuplet)
+        if not last_leaf_has_tie:
+            abjad.detach(abjad.Tie, tuplet[-1])
+        abjad.mutate._set_leaf_duration(tuplet[0], duration, tag=tag)
+        tuplet.multiplier = abjad.Multiplier(1)
 
 
 def split_measures() -> SplitMeasuresCommand:
@@ -18221,8 +18048,23 @@ def split_measures() -> SplitMeasuresCommand:
     return SplitMeasuresCommand()
 
 
-def split_measures_function(argument, *, durations=None, tag=None) -> None:
-    _do_split_measures_command(argument, durations=durations, tag=tag)
+def split_measures_function(voice, *, durations=None, tag=None) -> None:
+    if not durations:
+        # TODO: implement abjad.get() method for measure durations
+        staff = abjad.get.parentage(voice).parent
+        assert isinstance(staff, abjad.Staff)
+        voice_ = staff["TimeSignatureVoice"]
+        assert isinstance(voice_, abjad.Voice)
+        durations = [abjad.get.duration(_) for _ in voice_]
+    total_duration = abjad.sequence.sum(durations)
+    music_duration = abjad.get.duration(voice)
+    if total_duration != music_duration:
+        message = f"Total duration of splits is {total_duration!s}"
+        message += f" but duration of music is {music_duration!s}:"
+        message += f"\ndurations: {durations}."
+        message += f"\nvoice: {voice[:]}."
+        raise Exception(message)
+    abjad.mutate.split(voice[:], durations=durations)
 
 
 def tie(selector: typing.Callable | None = None) -> TieCommand:
@@ -18773,7 +18615,9 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     """
     Attaches ties to notes in ``argument``.
     """
-    _do_tie_command(argument, tag=tag)
+    for note in abjad.select.notes(argument):
+        tie = abjad.Tie()
+        abjad.attach(tie, note, tag=tag)
 
 
 def tremolo_container(
@@ -19175,7 +19019,9 @@ def untie_function(argument) -> None:
     """
     Removes ties in ``argument``.
     """
-    _do_untie_command(argument)
+    for leaf in abjad.select.leaves(argument):
+        abjad.detach(abjad.Tie, leaf)
+        abjad.detach(abjad.RepeatTie, leaf)
 
 
 def written_duration(
@@ -19194,7 +19040,14 @@ def written_duration_function(argument, duration: abjad.typings.Duration) -> Non
     Sets written duration of each leaf in ``argument`` to ``duration``.
     """
     duration_ = abjad.Duration(duration)
-    _do_written_duration_command(argument, duration_)
+    leaves = abjad.select.leaves(argument)
+    for leaf in leaves:
+        old_duration = leaf.written_duration
+        if duration_ == old_duration:
+            continue
+        leaf.written_duration = duration_
+        multiplier = old_duration / duration_
+        leaf.multiplier = multiplier
 
 
 # DEPRECATED STACK CLASSES & FUNCTIONS
