@@ -586,22 +586,21 @@ class Incise:
 
         Divides middle part of every division ``1:1``:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.incised(
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[0, 1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=16,
-        ...         body_ratio=abjad.Ratio((1, 1)),
-        ...     ),
-        ...     rmakers.beam(),
-        ...     rmakers.extract_trivial(),
+        >>> divisions =  4 * [(5, 16)]
+        >>> nested_music = rmakers.incised_function(
+        ...     divisions,
+        ...     prefix_talea=[-1],
+        ...     prefix_counts=[0, 1],
+        ...     suffix_talea=[-1],
+        ...     suffix_counts=[1],
+        ...     talea_denominator=16,
+        ...     body_ratio=abjad.Ratio((1, 1)),
         ... )
-        >>> divisions = 4 * [(5, 16)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> voice = abjad.Voice(nested_music)
+        >>> rmakers.beam_function(voice)
+        >>> rmakers.extract_trivial_function(voice)
+        >>> music = abjad.mutate.eject_contents(voice)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -783,19 +782,18 @@ class Spelling:
 
         Decreases monotically:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.talea(
-        ...         [5],
-        ...         16,
-        ...         spelling=rmakers.Spelling(increase_monotonic=False),
-        ...         ),
-        ...     rmakers.beam(),
-        ...     rmakers.extract_trivial(),
-        ... )
         >>> divisions = [(3, 4), (3, 4)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.talea_function(
+        ...     divisions,
+        ...     [5],
+        ...     16,
+        ...     spelling=rmakers.Spelling(increase_monotonic=False),
+        ... )
+        >>> voice = abjad.Voice(nested_music)
+        >>> rmakers.beam_function(voice)
+        >>> rmakers.extract_trivial_function(voice)
+        >>> music = abjad.mutate.eject_contents(voice)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -835,19 +833,18 @@ class Spelling:
 
         Increases monotically:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.talea(
-        ...         [5],
-        ...         16,
-        ...         spelling=rmakers.Spelling(increase_monotonic=True),
-        ...         ),
-        ...     rmakers.beam(),
-        ...     rmakers.extract_trivial(),
-        ... )
         >>> divisions = [(3, 4), (3, 4)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.talea_function(
+        ...     divisions,
+        ...     [5],
+        ...     16,
+        ...     spelling=rmakers.Spelling(increase_monotonic=True),
+        ... )
+        >>> voice = abjad.Voice(nested_music)
+        >>> rmakers.beam_function(voice)
+        >>> rmakers.extract_trivial_function(voice)
+        >>> music = abjad.mutate.eject_contents(voice)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -887,19 +884,18 @@ class Spelling:
 
         Forbids note durations equal to ``1/4`` or greater:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.talea(
-        ...         [1, 1, 1, 1, 4, -4],
-        ...         16,
-        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 4)),
-        ...     ),
-        ...     rmakers.beam(),
-        ...     rmakers.extract_trivial(),
-        ... )
         >>> divisions = [(3, 4), (3, 4)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.talea_function(
+        ...     divisions,
+        ...     [1, 1, 1, 1, 4, -4],
+        ...     16,
+        ...     spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 4)),
+        ... )
+        >>> voice = abjad.Voice(nested_music)
+        >>> rmakers.beam_function(voice)
+        >>> rmakers.extract_trivial_function(voice)
+        >>> music = abjad.mutate.eject_contents(voice)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -944,19 +940,18 @@ class Spelling:
 
         Forbids rest durations equal to ``1/4`` or greater:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.talea(
-        ...         [1, 1, 1, 1, 4, -4],
-        ...         16,
-        ...         spelling=rmakers.Spelling(forbidden_rest_duration=abjad.Duration(1, 4)),
-        ...     ),
-        ...     rmakers.beam(),
-        ...     rmakers.extract_trivial(),
-        ... )
         >>> divisions = [(3, 4), (3, 4)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.talea_function(
+        ...     divisions,
+        ...     [1, 1, 1, 1, 4, -4],
+        ...     16,
+        ...     spelling=rmakers.Spelling(forbidden_rest_duration=abjad.Duration(1, 4)),
+        ... )
+        >>> voice = abjad.Voice(nested_music)
+        >>> rmakers.beam_function(voice)
+        >>> rmakers.extract_trivial_function(voice)
+        >>> music = abjad.mutate.eject_contents(voice)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1406,7 +1401,7 @@ class Talea:
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RhythmMaker:
     """
-    Rhythm-maker baseclass.
+    DEPRECATED: Rhythm-maker baseclass.
     """
 
     spelling: Spelling = Spelling()
@@ -1464,21 +1459,19 @@ class RhythmMaker:
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class AccelerandoRhythmMaker(RhythmMaker):
     r"""
-    Accelerando rhythm-maker.
+    DEPRECATED: use ``rmakers.accelerando_function()`` instead; removed in Abjad 3.13.
 
     ..  container:: example
 
         Makes accelerandi:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.feather_beam(),
-        ...     rmakers.duration_bracket(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)]
+        ... )
+        >>> rmakers.feather_beam_function(nested_music)
+        >>> rmakers.duration_bracket_function(nested_music)
+        >>> lilypond_file = rmakers.example(nested_music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1699,15 +1692,13 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Makes ritardandi:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 20), (1, 8), (1, 16)]),
-        ...     rmakers.feather_beam(),
-        ...     rmakers.duration_bracket(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 20), (1, 8), (1, 16)]
+        ... )
+        >>> rmakers.feather_beam_function(nested_music)
+        >>> rmakers.duration_bracket_function(nested_music)
+        >>> lilypond_file = rmakers.example(nested_music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1930,29 +1921,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
     ..  container:: example
 
-        REGRESSION. Copy preserves commands:
-
-        >>> import dataclasses
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.force_fraction()
-        ... )
-
-        >>> dataclasses.replace(stack).commands
-        (ForceFractionCommand(selector=None),)
-
-    ..  container:: example
-
         Sets duration bracket with no beams:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.duration_bracket(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)]
+        ... )
+        >>> rmakers.duration_bracket_function(nested_music)
+        >>> lilypond_file = rmakers.example(nested_music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2162,15 +2138,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Beams tuplets together without feathering:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.beam_groups(lambda _: abjad.select.tuplets(_)),
-        ...     rmakers.duration_bracket(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)]
+        ... )
+        >>> tuplets = abjad.select.tuplets(nested_music)
+        >>> rmakers.beam_groups_function(tuplets)
+        >>> rmakers.duration_bracket_function(nested_music)
+        >>> lilypond_file = rmakers.example(nested_music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2427,20 +2402,17 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Ties across tuplets:
 
-        >>> def selector(argument):
-        ...     result = abjad.select.tuplets(argument)[:-1]
-        ...     return [abjad.select.leaf(_, -1) for _ in result]
-
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.duration_bracket(),
-        ...     rmakers.tie(selector),
-        ...     rmakers.feather_beam(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)]
+        ... )
+        >>> tuplets = abjad.select.tuplets(nested_music)
+        >>> rmakers.duration_bracket_function(nested_music)
+        >>> tuplets = abjad.select.tuplets(nested_music)[:-1]
+        >>> leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        >>> rmakers.tie_function(leaves)
+        >>> rmakers.feather_beam_function(nested_music)
+        >>> lilypond_file = rmakers.example(nested_music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2664,21 +2636,18 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Ties across every other tuplet:
 
-        >>> def selector(argument):
-        ...     result = abjad.select.tuplets(argument)
-        ...     result = abjad.select.get(result, [0], 2)
-        ...     return [abjad.select.leaf(_, -1) for _ in result]
-
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.duration_bracket(),
-        ...     rmakers.tie(selector),
-        ...     rmakers.feather_beam(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)]
+        ... )
+        >>> tuplets = abjad.select.tuplets(nested_music)
+        >>> rmakers.duration_bracket_function(nested_music)
+        >>> tuplets = abjad.select.tuplets(nested_music)[:-1]
+        >>> tuplets = abjad.select.get(tuplets, [0], 2)
+        >>> leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        >>> rmakers.tie_function(leaves)
+        >>> rmakers.feather_beam_function(nested_music)
+        >>> lilypond_file = rmakers.example(nested_music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2901,27 +2870,18 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Forces rests at first and last leaves:
 
-        >>> def selector(argument):
-        ...     result = abjad.select.leaves(argument)
-        ...     result = abjad.select.get(result, [0, -1])
-        ...     return result
-
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando(
-        ...         [(1, 8), (1, 20), (1, 16)],
-        ...         [(1, 20), (1, 8), (1, 16)],
-        ...     ),
-        ...     rmakers.force_rest(selector),
-        ...     rmakers.feather_beam(
-        ...         beam_rests=True,
-        ...         stemlet_length=0.75,
-        ...     ),
-        ...     rmakers.duration_bracket(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
+        ... )
+        >>> leaves = abjad.select.leaves(nested_music)
+        >>> leaves = abjad.select.get(leaves, [0, -1])
+        >>> rmakers.force_rest_function(leaves)
+        >>> rmakers.feather_beam_function(
+        ...     nested_music, beam_rests=True, stemlet_length=0.75
+        ... )
+        >>> rmakers.duration_bracket_function(nested_music)
+        >>> lilypond_file = rmakers.example(nested_music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3152,22 +3112,20 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Forces rests in every other tuplet:
 
-        >>> def selector(argument):
-        ...     result = abjad.select.tuplets(argument)
-        ...     result = abjad.select.get(result, [1], 2)
-        ...     return result
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.force_rest(selector),
-        ...     rmakers.rewrite_rest_filled(),
-        ...     rmakers.extract_trivial(),
-        ...     rmakers.duration_bracket(),
-        ...     rmakers.feather_beam(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)],
+        ... )
+        >>> container = abjad.Container(nested_music)
+        >>> tuplets = abjad.select.tuplets(container)
+        >>> tuplets = abjad.select.get(tuplets, [1], 2)
+        >>> rmakers.force_rest_function(tuplets)
+        >>> rmakers.rewrite_rest_filled_function(container)
+        >>> rmakers.extract_trivial_function(container)
+        >>> rmakers.duration_bracket_function(container)
+        >>> rmakers.feather_beam_function(container)
+        >>> music = abjad.mutate.eject_contents(container)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3294,18 +3252,15 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Alternates accelerandi and ritardandi:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando(
-        ...         [(1, 8), (1, 20), (1, 16)],
-        ...         [(1, 20), (1, 8), (1, 16)],
-        ...     ),
-        ...     rmakers.feather_beam(),
-        ...     rmakers.duration_bracket(),
-        ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
+        ... )
+        >>> container = abjad.Container(nested_music)
+        >>> rmakers.duration_bracket_function(container)
+        >>> rmakers.feather_beam_function(container)
+        >>> music = abjad.mutate.eject_contents(container)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3528,16 +3483,16 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Makes a single note in short division:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
-        ...     rmakers.feather_beam(),
-        ...     rmakers.duration_bracket(),
-        ...     rmakers.extract_trivial(),
-        ... )
         >>> divisions = [(5, 8), (3, 8), (1, 8)]
-        >>> selections = stack(divisions)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> nested_music = rmakers.accelerando_function(
+        ...     divisions, [(1, 8), (1, 20), (1, 16)]
+        ... )
+        >>> container = abjad.Container(nested_music)
+        >>> rmakers.duration_bracket_function(container)
+        >>> rmakers.feather_beam_function(container)
+        >>> rmakers.extract_trivial_function(container)
+        >>> music = abjad.mutate.eject_contents(container)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3665,18 +3620,25 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
         Consumes 3 divisions:
 
-        >>> stack = rmakers.stack(
-        ...     rmakers.accelerando(
-        ...         [(1, 8), (1, 20), (1, 16)],
-        ...         [(1, 20), (1, 8), (1, 16)],
-        ...     ),
-        ...     rmakers.feather_beam(),
-        ...     rmakers.duration_bracket(),
-        ... )
-        >>> divisions = [(3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions)
+        >>> def make_statal_accelerandi(divisions, previous_state=None):
+        ...     if previous_state is None:
+        ...         previous_state = {}
+        ...     state = {}
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions,
+        ...         [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)],
+        ...         previous_state=previous_state,
+        ...         state=state,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.feather_beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music, state
 
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> divisions = [(3, 8), (4, 8), (3, 8)]
+        >>> music, state = make_statal_accelerandi(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3844,15 +3806,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> stack.maker.state
+        >>> state
         {'divisions_consumed': 3, 'logical_ties_produced': 17}
 
         Advances 3 divisions; then consumes another 3 divisions:
 
         >>> divisions = [(4, 8), (3, 8), (4, 8)]
-        >>> selections = stack(divisions, previous_state=stack.maker.state)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> music, state = make_statal_accelerandi(divisions, previous_state=state)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4022,15 +3983,14 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> stack.maker.state
+        >>> state
         {'divisions_consumed': 6, 'logical_ties_produced': 36}
 
         Advances 6 divisions; then consumes another 3 divisions:
 
         >>> divisions = [(3, 8), (4, 8), (3, 8)]
-        >>> selections = stack(divisions, previous_state=stack.maker.state)
-
-        >>> lilypond_file = rmakers.example(selections, divisions)
+        >>> music, state = make_statal_accelerandi(divisions, previous_state=state)
+        >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4198,7 +4158,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
                 }
             >>
 
-        >>> stack.maker.state
+        >>> state
         {'divisions_consumed': 9, 'logical_ties_produced': 53}
 
     ..  container:: example
@@ -4213,7 +4173,6 @@ class AccelerandoRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -4753,7 +4712,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 16), (6, 16), (6, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -4807,7 +4765,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 16), (6, 16), (6, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -4869,7 +4826,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -4951,7 +4907,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5029,7 +4984,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5109,7 +5063,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5188,7 +5141,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5254,7 +5206,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5312,7 +5263,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5417,7 +5367,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5517,7 +5466,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5617,7 +5565,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5719,7 +5666,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5820,7 +5766,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 16), (3, 8), (3, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5878,7 +5823,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 16), (3, 8), (3, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5927,7 +5871,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 16), (3, 8), (3, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -5967,7 +5910,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 16), (3, 8), (3, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6008,7 +5950,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6121,7 +6062,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = 12 * [(6, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> staff = lilypond_file["Staff"]
         >>> abjad.override(staff).TextScript.staff_padding = 7
@@ -6373,7 +6313,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = 9 * [(6, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> staff = lilypond_file["Staff"]
         >>> abjad.override(staff).TextScript.staff_padding = 8
@@ -6523,7 +6462,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6584,7 +6522,6 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions, previous_state=stack.maker.state)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6693,7 +6630,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6748,7 +6684,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6803,7 +6738,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6854,7 +6788,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6911,7 +6844,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = 4 * [(5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -6963,7 +6895,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (5, 8), (5, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7020,7 +6951,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (5, 8), (5, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7074,7 +7004,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7123,7 +7052,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7180,7 +7108,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selections= stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7230,7 +7157,6 @@ class IncisedRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(8, 8), (4, 8), (6, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7521,7 +7447,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7563,7 +7488,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7597,7 +7521,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 2))
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7631,7 +7554,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 4))
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7667,7 +7589,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration()
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7703,7 +7624,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration(abjad.Rest)
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7742,7 +7662,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7778,7 +7697,6 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.multiplied_duration(abjad.Skip)
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7862,7 +7780,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7901,7 +7818,6 @@ class NoteRhythmMaker(RhythmMaker):
 
         >>> divisions = [(4, 8), (3, 8), (4, 8), (5, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7944,7 +7860,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -7984,7 +7899,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 32), (5, 32)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8026,7 +7940,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 32), (5, 32)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8071,7 +7984,6 @@ class NoteRhythmMaker(RhythmMaker):
         >>> stack = rmakers.NoteRhythmMaker()
         >>> divisions = [(5, 32), (5, 32)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8104,10 +8016,8 @@ class NoteRhythmMaker(RhythmMaker):
         Does not tie across divisions:
 
         >>> stack = rmakers.NoteRhythmMaker()
-
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8149,7 +8059,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8195,7 +8104,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8235,7 +8143,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(7, 16), (1, 4), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8269,7 +8176,6 @@ class NoteRhythmMaker(RhythmMaker):
         >>> stack = rmakers.NoteRhythmMaker()
         >>> divisions = [(5, 14), (3, 7)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8315,7 +8221,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 14), (3, 7)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8363,7 +8268,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8404,7 +8308,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8449,7 +8352,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8486,7 +8388,6 @@ class NoteRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.NoteRhythmMaker()
         >>> divisions = [(5, 8), (3, 8)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8521,7 +8422,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (3, 8)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8559,7 +8459,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 4), (6, 16), (9, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8594,7 +8493,6 @@ class NoteRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (3, 8)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8647,7 +8545,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8707,7 +8604,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8768,7 +8664,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8823,7 +8718,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = command(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8883,7 +8777,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -8959,7 +8852,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9030,7 +8922,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9150,7 +9041,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9213,7 +9103,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9290,7 +9179,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9364,7 +9252,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9443,7 +9330,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9503,7 +9389,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9567,7 +9452,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9630,7 +9514,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9701,7 +9584,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9776,7 +9658,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9855,7 +9736,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9936,7 +9816,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10020,7 +9899,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10080,7 +9958,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10147,7 +10024,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10213,7 +10089,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10285,7 +10160,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10350,7 +10224,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10415,7 +10288,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10476,7 +10348,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10531,7 +10402,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10588,7 +10458,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10643,7 +10512,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10699,7 +10567,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10759,7 +10626,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10817,7 +10683,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (5, 8), (5, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10872,7 +10737,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (5, 8), (5, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10924,7 +10788,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -10976,7 +10839,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11036,7 +10898,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 4), (3, 4), (3, 4)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11104,7 +10965,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11158,7 +11018,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11227,7 +11086,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11305,7 +11163,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11378,7 +11235,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11566,7 +11422,6 @@ class TaleaRhythmMaker(RhythmMaker):
 
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = command(divisions, previous_state=command.maker.state)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11628,7 +11483,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11736,7 +11590,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11791,7 +11644,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11838,7 +11690,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11891,7 +11742,6 @@ class TaleaRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -11964,7 +11814,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12025,7 +11874,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12085,7 +11933,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12159,7 +12006,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12233,7 +12079,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12329,7 +12174,6 @@ class TupletRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)])
         >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12394,7 +12238,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12452,7 +12295,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12513,7 +12355,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12577,7 +12418,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (2, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12626,7 +12466,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (2, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12682,7 +12521,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12741,7 +12579,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12795,7 +12632,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12854,7 +12690,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 8), (3, 8), (7, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12912,7 +12747,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -12974,7 +12808,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13036,7 +12869,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13100,7 +12932,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13172,7 +13003,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13234,7 +13064,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13292,7 +13121,6 @@ class TupletRhythmMaker(RhythmMaker):
         >>> rhythm_maker = rmakers.tuplet([(4, 1)])
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = rhythm_maker(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13352,7 +13180,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13402,7 +13229,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13463,7 +13289,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13523,7 +13348,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13583,7 +13407,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13644,7 +13467,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13704,7 +13526,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13764,7 +13585,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13820,7 +13640,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13908,7 +13727,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -13969,7 +13787,6 @@ class TupletRhythmMaker(RhythmMaker):
         ... )
         >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -14026,7 +13843,6 @@ class TupletRhythmMaker(RhythmMaker):
         >>> stack = rmakers.stack(rmakers.tuplet([(1,)]))
         >>> divisions = [(1, 5), (1, 4), (1, 6), (7, 9)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -14747,7 +14563,6 @@ class ForceNoteCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -14790,7 +14605,6 @@ class ForceNoteCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -14858,7 +14672,6 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -14896,7 +14709,6 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -14934,7 +14746,6 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -14977,7 +14788,6 @@ class ForceRestCommand(Command):
         ... )
         >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -15848,7 +15658,6 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
@@ -15914,7 +15723,6 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
@@ -15979,7 +15787,6 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
@@ -16044,7 +15851,6 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
@@ -16110,7 +15916,6 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
@@ -16175,7 +15980,6 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
@@ -16242,7 +16046,6 @@ def denominator(
         ... )
         >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
@@ -16358,7 +16161,6 @@ def extract_trivial(
         ... )
         >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -16479,7 +16281,6 @@ def force_augmentation(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -16539,7 +16340,6 @@ def force_augmentation(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -16787,7 +16587,6 @@ def on_beat_grace_container(
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
         >>> music_voice = abjad.Voice(selections, name="RhythmMaker.Music")
-
         >>> lilypond_file = rmakers.example(
         ...     [music_voice], divisions, includes=["abjad.ily"]
         ... )
@@ -16989,7 +16788,6 @@ def on_beat_grace_container(
         >>> divisions = [(3, 4), (3, 4)]
         >>> selections = stack(divisions)
         >>> music_voice = abjad.Voice(selections, name="RhythmMaker.Music")
-
         >>> lilypond_file = rmakers.example(
         ...     [music_voice], divisions, includes=["abjad.ily"]
         ... )
@@ -17218,7 +17016,6 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17311,7 +17108,6 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17516,7 +17312,6 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17585,7 +17380,6 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17626,7 +17420,6 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17665,7 +17458,6 @@ def rewrite_rest_filled(
         ... )
         >>> divisions = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17765,7 +17557,6 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17846,7 +17637,6 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17910,7 +17700,6 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -17960,7 +17749,6 @@ def rewrite_sustained(
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18082,7 +17870,6 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18181,7 +17968,6 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18274,7 +18060,6 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18365,7 +18150,6 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
         ... )
         >>> divisions = [(4, 8), (4, 8), (4, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18427,7 +18211,6 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18527,7 +18310,6 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18646,7 +18428,6 @@ def tremolo_container(
         >>> def slur_selector(argument):
         ...     return abjad.select.components(argument, abjad.TremoloContainer)
         >>> result = [abjad.slur(_) for _ in slur_selector(selections)]
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18714,7 +18495,6 @@ def tremolo_container(
         ...     result = abjad.select.components(argument, abjad.TremoloContainer)
         ...     return result
         >>> result = [abjad.slur(_) for _ in slur_selector(selections)]
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18822,7 +18602,6 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -18924,7 +18703,6 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
         ... )
         >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> selections = stack(divisions)
-
         >>> lilypond_file = rmakers.example(selections, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -19354,3 +19132,23 @@ def stack(
     """
     assert isinstance(commands, tuple)
     return Stack(maker, commands, preprocessor=preprocessor, tag=tag)
+
+
+def _deprecated():
+    r"""
+    Tests to be removed in Abjad 3.13.
+
+    ..  container:: example
+
+        REGRESSION. Copy preserves commands:
+
+        >>> import dataclasses
+        >>> stack = rmakers.stack(
+        ...     rmakers.accelerando([(1, 8), (1, 20), (1, 16)]),
+        ...     rmakers.force_fraction()
+        ... )
+
+        >>> dataclasses.replace(stack).commands
+        (ForceFractionCommand(selector=None),)
+
+    """
