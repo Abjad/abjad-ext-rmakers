@@ -980,12 +980,6 @@ def _make_leaves_from_talea(
 ):
     assert all(_ != 0 for _ in talea), repr(talea)
     result: list[abjad.Leaf | abjad.Tuplet] = []
-    leaf_maker = abjad.LeafMaker(
-        increase_monotonic=increase_monotonic,
-        forbidden_note_duration=forbidden_note_duration,
-        forbidden_rest_duration=forbidden_rest_duration,
-        tag=tag,
-    )
     pitches: list[int | None]
     for note_value in talea:
         if 0 < note_value:
@@ -994,7 +988,14 @@ def _make_leaves_from_talea(
             pitches = [None]
         division = abjad.Duration(abs(note_value), talea_denominator)
         durations = [division]
-        leaves = leaf_maker(pitches, durations)
+        leaves = abjad.makers.make_leaves(
+            pitches,
+            durations,
+            increase_monotonic=increase_monotonic,
+            forbidden_note_duration=forbidden_note_duration,
+            forbidden_rest_duration=forbidden_rest_duration,
+            tag=tag,
+        )
         if (
             1 < len(leaves)
             and abjad.get.logical_tie(leaves[0]).is_trivial
@@ -4301,8 +4302,7 @@ class AccelerandoRhythmMaker(RhythmMaker):
             stop_duration=interpolation.stop_duration,
         )
         if durations == "too small":
-            maker = abjad.NoteMaker(tag=tag)
-            notes = list(maker([0], [total_duration]))
+            notes = abjad.makers.make_notes([0], [total_duration], tag=tag)
             tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
             return tuplet
         durations = AccelerandoRhythmMaker._round_durations(durations, 2**10)
@@ -6316,9 +6316,8 @@ def _make_even_division_rhythm_maker_music(
         extra_count = extra_counts[i]
         basic_duration = abjad.Duration(1, denominator_)
         unprolated_note_count = None
-        maker = abjad.NoteMaker(tag=self_tag)
         if division < 2 * basic_duration:
-            notes = maker([0], [division])
+            notes = abjad.makers.make_notes([0], [division], tag=self_tag)
         else:
             unprolated_note_count = division / basic_duration
             unprolated_note_count = int(unprolated_note_count)
@@ -6332,7 +6331,7 @@ def _make_even_division_rhythm_maker_music(
                 extra_count *= -1
             note_count = unprolated_note_count + extra_count
             durations = note_count * [basic_duration]
-            notes = maker([0], durations)
+            notes = abjad.makers.make_notes([0], durations, tag=self_tag)
             assert all(_.written_duration.denominator == denominator_ for _ in notes)
         tuplet_duration = abjad.Duration(division)
         tuplet = abjad.Tuplet.from_duration(tuplet_duration, notes, tag=self_tag)
@@ -8359,14 +8358,15 @@ def _make_note_rhythm_maker_music(
     tag=None,
 ) -> list[list[abjad.Leaf | abjad.Tuplet]]:
     selections = []
-    leaf_maker = abjad.LeafMaker(
-        increase_monotonic=spelling.increase_monotonic,
-        forbidden_note_duration=spelling.forbidden_note_duration,
-        forbidden_rest_duration=spelling.forbidden_rest_duration,
-        tag=tag,
-    )
     for division in divisions:
-        selection = leaf_maker(pitches=0, durations=[division])
+        selection = abjad.makers.make_leaves(
+            pitches=0,
+            durations=[division],
+            increase_monotonic=spelling.increase_monotonic,
+            forbidden_note_duration=spelling.forbidden_note_duration,
+            forbidden_rest_duration=spelling.forbidden_rest_duration,
+            tag=tag,
+        )
         selections.append(list(selection))
     return selections
 
@@ -14520,7 +14520,7 @@ def _do_beam_groups_command(
 def _do_duration_bracket_command(argument):
     for tuplet in abjad.select.tuplets(argument):
         duration_ = abjad.get.duration(tuplet)
-        notes = abjad.LeafMaker()([0], [duration_])
+        notes = abjad.makers.make_leaves([0], [duration_])
         string = abjad.illustrators.selection_to_score_markup_string(notes)
         string = rf"\markup \scale #'(0.75 . 0.75) {string}"
         abjad.override(tuplet).TupletNumber.text = string
@@ -14643,7 +14643,6 @@ def _do_grace_container_command(
     leaves = abjad.select.leaves(argument, grace=False)
     assert counts is not None
     cyclic_counts = abjad.CyclicTuple(counts)
-    maker = abjad.LeafMaker()
     start = 0
     for i, leaf in enumerate(leaves):
         count = cyclic_counts[i]
@@ -14651,7 +14650,7 @@ def _do_grace_container_command(
             continue
         stop = start + count
         durations = talea[start:stop]
-        notes = maker([0], durations)
+        notes = abjad.makers.make_leaves([0], durations)
         if beam_and_slash:
             abjad.beam(notes)
             literal = abjad.LilyPondLiteral(r"\slash")
@@ -14687,7 +14686,6 @@ def _do_on_beat_grace_container_command(
         voice.name = voice_name
     assert isinstance(talea, Talea), repr(talea)
     cyclic_counts = abjad.CyclicTuple(counts)
-    maker = abjad.LeafMaker()
     start = 0
     for i, selection in enumerate(argument):
         count = cyclic_counts[i]
@@ -14695,7 +14693,7 @@ def _do_on_beat_grace_container_command(
             continue
         stop = start + count
         durations = talea[start:stop]
-        notes = maker([0], durations)
+        notes = abjad.makers.make_leaves([0], durations)
         abjad.on_beat_grace_container(
             notes,
             selection,
@@ -14784,17 +14782,18 @@ def _do_rewrite_rest_filled_command(selection, *, spelling=None, tag=None):
         increase_monotonic = None
         forbidden_note_duration = None
         forbidden_rest_duration = None
-    maker = abjad.LeafMaker(
-        increase_monotonic=increase_monotonic,
-        forbidden_note_duration=forbidden_note_duration,
-        forbidden_rest_duration=forbidden_rest_duration,
-        tag=tag,
-    )
     for tuplet in abjad.select.tuplets(selection):
         if not tuplet.rest_filled():
             continue
         duration = abjad.get.duration(tuplet)
-        rests = maker([None], [duration])
+        rests = abjad.makers.make_leaves(
+            [None],
+            [duration],
+            increase_monotonic=increase_monotonic,
+            forbidden_note_duration=forbidden_note_duration,
+            forbidden_rest_duration=forbidden_rest_duration,
+            tag=tag,
+        )
         abjad.mutate.replace(tuplet[:], rests)
         tuplet.multiplier = abjad.Multiplier(1)
 
