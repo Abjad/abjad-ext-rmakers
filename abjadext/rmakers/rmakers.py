@@ -557,98 +557,10 @@ def _validate_tuplets(selections):
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Incise:
-    r"""
+    """
     Incise specifier.
 
-    ..  container:: example
-
-        Specifies one sixteenth rest cut out of the beginning of every division:
-
-        >>> specifier = rmakers.Incise(
-        ...     prefix_talea=[-1],
-        ...     prefix_counts=[1],
-        ...     talea_denominator=16,
-        ... )
-
-    ..  container:: example
-
-        Specifies sixteenth rests cut out of the beginning and end of each division:
-
-        >>> specifier = rmakers.Incise(
-        ...     prefix_talea=[-1],
-        ...     prefix_counts=[1],
-        ...     suffix_talea=[-1],
-        ...     suffix_counts=[1],
-        ...     talea_denominator=16,
-        ... )
-
-    ..  container:: example
-
-        Divides middle part of every division ``1:1``:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[0, 1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=16,
-        ...         body_ratio=abjad.Ratio((1, 1)),
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions =  4 * [(5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 5/16
-                    c'8
-                    [
-                    c'8
-                    ]
-                    r16
-                    \time 5/16
-                    r16
-                    c'16.
-                    [
-                    c'16.
-                    ]
-                    r16
-                    \time 5/16
-                    c'8
-                    [
-                    c'8
-                    ]
-                    r16
-                    \time 5/16
-                    r16
-                    c'16.
-                    [
-                    c'16.
-                    ]
-                    r16
-                }
-            >>
-
+    See ``rmakers.incised_function()`` for examples.
     """
 
     body_ratio: abjad.typings.Ratio = abjad.Ratio([1])
@@ -715,15 +627,7 @@ class Interpolation:
     """
     Interpolation specifier.
 
-    ..  container:: example
-
-        >>> rmakers.Interpolation(
-        ...     start_duration=abjad.Duration(1, 4),
-        ...     stop_duration=abjad.Duration(1, 16),
-        ...     written_duration=abjad.Duration(1, 16),
-        ... )
-        Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
-
+    See ``rmakers.accelerando_function()`` for examples.
     """
 
     start_duration: abjad.Duration = abjad.Duration(1, 8)
@@ -1478,3040 +1382,8 @@ class RhythmMaker:
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class AccelerandoRhythmMaker(RhythmMaker):
-    r"""
+    """
     DEPRECATED; use ``rmakers.accelerando_function()`` instead.
-
-    ..  container:: example
-
-        Makes accelerandi:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.feather_beam_function(container)
-        ...     rmakers.duration_bracket_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-    ..  container:: example
-
-        Makes ritardandi:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 20), (1, 8), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.feather_beam_function(container)
-        ...     rmakers.duration_bracket_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-    ..  container:: example
-
-        Sets duration bracket with no beams:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.duration_bracket_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'16 * 63/32
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16 * 117/64
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'16 * 63/32
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16 * 117/64
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-
-    ..  container:: example
-
-        Beams tuplets together without feathering:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.beam_groups_function(tuplets)
-        ...     rmakers.duration_bracket_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 2
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 115/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 91/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 35/32
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 29/32
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16 * 13/16
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        \time 3/8
-                        c'16 * 117/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 99/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 69/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 13/16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16 * 47/64
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        \time 4/8
-                        c'16 * 63/32
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 115/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 91/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 35/32
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 29/32
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 1
-                        c'16 * 13/16
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 2
-                        \time 3/8
-                        c'16 * 117/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 99/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 69/64
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 2
-                        c'16 * 13/16
-                        \set stemLeftBeamCount = 2
-                        \set stemRightBeamCount = 0
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-        Leave feathering turned off here because LilyPond feathers conjoint beams poorly.
-
-    ..  container:: example
-
-        Ties across tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.duration_bracket_function(container)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.feather_beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                        ~
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                        ~
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                        ~
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-    ..  container:: example
-
-        Ties across every other tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.duration_bracket_function(container)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     tuplets = abjad.select.get(tuplets, [0], 2)
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.feather_beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                        ~
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                        ~
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-    ..  container:: example
-
-        Forces rests at first and last leaves:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     leaves = abjad.select.leaves(container)
-        ...     leaves = abjad.select.get(leaves, [0, -1])
-        ...     rmakers.force_rest_function(leaves)
-        ...     rmakers.feather_beam_function(
-        ...         container, beam_rests=True, stemlet_length=0.75
-        ...     )
-        ...     rmakers.duration_bracket_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \override Staff.Stem.stemlet-length = 0.75
-                        \time 4/8
-                        r16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        \revert Staff.Stem.stemlet-length
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \override Staff.Stem.stemlet-length = 0.75
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        \revert Staff.Stem.stemlet-length
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \override Staff.Stem.stemlet-length = 0.75
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        \revert Staff.Stem.stemlet-length
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \override Staff.Stem.stemlet-length = 0.75
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        \revert Staff.Stem.stemlet-length
-                        r16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-    ..  container:: example
-
-        Forces rests in every other tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)],
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     tuplets = abjad.select.get(tuplets, [1], 2)
-        ...     rmakers.force_rest_function(tuplets)
-        ...     rmakers.rewrite_rest_filled_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     rmakers.duration_bracket_function(container)
-        ...     rmakers.feather_beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \time 3/8
-                    r4.
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \time 3/8
-                    r4.
-                }
-            >>
-
-    ..  container:: example
-
-        Alternates accelerandi and ritardandi:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.duration_bracket_function(container)
-        ...     rmakers.feather_beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-    ..  container:: example
-
-        Makes a single note in short division:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.duration_bracket_function(container)
-        ...     rmakers.feather_beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(5, 8), (3, 8), (1, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                    ~
-                                    c'8
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 5/8
-                        c'16 * 61/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 49/32
-                        c'16 * 5/4
-                        c'16 * 33/32
-                        c'16 * 57/64
-                        c'16 * 13/16
-                        c'16 * 25/32
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \time 1/8
-                    c'8
-                }
-            >>
-
-    ..  container:: example
-
-        Consumes 3 divisions:
-
-        >>> def make_statal_accelerandi(divisions, previous_state=None):
-        ...     if previous_state is None:
-        ...         previous_state = {}
-        ...     state = {}
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions,
-        ...         [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)],
-        ...         previous_state=previous_state,
-        ...         state=state,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.duration_bracket_function(container)
-        ...     rmakers.feather_beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music, state
-
-        >>> divisions = [(3, 8), (4, 8), (3, 8)]
-        >>> music, state = make_statal_accelerandi(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-        >>> state
-        {'divisions_consumed': 3, 'logical_ties_produced': 17}
-
-        Advances 3 divisions; then consumes another 3 divisions:
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8)]
-        >>> music, state = make_statal_accelerandi(divisions, previous_state=state)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-        >>> state
-        {'divisions_consumed': 6, 'logical_ties_produced': 36}
-
-        Advances 6 divisions; then consumes another 3 divisions:
-
-        >>> divisions = [(3, 8), (4, 8), (3, 8)]
-        >>> music, state = make_statal_accelerandi(divisions, previous_state=state)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-        >>> state
-        {'divisions_consumed': 9, 'logical_ties_produced': 53}
-
-    ..  container:: example
-
-        Tags LilyPond output:
-
-        >>> def make_rhythm(divisions):
-        ...     tag = abjad.Tag("ACCELERANDO_RHYTHM_MAKER")
-        ...     nested_music = rmakers.accelerando_function(
-        ...         divisions, [(1, 8), (1, 20), (1, 16)], tag=tag
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.feather_beam_function(container, tag=tag)
-        ...     rmakers.duration_bracket_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    \times 1/1
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 63/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        [
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 115/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 91/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 35/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 29/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 13/16
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        ]
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    \times 1/1
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 117/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        [
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 99/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 69/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 13/16
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 47/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        ]
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    \times 1/1
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 63/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        [
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 115/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 91/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 35/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 29/32
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 13/16
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        ]
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'4.
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    \times 1/1
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 117/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        [
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 99/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 69/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 13/16
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        c'16 * 47/64
-                        %! ACCELERANDO_RHYTHM_MAKER
-                        ]
-                    %! ACCELERANDO_RHYTHM_MAKER
-                    }
-                    \revert TupletNumber.text
-                }
-            >>
-
-    Set interpolations' ``written_duration`` to ``1/16`` or less for multiple beams.
     """
 
     interpolations: typing.Sequence[Interpolation] = (Interpolation(),)
@@ -4776,1963 +1648,8 @@ class AccelerandoRhythmMaker(RhythmMaker):
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class EvenDivisionRhythmMaker(RhythmMaker):
-    r"""
+    """
     DEPRECATED; use ``rmakers.even_division_function()`` instead.
-
-    ..  container:: example
-
-        Forces tuplet diminution:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [8], extra_counts=[0, 0, 1]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_diminution_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(5, 16), (6, 16), (6, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/8
-                    {
-                        \time 5/16
-                        c'4
-                        c'4
-                    }
-                    \time 6/16
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 6/16
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        Forces tuplet augmentation:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [8], extra_counts=[0, 0, 1]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(5, 16), (6, 16), (6, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4
-                    {
-                        \time 5/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \time 6/16
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        \time 6/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-
-    ..  container:: example
-
-        Ties nonlast tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [8]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        (Equivalent to earlier tie-across-divisions pattern.)
-
-    ..  container:: example
-
-        Forces rest at every third logical tie:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [8])
-        ...     container = abjad.Container(nested_music)
-        ...     logical_ties = abjad.select.logical_ties(container)
-        ...     logical_ties = abjad.select.get(logical_ties, [0], 3)
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4
-                    {
-                        \time 4/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3
-                    {
-                        \time 3/8
-                        c'8
-                        r8
-                        c'8
-                    }
-                }
-            >>
-
-        Forces rest at every fourth logical tie:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [8])
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     logical_ties = abjad.select.logical_ties(container)
-        ...     logical_ties = abjad.select.get(logical_ties, [3], 4)
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        r8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3
-                    {
-                        \time 3/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        r8
-                        c'8
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        (Forcing rests at the fourth logical tie produces two rests. Forcing rests at the
-        eighth logical tie produces only one rest.)
-
-        Forces rest at leaf 0 of every tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [8])
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
-        ...     rmakers.force_rest_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3
-                    {
-                        \time 3/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4
-                    {
-                        \time 4/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/3
-                    {
-                        \time 3/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/4
-                    {
-                        \time 4/8
-                        r8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Forces rest and rewrites every other tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [8], extra_counts=[1]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     tuplets = abjad.select.get(tuplets, [0], 2)
-        ...     rmakers.force_rest_function(tuplets)
-        ...     rmakers.rewrite_rest_filled_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 4/8
-                    r2
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \time 4/8
-                    r2
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        (Equivalent to ealier silence pattern.)
-
-    ..  container:: example
-
-        Ties and rewrites every other tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [8], extra_counts=[1]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     tuplets = abjad.select.get(tuplets, [0], 2)
-        ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.rewrite_sustained_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 4/8
-                    c'2
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \time 4/8
-                    c'2
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        (Equivalent to earlier sustain pattern.)
-
-    ..  container:: example
-
-        No preferred denominator:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16], extra_counts=[4], denominator=None
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 2/3
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        Expresses tuplet ratios in the usual way with numerator and denominator
-        relatively prime.
-
-    ..  container:: example
-
-        Preferred denominator equal to 4:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16], extra_counts=[4], denominator=4
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/6
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 4/6
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        Preferred denominator equal to 8:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16], extra_counts=[4], denominator=8
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 8/12
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 8/12
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        Preferred denominator equal to 16:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16], extra_counts=[4], denominator=16
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 16/24
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 16/24
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Preferred denominator taken from count of elements in tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16], extra_counts=[4], denominator="from_counts"
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 8/12
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/10
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 8/12
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/10
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Fills tuplets with 16th notes and 8th notes, alternately:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16, 8]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 16), (3, 8), (3, 4)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Fills tuplets with 8th notes:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [8]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 16), (3, 8), (3, 4)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/16
-                    c'8.
-                    \time 3/8
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \time 3/4
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    c'8
-                    c'8
-                    c'8
-                    ]
-                }
-            >>
-
-        (Fills tuplets less than twice the duration of an eighth note with a single
-        attack.)
-
-        Fills tuplets with quarter notes:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [4]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 16), (3, 8), (3, 4)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/16
-                    c'8.
-                    \time 3/8
-                    c'4.
-                    \time 3/4
-                    c'4
-                    c'4
-                    c'4
-                }
-            >>
-
-        (Fills tuplets less than twice the duration of a quarter note with a single
-        attack.)
-
-        Fills tuplets with half notes:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [2]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 16), (3, 8), (3, 4)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/16
-                    c'8.
-                    \time 3/8
-                    c'4.
-                    \time 3/4
-                    c'2.
-                }
-            >>
-
-        (Fills tuplets less than twice the duration of a half note with a single
-        attack.)
-
-
-    ..  container:: example
-
-        Adds extra counts to tuplets according to a pattern of three elements:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16], extra_counts=[0, 1, 2]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        **Modular handling of positive values.** Denote by ``unprolated_note_count``
-        the number counts included in a tuplet when ``extra_counts`` is set to zero.
-        Then extra counts equals ``extra_counts % unprolated_note_count`` when
-        ``extra_counts`` is positive.
-
-        This is likely to be intuitive; compare with the handling of negative values,
-        below.
-
-        For positive extra counts, the modulus of transformation of a tuplet with six
-        notes is six:
-
-        >>> import math
-        >>> unprolated_note_count = 6
-        >>> modulus = unprolated_note_count
-        >>> extra_counts = list(range(12))
-        >>> labels = []
-        >>> for count in extra_counts:
-        ...     modular_count = count % modulus
-        ...     label = rf"\markup {{ {count:3} becomes {modular_count:2} }}"
-        ...     labels.append(label)
-
-        Which produces the following pattern of changes:
-
-        >>> def make_rhythm(divisions, extra_counts):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16], extra_counts=extra_counts
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = 12 * [(6, 16)]
-        >>> music = make_rhythm(divisions, extra_counts)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> staff = lilypond_file["Staff"]
-        >>> abjad.override(staff).TextScript.staff_padding = 7
-        >>> leaves = abjad.select.leaves(staff)
-        >>> groups = abjad.select.group_by_measure(leaves)
-        >>> for group, label in zip(groups, labels):
-        ...     markup = abjad.Markup(label)
-        ...     abjad.attach(markup, group[0], direction=abjad.UP)
-        ...
-
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                    \override TextScript.staff-padding = 7
-                }
-                {
-                    \time 6/16
-                    c'16
-                    ^ \markup {   0 becomes  0 }
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   1 becomes  1 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   2 becomes  2 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 6/9
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   3 becomes  3 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/10
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   4 becomes  4 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/11
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   5 becomes  5 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 6/16
-                    c'16
-                    ^ \markup {   6 becomes  0 }
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   7 becomes  1 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   8 becomes  2 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \times 6/9
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   9 becomes  3 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/10
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {  10 becomes  4 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/11
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {  11 becomes  5 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        This modular formula ensures that rhythm-maker ``denominators`` are always
-        respected: a very large number of extra counts never causes a
-        ``16``-denominated tuplet to result in 32nd- or 64th-note rhythms.
-
-    ..  container:: example
-
-        **Modular handling of negative values.** Denote by ``unprolated_note_count``
-        the number of counts included in a tuplet when ``extra_counts`` is set to
-        zero. Further, let ``modulus = ceiling(unprolated_note_count / 2)``. Then
-        extra counts equals ``-(abs(extra_counts) % modulus)`` when ``extra_counts``
-        is negative.
-
-        For negative extra counts, the modulus of transformation of a tuplet with six
-        notes is three:
-
-        >>> import math
-        >>> unprolated_note_count = 6
-        >>> modulus = math.ceil(unprolated_note_count / 2)
-        >>> extra_counts = [0, -1, -2, -3, -4, -5, -6, -7, -8]
-        >>> labels = []
-        >>> for count in extra_counts:
-        ...     modular_count = -(abs(count) % modulus)
-        ...     label = rf"\markup {{ {count:3} becomes {modular_count:2} }}"
-        ...     labels.append(label)
-
-        Which produces the following pattern of changes:
-
-        >>> def make_rhythm(divisions, extra_counts):
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16], extra_counts=extra_counts
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = 9 * [(6, 16)]
-        >>> music = make_rhythm(divisions, extra_counts)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> staff = lilypond_file["Staff"]
-        >>> abjad.override(staff).TextScript.staff_padding = 8
-        >>> leaves = abjad.select.leaves(staff)
-        >>> groups = abjad.select.group_by_measure(leaves)
-        >>> for group, label in zip(groups, labels):
-        ...     markup = abjad.Markup(label)
-        ...     abjad.attach(markup, group[0], direction=abjad.UP)
-        ...
-
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                    \override TextScript.staff-padding = 8
-                }
-                {
-                    \time 6/16
-                    c'16
-                    ^ \markup {   0 becomes  0 }
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {  -1 becomes -1 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/4
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {  -2 becomes -2 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 6/16
-                    c'16
-                    ^ \markup {  -3 becomes  0 }
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {  -4 becomes -1 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/4
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {  -5 becomes -2 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 6/16
-                    c'16
-                    ^ \markup {  -6 becomes  0 }
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {  -7 becomes -1 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/4
-                    {
-                        \time 6/16
-                        c'16
-                        ^ \markup {  -8 becomes -2 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        This modular formula ensures that rhythm-maker ``denominators`` are always
-        respected: a very small number of extra counts never causes a ``16``-denominated
-        tuplet to result in 8th- or quarter-note rhythms.
-
-    ..  container:: example
-
-        Fills divisions with 16th, 8th, quarter notes. Consumes 5:
-
-        >>> def make_rhythm(divisions, *, previous_state=None):
-        ...     state = {}
-        ...     nested_music = rmakers.even_division_function(
-        ...         divisions, [16, 8, 4], extra_counts=[0, 1],
-        ...         previous_state=previous_state, state=state
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music, state
-
-        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-        >>> music, state = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 2/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \time 2/8
-                    c'4
-                    \times 4/5
-                    {
-                        \time 2/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 2/8
-                    c'8
-                    [
-                    c'8
-                    ]
-                }
-            >>
-
-        >>> state
-        {'divisions_consumed': 5, 'logical_ties_produced': 15}
-
-        Advances 5 divisions; then consumes another 5 divisions:
-
-        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
-        >>> music, state = make_rhythm(divisions, previous_state=state)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 2/8
-                    c'4
-                    \time 2/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \time 2/8
-                    c'4
-                    \times 4/5
-                    {
-                        \time 2/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        >>> state
-        {'divisions_consumed': 10, 'logical_ties_produced': 29}
-
     """
 
     denominator: str | int = "from_counts"
@@ -6762,658 +1679,8 @@ class EvenDivisionRhythmMaker(RhythmMaker):
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class IncisedRhythmMaker(RhythmMaker):
-    r"""
-    DEPRECATED; use ``rmakers.incise_function()`` instead.
-
-    ..  container:: example
-
-        Forces rest at every other tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=16,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     logical_ties = abjad.select.logical_ties(container)
-        ...     logical_ties = abjad.select.get(logical_ties, [1], 2)
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 4/8
-                    r16
-                    r4..
-                    \time 3/8
-                    c'4.
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    c'4
-                    ~
-                    c'16
-                    r16
-                }
-            >>
-
-    ..  container:: example
-
-        Ties nonlast tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    ~
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 6/8
-                    c'2
-                    ~
-                    c'8
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Repeat-ties nonfirst tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)[1:]
-        ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
-        ...     rmakers.repeat_tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \repeatTie
-                    \time 6/8
-                    c'2
-                    \repeatTie
-                    ~
-                    c'8
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Add one extra count per tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         extra_counts=[1],
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 16/9
-                    {
-                        \time 8/8
-                        r16
-                        c'2
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 8/5
-                    {
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/7
-                    {
-                        \time 6/8
-                        c'4.
-                        r16
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[0, 1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=16,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = 4 * [(5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 5/16
-                    c'4
-                    r16
-                    \time 5/16
-                    r16
-                    c'8.
-                    r16
-                    \time 5/16
-                    c'4
-                    r16
-                    \time 5/16
-                    r16
-                    c'8.
-                    r16
-                }
-            >>
-
-    ..  container:: example
-
-        Fills divisions with notes. Incises outer divisions only:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-8, -7],
-        ...         prefix_counts=[2],
-        ...         suffix_talea=[-3],
-        ...         suffix_counts=[4],
-        ...         talea_denominator=32,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(5, 8), (5, 8), (5, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 5/8
-                    r4
-                    r8..
-                    c'8
-                    [
-                    ~
-                    c'32
-                    ]
-                    \time 5/8
-                    c'2
-                    ~
-                    c'8
-                    \time 5/8
-                    c'4
-                    r16.
-                    r16.
-                    r16.
-                    r16.
-                }
-            >>
-
-    ..  container:: example
-
-        Fills divisions with rests. Incises outer divisions only:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         fill_with_rests=True,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[7, 8],
-        ...         prefix_counts=[2],
-        ...         suffix_talea=[3],
-        ...         suffix_counts=[4],
-        ...         talea_denominator=32,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(5, 8), (5, 8), (5, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 5/8
-                    c'8..
-                    c'4
-                    r8
-                    r32
-                    \time 5/8
-                    r2
-                    r8
-                    \time 5/8
-                    r4
-                    c'16.
-                    [
-                    c'16.
-                    c'16.
-                    c'16.
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Spells durations with the fewest number of glyphs:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'2
-                    ~
-                    c'8
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Forbids notes with written duration greater than or equal to ``1/2``:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 2)),
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 8/8
-                    r8
-                    c'4
-                    ~
-                    c'4
-                    ~
-                    c'4.
-                    \time 4/8
-                    c'4
-                    ~
-                    c'4
-                    \time 6/8
-                    c'4
-                    ~
-                    c'4
-                    ~
-                    c'8
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Rewrites meter:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     voice = rmakers.wrap_in_time_signature_staff(nested_music, divisions)
-        ...     rmakers.beam_function(voice)
-        ...     rmakers.extract_trivial_function(voice)
-        ...     rmakers.rewrite_meter_function(voice)
-        ...     music = abjad.mutate.eject_contents(voice)
-        ...     return music
-
-        >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'4.
-                    ~
-                    c'4
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Makes augmentations:
-
-        >>> def make_rhythm(divisions):
-        ...     tag = abjad.Tag("INCISED_RHYTHM_MAKER")
-        ...     nested_music = rmakers.incised_function(
-        ...         divisions,
-        ...         extra_counts=[1],
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...         tag=tag,
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.beam_function(container, tag=tag)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(8, 8), (4, 8), (6, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 16/9
-                    %! INCISED_RHYTHM_MAKER
-                    {
-                        \time 8/8
-                        %! INCISED_RHYTHM_MAKER
-                        r16
-                        %! INCISED_RHYTHM_MAKER
-                        c'2
-                    %! INCISED_RHYTHM_MAKER
-                    }
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 8/5
-                    %! INCISED_RHYTHM_MAKER
-                    {
-                        \time 4/8
-                        %! INCISED_RHYTHM_MAKER
-                        c'4
-                        ~
-                        %! INCISED_RHYTHM_MAKER
-                        c'16
-                    %! INCISED_RHYTHM_MAKER
-                    }
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 12/7
-                    %! INCISED_RHYTHM_MAKER
-                    {
-                        \time 6/8
-                        %! INCISED_RHYTHM_MAKER
-                        c'4.
-                        %! INCISED_RHYTHM_MAKER
-                        r16
-                    %! INCISED_RHYTHM_MAKER
-                    }
-                }
-            >>
-
+    """
+    DEPRECATED; use ``rmakers.incised_function()`` instead.
     """
 
     extra_counts: typing.Sequence[int] = ()
@@ -7639,290 +1906,6 @@ class IncisedRhythmMaker(RhythmMaker):
 class MultipliedDurationRhythmMaker(RhythmMaker):
     r"""
     DEPRECATED; use ``rmakers.multplied_duration_function()`` instead.
-
-    ..  container:: example
-
-        >>> rhythm_maker = rmakers.multiplied_duration()
-        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    c'1 * 1/4
-                    \time 3/16
-                    c'1 * 3/16
-                    \time 5/8
-                    c'1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'1 * 1/3
-                }
-            >>
-
-    ..  container:: example
-
-        >>> rhythm_maker = rmakers.multiplied_duration()
-        >>> rhythm_maker
-        MultipliedDurationRhythmMaker(spelling=Spelling(forbidden_note_duration=None, forbidden_rest_duration=None, increase_monotonic=False), tag=Tag(string=''), prototype=<class 'abjad.score.Note'>, duration=Duration(1, 1))
-
-    ..  container:: example
-
-        Makes multiplied-duration whole notes when ``duration`` is unset:
-
-        >>> rhythm_maker = rmakers.multiplied_duration()
-        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    c'1 * 1/4
-                    \time 3/16
-                    c'1 * 3/16
-                    \time 5/8
-                    c'1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'1 * 1/3
-                }
-            >>
-
-        Makes multiplied-duration half notes when ``duration=(1, 2)``:
-
-        >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 2))
-        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    c'2 * 2/4
-                    \time 3/16
-                    c'2 * 6/16
-                    \time 5/8
-                    c'2 * 10/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'2 * 2/3
-                }
-            >>
-
-        Makes multiplied-duration quarter notes when ``duration=(1, 4)``:
-
-        >>> rhythm_maker = rmakers.multiplied_duration(duration=(1, 4))
-        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    c'4 * 4/4
-                    \time 3/16
-                    c'4 * 12/16
-                    \time 5/8
-                    c'4 * 20/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'4 * 4/3
-                }
-            >>
-
-    ..  container:: example
-
-        Makes multiplied-duration notes when ``prototype`` is unset:
-
-        >>> rhythm_maker = rmakers.multiplied_duration()
-        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    c'1 * 1/4
-                    \time 3/16
-                    c'1 * 3/16
-                    \time 5/8
-                    c'1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'1 * 1/3
-                }
-            >>
-
-    ..  container:: example
-
-        Makes multiplied-duration rests when ``prototype=abjad.Rest``:
-
-        >>> rhythm_maker = rmakers.multiplied_duration(abjad.Rest)
-        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    r1 * 1/4
-                    \time 3/16
-                    r1 * 3/16
-                    \time 5/8
-                    r1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    r1 * 1/3
-                }
-            >>
-
-    ..  container:: example
-
-        Makes multiplied-duration multimeasures rests when
-        ``prototype=abjad.MultimeasureRest``:
-
-        >>> rhythm_maker = rmakers.multiplied_duration(
-        ...     abjad.MultimeasureRest
-        ... )
-        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    R1 * 1/4
-                    \time 3/16
-                    R1 * 3/16
-                    \time 5/8
-                    R1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    R1 * 1/3
-                }
-            >>
-
-    ..  container:: example
-
-        Makes multiplied-duration skips when ``prototype=abjad.Skip``:
-
-        >>> rhythm_maker = rmakers.multiplied_duration(abjad.Skip)
-        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    s1 * 1/4
-                    \time 3/16
-                    s1 * 3/16
-                    \time 5/8
-                    s1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    s1 * 1/3
-                }
-            >>
-
     """
 
     prototype: type = abjad.Note
@@ -7941,22 +1924,13 @@ class MultipliedDurationRhythmMaker(RhythmMaker):
     def _make_music(
         self, divisions, *, previous_state=None, spelling=None, tag=None
     ) -> list[abjad.MultimeasureRest | abjad.Skip]:
-        component: abjad.MultimeasureRest | abjad.Skip
-        components = []
-        for division in divisions:
-            division = abjad.NonreducedFraction(division)
-            assert isinstance(division, abjad.NonreducedFraction)
-            multiplier = division / self.duration
-            if self.prototype is abjad.Note:
-                component = self.prototype(
-                    "c'", self.duration, multiplier=multiplier, tag=tag
-                )
-            else:
-                component = self.prototype(
-                    self.duration, multiplier=multiplier, tag=tag
-                )
-            components.append(component)
-        return components
+        return multiplied_duration_function(
+            divisions,
+            self.prototype,
+            duration=self.duration,
+            spelling=spelling,
+            tag=tag,
+        )
 
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
@@ -14325,8 +8299,3040 @@ def accelerando_function(
     state: dict = None,
     tag: abjad.Tag = abjad.Tag(),
 ):
-    """
-    Makes accelerandi in ``divisions``.
+    r"""
+    Makes accelerando figures in ``divisions``.
+
+    ..  container:: example
+
+        Makes accelerandi:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.feather_beam_function(container)
+        ...     rmakers.duration_bracket_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+    ..  container:: example
+
+        Makes ritardandi:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 20), (1, 8), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.feather_beam_function(container)
+        ...     rmakers.duration_bracket_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 4/8
+                        c'16 * 3/4
+                        [
+                        c'16 * 25/32
+                        c'16 * 7/8
+                        c'16 * 65/64
+                        c'16 * 79/64
+                        c'16 * 49/32
+                        c'16 * 29/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 3/8
+                        c'16 * 5/8
+                        [
+                        c'16 * 43/64
+                        c'16 * 51/64
+                        c'16 * 65/64
+                        c'16 * 85/64
+                        c'16 * 25/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 4/8
+                        c'16 * 3/4
+                        [
+                        c'16 * 25/32
+                        c'16 * 7/8
+                        c'16 * 65/64
+                        c'16 * 79/64
+                        c'16 * 49/32
+                        c'16 * 29/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 3/8
+                        c'16 * 5/8
+                        [
+                        c'16 * 43/64
+                        c'16 * 51/64
+                        c'16 * 65/64
+                        c'16 * 85/64
+                        c'16 * 25/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+    ..  container:: example
+
+        Sets duration bracket with no beams:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.duration_bracket_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'16 * 63/32
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'16 * 117/64
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'16 * 63/32
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'16 * 117/64
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+
+    ..  container:: example
+
+        Beams tuplets together without feathering:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     rmakers.beam_groups_function(tuplets)
+        ...     rmakers.duration_bracket_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 2
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 115/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 91/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 35/32
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 29/32
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16 * 13/16
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        \time 3/8
+                        c'16 * 117/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 99/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 69/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 13/16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16 * 47/64
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        \time 4/8
+                        c'16 * 63/32
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 115/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 91/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 35/32
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 29/32
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16 * 13/16
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        \time 3/8
+                        c'16 * 117/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 99/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 69/64
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16 * 13/16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 0
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+        Leave feathering turned off here because LilyPond feathers conjoint beams poorly.
+
+    ..  container:: example
+
+        Ties across tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     rmakers.duration_bracket_function(container)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     rmakers.feather_beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                        ~
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                        ~
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                        ~
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+    ..  container:: example
+
+        Ties across every other tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     rmakers.duration_bracket_function(container)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     tuplets = abjad.select.get(tuplets, [0], 2)
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     rmakers.feather_beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                        ~
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                        ~
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+    ..  container:: example
+
+        Forces rests at first and last leaves:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     leaves = abjad.select.leaves(container)
+        ...     leaves = abjad.select.get(leaves, [0, -1])
+        ...     rmakers.force_rest_function(leaves)
+        ...     rmakers.feather_beam_function(
+        ...         container, beam_rests=True, stemlet_length=0.75
+        ...     )
+        ...     rmakers.duration_bracket_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \override Staff.Stem.stemlet-length = 0.75
+                        \time 4/8
+                        r16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        \revert Staff.Stem.stemlet-length
+                        c'16 * 13/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \override Staff.Stem.stemlet-length = 0.75
+                        \time 3/8
+                        c'16 * 5/8
+                        [
+                        c'16 * 43/64
+                        c'16 * 51/64
+                        c'16 * 65/64
+                        c'16 * 85/64
+                        \revert Staff.Stem.stemlet-length
+                        c'16 * 25/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \override Staff.Stem.stemlet-length = 0.75
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        \revert Staff.Stem.stemlet-length
+                        c'16 * 13/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \override Staff.Stem.stemlet-length = 0.75
+                        \time 3/8
+                        c'16 * 5/8
+                        [
+                        c'16 * 43/64
+                        c'16 * 51/64
+                        c'16 * 65/64
+                        c'16 * 85/64
+                        \revert Staff.Stem.stemlet-length
+                        r16 * 25/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+    ..  container:: example
+
+        Forces rests in every other tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)],
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     tuplets = abjad.select.get(tuplets, [1], 2)
+        ...     rmakers.force_rest_function(tuplets)
+        ...     rmakers.rewrite_rest_filled_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.feather_beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \time 3/8
+                    r4.
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \time 3/8
+                    r4.
+                }
+            >>
+
+    ..  container:: example
+
+        Alternates accelerandi and ritardandi:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.feather_beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 3/8
+                        c'16 * 5/8
+                        [
+                        c'16 * 43/64
+                        c'16 * 51/64
+                        c'16 * 65/64
+                        c'16 * 85/64
+                        c'16 * 25/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        c'16 * 63/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 91/64
+                        c'16 * 35/32
+                        c'16 * 29/32
+                        c'16 * 13/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 3/8
+                        c'16 * 5/8
+                        [
+                        c'16 * 43/64
+                        c'16 * 51/64
+                        c'16 * 65/64
+                        c'16 * 85/64
+                        c'16 * 25/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+    ..  container:: example
+
+        Makes a single note in short division:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.feather_beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(5, 8), (3, 8), (1, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                    ~
+                                    c'8
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 5/8
+                        c'16 * 61/32
+                        [
+                        c'16 * 115/64
+                        c'16 * 49/32
+                        c'16 * 5/4
+                        c'16 * 33/32
+                        c'16 * 57/64
+                        c'16 * 13/16
+                        c'16 * 25/32
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \time 1/8
+                    c'8
+                }
+            >>
+
+    ..  container:: example
+
+        Consumes 3 divisions:
+
+        >>> def make_statal_accelerandi(divisions, previous_state=None):
+        ...     if previous_state is None:
+        ...         previous_state = {}
+        ...     state = {}
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions,
+        ...         [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)],
+        ...         previous_state=previous_state,
+        ...         state=state,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.feather_beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music, state
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8)]
+        >>> music, state = make_statal_accelerandi(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 4/8
+                        c'16 * 3/4
+                        [
+                        c'16 * 25/32
+                        c'16 * 7/8
+                        c'16 * 65/64
+                        c'16 * 79/64
+                        c'16 * 49/32
+                        c'16 * 29/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+        >>> state
+        {'divisions_consumed': 3, 'logical_ties_produced': 17}
+
+        Advances 3 divisions; then consumes another 3 divisions:
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8)]
+        >>> music, state = make_statal_accelerandi(divisions, previous_state=state)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 4/8
+                        c'16 * 3/4
+                        [
+                        c'16 * 25/32
+                        c'16 * 7/8
+                        c'16 * 65/64
+                        c'16 * 79/64
+                        c'16 * 49/32
+                        c'16 * 29/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 4/8
+                        c'16 * 3/4
+                        [
+                        c'16 * 25/32
+                        c'16 * 7/8
+                        c'16 * 65/64
+                        c'16 * 79/64
+                        c'16 * 49/32
+                        c'16 * 29/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+        >>> state
+        {'divisions_consumed': 6, 'logical_ties_produced': 36}
+
+        Advances 6 divisions; then consumes another 3 divisions:
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8)]
+        >>> music, state = make_statal_accelerandi(divisions, previous_state=state)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #left
+                        \time 4/8
+                        c'16 * 3/4
+                        [
+                        c'16 * 25/32
+                        c'16 * 7/8
+                        c'16 * 65/64
+                        c'16 * 79/64
+                        c'16 * 49/32
+                        c'16 * 29/16
+                        ]
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    \times 1/1
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        c'16 * 117/64
+                        [
+                        c'16 * 99/64
+                        c'16 * 69/64
+                        c'16 * 13/16
+                        c'16 * 47/64
+                        ]
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+        >>> state
+        {'divisions_consumed': 9, 'logical_ties_produced': 53}
+
+    ..  container:: example
+
+        Tags LilyPond output:
+
+        >>> def make_rhythm(divisions):
+        ...     tag = abjad.Tag("ACCELERANDO_RHYTHM_MAKER")
+        ...     nested_music = rmakers.accelerando_function(
+        ...         divisions, [(1, 8), (1, 20), (1, 16)], tag=tag
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.feather_beam_function(container, tag=tag)
+        ...     rmakers.duration_bracket_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score, tags=True)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    \times 1/1
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 63/32
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        [
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 115/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 91/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 35/32
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 29/32
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 13/16
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        ]
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    \times 1/1
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 117/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        [
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 99/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 69/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 13/16
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 47/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        ]
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'2
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    \times 1/1
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 63/32
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        [
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 115/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 91/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 35/32
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 29/32
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 13/16
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        ]
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
+                        {
+                            \context Score = "Score"
+                            \with
+                            {
+                                \override SpacingSpanner.spacing-increment = 0.5
+                                proportionalNotationDuration = ##f
+                            }
+                            <<
+                                \context RhythmicStaff = "Rhythmic_Staff"
+                                \with
+                                {
+                                    \remove Time_signature_engraver
+                                    \remove Staff_symbol_engraver
+                                    \override Stem.direction = #up
+                                    \override Stem.length = 5
+                                    \override TupletBracket.bracket-visibility = ##t
+                                    \override TupletBracket.direction = #up
+                                    \override TupletBracket.minimum-length = 4
+                                    \override TupletBracket.padding = 1.25
+                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
+                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
+                                    \override TupletNumber.font-size = 0
+                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
+                                    tupletFullLength = ##t
+                                }
+                                {
+                                    c'4.
+                                }
+                            >>
+                            \layout
+                            {
+                                indent = 0
+                                ragged-right = ##t
+                            }
+                        }
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    \times 1/1
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 117/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        [
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 99/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 69/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 13/16
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        c'16 * 47/64
+                        %! ACCELERANDO_RHYTHM_MAKER
+                        ]
+                    %! ACCELERANDO_RHYTHM_MAKER
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+
+    Set interpolations' ``written_duration`` to ``1/16`` or less for multiple beams.
     """
     interpolations_ = []
     for interpolation in interpolations:
@@ -14390,8 +11396,1963 @@ def even_division_function(
     state: dict = None,
     tag: abjad.Tag = abjad.Tag(),
 ):
-    """
+    r"""
     Makes even-division tuplets in ``divisions``.
+
+    ..  container:: example
+
+        Forces tuplet diminution:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [8], extra_counts=[0, 0, 1]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.force_diminution_function(container)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(5, 16), (6, 16), (6, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/8
+                    {
+                        \time 5/16
+                        c'4
+                        c'4
+                    }
+                    \time 6/16
+                    c'8
+                    [
+                    c'8
+                    c'8
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4
+                    {
+                        \time 6/16
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        Forces tuplet augmentation:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [8], extra_counts=[0, 0, 1]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.force_augmentation_function(container)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(5, 16), (6, 16), (6, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/4
+                    {
+                        \time 5/16
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \time 6/16
+                    c'8
+                    [
+                    c'8
+                    c'8
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2
+                    {
+                        \time 6/16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+
+    ..  container:: example
+
+        Ties nonlast tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [8]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/4
+                    {
+                        \time 4/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/4
+                    {
+                        \time 4/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        (Equivalent to earlier tie-across-divisions pattern.)
+
+    ..  container:: example
+
+        Forces rest at every third logical tie:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(divisions, [8])
+        ...     container = abjad.Container(nested_music)
+        ...     logical_ties = abjad.select.logical_ties(container)
+        ...     logical_ties = abjad.select.get(logical_ties, [0], 3)
+        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/4
+                    {
+                        \time 4/8
+                        r8
+                        c'8
+                        [
+                        c'8
+                        ]
+                        r8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                        r8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/4
+                    {
+                        \time 4/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                        r8
+                        c'8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        r8
+                        c'8
+                    }
+                }
+            >>
+
+        Forces rest at every fourth logical tie:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(divisions, [8])
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     logical_ties = abjad.select.logical_ties(container)
+        ...     logical_ties = abjad.select.get(logical_ties, [3], 4)
+        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/4
+                    {
+                        \time 4/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        r8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        r8
+                        c'8
+                        [
+                        c'8
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/4
+                    {
+                        \time 4/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                        r8
+                        c'8
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        (Forcing rests at the fourth logical tie produces two rests. Forcing rests at the
+        eighth logical tie produces only one rest.)
+
+        Forces rest at leaf 0 of every tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(divisions, [8])
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
+        ...     rmakers.force_rest_function(leaves)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        r8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/4
+                    {
+                        \time 4/8
+                        r8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        r8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/4
+                    {
+                        \time 4/8
+                        r8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Forces rest and rewrites every other tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [8], extra_counts=[1]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     tuplets = abjad.select.get(tuplets, [0], 2)
+        ...     rmakers.force_rest_function(tuplets)
+        ...     rmakers.rewrite_rest_filled_function(container)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
+                    r2
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \time 4/8
+                    r2
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        (Equivalent to ealier silence pattern.)
+
+    ..  container:: example
+
+        Ties and rewrites every other tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [8], extra_counts=[1]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     tuplets = abjad.select.get(tuplets, [0], 2)
+        ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
+        ...     rmakers.tie_function(notes)
+        ...     rmakers.rewrite_sustained_function(container)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
+                    c'2
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \time 4/8
+                    c'2
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        (Equivalent to earlier sustain pattern.)
+
+    ..  container:: example
+
+        No preferred denominator:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16], extra_counts=[4], denominator=None
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 2/3
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+        Expresses tuplet ratios in the usual way with numerator and denominator
+        relatively prime.
+
+    ..  container:: example
+
+        Preferred denominator equal to 4:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16], extra_counts=[4], denominator=4
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/6
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \times 4/6
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+        Preferred denominator equal to 8:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16], extra_counts=[4], denominator=8
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 8/12
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \times 8/12
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+        Preferred denominator equal to 16:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16], extra_counts=[4], denominator=16
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 16/24
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \times 16/24
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Preferred denominator taken from count of elements in tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16], extra_counts=[4], denominator="from_counts"
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 8/12
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/10
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \times 8/12
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/10
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Fills tuplets with 16th notes and 8th notes, alternately:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16, 8]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 16), (3, 8), (3, 4)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'8
+                    [
+                    c'8
+                    c'8
+                    ]
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Fills tuplets with 8th notes:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [8]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 16), (3, 8), (3, 4)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/16
+                    c'8.
+                    \time 3/8
+                    c'8
+                    [
+                    c'8
+                    c'8
+                    ]
+                    \time 3/4
+                    c'8
+                    [
+                    c'8
+                    c'8
+                    c'8
+                    c'8
+                    c'8
+                    ]
+                }
+            >>
+
+        (Fills tuplets less than twice the duration of an eighth note with a single
+        attack.)
+
+        Fills tuplets with quarter notes:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [4]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 16), (3, 8), (3, 4)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/16
+                    c'8.
+                    \time 3/8
+                    c'4.
+                    \time 3/4
+                    c'4
+                    c'4
+                    c'4
+                }
+            >>
+
+        (Fills tuplets less than twice the duration of a quarter note with a single
+        attack.)
+
+        Fills tuplets with half notes:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [2]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 16), (3, 8), (3, 4)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/16
+                    c'8.
+                    \time 3/8
+                    c'4.
+                    \time 3/4
+                    c'2.
+                }
+            >>
+
+        (Fills tuplets less than twice the duration of a half note with a single
+        attack.)
+
+
+    ..  container:: example
+
+        Adds extra counts to tuplets according to a pattern of three elements:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16], extra_counts=[0, 1, 2]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/8
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        **Modular handling of positive values.** Denote by ``unprolated_note_count``
+        the number counts included in a tuplet when ``extra_counts`` is set to zero.
+        Then extra counts equals ``extra_counts % unprolated_note_count`` when
+        ``extra_counts`` is positive.
+
+        This is likely to be intuitive; compare with the handling of negative values,
+        below.
+
+        For positive extra counts, the modulus of transformation of a tuplet with six
+        notes is six:
+
+        >>> import math
+        >>> unprolated_note_count = 6
+        >>> modulus = unprolated_note_count
+        >>> extra_counts = list(range(12))
+        >>> labels = []
+        >>> for count in extra_counts:
+        ...     modular_count = count % modulus
+        ...     label = rf"\markup {{ {count:3} becomes {modular_count:2} }}"
+        ...     labels.append(label)
+
+        Which produces the following pattern of changes:
+
+        >>> def make_rhythm(divisions, extra_counts):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16], extra_counts=extra_counts
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = 12 * [(6, 16)]
+        >>> music = make_rhythm(divisions, extra_counts)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> staff = lilypond_file["Staff"]
+        >>> abjad.override(staff).TextScript.staff_padding = 7
+        >>> leaves = abjad.select.leaves(staff)
+        >>> groups = abjad.select.group_by_measure(leaves)
+        >>> for group, label in zip(groups, labels):
+        ...     markup = abjad.Markup(label)
+        ...     abjad.attach(markup, group[0], direction=abjad.UP)
+        ...
+
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                    \override TextScript.staff-padding = 7
+                }
+                {
+                    \time 6/16
+                    c'16
+                    ^ \markup {   0 becomes  0 }
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {   1 becomes  1 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/8
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {   2 becomes  2 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \times 6/9
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {   3 becomes  3 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/10
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {   4 becomes  4 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/11
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {   5 becomes  5 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \time 6/16
+                    c'16
+                    ^ \markup {   6 becomes  0 }
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {   7 becomes  1 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/8
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {   8 becomes  2 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \times 6/9
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {   9 becomes  3 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/10
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {  10 becomes  4 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/11
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {  11 becomes  5 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+        This modular formula ensures that rhythm-maker ``denominators`` are always
+        respected: a very large number of extra counts never causes a
+        ``16``-denominated tuplet to result in 32nd- or 64th-note rhythms.
+
+    ..  container:: example
+
+        **Modular handling of negative values.** Denote by ``unprolated_note_count``
+        the number of counts included in a tuplet when ``extra_counts`` is set to
+        zero. Further, let ``modulus = ceiling(unprolated_note_count / 2)``. Then
+        extra counts equals ``-(abs(extra_counts) % modulus)`` when ``extra_counts``
+        is negative.
+
+        For negative extra counts, the modulus of transformation of a tuplet with six
+        notes is three:
+
+        >>> import math
+        >>> unprolated_note_count = 6
+        >>> modulus = math.ceil(unprolated_note_count / 2)
+        >>> extra_counts = [0, -1, -2, -3, -4, -5, -6, -7, -8]
+        >>> labels = []
+        >>> for count in extra_counts:
+        ...     modular_count = -(abs(count) % modulus)
+        ...     label = rf"\markup {{ {count:3} becomes {modular_count:2} }}"
+        ...     labels.append(label)
+
+        Which produces the following pattern of changes:
+
+        >>> def make_rhythm(divisions, extra_counts):
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16], extra_counts=extra_counts
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = 9 * [(6, 16)]
+        >>> music = make_rhythm(divisions, extra_counts)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> staff = lilypond_file["Staff"]
+        >>> abjad.override(staff).TextScript.staff_padding = 8
+        >>> leaves = abjad.select.leaves(staff)
+        >>> groups = abjad.select.group_by_measure(leaves)
+        >>> for group, label in zip(groups, labels):
+        ...     markup = abjad.Markup(label)
+        ...     abjad.attach(markup, group[0], direction=abjad.UP)
+        ...
+
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                    \override TextScript.staff-padding = 8
+                }
+                {
+                    \time 6/16
+                    c'16
+                    ^ \markup {   0 becomes  0 }
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {  -1 becomes -1 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/4
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {  -2 becomes -2 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \time 6/16
+                    c'16
+                    ^ \markup {  -3 becomes  0 }
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {  -4 becomes -1 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/4
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {  -5 becomes -2 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \time 6/16
+                    c'16
+                    ^ \markup {  -6 becomes  0 }
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {  -7 becomes -1 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/4
+                    {
+                        \time 6/16
+                        c'16
+                        ^ \markup {  -8 becomes -2 }
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+        This modular formula ensures that rhythm-maker ``denominators`` are always
+        respected: a very small number of extra counts never causes a ``16``-denominated
+        tuplet to result in 8th- or quarter-note rhythms.
+
+    ..  container:: example
+
+        Fills divisions with 16th, 8th, quarter notes. Consumes 5:
+
+        >>> def make_rhythm(divisions, *, previous_state=None):
+        ...     state = {}
+        ...     nested_music = rmakers.even_division_function(
+        ...         divisions, [16, 8, 4], extra_counts=[0, 1],
+        ...         previous_state=previous_state, state=state
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music, state
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> music, state = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 2/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \time 2/8
+                    c'4
+                    \times 4/5
+                    {
+                        \time 2/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \time 2/8
+                    c'8
+                    [
+                    c'8
+                    ]
+                }
+            >>
+
+        >>> state
+        {'divisions_consumed': 5, 'logical_ties_produced': 15}
+
+        Advances 5 divisions; then consumes another 5 divisions:
+
+        >>> divisions = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> music, state = make_rhythm(divisions, previous_state=state)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 2/8
+                    c'4
+                    \time 2/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \time 2/8
+                    c'4
+                    \times 4/5
+                    {
+                        \time 2/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+        >>> state
+        {'divisions_consumed': 10, 'logical_ties_produced': 29}
+
     """
     previous_state = previous_state or {}
     if state is None:
@@ -14486,6 +13447,748 @@ def incised_function(
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ):
+    r"""
+    Makes incised tuplets in ``divisions``.
+
+    ..  container:: example
+
+        Specifies one sixteenth rest cut out of the beginning of every division:
+
+        >>> specifier = rmakers.Incise(
+        ...     prefix_talea=[-1],
+        ...     prefix_counts=[1],
+        ...     talea_denominator=16,
+        ... )
+
+    ..  container:: example
+
+        Specifies sixteenth rests cut out of the beginning and end of each division:
+
+        >>> specifier = rmakers.Incise(
+        ...     prefix_talea=[-1],
+        ...     prefix_counts=[1],
+        ...     suffix_talea=[-1],
+        ...     suffix_counts=[1],
+        ...     talea_denominator=16,
+        ... )
+
+    ..  container:: example
+
+        Divides middle part of every division ``1:1``:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[0, 1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=16,
+        ...         body_ratio=abjad.Ratio((1, 1)),
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions =  4 * [(5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/16
+                    c'8
+                    [
+                    c'8
+                    ]
+                    r16
+                    \time 5/16
+                    r16
+                    c'16.
+                    [
+                    c'16.
+                    ]
+                    r16
+                    \time 5/16
+                    c'8
+                    [
+                    c'8
+                    ]
+                    r16
+                    \time 5/16
+                    r16
+                    c'16.
+                    [
+                    c'16.
+                    ]
+                    r16
+                }
+            >>
+
+    ..  container:: example
+
+        Forces rest at every other tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=16,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     logical_ties = abjad.select.logical_ties(container)
+        ...     logical_ties = abjad.select.get(logical_ties, [1], 2)
+        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
+                    r16
+                    r4..
+                    \time 3/8
+                    c'4.
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'4
+                    ~
+                    c'16
+                    r16
+                }
+            >>
+
+    ..  container:: example
+
+        Ties nonlast tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=8,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(8, 8), (4, 8), (6, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 8/8
+                    r8
+                    c'2..
+                    ~
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 6/8
+                    c'2
+                    ~
+                    c'8
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Repeat-ties nonfirst tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=8,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)[1:]
+        ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
+        ...     rmakers.repeat_tie_function(leaves)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(8, 8), (4, 8), (6, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 8/8
+                    r8
+                    c'2..
+                    \time 4/8
+                    c'2
+                    \repeatTie
+                    \time 6/8
+                    c'2
+                    \repeatTie
+                    ~
+                    c'8
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Add one extra count per tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         extra_counts=[1],
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=8,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.force_augmentation_function(container)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(8, 8), (4, 8), (6, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 16/9
+                    {
+                        \time 8/8
+                        r16
+                        c'2
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 8/5
+                    {
+                        \time 4/8
+                        c'4
+                        ~
+                        c'16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 12/7
+                    {
+                        \time 6/8
+                        c'4.
+                        r16
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[0, 1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=16,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = 4 * [(5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/16
+                    c'4
+                    r16
+                    \time 5/16
+                    r16
+                    c'8.
+                    r16
+                    \time 5/16
+                    c'4
+                    r16
+                    \time 5/16
+                    r16
+                    c'8.
+                    r16
+                }
+            >>
+
+    ..  container:: example
+
+        Fills divisions with notes. Incises outer divisions only:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-8, -7],
+        ...         prefix_counts=[2],
+        ...         suffix_talea=[-3],
+        ...         suffix_counts=[4],
+        ...         talea_denominator=32,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(5, 8), (5, 8), (5, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/8
+                    r4
+                    r8..
+                    c'8
+                    [
+                    ~
+                    c'32
+                    ]
+                    \time 5/8
+                    c'2
+                    ~
+                    c'8
+                    \time 5/8
+                    c'4
+                    r16.
+                    r16.
+                    r16.
+                    r16.
+                }
+            >>
+
+    ..  container:: example
+
+        Fills divisions with rests. Incises outer divisions only:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         fill_with_rests=True,
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[7, 8],
+        ...         prefix_counts=[2],
+        ...         suffix_talea=[3],
+        ...         suffix_counts=[4],
+        ...         talea_denominator=32,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(5, 8), (5, 8), (5, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/8
+                    c'8..
+                    c'4
+                    r8
+                    r32
+                    \time 5/8
+                    r2
+                    r8
+                    \time 5/8
+                    r4
+                    c'16.
+                    [
+                    c'16.
+                    c'16.
+                    c'16.
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Spells durations with the fewest number of glyphs:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=8,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(8, 8), (4, 8), (6, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 8/8
+                    r8
+                    c'2..
+                    \time 4/8
+                    c'2
+                    \time 6/8
+                    c'2
+                    ~
+                    c'8
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Forbids notes with written duration greater than or equal to ``1/2``:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[1],
+        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 2)),
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=8,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(8, 8), (4, 8), (6, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 8/8
+                    r8
+                    c'4
+                    ~
+                    c'4
+                    ~
+                    c'4.
+                    \time 4/8
+                    c'4
+                    ~
+                    c'4
+                    \time 6/8
+                    c'4
+                    ~
+                    c'4
+                    ~
+                    c'8
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Rewrites meter:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=8,
+        ...     )
+        ...     voice = rmakers.wrap_in_time_signature_staff(nested_music, divisions)
+        ...     rmakers.beam_function(voice)
+        ...     rmakers.extract_trivial_function(voice)
+        ...     rmakers.rewrite_meter_function(voice)
+        ...     music = abjad.mutate.eject_contents(voice)
+        ...     return music
+
+        >>> divisions = [(8, 8), (4, 8), (6, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 8/8
+                    r8
+                    c'2..
+                    \time 4/8
+                    c'2
+                    \time 6/8
+                    c'4.
+                    ~
+                    c'4
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Makes augmentations:
+
+        >>> def make_rhythm(divisions):
+        ...     tag = abjad.Tag("INCISED_RHYTHM_MAKER")
+        ...     nested_music = rmakers.incised_function(
+        ...         divisions,
+        ...         extra_counts=[1],
+        ...         outer_divisions_only=True,
+        ...         prefix_talea=[-1],
+        ...         prefix_counts=[1],
+        ...         suffix_talea=[-1],
+        ...         suffix_counts=[1],
+        ...         talea_denominator=8,
+        ...         tag=tag,
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.force_augmentation_function(container)
+        ...     rmakers.beam_function(container, tag=tag)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(8, 8), (4, 8), (6, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score, tags=True)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    %! INCISED_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text
+                    %! INCISED_RHYTHM_MAKER
+                    \times 16/9
+                    %! INCISED_RHYTHM_MAKER
+                    {
+                        \time 8/8
+                        %! INCISED_RHYTHM_MAKER
+                        r16
+                        %! INCISED_RHYTHM_MAKER
+                        c'2
+                    %! INCISED_RHYTHM_MAKER
+                    }
+                    %! INCISED_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text
+                    %! INCISED_RHYTHM_MAKER
+                    \times 8/5
+                    %! INCISED_RHYTHM_MAKER
+                    {
+                        \time 4/8
+                        %! INCISED_RHYTHM_MAKER
+                        c'4
+                        ~
+                        %! INCISED_RHYTHM_MAKER
+                        c'16
+                    %! INCISED_RHYTHM_MAKER
+                    }
+                    %! INCISED_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text
+                    %! INCISED_RHYTHM_MAKER
+                    \times 12/7
+                    %! INCISED_RHYTHM_MAKER
+                    {
+                        \time 6/8
+                        %! INCISED_RHYTHM_MAKER
+                        c'4.
+                        %! INCISED_RHYTHM_MAKER
+                        r16
+                    %! INCISED_RHYTHM_MAKER
+                    }
+                }
+            >>
+
+    """
     divisions_ = [abjad.NonreducedFraction(_) for _ in divisions]
     return _make_incised_rhythm_maker_music(
         divisions_,
@@ -14533,6 +14236,300 @@ def multiplied_duration(
     return MultipliedDurationRhythmMaker(
         prototype=prototype, duration=duration_, tag=tag
     )
+
+
+def multiplied_duration_function(
+    divisions,
+    prototype: type = abjad.Note,
+    *,
+    duration: abjad.typings.Duration = (1, 1),
+    spelling: Spelling = Spelling(),
+    tag: abjad.Tag = abjad.Tag(),
+) -> list[abjad.Leaf]:
+    r"""
+    Makes one multiplied duration for each division in ``divisions``.
+
+    ..  container:: example
+
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> music = rmakers.multiplied_duration_function(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    c'1 * 1/4
+                    \time 3/16
+                    c'1 * 3/16
+                    \time 5/8
+                    c'1 * 5/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    c'1 * 1/3
+                }
+            >>
+
+    ..  container:: example
+
+        Makes multiplied-duration whole notes when ``duration`` is unset:
+
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> music = rmakers.multiplied_duration_function(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    c'1 * 1/4
+                    \time 3/16
+                    c'1 * 3/16
+                    \time 5/8
+                    c'1 * 5/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    c'1 * 1/3
+                }
+            >>
+
+        Makes multiplied-duration half notes when ``duration=(1, 2)``:
+
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> music = rmakers.multiplied_duration_function(divisions, duration=(1, 2))
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    c'2 * 2/4
+                    \time 3/16
+                    c'2 * 6/16
+                    \time 5/8
+                    c'2 * 10/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    c'2 * 2/3
+                }
+            >>
+
+        Makes multiplied-duration quarter notes when ``duration=(1, 4)``:
+
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> music = rmakers.multiplied_duration_function(divisions, duration=(1, 4))
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    c'4 * 4/4
+                    \time 3/16
+                    c'4 * 12/16
+                    \time 5/8
+                    c'4 * 20/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    c'4 * 4/3
+                }
+            >>
+
+    ..  container:: example
+
+        Makes multiplied-duration notes when ``prototype`` is unset:
+
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> music = rmakers.multiplied_duration_function(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    c'1 * 1/4
+                    \time 3/16
+                    c'1 * 3/16
+                    \time 5/8
+                    c'1 * 5/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    c'1 * 1/3
+                }
+            >>
+
+    ..  container:: example
+
+        Makes multiplied-duration rests when ``prototype=abjad.Rest``:
+
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> music = rmakers.multiplied_duration_function(divisions, abjad.Rest)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    r1 * 1/4
+                    \time 3/16
+                    r1 * 3/16
+                    \time 5/8
+                    r1 * 5/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    r1 * 1/3
+                }
+            >>
+
+    ..  container:: example
+
+        Makes multiplied-duration multimeasures rests when
+        ``prototype=abjad.MultimeasureRest``:
+
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> music = rmakers.multiplied_duration_function(divisions, abjad.MultimeasureRest)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    R1 * 1/4
+                    \time 3/16
+                    R1 * 3/16
+                    \time 5/8
+                    R1 * 5/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    R1 * 1/3
+                }
+            >>
+
+    ..  container:: example
+
+        Makes multiplied-duration skips when ``prototype=abjad.Skip``:
+
+        >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
+        >>> music = rmakers.multiplied_duration_function(divisions, abjad.Skip)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    s1 * 1/4
+                    \time 3/16
+                    s1 * 3/16
+                    \time 5/8
+                    s1 * 5/8
+                    #(ly:expect-warning "strange time signature found")
+                    \time 1/3
+                    s1 * 1/3
+                }
+            >>
+
+    """
+    duration = abjad.Duration(duration)
+    component: abjad.MultimeasureRest | abjad.Skip
+    components = []
+    for division in divisions:
+        division = abjad.NonreducedFraction(division)
+        assert isinstance(division, abjad.NonreducedFraction)
+        multiplier = division / duration
+        if prototype is abjad.Note:
+            component = prototype("c'", duration, multiplier=multiplier, tag=tag)
+        else:
+            component = prototype(duration, multiplier=multiplier, tag=tag)
+        components.append(component)
+    return components
 
 
 def note(
@@ -19274,6 +19271,7 @@ def written_duration_function(argument, duration: abjad.typings.Duration) -> Non
 
 
 # DEPRECATED STACK CLASSES & FUNCTIONS
+
 
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Match:
