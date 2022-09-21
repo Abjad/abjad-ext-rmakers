@@ -6,7 +6,7 @@ import typing
 
 import abjad
 
-# MAKER HELPER FUNCTIONS (PRIVATE)
+# MAKER HELPER FUNCTIONS
 
 
 def _apply_ties_to_split_notes(
@@ -558,8 +558,6 @@ def _validate_tuplets(selections):
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Incise:
     """
-    Incise specifier.
-
     See ``rmakers.incised_function()`` for examples.
     """
 
@@ -625,8 +623,6 @@ class Incise:
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Interpolation:
     """
-    Interpolation specifier.
-
     See ``rmakers.accelerando_function()`` for examples.
     """
 
@@ -1325,7 +1321,7 @@ class Talea:
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RhythmMaker:
     """
-    DEPRECATED.
+    DEPRECATED; use functions instead.
     """
 
     spelling: Spelling = Spelling()
@@ -2009,7 +2005,7 @@ class TupletRhythmMaker(RhythmMaker):
         )
 
 
-# MAKER FUNCTIONS (PUBLIC)
+# MAKER FUNCTIONS
 
 
 def accelerando(
@@ -18284,6 +18280,14 @@ def split_measures() -> SplitMeasuresCommand:
 
 
 def split_measures_function(voice, *, durations=None, tag=None) -> None:
+    r"""
+    Splits measures in ``voice``.
+
+    Uses ``durations`` when ``durations`` is not none.
+
+    Tries to find time signature information (from the staff that contains ``voice``)
+    when ``durations`` is none.
+    """
     if not durations:
         # TODO: implement abjad.get() method for measure durations
         staff = abjad.get.parentage(voice).parent
@@ -18305,6 +18309,13 @@ def split_measures_function(voice, *, durations=None, tag=None) -> None:
 def tie(selector: typing.Callable | None = None) -> TieCommand:
     r"""
     DEPRECATED; use ``rmakers.tie_function()`` instead.
+    """
+    return TieCommand(selector=selector)
+
+
+def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+    r"""
+    Attaches one tie to each notes in ``argument``.
 
     ..  container:: example
 
@@ -18857,13 +18868,6 @@ def tie(selector: typing.Callable | None = None) -> TieCommand:
             >>
 
     """
-    return TieCommand(selector=selector)
-
-
-def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
-    """
-    Attaches ties to notes in ``argument``.
-    """
     for note in abjad.select.notes(argument):
         tie = abjad.Tie()
         abjad.attach(tie, note, tag=tag)
@@ -18872,8 +18876,15 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
 def tremolo_container(
     count: int, selector: typing.Callable | None = None
 ) -> TremoloContainerCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.tremolo_container_function()`` instead.
+    """
+    return TremoloContainerCommand(selector=selector, count=count)
+
+
+def tremolo_container_function(argument, count: int, *, tag: abjad.Tag = None) -> None:
+    r"""
+    Replaces each note in ``argument`` with a tremolo container.
 
     ..  container:: example
 
@@ -19008,10 +19019,6 @@ def tremolo_container(
             >>
 
     """
-    return TremoloContainerCommand(selector=selector, count=count)
-
-
-def tremolo_container_function(argument, count: int, *, tag: abjad.Tag = None) -> None:
     for note in abjad.select.notes(argument):
         container_duration = note.written_duration
         note_duration = container_duration / (2 * count)
@@ -19030,7 +19037,7 @@ def trivialize(selector: typing.Callable | None = None) -> TrivializeCommand:
 
 def trivialize_function(argument) -> None:
     """
-    Trivializes tuplets in ``argument``.
+    Trivializes each tuplet in ``argument``.
     """
     for tuplet in abjad.select.tuplets(argument):
         tuplet.trivialize()
@@ -19047,7 +19054,7 @@ def unbeam(
 
 def unbeam_function(argument) -> None:
     """
-    Unbeams leaves in ``argument``.
+    Unbeams each leaf in ``argument``.
     """
     leaves = abjad.select.leaves(argument)
     for leaf in leaves:
@@ -19059,6 +19066,13 @@ def unbeam_function(argument) -> None:
 def untie(selector: typing.Callable | None = None) -> UntieCommand:
     r"""
     DEPRECATED; use ``rmakers.untie_function()`` instead.
+    """
+    return UntieCommand(selector=selector)
+
+
+def untie_function(argument) -> None:
+    r"""
+    Deatches ties from each leaf in ``argument``.
 
     ..  container:: example
 
@@ -19271,13 +19285,6 @@ def untie(selector: typing.Callable | None = None) -> UntieCommand:
                 }
             >>
 
-    """
-    return UntieCommand(selector=selector)
-
-
-def untie_function(argument) -> None:
-    """
-    Removes ties in ``argument``.
     """
     for leaf in abjad.select.leaves(argument):
         abjad.detach(abjad.Tie, leaf)
