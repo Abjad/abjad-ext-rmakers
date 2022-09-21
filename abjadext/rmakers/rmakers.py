@@ -1938,6 +1938,7 @@ class NoteRhythmMaker(RhythmMaker):
     r"""
     DEPRECATED; use ``rmakers.note_function()`` instead.
     """
+
     def _make_music(
         self, divisions, *, previous_state=None, spelling=None, tag=None
     ) -> list[list[abjad.Leaf | abjad.Tuplet]]:
@@ -1981,2246 +1982,6 @@ class TaleaRhythmMaker(RhythmMaker):
 class TupletRhythmMaker(RhythmMaker):
     r"""
     DEPRECATED; use ``rmakers.tuplet_function()`` instead.
-
-    ..  container:: example
-
-        Makes tuplets with ``3:2`` ratios:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(3, 2)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 1/2
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, -1), (3, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 1/2
-                        c'4
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'4.
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        \time 5/16
-                        c'8.
-                        r8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4
-                    {
-                        \time 5/16
-                        c'8.
-                        [
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Beams each division:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 1, 1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        \time 5/8
-                        c'8.
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        [
-                        c'16.
-                        c'16.
-                        c'16.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 6/8
-                        c'8.
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Beams each division:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 1, 1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        \time 5/8
-                        c'8.
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        [
-                        c'16.
-                        c'16.
-                        c'16.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 6/8
-                        c'8.
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Beams tuplets together:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 1, 2, 1, 1), (3, 1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.beam_groups_function(tuplets)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9
-                    {
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        \time 5/8
-                        c'8.
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8.
-                        ]
-                        c'4.
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8.
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        \time 6/8
-                        c'8
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8
-                        ]
-                        c'4
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'4.
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Beams nothing:
-
-        >>> rhythm_maker = rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)])
-        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9
-                    {
-                        \time 5/8
-                        c'8.
-                        c'8.
-                        c'4.
-                        c'8.
-                        c'8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'8
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 6/8
-                        c'8
-                        c'8
-                        c'4
-                        c'8
-                        c'8
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'4.
-                        c'8
-                        c'8
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Ties nothing:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(2, 3), (1, -2, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 2), (3, 8), (5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 1/2
-                        c'4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Ties across all divisions:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(2, 3), (1, -2, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 2), (3, 8), (5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 1/2
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Ties across every other division:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(2, 3), (1, -2, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     tuplets = abjad.select.get(tuplets, [0], 2)
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 1/2
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        \time 5/16
-                        c'16.
-                        r8.
-                        c'16.
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes diminished tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(2, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_diminution_function(container)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 8), (2, 8), (4, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'4
-                        c'8
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'4
-                        c'8
-                    }
-                    \times 2/3
-                    {
-                        \time 4/8
-                        c'2
-                        c'4
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes augmented tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(2, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 8), (2, 8), (4, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 4/8
-                        c'4
-                        c'8
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes diminished tuplets and does not rewrite dots:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.force_diminution_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 7/16
-                        c'8..
-                        [
-                        c'8..
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes diminished tuplets and rewrites dots:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.force_diminution_function(container)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'4
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/8
-                    {
-                        \time 7/16
-                        c'4
-                        c'4
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes augmented tuplets and does not rewrite dots:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.force_augmentation_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 7/16
-                        c'8..
-                        [
-                        c'8..
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes augmented tuplets and rewrites dots:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.force_augmentation_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 8), (3, 8), (7, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/4
-                    {
-                        \time 7/16
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Leaves trivializable tuplets as-is when ``trivialize`` is false:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        \time 3/8
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Rewrites trivializable tuplets when ``trivialize`` is true. Measures 2 and 4
-        contain trivial tuplets with 1:1 ratios. To remove these trivial tuplets, set
-        ``extract_trivial`` as shown in the next example:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.trivialize_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                }
-            >>
-
-        REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when both are
-        true. Measures 2 and 4 are first rewritten as trivial but then supplied again
-        with nontrivial prolation when removing dots. The result is that measures 2 and 4
-        carry nontrivial prolation with no dots:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.trivialize_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        \time 3/8
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Leaves trivial tuplets as-is when ``extract_trivial`` is false:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(2, 3), (1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Extracts trivial tuplets when ``extract_trivial`` is true. Measures 2 and 4 in
-        the example below now contain only a flat list of notes:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(2, 3), (1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \time 2/8
-                    c'8
-                    [
-                    c'8
-                    ]
-                    ~
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \time 2/8
-                    c'8
-                    [
-                    c'8
-                    ]
-                }
-            >>
-
-        .. note:: Flattening trivial tuplets makes it possible
-            subsequently to rewrite the meter of the untupletted notes.
-
-    ..  container:: example
-
-        REGRESSION: Very long ties are preserved when ``extract_trivial`` is true:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(2, 3), (1, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     notes = abjad.select.notes(container)[:-1]
-        ...     rmakers.tie_function(notes)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        ~
-                        c'4.
-                        ~
-                    }
-                    \time 2/8
-                    c'8
-                    [
-                    ~
-                    c'8
-                    ]
-                    ~
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        ~
-                        c'4.
-                        ~
-                    }
-                    \time 2/8
-                    c'8
-                    [
-                    ~
-                    c'8
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        No rest commands:
-
-        >>> rhythm_maker = rmakers.tuplet([(4, 1)])
-        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> music = rhythm_maker(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'16.
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'2
-                        c'8
-                    }
-                    \times 4/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'16.
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'2
-                        c'8
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Masks every other output division:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(4, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     tuplets = abjad.select.get(tuplets, [1], 2)
-        ...     rmakers.force_rest_function(tuplets)
-        ...     rmakers.rewrite_rest_filled_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'16.
-                    }
-                    \time 4/8
-                    r2
-                    \times 4/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'16.
-                    }
-                    \time 4/8
-                    r2
-                }
-            >>
-
-
-    ..  container:: example
-
-        Tuplet numerators and denominators are reduced to numbers that are relatively
-        prime when ``denominator`` is set to none. This means that ratios like
-        ``6:4`` and ``10:8`` do not arise:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 4)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        The preferred denominator of each tuplet is set in terms of a unit duration
-        when ``denominator`` is set to a duration. The setting does not affect the
-        first tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 4)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 16))
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Sets the preferred denominator of each tuplet in terms 32nd notes. The
-        setting affects all tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 4)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 32))
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 16/20
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Sets the preferred denominator each tuplet in terms 64th notes. The setting
-        affects all tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 4)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 64))
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 8/10
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 16/20
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 24/20
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 32/40
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        The preferred denominator of each tuplet is set directly when ``denominator``
-        is set to a positive integer. This example sets the preferred denominator of
-        each tuplet to ``8``. Setting does not affect the third tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 4)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 8)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 8/10
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Sets the preferred denominator of each tuplet to ``12``. Setting affects all
-        tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 4)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 12)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 12/15
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 12/15
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 12/15
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Sets the preferred denominator of each tuplet to ``13``. Setting does not
-        affect any tuplet:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, 4)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 13)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        >>> def make_rhythm(divisions):
-        ...     tag = abjad.Tag("TUPLET_RHYTHM_MAKER")
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(3, 2)], tag=tag
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container, tag=tag)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    %! TUPLET_RHYTHM_MAKER
-                    \times 4/5
-                    %! TUPLET_RHYTHM_MAKER
-                    {
-                        \time 1/2
-                        %! TUPLET_RHYTHM_MAKER
-                        c'4.
-                        %! TUPLET_RHYTHM_MAKER
-                        c'4
-                    %! TUPLET_RHYTHM_MAKER
-                    }
-                    %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
-                    \times 3/5
-                    %! TUPLET_RHYTHM_MAKER
-                    {
-                        \time 3/8
-                        %! TUPLET_RHYTHM_MAKER
-                        c'4.
-                        %! TUPLET_RHYTHM_MAKER
-                        c'4
-                    %! TUPLET_RHYTHM_MAKER
-                    }
-                    %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
-                    \times 1/1
-                    %! TUPLET_RHYTHM_MAKER
-                    {
-                        \time 5/16
-                        %! TUPLET_RHYTHM_MAKER
-                        c'8.
-                        %! TUPLET_RHYTHM_MAKER
-                        [
-                        %! TUPLET_RHYTHM_MAKER
-                        c'8
-                        %! TUPLET_RHYTHM_MAKER
-                        ]
-                    %! TUPLET_RHYTHM_MAKER
-                    }
-                    %! TUPLET_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
-                    \times 1/1
-                    %! TUPLET_RHYTHM_MAKER
-                    {
-                        \time 5/16
-                        %! TUPLET_RHYTHM_MAKER
-                        c'8.
-                        %! TUPLET_RHYTHM_MAKER
-                        [
-                        %! TUPLET_RHYTHM_MAKER
-                        c'8
-                        %! TUPLET_RHYTHM_MAKER
-                        ]
-                    %! TUPLET_RHYTHM_MAKER
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes tuplets with ``3:2`` ratios:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(3, 2)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 1/2
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1, -1), (3, 1)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 1/2
-                        c'4
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'4.
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        \time 5/16
-                        c'8.
-                        r8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4
-                    {
-                        \time 5/16
-                        c'8.
-                        [
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Makes length-1 tuplets:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
-        ...         divisions, [(1,)]
-        ...     )
-        ...     container = abjad.Container(nested_music)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(1, 5), (1, 4), (1, 6), (7, 9)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 4/5
-                    {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 1/5
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 1/4
-                        c'4
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 2/3
-                    {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 1/6
-                        c'4
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 8/9
-                    {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 7/9
-                        c'2..
-                    }
-                }
-            >>
-
     """
 
     # TODO: is 'denominator' unused?
@@ -9362,7 +7123,7 @@ def even_division_function(
 
 def example(selection, time_signatures=None, *, includes=None):
     """
-    Makes example LilyPond file.
+    Makes example LilyPond file for documentation examples.
     """
     lilypond_file = abjad.illustrators.selection(
         selection,
@@ -14667,8 +12428,2248 @@ def tuplet_function(
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ) -> TupletRhythmMaker:
-    """
-    Makes tuplets in ``divisions``.
+    r"""
+    Makes one tuplet for each division in ``divisions``.
+
+    ..  container:: example
+
+        Makes tuplets with ``3:2`` ratios:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(3, 2)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 1/2
+                        c'4.
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4.
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 5/16
+                        c'8.
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 5/16
+                        c'8.
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, -1), (3, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 1/2
+                        c'4
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4
+                    {
+                        \time 3/8
+                        c'4.
+                        c'8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/16
+                        c'8.
+                        r8.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/4
+                    {
+                        \time 5/16
+                        c'8.
+                        [
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Beams each division:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 1, 1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/8
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'16.
+                        [
+                        c'16.
+                        c'16.
+                        c'16.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 6/8
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Beams each division:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 1, 1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/8
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'16.
+                        [
+                        c'16.
+                        c'16.
+                        c'16.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 6/8
+                        c'8.
+                        [
+                        c'8.
+                        c'8.
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Beams tuplets together:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 1, 2, 1, 1), (3, 1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     rmakers.beam_groups_function(tuplets)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/9
+                    {
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        \time 5/8
+                        c'8.
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8.
+                        ]
+                        c'4.
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8.
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4.
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 1
+                        c'8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 1
+                        \time 6/8
+                        c'8
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8
+                        ]
+                        c'4
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8
+                        ]
+                    }
+                    \times 4/5
+                    {
+                        \time 4/8
+                        c'4.
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        c'8
+                        [
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 0
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Beams nothing:
+
+        >>> rhythm_maker = rmakers.tuplet([(1, 1, 2, 1, 1), (3, 1, 1)])
+        >>> divisions = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> music = rhythm_maker(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/9
+                    {
+                        \time 5/8
+                        c'8.
+                        c'8.
+                        c'4.
+                        c'8.
+                        c'8.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4.
+                        c'8
+                        c'8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 6/8
+                        c'8
+                        c'8
+                        c'4
+                        c'8
+                        c'8
+                    }
+                    \times 4/5
+                    {
+                        \time 4/8
+                        c'4.
+                        c'8
+                        c'8
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Ties nothing:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(2, 3), (1, -2, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 1/2
+                        c'4
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'16.
+                        r8.
+                        c'16.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 5/16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Ties across all divisions:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(2, 3), (1, -2, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 1/2
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'16.
+                        r8.
+                        c'16.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 5/16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Ties across every other division:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(2, 3), (1, -2, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     tuplets = abjad.select.get(tuplets, [0], 2)
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 1/2
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'16.
+                        r8.
+                        c'16.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 5/16
+                        c'8
+                        [
+                        c'8.
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/16
+                        c'16.
+                        r8.
+                        c'16.
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes diminished tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(2, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.force_diminution_function(container)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 8), (2, 8), (4, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'4
+                        c'8
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'4
+                        c'8
+                    }
+                    \times 2/3
+                    {
+                        \time 4/8
+                        c'2
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes augmented tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(2, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.force_augmentation_function(container)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 8), (2, 8), (4, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'16
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 4/8
+                        c'4
+                        c'8
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes diminished tuplets and does not rewrite dots:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.force_diminution_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 8), (3, 8), (7, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 7/16
+                        c'8..
+                        [
+                        c'8..
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes diminished tuplets and rewrites dots:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.force_diminution_function(container)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 8), (3, 8), (7, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4
+                    {
+                        \time 3/8
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 7/8
+                    {
+                        \time 7/16
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes augmented tuplets and does not rewrite dots:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.force_augmentation_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 8), (3, 8), (7, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 7/16
+                        c'8..
+                        [
+                        c'8..
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes augmented tuplets and rewrites dots:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.force_augmentation_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 8), (3, 8), (7, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 7/4
+                    {
+                        \time 7/16
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Leaves trivializable tuplets as-is when ``trivialize`` is false:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4.
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2
+                    {
+                        \time 3/8
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        r4
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Rewrites trivializable tuplets when ``trivialize`` is true. Measures 2 and 4
+        contain trivial tuplets with 1:1 ratios. To remove these trivial tuplets, set
+        ``extract_trivial`` as shown in the next example:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.trivialize_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4.
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        r4
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                }
+            >>
+
+        REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when both are
+        true. Measures 2 and 4 are first rewritten as trivial but then supplied again
+        with nontrivial prolation when removing dots. The result is that measures 2 and 4
+        carry nontrivial prolation with no dots:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.trivialize_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (3, 8), (3, 8), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4.
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2
+                    {
+                        \time 3/8
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        r4
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/2
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Leaves trivial tuplets as-is when ``extract_trivial`` is false:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(2, 3), (1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Extracts trivial tuplets when ``extract_trivial`` is true. Measures 2 and 4 in
+        the example below now contain only a flat list of notes:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(2, 3), (1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie_function(leaves)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \time 2/8
+                    c'8
+                    [
+                    c'8
+                    ]
+                    ~
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4
+                        c'4.
+                        ~
+                    }
+                    \time 2/8
+                    c'8
+                    [
+                    c'8
+                    ]
+                }
+            >>
+
+        .. note:: Flattening trivial tuplets makes it possible
+            subsequently to rewrite the meter of the untupletted notes.
+
+    ..  container:: example
+
+        REGRESSION: Very long ties are preserved when ``extract_trivial`` is true:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(2, 3), (1, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     notes = abjad.select.notes(container)[:-1]
+        ...     rmakers.tie_function(notes)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (2, 8), (3, 8), (2, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4
+                        ~
+                        c'4.
+                        ~
+                    }
+                    \time 2/8
+                    c'8
+                    [
+                    ~
+                    c'8
+                    ]
+                    ~
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4
+                        ~
+                        c'4.
+                        ~
+                    }
+                    \time 2/8
+                    c'8
+                    [
+                    ~
+                    c'8
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        No rest commands:
+
+        >>> rhythm_maker = rmakers.tuplet([(4, 1)])
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> music = rhythm_maker(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 3/8
+                        c'4.
+                        c'16.
+                    }
+                    \times 4/5
+                    {
+                        \time 4/8
+                        c'2
+                        c'8
+                    }
+                    \times 4/5
+                    {
+                        \time 3/8
+                        c'4.
+                        c'16.
+                    }
+                    \times 4/5
+                    {
+                        \time 4/8
+                        c'2
+                        c'8
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Masks every other output division:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(4, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     tuplets = abjad.select.get(tuplets, [1], 2)
+        ...     rmakers.force_rest_function(tuplets)
+        ...     rmakers.rewrite_rest_filled_function(container)
+        ...     rmakers.extract_trivial_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 3/8
+                        c'4.
+                        c'16.
+                    }
+                    \time 4/8
+                    r2
+                    \times 4/5
+                    {
+                        \time 3/8
+                        c'4.
+                        c'16.
+                    }
+                    \time 4/8
+                    r2
+                }
+            >>
+
+
+    ..  container:: example
+
+        Tuplet numerators and denominators are reduced to numbers that are relatively
+        prime when ``denominator`` is set to none. This means that ratios like
+        ``6:4`` and ``10:8`` do not arise:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 4)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 2/16
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 4/5
+                    {
+                        \time 4/16
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5
+                    {
+                        \time 6/16
+                        c'16
+                        c'4
+                    }
+                    \times 4/5
+                    {
+                        \time 8/16
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        The preferred denominator of each tuplet is set in terms of a unit duration
+        when ``denominator`` is set to a duration. The setting does not affect the
+        first tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 4)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.denominator_function(container, (1, 16))
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 2/16
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 4/5
+                    {
+                        \time 4/16
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5
+                    {
+                        \time 6/16
+                        c'16
+                        c'4
+                    }
+                    \times 8/10
+                    {
+                        \time 8/16
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Sets the preferred denominator of each tuplet in terms 32nd notes. The
+        setting affects all tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 4)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.denominator_function(container, (1, 32))
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 2/16
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 8/10
+                    {
+                        \time 4/16
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 12/10
+                    {
+                        \time 6/16
+                        c'16
+                        c'4
+                    }
+                    \times 16/20
+                    {
+                        \time 8/16
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Sets the preferred denominator each tuplet in terms 64th notes. The setting
+        affects all tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 4)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.denominator_function(container, (1, 64))
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 8/10
+                    {
+                        \time 2/16
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 16/20
+                    {
+                        \time 4/16
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 24/20
+                    {
+                        \time 6/16
+                        c'16
+                        c'4
+                    }
+                    \times 32/40
+                    {
+                        \time 8/16
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        The preferred denominator of each tuplet is set directly when ``denominator``
+        is set to a positive integer. This example sets the preferred denominator of
+        each tuplet to ``8``. Setting does not affect the third tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 4)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.denominator_function(container, 8)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 8/10
+                    {
+                        \time 2/16
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 8/10
+                    {
+                        \time 4/16
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5
+                    {
+                        \time 6/16
+                        c'16
+                        c'4
+                    }
+                    \times 8/10
+                    {
+                        \time 8/16
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Sets the preferred denominator of each tuplet to ``12``. Setting affects all
+        tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 4)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.denominator_function(container, 12)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 12/15
+                    {
+                        \time 2/16
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 12/15
+                    {
+                        \time 4/16
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 12/10
+                    {
+                        \time 6/16
+                        c'16
+                        c'4
+                    }
+                    \times 12/15
+                    {
+                        \time 8/16
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Sets the preferred denominator of each tuplet to ``13``. Setting does not
+        affect any tuplet:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, 4)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.denominator_function(container, 13)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 2/16
+                        c'32
+                        [
+                        c'8
+                        ]
+                    }
+                    \times 4/5
+                    {
+                        \time 4/16
+                        c'16
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5
+                    {
+                        \time 6/16
+                        c'16
+                        c'4
+                    }
+                    \times 4/5
+                    {
+                        \time 8/16
+                        c'8
+                        c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        >>> def make_rhythm(divisions):
+        ...     tag = abjad.Tag("TUPLET_RHYTHM_MAKER")
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(3, 2)], tag=tag
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container, tag=tag)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score, tags=True)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    %! TUPLET_RHYTHM_MAKER
+                    \times 4/5
+                    %! TUPLET_RHYTHM_MAKER
+                    {
+                        \time 1/2
+                        %! TUPLET_RHYTHM_MAKER
+                        c'4.
+                        %! TUPLET_RHYTHM_MAKER
+                        c'4
+                    %! TUPLET_RHYTHM_MAKER
+                    }
+                    %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text
+                    %! TUPLET_RHYTHM_MAKER
+                    \times 3/5
+                    %! TUPLET_RHYTHM_MAKER
+                    {
+                        \time 3/8
+                        %! TUPLET_RHYTHM_MAKER
+                        c'4.
+                        %! TUPLET_RHYTHM_MAKER
+                        c'4
+                    %! TUPLET_RHYTHM_MAKER
+                    }
+                    %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text
+                    %! TUPLET_RHYTHM_MAKER
+                    \times 1/1
+                    %! TUPLET_RHYTHM_MAKER
+                    {
+                        \time 5/16
+                        %! TUPLET_RHYTHM_MAKER
+                        c'8.
+                        %! TUPLET_RHYTHM_MAKER
+                        [
+                        %! TUPLET_RHYTHM_MAKER
+                        c'8
+                        %! TUPLET_RHYTHM_MAKER
+                        ]
+                    %! TUPLET_RHYTHM_MAKER
+                    }
+                    %! TUPLET_RHYTHM_MAKER
+                    \tweak text #tuplet-number::calc-fraction-text
+                    %! TUPLET_RHYTHM_MAKER
+                    \times 1/1
+                    %! TUPLET_RHYTHM_MAKER
+                    {
+                        \time 5/16
+                        %! TUPLET_RHYTHM_MAKER
+                        c'8.
+                        %! TUPLET_RHYTHM_MAKER
+                        [
+                        %! TUPLET_RHYTHM_MAKER
+                        c'8
+                        %! TUPLET_RHYTHM_MAKER
+                        ]
+                    %! TUPLET_RHYTHM_MAKER
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes tuplets with ``3:2`` ratios:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(3, 2)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 4/5
+                    {
+                        \time 1/2
+                        c'4.
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/8
+                        c'4.
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 5/16
+                        c'8.
+                        [
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 5/16
+                        c'8.
+                        [
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1, -1), (3, 1)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     rmakers.beam_function(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 2), (3, 8), (5, 16), (5, 16)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 1/2
+                        c'4
+                        r4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/4
+                    {
+                        \time 3/8
+                        c'4.
+                        c'8
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/16
+                        c'8.
+                        r8.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/4
+                    {
+                        \time 5/16
+                        c'8.
+                        [
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        Makes length-1 tuplets:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.tuplet_function(
+        ...         divisions, [(1,)]
+        ...     )
+        ...     container = abjad.Container(nested_music)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(1, 5), (1, 4), (1, 6), (7, 9)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 4/5
+                    {
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/5
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 1/4
+                        c'4
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 2/3
+                    {
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/6
+                        c'4
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 8/9
+                    {
+                        #(ly:expect-warning "strange time signature found")
+                        \time 7/9
+                        c'2..
+                    }
+                }
+            >>
+
     """
     tuplet_ratios_ = [abjad.Ratio(_) for _ in tuplet_ratios]
     return _make_tuplet_rhythm_maker_music(
@@ -14681,6 +14682,12 @@ def tuplet_function(
 
 
 def wrap_in_time_signature_staff(music, divisions):
+    """
+    Makes staff with two voices: one voice for ``music`` and another voice
+    with time signatures (equal to divisions).
+
+    See ``rmakers.rewrite_meter()`` for examples of this function.
+    """
     music = abjad.sequence.flatten(music, depth=-1)
     assert all(isinstance(_, abjad.Component) for _ in music), repr(music)
     assert isinstance(music, list), repr(music)
@@ -14951,94 +14958,6 @@ class ForceFractionCommand(Command):
 class ForceNoteCommand(Command):
     r"""
     DEPRECATED; use ``rmakers.force_notes_function()`` instead.
-
-    ..  container:: example
-
-        Changes logical ties 1 and 2 to notes:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
-        ...     container = abjad.Container(nested_music)
-        ...     leaves = abjad.select.leaves(container)
-        ...     rmakers.force_rest_function(leaves)
-        ...     logical_ties = abjad.select.logical_ties(container)[1:3]
-        ...     rmakers.force_note_function(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 7/16
-                    r4..
-                    \time 3/8
-                    c'4.
-                    \time 7/16
-                    c'4..
-                    \time 3/8
-                    r4.
-                }
-            >>
-
-    ..  container:: example
-
-        Changes patterned selection of leaves to notes. Works inverted composite pattern:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
-        ...     container = abjad.Container(nested_music)
-        ...     leaves = abjad.select.leaves(container)
-        ...     rmakers.force_rest_function(leaves)
-        ...     logical_ties = abjad.select.logical_ties(container)
-        ...     leaves = abjad.select.get(logical_ties, [0, -1])
-        ...     rmakers.force_note_function(leaves)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 7/16
-                    c'4..
-                    \time 3/8
-                    r4.
-                    \time 7/16
-                    r4..
-                    \time 3/8
-                    c'4.
-                }
-            >>
-
     """
 
     def __call__(self, voice, *, tag: abjad.Tag = abjad.Tag()):
@@ -15068,130 +14987,6 @@ class ForceRepeatTieCommand(Command):
 class ForceRestCommand(Command):
     r"""
     DEPRECATED; use ``rmakers.force_rest_function()`` instead.
-
-    ..  container:: example
-
-        Changes logical ties 1 and 2 to rests:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
-        ...     container = abjad.Container(nested_music)
-        ...     logical_ties = abjad.select.logical_ties(container)[1:3]
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 7/16
-                    c'4..
-                    \time 3/8
-                    r4.
-                    \time 7/16
-                    r4..
-                    \time 3/8
-                    c'4.
-                }
-            >>
-
-    ..  container:: example
-
-        Changes logical ties -1 and -2 to rests:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
-        ...     container = abjad.Container(nested_music)
-        ...     logical_ties = abjad.select.logical_ties(container)[-2:]
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 7/16
-                    c'4..
-                    \time 3/8
-                    c'4.
-                    \time 7/16
-                    r4..
-                    \time 3/8
-                    r4.
-                }
-            >>
-
-    ..  container:: example
-
-        Changes patterned selection of logical ties to rests:
-
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
-        ...     container = abjad.Container(nested_music)
-        ...     logical_ties = abjad.select.logical_ties(container)[1:-1]
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 7/16
-                    c'4..
-                    \time 3/8
-                    r4.
-                    \time 7/16
-                    r4..
-                    \time 3/8
-                    c'4.
-                }
-            >>
-
     """
 
     def __call__(
@@ -15355,46 +15150,6 @@ class RewriteMeterCommand(Command):
         )
 
 
-def _make_beamable_groups(components, durations):
-    music_duration = abjad.get.duration(components)
-    if music_duration != sum(durations):
-        message = f"music duration {music_duration} does not equal"
-        message += f" total duration {sum(durations)}:\n"
-        message += f"   {components}\n"
-        message += f"   {durations}"
-        raise Exception(message)
-    component_to_timespan = []
-    start_offset = abjad.Offset(0)
-    for component in components:
-        duration = abjad.get.duration(component)
-        stop_offset = start_offset + duration
-        timespan = abjad.Timespan(start_offset, stop_offset)
-        pair = (component, timespan)
-        component_to_timespan.append(pair)
-        start_offset = stop_offset
-    group_to_target_duration = []
-    start_offset = abjad.Offset(0)
-    for target_duration in durations:
-        stop_offset = start_offset + target_duration
-        group_timespan = abjad.Timespan(start_offset, stop_offset)
-        start_offset = stop_offset
-        group = []
-        for component, component_timespan in component_to_timespan:
-            if component_timespan.happens_during_timespan(group_timespan):
-                group.append(component)
-        pair = ([group], target_duration)
-        group_to_target_duration.append(pair)
-    beamable_groups = []
-    for group, target_duration in group_to_target_duration:
-        group_duration = abjad.get.duration(group)
-        assert group_duration <= target_duration
-        if group_duration == target_duration:
-            beamable_groups.append(group)
-        else:
-            beamable_groups.append([])
-    return beamable_groups
-
-
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class RewriteRestFilledCommand(Command):
     """
@@ -15547,6 +15302,46 @@ def _do_grace_container_command(
         abjad.attach(container, leaf)
 
 
+def _make_beamable_groups(components, durations):
+    music_duration = abjad.get.duration(components)
+    if music_duration != sum(durations):
+        message = f"music duration {music_duration} does not equal"
+        message += f" total duration {sum(durations)}:\n"
+        message += f"   {components}\n"
+        message += f"   {durations}"
+        raise Exception(message)
+    component_to_timespan = []
+    start_offset = abjad.Offset(0)
+    for component in components:
+        duration = abjad.get.duration(component)
+        stop_offset = start_offset + duration
+        timespan = abjad.Timespan(start_offset, stop_offset)
+        pair = (component, timespan)
+        component_to_timespan.append(pair)
+        start_offset = stop_offset
+    group_to_target_duration = []
+    start_offset = abjad.Offset(0)
+    for target_duration in durations:
+        stop_offset = start_offset + target_duration
+        group_timespan = abjad.Timespan(start_offset, stop_offset)
+        start_offset = stop_offset
+        group = []
+        for component, component_timespan in component_to_timespan:
+            if component_timespan.happens_during_timespan(group_timespan):
+                group.append(component)
+        pair = ([group], target_duration)
+        group_to_target_duration.append(pair)
+    beamable_groups = []
+    for group, target_duration in group_to_target_duration:
+        group_duration = abjad.get.duration(group)
+        assert group_duration <= target_duration
+        if group_duration == target_duration:
+            beamable_groups.append(group)
+        else:
+            beamable_groups.append([])
+    return beamable_groups
+
+
 def nongrace_leaves_in_each_tuplet(level: int = -1):
     """
     Makes nongrace leaves in each tuplet selector.
@@ -15570,8 +15365,27 @@ def after_grace_container(
     beam_and_slash: bool = False,
     talea: Talea = Talea([1], 8),
 ) -> GraceContainerCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.after_grace_container_function()`` instead.
+    """
+    return GraceContainerCommand(
+        selector=selector,
+        counts=counts,
+        beam_and_slash=beam_and_slash,
+        class_=abjad.AfterGraceContainer,
+        talea=talea,
+    )
+
+
+def after_grace_container_function(
+    argument,
+    counts: typing.Sequence[int],
+    *,
+    beam_and_slash: bool = False,
+    talea: Talea = Talea([1], 8),
+):
+    r"""
+    Makes after-grace containers.
 
     ..  container:: example
 
@@ -15733,22 +15547,6 @@ def after_grace_container(
             >>
 
     """
-    return GraceContainerCommand(
-        selector=selector,
-        counts=counts,
-        beam_and_slash=beam_and_slash,
-        class_=abjad.AfterGraceContainer,
-        talea=talea,
-    )
-
-
-def after_grace_container_function(
-    argument,
-    counts: typing.Sequence[int],
-    *,
-    beam_and_slash: bool = False,
-    talea: Talea = Talea([1], 8),
-):
     _do_grace_container_command(
         argument,
         counts=counts,
@@ -15785,7 +15583,7 @@ def beam_function(
     tag: abjad.Tag = abjad.Tag("rmakers.beam()"),
 ) -> None:
     """
-    Beams ``argument``.
+    Calls ``abjad.beam()`` on leaves in ``argument``.
     """
     for selection in argument:
         unbeam_function(selection)
@@ -15859,8 +15657,21 @@ def before_grace_container(
     *,
     talea: Talea = Talea([1], 8),
 ) -> GraceContainerCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.before_grace_container_function()`` instead.
+    """
+    return GraceContainerCommand(selector=selector, counts=counts, talea=talea)
+
+
+def before_grace_container_function(
+    argument,
+    counts: typing.Sequence[int],
+    *,
+    beam_and_slash: bool = False,
+    talea: Talea = Talea([1], 8),
+):
+    r"""
+    Makes before-grace containers.
 
     ..  container:: example
 
@@ -15986,16 +15797,6 @@ def before_grace_container(
             >>
 
     """
-    return GraceContainerCommand(selector=selector, counts=counts, talea=talea)
-
-
-def before_grace_container_function(
-    argument,
-    counts: typing.Sequence[int],
-    *,
-    beam_and_slash: bool = False,
-    talea: Talea = Talea([1], 8),
-):
     _do_grace_container_command(
         argument,
         counts=counts,
@@ -16016,8 +15817,17 @@ def denominator(
     denominator: int | abjad.typings.Duration,
     selector: typing.Callable | None = lambda _: abjad.select.tuplets(_),
 ) -> DenominatorCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.denominator_function()`` instead.
+    """
+    if isinstance(denominator, tuple):
+        denominator = abjad.Duration(denominator)
+    return DenominatorCommand(selector=selector, denominator=denominator)
+
+
+def denominator_function(argument, denominator: int | abjad.typings.Duration) -> None:
+    r"""
+    Sets denominator of every tuplet in ``argument`` to ``denominator``.
 
     ..  container:: example
 
@@ -16502,15 +16312,6 @@ def denominator(
     """
     if isinstance(denominator, tuple):
         denominator = abjad.Duration(denominator)
-    return DenominatorCommand(selector=selector, denominator=denominator)
-
-
-def denominator_function(argument, denominator: int | abjad.typings.Duration) -> None:
-    r"""
-    Sets denominator of every tuplet in ``argument`` to ``denominator``.
-    """
-    if isinstance(denominator, tuple):
-        denominator = abjad.Duration(denominator)
     for tuplet in abjad.select.tuplets(argument):
         if isinstance(denominator, abjad.Duration):
             unit_duration = denominator
@@ -16549,8 +16350,15 @@ def duration_bracket_function(argument) -> None:
 def extract_trivial(
     selector: typing.Callable | None = None,
 ) -> ExtractTrivialCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.extract_trivial_function()`` instead.
+    """
+    return ExtractTrivialCommand(selector=selector)
+
+
+def extract_trivial_function(argument) -> None:
+    r"""
+    Extracts trivial tuplets from ``argument``.
 
     ..  container:: example
 
@@ -16619,13 +16427,6 @@ def extract_trivial(
             >>
 
     """
-    return ExtractTrivialCommand(selector=selector)
-
-
-def extract_trivial_function(argument) -> None:
-    """
-    Extracts trivial tuplets in ``argument``.
-    """
     tuplets = abjad.select.tuplets(argument)
     for tuplet in tuplets:
         if tuplet.trivial():
@@ -16653,6 +16454,9 @@ def feather_beam_function(
     stemlet_length: int | float | None = None,
     tag: abjad.Tag = abjad.Tag(),
 ) -> None:
+    """
+    Feather-beams leaves in ``argument``.
+    """
     for selection in argument:
         unbeam_function(selection)
         leaves = abjad.select.leaves(selection)
@@ -16673,8 +16477,15 @@ def feather_beam_function(
 def force_augmentation(
     selector: typing.Callable | None = None,
 ) -> ForceAugmentationCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.force_augmentation_function()`` instead.
+    """
+    return ForceAugmentationCommand(selector=selector)
+
+
+def force_augmentation_function(argument) -> None:
+    r"""
+    Forces each tuplet in ``argument`` to notate as an augmentation.
 
     ..  container:: example
 
@@ -16806,13 +16617,6 @@ def force_augmentation(
             >>
 
     """
-    return ForceAugmentationCommand(selector=selector)
-
-
-def force_augmentation_function(argument) -> None:
-    """
-    Forces each tuplet in ``argument`` to notate as an augmentation.
-    """
     for tuplet in abjad.select.tuplets(argument):
         if not tuplet.augmentation():
             tuplet.toggle_prolation()
@@ -16863,6 +16667,97 @@ def force_note(
 
 
 def force_note_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+    r"""
+    Replaces leaves in ``argument`` with notes.
+
+    ..  container:: example
+
+        Changes logical ties 1 and 2 to notes:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.note_function(divisions)
+        ...     container = abjad.Container(nested_music)
+        ...     leaves = abjad.select.leaves(container)
+        ...     rmakers.force_rest_function(leaves)
+        ...     logical_ties = abjad.select.logical_ties(container)[1:3]
+        ...     rmakers.force_note_function(logical_ties)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
+                    r4..
+                    \time 3/8
+                    c'4.
+                    \time 7/16
+                    c'4..
+                    \time 3/8
+                    r4.
+                }
+            >>
+
+    ..  container:: example
+
+        Changes patterned selection of leaves to notes. Works inverted composite pattern:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.note_function(divisions)
+        ...     container = abjad.Container(nested_music)
+        ...     leaves = abjad.select.leaves(container)
+        ...     rmakers.force_rest_function(leaves)
+        ...     logical_ties = abjad.select.logical_ties(container)
+        ...     leaves = abjad.select.get(logical_ties, [0, -1])
+        ...     rmakers.force_note_function(leaves)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
+                    c'4..
+                    \time 3/8
+                    r4.
+                    \time 7/16
+                    r4..
+                    \time 3/8
+                    c'4.
+                }
+            >>
+
+    """
     leaves = abjad.select.leaves(argument)
     for leaf in leaves:
         if isinstance(leaf, abjad.Note):
@@ -16889,6 +16784,9 @@ def force_repeat_tie_function(
     tag: abjad.Tag = None,
     threshold: bool | tuple[int, int] | typing.Callable = True,
 ) -> None:
+    """
+    Changes all ties in argument to repeat-ties.
+    """
     assert isinstance(argument, abjad.Container), argument
     if callable(threshold):
         inequality = threshold
@@ -16936,8 +16834,132 @@ def force_rest(selector: typing.Callable | None) -> ForceRestCommand:
 
 
 def force_rest_function(argument, *, tag=None) -> None:
-    """
-    Forces rests in ``argument``.
+    r"""
+    Replaces leaves in ``argument`` with rests.
+
+    ..  container:: example
+
+        Changes logical ties 1 and 2 to rests:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.note_function(divisions)
+        ...     container = abjad.Container(nested_music)
+        ...     logical_ties = abjad.select.logical_ties(container)[1:3]
+        ...     rmakers.force_rest_function(logical_ties)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
+                    c'4..
+                    \time 3/8
+                    r4.
+                    \time 7/16
+                    r4..
+                    \time 3/8
+                    c'4.
+                }
+            >>
+
+    ..  container:: example
+
+        Changes logical ties -1 and -2 to rests:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.note_function(divisions)
+        ...     container = abjad.Container(nested_music)
+        ...     logical_ties = abjad.select.logical_ties(container)[-2:]
+        ...     rmakers.force_rest_function(logical_ties)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
+                    c'4..
+                    \time 3/8
+                    c'4.
+                    \time 7/16
+                    r4..
+                    \time 3/8
+                    r4.
+                }
+            >>
+
+    ..  container:: example
+
+        Changes patterned selection of logical ties to rests:
+
+        >>> def make_rhythm(divisions):
+        ...     nested_music = rmakers.note_function(divisions)
+        ...     container = abjad.Container(nested_music)
+        ...     logical_ties = abjad.select.logical_ties(container)[1:-1]
+        ...     rmakers.force_rest_function(logical_ties)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> divisions = [(7, 16), (3, 8), (7, 16), (3, 8)]
+        >>> music = make_rhythm(divisions)
+        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 7/16
+                    c'4..
+                    \time 3/8
+                    r4.
+                    \time 7/16
+                    r4..
+                    \time 3/8
+                    c'4.
+                }
+            >>
+
     """
     leaves = abjad.select.leaves(argument)
     for leaf in leaves:
@@ -16983,8 +17005,31 @@ def on_beat_grace_container(
     talea: Talea = Talea([1], 8),
     voice_name: str = "",
 ) -> OnBeatGraceContainerCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.on_beat_grace_container_function()`` instead.
+    """
+    return OnBeatGraceContainerCommand(
+        selector=selector,
+        counts=counts,
+        leaf_duration=abjad.Duration(leaf_duration),
+        talea=talea,
+        voice_name=voice_name,
+    )
+
+
+def on_beat_grace_container_function(
+    voice: abjad.Voice,
+    voice_name: str,
+    argument,
+    counts: typing.Sequence[int],
+    *,
+    leaf_duration: abjad.typings.Duration = None,
+    # TODO: activate tag
+    tag: abjad.Tag = None,
+    talea: Talea = Talea([1], 8),
+):
+    r"""
+    Makes on-beat grace containers.
 
     ..  container:: example
 
@@ -17382,26 +17427,6 @@ def on_beat_grace_container(
             >>
 
     """
-    return OnBeatGraceContainerCommand(
-        selector=selector,
-        counts=counts,
-        leaf_duration=abjad.Duration(leaf_duration),
-        talea=talea,
-        voice_name=voice_name,
-    )
-
-
-def on_beat_grace_container_function(
-    voice: abjad.Voice,
-    voice_name: str,
-    argument,
-    counts: typing.Sequence[int],
-    *,
-    leaf_duration: abjad.typings.Duration = None,
-    # TODO: activate tag
-    tag: abjad.Tag = None,
-    talea: Talea = Talea([1], 8),
-):
     assert isinstance(voice, abjad.Voice), repr(voice)
     assert isinstance(voice_name, str), repr(voice_name)
     assert isinstance(talea, Talea), repr(talea)
@@ -17431,6 +17456,13 @@ def on_beat_grace_container_function(
 def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
     r"""
     DEPRECATED; use ``rmakers.repeat_tie_function()`` instead.
+    """
+    return RepeatTieCommand(selector=selector)
+
+
+def repeat_tie_function(argument, *, tag=None) -> None:
+    r"""
+    Attaches repeat-tie to each leaf in ``argument``.
 
     ..  container:: example
 
@@ -17623,10 +17655,6 @@ def repeat_tie(selector: typing.Callable | None = None) -> RepeatTieCommand:
             >>
 
     """
-    return RepeatTieCommand(selector=selector)
-
-
-def repeat_tie_function(argument, *, tag=None) -> None:
     for note in abjad.select.notes(argument):
         tie = abjad.RepeatTie()
         abjad.attach(tie, note, tag=tag)
@@ -17682,6 +17710,12 @@ def rewrite_meter_function(
     reference_meters: typing.Sequence[abjad.Meter] = (),
     tag=None,
 ) -> None:
+    """
+    Rewrites meter of material in ``voice``.
+
+    Use ``rmakers.wrap_in_time_signature_staff()`` to make sure ``voice``
+    appears together with time signature information in a staff.
+    """
     assert isinstance(voice, abjad.Container), repr(voice)
     tag = tag or abjad.Tag()
     tag = tag.append(abjad.Tag("rmakers.RewriteMeterCommand.__call__"))
@@ -17737,8 +17771,15 @@ def rewrite_meter_function(
 def rewrite_rest_filled(
     selector: typing.Callable | None = None, spelling: Spelling = Spelling()
 ) -> RewriteRestFilledCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.rewrite_rest_filled_function()`` instead.
+    """
+    return RewriteRestFilledCommand(selector=selector, spelling=spelling)
+
+
+def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
+    r"""
+    Rewrites rest-filled tuplets in ``argument``.
 
     ..  container:: example
 
@@ -17907,13 +17948,6 @@ def rewrite_rest_filled(
             >>
 
     """
-    return RewriteRestFilledCommand(selector=selector, spelling=spelling)
-
-
-def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
-    """
-    Rewrites rest-filled tuplets in ``argument``.
-    """
     if spelling is not None:
         increase_monotonic = spelling.increase_monotonic
         forbidden_note_duration = spelling.forbidden_note_duration
@@ -17941,8 +17975,15 @@ def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
 def rewrite_sustained(
     selector: typing.Callable | None = lambda _: abjad.select.tuplets(_),
 ) -> RewriteSustainedCommand:
-    r"""
+    """
     DEPRECATED; use ``rmakers.rewrite_sustained_function()`` instead.
+    """
+    return RewriteSustainedCommand(selector=selector)
+
+
+def rewrite_sustained_function(argument, *, tag=None) -> None:
+    r"""
+    Rewrites sustained tuplets in ``argument``.
 
     ..  container:: example
 
@@ -18215,13 +18256,6 @@ def rewrite_sustained(
                 }
             >>
 
-    """
-    return RewriteSustainedCommand(selector=selector)
-
-
-def rewrite_sustained_function(argument, *, tag=None) -> None:
-    """
-    Rewrite sustained tuplets in ``argument``.
     """
     for tuplet in abjad.select.tuplets(argument):
         if not abjad.get.sustained(tuplet):
