@@ -1047,7 +1047,7 @@ def _validate_tuplets(selections):
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Incise:
     """
-    See ``rmakers.incised_function()`` for examples.
+    See ``rmakers.incised()`` for examples.
     """
 
     body_ratio: abjad.typings.Ratio = abjad.Ratio([1])
@@ -1112,7 +1112,7 @@ class Incise:
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Interpolation:
     """
-    See ``rmakers.accelerando_function()`` for examples.
+    See ``rmakers.accelerando()`` for examples.
     """
 
     start_duration: abjad.Duration = abjad.Duration(1, 8)
@@ -1176,15 +1176,15 @@ class Spelling:
         Decreases monotically:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions,
         ...         [5],
         ...         16,
         ...         spelling=rmakers.Spelling(increase_monotonic=False),
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -1231,15 +1231,15 @@ class Spelling:
         Increases monotically:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions,
         ...         [5],
         ...         16,
         ...         spelling=rmakers.Spelling(increase_monotonic=True),
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -1286,15 +1286,15 @@ class Spelling:
         Forbids note durations equal to ``1/4`` or greater:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions,
         ...         [1, 1, 1, 1, 4, -4],
         ...         16,
         ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 4)),
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -1346,15 +1346,15 @@ class Spelling:
         Forbids rest durations equal to ``1/4`` or greater:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions,
         ...         [1, 1, 1, 1, 4, -4],
         ...         16,
         ...         spelling=rmakers.Spelling(forbidden_rest_duration=abjad.Duration(1, 4)),
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -1807,7 +1807,7 @@ class Talea:
 # FUNCTIONS
 
 
-def accelerando_function(
+def accelerando(
     divisions,
     *interpolations: typing.Sequence[abjad.typings.Duration],
     previous_state: dict = None,
@@ -1823,12 +1823,12 @@ def accelerando_function(
         Makes accelerandi:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.feather_beam_function(container)
-        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.feather_beam(container)
+        ...     rmakers.duration_bracket(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -2056,12 +2056,12 @@ def accelerando_function(
         Makes ritardandi:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 20), (1, 8), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.feather_beam_function(container)
-        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.feather_beam(container)
+        ...     rmakers.duration_bracket(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -2293,11 +2293,11 @@ def accelerando_function(
         Sets duration bracket with no beams:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.duration_bracket(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -2514,13 +2514,13 @@ def accelerando_function(
         Beams tuplets together without feathering:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.beam_groups_function(tuplets)
-        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.beam_groups(tuplets)
+        ...     rmakers.duration_bracket(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -2784,16 +2784,16 @@ def accelerando_function(
         Ties across tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.duration_bracket(container)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.feather_beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.feather_beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -3024,17 +3024,17 @@ def accelerando_function(
         Ties across every other tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.duration_bracket(container)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     tuplets = abjad.select.get(tuplets, [0], 2)
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.feather_beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.feather_beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -3264,17 +3264,17 @@ def accelerando_function(
         Forces rests at first and last leaves:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     leaves = abjad.select.leaves(container)
         ...     leaves = abjad.select.get(leaves, [0, -1])
-        ...     rmakers.force_rest_function(leaves)
-        ...     rmakers.feather_beam_function(
+        ...     rmakers.force_rest(leaves)
+        ...     rmakers.feather_beam(
         ...         container, beam_rests=True, stemlet_length=0.75
         ...     )
-        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.duration_bracket(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -3512,17 +3512,17 @@ def accelerando_function(
         Forces rests in every other tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)],
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     tuplets = abjad.select.get(tuplets, [1], 2)
-        ...     rmakers.force_rest_function(tuplets)
-        ...     rmakers.rewrite_rest_filled_function(container)
-        ...     rmakers.extract_trivial_function(container)
-        ...     rmakers.duration_bracket_function(container)
-        ...     rmakers.feather_beam_function(container)
+        ...     rmakers.force_rest(tuplets)
+        ...     rmakers.rewrite_rest_filled(container)
+        ...     rmakers.extract_trivial(container)
+        ...     rmakers.duration_bracket(container)
+        ...     rmakers.feather_beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -3656,12 +3656,12 @@ def accelerando_function(
         Alternates accelerandi and ritardandi:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.duration_bracket_function(container)
-        ...     rmakers.feather_beam_function(container)
+        ...     rmakers.duration_bracket(container)
+        ...     rmakers.feather_beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -3891,13 +3891,13 @@ def accelerando_function(
         Makes a single note in short division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.duration_bracket_function(container)
-        ...     rmakers.feather_beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.duration_bracket(container)
+        ...     rmakers.feather_beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -4035,15 +4035,15 @@ def accelerando_function(
         ...     if previous_state is None:
         ...         previous_state = {}
         ...     state = {}
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions,
         ...         [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)],
         ...         previous_state=previous_state,
         ...         state=state,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.duration_bracket_function(container)
-        ...     rmakers.feather_beam_function(container)
+        ...     rmakers.duration_bracket(container)
+        ...     rmakers.feather_beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music, state
 
@@ -4578,12 +4578,12 @@ def accelerando_function(
 
         >>> def make_rhythm(divisions):
         ...     tag = abjad.Tag("ACCELERANDO_RHYTHM_MAKER")
-        ...     nested_music = rmakers.accelerando_function(
+        ...     nested_music = rmakers.accelerando(
         ...         divisions, [(1, 8), (1, 20), (1, 16)], tag=tag
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.feather_beam_function(container, tag=tag)
-        ...     rmakers.duration_bracket_function(container)
+        ...     rmakers.feather_beam(container, tag=tag)
+        ...     rmakers.duration_bracket(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -4881,7 +4881,7 @@ def accelerando_function(
     return tuplets
 
 
-def after_grace_container_function(
+def after_grace_container(
     argument,
     counts: typing.Sequence[int],
     *,
@@ -4896,14 +4896,14 @@ def after_grace_container_function(
         Single after-graces with slurs applied manually:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [4], extra_counts=[2]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.after_grace_container_function(notes, [1])
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.after_grace_container(notes, [1])
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -4970,16 +4970,16 @@ def after_grace_container_function(
         manually:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [4], extra_counts=[2]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.after_grace_container_function(
+        ...     rmakers.after_grace_container(
         ...         notes, [2, 4], beam_and_slash=True
         ...     )
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5060,7 +5060,7 @@ def after_grace_container_function(
     )
 
 
-def beam_function(
+def beam(
     argument,
     *,
     beam_lone_notes: bool = False,
@@ -5072,7 +5072,7 @@ def beam_function(
     Calls ``abjad.beam()`` on leaves in ``argument``.
     """
     for selection in argument:
-        unbeam_function(selection)
+        unbeam(selection)
         leaves = abjad.select.leaves(selection)
         abjad.beam(
             leaves,
@@ -5083,7 +5083,7 @@ def beam_function(
         )
 
 
-def beam_groups_function(
+def beam_groups(
     argument,
     *,
     beam_lone_notes: bool = False,
@@ -5094,7 +5094,7 @@ def beam_groups_function(
     """
     Beams ``argument`` groups.
     """
-    unbeam_function(argument)
+    unbeam(argument)
     durations = []
     components: list[abjad.Component] = []
     for selection in argument:
@@ -5117,7 +5117,7 @@ def beam_groups_function(
     )
 
 
-def before_grace_container_function(
+def before_grace_container(
     argument,
     counts: typing.Sequence[int],
     *,
@@ -5130,15 +5130,15 @@ def before_grace_container_function(
     ..  container:: example
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [4], extra_counts=[2]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.notes(_) for _ in tuplets]
         ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
-        ...     rmakers.before_grace_container_function(notes, [2, 4])
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.before_grace_container(notes, [2, 4])
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5260,7 +5260,7 @@ def before_grace_container_function(
     )
 
 
-def denominator_function(argument, denominator: int | abjad.typings.Duration) -> None:
+def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
     r"""
     Sets denominator of every tuplet in ``argument`` to ``denominator``.
 
@@ -5271,11 +5271,11 @@ def denominator_function(argument, denominator: int | abjad.typings.Duration) ->
         and ``10:8`` do not arise:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(divisions, [(1, 4)])
+        ...     nested_music = rmakers.tuplet(divisions, [(1, 4)])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5339,12 +5339,12 @@ def denominator_function(argument, denominator: int | abjad.typings.Duration) ->
         tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(divisions, [(1, 4)])
+        ...     nested_music = rmakers.tuplet(divisions, [(1, 4)])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 16))
-        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, (1, 16))
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5407,12 +5407,12 @@ def denominator_function(argument, denominator: int | abjad.typings.Duration) ->
         affects all tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(divisions, [(1, 4)])
+        ...     nested_music = rmakers.tuplet(divisions, [(1, 4)])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 32))
-        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, (1, 32))
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5475,12 +5475,12 @@ def denominator_function(argument, denominator: int | abjad.typings.Duration) ->
         affects all tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(divisions, [(1, 4)])
+        ...     nested_music = rmakers.tuplet(divisions, [(1, 4)])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 64))
-        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, (1, 64))
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5544,12 +5544,12 @@ def denominator_function(argument, denominator: int | abjad.typings.Duration) ->
         tuplet to ``8``. Setting does not affect the third tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(divisions, [(1, 4)])
+        ...     nested_music = rmakers.tuplet(divisions, [(1, 4)])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 8)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, 8)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5612,12 +5612,12 @@ def denominator_function(argument, denominator: int | abjad.typings.Duration) ->
         tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(divisions, [(1, 4)])
+        ...     nested_music = rmakers.tuplet(divisions, [(1, 4)])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 12)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, 12)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5682,12 +5682,12 @@ def denominator_function(argument, denominator: int | abjad.typings.Duration) ->
         any tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(divisions, [(1, 4)])
+        ...     nested_music = rmakers.tuplet(divisions, [(1, 4)])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 13)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, 13)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5761,7 +5761,7 @@ def denominator_function(argument, denominator: int | abjad.typings.Duration) ->
             raise Exception(f"invalid preferred denominator: {denominator!r}.")
 
 
-def duration_bracket_function(argument) -> None:
+def duration_bracket(argument) -> None:
     """
     Applies durtaion bracket to tuplets in ``argument``.
     """
@@ -5773,7 +5773,7 @@ def duration_bracket_function(argument) -> None:
         abjad.override(tuplet).TupletNumber.text = string
 
 
-def even_division_function(
+def even_division(
     divisions,
     denominators: typing.Sequence[int],
     *,
@@ -5792,13 +5792,13 @@ def even_division_function(
         Forces tuplet diminution:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[0, 0, 1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_diminution_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_diminution(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5850,13 +5850,13 @@ def even_division_function(
         Forces tuplet augmentation:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[0, 0, 1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_augmentation(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5913,14 +5913,14 @@ def even_division_function(
         Ties nonlast tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -5997,12 +5997,12 @@ def even_division_function(
         Forces rest at every third logical tie:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [8])
+        ...     nested_music = rmakers.even_division(divisions, [8])
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0], 3)
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.force_rest(logical_ties)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6070,15 +6070,15 @@ def even_division_function(
         Forces rest at every fourth logical tie:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [8])
+        ...     nested_music = rmakers.even_division(divisions, [8])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
+        ...     rmakers.tie(leaves)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [3], 4)
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.force_rest(logical_ties)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6153,12 +6153,12 @@ def even_division_function(
         Forces rest at leaf 0 of every tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [8])
+        ...     nested_music = rmakers.even_division(divisions, [8])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
-        ...     rmakers.force_rest_function(leaves)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.force_rest(leaves)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6230,16 +6230,16 @@ def even_division_function(
         Forces rest and rewrites every other tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     tuplets = abjad.select.get(tuplets, [0], 2)
-        ...     rmakers.force_rest_function(tuplets)
-        ...     rmakers.rewrite_rest_filled_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_rest(tuplets)
+        ...     rmakers.rewrite_rest_filled(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6297,17 +6297,17 @@ def even_division_function(
         Ties and rewrites every other tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     tuplets = abjad.select.get(tuplets, [0], 2)
         ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.rewrite_sustained_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.rewrite_sustained(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6365,11 +6365,11 @@ def even_division_function(
         No preferred denominator:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16], extra_counts=[4], denominator=None
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6472,11 +6472,11 @@ def even_division_function(
         Preferred denominator equal to 4:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16], extra_counts=[4], denominator=4
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6574,11 +6574,11 @@ def even_division_function(
         Preferred denominator equal to 8:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16], extra_counts=[4], denominator=8
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6676,11 +6676,11 @@ def even_division_function(
         Preferred denominator equal to 16:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16], extra_counts=[4], denominator=16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6780,11 +6780,11 @@ def even_division_function(
         Preferred denominator taken from count of elements in tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16], extra_counts=[4], denominator="from_counts"
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6884,12 +6884,12 @@ def even_division_function(
         Fills tuplets with 16th notes and 8th notes, alternately:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16, 8]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6946,12 +6946,12 @@ def even_division_function(
         Fills tuplets with 8th notes:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -6999,12 +6999,12 @@ def even_division_function(
         Fills tuplets with quarter notes:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [4]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -7043,12 +7043,12 @@ def even_division_function(
         Fills tuplets with half notes:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [2]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -7088,12 +7088,12 @@ def even_division_function(
         Adds extra counts to tuplets according to a pattern of three elements:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16], extra_counts=[0, 1, 2]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -7205,12 +7205,12 @@ def even_division_function(
         Which produces the following pattern of changes:
 
         >>> def make_rhythm(divisions, extra_counts):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16], extra_counts=extra_counts
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -7461,12 +7461,12 @@ def even_division_function(
         Which produces the following pattern of changes:
 
         >>> def make_rhythm(divisions, extra_counts):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16], extra_counts=extra_counts
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -7616,13 +7616,13 @@ def even_division_function(
 
         >>> def make_rhythm(divisions, *, previous_state=None):
         ...     state = {}
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [16, 8, 4], extra_counts=[0, 1],
         ...         previous_state=previous_state, state=state
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music, state
 
@@ -7786,7 +7786,7 @@ def example(selection, time_signatures=None, *, includes=None):
     return lilypond_file
 
 
-def extract_trivial_function(argument) -> None:
+def extract_trivial(argument) -> None:
     r"""
     Extracts trivial tuplets from ``argument``.
 
@@ -7795,11 +7795,11 @@ def extract_trivial_function(argument) -> None:
         With selector:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [8])
+        ...     nested_music = rmakers.even_division(divisions, [8])
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     tuplets = abjad.select.tuplets(container)[-2:]
-        ...     rmakers.extract_trivial_function(tuplets)
+        ...     rmakers.extract_trivial(tuplets)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -7863,7 +7863,7 @@ def extract_trivial_function(argument) -> None:
             abjad.mutate.extract(tuplet)
 
 
-def feather_beam_function(
+def feather_beam(
     argument,
     *,
     beam_rests: bool = False,
@@ -7875,7 +7875,7 @@ def feather_beam_function(
     """
 
     for selection in argument:
-        unbeam_function(selection)
+        unbeam(selection)
         leaves = abjad.select.leaves(selection)
         abjad.beam(
             leaves,
@@ -7891,7 +7891,7 @@ def feather_beam_function(
             abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
 
 
-def force_augmentation_function(argument) -> None:
+def force_augmentation(argument) -> None:
     r"""
     Forces each tuplet in ``argument`` to notate as an augmentation.
 
@@ -7900,12 +7900,12 @@ def force_augmentation_function(argument) -> None:
         Without forced augmentation:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_fraction_function(container)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.force_fraction(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -7963,13 +7963,13 @@ def force_augmentation_function(argument) -> None:
         With forced augmentation:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.force_fraction_function(container)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.force_augmentation(container)
+        ...     rmakers.force_fraction(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8030,7 +8030,7 @@ def force_augmentation_function(argument) -> None:
             tuplet.toggle_prolation()
 
 
-def force_diminution_function(argument) -> None:
+def force_diminution(argument) -> None:
     """
     Forces each tuplet in ``argument`` to notate as a diminution.
     """
@@ -8039,7 +8039,7 @@ def force_diminution_function(argument) -> None:
             tuplet.toggle_prolation()
 
 
-def force_fraction_function(argument) -> None:
+def force_fraction(argument) -> None:
     """
     Sets ``force_fraction=True`` on all tuplets in ``argument``.
     """
@@ -8047,7 +8047,7 @@ def force_fraction_function(argument) -> None:
         tuplet.force_fraction = True
 
 
-def force_note_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+def force_note(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     r"""
     Replaces leaves in ``argument`` with notes.
 
@@ -8056,12 +8056,12 @@ def force_note_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         Changes logical ties 1 and 2 to notes:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     leaves = abjad.select.leaves(container)
-        ...     rmakers.force_rest_function(leaves)
+        ...     rmakers.force_rest(leaves)
         ...     logical_ties = abjad.select.logical_ties(container)[1:3]
-        ...     rmakers.force_note_function(logical_ties)
+        ...     rmakers.force_note(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8099,13 +8099,13 @@ def force_note_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         Changes patterned selection of leaves to notes. Works inverted composite pattern:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     leaves = abjad.select.leaves(container)
-        ...     rmakers.force_rest_function(leaves)
+        ...     rmakers.force_rest(leaves)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     leaves = abjad.select.get(logical_ties, [0, -1])
-        ...     rmakers.force_note_function(leaves)
+        ...     rmakers.force_note(leaves)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8149,7 +8149,7 @@ def force_note_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         abjad.mutate.replace(leaf, [note])
 
 
-def force_repeat_tie_function(
+def force_repeat_tie(
     argument,
     *,
     tag: abjad.Tag = None,
@@ -8197,7 +8197,7 @@ def force_repeat_tie_function(
         abjad.attach(repeat_tie, leaf, tag=tag)
 
 
-def force_rest_function(argument, *, tag=None) -> None:
+def force_rest(argument, *, tag=None) -> None:
     r"""
     Replaces leaves in ``argument`` with rests.
 
@@ -8206,10 +8206,10 @@ def force_rest_function(argument, *, tag=None) -> None:
         Changes logical ties 1 and 2 to rests:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)[1:3]
-        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8247,10 +8247,10 @@ def force_rest_function(argument, *, tag=None) -> None:
         Changes logical ties -1 and -2 to rests:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)[-2:]
-        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8288,10 +8288,10 @@ def force_rest_function(argument, *, tag=None) -> None:
         Changes patterned selection of logical ties to rests:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)[1:-1]
-        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8341,7 +8341,7 @@ def force_rest_function(argument, *, tag=None) -> None:
             abjad.detach(abjad.RepeatTie, next_leaf)
 
 
-def incised_function(
+def incised(
     divisions,
     extra_counts: typing.Sequence[int] = (),
     *,
@@ -8386,7 +8386,7 @@ def incised_function(
         Divides middle part of every division ``1:1``:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         prefix_talea=[-1],
         ...         prefix_counts=[0, 1],
@@ -8396,8 +8396,8 @@ def incised_function(
         ...         body_ratio=abjad.Ratio((1, 1)),
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8453,7 +8453,7 @@ def incised_function(
         Forces rest at every other tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
@@ -8465,9 +8465,9 @@ def incised_function(
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [1], 2)
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_rest(logical_ties)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8509,7 +8509,7 @@ def incised_function(
         Ties nonlast tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
@@ -8521,9 +8521,9 @@ def incised_function(
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8565,7 +8565,7 @@ def incised_function(
         Repeat-ties nonfirst tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
@@ -8577,9 +8577,9 @@ def incised_function(
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[1:]
         ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
-        ...     rmakers.repeat_tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.repeat_tie(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8621,7 +8621,7 @@ def incised_function(
         Add one extra count per tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         extra_counts=[1],
         ...         outer_divisions_only=True,
@@ -8632,9 +8632,9 @@ def incised_function(
         ...         talea_denominator=8,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_augmentation(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8684,7 +8684,7 @@ def incised_function(
     ..  container:: example
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         prefix_talea=[-1],
         ...         prefix_counts=[0, 1],
@@ -8693,8 +8693,8 @@ def incised_function(
         ...         talea_denominator=16,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8738,7 +8738,7 @@ def incised_function(
         Fills divisions with notes. Incises outer divisions only:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         outer_divisions_only=True,
         ...         prefix_talea=[-8, -7],
@@ -8748,8 +8748,8 @@ def incised_function(
         ...         talea_denominator=32,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8797,7 +8797,7 @@ def incised_function(
         Fills divisions with rests. Incises outer divisions only:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         fill_with_rests=True,
         ...         outer_divisions_only=True,
@@ -8808,8 +8808,8 @@ def incised_function(
         ...         talea_denominator=32,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8855,7 +8855,7 @@ def incised_function(
         Spells durations with the fewest number of glyphs:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
@@ -8865,8 +8865,8 @@ def incised_function(
         ...         talea_denominator=8,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8906,7 +8906,7 @@ def incised_function(
         Forbids notes with written duration greater than or equal to ``1/2``:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
@@ -8917,8 +8917,8 @@ def incised_function(
         ...         talea_denominator=8,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8966,7 +8966,7 @@ def incised_function(
         Rewrites meter:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
@@ -8976,9 +8976,9 @@ def incised_function(
         ...         talea_denominator=8,
         ...     )
         ...     voice = rmakers.wrap_in_time_signature_staff(nested_music, divisions)
-        ...     rmakers.beam_function(voice)
-        ...     rmakers.extract_trivial_function(voice)
-        ...     rmakers.rewrite_meter_function(voice)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
+        ...     rmakers.rewrite_meter(voice)
         ...     music = abjad.mutate.eject_contents(voice)
         ...     return music
 
@@ -9019,7 +9019,7 @@ def incised_function(
 
         >>> def make_rhythm(divisions):
         ...     tag = abjad.Tag("INCISED_RHYTHM_MAKER")
-        ...     nested_music = rmakers.incised_function(
+        ...     nested_music = rmakers.incised(
         ...         divisions,
         ...         extra_counts=[1],
         ...         outer_divisions_only=True,
@@ -9031,8 +9031,8 @@ def incised_function(
         ...         tag=tag,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.beam_function(container, tag=tag)
+        ...     rmakers.force_augmentation(container)
+        ...     rmakers.beam(container, tag=tag)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9117,7 +9117,7 @@ def incised_function(
     )
 
 
-def invisible_music_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+def invisible_music(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     """
     Makes ``argument`` invisible.
     """
@@ -9145,7 +9145,7 @@ def interpolate(
     )
 
 
-def multiplied_duration_function(
+def multiplied_duration(
     divisions,
     prototype: type = abjad.Note,
     *,
@@ -9159,7 +9159,7 @@ def multiplied_duration_function(
     ..  container:: example
 
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rmakers.multiplied_duration_function(divisions)
+        >>> music = rmakers.multiplied_duration(divisions)
         >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9193,7 +9193,7 @@ def multiplied_duration_function(
         Makes multiplied-duration whole notes when ``duration`` is unset:
 
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rmakers.multiplied_duration_function(divisions)
+        >>> music = rmakers.multiplied_duration(divisions)
         >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9225,7 +9225,7 @@ def multiplied_duration_function(
         Makes multiplied-duration half notes when ``duration=(1, 2)``:
 
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rmakers.multiplied_duration_function(divisions, duration=(1, 2))
+        >>> music = rmakers.multiplied_duration(divisions, duration=(1, 2))
         >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9257,7 +9257,7 @@ def multiplied_duration_function(
         Makes multiplied-duration quarter notes when ``duration=(1, 4)``:
 
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rmakers.multiplied_duration_function(divisions, duration=(1, 4))
+        >>> music = rmakers.multiplied_duration(divisions, duration=(1, 4))
         >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9291,7 +9291,7 @@ def multiplied_duration_function(
         Makes multiplied-duration notes when ``prototype`` is unset:
 
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rmakers.multiplied_duration_function(divisions)
+        >>> music = rmakers.multiplied_duration(divisions)
         >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9325,7 +9325,7 @@ def multiplied_duration_function(
         Makes multiplied-duration rests when ``prototype=abjad.Rest``:
 
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rmakers.multiplied_duration_function(divisions, abjad.Rest)
+        >>> music = rmakers.multiplied_duration(divisions, abjad.Rest)
         >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9360,7 +9360,7 @@ def multiplied_duration_function(
         ``prototype=abjad.MultimeasureRest``:
 
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rmakers.multiplied_duration_function(divisions, abjad.MultimeasureRest)
+        >>> music = rmakers.multiplied_duration(divisions, abjad.MultimeasureRest)
         >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9394,7 +9394,7 @@ def multiplied_duration_function(
         Makes multiplied-duration skips when ``prototype=abjad.Skip``:
 
         >>> divisions = [(1, 4), (3, 16), (5, 8), (1, 3)]
-        >>> music = rmakers.multiplied_duration_function(divisions, abjad.Skip)
+        >>> music = rmakers.multiplied_duration(divisions, abjad.Skip)
         >>> lilypond_file = rmakers.example(music, divisions)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -9439,14 +9439,7 @@ def multiplied_duration_function(
     return components
 
 
-def nongrace_leaves_in_each_tuplet(level: int = -1):
-    """
-    Makes nongrace leaves in each tuplet selector.
-    """
-    return lambda _: nongrace_leaves_in_each_tuplet_function(_, level=level)
-
-
-def nongrace_leaves_in_each_tuplet_function(argument, level: int = -1):
+def nongrace_leaves_in_each_tuplet(argument, level: int = -1):
     """
     Selects nongrace leaves in each tuplet.
     """
@@ -9455,7 +9448,7 @@ def nongrace_leaves_in_each_tuplet_function(argument, level: int = -1):
     return leaves
 
 
-def note_function(
+def note(
     divisions, *, spelling: Spelling = Spelling(), tag: abjad.Tag = abjad.Tag()
 ) -> list[list[abjad.Leaf | abjad.Tuplet]]:
     r"""
@@ -9466,11 +9459,11 @@ def note_function(
         Silences every other logical tie:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)
-        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9508,10 +9501,10 @@ def note_function(
         Forces rest at every logical tie:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
-        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9550,11 +9543,11 @@ def note_function(
         Silences every other output division except for the first and last:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)[1:-1]
-        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9594,10 +9587,10 @@ def note_function(
         Beams each division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container, pitched=True)
-        ...     rmakers.beam_function(logical_ties)
+        ...     rmakers.beam(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9639,10 +9632,10 @@ def note_function(
         Beams divisions together:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
-        ...     rmakers.beam_groups_function(logical_ties)
+        ...     rmakers.beam_groups(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9690,7 +9683,7 @@ def note_function(
         Makes no beams:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
@@ -9729,7 +9722,7 @@ def note_function(
         Does not tie across divisions:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
@@ -9768,11 +9761,11 @@ def note_function(
         Ties across divisions:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in logical_ties]
-        ...     rmakers.tie_function(leaves)
+        ...     rmakers.tie(leaves)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9813,12 +9806,12 @@ def note_function(
         Ties across every other logical tie:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)[:-1]
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)
         ...     leaves = [abjad.select.leaf(_, -1) for _ in logical_ties]
-        ...     rmakers.tie_function(leaves)
+        ...     rmakers.tie(leaves)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9858,9 +9851,9 @@ def note_function(
         Strips all ties:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.untie_function(container)
+        ...     rmakers.untie(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9897,7 +9890,7 @@ def note_function(
         Spells tuplets as diminutions:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
@@ -9944,9 +9937,9 @@ def note_function(
         Spells tuplets as augmentations:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
+        ...     rmakers.force_augmentation(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -9994,10 +9987,10 @@ def note_function(
         Forces rest in logical tie 0:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_tie = abjad.select.logical_tie(container, 0)
-        ...     rmakers.force_rest_function(logical_tie)
+        ...     rmakers.force_rest(logical_tie)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -10038,10 +10031,10 @@ def note_function(
         Forces rests in first two logical ties:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_tie = abjad.select.logical_ties(container)[:2]
-        ...     rmakers.force_rest_function(logical_tie)
+        ...     rmakers.force_rest(logical_tie)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -10082,11 +10075,11 @@ def note_function(
         Forces rests in first and last logical ties:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
-        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -10126,9 +10119,9 @@ def note_function(
         Rewrites meter:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.note_function(divisions)
+        ...     nested_music = rmakers.note(divisions)
         ...     voice = rmakers.wrap_in_time_signature_staff(nested_music, divisions)
-        ...     rmakers.rewrite_meter_function(voice)
+        ...     rmakers.rewrite_meter(voice)
         ...     music = abjad.mutate.eject_contents(voice)
         ...     return music
 
@@ -10166,7 +10159,7 @@ def note_function(
     return _make_note_rhythm_maker_music(divisions, spelling=spelling, tag=tag)
 
 
-def on_beat_grace_container_function(
+def on_beat_grace_container(
     voice: abjad.Voice,
     voice_name: str,
     argument,
@@ -10183,7 +10176,7 @@ def on_beat_grace_container_function(
     ..  container:: example
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [4], extra_counts=[2]
         ...     )
         ...     voice = abjad.Voice(nested_music)
@@ -10192,7 +10185,7 @@ def on_beat_grace_container_function(
         ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
         ...     notes = abjad.select.notes(notes)
         ...     groups = [[_] for _ in notes]
-        ...     rmakers.on_beat_grace_container_function(
+        ...     rmakers.on_beat_grace_container(
         ...         voice,
         ...         "RhythmMaker.Music",
         ...         groups,
@@ -10397,11 +10390,11 @@ def on_beat_grace_container_function(
     ..  container:: example
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(divisions, [5], 16)
+        ...     nested_music = rmakers.talea(divisions, [5], 16)
         ...     voice = abjad.Voice(nested_music)
-        ...     rmakers.extract_trivial_function(voice)
+        ...     rmakers.extract_trivial(voice)
         ...     logical_ties = abjad.select.logical_ties(voice)
-        ...     rmakers.on_beat_grace_container_function(
+        ...     rmakers.on_beat_grace_container(
         ...         voice,
         ...         "RhythmMaker.Music",
         ...         logical_ties,
@@ -10602,7 +10595,7 @@ def on_beat_grace_container_function(
         )
 
 
-def repeat_tie_function(argument, *, tag=None) -> None:
+def repeat_tie(argument, *, tag=None) -> None:
     r"""
     Attaches repeat-tie to each leaf in ``argument``.
 
@@ -10612,14 +10605,14 @@ def repeat_tie_function(argument, *, tag=None) -> None:
         tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[1:]
         ...     notes = [abjad.select.note(_, 0) for _ in tuplets]
-        ...     rmakers.repeat_tie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.repeat_tie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -10706,15 +10699,15 @@ def repeat_tie_function(argument, *, tag=None) -> None:
         With pattern:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     tuplets = abjad.select.get(tuplets, [1], 2)
         ...     notes = [abjad.select.note(_, 0) for _ in tuplets]
-        ...     rmakers.repeat_tie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.repeat_tie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -10802,7 +10795,7 @@ def repeat_tie_function(argument, *, tag=None) -> None:
         abjad.attach(tie, note, tag=tag)
 
 
-def reduce_multiplier_function(argument) -> None:
+def reduce_multiplier(argument) -> None:
     """
     Reduces multipliers of tuplets in ``argument``.
     """
@@ -10810,7 +10803,7 @@ def reduce_multiplier_function(argument) -> None:
         tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
 
 
-def rewrite_dots_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+def rewrite_dots(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     """
     Rewrites dots of tuplets in ``argument``.
     """
@@ -10818,7 +10811,7 @@ def rewrite_dots_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         tuplet.rewrite_dots()
 
 
-def rewrite_meter_function(
+def rewrite_meter(
     voice: abjad.Voice,
     *,
     boundary_depth: int = None,
@@ -10845,7 +10838,7 @@ def rewrite_meter_function(
         meters.append(meter)
     durations = [abjad.Duration(_) for _ in meters]
     reference_meters = reference_meters or ()
-    split_measures_function(voice, durations=durations)
+    split_measures(voice, durations=durations)
     selections = abjad.select.group_by_measure(voice[:])
     for meter, selection in zip(meters, selections):
         for reference_meter in reference_meters:
@@ -10857,7 +10850,7 @@ def rewrite_meter_function(
         for leaf in abjad.iterate.leaves(selection):
             if not abjad.get.parentage(leaf).count(abjad.Tuplet):
                 nontupletted_leaves.append(leaf)
-        unbeam_function(nontupletted_leaves)
+        unbeam(nontupletted_leaves)
         abjad.Meter.rewrite_meter(
             selection,
             meter,
@@ -10883,7 +10876,7 @@ def rewrite_meter_function(
             )
 
 
-def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
+def rewrite_rest_filled(argument, *, spelling=None, tag=None) -> None:
     r"""
     Rewrites rest-filled tuplets in ``argument``.
 
@@ -10892,12 +10885,12 @@ def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
         Does not rewrite rest-filled tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [-1], 16, extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -10965,13 +10958,13 @@ def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
         Rewrites rest-filled tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [-1], 16, extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_rest_filled_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.rewrite_rest_filled(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11009,16 +11002,16 @@ def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
         With spelling specifier:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [-1], 16, extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_rest_filled_function(
+        ...     rmakers.rewrite_rest_filled(
         ...         container,
         ...         spelling=rmakers.Spelling(increase_monotonic=True)
         ...     )
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11078,7 +11071,7 @@ def rewrite_rest_filled_function(argument, *, spelling=None, tag=None) -> None:
         tuplet.multiplier = abjad.Multiplier(1)
 
 
-def rewrite_sustained_function(argument, *, tag=None) -> None:
+def rewrite_sustained(argument, *, tag=None) -> None:
     r"""
     Rewrites sustained tuplets in ``argument``.
 
@@ -11087,14 +11080,14 @@ def rewrite_sustained_function(argument, *, tag=None) -> None:
         Sustained tuplets generalize a class of rhythms composers are likely to rewrite:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[1:3]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11168,15 +11161,15 @@ def rewrite_sustained_function(argument, *, tag=None) -> None:
         Rewrite sustained tuplets like this:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[1:3]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.rewrite_sustained_function(container)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.rewrite_sustained(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11233,16 +11226,16 @@ def rewrite_sustained_function(argument, *, tag=None) -> None:
         like this:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [6, 5, 5, 4, 1], 16, extra_counts=[2, 1, 1, 1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     tuplets = abjad.select.tuplets(container)[1:3]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.rewrite_sustained_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.rewrite_sustained(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11286,15 +11279,15 @@ def rewrite_sustained_function(argument, *, tag=None) -> None:
         With selector:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.rewrite_sustained_function(tuplets[-2:])
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.rewrite_sustained(tuplets[-2:])
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11373,7 +11366,7 @@ def rewrite_sustained_function(argument, *, tag=None) -> None:
         tuplet.multiplier = abjad.Multiplier(1)
 
 
-def split_measures_function(voice, *, durations=None, tag=None) -> None:
+def split_measures(voice, *, durations=None, tag=None) -> None:
     r"""
     Splits measures in ``voice``.
 
@@ -11400,7 +11393,7 @@ def split_measures_function(voice, *, durations=None, tag=None) -> None:
     abjad.mutate.split(voice[:], durations=durations)
 
 
-def talea_function(
+def talea(
     divisions,
     counts: typing.Sequence[int],
     denominator: int,
@@ -11423,10 +11416,10 @@ def talea_function(
         Repeats talea of 1/16, 2/16, 3/16, 4/16:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(divisions, [1, 2, 3, 4], 16)
+        ...     nested_music = rmakers.talea(divisions, [1, 2, 3, 4], 16)
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11480,13 +11473,13 @@ def talea_function(
         Silences first and last logical ties:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(divisions, [1, 2, 3, 4], 16)
+        ...     nested_music = rmakers.talea(divisions, [1, 2, 3, 4], 16)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
-        ...     rmakers.force_rest_function(logical_ties)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_rest(logical_ties)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11540,15 +11533,15 @@ def talea_function(
         Silences all logical ties. Then sustains first and last logical ties:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(divisions, [1, 2, 3, 4], 16)
+        ...     nested_music = rmakers.talea(divisions, [1, 2, 3, 4], 16)
         ...     container = abjad.Container(nested_music)
         ...     logical_ties = abjad.select.logical_ties(container)
-        ...     rmakers.force_rest_function(logical_ties)
+        ...     rmakers.force_rest(logical_ties)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
-        ...     rmakers.force_note_function(logical_ties)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_note(logical_ties)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11596,13 +11589,13 @@ def talea_function(
         given as a duration:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.denominator_function(container, (1, 16))
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.denominator(container, (1, 16))
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11677,12 +11670,12 @@ def talea_function(
         Beams each division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11752,13 +11745,13 @@ def talea_function(
         Beams tuplets together:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1], 16
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.beam_groups_function(tuplets)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam_groups(tuplets)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11878,11 +11871,11 @@ def talea_function(
         Beams nothing:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -11944,12 +11937,12 @@ def talea_function(
         Does not beam rests:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 1, 1, -1], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12025,12 +12018,12 @@ def talea_function(
         Does beam rests:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 1, 1, -1], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container, beam_rests=True)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container, beam_rests=True)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12100,12 +12093,12 @@ def talea_function(
         Beams rests with stemlets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 1, 1, -1], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container, beam_rests=True, stemlet_length=0.75)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container, beam_rests=True, stemlet_length=0.75)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12183,12 +12176,12 @@ def talea_function(
         Does not tie across divisions:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [5, 3, 3, 3], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12242,15 +12235,15 @@ def talea_function(
         Ties across divisions:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [5, 3, 3, 3], 16
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12307,16 +12300,16 @@ def talea_function(
         Ties across every other tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [5, 3, 3, 3], 16
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     tuplets = abjad.select.get(tuplets, [0], 2)
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12372,16 +12365,16 @@ def talea_function(
         TIE-CONSECUTIVE-NOTES RECIPE:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [5, -3, 3, 3], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.untie_function(container)
+        ...     rmakers.untie(container)
         ...     runs = abjad.select.runs(container)
         ...     notes = [abjad.select.notes(_)[:-1] for _ in runs]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12436,11 +12429,11 @@ def talea_function(
         Reduces terms in tuplet ratio to relative primes when no tuplet command is given:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12514,12 +12507,12 @@ def talea_function(
         given as a duration:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.denominator_function(container, (1, 16))
-        ...     rmakers.beam_function(container)
+        ...     rmakers.denominator(container, (1, 16))
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12597,12 +12590,12 @@ def talea_function(
         is given):
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1], 16, extra_counts=[0, -1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12681,13 +12674,13 @@ def talea_function(
         Forces augmented tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1], 16, extra_counts=[0, -1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.force_augmentation(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12771,11 +12764,11 @@ def talea_function(
         in measures 2 and 4 can be written as trivial tuplets, but they are not:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [3, 3, 6, 6], 16, extra_counts=[0, 4]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12834,12 +12827,12 @@ def talea_function(
         true:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [3, 3, 6, 6], 16, extra_counts=[0, 4]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.trivialize_function(container)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.trivialize(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12900,15 +12893,15 @@ def talea_function(
         multiple ties:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [3, 3, 6, 6], 16, extra_counts=[0, 4]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.trivialize_function(container)
+        ...     rmakers.trivialize(container)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -12972,14 +12965,14 @@ def talea_function(
         long ties:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [3, 3, 6, 6], 16, extra_counts=[0, 4]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.trivialize_function(container)
+        ...     rmakers.trivialize(container)
         ...     notes = abjad.select.notes(container)[:-1]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13050,11 +13043,11 @@ def talea_function(
         Makes rest-filled tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [3, 3, -6, -6], 16, extra_counts=[1, 0]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13118,12 +13111,12 @@ def talea_function(
         Rewrites rest-filled tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [3, 3, -6, -6], 16, extra_counts=[1, 0]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_rest_filled_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_rest_filled(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13187,12 +13180,12 @@ def talea_function(
         No rest commands:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13246,16 +13239,16 @@ def talea_function(
         Silences every other output division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     tuplets = abjad.select.get(tuplets, [1], 2)
-        ...     rmakers.force_rest_function(tuplets)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_rest_filled_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_rest(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_rest_filled(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13298,17 +13291,17 @@ def talea_function(
         Sustains every other output division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     tuplets = abjad.select.get(tuplets, [1], 2)
         ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.rewrite_sustained_function(tuplets)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.rewrite_sustained(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13352,15 +13345,15 @@ def talea_function(
         Forces the first leaf and the last two leaves to be rests:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     leaves = abjad.select.leaves(container)
         ...     leaves = abjad.select.get(leaves, [0, -2, -1])
-        ...     rmakers.force_rest_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_rest(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13415,15 +13408,15 @@ def talea_function(
 
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
-        ...     rmakers.force_rest_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_rest(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13476,15 +13469,15 @@ def talea_function(
         Spells nonassignable durations with monontonically decreasing durations:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions,
         ...         [5],
         ...         16,
         ...         spelling=rmakers.Spelling(increase_monotonic=False),
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13535,15 +13528,15 @@ def talea_function(
         Spells nonassignable durations with monontonically increasing durations:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions,
         ...         [5],
         ...         16,
         ...         spelling=rmakers.Spelling(increase_monotonic=True),
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13594,12 +13587,12 @@ def talea_function(
         Forbids no durations:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 1, 1, 1, 4, 4], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13647,13 +13640,13 @@ def talea_function(
         Forbids durations equal to ``1/4`` or greater:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 1, 1, 1, 4, 4], 16,
         ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 4)),
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13711,13 +13704,13 @@ def talea_function(
         Rewrites meter:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [5, 4], 16
         ...     )
         ...     voice = rmakers.wrap_in_time_signature_staff(nested_music, divisions)
-        ...     rmakers.beam_function(voice)
-        ...     rmakers.extract_trivial_function(voice)
-        ...     rmakers.rewrite_meter_function(voice)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
+        ...     rmakers.rewrite_meter(voice)
         ...     music = abjad.mutate.eject_contents(voice)
         ...     return music
 
@@ -13784,12 +13777,12 @@ def talea_function(
         No extra counts:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13843,11 +13836,11 @@ def talea_function(
         Adds one extra count to every other division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16, extra_counts=[0, 1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13915,11 +13908,11 @@ def talea_function(
         Adds two extra counts to every other division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16, extra_counts=[0, 2]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -13996,11 +13989,11 @@ def talea_function(
         Removes one count from every other division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16, extra_counts=[0, -1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14071,12 +14064,12 @@ def talea_function(
         Reads talea cyclically:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14136,11 +14129,11 @@ def talea_function(
         interpolating from short durations to long durations:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16, read_talea_once_only=True
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14159,14 +14152,14 @@ def talea_function(
 
         >>> def make_rhythm(divisions, *, previous_state=None):
         ...     state = {}
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [4], 16, extra_counts=[0, 1, 2],
         ...         previous_state=previous_state,
         ...         state=state,
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music, state
 
@@ -14333,11 +14326,11 @@ def talea_function(
 
         >>> def make_rhythm(divisions):
         ...     tag = abjad.Tag("TALEA_RHYTHM_MAKER")
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [1, 2, 3, 4], 16, extra_counts=[0, 1], tag=tag
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container, tag=tag)
+        ...     rmakers.beam(container, tag=tag)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14440,12 +14433,12 @@ def talea_function(
         Preamble less than total duration:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [8, -4, 8], 32, preamble=[1, 1, 1, 1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14495,12 +14488,12 @@ def talea_function(
         Preamble more than total duration; ignores counts:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [8, -4, 8], 32, preamble=[32, 32, 32, 32]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14542,12 +14535,12 @@ def talea_function(
         Working with ``end_counts``.
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [8, -4, 8], 32, end_counts=[1, 1, 1, 1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14595,12 +14588,12 @@ def talea_function(
         REGRESSION. End counts leave 5-durated tie in tact:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea_function(
+        ...     nested_music = rmakers.talea(
         ...         divisions, [6], 16, end_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14671,7 +14664,7 @@ def talea_function(
     return tuplets
 
 
-def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+def tie(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     r"""
     Attaches one tie to each notes in ``argument``.
 
@@ -14680,14 +14673,14 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         TIE-CONSECUTIVE-NOTES RECIPE. Attaches ties notes in selection:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = abjad.select.notes(container)[5:15]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14781,14 +14774,14 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         TIE-ACROSS-DIVISIONS RECIPE. Attaches ties to last note in nonlast tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14875,15 +14868,15 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         With pattern:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     tuplets = abjad.select.get(tuplets, [0], 2)
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -14970,11 +14963,11 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         TIE-ACROSS-DIVISIONS RECIPE:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(divisions, [(5, 2)])
+        ...     nested_music = rmakers.tuplet(divisions, [(5, 2)])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(notes)
+        ...     rmakers.tie(notes)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15030,15 +15023,15 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         TIE-WITHIN-DIVISIONS RECIPE:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
-        ...     rmakers.untie_function(notes)
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.untie(notes)
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15132,15 +15125,15 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         With pattern:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     tuplets = abjad.select.get(tuplets, [0], 2)
         ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
-        ...     rmakers.tie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15231,7 +15224,7 @@ def tie_function(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         abjad.attach(tie, note, tag=tag)
 
 
-def tremolo_container_function(argument, count: int, *, tag: abjad.Tag = None) -> None:
+def tremolo_container(argument, count: int, *, tag: abjad.Tag = None) -> None:
     r"""
     Replaces each note in ``argument`` with a tremolo container.
 
@@ -15240,13 +15233,13 @@ def tremolo_container_function(argument, count: int, *, tag: abjad.Tag = None) -
         Repeats figures two times each:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [4])
+        ...     nested_music = rmakers.even_division(divisions, [4])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.notes(_) for _ in tuplets]
         ...     groups = [abjad.select.get(_, [0, -1]) for _ in notes]
-        ...     rmakers.tremolo_container_function(groups, 2)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tremolo_container(groups, 2)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15305,13 +15298,13 @@ def tremolo_container_function(argument, count: int, *, tag: abjad.Tag = None) -
         Repeats figures four times each:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(divisions, [4])
+        ...     nested_music = rmakers.even_division(divisions, [4])
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.notes(_) for _ in tuplets]
         ...     groups = [abjad.select.get(_, [0, -1]) for _ in notes]
-        ...     rmakers.tremolo_container_function(groups, 4)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tremolo_container(groups, 4)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15377,7 +15370,7 @@ def tremolo_container_function(argument, count: int, *, tag: abjad.Tag = None) -
         abjad.mutate.replace(note, container)
 
 
-def trivialize_function(argument) -> None:
+def trivialize(argument) -> None:
     """
     Trivializes each tuplet in ``argument``.
     """
@@ -15385,7 +15378,7 @@ def trivialize_function(argument) -> None:
         tuplet.trivialize()
 
 
-def tuplet_function(
+def tuplet(
     divisions,
     tuplet_ratios: typing.Sequence[abjad.typings.Ratio],
     *,
@@ -15404,11 +15397,11 @@ def tuplet_function(
         Makes tuplets with ``3:2`` ratios:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(3, 2)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15469,11 +15462,11 @@ def tuplet_function(
         Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, -1), (3, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15533,11 +15526,11 @@ def tuplet_function(
         Beams each division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 1, 1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15611,11 +15604,11 @@ def tuplet_function(
         Beams each division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 1, 1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15689,12 +15682,12 @@ def tuplet_function(
         Beams tuplets together:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 1, 2, 1, 1), (3, 1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.beam_groups_function(tuplets)
+        ...     rmakers.beam_groups(tuplets)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15793,11 +15786,11 @@ def tuplet_function(
         Ties nothing:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(2, 3), (1, -2, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15850,14 +15843,14 @@ def tuplet_function(
         Ties across all divisions:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(2, 3), (1, -2, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15912,15 +15905,15 @@ def tuplet_function(
         Ties across every other division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(2, 3), (1, -2, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     tuplets = abjad.select.get(tuplets, [0], 2)
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -15983,12 +15976,12 @@ def tuplet_function(
         Makes diminished tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(2, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_diminution_function(container)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.force_diminution(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16036,12 +16029,12 @@ def tuplet_function(
         Makes augmented tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(2, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.force_augmentation_function(container)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.force_augmentation(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16096,12 +16089,12 @@ def tuplet_function(
         Makes diminished tuplets and does not rewrite dots:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.force_diminution_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.force_diminution(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16158,13 +16151,13 @@ def tuplet_function(
         Makes diminished tuplets and rewrites dots:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.force_diminution_function(container)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.force_diminution(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16217,12 +16210,12 @@ def tuplet_function(
         Makes augmented tuplets and does not rewrite dots:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.force_augmentation_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.force_augmentation(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16279,13 +16272,13 @@ def tuplet_function(
         Makes augmented tuplets and rewrites dots:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.force_augmentation_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.force_augmentation(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16342,12 +16335,12 @@ def tuplet_function(
         Leaves trivializable tuplets as-is when ``trivialize`` is false:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16408,12 +16401,12 @@ def tuplet_function(
         ``extract_trivial`` as shown in the next example:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.trivialize_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.trivialize(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16473,13 +16466,13 @@ def tuplet_function(
         carry nontrivial prolation with no dots:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(3, -2), (1,), (-2, 3), (1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.trivialize_function(container)
-        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.trivialize(container)
+        ...     rmakers.rewrite_dots(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16538,14 +16531,14 @@ def tuplet_function(
         Leaves trivial tuplets as-is when ``extract_trivial`` is false:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(2, 3), (1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16611,15 +16604,15 @@ def tuplet_function(
         the example below now contain only a flat list of notes:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(2, 3), (1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie_function(leaves)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16679,14 +16672,14 @@ def tuplet_function(
         REGRESSION: Very long ties are preserved when ``extract_trivial`` is true:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(2, 3), (1, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
         ...     notes = abjad.select.notes(container)[:-1]
-        ...     rmakers.tie_function(notes)
+        ...     rmakers.tie(notes)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16747,15 +16740,15 @@ def tuplet_function(
         Masks every other output division:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(4, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     tuplets = abjad.select.tuplets(container)
         ...     tuplets = abjad.select.get(tuplets, [1], 2)
-        ...     rmakers.force_rest_function(tuplets)
-        ...     rmakers.rewrite_rest_filled_function(container)
-        ...     rmakers.extract_trivial_function(container)
+        ...     rmakers.force_rest(tuplets)
+        ...     rmakers.rewrite_rest_filled(container)
+        ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16804,12 +16797,12 @@ def tuplet_function(
         ``6:4`` and ``10:8`` do not arise:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 4)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16868,13 +16861,13 @@ def tuplet_function(
         first tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 4)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 16))
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, (1, 16))
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16932,13 +16925,13 @@ def tuplet_function(
         setting affects all tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 4)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 32))
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, (1, 32))
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -16996,13 +16989,13 @@ def tuplet_function(
         affects all tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 4)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, (1, 64))
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, (1, 64))
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17061,13 +17054,13 @@ def tuplet_function(
         each tuplet to ``8``. Setting does not affect the third tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 4)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 8)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, 8)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17125,13 +17118,13 @@ def tuplet_function(
         tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 4)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 12)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, 12)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17189,13 +17182,13 @@ def tuplet_function(
         affect any tuplet:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, 4)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
-        ...     rmakers.rewrite_dots_function(container)
-        ...     rmakers.denominator_function(container, 13)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_dots(container)
+        ...     rmakers.denominator(container, 13)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17251,11 +17244,11 @@ def tuplet_function(
 
         >>> def make_rhythm(divisions):
         ...     tag = abjad.Tag("TUPLET_RHYTHM_MAKER")
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(3, 2)], tag=tag
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container, tag=tag)
+        ...     rmakers.beam(container, tag=tag)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17343,11 +17336,11 @@ def tuplet_function(
         Makes tuplets with ``3:2`` ratios:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(3, 2)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17408,11 +17401,11 @@ def tuplet_function(
         Makes tuplets with alternating ``1:-1`` and ``3:1`` ratios:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1, -1), (3, 1)]
         ...     )
         ...     container = abjad.Container(nested_music)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17472,7 +17465,7 @@ def tuplet_function(
         Makes length-1 tuplets:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.tuplet_function(
+        ...     nested_music = rmakers.tuplet(
         ...         divisions, [(1,)]
         ...     )
         ...     container = abjad.Container(nested_music)
@@ -17538,7 +17531,7 @@ def tuplet_function(
     )
 
 
-def unbeam_function(argument) -> None:
+def unbeam(argument) -> None:
     """
     Unbeams each leaf in ``argument``.
     """
@@ -17549,7 +17542,7 @@ def unbeam_function(argument) -> None:
         abjad.detach(abjad.StopBeam, leaf)
 
 
-def untie_function(argument) -> None:
+def untie(argument) -> None:
     r"""
     Deatches ties from each leaf in ``argument``.
 
@@ -17558,16 +17551,16 @@ def untie_function(argument) -> None:
         Attaches ties to nonlast notes; then detaches ties from select notes:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     notes = abjad.select.notes(container)[:-1]
-        ...     rmakers.tie_function(notes)
+        ...     rmakers.tie(notes)
         ...     notes = abjad.select.notes(container)
         ...     notes = abjad.select.get(notes, [0], 4)
-        ...     rmakers.untie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.untie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17663,16 +17656,16 @@ def untie_function(argument) -> None:
         Attaches repeat-ties to nonfirst notes; then detaches ties from select notes:
 
         >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.even_division_function(
+        ...     nested_music = rmakers.even_division(
         ...         divisions, [8], extra_counts=[1]
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     notes = abjad.select.notes(container)[1:]
-        ...     rmakers.repeat_tie_function(notes)
+        ...     rmakers.repeat_tie(notes)
         ...     notes = abjad.select.notes(container)
         ...     notes = abjad.select.get(notes, [0], 4)
-        ...     rmakers.untie_function(notes)
-        ...     rmakers.beam_function(container)
+        ...     rmakers.untie(notes)
+        ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -17788,7 +17781,7 @@ def wrap_in_time_signature_staff(music, divisions):
     return music_voice
 
 
-def written_duration_function(argument, duration: abjad.typings.Duration) -> None:
+def written_duration(argument, duration: abjad.typings.Duration) -> None:
     """
     Sets written duration of each leaf in ``argument`` to ``duration``.
     """
