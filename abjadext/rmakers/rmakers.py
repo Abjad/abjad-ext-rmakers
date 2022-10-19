@@ -405,7 +405,7 @@ def _make_beamable_groups(components, durations):
         start_offset = stop_offset
         group = []
         for component, component_timespan in component_to_timespan:
-            if component_timespan.happens_during_timespan(group_timespan):
+            if component_timespan in group_timespan:
                 group.append(component)
         pair = ([group], target_duration)
         group_to_target_duration.append(pair)
