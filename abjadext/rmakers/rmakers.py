@@ -10800,7 +10800,8 @@ def reduce_multiplier(argument) -> None:
     Reduces multipliers of tuplets in ``argument``.
     """
     for tuplet in abjad.select.tuplets(argument):
-        tuplet.multiplier = abjad.Multiplier(tuplet.multiplier)
+        fraction = abjad.Fraction(tuplet.multiplier)
+        tuplet.multiplier = abjad.NonreducedFraction(fraction)
 
 
 def rewrite_dots(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
@@ -11068,7 +11069,7 @@ def rewrite_rest_filled(argument, *, spelling=None, tag=None) -> None:
             tag=tag,
         )
         abjad.mutate.replace(tuplet[:], rests)
-        tuplet.multiplier = abjad.Multiplier(1)
+        tuplet.multiplier = abjad.NonreducedFraction(1)
 
 
 def rewrite_sustained(argument, *, tag=None) -> None:
@@ -11363,7 +11364,7 @@ def rewrite_sustained(argument, *, tag=None) -> None:
         if not last_leaf_has_tie:
             abjad.detach(abjad.Tie, tuplet[-1])
         abjad.mutate._set_leaf_duration(tuplet[0], duration, tag=tag)
-        tuplet.multiplier = abjad.Multiplier(1)
+        tuplet.multiplier = abjad.NonreducedFraction(1)
 
 
 def split_measures(voice, *, durations=None, tag=None) -> None:
