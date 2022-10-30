@@ -10800,7 +10800,7 @@ def reduce_multiplier(argument) -> None:
     Reduces multipliers of tuplets in ``argument``.
     """
     for tuplet in abjad.select.tuplets(argument):
-        fraction = abjad.Fraction(tuplet.multiplier)
+        fraction = abjad.Fraction(*tuplet.multiplier.pair)
         tuplet.multiplier = abjad.NonreducedFraction(fraction)
 
 
