@@ -32,7 +32,7 @@ if __name__ == "__main__":
         description=description,
         include_package_data=True,
         install_requires=[
-            "abjad>=3.13",
+            "abjad>=3.14",
         ],
         license="MIT",
         long_description=pathlib.Path("README.md").read_text(),
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         name=f"abjad-ext-{name}",
         packages=["abjadext"],
         platforms="Any",
-        python_requires="<3.12,>=3.10.*",
+        python_requires=">=3.10.*",
         url="http://abjad.github.io",
         version=read_version(),
     )
