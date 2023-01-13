@@ -1810,9 +1810,9 @@ class Talea:
 def accelerando(
     divisions,
     *interpolations: typing.Sequence[abjad.typings.Duration],
-    previous_state: dict = None,
+    previous_state: dict | None = None,
     spelling: Spelling = Spelling(),
-    state: dict = None,
+    state: dict | None = None,
     tag: abjad.Tag = abjad.Tag(),
 ):
     r"""
@@ -5779,9 +5779,9 @@ def even_division(
     *,
     denominator: str | int = "from_counts",
     extra_counts: typing.Sequence[int] = (0,),
-    previous_state: dict = None,
+    previous_state: dict | None = None,
     spelling: Spelling = Spelling(),
-    state: dict = None,
+    state: dict | None = None,
     tag: abjad.Tag = abjad.Tag(),
 ):
     r"""
@@ -8152,7 +8152,7 @@ def force_note(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
 def force_repeat_tie(
     argument,
     *,
-    tag: abjad.Tag = None,
+    tag: abjad.Tag | None = None,
     threshold: bool | tuple[int, int] | typing.Callable = True,
 ) -> None:
     """
@@ -8352,7 +8352,7 @@ def incised(
     prefix_counts: typing.Sequence[int] = (),
     suffix_talea: typing.Sequence[int] = (),
     suffix_counts: typing.Sequence[int] = (),
-    talea_denominator: int = None,
+    talea_denominator: int | None = None,
     spelling: Spelling = Spelling(),
     tag: abjad.Tag = abjad.Tag(),
 ):
@@ -10165,9 +10165,9 @@ def on_beat_grace_container(
     argument,
     counts: typing.Sequence[int],
     *,
-    leaf_duration: abjad.typings.Duration = None,
+    leaf_duration: abjad.typings.Duration | None = None,
     # TODO: activate tag
-    tag: abjad.Tag = None,
+    tag: abjad.Tag | None = None,
     talea: Talea = Talea([1], 8),
 ):
     r"""
@@ -10815,7 +10815,7 @@ def rewrite_dots(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
 def rewrite_meter(
     voice: abjad.Voice,
     *,
-    boundary_depth: int = None,
+    boundary_depth: int | None = None,
     reference_meters: typing.Sequence[abjad.Meter] = (),
     tag=None,
 ) -> None:
@@ -11403,10 +11403,10 @@ def talea(
     end_counts: typing.Sequence[int] = (),
     extra_counts: typing.Sequence[int] = (),
     preamble: typing.Sequence[int] = (),
-    previous_state: dict = None,
+    previous_state: dict | None = None,
     read_talea_once_only: bool = False,
     spelling: Spelling = Spelling(),
-    state: dict = None,
+    state: dict | None = None,
     tag: abjad.Tag = abjad.Tag(),
 ) -> list[abjad.Tuplet]:
     r"""
@@ -15225,7 +15225,7 @@ def tie(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
         abjad.attach(tie, note, tag=tag)
 
 
-def tremolo_container(argument, count: int, *, tag: abjad.Tag = None) -> None:
+def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> None:
     r"""
     Replaces each note in ``argument`` with a tremolo container.
 
