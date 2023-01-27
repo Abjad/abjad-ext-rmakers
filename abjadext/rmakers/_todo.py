@@ -319,7 +319,7 @@
 #
 #        ..  container:: example
 #
-#            >>> weights = [abjad.NonreducedFraction(3, 8)]
+#            >>> weights = [(3, 8)]
 #            >>> divisions = []
 #            >>> divisions = divisions.split(
 #            ...     weights, cyclic=True, overhang=True,

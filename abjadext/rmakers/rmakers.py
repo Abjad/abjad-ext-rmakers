@@ -79,6 +79,12 @@ def _apply_ties_to_split_notes(
                 abjad.detach(abjad.Tie, previous_leaf)
 
 
+def _assert_are_pairs_durations_or_time_signatures(argument):
+    for item in abjad.sequence.flatten(argument, classes=(list,)):
+        if not isinstance(item, tuple | abjad.Duration | abjad.TimeSignature):
+            raise Exception(argument)
+
+
 def _do_grace_container_command(
     argument,
     counts,
@@ -464,7 +470,7 @@ def _make_even_division_rhythm_maker_music(
     tuplets = []
     assert isinstance(self_previous_state, dict)
     divisions_consumed = self_previous_state.get("divisions_consumed", 0)
-    divisions = [abjad.NonreducedFraction(_) for _ in divisions]
+    divisions = [abjad.Duration(_) for _ in divisions]
     denominators_ = list(self_denominators)
     denominators_ = abjad.sequence.rotate(denominators_, -divisions_consumed)
     denominators = abjad.CyclicTuple(denominators_)
@@ -474,9 +480,7 @@ def _make_even_division_rhythm_maker_music(
     extra_counts = abjad.CyclicTuple(extra_counts__)
     for i, division in enumerate(divisions):
         if not abjad.math.is_positive_integer_power_of_two(division.denominator):
-            message = "non-power-of-two divisions not implemented:"
-            message += f" {division}."
-            raise Exception(message)
+            raise Exception("non-power-of-two divisions not implemented: division")
         denominator_ = denominators[i]
         extra_count = extra_counts[i]
         basic_duration = abjad.Duration(1, denominator_)
@@ -498,7 +502,7 @@ def _make_even_division_rhythm_maker_music(
             durations = note_count * [basic_duration]
             notes = abjad.makers.make_notes([0], durations, tag=self_tag)
             assert all(_.written_duration.denominator == denominator_ for _ in notes)
-        tuplet_duration = abjad.Duration(division)
+        tuplet_duration = division
         tuplet = abjad.Tuplet.from_duration(tuplet_duration, notes, tag=self_tag)
         if self_denominator == "from_counts" and unprolated_note_count is not None:
             denominator = unprolated_note_count
@@ -4850,6 +4854,7 @@ def accelerando(
 
     Set interpolations' ``written_duration`` to ``1/16`` or less for multiple beams.
     """
+    _assert_are_pairs_durations_or_time_signatures(divisions)
     interpolations_ = []
     for interpolation in interpolations:
         interpolation_durations = [abjad.Duration(_) for _ in interpolation]
@@ -7742,6 +7747,7 @@ def even_division(
         {'divisions_consumed': 10, 'logical_ties_produced': 29}
 
     """
+    _assert_are_pairs_durations_or_time_signatures(divisions)
     previous_state = previous_state or {}
     if state is None:
         state = {}
@@ -9098,7 +9104,9 @@ def incised(
             >>
 
     """
-    divisions_ = [abjad.NonreducedFraction(_) for _ in divisions]
+    _assert_are_pairs_durations_or_time_signatures(divisions)
+    # divisions_ = [abjad.NonreducedFraction(_) for _ in divisions]
+    divisions_ = [_ for _ in divisions]
     return _make_incised_rhythm_maker_music(
         divisions_,
         extra_counts=extra_counts,
@@ -9424,13 +9432,14 @@ def multiplied_duration(
             >>
 
     """
+    _assert_are_pairs_durations_or_time_signatures(divisions)
     duration = abjad.Duration(duration)
     component: abjad.Leaf
     components = []
     for division in divisions:
         division = abjad.NonreducedFraction(division)
-        assert isinstance(division, abjad.NonreducedFraction)
         multiplier = division / duration
+        assert isinstance(multiplier, abjad.NonreducedFraction)
         if prototype is abjad.Note:
             component = prototype("c'", duration, multiplier=multiplier, tag=tag)
         else:
@@ -10155,7 +10164,7 @@ def note(
             >>
 
     """
-
+    _assert_are_pairs_durations_or_time_signatures(divisions)
     return _make_note_rhythm_maker_music(divisions, spelling=spelling, tag=tag)
 
 
@@ -14629,6 +14638,7 @@ def talea(
             >>
 
     """
+    _assert_are_pairs_durations_or_time_signatures(divisions)
     talea = Talea(
         counts=counts,
         denominator=denominator,
@@ -17522,6 +17532,7 @@ def tuplet(
             >>
 
     """
+    _assert_are_pairs_durations_or_time_signatures(divisions)
     tuplet_ratios_ = [abjad.Ratio(_) for _ in tuplet_ratios]
     return _make_tuplet_rhythm_maker_music(
         divisions,
