@@ -116,7 +116,8 @@ def _fix_rounding_error(selection, total_duration, interpolation):
     if not selection_duration == total_duration:
         needed_duration = total_duration - abjad.get.duration(selection[:-1])
         multiplier = needed_duration / interpolation.written_duration
-        selection[-1].multiplier = multiplier
+        pair = multiplier.pair
+        selection[-1].multiplier = pair
 
 
 def _get_interpolations(self_interpolations, self_previous_state):
@@ -364,7 +365,8 @@ def _make_accelerando(
     for i, duration in enumerate(durations):
         written_duration = interpolation.written_duration
         multiplier = duration / written_duration
-        note = abjad.Note(0, written_duration, multiplier=multiplier, tag=tag)
+        pair = multiplier.pair
+        note = abjad.Note(0, written_duration, multiplier=pair, tag=tag)
         notes.append(note)
     _fix_rounding_error(notes, total_duration, interpolation)
     tuplet = abjad.Tuplet((1, 1), notes, tag=tag)
@@ -9439,11 +9441,12 @@ def multiplied_duration(
     for division in divisions:
         division = abjad.NonreducedFraction(division)
         multiplier = division / duration
+        pair = multiplier.pair
         assert isinstance(multiplier, abjad.NonreducedFraction)
         if prototype is abjad.Note:
-            component = prototype("c'", duration, multiplier=multiplier, tag=tag)
+            component = prototype("c'", duration, multiplier=pair, tag=tag)
         else:
-            component = prototype(duration, multiplier=multiplier, tag=tag)
+            component = prototype(duration, multiplier=pair, tag=tag)
         components.append(component)
     return components
 
@@ -17805,4 +17808,5 @@ def written_duration(argument, duration: abjad.typings.Duration) -> None:
             continue
         leaf.written_duration = duration_
         multiplier = old_duration / duration_
-        leaf.multiplier = multiplier
+        pair = multiplier.pair
+        leaf.multiplier = pair
