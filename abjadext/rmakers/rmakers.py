@@ -876,7 +876,7 @@ def _make_talea_rhythm_maker_music(
             numeric_map, scaled.lcd, self_spelling, self_tag
         )
         if not scaled.counts.extra_counts:
-            tuplets = [abjad.Tuplet(1, _) for _ in leaf_lists]
+            tuplets = [abjad.Tuplet((1, 1), _) for _ in leaf_lists]
         else:
             tuplets = _make_talea_rhythm_maker_tuplets(
                 scaled.divisions, leaf_lists, self_tag
@@ -9975,7 +9975,7 @@ def note(
                 {
                     \tweak text #tuplet-number::calc-fraction-text
                     \tweak edge-height #'(0.7 . 0)
-                    \times 16/14
+                    \times 8/7
                     {
                         #(ly:expect-warning "strange time signature found")
                         \time 5/14
@@ -10812,8 +10812,9 @@ def reduce_multiplier(argument) -> None:
     Reduces multipliers of tuplets in ``argument``.
     """
     for tuplet in abjad.select.tuplets(argument):
-        fraction = abjad.Fraction(*tuplet.multiplier.pair)
-        tuplet.multiplier = abjad.NonreducedFraction(fraction)
+        fraction = abjad.Fraction(*tuplet.multiplier)
+        pair = fraction.numerator, fraction.denominator
+        tuplet.multiplier = pair
 
 
 def rewrite_dots(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
@@ -11081,7 +11082,7 @@ def rewrite_rest_filled(argument, *, spelling=None, tag=None) -> None:
             tag=tag,
         )
         abjad.mutate.replace(tuplet[:], rests)
-        tuplet.multiplier = abjad.NonreducedFraction(1)
+        tuplet.multiplier = (1, 1)
 
 
 def rewrite_sustained(argument, *, tag=None) -> None:
@@ -11376,7 +11377,7 @@ def rewrite_sustained(argument, *, tag=None) -> None:
         if not last_leaf_has_tie:
             abjad.detach(abjad.Tie, tuplet[-1])
         abjad.mutate._set_leaf_duration(tuplet[0], duration, tag=tag)
-        tuplet.multiplier = abjad.NonreducedFraction(1)
+        tuplet.multiplier = (1, 1)
 
 
 def split_measures(voice, *, durations=None, tag=None) -> None:
