@@ -5760,7 +5760,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
             assert unit_duration.numerator == 1
             duration = abjad.get.duration(tuplet)
             denominator_ = unit_duration.denominator
-            nonreduced_fraction = duration.with_denominator(denominator_)
+            pair = abjad.duration.with_denominator(duration, denominator_)
+            nonreduced_fraction = abjad.NonreducedFraction(pair)
             tuplet.denominator = nonreduced_fraction.numerator
         elif abjad.math.is_positive_integer(denominator):
             tuplet.denominator = denominator
