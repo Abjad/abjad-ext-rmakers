@@ -116,7 +116,7 @@ def _fix_rounding_error(selection, total_duration, interpolation):
     if not selection_duration == total_duration:
         needed_duration = total_duration - abjad.get.duration(selection[:-1])
         multiplier = needed_duration / interpolation.written_duration
-        pair = multiplier.pair
+        pair = abjad.duration.pair(multiplier)
         selection[-1].multiplier = pair
 
 
@@ -365,7 +365,7 @@ def _make_accelerando(
     for i, duration in enumerate(durations):
         written_duration = interpolation.written_duration
         multiplier = duration / written_duration
-        pair = multiplier.pair
+        pair = abjad.duration.pair(multiplier)
         note = abjad.Note(0, written_duration, multiplier=pair, tag=tag)
         notes.append(note)
     _fix_rounding_error(notes, total_duration, interpolation)
@@ -17809,5 +17809,5 @@ def written_duration(argument, duration: abjad.typings.Duration) -> None:
             continue
         leaf.written_duration = duration_
         multiplier = old_duration / duration_
-        pair = multiplier.pair
+        pair = abjad.duration.pair(multiplier)
         leaf.multiplier = pair
