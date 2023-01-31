@@ -656,10 +656,15 @@ def _make_numeric_map(
     if "+" in talea or "-" in talea:
         assert not preamble, repr(preamble)
     prolated_divisions = _make_prolated_divisions(divisions, extra_counts)
-    prolated_divisions = [abjad.NonreducedFraction(_) for _ in prolated_divisions]
+    pairs = []
+    for item in prolated_divisions:
+        if isinstance(item, tuple):
+            pairs.append(item)
+        else:
+            pairs.append(item.pair)
     if not preamble and not talea:
-        return prolated_divisions, None
-    prolated_numerators = [_.numerator for _ in prolated_divisions]
+        return pairs, None
+    prolated_numerators = [_[0] for _ in pairs]
     expanded_talea = None
     if "-" in talea or "+" in talea:
         total_weight = sum(prolated_numerators)
@@ -736,10 +741,7 @@ def _make_output_incised_numeric_map(
     suffix = suffix_talea[start:stop]
     if len(divisions) == 1:
         prolation_addendum = extra_counts[0]
-        if isinstance(divisions[0], abjad.NonreducedFraction):
-            numerator = divisions[0].numerator
-        else:
-            numerator = divisions[0][0]
+        numerator = getattr(divisions[0], "numerator", divisions[0][0])
         numerator += prolation_addendum % numerator
         numeric_map_part = _make_numeric_map_part(numerator, prefix, suffix, incise)
         numeric_map.append(numeric_map_part)
@@ -1005,7 +1007,7 @@ def _scale_rhythm_maker_input(divisions, talea_denominator, counts):
         scaled_divisions
     )
     dummy_division = scaled_divisions.pop()
-    lcd = dummy_division.denominator
+    lcd = dummy_division[1]
     multiplier = lcd / talea_denominator
     assert abjad.math.is_integer_equivalent(multiplier)
     multiplier = int(multiplier)
@@ -1573,9 +1575,7 @@ class Talea:
         argument %= self.period
         return argument in cumulative
 
-    def __getitem__(
-        self, argument
-    ) -> abjad.NonreducedFraction | list[abjad.NonreducedFraction]:
+    def __getitem__(self, argument) -> tuple[int, int] | list[tuple[int, int]]:
         """
         Gets item or slice identified by ``argument``.
 
@@ -1590,10 +1590,10 @@ class Talea:
             ... )
 
             >>> talea[0]
-            NonreducedFraction(1, 16)
+            (1, 16)
 
             >>> talea[1]
-            NonreducedFraction(1, 16)
+            (1, 16)
 
         ..  container:: example
 
@@ -1602,22 +1602,22 @@ class Talea:
             >>> for duration in talea[:6]:
             ...     duration
             ...
-            NonreducedFraction(1, 16)
-            NonreducedFraction(1, 16)
-            NonreducedFraction(1, 16)
-            NonreducedFraction(1, 16)
-            NonreducedFraction(2, 16)
-            NonreducedFraction(1, 16)
+            (1, 16)
+            (1, 16)
+            (1, 16)
+            (1, 16)
+            (2, 16)
+            (1, 16)
 
             >>> for duration in talea[2:8]:
             ...     duration
             ...
-            NonreducedFraction(1, 16)
-            NonreducedFraction(1, 16)
-            NonreducedFraction(2, 16)
-            NonreducedFraction(1, 16)
-            NonreducedFraction(3, 16)
-            NonreducedFraction(2, 16)
+            (1, 16)
+            (1, 16)
+            (2, 16)
+            (1, 16)
+            (3, 16)
+            (2, 16)
 
         """
         preamble: list[int | str] = list(self.preamble)
@@ -1625,12 +1625,10 @@ class Talea:
         counts_ = abjad.CyclicTuple(preamble + counts)
         if isinstance(argument, int):
             count = counts_.__getitem__(argument)
-            return abjad.NonreducedFraction(count, self.denominator)
+            return (count, self.denominator)
         elif isinstance(argument, slice):
             counts_ = counts_.__getitem__(argument)
-            result = [
-                abjad.NonreducedFraction(count, self.denominator) for count in counts_
-            ]
+            result = [(count, self.denominator) for count in counts_]
             return result
         raise ValueError(argument)
 
@@ -5761,8 +5759,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
             duration = abjad.get.duration(tuplet)
             denominator_ = unit_duration.denominator
             pair = abjad.duration.with_denominator(duration, denominator_)
-            nonreduced_fraction = abjad.NonreducedFraction(pair)
-            tuplet.denominator = nonreduced_fraction.numerator
+            tuplet.denominator = pair[0]
         elif abjad.math.is_positive_integer(denominator):
             tuplet.denominator = denominator
         else:
@@ -9108,7 +9105,6 @@ def incised(
 
     """
     _assert_are_pairs_durations_or_time_signatures(divisions)
-    # divisions_ = [abjad.NonreducedFraction(_) for _ in divisions]
     divisions_ = [_ for _ in divisions]
     return _make_incised_rhythm_maker_music(
         divisions_,
@@ -9440,10 +9436,13 @@ def multiplied_duration(
     component: abjad.Leaf
     components = []
     for division in divisions:
-        division = abjad.NonreducedFraction(division)
-        multiplier = division / duration
-        pair = multiplier.pair
-        assert isinstance(multiplier, abjad.NonreducedFraction)
+        if hasattr(division, "numerator"):
+            pair = division.numerator, division.denominator
+        else:
+            assert isinstance(division, tuple)
+            numerator, denominator = division
+            pair = numerator, denominator
+        pair = abjad.duration.divide_pair(pair, duration)
         if prototype is abjad.Note:
             component = prototype("c'", duration, multiplier=pair, tag=tag)
         else:
