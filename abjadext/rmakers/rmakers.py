@@ -1045,7 +1045,7 @@ def _split_talea_extended_to_weights(preamble, read_talea_once_only, talea, weig
 
 def _validate_tuplets(selections):
     for tuplet in abjad.iterate.components(selections, abjad.Tuplet):
-        assert abjad.Multiplier(tuplet.multiplier).normalized(), repr(tuplet)
+        assert abjad.Duration(tuplet.multiplier).normalized(), repr(tuplet)
         assert len(tuplet), repr(tuplet)
 
 
