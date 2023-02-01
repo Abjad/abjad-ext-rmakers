@@ -598,7 +598,9 @@ def _make_middle_of_numeric_map_part(middle, incise):
         if not incise.outer_divisions_only:
             if 0 < middle:
                 if incise.body_ratio is not None:
-                    shards = middle / incise.body_ratio
+                    shards = abjad.math.divide_integer_by_ratio(
+                        middle, incise.body_ratio
+                    )
                     return tuple(shards)
                 else:
                     return (middle,)
@@ -1058,7 +1060,7 @@ class Incise:
     See ``rmakers.incised()`` for examples.
     """
 
-    body_ratio: abjad.typings.Ratio = abjad.Ratio([1])
+    body_ratio: tuple[int, ...] = (1,)
     fill_with_rests: bool = False
     outer_divisions_only: bool = False
     prefix_counts: typing.Sequence[int] = ()
@@ -1088,7 +1090,7 @@ class Incise:
             )
         if self.prefix_talea or self.suffix_talea:
             assert self.talea_denominator is not None
-        assert isinstance(self.body_ratio, abjad.Ratio), repr(self.body_ratio)
+        assert isinstance(self.body_ratio, tuple), repr(self.body_ratio)
         assert isinstance(self.fill_with_rests, bool), repr(self.fill_with_rests)
         assert isinstance(self.outer_divisions_only, bool), repr(
             self.outer_divisions_only
@@ -8351,7 +8353,7 @@ def incised(
     divisions,
     extra_counts: typing.Sequence[int] = (),
     *,
-    body_ratio: abjad.typings.Ratio = abjad.Ratio((1,)),
+    body_ratio: tuple[int, ...] = (1,),
     fill_with_rests: bool = False,
     outer_divisions_only: bool = False,
     prefix_talea: typing.Sequence[int] = (),
@@ -8399,7 +8401,7 @@ def incised(
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=16,
-        ...         body_ratio=abjad.Ratio((1, 1)),
+        ...         body_ratio=(1, 1),
         ...     )
         ...     container = abjad.Container(nested_music)
         ...     rmakers.beam(container)
@@ -15395,7 +15397,7 @@ def trivialize(argument) -> None:
 
 def tuplet(
     divisions,
-    tuplet_ratios: typing.Sequence[abjad.typings.Ratio],
+    tuplet_ratios: typing.Sequence[tuple[int, ...]],
     *,
     # TODO: is 'denominator' unused?
     # TODO: remove in favor of dedicated denominator control commands:
@@ -17537,10 +17539,9 @@ def tuplet(
 
     """
     _assert_are_pairs_durations_or_time_signatures(divisions)
-    tuplet_ratios_ = [abjad.Ratio(_) for _ in tuplet_ratios]
     return _make_tuplet_rhythm_maker_music(
         divisions,
-        tuplet_ratios_,
+        tuplet_ratios,
         # denominator=denominator,
         # spelling=spelling,
         self_tag=tag,
