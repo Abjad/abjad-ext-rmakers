@@ -11400,17 +11400,19 @@ def talea(
 
         Repeats talea of 1/16, 2/16, 3/16, 4/16:
 
-        >>> def make_rhythm(divisions):
-        ...     nested_music = rmakers.talea(divisions, [1, 2, 3, 4], 16)
+        >>> def make_rhythm(time_signatures):
+        ...     durations = [_.duration for _ in time_signatures]
+        ...     nested_music = rmakers.talea(durations, [1, 2, 3, 4], 16)
         ...     container = abjad.Container(nested_music)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> music = make_rhythm(divisions)
-        >>> lilypond_file = rmakers.example(music, divisions)
+        >>> time_signatures = [
+        ...     abjad.TimeSignature(_) for _ in [(3, 8), (4, 8), (3, 8), (4, 8)]]
+        >>> music = make_rhythm(time_signatures)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
