@@ -11,7 +11,7 @@ def _apply_ties_to_split_notes(
     unscaled_end_counts,
     unscaled_preamble,
     unscaled_talea,
-    self_talea,
+    talea,
 ):
     leaves = abjad.select.leaves(tuplets)
     written_durations = [leaf.written_duration for leaf in leaves]
@@ -21,7 +21,7 @@ def _apply_ties_to_split_notes(
     if unscaled_preamble:
         preamble_weights = []
         for numerator in unscaled_preamble:
-            pair = (numerator, self_talea.denominator)
+            pair = (numerator, talea.denominator)
             duration = abjad.Duration(*pair)
             weight = abs(duration)
             preamble_weights.append(weight)
@@ -46,7 +46,7 @@ def _apply_ties_to_split_notes(
         )
         talea_weights = []
         for numerator in unscaled_talea:
-            pair = (numerator, self_talea.denominator)
+            pair = (numerator, talea.denominator)
             weight = abs(abjad.Duration(*pair))
             talea_weights.append(weight)
         preamble_length = len(abjad.sequence.flatten(preamble_parts))
@@ -448,10 +448,10 @@ def _make_division_incised_numeric_map(
 
 def _make_even_division_rhythm_maker_music(
     divisions,
-    self_denominators,
+    denominators,
     *,
-    self_denominator=None,
-    self_extra_counts=None,
+    denominator=None,
+    extra_counts=None,
     previous_state=None,
     spelling=None,
     tag=None,
@@ -460,18 +460,18 @@ def _make_even_division_rhythm_maker_music(
     assert isinstance(previous_state, dict)
     divisions_consumed = previous_state.get("divisions_consumed", 0)
     divisions = [abjad.Duration(_) for _ in divisions]
-    denominators_ = list(self_denominators)
+    denominators_ = list(denominators)
     denominators_ = abjad.sequence.rotate(denominators_, -divisions_consumed)
-    denominators = abjad.CyclicTuple(denominators_)
-    extra_counts_ = self_extra_counts or [0]
+    cyclic_denominators = abjad.CyclicTuple(denominators_)
+    extra_counts_ = extra_counts or [0]
     extra_counts__ = list(extra_counts_)
     extra_counts__ = abjad.sequence.rotate(extra_counts__, -divisions_consumed)
-    extra_counts = abjad.CyclicTuple(extra_counts__)
+    cyclic_extra_counts = abjad.CyclicTuple(extra_counts__)
     for i, division in enumerate(divisions):
         if not abjad.math.is_positive_integer_power_of_two(division.denominator):
             raise Exception("non-power-of-two divisions not implemented: division")
-        denominator_ = denominators[i]
-        extra_count = extra_counts[i]
+        denominator_ = cyclic_denominators[i]
+        extra_count = cyclic_extra_counts[i]
         basic_duration = abjad.Duration(1, denominator_)
         unprolated_note_count = None
         if division < 2 * basic_duration:
@@ -493,11 +493,10 @@ def _make_even_division_rhythm_maker_music(
             assert all(_.written_duration.denominator == denominator_ for _ in notes)
         tuplet_duration = division
         tuplet = abjad.Tuplet.from_duration(tuplet_duration, notes, tag=tag)
-        if self_denominator == "from_counts" and unprolated_note_count is not None:
-            denominator = unprolated_note_count
+        if denominator == "from_counts" and unprolated_note_count is not None:
+            tuplet.denominator = unprolated_note_count
+        elif isinstance(denominator, int):
             tuplet.denominator = denominator
-        elif isinstance(self_denominator, int):
-            tuplet.denominator = self_denominator
         tuplets.append(tuplet)
     assert all(isinstance(_, abjad.Tuplet) for _ in tuplets), repr(tuplets)
     return tuplets
@@ -840,14 +839,14 @@ def _make_talea_rhythm_maker_music(
     self_read_talea_once_only,
     spelling,
     self_state,
-    self_talea,
+    talea,
     tag,
 ):
     prepared = _prepare_talea_rhythm_maker_input(
-        self_extra_counts, previous_state, self_talea
+        self_extra_counts, previous_state, talea
     )
     divisions = list(divisions)
-    scaled = _scale_rhythm_maker_input(divisions, self_talea.denominator, prepared)
+    scaled = _scale_rhythm_maker_input(divisions, talea.denominator, prepared)
     assert scaled.counts.talea
     if scaled.counts.talea:
         numeric_map, expanded_talea = _make_numeric_map(
@@ -877,14 +876,14 @@ def _make_talea_rhythm_maker_music(
             prepared.end_counts,
             prepared.preamble,
             unscaled_talea,
-            self_talea,
+            talea,
         )
     for tuplet in abjad.iterate.components(tuplets, abjad.Tuplet):
         tuplet.normalize_multiplier()
     assert isinstance(self_state, dict)
     advanced_talea = Talea(
         counts=prepared.talea,
-        denominator=self_talea.denominator,
+        denominator=talea.denominator,
         end_counts=prepared.end_counts,
         preamble=prepared.preamble,
     )
@@ -955,9 +954,9 @@ def _prepare_incised_input(incise, extra_counts):
     )
 
 
-def _prepare_talea_rhythm_maker_input(self_extra_counts, previous_state, self_talea):
+def _prepare_talea_rhythm_maker_input(self_extra_counts, previous_state, talea):
     talea_weight_consumed = previous_state.get("talea_weight_consumed", 0)
-    talea = self_talea.advance(talea_weight_consumed)
+    talea = talea.advance(talea_weight_consumed)
     end_counts = talea.end_counts or ()
     preamble = talea.preamble or ()
     talea = talea.counts or ()
@@ -7733,14 +7732,19 @@ def even_division(
 
     """
     _assert_are_pairs_durations_or_time_signatures(divisions)
+    divisions = [abjad.Duration(_) for _ in divisions]
+    assert all(isinstance(_, int) for _ in denominators), repr(denominators)
+    if denominator is not None and not isinstance(denominator, int):
+        assert denominator in ("from_counts",), repr(denominator)
+    assert all(isinstance(_, int) for _ in extra_counts), repr(extra_counts)
     previous_state = previous_state or {}
     if state is None:
         state = {}
     tuplets = _make_even_division_rhythm_maker_music(
         divisions,
         denominators,
-        self_denominator=denominator,
-        self_extra_counts=extra_counts,
+        denominator=denominator,
+        extra_counts=extra_counts,
         previous_state=previous_state,
         spelling=spelling,
         tag=tag,
