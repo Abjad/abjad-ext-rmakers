@@ -1072,9 +1072,9 @@ class Interpolation:
         """
         Swaps start duration and stop duration of interpolation specifier.
 
-        ..  container:: example
+        Changes accelerando specifier to ritardando specifier:
 
-            Changes accelerando specifier to ritardando specifier:
+        ..  container:: example
 
             >>> specifier = rmakers.Interpolation(
             ...     start_duration=abjad.Duration(1, 4),
@@ -1452,9 +1452,9 @@ class Talea:
         """
         Is true when talea contains ``argument``.
 
-        ..  container:: example
+        With preamble:
 
-            With preamble:
+        ..  container:: example
 
             >>> talea = rmakers.Talea(
             ...     [10],
@@ -1513,9 +1513,9 @@ class Talea:
         """
         Gets item or slice identified by ``argument``.
 
-        ..  container:: example
+        Gets item at index:
 
-            Gets item at index:
+        ..  container:: example
 
             >>> talea = rmakers.Talea(
             ...     [2, 1, 3, 2, 4, 1, 1],
@@ -5220,11 +5220,11 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
     r"""
     Sets denominator of every tuplet in ``argument`` to ``denominator``.
 
-    ..  container:: example
+    Tuplet numerators and denominators are reduced to numbers that are
+    relatively prime when ``denominator`` is set to none. This means that
+    ratios like ``6:4`` and ``10:8`` do not arise:
 
-        Tuplet numerators and denominators are reduced to numbers that are relatively
-        prime when ``denominator`` is set to none. This means that ratios like ``6:4``
-        and ``10:8`` do not arise:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.tuplet(durations, [(1, 4)])
@@ -7815,9 +7815,9 @@ def extract_trivial(argument) -> None:
     r"""
     Extracts trivial tuplets from ``argument``.
 
-    ..  container:: example
+    With selector:
 
-        With selector:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.even_division(durations, [8])
@@ -7921,9 +7921,9 @@ def force_augmentation(argument) -> None:
     r"""
     Forces each tuplet in ``argument`` to notate as an augmentation.
 
-    ..  container:: example
+    Without forced augmentation:
 
-        Without forced augmentation:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.even_division(
@@ -8079,9 +8079,9 @@ def force_note(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     r"""
     Replaces leaves in ``argument`` with notes.
 
-    ..  container:: example
+    Changes logical ties 1 and 2 to notes:
 
-        Changes logical ties 1 and 2 to notes:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
@@ -8231,9 +8231,9 @@ def force_rest(argument, *, tag=None) -> None:
     r"""
     Replaces leaves in ``argument`` with rests.
 
-    ..  container:: example
+    Changes logical ties 1 and 2 to rests:
 
-        Changes logical ties 1 and 2 to rests:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
@@ -9514,9 +9514,9 @@ def note(
     r"""
     Makes one note for every division in ``divisions``.
 
-    ..  container:: example
+    Silences every other logical tie:
 
-        Silences every other logical tie:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
@@ -10678,10 +10678,9 @@ def repeat_tie(argument, *, tag=None) -> None:
     r"""
     Attaches repeat-tie to each leaf in ``argument``.
 
-    ..  container:: example
+    TIE-ACROSS-DIVISIONS RECIPE. Attaches repeat-ties to first note in nonfirst tuplets:
 
-        TIE-ACROSS-DIVISIONS RECIPE. Attaches repeat-ties to first note in nonfirst
-        tuplets:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.even_division(
@@ -10963,9 +10962,9 @@ def rewrite_rest_filled(argument, *, spelling=None, tag=None) -> None:
     r"""
     Rewrites rest-filled tuplets in ``argument``.
 
-    ..  container:: example
+    Does not rewrite rest-filled tuplets:
 
-        Does not rewrite rest-filled tuplets:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.talea(
@@ -11161,9 +11160,9 @@ def rewrite_sustained(argument, *, tag=None) -> None:
     r"""
     Rewrites sustained tuplets in ``argument``.
 
-    ..  container:: example
+    Sustained tuplets generalize a class of rhythms composers are likely to rewrite:
 
-        Sustained tuplets generalize a class of rhythms composers are likely to rewrite:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.talea(
@@ -11501,9 +11500,9 @@ def talea(
     r"""
     Reads ``counts`` cyclically and makes one tuplet for each division in ``divisions``.
 
-    ..  container:: example
+    Repeats talea of 1/16, 2/16, 3/16, 4/16:
 
-        Repeats talea of 1/16, 2/16, 3/16, 4/16:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.talea(durations, [1, 2, 3, 4], 16)
@@ -14809,9 +14808,9 @@ def tie(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
     r"""
     Attaches one tie to each notes in ``argument``.
 
-    ..  container:: example
+    Attaches ties to notes in selection:
 
-        TIE-CONSECUTIVE-NOTES RECIPE. Attaches ties notes in selection:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.even_division(
@@ -15383,9 +15382,9 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
     r"""
     Replaces each note in ``argument`` with a tremolo container.
 
-    ..  container:: example
+    Repeats figures two times each:
 
-        Repeats figures two times each:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.even_division(durations, [4])
@@ -15549,9 +15548,9 @@ def tuplet(
     r"""
     Makes one tuplet for each division in ``divisions``.
 
-    ..  container:: example
+    Makes tuplets with ``3:2`` ratios:
 
-        Makes tuplets with ``3:2`` ratios:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.tuplet(
@@ -17734,9 +17733,9 @@ def untie(argument) -> None:
     r"""
     Deatches ties from each leaf in ``argument``.
 
-    ..  container:: example
+    Attaches ties to nonlast notes; then detaches ties from select notes:
 
-        Attaches ties to nonlast notes; then detaches ties from select notes:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.even_division(
