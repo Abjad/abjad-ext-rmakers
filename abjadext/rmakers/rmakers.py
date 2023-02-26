@@ -2677,44 +2677,7 @@ def accelerando(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \score
-                        {
-                            \context Score = "Score"
-                            \with
-                            {
-                                \override SpacingSpanner.spacing-increment = 0.5
-                                proportionalNotationDuration = ##f
-                            }
-                            <<
-                                \context RhythmicStaff = "Rhythmic_Staff"
-                                \with
-                                {
-                                    \remove Time_signature_engraver
-                                    \remove Staff_symbol_engraver
-                                    \override Stem.direction = #up
-                                    \override Stem.length = 5
-                                    \override TupletBracket.bracket-visibility = ##t
-                                    \override TupletBracket.direction = #up
-                                    \override TupletBracket.minimum-length = 4
-                                    \override TupletBracket.padding = 1.25
-                                    \override TupletBracket.shorten-pair = #'(-1 . -1.5)
-                                    \override TupletBracket.springs-and-rods = #ly:spanner::set-spacing-rods
-                                    \override TupletNumber.font-size = 0
-                                    \override TupletNumber.text = #tuplet-number::calc-fraction-text
-                                    tupletFullLength = ##t
-                                }
-                                {
-                                    c'2
-                                    ~
-                                    c'8
-                                }
-                            >>
-                            \layout
-                            {
-                                indent = 0
-                                ragged-right = ##t
-                            }
-                        }
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 ~ 8 }
                     \times 1/1
                     {
                         \once \override Beam.grow-direction = #right
@@ -4050,13 +4013,16 @@ def duration_bracket(argument) -> None:
     """
     for tuplet in abjad.select.tuplets(argument):
         duration_ = abjad.get.duration(tuplet)
-        try:
-            lds = duration_.lilypond_duration_string
-            string = rf"\markup \scale #'(0.75 . 0.75) \rhythm {{ {lds} }}"
-        except abjad.AssignabilityError:
-            notes = abjad.makers.make_leaves([0], [duration_])
-            string = abjad.illustrators.selection_to_score_markup_string(notes)
-            string = rf"\markup \scale #'(0.75 . 0.75) {string}"
+
+        components = abjad.makers.make_leaves([0], [duration_])
+        if all(isinstance(_, abjad.Note) for _ in components):
+            durations = [abjad.get.duration(_) for _ in components]
+            strings = [_.lilypond_duration_string for _ in durations]
+            string = " ~ ".join(strings)
+            string = rf"\rhythm {{ {string} }}"
+        else:
+            string = abjad.illustrators.selection_to_score_markup_string(components)
+        string = rf"\markup \scale #'(0.75 . 0.75) {string}"
         abjad.override(tuplet).TupletNumber.text = string
 
 
