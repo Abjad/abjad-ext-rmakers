@@ -1756,9 +1756,9 @@ def accelerando(
     r"""
     Makes accelerando figures in ``divisions``.
 
-    ..  container:: example
+    Makes accelerandi:
 
-        Makes accelerandi:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.accelerando(durations, [(1, 8), (1, 20), (1, 16)])
@@ -3113,9 +3113,9 @@ def after_grace_container(
     r"""
     Makes after-grace containers.
 
-    ..  container:: example
+    Single after-graces with slurs applied manually:
 
-        Single after-graces with slurs applied manually:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
@@ -4020,9 +4020,9 @@ def even_division(
     r"""
     Makes even-division tuplets in ``divisions``.
 
-    ..  container:: example
+    Forces tuplet diminution:
 
-        Forces tuplet diminution:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[0, 0, 1])
@@ -6334,9 +6334,9 @@ def force_note(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
-        ...     leaves = abjad.select.leaves(container)
-        ...     rmakers.force_rest(leaves)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
+        ...     rmakers.force_rest(components)
         ...     logical_ties = abjad.select.logical_ties(container)[1:3]
         ...     rmakers.force_note(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
@@ -6378,7 +6378,8 @@ def force_note(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     leaves = abjad.select.leaves(container)
         ...     rmakers.force_rest(leaves)
         ...     logical_ties = abjad.select.logical_ties(container)
@@ -6486,7 +6487,8 @@ def force_rest(argument, *, tag=None) -> None:
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)[1:3]
         ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
@@ -6528,7 +6530,8 @@ def force_rest(argument, *, tag=None) -> None:
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)[-2:]
         ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
@@ -6570,7 +6573,8 @@ def force_rest(argument, *, tag=None) -> None:
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)[1:-1]
         ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
@@ -6641,9 +6645,9 @@ def incised(
     r"""
     Makes incised tuplets in ``divisions``.
 
-    ..  container:: example
+    Specifies one sixteenth rest cut out of the beginning of every division:
 
-        Specifies one sixteenth rest cut out of the beginning of every division:
+    ..  container:: example
 
         >>> specifier = rmakers.Incise(
         ...     prefix_talea=[-1],
@@ -7775,7 +7779,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)
         ...     rmakers.force_rest(logical_ties)
@@ -7818,7 +7823,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     rmakers.force_rest(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
@@ -7861,7 +7867,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)[1:-1]
         ...     rmakers.force_rest(logical_ties)
@@ -7906,7 +7913,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container, pitched=True)
         ...     rmakers.beam(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
@@ -7952,7 +7960,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     rmakers.beam_groups(logical_ties)
         ...     music = abjad.mutate.eject_contents(container)
@@ -8004,7 +8013,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8044,7 +8054,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8084,7 +8095,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in logical_ties]
         ...     rmakers.tie(leaves)
@@ -8130,7 +8142,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)[:-1]
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)
         ...     leaves = [abjad.select.leaf(_, -1) for _ in logical_ties]
@@ -8176,7 +8189,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     rmakers.untie(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
@@ -8216,7 +8230,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
@@ -8264,7 +8279,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     rmakers.force_augmentation(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
@@ -8315,7 +8331,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_tie = abjad.select.logical_tie(container, 0)
         ...     rmakers.force_rest(logical_tie)
         ...     music = abjad.mutate.eject_contents(container)
@@ -8360,7 +8377,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_tie = abjad.select.logical_ties(container)[:2]
         ...     rmakers.force_rest(logical_tie)
         ...     music = abjad.mutate.eject_contents(container)
@@ -8405,7 +8423,8 @@ def note(
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
-        ...     container = abjad.Container(nested_music)
+        ...     components = abjad.sequence.flatten(nested_music)
+        ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
         ...     rmakers.force_rest(logical_ties)
@@ -8450,6 +8469,7 @@ def note(
 
         >>> def make_rhythm(durations, time_signatures):
         ...     nested_music = rmakers.note(durations)
+        ...     components = abjad.sequence.flatten(nested_music)
         ...     voice = rmakers.wrap_in_time_signature_staff(nested_music, time_signatures)
         ...     rmakers.rewrite_meter(voice)
         ...     music = abjad.mutate.eject_contents(voice)
