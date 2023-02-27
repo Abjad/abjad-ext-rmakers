@@ -8470,7 +8470,7 @@ def note(
         >>> def make_rhythm(durations, time_signatures):
         ...     nested_music = rmakers.note(durations)
         ...     components = abjad.sequence.flatten(nested_music)
-        ...     voice = rmakers.wrap_in_time_signature_staff(nested_music, time_signatures)
+        ...     voice = rmakers.wrap_in_time_signature_staff(components, time_signatures)
         ...     rmakers.rewrite_meter(voice)
         ...     music = abjad.mutate.eject_contents(voice)
         ...     return music
@@ -16094,20 +16094,22 @@ def untie(argument) -> None:
         abjad.detach(abjad.RepeatTie, leaf)
 
 
-def wrap_in_time_signature_staff(music, divisions) -> abjad.Voice:
+def wrap_in_time_signature_staff(
+    components, time_signatures: list[abjad.TimeSignature]
+) -> abjad.Voice:
     """
-    Makes staff with two voices: one voice for ``music`` and another voice
-    with time signatures (equal to divisions).
+    Makes staff with two voices: one voice for ``components`` and another voice
+    for ``time_signatures``.
 
     See ``rmakers.rewrite_meter()`` for examples of this function.
     """
-    music = abjad.sequence.flatten(music, depth=-1)
-    assert all(isinstance(_, abjad.Component) for _ in music), repr(music)
-    assert isinstance(music, list), repr(music)
-    time_signatures = [abjad.TimeSignature(_) for _ in divisions]
+    assert all(isinstance(_, abjad.Component) for _ in components), repr(components)
+    assert all(isinstance(_, abjad.TimeSignature) for _ in time_signatures), repr(
+        time_signatures
+    )
     staff = _make_time_signature_staff(time_signatures)
     music_voice = staff["RhythmMaker.Music"]
-    music_voice.extend(music)
+    music_voice.extend(components)
     _validate_tuplets(music_voice)
     return music_voice
 
