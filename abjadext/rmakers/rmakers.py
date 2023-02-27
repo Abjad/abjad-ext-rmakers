@@ -7769,7 +7769,7 @@ def nongrace_leaves_in_each_tuplet(argument, level: int = -1) -> list[list[abjad
 
 def note(
     divisions, *, spelling: Spelling = Spelling(), tag: abjad.Tag = abjad.Tag()
-) -> list[list[abjad.Leaf | abjad.Tuplet]]:
+) -> list[abjad.Leaf | abjad.Tuplet]:
     r"""
     Makes one note for every division in ``divisions``.
 
@@ -8509,10 +8509,9 @@ def note(
     _assert_are_pairs_durations_or_time_signatures(divisions)
     durations = [abjad.Duration(_) for _ in divisions]
     lists = _make_note_rhythm_maker_music(durations, spelling=spelling, tag=tag)
-    for list_ in lists:
-        assert isinstance(list_, list), repr(list_)
-        assert all(isinstance(_, abjad.Leaf | abjad.Tuplet) for _ in list_), repr(list_)
-    return lists
+    components = abjad.sequence.flatten(lists)
+    assert all(isinstance(_, abjad.Leaf | abjad.Tuplet) for _ in components)
+    return components
 
 
 def on_beat_grace_container(
