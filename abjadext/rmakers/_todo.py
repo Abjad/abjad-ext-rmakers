@@ -1,11 +1,11 @@
 # TODO: make this work again relatively soon
 #            Only logical tie 12 is rested here:
 #
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = command(divisions, previous_segment_stop_state=state)
+#            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selections = command(durations, previous_segment_stop_state=state)
 #
 #
-#            >>> lilypond_file = rmakers.example(selections, divisions)
+#            >>> lilypond_file = rmakers.example(selections, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -54,7 +54,7 @@
 #            >>> command.state
 #            dict(
 #                [
-#                    ('divisions_consumed', 8),
+#                    ('durations_consumed', 8),
 #                    ('incomplete_last_note', True),
 #                    ('logical_ties_produced', 16),
 #                    ('talea_weight_consumed', 63),
@@ -76,10 +76,10 @@
 #
 #            Incomplete last note is rested here:
 #
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = stack(divisions)
+#            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selections = stack(durations)
 #
-#            >>> lilypond_file = rmakers.example(selections, divisions)
+#            >>> lilypond_file = rmakers.example(selections, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -126,7 +126,7 @@
 #            >>> stack.maker.state
 #            dict(
 #                [
-#                    ('divisions_consumed', 4),
+#                    ('durations_consumed', 4),
 #                    ('incomplete_last_note', True),
 #                    ('logical_ties_produced', 8),
 #                    ('talea_weight_consumed', 31),
@@ -135,10 +135,10 @@
 #
 #            Incomplete first note is rested here:
 #
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = stack(divisions, previous_state=state)
+#            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selections = stack(durations, previous_state=state)
 #
-#            >>> lilypond_file = rmakers.example(selections, divisions)
+#            >>> lilypond_file = rmakers.example(selections, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -187,7 +187,7 @@
 #            >>> stack.maker.state
 #            dict(
 #                [
-#                    ('divisions_consumed', 8),
+#                    ('durations_consumed', 8),
 #                    ('incomplete_last_note', True),
 #                    ('logical_ties_produced', 16),
 #                    ('talea_weight_consumed', 63),
@@ -198,10 +198,10 @@
 # TODO: allow statal GROUP_BY_MEASURE selector (or maybe tuplet selecctor) to work here:
 #            Only tuplet 7 is rested here:
 #
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = stack(divisions, previous_state=state)
+#            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selections = stack(durations, previous_state=state)
 #
-#            >>> lilypond_file = rmakers.example(selections, divisions)
+#            >>> lilypond_file = rmakers.example(selections, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -245,7 +245,7 @@
 #            >>> stack.maker.state
 #            dict(
 #                [
-#                    ('divisions_consumed', 8),
+#                    ('durations_consumed', 8),
 #                    ('incomplete_last_note', True),
 #                    ('logical_ties_produced', 15),
 #                    ('talea_weight_consumed', 63),
@@ -256,10 +256,10 @@
 # TODO: allow statal GROUP_BY_MEASURE selector (or maybe tuplet selecctor) to work here:
 #            Incomplete first note is rested here:
 #
-#            >>> divisions = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = stack(divisions, previous_state=state)
+#            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
+#            >>> selections = stack(durations, previous_state=state)
 #
-#            >>> lilypond_file = rmakers.example(selections, divisions)
+#            >>> lilypond_file = rmakers.example(selections, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -303,7 +303,7 @@
 #            >>> stack.maker.state
 #            dict(
 #                [
-#                    ('divisions_consumed', 8),
+#                    ('durations_consumed', 8),
 #                    ('incomplete_last_note', True),
 #                    ('logical_ties_produced', 15),
 #                    ('talea_weight_consumed', 63),
