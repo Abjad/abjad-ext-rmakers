@@ -142,24 +142,6 @@ def _get_interpolations(interpolations, previous_state):
     return specifiers_
 
 
-def _incised_numeric_map_to_leaf_selections(
-    numeric_map, lcd, *, spelling=None, tag=None
-):
-    selections = []
-    for numeric_map_part in numeric_map:
-        numeric_map_part = [_ for _ in numeric_map_part if _ != abjad.Duration(0)]
-        selection = _make_leaves_from_talea(
-            numeric_map_part,
-            lcd,
-            forbidden_note_duration=spelling.forbidden_note_duration,
-            forbidden_rest_duration=spelling.forbidden_rest_duration,
-            increase_monotonic=spelling.increase_monotonic,
-            tag=tag,
-        )
-        selections.append(selection)
-    return selections
-
-
 def _interpolate_cosine(y1, y2, mu) -> float:
     mu2 = (1 - math.cos(mu * math.pi)) / 2
     return y1 * (1 - mu2) + y2 * mu2
@@ -423,7 +405,7 @@ def _make_beamable_groups(components, durations):
     return beamable_groups
 
 
-def _make_division_incised_numeric_map(
+def _make_incised_duration_lists(
     pairs,
     prefix_talea,
     prefix_counts,
@@ -454,40 +436,40 @@ def _make_division_incised_numeric_map(
     return duration_lists
 
 
-def _make_leaves_from_talea(
-    talea,
-    talea_denominator,
+def _make_leaf_and_tuplet_list(
+    durations,
     increase_monotonic=None,
     forbidden_note_duration=None,
     forbidden_rest_duration=None,
-    tag: abjad.Tag = abjad.Tag(),
-):
-    assert all(_ != 0 for _ in talea), repr(talea)
-    result: list[abjad.Leaf | abjad.Tuplet] = []
+    tag=None,
+) -> list[abjad.Leaf | abjad.Tuplet]:
+    assert all(isinstance(_, abjad.Duration) for _ in durations), repr(durations)
+    assert all(_ != 0 for _ in durations), repr(durations)
+    leaves_and_tuplets: list[abjad.Leaf | abjad.Tuplet] = []
     pitches: list[int | None]
-    for note_value in talea:
-        if 0 < note_value:
+    for duration in durations:
+        if 0 < duration:
             pitches = [0]
         else:
             pitches = [None]
-        division = abjad.Duration(abs(note_value), talea_denominator)
-        durations = [division]
-        leaves = abjad.makers.make_leaves(
+        duration = abs(duration)
+        leaves_and_tuplets_ = abjad.makers.make_leaves(
             pitches,
-            durations,
+            [duration],
             increase_monotonic=increase_monotonic,
             forbidden_note_duration=forbidden_note_duration,
             forbidden_rest_duration=forbidden_rest_duration,
             tag=tag,
         )
+        # TODO: is this needed?
         if (
-            1 < len(leaves)
-            and abjad.get.logical_tie(leaves[0]).is_trivial
-            and not isinstance(leaves[0], abjad.Rest)
+            1 < len(leaves_and_tuplets_)
+            and abjad.get.logical_tie(leaves_and_tuplets_[0]).is_trivial
+            and not isinstance(leaves_and_tuplets_[0], abjad.Rest)
         ):
-            abjad.tie(leaves)
-        result.extend(leaves)
-    return result
+            abjad.tie(leaves_and_tuplets_)
+        leaves_and_tuplets.extend(leaves_and_tuplets_)
+    return leaves_and_tuplets
 
 
 def _make_middle_durations(middle_duration, incise):
@@ -576,14 +558,14 @@ def _make_numeric_map(
         talea_[index] = implicit_weight
         expanded_talea = tuple(talea_)
         talea = abjad.CyclicTuple(expanded_talea)
-    result = _split_talea_extended_to_weights(
+    numerator_lists = _split_talea_extended_to_weights(
         preamble, read_talea_once_only, talea, prolated_numerators
     )
     if end_counts:
         end_counts = list(end_counts)
         end_weight = abjad.sequence.weight(end_counts)
-        division_weights = [abjad.sequence.weight(_) for _ in result]
-        counts = abjad.sequence.flatten(result)
+        division_weights = [abjad.sequence.weight(_) for _ in numerator_lists]
+        counts = abjad.sequence.flatten(numerator_lists)
         counts_weight = abjad.sequence.weight(counts)
         assert end_weight <= counts_weight, repr(end_counts)
         left = counts_weight - end_weight
@@ -591,10 +573,10 @@ def _make_numeric_map(
         counts = abjad.sequence.split(counts, [left, right])
         counts = counts[0] + end_counts
         assert abjad.sequence.weight(counts) == counts_weight
-        result = abjad.sequence.partition_by_weights(counts, division_weights)
-    for sequence in result:
-        assert all(isinstance(_, int) for _ in sequence), repr(sequence)
-    return result, expanded_talea
+        numerator_lists = abjad.sequence.partition_by_weights(counts, division_weights)
+    for numerator_list in numerator_lists:
+        assert all(isinstance(_, int) for _ in numerator_list), repr(numerator_list)
+    return numerator_lists, expanded_talea
 
 
 def _make_duration_list(numerator, prefix, suffix, incise, *, is_note_filled=True):
@@ -624,7 +606,7 @@ def _make_duration_list(numerator, prefix, suffix, incise, *, is_note_filled=Tru
     return duration_list
 
 
-def _make_output_incised_numeric_map(
+def _make_outer_tuplets_only_incised_duration_lists(
     divisions,
     prefix_talea,
     prefix_counts,
@@ -731,21 +713,6 @@ def _make_state_dictionary(
     return state
 
 
-def _make_talea_rhythm_make_leaf_lists(numeric_map, talea_denominator, spelling, tag):
-    leaf_lists = []
-    for map_division in numeric_map:
-        leaf_list = _make_leaves_from_talea(
-            map_division,
-            talea_denominator,
-            increase_monotonic=spelling.increase_monotonic,
-            forbidden_note_duration=spelling.forbidden_note_duration,
-            forbidden_rest_duration=spelling.forbidden_rest_duration,
-            tag=tag,
-        )
-        leaf_lists.append(leaf_list)
-    return leaf_lists
-
-
 def _make_talea_tuplets(
     divisions,
     self_extra_counts,
@@ -763,7 +730,7 @@ def _make_talea_tuplets(
     scaled = _scale_rhythm_maker_input(divisions, talea.denominator, prepared)
     assert scaled.counts.talea
     if scaled.counts.talea:
-        duration_lists, expanded_talea = _make_numeric_map(
+        numerator_lists, expanded_talea = _make_numeric_map(
             scaled.pairs,
             scaled.counts.preamble,
             scaled.counts.talea,
@@ -775,16 +742,25 @@ def _make_talea_tuplets(
             unscaled_talea = expanded_talea
         else:
             unscaled_talea = prepared.talea
-        talea_weight_consumed = sum(abjad.sequence.weight(_) for _ in duration_lists)
-        leaf_lists = _make_talea_rhythm_make_leaf_lists(
-            duration_lists, scaled.lcd, spelling, tag
-        )
+        talea_weight_consumed = sum(abjad.sequence.weight(_) for _ in numerator_lists)
+        duration_lists = [
+            [abjad.Duration(_, scaled.lcd) for _ in n] for n in numerator_lists
+        ]
+        leaf_lists = []
+        for duration_list in duration_lists:
+            leaf_list = _make_leaf_and_tuplet_list(
+                duration_list,
+                increase_monotonic=spelling.increase_monotonic,
+                forbidden_note_duration=spelling.forbidden_note_duration,
+                forbidden_rest_duration=spelling.forbidden_rest_duration,
+                tag=tag,
+            )
+            leaf_lists.append(leaf_list)
         if not scaled.counts.extra_counts:
             tuplets = [abjad.Tuplet((1, 1), _) for _ in leaf_lists]
         else:
-            tuplets = _make_talea_rhythm_maker_tuplets(
-                scaled.pairs, leaf_lists, tag=tag
-            )
+            durations_ = [abjad.Duration(_) for _ in scaled.pairs]
+            tuplets = _make_talea_rhythm_maker_tuplets(durations_, leaf_lists, tag=tag)
         _apply_ties_to_split_notes(
             tuplets,
             prepared.end_counts,
@@ -815,8 +791,7 @@ def _make_talea_tuplets(
 
 
 def _make_talea_rhythm_maker_tuplets(durations, leaf_lists, *, tag):
-    durations = [abjad.Duration(_) for _ in durations]
-    # assert all(isinstance(_, abjad.Duration) for _ in durations), repr(durations)
+    assert all(isinstance(_, abjad.Duration) for _ in durations), repr(durations)
     assert len(durations) == len(leaf_lists)
     tuplets = []
     for duration, leaf_list in zip(durations, leaf_lists):
@@ -7147,8 +7122,8 @@ def incised(
     )
     talea_denominator = incise.talea_denominator
     scaled = _scale_rhythm_maker_input(durations, talea_denominator, counts)
-    if not incise.outer_tuplets_only:
-        duration_lists = _make_division_incised_numeric_map(
+    if incise.outer_tuplets_only:
+        duration_lists = _make_outer_tuplets_only_incised_duration_lists(
             scaled.pairs,
             scaled.counts.prefix_talea,
             prepared.prefix_counts,
@@ -7158,8 +7133,7 @@ def incised(
             incise,
         )
     else:
-        assert incise.outer_tuplets_only
-        duration_lists = _make_output_incised_numeric_map(
+        duration_lists = _make_incised_duration_lists(
             scaled.pairs,
             scaled.counts.prefix_talea,
             prepared.prefix_counts,
@@ -7168,12 +7142,22 @@ def incised(
             scaled.counts.extra_counts,
             incise,
         )
-    lists = _incised_numeric_map_to_leaf_selections(
-        duration_lists, scaled.lcd, spelling=spelling, tag=tag
+    leaf_and_tuplet_lists = []
+    for duration_list in duration_lists:
+        duration_list = [_ for _ in duration_list if _ != abjad.Duration(0)]
+        duration_list = [abjad.Duration(_, scaled.lcd) for _ in duration_list]
+        leaf_and_tuplet_list_ = _make_leaf_and_tuplet_list(
+            duration_list,
+            forbidden_note_duration=spelling.forbidden_note_duration,
+            forbidden_rest_duration=spelling.forbidden_rest_duration,
+            increase_monotonic=spelling.increase_monotonic,
+            tag=tag,
+        )
+        leaf_and_tuplet_lists.append(leaf_and_tuplet_list_)
+    durations = [abjad.Duration(_) for _ in scaled.pairs]
+    tuplets = _make_talea_rhythm_maker_tuplets(
+        durations, leaf_and_tuplet_lists, tag=tag
     )
-    for list_ in lists:
-        assert all(isinstance(_, abjad.Leaf | abjad.Tuplet) for _ in list_), repr(list_)
-    tuplets = _make_talea_rhythm_maker_tuplets(scaled.pairs, lists, tag=tag)
     assert all(isinstance(_, abjad.Tuplet) for _ in tuplets)
     return tuplets
 
