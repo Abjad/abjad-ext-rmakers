@@ -1,4 +1,5 @@
 import dataclasses
+import inspect
 import math
 import types
 import typing
@@ -118,6 +119,12 @@ def _fix_rounding_error(selection, total_duration, interpolation):
         multiplier = needed_duration / interpolation.written_duration
         pair = abjad.duration.pair(multiplier)
         selection[-1].multiplier = pair
+
+
+def _function_name(frame):
+    function_name = frame.f_code.co_name
+    string = f"rmakers.{function_name}()"
+    return abjad.Tag(string)
 
 
 def _get_interpolations(interpolations, previous_state):
@@ -1711,7 +1718,7 @@ def accelerando(
     previous_state: dict | None = None,
     spelling: Spelling = Spelling(),
     state: dict | None = None,
-    tag: abjad.Tag = abjad.Tag(),
+    tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
     Makes accelerando figures in ``durations``.
@@ -3031,6 +3038,7 @@ def accelerando(
     """
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
+    tag = tag or _function_name(inspect.currentframe())
     interpolations_ = []
     for interpolation in interpolations:
         interpolation_durations = [abjad.Duration(_) for _ in interpolation]
@@ -3246,11 +3254,12 @@ def beam(
     beam_lone_notes: bool = False,
     beam_rests: bool = False,
     stemlet_length: int | float | None = None,
-    tag: abjad.Tag = abjad.Tag("rmakers.beam()"),
+    tag: abjad.Tag | None = None,
 ) -> None:
     """
     Calls ``abjad.beam()`` on leaves in ``argument``.
     """
+    tag = tag or _function_name(inspect.currentframe())
     for selection in argument:
         unbeam(selection)
         leaves = abjad.select.leaves(selection)
@@ -3269,11 +3278,12 @@ def beam_groups(
     beam_lone_notes: bool = False,
     beam_rests: bool = False,
     stemlet_length: int | float | None = None,
-    tag: abjad.Tag = abjad.Tag("rmakers.beam_groups()"),
+    tag: abjad.Tag | None = None,
 ) -> None:
     """
     Beams ``argument`` groups.
     """
+    tag = tag or _function_name(inspect.currentframe())
     unbeam(argument)
     durations = []
     components: list[abjad.Component] = []
@@ -3974,7 +3984,7 @@ def even_division(
     previous_state: dict | None = None,
     spelling: Spelling = Spelling(),
     state: dict | None = None,
-    tag: abjad.Tag = abjad.Tag(),
+    tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
     Makes even-division tuplets from ``durations``.
@@ -5935,6 +5945,7 @@ def even_division(
 
     """
     _assert_are_pairs_durations_or_time_signatures(durations)
+    tag = tag or _function_name(inspect.currentframe())
     durations = [abjad.Duration(_) for _ in durations]
     assert all(isinstance(_, int) for _ in denominators), repr(denominators)
     if denominator is not None and not isinstance(denominator, int):
@@ -5946,7 +5957,6 @@ def even_division(
     tuplets = []
     assert isinstance(previous_state, dict)
     durations_consumed = previous_state.get("durations_consumed", 0)
-    # divisions = [abjad.Duration(_) for _ in durations]
     denominators_ = list(denominators)
     denominators_ = abjad.sequence.rotate(denominators_, -durations_consumed)
     cyclic_denominators = abjad.CyclicTuple(denominators_)
@@ -6005,15 +6015,16 @@ def even_division(
     return tuplets
 
 
-# TODO: constrain selection, constrain time_signatures
-def example(selection, time_signatures=None, *, includes=None) -> abjad.LilyPondFile:
+def example(components, time_signatures, *, includes=None) -> abjad.LilyPondFile:
     """
     Makes example LilyPond file for documentation examples.
     """
-    lilypond_file = abjad.illustrators.selection(
-        selection,
-        time_signatures,
+    assert all(isinstance(_, abjad.Component) for _ in components), repr(components)
+    assert all(isinstance(_, abjad.TimeSignature) for _ in time_signatures), repr(
+        time_signatures
     )
+    assert time_signatures is not None
+    lilypond_file = abjad.illustrators.selection(components, time_signatures)
     includes = [rf'\include "{_}"' for _ in includes or []]
     lilypond_file.items[0:0] = includes
     staff = lilypond_file["Staff"]
@@ -6105,12 +6116,12 @@ def feather_beam(
     *,
     beam_rests: bool = False,
     stemlet_length: int | float | None = None,
-    tag: abjad.Tag = abjad.Tag(),
+    tag: abjad.Tag | None = None,
 ) -> None:
     """
     Feather-beams leaves in ``argument``.
     """
-
+    tag = tag or _function_name(inspect.currentframe())
     for selection in argument:
         unbeam(selection)
         leaves = abjad.select.leaves(selection)
@@ -6282,7 +6293,7 @@ def force_fraction(argument) -> None:
         tuplet.force_fraction = True
 
 
-def force_note(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
     Replaces leaves in ``argument`` with notes.
 
@@ -6377,6 +6388,7 @@ def force_note(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     leaves = abjad.select.leaves(argument)
     for leaf in leaves:
         if isinstance(leaf, abjad.Note):
@@ -6396,7 +6408,8 @@ def force_repeat_tie(
     """
     Changes all ties in argument to repeat-ties.
     """
-    assert isinstance(argument, abjad.Container), argument
+    tag = tag or _function_name(inspect.currentframe())
+    assert isinstance(argument, abjad.Container), repr(argument)
     if callable(threshold):
         inequality = threshold
     elif threshold in (None, False):
@@ -6435,7 +6448,7 @@ def force_repeat_tie(
         abjad.attach(repeat_tie, leaf, tag=tag)
 
 
-def force_rest(argument, *, tag=None) -> None:
+def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
     Replaces leaves in ``argument`` with rests.
 
@@ -6569,6 +6582,7 @@ def force_rest(argument, *, tag=None) -> None:
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     leaves = abjad.select.leaves(argument)
     for leaf in leaves:
         rest = abjad.Rest(leaf.written_duration, tag=tag)
@@ -6597,7 +6611,7 @@ def incised(
     spelling: Spelling = Spelling(),
     suffix_counts: typing.Sequence[int] = (),
     suffix_talea: typing.Sequence[int] = (),
-    tag: abjad.Tag = abjad.Tag(),
+    tag: abjad.Tag | None = None,
     talea_denominator: int | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
@@ -7112,6 +7126,7 @@ def incised(
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
     incise = Incise(
@@ -7163,10 +7178,11 @@ def incised(
     return tuplets
 
 
-def invisible_music(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+def invisible_music(argument, *, tag: abjad.Tag | None = None) -> None:
     """
     Makes ``argument`` invisible.
     """
+    tag = tag or _function_name(inspect.currentframe())
     tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
     literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
     tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
@@ -7197,7 +7213,7 @@ def multiplied_duration(
     *,
     duration: abjad.typings.Duration = (1, 1),
     spelling: Spelling = Spelling(),
-    tag: abjad.Tag = abjad.Tag(),
+    tag: abjad.Tag | None = None,
 ) -> list[abjad.Leaf]:
     r"""
     Makes one multiplied duration for each division in ``divisions``.
@@ -7478,6 +7494,7 @@ def multiplied_duration(
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     _assert_are_pairs_durations_or_time_signatures(divisions)
     divisions = [abjad.Duration(_) for _ in divisions]
     duration = abjad.Duration(duration)
@@ -7515,7 +7532,7 @@ def nongrace_leaves_in_each_tuplet(
 
 
 def note(
-    divisions, *, spelling: Spelling = Spelling(), tag: abjad.Tag = abjad.Tag()
+    divisions, *, spelling: Spelling = Spelling(), tag: abjad.Tag | None = None
 ) -> list[abjad.Leaf | abjad.Tuplet]:
     r"""
     Makes one note for every division in ``divisions``.
@@ -8253,6 +8270,7 @@ def note(
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     _assert_are_pairs_durations_or_time_signatures(divisions)
     durations = [abjad.Duration(_) for _ in divisions]
     lists = _make_note_rhythm_maker_music(durations, spelling=spelling, tag=tag)
@@ -8676,6 +8694,7 @@ def on_beat_grace_container(
     assert isinstance(talea, Talea), repr(talea)
     assert isinstance(voice, abjad.Voice), repr(voice)
     assert isinstance(voice_name, str), repr(voice_name)
+    tag = tag or _function_name(inspect.currentframe())
     if voice_name:
         voice.name = voice_name
     assert isinstance(talea, Talea), repr(talea)
@@ -8697,7 +8716,7 @@ def on_beat_grace_container(
         )
 
 
-def repeat_tie(argument, *, tag=None) -> None:
+def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
     Attaches repeat-tie to each leaf in ``argument``.
 
@@ -8889,6 +8908,7 @@ def repeat_tie(argument, *, tag=None) -> None:
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     for note in abjad.select.notes(argument):
         tie = abjad.RepeatTie()
         abjad.attach(tie, note, tag=tag)
@@ -8904,10 +8924,11 @@ def reduce_multiplier(argument) -> None:
         tuplet.multiplier = pair
 
 
-def rewrite_dots(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+def rewrite_dots(argument, *, tag: abjad.Tag | None = None) -> None:
     """
     Rewrites dots of tuplets in ``argument``.
     """
+    tag = tag or _function_name(inspect.currentframe())
     for tuplet in abjad.select.tuplets(argument):
         tuplet.rewrite_dots()
 
@@ -8917,7 +8938,7 @@ def rewrite_meter(
     *,
     boundary_depth: int | None = None,
     reference_meters: typing.Sequence[abjad.Meter] = (),
-    tag=None,
+    tag: abjad.Tag | None = None,
 ) -> None:
     """
     Rewrites meter of material in ``voice``.
@@ -8925,6 +8946,7 @@ def rewrite_meter(
     Use ``rmakers.wrap_in_time_signature_staff()`` to make sure ``voice``
     appears together with time signature information in a staff.
     """
+    tag = tag or _function_name(inspect.currentframe())
     assert isinstance(voice, abjad.Container), repr(voice)
     tag = tag or abjad.Tag()
     tag = tag.append(abjad.Tag("rmakers.RewriteMeterCommand.__call__"))
@@ -8977,7 +8999,9 @@ def rewrite_meter(
             )
 
 
-def rewrite_rest_filled(argument, *, spelling=None, tag=None) -> None:
+def rewrite_rest_filled(
+    argument, *, spelling=None, tag: abjad.Tag | None = None
+) -> None:
     r"""
     Rewrites rest-filled tuplets in ``argument``.
 
@@ -9145,6 +9169,7 @@ def rewrite_rest_filled(argument, *, spelling=None, tag=None) -> None:
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     if spelling is not None:
         increase_monotonic = spelling.increase_monotonic
         forbidden_note_duration = spelling.forbidden_note_duration
@@ -9169,7 +9194,7 @@ def rewrite_rest_filled(argument, *, spelling=None, tag=None) -> None:
         tuplet.multiplier = (1, 1)
 
 
-def rewrite_sustained(argument, *, tag=None) -> None:
+def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
     Rewrites sustained tuplets in ``argument``.
 
@@ -9447,6 +9472,7 @@ def rewrite_sustained(argument, *, tag=None) -> None:
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     for tuplet in abjad.select.tuplets(argument):
         if not abjad.get.sustained(tuplet):
             continue
@@ -9466,7 +9492,7 @@ def rewrite_sustained(argument, *, tag=None) -> None:
         tuplet.multiplier = (1, 1)
 
 
-def split_measures(voice, *, durations=None, tag=None) -> None:
+def split_measures(voice, *, durations=None, tag: abjad.Tag | None = None) -> None:
     r"""
     Splits measures in ``voice``.
 
@@ -9475,6 +9501,7 @@ def split_measures(voice, *, durations=None, tag=None) -> None:
     Tries to find time signature information (from the staff that contains ``voice``)
     when ``durations`` is none.
     """
+    tag = tag or _function_name(inspect.currentframe())
     if not durations:
         # TODO: implement abjad.get() method for measure durations
         staff = abjad.get.parentage(voice).parent
@@ -9506,7 +9533,7 @@ def talea(
     read_talea_once_only: bool = False,
     spelling: Spelling = Spelling(),
     state: dict | None = None,
-    tag: abjad.Tag = abjad.Tag(),
+    tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
     Reads ``counts`` cyclically and makes one tuplet for each division in ``divisions``.
@@ -12729,6 +12756,7 @@ def talea(
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     _assert_are_pairs_durations_or_time_signatures(divisions)
     divisions = [abjad.Duration(_) for _ in divisions]
     talea = Talea(
@@ -12768,7 +12796,7 @@ def talea(
     return tuplets
 
 
-def tie(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
+def tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
     Attaches one tie to each notes in ``argument``.
 
@@ -13319,6 +13347,7 @@ def tie(argument, *, tag: abjad.Tag = abjad.Tag()) -> None:
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     for note in abjad.select.notes(argument):
         tie = abjad.Tie()
         abjad.attach(tie, note, tag=tag)
@@ -13471,6 +13500,7 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     for note in abjad.select.notes(argument):
         container_duration = note.written_duration
         note_duration = container_duration / (2 * count)
@@ -13497,7 +13527,7 @@ def tuplet(
     denominator: int | abjad.Duration | str | None = None,
     # TODO: is 'spelling' unused?
     spelling: Spelling = Spelling(),
-    tag: abjad.Tag = abjad.Tag(),
+    tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
     Makes one tuplet for each division in ``divisions``.
@@ -15599,6 +15629,7 @@ def tuplet(
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     _assert_are_pairs_durations_or_time_signatures(divisions)
     durations = [abjad.Duration(_) for _ in divisions]
     tuplets = _make_tuplet_rhythm_maker_music(
