@@ -489,7 +489,7 @@ def _make_middle_durations(middle_duration, incise):
     assert isinstance(incise, Incise), repr(incise)
     durations = []
     if not (incise.fill_with_rests):
-        if not incise.outer_divisions_only:
+        if not incise.outer_tuplets_only:
             if 0 < middle_duration:
                 if incise.body_ratio is not None:
                     shards = abjad.math.divide_integer_by_ratio(
@@ -503,7 +503,7 @@ def _make_middle_durations(middle_duration, incise):
             if 0 < middle_duration:
                 durations.append(middle_duration)
     else:
-        if not incise.outer_divisions_only:
+        if not incise.outer_tuplets_only:
             if 0 < middle_duration:
                 durations.append(-abs(middle_duration))
         else:
@@ -952,7 +952,7 @@ class Incise:
 
     body_ratio: tuple[int, ...] = (1,)
     fill_with_rests: bool = False
-    outer_divisions_only: bool = False
+    outer_tuplets_only: bool = False
     prefix_counts: typing.Sequence[int] = ()
     prefix_talea: typing.Sequence[int] = ()
     suffix_counts: typing.Sequence[int] = ()
@@ -982,9 +982,7 @@ class Incise:
             assert self.talea_denominator is not None
         assert isinstance(self.body_ratio, tuple), repr(self.body_ratio)
         assert isinstance(self.fill_with_rests, bool), repr(self.fill_with_rests)
-        assert isinstance(self.outer_divisions_only, bool), repr(
-            self.outer_divisions_only
-        )
+        assert isinstance(self.outer_tuplets_only, bool), repr(self.outer_tuplets_only)
 
     @staticmethod
     def _is_integer_tuple(argument):
@@ -3955,7 +3953,6 @@ def duration_bracket(argument) -> None:
     """
     for tuplet in abjad.select.tuplets(argument):
         duration_ = abjad.get.duration(tuplet)
-
         components = abjad.makers.make_leaves([0], [duration_])
         if all(isinstance(_, abjad.Note) for _ in components):
             durations = [abjad.get.duration(_) for _ in components]
@@ -6008,6 +6005,7 @@ def even_division(
     return tuplets
 
 
+# TODO: constrain selection, constrain time_signatures
 def example(selection, time_signatures=None, *, includes=None) -> abjad.LilyPondFile:
     """
     Makes example LilyPond file for documentation examples.
@@ -6589,136 +6587,41 @@ def force_rest(argument, *, tag=None) -> None:
 
 def incised(
     durations,
-    extra_counts: typing.Sequence[int] = (),
     *,
     body_ratio: tuple[int, ...] = (1,),
+    extra_counts: typing.Sequence[int] = (),
     fill_with_rests: bool = False,
-    outer_divisions_only: bool = False,
-    prefix_talea: typing.Sequence[int] = (),
+    outer_tuplets_only: bool = False,
     prefix_counts: typing.Sequence[int] = (),
-    suffix_talea: typing.Sequence[int] = (),
-    suffix_counts: typing.Sequence[int] = (),
-    talea_denominator: int | None = None,
+    prefix_talea: typing.Sequence[int] = (),
     spelling: Spelling = Spelling(),
+    suffix_counts: typing.Sequence[int] = (),
+    suffix_talea: typing.Sequence[int] = (),
     tag: abjad.Tag = abjad.Tag(),
+    talea_denominator: int | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
     Makes incised tuplets from ``durations``.
 
-    Specifies one sixteenth rest cut out of the beginning of every division:
+    Set ``prefix_talea=[-1]`` with ``prefix_counts=[1]`` to incise a rest at the start
+    of each tuplet:
 
     ..  container:: example
-
-        >>> specifier = rmakers.Incise(
-        ...     prefix_talea=[-1],
-        ...     prefix_counts=[1],
-        ...     talea_denominator=16,
-        ... )
-
-    ..  container:: example
-
-        Specifies sixteenth rests cut out of the beginning and end of each division:
-
-        >>> specifier = rmakers.Incise(
-        ...     prefix_talea=[-1],
-        ...     prefix_counts=[1],
-        ...     suffix_talea=[-1],
-        ...     suffix_counts=[1],
-        ...     talea_denominator=16,
-        ... )
-
-    ..  container:: example
-
-        Divides middle part of every division ``1:1``:
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.incised(
         ...         durations,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[0, 1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=16,
-        ...         body_ratio=(1, 1),
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures( 4 * [(5, 16)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 5/16
-                    c'8
-                    [
-                    c'8
-                    ]
-                    r16
-                    \time 5/16
-                    r16
-                    c'16.
-                    [
-                    c'16.
-                    ]
-                    r16
-                    \time 5/16
-                    c'8
-                    [
-                    c'8
-                    ]
-                    r16
-                    \time 5/16
-                    r16
-                    c'16.
-                    [
-                    c'16.
-                    ]
-                    r16
-                }
-            >>
-
-    ..  container:: example
-
-        Forces rest at every other tuplet:
-
-        >>> def make_rhythm(durations):
-        ...     tuplets = rmakers.incised(
-        ...         durations,
-        ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
         ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
         ...         talea_denominator=16,
         ...     )
         ...     container = abjad.Container(tuplets)
-        ...     logical_ties = abjad.select.logical_ties(container)
-        ...     logical_ties = abjad.select.get(logical_ties, [1], 2)
-        ...     rmakers.force_rest(logical_ties)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
+        >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -6737,45 +6640,40 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 4/8
+                    \time 5/16
                     r16
-                    r4..
-                    \time 3/8
-                    c'4.
-                    \time 4/8
-                    r2
-                    \time 3/8
                     c'4
-                    ~
-                    c'16
+                    \time 5/16
                     r16
+                    c'4
+                    \time 5/16
+                    r16
+                    c'4
+                    \time 5/16
+                    r16
+                    c'4
                 }
             >>
 
-    ..  container:: example
+    Set ``prefix_talea=[-1]`` with ``prefix_counts=[2]`` to incise 2 rests at the start
+    of each tuplet:
 
-        Ties nonlast tuplets:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.incised(
         ...         durations,
-        ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
+        ...         prefix_counts=[2],
+        ...         talea_denominator=16,
         ...     )
         ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(8, 8), (4, 8), (6, 8)])
+        >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -6794,45 +6692,44 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 8/8
-                    r8
-                    c'2..
-                    ~
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 6/8
-                    c'2
-                    ~
-                    c'8
-                    r8
+                    \time 5/16
+                    r16
+                    r16
+                    c'8.
+                    \time 5/16
+                    r16
+                    r16
+                    c'8.
+                    \time 5/16
+                    r16
+                    r16
+                    c'8.
+                    \time 5/16
+                    r16
+                    r16
+                    c'8.
                 }
             >>
 
-    ..  container:: example
+    Set ``prefix_talea=[1]`` with ``prefix_counts=[1]`` to incise 1 note at the start
+    of each tuplet:
 
-        Repeat-ties nonfirst tuplets:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.incised(
         ...         durations,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
+        ...         prefix_talea=[1],
         ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
+        ...         talea_denominator=16,
         ...     )
         ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[1:]
-        ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
-        ...     rmakers.repeat_tie(leaves)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(8, 8), (4, 8), (6, 8)])
+        >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -6851,94 +6748,95 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \repeatTie
-                    \time 6/8
-                    c'2
-                    \repeatTie
-                    ~
-                    c'8
-                    r8
+                    \time 5/16
+                    c'16
+                    c'4
+                    \time 5/16
+                    c'16
+                    c'4
+                    \time 5/16
+                    c'16
+                    c'4
+                    \time 5/16
+                    c'16
+                    c'4
                 }
             >>
 
+    Set ``prefix_talea=[1]`` with ``prefix_counts=[2]`` to incise 2 notes at the start
+    of each tuplet:
+
     ..  container:: example
 
-        Add one extra count per tuplet:
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.incised(
+        ...         durations,
+        ...         prefix_talea=[1],
+        ...         prefix_counts=[2],
+        ...         talea_denominator=16,
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/16
+                    c'16
+                    [
+                    c'16
+                    c'8.
+                    ]
+                    \time 5/16
+                    c'16
+                    [
+                    c'16
+                    c'8.
+                    ]
+                    \time 5/16
+                    c'16
+                    [
+                    c'16
+                    c'8.
+                    ]
+                    \time 5/16
+                    c'16
+                    [
+                    c'16
+                    c'8.
+                    ]
+                }
+            >>
+
+    Incise rests at the beginning and end of each tuplet like this:
+
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.incised(
         ...         durations,
         ...         extra_counts=[1],
-        ...         outer_divisions_only=True,
         ...         prefix_talea=[-1],
         ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.force_augmentation(container)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(8, 8), (4, 8), (6, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 16/9
-                    {
-                        \time 8/8
-                        r16
-                        c'2
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 8/5
-                    {
-                        \time 4/8
-                        c'4
-                        ~
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/7
-                    {
-                        \time 6/8
-                        c'4.
-                        r16
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        >>> def make_rhythm(durations):
-        ...     tuplets = rmakers.incised(
-        ...         durations,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[0, 1],
         ...         suffix_talea=[-1],
         ...         suffix_counts=[1],
         ...         talea_denominator=16,
@@ -6968,36 +6866,50 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/16
-                    c'4
-                    r16
-                    \time 5/16
-                    r16
-                    c'8.
-                    r16
-                    \time 5/16
-                    c'4
-                    r16
-                    \time 5/16
-                    r16
-                    c'8.
-                    r16
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/16
+                        r16
+                        c'4
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/16
+                        r16
+                        c'4
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/16
+                        r16
+                        c'4
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 5/6
+                    {
+                        \time 5/16
+                        r16
+                        c'4
+                        r16
+                    }
                 }
             >>
 
-    ..  container:: example
+    Set ``body_ratio=(1, 1)`` to divide the middle part of each tuplet ``1:1``:
 
-        Fills durations with notes. Incises outer durations only:
+    ..  container:: example
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.incised(
         ...         durations,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-8, -7],
-        ...         prefix_counts=[2],
-        ...         suffix_talea=[-3],
-        ...         suffix_counts=[4],
-        ...         talea_denominator=32,
+        ...         body_ratio=(1, 1),
+        ...         talea_denominator=16,
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
@@ -7005,7 +6917,7 @@ def incised(
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(5, 8), (5, 8), (5, 8)])
+        >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -7024,99 +6936,56 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/8
-                    r4
-                    r8..
+                    \time 5/16
                     c'8
                     [
                     ~
                     c'32
-                    ]
-                    \time 5/8
-                    c'2
-                    ~
                     c'8
-                    \time 5/8
-                    c'4
-                    r16.
-                    r16.
-                    r16.
-                    r16.
-                }
-            >>
-
-    ..  container:: example
-
-        Fills durations with rests. Incises outer durations only:
-
-        >>> def make_rhythm(durations):
-        ...     tuplets = rmakers.incised(
-        ...         durations,
-        ...         fill_with_rests=True,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[7, 8],
-        ...         prefix_counts=[2],
-        ...         suffix_talea=[3],
-        ...         suffix_counts=[4],
-        ...         talea_denominator=32,
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(5, 8), (5, 8), (5, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 5/8
-                    c'8..
-                    c'4
-                    r8
-                    r32
-                    \time 5/8
-                    r2
-                    r8
-                    \time 5/8
-                    r4
-                    c'16.
+                    ~
+                    c'32
+                    ]
+                    \time 5/16
+                    c'8
                     [
-                    c'16.
-                    c'16.
-                    c'16.
+                    ~
+                    c'32
+                    c'8
+                    ~
+                    c'32
+                    ]
+                    \time 5/16
+                    c'8
+                    [
+                    ~
+                    c'32
+                    c'8
+                    ~
+                    c'32
+                    ]
+                    \time 5/16
+                    c'8
+                    [
+                    ~
+                    c'32
+                    c'8
+                    ~
+                    c'32
                     ]
                 }
             >>
 
+    Set ``body_ratio=(1, 1, 1)`` to divide the middle part of each tuplet ``1:1:1``:
+
     ..  container:: example
 
-        Spells durations with the fewest number of glyphs:
+        TODO. Allow nested tuplets to clean up notation:
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.incised(
         ...         durations,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
+        ...         body_ratio=(1, 1, 1),
+        ...         talea_denominator=16,
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
@@ -7124,7 +6993,7 @@ def incised(
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(8, 8), (4, 8), (6, 8)])
+        >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -7143,214 +7012,101 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'2
-                    ~
-                    c'8
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Forbids notes with written duration greater than or equal to ``1/2``:
-
-        >>> def make_rhythm(durations):
-        ...     tuplets = rmakers.incised(
-        ...         durations,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 2)),
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(8, 8), (4, 8), (6, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 8/8
-                    r8
-                    c'4
-                    ~
-                    c'4
-                    ~
-                    c'4.
-                    \time 4/8
-                    c'4
-                    ~
-                    c'4
-                    \time 6/8
-                    c'4
-                    ~
-                    c'4
-                    ~
-                    c'8
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Rewrites meter:
-
-        >>> def make_rhythm(durations, time_signatures):
-        ...     tuplets = rmakers.incised(
-        ...         durations,
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...     )
-        ...     voice = rmakers.wrap_in_time_signature_staff(tuplets, time_signatures)
-        ...     rmakers.beam(voice)
-        ...     rmakers.extract_trivial(voice)
-        ...     rmakers.rewrite_meter(voice)
-        ...     music = abjad.mutate.eject_contents(voice)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(8, 8), (4, 8), (6, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations, time_signatures)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 8/8
-                    r8
-                    c'2..
-                    \time 4/8
-                    c'2
-                    \time 6/8
-                    c'4.
-                    ~
-                    c'4
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Makes augmentations:
-
-        >>> def make_rhythm(durations):
-        ...     tag = abjad.Tag("INCISED_RHYTHM_MAKER")
-        ...     tuplets = rmakers.incised(
-        ...         durations,
-        ...         extra_counts=[1],
-        ...         outer_divisions_only=True,
-        ...         prefix_talea=[-1],
-        ...         prefix_counts=[1],
-        ...         suffix_talea=[-1],
-        ...         suffix_counts=[1],
-        ...         talea_denominator=8,
-        ...         tag=tag,
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.force_augmentation(container)
-        ...     rmakers.beam(container, tag=tag)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(8, 8), (4, 8), (6, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 16/9
-                    %! INCISED_RHYTHM_MAKER
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
                     {
-                        \time 8/8
-                        %! INCISED_RHYTHM_MAKER
-                        r16
-                        %! INCISED_RHYTHM_MAKER
-                        c'2
-                    %! INCISED_RHYTHM_MAKER
-                    }
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 8/5
-                    %! INCISED_RHYTHM_MAKER
-                    {
-                        \time 4/8
-                        %! INCISED_RHYTHM_MAKER
-                        c'4
+                        \time 5/16
+                        c'8
+                        [
                         ~
-                        %! INCISED_RHYTHM_MAKER
-                        c'16
-                    %! INCISED_RHYTHM_MAKER
+                        c'32
                     }
-                    %! INCISED_RHYTHM_MAKER
-                    \tweak text #tuplet-number::calc-fraction-text
-                    %! INCISED_RHYTHM_MAKER
-                    \times 12/7
-                    %! INCISED_RHYTHM_MAKER
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
                     {
-                        \time 6/8
-                        %! INCISED_RHYTHM_MAKER
-                        c'4.
-                        %! INCISED_RHYTHM_MAKER
-                        r16
-                    %! INCISED_RHYTHM_MAKER
+                        c'8
+                        ~
+                        c'32
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        c'8
+                        ~
+                        c'32
+                        ]
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        \time 5/16
+                        c'8
+                        [
+                        ~
+                        c'32
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        c'8
+                        ~
+                        c'32
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        c'8
+                        ~
+                        c'32
+                        ]
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        \time 5/16
+                        c'8
+                        [
+                        ~
+                        c'32
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        c'8
+                        ~
+                        c'32
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        c'8
+                        ~
+                        c'32
+                        ]
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        \time 5/16
+                        c'8
+                        [
+                        ~
+                        c'32
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        c'8
+                        ~
+                        c'32
+                    }
+                    \tweak edge-height #'(0.7 . 0)
+                    \times 32/48
+                    {
+                        c'8
+                        ~
+                        c'32
+                        ]
                     }
                 }
             >>
@@ -7361,7 +7117,7 @@ def incised(
     incise = Incise(
         body_ratio=body_ratio,
         fill_with_rests=fill_with_rests,
-        outer_divisions_only=outer_divisions_only,
+        outer_tuplets_only=outer_tuplets_only,
         prefix_talea=prefix_talea,
         prefix_counts=prefix_counts,
         suffix_talea=suffix_talea,
@@ -7376,7 +7132,7 @@ def incised(
     )
     talea_denominator = incise.talea_denominator
     scaled = _scale_rhythm_maker_input(durations, talea_denominator, counts)
-    if not incise.outer_divisions_only:
+    if not incise.outer_tuplets_only:
         duration_lists = _make_division_incised_numeric_map(
             scaled.pairs,
             scaled.counts.prefix_talea,
@@ -7387,7 +7143,7 @@ def incised(
             incise,
         )
     else:
-        assert incise.outer_divisions_only
+        assert incise.outer_tuplets_only
         duration_lists = _make_output_incised_numeric_map(
             scaled.pairs,
             scaled.counts.prefix_talea,
@@ -7401,7 +7157,7 @@ def incised(
         duration_lists, scaled.lcd, spelling=spelling, tag=tag
     )
     for list_ in lists:
-        assert all(isinstance(_, abjad.Leaf) for _ in list_), repr(list_)
+        assert all(isinstance(_, abjad.Leaf | abjad.Tuplet) for _ in list_), repr(list_)
     tuplets = _make_talea_rhythm_maker_tuplets(scaled.pairs, lists, tag=tag)
     assert all(isinstance(_, abjad.Tuplet) for _ in tuplets)
     return tuplets
@@ -7744,7 +7500,9 @@ def multiplied_duration(
     return leaves
 
 
-def nongrace_leaves_in_each_tuplet(argument, level: int = -1) -> list[list[abjad.Leaf]]:
+def nongrace_leaves_in_each_tuplet(
+    argument, *, level: int = -1
+) -> list[list[abjad.Leaf]]:
     """
     Selects nongrace leaves in each tuplet.
     """
