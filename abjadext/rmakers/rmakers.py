@@ -128,9 +128,9 @@ def _get_interpolations(interpolations, previous_state):
         specifiers_ = abjad.CyclicTuple([specifiers_])
     else:
         specifiers_ = abjad.CyclicTuple(specifiers_)
-    string = "divisions_consumed"
-    divisions_consumed = previous_state.get(string, 0)
-    specifiers_ = abjad.sequence.rotate(specifiers_, n=-divisions_consumed)
+    string = "durations_consumed"
+    durations_consumed = previous_state.get(string, 0)
+    specifiers_ = abjad.sequence.rotate(specifiers_, n=-durations_consumed)
     specifiers_ = abjad.CyclicTuple(specifiers_)
     return specifiers_
 
@@ -707,15 +707,15 @@ def _make_prolated_divisions(divisions, extra_counts):
 
 def _make_state_dictionary(
     *,
-    divisions_consumed,
+    durations_consumed,
     logical_ties_produced,
-    previous_divisions_consumed,
+    previous_durations_consumed,
     previous_incomplete_last_note,
     previous_logical_ties_produced,
     state,
 ):
-    divisions_consumed_ = previous_divisions_consumed + divisions_consumed
-    state["divisions_consumed"] = divisions_consumed_
+    durations_consumed_ = previous_durations_consumed + durations_consumed
+    state["durations_consumed"] = durations_consumed_
     logical_ties_produced_ = previous_logical_ties_produced + logical_ties_produced
     if previous_incomplete_last_note:
         logical_ties_produced_ -= 1
@@ -870,8 +870,8 @@ def _prepare_talea_rhythm_maker_input(self_extra_counts, previous_state, talea):
     talea = talea.counts or ()
     talea = abjad.CyclicTuple(talea)
     extra_counts = list(self_extra_counts or [])
-    divisions_consumed = previous_state.get("divisions_consumed", 0)
-    extra_counts = abjad.sequence.rotate(extra_counts, -divisions_consumed)
+    durations_consumed = previous_state.get("durations_consumed", 0)
+    extra_counts = abjad.sequence.rotate(extra_counts, -durations_consumed)
     extra_counts = abjad.CyclicTuple(extra_counts)
     return types.SimpleNamespace(
         end_counts=end_counts,
@@ -2746,7 +2746,7 @@ def accelerando(
             >>
 
         >>> state
-        {'divisions_consumed': 3, 'logical_ties_produced': 17}
+        {'durations_consumed': 3, 'logical_ties_produced': 17}
 
         Advances 3 durations; then consumes another 3 durations:
 
@@ -2819,7 +2819,7 @@ def accelerando(
             >>
 
         >>> state
-        {'divisions_consumed': 6, 'logical_ties_produced': 36}
+        {'durations_consumed': 6, 'logical_ties_produced': 36}
 
         Advances 6 durations; then consumes another 3 durations:
 
@@ -2890,7 +2890,7 @@ def accelerando(
             >>
 
         >>> state
-        {'divisions_consumed': 9, 'logical_ties_produced': 53}
+        {'durations_consumed': 9, 'logical_ties_produced': 53}
 
     ..  container:: example
 
@@ -3049,9 +3049,9 @@ def accelerando(
     voice = abjad.Voice(tuplets)
     logical_ties_produced = len(abjad.select.logical_ties(voice))
     new_state = _make_state_dictionary(
-        divisions_consumed=len(durations),
+        durations_consumed=len(durations),
         logical_ties_produced=logical_ties_produced,
-        previous_divisions_consumed=previous_state.get("divisions_consumed", 0),
+        previous_durations_consumed=previous_state.get("durations_consumed", 0),
         previous_incomplete_last_note=previous_state.get("incomplete_last_note", False),
         previous_logical_ties_produced=previous_state.get("logical_ties_produced", 0),
         state=state,
@@ -5876,7 +5876,7 @@ def even_division(
             >>
 
         >>> state
-        {'divisions_consumed': 5, 'logical_ties_produced': 15}
+        {'durations_consumed': 5, 'logical_ties_produced': 15}
 
         Advances 5 durations; then consumes another 5 durations:
 
@@ -5934,7 +5934,7 @@ def even_division(
             >>
 
         >>> state
-        {'divisions_consumed': 10, 'logical_ties_produced': 29}
+        {'durations_consumed': 10, 'logical_ties_produced': 29}
 
     """
     _assert_are_pairs_durations_or_time_signatures(durations)
@@ -5948,14 +5948,14 @@ def even_division(
         state = {}
     tuplets = []
     assert isinstance(previous_state, dict)
-    divisions_consumed = previous_state.get("divisions_consumed", 0)
+    durations_consumed = previous_state.get("durations_consumed", 0)
     # divisions = [abjad.Duration(_) for _ in durations]
     denominators_ = list(denominators)
-    denominators_ = abjad.sequence.rotate(denominators_, -divisions_consumed)
+    denominators_ = abjad.sequence.rotate(denominators_, -durations_consumed)
     cyclic_denominators = abjad.CyclicTuple(denominators_)
     extra_counts_ = extra_counts or [0]
     extra_counts__ = list(extra_counts_)
-    extra_counts__ = abjad.sequence.rotate(extra_counts__, -divisions_consumed)
+    extra_counts__ = abjad.sequence.rotate(extra_counts__, -durations_consumed)
     cyclic_extra_counts = abjad.CyclicTuple(extra_counts__)
     for i, division in enumerate(durations):
         if not abjad.math.is_positive_integer_power_of_two(division.denominator):
@@ -5992,9 +5992,9 @@ def even_division(
     voice = abjad.Voice(tuplets)
     logical_ties_produced = len(abjad.select.logical_ties(voice))
     new_state = _make_state_dictionary(
-        divisions_consumed=len(durations),
+        durations_consumed=len(durations),
         logical_ties_produced=logical_ties_produced,
-        previous_divisions_consumed=previous_state.get("divisions_consumed", 0),
+        previous_durations_consumed=previous_state.get("durations_consumed", 0),
         previous_incomplete_last_note=previous_state.get("incomplete_last_note", False),
         previous_logical_ties_produced=previous_state.get("logical_ties_produced", 0),
         state=state,
@@ -12548,7 +12548,7 @@ def talea(
             >>
 
         >>> state
-        {'divisions_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
+        {'durations_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
 
         Advances 4 divisions and 31 counts; then consumes another 4 divisions and 31
         counts:
@@ -12603,7 +12603,7 @@ def talea(
             >>
 
         >>> state
-        {'divisions_consumed': 8, 'incomplete_last_note': True, 'logical_ties_produced': 16, 'talea_weight_consumed': 63}
+        {'durations_consumed': 8, 'incomplete_last_note': True, 'logical_ties_produced': 16, 'talea_weight_consumed': 63}
 
         Advances 8 divisions and 62 counts; then consumes 4 divisions and 31 counts:
 
@@ -12660,7 +12660,7 @@ def talea(
             >>
 
         >>> state
-        {'divisions_consumed': 12, 'logical_ties_produced': 24, 'talea_weight_consumed': 96}
+        {'durations_consumed': 12, 'logical_ties_produced': 24, 'talea_weight_consumed': 96}
 
     ..  container:: example
 
@@ -12996,9 +12996,9 @@ def talea(
     voice = abjad.Voice(tuplets)
     logical_ties_produced = len(abjad.select.logical_ties(voice))
     new_state = _make_state_dictionary(
-        divisions_consumed=len(divisions),
+        durations_consumed=len(divisions),
         logical_ties_produced=logical_ties_produced,
-        previous_divisions_consumed=previous_state.get("divisions_consumed", 0),
+        previous_durations_consumed=previous_state.get("durations_consumed", 0),
         previous_incomplete_last_note=previous_state.get("incomplete_last_note", False),
         previous_logical_ties_produced=previous_state.get("logical_ties_produced", 0),
         state=state,
