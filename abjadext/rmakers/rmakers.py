@@ -3918,7 +3918,7 @@ def duration_bracket(argument) -> None:
             string = " ~ ".join(strings)
             string = rf"\rhythm {{ {string} }}"
         else:
-            string = abjad.illustrators.selection_to_score_markup_string(components)
+            string = abjad.illustrators.components_to_score_markup_string(components)
         string = rf"\markup \scale #'(0.75 . 0.75) {string}"
         abjad.override(tuplet).TupletNumber.text = string
 
@@ -5972,7 +5972,7 @@ def example(components, time_signatures, *, includes=None) -> abjad.LilyPondFile
         time_signatures
     )
     assert time_signatures is not None
-    lilypond_file = abjad.illustrators.selection(components, time_signatures)
+    lilypond_file = abjad.illustrators.components(components, time_signatures)
     includes = [rf'\include "{_}"' for _ in includes or []]
     lilypond_file.items[0:0] = includes
     staff = lilypond_file["Staff"]
