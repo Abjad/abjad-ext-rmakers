@@ -2,10 +2,10 @@
 #            Only logical tie 12 is rested here:
 #
 #            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = command(durations, previous_segment_stop_state=state)
+#            >>> components = command(durations, previous_segment_stop_state=state)
 #
 #
-#            >>> lilypond_file = rmakers.example(selections, durations)
+#            >>> lilypond_file = rmakers.example(components, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -77,9 +77,9 @@
 #            Incomplete last note is rested here:
 #
 #            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = stack(durations)
+#            >>> components = stack(durations)
 #
-#            >>> lilypond_file = rmakers.example(selections, durations)
+#            >>> lilypond_file = rmakers.example(components, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -136,9 +136,9 @@
 #            Incomplete first note is rested here:
 #
 #            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = stack(durations, previous_state=state)
+#            >>> components = stack(durations, previous_state=state)
 #
-#            >>> lilypond_file = rmakers.example(selections, durations)
+#            >>> lilypond_file = rmakers.example(components, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -199,9 +199,9 @@
 #            Only tuplet 7 is rested here:
 #
 #            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = stack(durations, previous_state=state)
+#            >>> components = stack(durations, previous_state=state)
 #
-#            >>> lilypond_file = rmakers.example(selections, durations)
+#            >>> lilypond_file = rmakers.example(components, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::
@@ -257,9 +257,9 @@
 #            Incomplete first note is rested here:
 #
 #            >>> durations = [(3, 8), (4, 8), (3, 8), (4, 8)]
-#            >>> selections = stack(durations, previous_state=state)
+#            >>> components = stack(durations, previous_state=state)
 #
-#            >>> lilypond_file = rmakers.example(selections, durations)
+#            >>> lilypond_file = rmakers.example(components, durations)
 #            >>> abjad.show(lilypond_file) # doctest: +SKIP
 #
 #            ..  docs::

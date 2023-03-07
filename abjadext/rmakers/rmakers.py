@@ -112,13 +112,13 @@ def _do_grace_container_command(
         abjad.attach(container, leaf)
 
 
-def _fix_rounding_error(selection, total_duration, interpolation):
-    selection_duration = abjad.get.duration(selection)
-    if not selection_duration == total_duration:
-        needed_duration = total_duration - abjad.get.duration(selection[:-1])
+def _fix_rounding_error(leaves, total_duration, interpolation):
+    duration = abjad.get.duration(leaves)
+    if not duration == total_duration:
+        needed_duration = total_duration - abjad.get.duration(leaves[:-1])
         multiplier = needed_duration / interpolation.written_duration
         pair = abjad.duration.pair(multiplier)
-        selection[-1].multiplier = pair
+        leaves[-1].multiplier = pair
 
 
 def _function_name(frame):
@@ -303,9 +303,9 @@ def _interpolate_exponential(y1, y2, mu, exponent=1) -> float:
     return result
 
 
-def _is_accelerando(selection):
-    first_leaf = abjad.select.leaf(selection, 0)
-    last_leaf = abjad.select.leaf(selection, -1)
+def _is_accelerando(argument):
+    first_leaf = abjad.select.leaf(argument, 0)
+    last_leaf = abjad.select.leaf(argument, -1)
     first_duration = abjad.get.duration(first_leaf)
     last_duration = abjad.get.duration(last_leaf)
     if last_duration < first_duration:
@@ -313,9 +313,9 @@ def _is_accelerando(selection):
     return False
 
 
-def _is_ritardando(selection):
-    first_leaf = abjad.select.leaf(selection, 0)
-    last_leaf = abjad.select.leaf(selection, -1)
+def _is_ritardando(argument):
+    first_leaf = abjad.select.leaf(argument, 0)
+    last_leaf = abjad.select.leaf(argument, -1)
     first_duration = abjad.get.duration(first_leaf)
     last_duration = abjad.get.duration(last_leaf)
     if first_duration < last_duration:
@@ -890,8 +890,8 @@ def _split_talea_extended_to_weights(preamble, read_talea_once_only, talea, weig
     return talea
 
 
-def _validate_tuplets(selections):
-    for tuplet in abjad.iterate.components(selections, abjad.Tuplet):
+def _validate_tuplets(argument):
+    for tuplet in abjad.iterate.components(argument, abjad.Tuplet):
         assert abjad.Duration(tuplet.multiplier).normalized(), repr(tuplet)
         assert len(tuplet), repr(tuplet)
 
@@ -3208,9 +3208,9 @@ def beam(
     Calls ``abjad.beam()`` on leaves in ``argument``.
     """
     tag = tag or _function_name(inspect.currentframe())
-    for selection in argument:
-        unbeam(selection)
-        leaves = abjad.select.leaves(selection)
+    for item in argument:
+        unbeam(item)
+        leaves = abjad.select.leaves(item)
         abjad.beam(
             leaves,
             beam_lone_notes=beam_lone_notes,
@@ -3235,14 +3235,14 @@ def beam_groups(
     unbeam(argument)
     durations = []
     components: list[abjad.Component] = []
-    for selection in argument:
-        duration = abjad.get.duration(selection)
+    for item in argument:
+        duration = abjad.get.duration(item)
         durations.append(duration)
-    for selection in argument:
-        if isinstance(selection, abjad.Tuplet):
-            components.append(selection)
+    for item in argument:
+        if isinstance(item, abjad.Tuplet):
+            components.append(item)
         else:
-            components.extend(selection)
+            components.extend(item)
     leaves = abjad.select.leaves(components)
     abjad.beam(
         leaves,
@@ -6070,20 +6070,20 @@ def feather_beam(
     Feather-beams leaves in ``argument``.
     """
     tag = tag or _function_name(inspect.currentframe())
-    for selection in argument:
-        unbeam(selection)
-        leaves = abjad.select.leaves(selection)
+    for item in argument:
+        unbeam(item)
+        leaves = abjad.select.leaves(item)
         abjad.beam(
             leaves,
             beam_rests=beam_rests,
             stemlet_length=stemlet_length,
             tag=tag,
         )
-    for selection in argument:
-        first_leaf = abjad.select.leaf(selection, 0)
-        if _is_accelerando(selection):
+    for item in argument:
+        first_leaf = abjad.select.leaf(item, 0)
+        if _is_accelerando(item):
             abjad.override(first_leaf).Beam.grow_direction = abjad.RIGHT
-        elif _is_ritardando(selection):
+        elif _is_ritardando(item):
             abjad.override(first_leaf).Beam.grow_direction = abjad.LEFT
 
 
@@ -6291,7 +6291,7 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
 
     ..  container:: example
 
-        Changes patterned selection of leaves to notes. Works inverted composite pattern:
+        Changes leaves to notes with inverted composite pattern:
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
@@ -6488,7 +6488,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
 
     ..  container:: example
 
-        Changes patterned selection of logical ties to rests:
+        Changes logical ties to rests according to pattern:
 
         >>> def make_rhythm(durations):
         ...     nested_music = rmakers.note(durations)
@@ -8662,7 +8662,7 @@ def on_beat_grace_container(
     assert isinstance(talea, Talea), repr(talea)
     cyclic_counts = abjad.CyclicTuple(counts)
     start = 0
-    for i, selection in enumerate(argument):
+    for i, item in enumerate(argument):
         count = cyclic_counts[i]
         if not count:
             continue
@@ -8671,7 +8671,7 @@ def on_beat_grace_container(
         notes = abjad.makers.make_leaves([0], durations)
         abjad.on_beat_grace_container(
             notes,
-            selection,
+            item,
             anchor_voice_number=2,
             grace_voice_number=1,
             leaf_duration=leaf_duration,
@@ -8924,27 +8924,28 @@ def rewrite_meter(
     durations = [abjad.Duration(_) for _ in meters]
     reference_meters = reference_meters or ()
     split_measures(voice, durations=durations)
-    selections = abjad.select.group_by_measure(voice[:])
-    for meter, selection in zip(meters, selections):
+    lists = abjad.select.group_by_measure(voice[:])
+    assert all(isinstance(_, list) for _ in lists), repr(lists)
+    for meter, list_ in zip(meters, lists):
         for reference_meter in reference_meters:
             if reference_meter == meter:
                 meter = reference_meter
                 break
         preferred_meters.append(meter)
         nontupletted_leaves = []
-        for leaf in abjad.iterate.leaves(selection):
+        for leaf in abjad.iterate.leaves(list_):
             if not abjad.get.parentage(leaf).count(abjad.Tuplet):
                 nontupletted_leaves.append(leaf)
         unbeam(nontupletted_leaves)
         abjad.Meter.rewrite_meter(
-            selection,
+            list_,
             meter,
             boundary_depth=boundary_depth,
             rewrite_tuplets=False,
         )
-    selections = abjad.select.group_by_measure(voice[:])
-    for meter, selection in zip(preferred_meters, selections):
-        leaves = abjad.select.leaves(selection, grace=False)
+    lists = abjad.select.group_by_measure(voice[:])
+    for meter, list_ in zip(preferred_meters, lists):
+        leaves = abjad.select.leaves(list_, grace=False)
         beat_durations = []
         beat_offsets = meter.depthwise_offset_inventory[1]
         for start, stop in abjad.sequence.nwise(beat_offsets):
@@ -12762,7 +12763,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
     Attaches one tie to each notes in ``argument``.
 
-    Attaches ties to notes in selection:
+    Attaches ties to notes:
 
     ..  container:: example
 
