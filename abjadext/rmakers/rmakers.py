@@ -9483,6 +9483,87 @@ def split_measures(voice, *, durations=None, tag: abjad.Tag | None = None) -> No
     abjad.mutate.split(voice[:], durations=durations)
 
 
+def swap_trivial(argument) -> None:
+    r"""
+    Swaps trivial tuplets in ``argument`` with containers.
+
+    ..  container:: example
+
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.even_division(durations, [8])
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     tuplets = abjad.select.tuplets(container)[-2:]
+        ...     rmakers.swap_trivial(tuplets)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    """
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if tuplet.trivial():
+            container = abjad.Container()
+            abjad.mutate.swap(tuplet, container)
+
+
 def talea(
     durations,
     counts: typing.Sequence[int],
