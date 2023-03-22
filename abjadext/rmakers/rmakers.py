@@ -6547,6 +6547,88 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
             abjad.detach(abjad.RepeatTie, next_leaf)
 
 
+def hide_trivial(argument) -> None:
+    r"""
+    Hides trivial tuplets in ``argument``.
+
+    ..  container:: example
+
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.even_division(durations, [8])
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     tuplets = abjad.select.tuplets(container)[-2:]
+        ...     rmakers.hide_trivial(tuplets)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/3
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \scaleDurations #'(1 . 1)
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \scaleDurations #'(1 . 1)
+                    {
+                        \time 3/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+    """
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if tuplet.trivial():
+            tuplet.hide = True
+
+
 def incised(
     durations,
     *,
