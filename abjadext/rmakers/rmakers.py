@@ -8990,10 +8990,9 @@ def rewrite_meter(
     Use ``rmakers.wrap_in_time_signature_staff()`` to make sure ``voice``
     appears together with time signature information in a staff.
     """
-    tag = tag or _function_name(inspect.currentframe())
-    assert isinstance(voice, abjad.Container), repr(voice)
     tag = tag or abjad.Tag()
-    tag = tag.append(abjad.Tag("rmakers.RewriteMeterCommand.__call__"))
+    tag = tag.append(_function_name(inspect.currentframe()))
+    assert isinstance(voice, abjad.Container), repr(voice)
     staff = abjad.get.parentage(voice).parent
     assert isinstance(staff, abjad.Staff), repr(staff)
     time_signature_voice = staff["TimeSignatureVoice"]
