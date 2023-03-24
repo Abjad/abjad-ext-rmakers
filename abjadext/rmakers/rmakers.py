@@ -15766,15 +15766,744 @@ def tuplet(
     return tuplets
 
 
-def unbeam(argument) -> None:
-    """
+def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> None:
+    r"""
     Unbeams each leaf in ``argument``.
+
+    Adjusts adjacent start- and stop-beams when ``smart=True``.
+
+    Unbeams 1 note:
+
+    ..  container:: example
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[0], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    d'8
+                    [
+                    e'8
+                    f'8
+                    g'8
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[1], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    d'8
+                    e'8
+                    [
+                    f'8
+                    g'8
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[2], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    f'8
+                    [
+                    g'8
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[3], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    e'8
+                    ]
+                    f'8
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[4], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    e'8
+                    f'8
+                    ]
+                    g'8
+                    a'8
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[5], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    e'8
+                    f'8
+                    g'8
+                    ]
+                    a'8
+                }
+            >>
+
+    ..  container:: example
+
+        Unbeams 2 notes:
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[:2], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    d'8
+                    e'8
+                    [
+                    f'8
+                    g'8
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[1:3], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    d'8
+                    e'8
+                    f'8
+                    [
+                    g'8
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[2:4], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    f'8
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[3:5], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    e'8
+                    ]
+                    f'8
+                    g'8
+                    a'8
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[4:], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    e'8
+                    f'8
+                    ]
+                    g'8
+                    a'8
+                }
+            >>
+
+    ..  container:: example
+
+        Unbeams 1 note:
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[0], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    d'8
+                    e'8
+                    [
+                    f'8
+                    ]
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[1], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    d'8
+                    e'8
+                    [
+                    f'8
+                    ]
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[2], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    f'8
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[3], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    f'8
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[4], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    [
+                    f'8
+                    ]
+                    g'8
+                    a'8
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[5], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    [
+                    f'8
+                    ]
+                    g'8
+                    a'8
+                }
+            >>
+
+    ..  container:: example
+
+        Unbeams 2 notes:
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[:2], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    d'8
+                    e'8
+                    [
+                    f'8
+                    ]
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[1:3], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    d'8
+                    e'8
+                    f'8
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[2:4], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    f'8
+                    g'8
+                    [
+                    a'8
+                    ]
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[3:5], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    f'8
+                    g'8
+                    a'8
+                }
+            >>
+
+        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> score = abjad.Score([staff])
+        >>> abjad.setting(score).autoBeaming = False
+        >>> rmakers.unbeam(staff[4:], smart=True)
+        >>> abjad.show(score) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \new Score
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \new Staff
+                {
+                    c'8
+                    [
+                    d'8
+                    ]
+                    e'8
+                    [
+                    f'8
+                    ]
+                    g'8
+                    a'8
+                }
+            >>
+
     """
     leaves = abjad.select.leaves(argument)
+    leaf: abjad.Leaf | None = leaves[0]
     for leaf in leaves:
         abjad.detach(abjad.BeamCount, leaf)
         abjad.detach(abjad.StartBeam, leaf)
         abjad.detach(abjad.StopBeam, leaf)
+    if smart is True:
+        tag = tag or abjad.Tag()
+        tag = tag.append(_function_name(inspect.currentframe()))
+        unmatched_start_beam = False
+        leaf = leaves[0]
+        leaf = abjad.get.leaf(leaf, -1)
+        if leaf is not None:
+            if abjad.get.has_indicator(leaf, abjad.StopBeam):
+                pass
+            elif abjad.get.has_indicator(leaf, abjad.StartBeam):
+                abjad.detach(abjad.StartBeam, leaf)
+            else:
+                while True:
+                    leaf = abjad.get.leaf(leaf, -1)
+                    if leaf is None:
+                        break
+                    if abjad.get.has_indicator(leaf, abjad.StopBeam):
+                        break
+                    if abjad.get.has_indicator(leaf, abjad.StartBeam):
+                        unmatched_start_beam = True
+                        break
+        unmatched_stop_beam = False
+        leaf = leaves[-1]
+        leaf = abjad.get.leaf(leaf, 1)
+        if leaf is not None:
+            if abjad.get.has_indicator(leaf, abjad.StartBeam):
+                pass
+            elif abjad.get.has_indicator(leaf, abjad.StopBeam):
+                abjad.detach(abjad.StopBeam, leaf)
+            else:
+                while True:
+                    leaf = abjad.get.leaf(leaf, 1)
+                    if leaf is None:
+                        break
+                    if abjad.get.has_indicator(leaf, abjad.StartBeam):
+                        break
+                    if abjad.get.has_indicator(leaf, abjad.StopBeam):
+                        unmatched_stop_beam = True
+                        break
+        if unmatched_start_beam is True:
+            leaf = leaves[0]
+            leaf = abjad.get.leaf(leaf, -1)
+            abjad.attach(abjad.StopBeam(), leaf, tag=tag)
+        if unmatched_stop_beam is True:
+            leaf = leaves[-1]
+            leaf = abjad.get.leaf(leaf, 1)
+            abjad.attach(abjad.StartBeam(), leaf, tag=tag)
 
 
 def untie(argument) -> None:
