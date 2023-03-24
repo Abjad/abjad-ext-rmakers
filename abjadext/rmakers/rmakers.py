@@ -16452,7 +16452,7 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
 
     """
     leaves = abjad.select.leaves(argument)
-    leaf: abjad.Leaf | None = leaves[0]
+    leaf: abjad.Leaf | None
     for leaf in leaves:
         abjad.detach(abjad.BeamCount, leaf)
         abjad.detach(abjad.StartBeam, leaf)
