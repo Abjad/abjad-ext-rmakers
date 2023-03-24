@@ -5981,6 +5981,16 @@ def example(components, time_signatures, *, includes=None) -> abjad.LilyPondFile
     return lilypond_file
 
 
+def extract_rest_filled(argument) -> None:
+    """
+    Extracts rest-filled tuplets from ``argument``.
+    """
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if tuplet.rest_filled():
+            abjad.mutate.extract(tuplet)
+
+
 def extract_trivial(argument) -> None:
     r"""
     Extracts trivial tuplets from ``argument``.
