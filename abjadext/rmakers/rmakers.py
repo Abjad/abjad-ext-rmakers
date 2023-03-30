@@ -86,32 +86,6 @@ def _assert_are_pairs_durations_or_time_signatures(argument):
             raise Exception(argument)
 
 
-def _do_grace_container_command(
-    argument,
-    counts,
-    beam_and_slash=False,
-    class_=None,
-    talea=None,
-):
-    leaves = abjad.select.leaves(argument, grace=False)
-    assert all(isinstance(_, int) for _ in counts), repr(counts)
-    cyclic_counts = abjad.CyclicTuple(counts)
-    start = 0
-    for i, leaf in enumerate(leaves):
-        count = cyclic_counts[i]
-        if not count:
-            continue
-        stop = start + count
-        durations = talea[start:stop]
-        notes = abjad.makers.make_leaves([0], durations)
-        if beam_and_slash:
-            abjad.beam(notes)
-            literal = abjad.LilyPondLiteral(r"\slash")
-            abjad.attach(literal, notes[0])
-        container = class_(notes)
-        abjad.attach(container, leaf)
-
-
 def _fix_rounding_error(leaves, total_duration, interpolation):
     duration = abjad.get.duration(leaves)
     if not duration == total_duration:
@@ -3020,16 +2994,17 @@ def accelerando(
 
 
 def after_grace_container(
-    argument,
+    argument: abjad.Component | typing.Sequence[abjad.Component],
     counts: typing.Sequence[int],
     *,
-    beam_and_slash: bool = False,
+    beam: bool = False,
+    slash: bool = False,
     talea: Talea = Talea([1], 8),
 ) -> None:
     r"""
-    Makes after-grace containers.
+    Makes (and attaches) after-grace containers.
 
-    Single after-graces with slurs applied manually:
+    With ``beam=False`` and ``slash=False`` (default):
 
     ..  container:: example
 
@@ -3038,7 +3013,7 @@ def after_grace_container(
         ...     container = abjad.Container(tuplets)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.after_grace_container(notes, [1])
+        ...     rmakers.after_grace_container(notes, [1, 4])
         ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
@@ -3047,10 +3022,8 @@ def after_grace_container(
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> staff = lilypond_file["Staff"]
-        >>> containers = abjad.select.components(staff, abjad.AfterGraceContainer)
-        >>> groups = [abjad.select.with_next_leaf(_) for _ in containers]
-        >>> result = [abjad.slur(_) for _ in groups]
+        >>> score = lilypond_file["Score"]
+        >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3059,6 +3032,10 @@ def after_grace_container(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -3078,7 +3055,6 @@ def after_grace_container(
                         c'4
                         {
                             c'8
-                            (
                         }
                     }
                     \tweak text #tuplet-number::calc-fraction-text
@@ -3086,7 +3062,6 @@ def after_grace_container(
                     {
                         \time 3/4
                         c'4
-                        )
                         c'4
                         c'4
                         c'4
@@ -3094,8 +3069,9 @@ def after_grace_container(
                         c'4
                         {
                             c'8
-                            )
-                            (
+                            c'8
+                            c'8
+                            c'8
                         }
                     }
                 }
@@ -3103,17 +3079,14 @@ def after_grace_container(
 
     ..  container:: example
 
-        Multiple after-graces with ``beam_and_slash=True`` and with slurs applied
-        manually:
+        With ``beam=True`` and ``slash=True``:
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
         ...     container = abjad.Container(tuplets)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.after_grace_container(
-        ...         notes, [2, 4], beam_and_slash=True
-        ...     )
+        ...     rmakers.after_grace_container(notes, [1, 4], beam=True, slash=True)
         ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
@@ -3122,10 +3095,8 @@ def after_grace_container(
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> staff = lilypond_file["Staff"]
-        >>> containers = abjad.select.components(staff, abjad.AfterGraceContainer)
-        >>> groups = [abjad.select.with_next_leaf(_) for _ in containers]
-        >>> result = [abjad.slur(_) for _ in groups]
+        >>> score = lilypond_file["Score"]
+        >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3134,6 +3105,10 @@ def after_grace_container(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -3152,12 +3127,7 @@ def after_grace_container(
                         \afterGrace
                         c'4
                         {
-                            \slash
                             c'8
-                            [
-                            (
-                            c'8
-                            ]
                         }
                     }
                     \tweak text #tuplet-number::calc-fraction-text
@@ -3165,7 +3135,6 @@ def after_grace_container(
                     {
                         \time 3/4
                         c'4
-                        )
                         c'4
                         c'4
                         c'4
@@ -3175,25 +3144,42 @@ def after_grace_container(
                             \slash
                             c'8
                             [
-                            (
                             c'8
                             c'8
                             c'8
-                            )
                             ]
                         }
                     }
                 }
             >>
+
+        When ``slash=True`` then ``beam`` must also be true.
+
+        Leaves lone after-graces unslashed even when ``slash=True``.
 
     """
-    _do_grace_container_command(
-        argument,
-        counts=counts,
-        beam_and_slash=beam_and_slash,
-        class_=abjad.AfterGraceContainer,
-        talea=talea,
-    )
+    assert all(isinstance(_, int) for _ in counts), repr(counts)
+    if slash is True:
+        assert beam is True, repr(beam)
+    assert isinstance(talea, Talea), repr(talea)
+    leaves = abjad.select.leaves(argument, grace=False)
+    cyclic_counts = abjad.CyclicTuple(counts)
+    start = 0
+    for i, leaf in enumerate(leaves):
+        count = cyclic_counts[i]
+        if not count:
+            continue
+        stop = start + count
+        durations = talea[start:stop]
+        notes = abjad.makers.make_leaves([0], durations)
+        if 1 < len(notes):
+            if beam is True:
+                abjad.beam(notes)
+            if slash is True:
+                literal = abjad.LilyPondLiteral(r"\slash")
+                abjad.attach(literal, notes[0])
+        container = abjad.AfterGraceContainer(notes)
+        abjad.attach(container, leaf)
 
 
 def beam(
@@ -3256,14 +3242,18 @@ def beam_groups(
 
 
 def before_grace_container(
-    argument,
+    argument: abjad.Component | typing.Sequence[abjad.Component],
     counts: typing.Sequence[int],
     *,
-    beam_and_slash: bool = False,
+    beam: bool = False,
+    slash: bool = False,
+    slur: bool = False,
     talea: Talea = Talea([1], 8),
 ) -> None:
     r"""
-    Makes before-grace containers.
+    Makes (and attaches) before-grace containers.
+
+    With ``beam=False``, ``slash=False``, ``slur=False`` (default):
 
     ..  container:: example
 
@@ -3273,7 +3263,7 @@ def before_grace_container(
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.notes(_) for _ in tuplets]
         ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
-        ...     rmakers.before_grace_container(notes, [2, 4])
+        ...     rmakers.before_grace_container(notes, [1, 2, 3])
         ...     rmakers.extract_trivial(container)
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
@@ -3282,13 +3272,8 @@ def before_grace_container(
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> staff = lilypond_file["Staff"]
-        >>> containers = abjad.select.components(staff, abjad.BeforeGraceContainer)
-        >>> result = [abjad.beam(_) for _ in containers]
-        >>> groups = [abjad.select.with_next_leaf(_) for _ in containers]
-        >>> result = [abjad.slur(_) for _ in groups]
-        >>> slash = abjad.LilyPondLiteral(r"\slash")
-        >>> result = [abjad.attach(slash, _[0]) for _ in containers]
+        >>> score = lilypond_file["Score"]
+        >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3297,6 +3282,10 @@ def before_grace_container(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -3310,37 +3299,20 @@ def before_grace_container(
                         \time 3/4
                         c'4
                         \grace {
-                            \slash
                             c'8
-                            [
-                            (
-                            c'8
-                            ]
                         }
                         c'4
-                        )
                         \grace {
-                            \slash
-                            c'8
-                            [
-                            (
                             c'8
                             c'8
-                            c'8
-                            ]
                         }
                         c'4
-                        )
                         \grace {
-                            \slash
                             c'8
-                            [
-                            (
                             c'8
-                            ]
+                            c'8
                         }
                         c'4
-                        )
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
@@ -3349,52 +3321,550 @@ def before_grace_container(
                         \time 3/4
                         c'4
                         \grace {
-                            \slash
                             c'8
-                            [
-                            (
-                            c'8
-                            c'8
-                            c'8
-                            ]
                         }
                         c'4
-                        )
                         \grace {
-                            \slash
                             c'8
-                            [
-                            (
                             c'8
-                            ]
                         }
                         c'4
-                        )
                         \grace {
-                            \slash
-                            c'8
-                            [
-                            (
                             c'8
                             c'8
                             c'8
-                            ]
                         }
                         c'4
-                        )
                         c'4
                     }
                 }
             >>
 
+    ..  container:: example
+
+        With ``beam=False``, ``slash=False``, ``slur=True``:
+
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     notes = [abjad.select.notes(_) for _ in tuplets]
+        ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
+        ...     rmakers.before_grace_container(notes, [1, 2, 3], slur=True)
+        ...     rmakers.extract_trivial(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.setting(score).autoBeaming = False
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \appoggiatura {
+                            c'8
+                        }
+                        c'4
+                        \appoggiatura {
+                            c'8
+                            c'8
+                        }
+                        c'4
+                        \appoggiatura {
+                            c'8
+                            c'8
+                            c'8
+                        }
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \appoggiatura {
+                            c'8
+                        }
+                        c'4
+                        \appoggiatura {
+                            c'8
+                            c'8
+                        }
+                        c'4
+                        \appoggiatura {
+                            c'8
+                            c'8
+                            c'8
+                        }
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        With ``beam=True``, ``slash=False``, ``slur=False``:
+
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     notes = [abjad.select.notes(_) for _ in tuplets]
+        ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
+        ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True)
+        ...     rmakers.extract_trivial(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.setting(score).autoBeaming = False
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \grace {
+                            c'8
+                        }
+                        c'4
+                        \grace {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'4
+                        \grace {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \grace {
+                            c'8
+                        }
+                        c'4
+                        \grace {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'4
+                        \grace {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        With ``beam=True``, ``slash=False``, ``slur=True``:
+
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     notes = [abjad.select.notes(_) for _ in tuplets]
+        ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
+        ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True, slur=True)
+        ...     rmakers.extract_trivial(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.setting(score).autoBeaming = False
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \appoggiatura {
+                            c'8
+                        }
+                        c'4
+                        \appoggiatura {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'4
+                        \appoggiatura {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \appoggiatura {
+                            c'8
+                        }
+                        c'4
+                        \appoggiatura {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'4
+                        \appoggiatura {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        With ``beam=True``, ``slash=True``, ``slur=False``:
+
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     notes = [abjad.select.notes(_) for _ in tuplets]
+        ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
+        ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True, slash=True)
+        ...     rmakers.extract_trivial(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.setting(score).autoBeaming = False
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \slashedGrace {
+                            c'8
+                        }
+                        c'4
+                        \slashedGrace {
+                            \slash
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'4
+                        \slashedGrace {
+                            \slash
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \slashedGrace {
+                            c'8
+                        }
+                        c'4
+                        \slashedGrace {
+                            \slash
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'4
+                        \slashedGrace {
+                            \slash
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+        (When ``slash=True`` then ``beam`` must also be true.)
+
+    ..  container:: example
+
+        With ``beam=True``, ``slash=True``, ``slur=True``:
+
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     notes = [abjad.select.notes(_) for _ in tuplets]
+        ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
+        ...     rmakers.before_grace_container(
+        ...         notes, [1, 2, 3], beam=True, slash=True, slur=True
+        ...     )
+        ...     rmakers.extract_trivial(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> score = lilypond_file["Score"]
+        >>> abjad.setting(score).autoBeaming = False
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \acciaccatura {
+                            c'8
+                        }
+                        c'4
+                        \acciaccatura {
+                            \slash
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'4
+                        \acciaccatura {
+                            \slash
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 3/5
+                    {
+                        \time 3/4
+                        c'4
+                        \acciaccatura {
+                            c'8
+                        }
+                        c'4
+                        \acciaccatura {
+                            \slash
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        c'4
+                        \acciaccatura {
+                            \slash
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                        }
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+        (When ``slash=True`` then ``beam`` must also be true.)
+
     """
-    _do_grace_container_command(
-        argument,
-        counts=counts,
-        beam_and_slash=beam_and_slash,
-        class_=abjad.BeforeGraceContainer,
-        talea=talea,
-    )
+    assert all(isinstance(_, int) for _ in counts), repr(counts)
+    if slash is True:
+        assert beam is True, repr(beam)
+    assert isinstance(talea, Talea), repr(talea)
+    leaves = abjad.select.leaves(argument, grace=False)
+    cyclic_counts = abjad.CyclicTuple(counts)
+    start = 0
+    for i, leaf in enumerate(leaves):
+        count = cyclic_counts[i]
+        if not count:
+            continue
+        stop = start + count
+        durations = talea[start:stop]
+        notes = abjad.makers.make_leaves([0], durations)
+        if len(notes) == 1:
+            if slash is False and slur is False:
+                command = r"\grace"
+            elif slash is False and slur is True:
+                command = r"\appoggiatura"
+            elif slash is True and slur is False:
+                command = r"\slashedGrace"
+            elif slash is True and slur is True:
+                command = r"\acciaccatura"
+            else:
+                raise Exception
+        elif 1 < len(notes):
+            if beam is True:
+                abjad.beam(notes)
+            if slash is True:
+                literal = abjad.LilyPondLiteral(r"\slash")
+                abjad.attach(literal, notes[0])
+            if slash is False and slur is False:
+                command = r"\grace"
+            elif slash is False and slur is True:
+                command = r"\appoggiatura"
+            elif slash is True and slur is False:
+                command = r"\slashedGrace"
+            elif slash is True and slur is True:
+                command = r"\acciaccatura"
+            else:
+                raise Exception
+        container = abjad.BeforeGraceContainer(notes, command=command)
+        abjad.attach(container, leaf)
 
 
 def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
@@ -5963,17 +6433,23 @@ def even_division(
     return tuplets
 
 
-def example(components, time_signatures, *, includes=None) -> abjad.LilyPondFile:
+def example(
+    components: typing.Sequence[abjad.Component],
+    time_signatures: typing.Sequence[abjad.TimeSignature],
+    *,
+    includes: typing.Sequence[str] = (),
+) -> abjad.LilyPondFile:
     """
     Makes example LilyPond file for documentation examples.
     """
     assert all(isinstance(_, abjad.Component) for _ in components), repr(components)
+    assert time_signatures is not None
     assert all(isinstance(_, abjad.TimeSignature) for _ in time_signatures), repr(
         time_signatures
     )
-    assert time_signatures is not None
+    assert all(isinstance(_, str) for _ in includes), repr(includes)
     lilypond_file = abjad.illustrators.components(components, time_signatures)
-    includes = [rf'\include "{_}"' for _ in includes or []]
+    includes = [rf'\include "{_}"' for _ in includes]
     lilypond_file.items[0:0] = includes
     staff = lilypond_file["Staff"]
     staff.lilypond_type = "RhythmicStaff"
