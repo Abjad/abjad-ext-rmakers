@@ -3268,7 +3268,7 @@ def before_grace_container(
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -3293,28 +3293,6 @@ def before_grace_container(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/4
-                        c'4
-                        \grace {
-                            c'8
-                        }
-                        c'4
-                        \grace {
-                            c'8
-                            c'8
-                        }
-                        c'4
-                        \grace {
-                            c'8
-                            c'8
-                            c'8
-                        }
-                        c'4
-                        c'4
-                    }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
@@ -3355,7 +3333,7 @@ def before_grace_container(
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -3380,28 +3358,6 @@ def before_grace_container(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/4
-                        c'4
-                        \appoggiatura {
-                            c'8
-                        }
-                        c'4
-                        \appoggiatura {
-                            c'8
-                            c'8
-                        }
-                        c'4
-                        \appoggiatura {
-                            c'8
-                            c'8
-                            c'8
-                        }
-                        c'4
-                        c'4
-                    }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
@@ -3442,7 +3398,7 @@ def before_grace_container(
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -3467,32 +3423,6 @@ def before_grace_container(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/4
-                        c'4
-                        \grace {
-                            c'8
-                        }
-                        c'4
-                        \grace {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        c'4
-                        \grace {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        c'4
-                        c'4
-                    }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
@@ -3537,7 +3467,7 @@ def before_grace_container(
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -3562,32 +3492,6 @@ def before_grace_container(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/4
-                        c'4
-                        \appoggiatura {
-                            c'8
-                        }
-                        c'4
-                        \appoggiatura {
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        c'4
-                        \appoggiatura {
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        c'4
-                        c'4
-                    }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
@@ -3632,7 +3536,7 @@ def before_grace_container(
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -3657,34 +3561,6 @@ def before_grace_container(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/4
-                        c'4
-                        \slashedGrace {
-                            c'8
-                        }
-                        c'4
-                        \slashedGrace {
-                            \slash
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        c'4
-                        \slashedGrace {
-                            \slash
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        c'4
-                        c'4
-                    }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
@@ -3735,7 +3611,7 @@ def before_grace_container(
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
+        >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -3760,34 +3636,6 @@ def before_grace_container(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/4
-                        c'4
-                        \acciaccatura {
-                            c'8
-                        }
-                        c'4
-                        \acciaccatura {
-                            \slash
-                            c'8
-                            [
-                            c'8
-                            ]
-                        }
-                        c'4
-                        \acciaccatura {
-                            \slash
-                            c'8
-                            [
-                            c'8
-                            c'8
-                            ]
-                        }
-                        c'4
-                        c'4
-                    }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
@@ -3886,7 +3734,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
+        >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
+        >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
