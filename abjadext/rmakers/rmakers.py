@@ -8665,7 +8665,6 @@ def on_beat_grace_container(
     counts: typing.Sequence[int],
     *,
     leaf_duration: abjad.typings.Duration | None = None,
-    # TODO: activate tag
     tag: abjad.Tag | None = None,
     talea: Talea = Talea([1], 8),
 ) -> None:
@@ -9092,6 +9091,7 @@ def on_beat_grace_container(
             anchor_voice_number=2,
             grace_voice_number=1,
             leaf_duration=leaf_duration,
+            tag=tag,
         )
 
 
