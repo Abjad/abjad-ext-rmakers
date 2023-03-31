@@ -8661,10 +8661,10 @@ def note(
 def on_beat_grace_container(
     voice: abjad.Voice,
     voice_name: str,
-    argument,
+    argument_leaf_lists: typing.Sequence[typing.Sequence[abjad.Leaf]],
     counts: typing.Sequence[int],
     *,
-    leaf_duration: abjad.typings.Duration | None = None,
+    grace_leaf_duration: abjad.typings.Duration | None = None,
     tag: abjad.Tag | None = None,
     talea: Talea = Talea([1], 8),
 ) -> None:
@@ -8686,7 +8686,7 @@ def on_beat_grace_container(
         ...         "RhythmMaker.Music",
         ...         groups,
         ...         [2, 4],
-        ...         leaf_duration=(1, 28)
+        ...         grace_leaf_duration=(1, 28)
         ...     )
         ...     music = abjad.mutate.eject_contents(voice)
         ...     return music
@@ -8896,7 +8896,7 @@ def on_beat_grace_container(
         ...         "RhythmMaker.Music",
         ...         logical_ties,
         ...         [6, 2],
-        ...         leaf_duration=(1, 28)
+        ...         grace_leaf_duration=(1, 28)
         ...     )
         ...     music = abjad.mutate.eject_contents(voice)
         ...     return music
@@ -9070,15 +9070,16 @@ def on_beat_grace_container(
     assert isinstance(voice, abjad.Voice), repr(voice)
     assert isinstance(voice_name, str), repr(voice_name)
     assert isinstance(talea, Talea), repr(talea)
-    assert isinstance(voice, abjad.Voice), repr(voice)
-    assert isinstance(voice_name, str), repr(voice_name)
     tag = tag or _function_name(inspect.currentframe())
     if voice_name:
         voice.name = voice_name
     assert isinstance(talea, Talea), repr(talea)
     cyclic_counts = abjad.CyclicTuple(counts)
     start = 0
-    for i, item in enumerate(argument):
+    for i, anchor_leaves in enumerate(argument_leaf_lists):
+        assert all(isinstance(_, abjad.Leaf) for _ in anchor_leaves), repr(
+            anchor_leaves
+        )
         count = cyclic_counts[i]
         if not count:
             continue
@@ -9087,10 +9088,10 @@ def on_beat_grace_container(
         notes = abjad.makers.make_leaves([0], durations)
         abjad.on_beat_grace_container(
             notes,
-            item,
+            anchor_leaves,
             anchor_voice_number=2,
+            grace_leaf_duration=grace_leaf_duration,
             grace_voice_number=1,
-            leaf_duration=leaf_duration,
             tag=tag,
         )
 
