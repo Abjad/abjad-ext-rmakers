@@ -8675,7 +8675,8 @@ def on_beat_grace_container(
 
     ..  container:: example
 
-        >>> def make_rhythm(durations):
+        >>> def make_lilypond_file(time_signatures):
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
         ...     voice = abjad.Voice(tuplets)
         ...     tuplets = abjad.select.tuplets(voice)
@@ -8691,18 +8692,17 @@ def on_beat_grace_container(
         ...         grace_leaf_duration=(1, 28)
         ...     )
         ...     music = abjad.mutate.eject_contents(voice)
-        ...     return music
+        ...     music_voice = abjad.Voice(music, name="RhythmMaker.Music")
+        ...     lilypond_file = rmakers.example(
+        ...         [music_voice], time_signatures, includes=["abjad.ily"]
+        ...     )
+        ...     staff = lilypond_file["Staff"]
+        ...     abjad.override(staff).TupletBracket.direction = abjad.UP
+        ...     abjad.override(staff).TupletBracket.staff_padding = 5
+        ...     return lilypond_file
 
-        >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> music_voice = abjad.Voice(music, name="RhythmMaker.Music")
-        >>> lilypond_file = rmakers.example(
-        ...     [music_voice], time_signatures, includes=["abjad.ily"]
-        ... )
-        >>> staff = lilypond_file["Staff"]
-        >>> abjad.override(staff).TupletBracket.direction = abjad.UP
-        >>> abjad.override(staff).TupletBracket.staff_padding = 5
+        >>> time_signatures = rmakers.time_signatures([(3, 4)])
+        >>> lilypond_file = make_lilypond_file(time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8801,94 +8801,14 @@ def on_beat_grace_container(
                             \oneVoice
                             c'4
                         }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/4
-                            c'4
-                            <<
-                                \context Voice = "On_Beat_Grace_Container"
-                                {
-                                    \set fontSize = #-3
-                                    \slash
-                                    \voiceOne
-                                    <
-                                        \tweak font-size 0
-                                        \tweak transparent ##t
-                                        c'
-                                    >8 * 10/21
-                                    [
-                                    (
-                                    c'8 * 10/21
-                                    c'8 * 10/21
-                                    c'8 * 10/21
-                                    )
-                                    ]
-                                }
-                                \context Voice = "RhythmMaker.Music"
-                                {
-                                    \voiceTwo
-                                    c'4
-                                }
-                            >>
-                            <<
-                                \context Voice = "On_Beat_Grace_Container"
-                                {
-                                    \set fontSize = #-3
-                                    \slash
-                                    \voiceOne
-                                    <
-                                        \tweak font-size 0
-                                        \tweak transparent ##t
-                                        c'
-                                    >8 * 10/21
-                                    [
-                                    (
-                                    c'8 * 10/21
-                                    )
-                                    ]
-                                }
-                                \context Voice = "RhythmMaker.Music"
-                                {
-                                    \voiceTwo
-                                    c'4
-                                }
-                            >>
-                            <<
-                                \context Voice = "On_Beat_Grace_Container"
-                                {
-                                    \set fontSize = #-3
-                                    \slash
-                                    \voiceOne
-                                    <
-                                        \tweak font-size 0
-                                        \tweak transparent ##t
-                                        c'
-                                    >8 * 10/21
-                                    [
-                                    (
-                                    c'8 * 10/21
-                                    c'8 * 10/21
-                                    c'8 * 10/21
-                                    )
-                                    ]
-                                }
-                                \context Voice = "RhythmMaker.Music"
-                                {
-                                    \voiceTwo
-                                    c'4
-                                }
-                            >>
-                            \oneVoice
-                            c'4
-                        }
                     }
                 }
             >>
 
     ..  container:: example
 
-        >>> def make_rhythm(durations):
+        >>> def make_lilypond_file(time_signatures):
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [5], 16)
         ...     voice = abjad.Voice(tuplets)
         ...     rmakers.extract_trivial(voice)
@@ -8901,15 +8821,14 @@ def on_beat_grace_container(
         ...         grace_leaf_duration=(1, 28)
         ...     )
         ...     music = abjad.mutate.eject_contents(voice)
-        ...     return music
+        ...     music_voice = abjad.Voice(music, name="RhythmMaker.Music")
+        ...     lilypond_file = rmakers.example(
+        ...         [music_voice], time_signatures, includes=["abjad.ily"]
+        ...     )
+        ...     return lilypond_file
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> music_voice = abjad.Voice(music, name="RhythmMaker.Music")
-        >>> lilypond_file = rmakers.example(
-        ...     [music_voice], time_signatures, includes=["abjad.ily"]
-        ... )
+        >>> lilypond_file = make_lilypond_file(time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9106,7 +9025,7 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
     Attaches repeat-tie to each leaf in ``argument``.
 
-    TIE-ACROSS-DIVISIONS RECIPE. Attaches repeat-ties to first note in nonfirst tuplets:
+    Attaches repeat-tie to first note in each nonfirst tuplet:
 
     ..  container:: example
 
@@ -9120,7 +9039,8 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
+        >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -9201,7 +9121,7 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                 }
             >>
 
-        With pattern:
+        Attaches repeat-tie to first note in every other tuplet:
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
@@ -9214,7 +9134,8 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
+        >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
