@@ -8661,7 +8661,7 @@ def note(
 def on_beat_grace_container(
     voice: abjad.Voice,
     voice_name: str,
-    argument_leaf_lists: typing.Sequence[typing.Sequence[abjad.Leaf]],
+    nongrace_leaf_lists: typing.Sequence[typing.Sequence[abjad.Leaf]],
     counts: typing.Sequence[int],
     *,
     grace_leaf_duration: abjad.typings.Duration | None = None,
@@ -9076,22 +9076,22 @@ def on_beat_grace_container(
     assert isinstance(talea, Talea), repr(talea)
     cyclic_counts = abjad.CyclicTuple(counts)
     start = 0
-    for i, anchor_leaves in enumerate(argument_leaf_lists):
-        assert all(isinstance(_, abjad.Leaf) for _ in anchor_leaves), repr(
-            anchor_leaves
+    for i, nongrace_leaves in enumerate(nongrace_leaf_lists):
+        assert all(isinstance(_, abjad.Leaf) for _ in nongrace_leaves), repr(
+            nongrace_leaves
         )
         count = cyclic_counts[i]
         if not count:
             continue
         stop = start + count
         durations = talea[start:stop]
-        notes = abjad.makers.make_leaves([0], durations)
+        grace_leaves = abjad.makers.make_leaves([0], durations)
         abjad.on_beat_grace_container(
-            notes,
-            anchor_leaves,
-            anchor_voice_number=2,
+            grace_leaves,
+            nongrace_leaves,
             grace_leaf_duration=grace_leaf_duration,
-            grace_voice_number=1,
+            grace_polyphony_command=r"\voiceOne",
+            nongrace_polyphony_command=r"\voiceTwo",
             tag=tag,
         )
 
