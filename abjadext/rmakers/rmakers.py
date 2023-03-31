@@ -8988,7 +8988,8 @@ def on_beat_grace_container(
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     assert isinstance(voice, abjad.Voice), repr(voice)
     assert isinstance(voice_name, str), repr(voice_name)
     assert isinstance(talea, Talea), repr(talea)
