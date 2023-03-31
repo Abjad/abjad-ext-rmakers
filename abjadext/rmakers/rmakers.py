@@ -8665,6 +8665,8 @@ def on_beat_grace_container(
     counts: typing.Sequence[int],
     *,
     grace_leaf_duration: abjad.typings.Duration | None = None,
+    grace_polyphony_command: str = r"\voiceOne",
+    nongrace_polyphony_command: str = r"\voiceTwo",
     tag: abjad.Tag | None = None,
     talea: Talea = Talea([1], 8),
 ) -> None:
@@ -9067,13 +9069,17 @@ def on_beat_grace_container(
             >>
 
     """
+    tag = tag or _function_name(inspect.currentframe())
     assert isinstance(voice, abjad.Voice), repr(voice)
     assert isinstance(voice_name, str), repr(voice_name)
     assert isinstance(talea, Talea), repr(talea)
-    tag = tag or _function_name(inspect.currentframe())
+    polyphony_commands = (r"\voiceOne", r"\voiceTwo", r"\voiceThree", r"\voiceFour")
+    assert grace_polyphony_command in polyphony_commands, repr(grace_polyphony_command)
+    assert nongrace_polyphony_command in polyphony_commands, repr(
+        nongrace_polyphony_command
+    )
     if voice_name:
         voice.name = voice_name
-    assert isinstance(talea, Talea), repr(talea)
     cyclic_counts = abjad.CyclicTuple(counts)
     start = 0
     for i, nongrace_leaves in enumerate(nongrace_leaf_lists):
@@ -9090,8 +9096,8 @@ def on_beat_grace_container(
             grace_leaves,
             nongrace_leaves,
             grace_leaf_duration=grace_leaf_duration,
-            grace_polyphony_command=r"\voiceOne",
-            nongrace_polyphony_command=r"\voiceTwo",
+            grace_polyphony_command=grace_polyphony_command,
+            nongrace_polyphony_command=nongrace_polyphony_command,
             tag=tag,
         )
 
