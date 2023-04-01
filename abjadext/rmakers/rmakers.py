@@ -6688,8 +6688,185 @@ def force_repeat_tie(
     tag: abjad.Tag | None = None,
     threshold: bool | tuple[int, int] | typing.Callable = True,
 ) -> None:
-    """
+    r"""
     Changes all ties in argument to repeat-ties.
+
+    ..  container:: example
+
+        >>> def make_rhythm(durations):
+        ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
+        ...     music = abjad.mutate.eject_contents(container)
+        ...     return music
+
+        Attaches tie to last note in each nonlast tuplet:
+
+        >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> time_signatures = rmakers.time_signatures(pairs)
+        >>> durations = [abjad.Duration(_) for _ in time_signatures]
+        >>> music = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        ~
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        ~
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        ~
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        ~
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                        ~
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
+        Changes ties to repeat-ties:
+
+        >>> rmakers.force_repeat_tie(lilypond_file["Score"])
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        \repeatTie
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        \repeatTie
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        \repeatTie
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        \repeatTie
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        \repeatTie
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
     """
     tag = tag or _function_name(inspect.currentframe())
     assert isinstance(argument, abjad.Container), repr(argument)
@@ -9122,14 +9299,15 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                 }
             >>
 
-        Attaches repeat-tie to first note in every other tuplet:
+    ..  container:: example
+
+        Attaches repeat-ties to nonfirst notes in each tuplet:
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
         ...     container = abjad.Container(tuplets)
         ...     tuplets = abjad.select.tuplets(container)
-        ...     tuplets = abjad.select.get(tuplets, [1], 2)
-        ...     notes = [abjad.select.note(_, 0) for _ in tuplets]
+        ...     notes = [abjad.select.notes(_)[1:] for _ in tuplets]
         ...     rmakers.repeat_tie(notes)
         ...     rmakers.beam(container)
         ...     music = abjad.mutate.eject_contents(container)
@@ -9161,18 +9339,10 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         c'8
                         [
                         c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
                         \repeatTie
                         c'8
-                        c'8
                         ]
+                        \repeatTie
                     }
                     \times 2/3
                     {
@@ -9180,18 +9350,10 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         c'8
                         [
                         c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
                         \repeatTie
                         c'8
-                        c'8
                         ]
+                        \repeatTie
                     }
                     \times 2/3
                     {
@@ -9199,23 +9361,49 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         c'8
                         [
                         c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
                         \repeatTie
                         c'8
+                        ]
+                        \repeatTie
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        \repeatTie
                         c'8
                         ]
+                        \repeatTie
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        ]
+                        \repeatTie
+                    }
+                    \times 2/3
+                    {
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        \repeatTie
+                        c'8
+                        ]
+                        \repeatTie
                     }
                 }
             >>
 
     """
+    # TODO: compose tags
     tag = tag or _function_name(inspect.currentframe())
     for note in abjad.select.notes(argument):
         tie = abjad.RepeatTie()
@@ -13187,111 +13375,11 @@ def talea(
 
 def tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
-    Attaches one tie to each notes in ``argument``.
+    Attaches one tie to each note in ``argument``.
 
-    Attaches ties to notes:
-
-    ..  container:: example
-
-        >>> def make_rhythm(durations):
-        ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     notes = abjad.select.notes(container)[5:15]
-        ...     rmakers.tie(notes)
-        ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        ~
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        ~
-                        c'8
-                        ~
-                        c'8
-                        ]
-                        ~
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        ~
-                        c'8
-                        ~
-                        c'8
-                        ]
-                        ~
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        ~
-                        c'8
-                        ~
-                        c'8
-                        ]
-                        ~
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
+    Attaches tie to last note in each nonlast tuplet:
 
     ..  container:: example
-
-        TIE-ACROSS-DIVISIONS RECIPE. Attaches ties to last note in nonlast tuplets:
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
@@ -13303,7 +13391,8 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
+        >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -13361,98 +13450,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         c'8
                         ]
                         ~
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        ~
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        With pattern:
-
-        >>> def make_rhythm(durations):
-        ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     tuplets = abjad.select.get(tuplets, [0], 2)
-        ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.tie(notes)
-        ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        ~
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        ~
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
                     }
                     \times 2/3
                     {
@@ -13478,68 +13475,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
 
     ..  container:: example
 
-        TIE-ACROSS-DIVISIONS RECIPE:
-
-        >>> def make_rhythm(durations):
-        ...     tuplets = rmakers.tuplet(durations, [(5, 2)])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.tie(notes)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(4, 8), (4, 8), (4, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/7
-                    {
-                        \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                        ~
-                    }
-                    \times 4/7
-                    {
-                        \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                        ~
-                    }
-                    \times 4/7
-                    {
-                        \time 4/8
-                        c'2
-                        ~
-                        c'8
-                        c'4
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        TIE-WITHIN-DIVISIONS RECIPE:
+        Attaches ties to nonlast notes in each tuplet:
 
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
@@ -13552,7 +13488,8 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     music = abjad.mutate.eject_contents(container)
         ...     return music
 
-        >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
+        >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
+        >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
         >>> music = make_rhythm(durations)
         >>> lilypond_file = rmakers.example(music, time_signatures)
@@ -13634,101 +13571,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         ~
                         c'8
                         ~
-                        c'8
-                        ]
-                    }
-                }
-            >>
-
-        With pattern:
-
-        >>> def make_rhythm(durations):
-        ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     tuplets = abjad.select.get(tuplets, [0], 2)
-        ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
-        ...     rmakers.tie(notes)
-        ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
-
-        >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
-        >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        ~
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        ~
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        ~
-                        c'8
-                        ~
-                        c'8
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
                         c'8
                         ]
                     }
@@ -13736,6 +13578,8 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>
 
     """
+    # TODO: change to tag = tag or abjad.Tag()
+    #                 tag = tag.append(_function_name(inspect.currentframe()))
     tag = tag or _function_name(inspect.currentframe())
     for note in abjad.select.notes(argument):
         tie = abjad.Tie()
@@ -13744,7 +13588,9 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
 
 def time_signatures(pairs: list[tuple[int, int]]) -> list[abjad.TimeSignature]:
     """
-    Documentation helper: makes time signatures from ``pairs``.
+    Documentation helper.
+
+    Makes time signatures from ``pairs``.
     """
     assert all(isinstance(_, tuple) for _ in pairs), repr(pairs)
     return [abjad.TimeSignature(_) for _ in pairs]
