@@ -44,44 +44,62 @@ def test_01():
             }
             {
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 \tweak text #tuplet-number::calc-fraction-text
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 \times 16/9
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 {
                     \time 8/8
                       %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
                     r16
                       %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
                     c'2
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 }
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 \tweak text #tuplet-number::calc-fraction-text
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 \times 8/5
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 {
                     \time 4/8
                       %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
                     c'4
                     ~
                       %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
                     c'16
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 }
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 \tweak text #tuplet-number::calc-fraction-text
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 \times 12/7
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 {
                     \time 6/8
                       %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
                     c'4.
                       %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
                     r16
                   %! INCISED_RHYTHM_MAKER
+                  %! rmakers.incised()
                 }
             }
         >>

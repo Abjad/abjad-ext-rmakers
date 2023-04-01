@@ -2855,102 +2855,144 @@ def accelerando(
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     \times 1/1
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     {
                         \once \override Beam.grow-direction = #right
                         \time 4/8
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 63/32
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
                         [
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 115/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 91/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 35/32
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 29/32
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 13/16
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
                         ]
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     }
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     \times 1/1
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     {
                         \once \override Beam.grow-direction = #right
                         \time 3/8
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 117/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
                         [
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 99/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 69/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 13/16
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 47/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
                         ]
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     }
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     \times 1/1
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     {
                         \once \override Beam.grow-direction = #right
                         \time 4/8
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 63/32
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
                         [
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 115/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 91/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 35/32
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 29/32
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 13/16
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
                         ]
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     }
                     \revert TupletNumber.text
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     \times 1/1
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     {
                         \once \override Beam.grow-direction = #right
                         \time 3/8
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 117/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
                         [
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 99/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 69/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 13/16
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
                         c'16 * 47/64
                           %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
                         ]
                       %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
                     }
                     \revert TupletNumber.text
                 }
@@ -2960,7 +3002,8 @@ def accelerando(
     """
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     interpolations_ = []
     for interpolation in interpolations:
         interpolation_durations = [abjad.Duration(_) for _ in interpolation]
@@ -3193,7 +3236,8 @@ def beam(
     """
     Calls ``abjad.beam()`` on leaves in ``argument``.
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     for item in argument:
         unbeam(item)
         leaves = abjad.select.leaves(item)
@@ -3217,7 +3261,8 @@ def beam_groups(
     """
     Beams ``argument`` groups.
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     unbeam(argument)
     durations = []
     components: list[abjad.Component] = []
@@ -6212,7 +6257,8 @@ def even_division(
 
     """
     _assert_are_pairs_durations_or_time_signatures(durations)
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     durations = [abjad.Duration(_) for _ in durations]
     assert all(isinstance(_, int) for _ in denominators), repr(denominators)
     if denominator is not None and not isinstance(denominator, int):
@@ -6404,7 +6450,8 @@ def feather_beam(
     """
     Feather-beams leaves in ``argument``.
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     for item in argument:
         unbeam(item)
         leaves = abjad.select.leaves(item)
@@ -6671,7 +6718,8 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     leaves = abjad.select.leaves(argument)
     for leaf in leaves:
         if isinstance(leaf, abjad.Note):
@@ -6868,7 +6916,8 @@ def force_repeat_tie(
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     assert isinstance(argument, abjad.Container), repr(argument)
     if callable(threshold):
         inequality = threshold
@@ -7042,7 +7091,8 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     leaves = abjad.select.leaves(argument)
     for leaf in leaves:
         rest = abjad.Rest(leaf.written_duration, tag=tag)
@@ -7668,7 +7718,8 @@ def incised(
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
     incise = Incise(
@@ -7733,7 +7784,8 @@ def invisible_music(argument, *, tag: abjad.Tag | None = None) -> None:
     """
     Makes ``argument`` invisible.
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
     literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
     tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
@@ -8045,7 +8097,8 @@ def multiplied_duration(
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
     duration = abjad.Duration(duration)
@@ -8816,7 +8869,8 @@ def note(
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
     lists = []
@@ -9403,8 +9457,8 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>
 
     """
-    # TODO: compose tags
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     for note in abjad.select.notes(argument):
         tie = abjad.RepeatTie()
         abjad.attach(tie, note, tag=tag)
@@ -9424,7 +9478,8 @@ def rewrite_dots(argument, *, tag: abjad.Tag | None = None) -> None:
     """
     Rewrites dots of tuplets in ``argument``.
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     for tuplet in abjad.select.tuplets(argument):
         tuplet.rewrite_dots()
 
@@ -9665,7 +9720,8 @@ def rewrite_rest_filled(
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     if spelling is not None:
         increase_monotonic = spelling.increase_monotonic
         forbidden_note_duration = spelling.forbidden_note_duration
@@ -9968,7 +10024,8 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     for tuplet in abjad.select.tuplets(argument):
         if not abjad.get.sustained(tuplet):
             continue
@@ -9997,7 +10054,8 @@ def split_measures(voice, *, durations=None, tag: abjad.Tag | None = None) -> No
     Tries to find time signature information (from the staff that contains ``voice``)
     when ``durations`` is none.
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     if not durations:
         # TODO: implement abjad.get() method for measure durations
         staff = abjad.get.parentage(voice).parent
@@ -13055,76 +13113,109 @@ def talea(
                     \override Clef.stencil = ##f
                 }
                 {
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     \tweak text #tuplet-number::calc-fraction-text
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     \times 1/1
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     {
                         \time 3/8
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'16
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
                         [
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'8
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'8.
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
                         ]
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     }
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     \times 8/9
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     {
                         \time 4/8
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'4
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'16
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
                         [
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'8
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'8
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
                         ]
                         ~
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     }
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     \tweak text #tuplet-number::calc-fraction-text
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     \times 1/1
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     {
                         \time 3/8
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'16
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'4
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'16
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     }
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     \times 8/9
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     {
                         \time 4/8
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'8
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
                         [
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'8.
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
                         ]
-                        %! TALEA_RHYTHM_MAKER
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
                         c'4
-                    %! TALEA_RHYTHM_MAKER
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
                     }
                 }
             >>
@@ -13333,7 +13424,8 @@ def talea(
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
     talea = Talea(
@@ -13578,9 +13670,8 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>
 
     """
-    # TODO: change to tag = tag or abjad.Tag()
-    #                 tag = tag.append(_function_name(inspect.currentframe()))
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     for note in abjad.select.notes(argument):
         tie = abjad.Tie()
         abjad.attach(tie, note, tag=tag)
@@ -13735,7 +13826,8 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     for note in abjad.select.notes(argument):
         container_duration = note.written_duration
         note_duration = container_duration / (2 * count)
@@ -15616,63 +15708,90 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     \times 4/5
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     {
                         \time 1/2
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
                         c'4.
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
                         c'4
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     }
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     \times 3/5
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     {
                         \time 3/8
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
                         c'4.
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
                         c'4
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     }
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     \times 1/1
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     {
                         \time 5/16
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
                         c'8.
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.beam()
                         [
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
                         c'8
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.beam()
                         ]
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     }
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     \tweak text #tuplet-number::calc-fraction-text
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     \times 1/1
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     {
                         \time 5/16
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
                         c'8.
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.beam()
                         [
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
                         c'8
-                        %! TUPLET_RHYTHM_MAKER
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.beam()
                         ]
-                    %! TUPLET_RHYTHM_MAKER
+                      %! TUPLET_RHYTHM_MAKER
+                      %! rmakers.tuplet()
                     }
                 }
             >>
@@ -15864,7 +15983,8 @@ def tuplet(
             >>
 
     """
-    tag = tag or _function_name(inspect.currentframe())
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
     tuplets = _make_tuplet_rhythm_maker_music(
