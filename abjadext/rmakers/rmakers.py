@@ -8896,8 +8896,8 @@ def on_beat_grace_container(
     counts: typing.Sequence[int],
     *,
     grace_leaf_duration: abjad.typings.Duration | None = None,
-    grace_polyphony_command: str = r"\voiceOne",
-    nongrace_polyphony_command: str = r"\voiceTwo",
+    grace_polyphony_command: abjad.VoiceNumber = abjad.VoiceNumber(1),
+    nongrace_polyphony_command: abjad.VoiceNumber = abjad.VoiceNumber(2),
     tag: abjad.Tag | None = None,
     talea: Talea = Talea([1], 8),
 ) -> None:
@@ -8961,9 +8961,9 @@ def on_beat_grace_container(
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
+                                    \voiceOne
                                     \set fontSize = #-3
                                     \slash
-                                    \voiceOne
                                     <
                                         \tweak font-size 0
                                         \tweak transparent ##t
@@ -8984,9 +8984,9 @@ def on_beat_grace_container(
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
+                                    \voiceOne
                                     \set fontSize = #-3
                                     \slash
-                                    \voiceOne
                                     <
                                         \tweak font-size 0
                                         \tweak transparent ##t
@@ -9009,9 +9009,9 @@ def on_beat_grace_container(
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
+                                    \voiceOne
                                     \set fontSize = #-3
                                     \slash
-                                    \voiceOne
                                     <
                                         \tweak font-size 0
                                         \tweak transparent ##t
@@ -9080,9 +9080,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
+                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
-                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9100,8 +9100,8 @@ def on_beat_grace_container(
                             }
                             \context Voice = "RhythmMaker.Music"
                             {
+                                \voiceTwo
                                 \time 3/4
-                                \voiceTwo
                                 c'4
                                 ~
                                 c'16
@@ -9110,9 +9110,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
+                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
-                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9135,9 +9135,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
+                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
-                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9165,9 +9165,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
+                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
-                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9190,9 +9190,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
+                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
-                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9224,9 +9224,10 @@ def on_beat_grace_container(
     assert isinstance(voice, abjad.Voice), repr(voice)
     assert isinstance(voice_name, str), repr(voice_name)
     assert isinstance(talea, Talea), repr(talea)
-    polyphony_commands = (r"\voiceOne", r"\voiceTwo", r"\voiceThree", r"\voiceFour")
-    assert grace_polyphony_command in polyphony_commands, repr(grace_polyphony_command)
-    assert nongrace_polyphony_command in polyphony_commands, repr(
+    assert isinstance(grace_polyphony_command, abjad.VoiceNumber), repr(
+        grace_polyphony_command
+    )
+    assert isinstance(nongrace_polyphony_command, abjad.VoiceNumber), repr(
         nongrace_polyphony_command
     )
     if voice_name:
