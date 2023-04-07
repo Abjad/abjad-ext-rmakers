@@ -8961,9 +8961,9 @@ def on_beat_grace_container(
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \voiceOne
                                     \set fontSize = #-3
                                     \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size 0
                                         \tweak transparent ##t
@@ -8984,9 +8984,9 @@ def on_beat_grace_container(
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \voiceOne
                                     \set fontSize = #-3
                                     \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size 0
                                         \tweak transparent ##t
@@ -9009,9 +9009,9 @@ def on_beat_grace_container(
                             <<
                                 \context Voice = "On_Beat_Grace_Container"
                                 {
-                                    \voiceOne
                                     \set fontSize = #-3
                                     \slash
+                                    \voiceOne
                                     <
                                         \tweak font-size 0
                                         \tweak transparent ##t
@@ -9080,9 +9080,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
+                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9110,9 +9110,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
+                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9135,9 +9135,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
+                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9165,9 +9165,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
+                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
@@ -9190,9 +9190,9 @@ def on_beat_grace_container(
                         <<
                             \context Voice = "On_Beat_Grace_Container"
                             {
-                                \voiceOne
                                 \set fontSize = #-3
                                 \slash
+                                \voiceOne
                                 <
                                     \tweak font-size 0
                                     \tweak transparent ##t
