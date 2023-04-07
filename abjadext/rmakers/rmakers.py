@@ -2281,8 +2281,8 @@ def accelerando(
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                     \times 1/1
                     {
-                        \once \override Beam.grow-direction = #right
                         \override Staff.Stem.stemlet-length = 0.75
+                        \once \override Beam.grow-direction = #right
                         \time 4/8
                         r16 * 63/32
                         [
@@ -2298,8 +2298,8 @@ def accelerando(
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                     \times 1/1
                     {
-                        \once \override Beam.grow-direction = #left
                         \override Staff.Stem.stemlet-length = 0.75
+                        \once \override Beam.grow-direction = #left
                         \time 3/8
                         c'16 * 5/8
                         [
@@ -2315,8 +2315,8 @@ def accelerando(
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                     \times 1/1
                     {
-                        \once \override Beam.grow-direction = #right
                         \override Staff.Stem.stemlet-length = 0.75
+                        \once \override Beam.grow-direction = #right
                         \time 4/8
                         c'16 * 63/32
                         [
@@ -2332,8 +2332,8 @@ def accelerando(
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                     \times 1/1
                     {
-                        \once \override Beam.grow-direction = #left
                         \override Staff.Stem.stemlet-length = 0.75
+                        \once \override Beam.grow-direction = #left
                         \time 3/8
                         c'16 * 5/8
                         [
@@ -3219,7 +3219,7 @@ def after_grace_container(
             if beam is True:
                 abjad.beam(notes)
             if slash is True:
-                literal = abjad.LilyPondLiteral(r"\slash")
+                literal = abjad.LilyPondLiteral(r"\slash", site="before")
                 abjad.attach(literal, notes[0])
         container = abjad.AfterGraceContainer(notes)
         abjad.attach(container, leaf)
@@ -3744,7 +3744,7 @@ def before_grace_container(
             if beam is True:
                 abjad.beam(notes)
             if slash is True:
-                literal = abjad.LilyPondLiteral(r"\slash")
+                literal = abjad.LilyPondLiteral(r"\slash", site="before")
                 abjad.attach(literal, notes[0])
             if slash is False and slur is False:
                 command = r"\grace"
