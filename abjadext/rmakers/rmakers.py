@@ -10075,6 +10075,17 @@ def split_measures(voice, *, durations=None, tag: abjad.Tag | None = None) -> No
     abjad.mutate.split(voice[:], durations=durations)
 
 
+def swap_skip_filled(argument) -> None:
+    """
+    Swaps skip-filled tuplets in ``argument`` with containers.
+    """
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if all(isinstance(_, abjad.Skip) for _ in tuplet):
+            container = abjad.Container()
+            abjad.mutate.swap(tuplet, container)
+
+
 def swap_trivial(argument) -> None:
     r"""
     Swaps trivial tuplets in ``argument`` with containers.
