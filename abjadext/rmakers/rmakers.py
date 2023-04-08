@@ -7787,9 +7787,9 @@ def invisible_music(argument, *, tag: abjad.Tag | None = None) -> None:
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
     tag_1 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COMMAND"))
-    literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music")
+    literal_1 = abjad.LilyPondLiteral(r"\abjad-invisible-music", site="before")
     tag_2 = tag.append(abjad.Tag("INVISIBLE_MUSIC_COLORING"))
-    literal_2 = abjad.LilyPondLiteral(r"\abjad-invisible-music-coloring")
+    literal_2 = abjad.LilyPondLiteral(r"\abjad-invisible-music-coloring", site="before")
     for leaf in abjad.select.leaves(argument):
         abjad.attach(literal_1, leaf, tag=tag_1, deactivate=True)
         abjad.attach(literal_2, leaf, tag=tag_2)
