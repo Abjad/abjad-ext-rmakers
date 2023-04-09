@@ -1012,13 +1012,13 @@ class Spelling:
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1068,13 +1068,13 @@ class Spelling:
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1124,13 +1124,13 @@ class Spelling:
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1185,13 +1185,13 @@ class Spelling:
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1654,13 +1654,13 @@ def accelerando(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.feather_beam(container)
         ...     rmakers.duration_bracket(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1746,13 +1746,13 @@ def accelerando(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.feather_beam(container)
         ...     rmakers.duration_bracket(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1841,13 +1841,13 @@ def accelerando(
         ...     tuplets = rmakers.accelerando(durations, [(1, 8), (1, 20), (1, 16)])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.duration_bracket(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1923,13 +1923,13 @@ def accelerando(
         ...     tuplets = abjad.select.tuplets(container)
         ...     rmakers.beam_groups(tuplets)
         ...     rmakers.duration_bracket(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2055,13 +2055,13 @@ def accelerando(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
         ...     rmakers.feather_beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2155,13 +2155,13 @@ def accelerando(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
         ...     rmakers.feather_beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2256,13 +2256,13 @@ def accelerando(
         ...         container, beam_rests=True, stemlet_length=0.75
         ...     )
         ...     rmakers.duration_bracket(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2363,13 +2363,13 @@ def accelerando(
         ...     rmakers.extract_trivial(container)
         ...     rmakers.duration_bracket(container)
         ...     rmakers.feather_beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2433,13 +2433,13 @@ def accelerando(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.duration_bracket(container)
         ...     rmakers.feather_beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2528,13 +2528,13 @@ def accelerando(
         ...     rmakers.duration_bracket(container)
         ...     rmakers.feather_beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (3, 8), (1, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2603,13 +2603,13 @@ def accelerando(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.duration_bracket(container)
         ...     rmakers.feather_beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music, state
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components, state
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music, state = make_statal_accelerandi(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components, state = make_statal_accelerandi(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2679,8 +2679,8 @@ def accelerando(
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music, state = make_statal_accelerandi(durations, previous_state=state)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components, state = make_statal_accelerandi(durations, previous_state=state)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2752,8 +2752,8 @@ def accelerando(
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music, state = make_statal_accelerandi(durations, previous_state=state)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components, state = make_statal_accelerandi(durations, previous_state=state)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -2831,13 +2831,13 @@ def accelerando(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.feather_beam(container, tag=tag)
         ...     rmakers.duration_bracket(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -3058,13 +3058,13 @@ def after_grace_container(
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
         ...     rmakers.after_grace_container(notes, [1, 4])
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3131,13 +3131,13 @@ def after_grace_container(
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
         ...     rmakers.after_grace_container(notes, [1, 4], beam=True, slash=True)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3310,13 +3310,13 @@ def before_grace_container(
         ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
         ...     rmakers.before_grace_container(notes, [1, 2, 3])
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3375,13 +3375,13 @@ def before_grace_container(
         ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
         ...     rmakers.before_grace_container(notes, [1, 2, 3], slur=True)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3440,13 +3440,13 @@ def before_grace_container(
         ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
         ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3509,13 +3509,13 @@ def before_grace_container(
         ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
         ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True, slur=True)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3578,13 +3578,13 @@ def before_grace_container(
         ...     notes = [abjad.select.exclude(_, [0, -1]) for _ in notes]
         ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True, slash=True)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3653,13 +3653,13 @@ def before_grace_container(
         ...         notes, [1, 2, 3], beam=True, slash=True, slur=True
         ...     )
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3776,14 +3776,14 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     tuplets = abjad.select.tuplets(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3847,13 +3847,13 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, (1, 16))
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3916,13 +3916,13 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, (1, 32))
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -3985,13 +3985,13 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, (1, 64))
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -4055,13 +4055,13 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, 8)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -4124,13 +4124,13 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, 12)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
@@ -4195,13 +4195,13 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, 13)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> score = lilypond_file["Score"]
         >>> abjad.override(score).TupletBracket.staff_padding = 4.5
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -4311,13 +4311,13 @@ def even_division(
         ...     rmakers.force_diminution(container)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 16), (6, 16), (6, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4368,13 +4368,13 @@ def even_division(
         ...     rmakers.force_augmentation(container)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 16), (6, 16), (6, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4431,13 +4431,13 @@ def even_division(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4512,13 +4512,13 @@ def even_division(
         ...     logical_ties = abjad.select.get(logical_ties, [0], 3)
         ...     rmakers.force_rest(logical_ties)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4589,13 +4589,13 @@ def even_division(
         ...     logical_ties = abjad.select.get(logical_ties, [3], 4)
         ...     rmakers.force_rest(logical_ties)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4670,13 +4670,13 @@ def even_division(
         ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
         ...     rmakers.force_rest(leaves)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4750,13 +4750,13 @@ def even_division(
         ...     rmakers.rewrite_rest_filled(container)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4817,13 +4817,13 @@ def even_division(
         ...     rmakers.rewrite_sustained(container)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4880,13 +4880,13 @@ def even_division(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -4988,13 +4988,13 @@ def even_division(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5091,13 +5091,13 @@ def even_division(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5194,13 +5194,13 @@ def even_division(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5299,13 +5299,13 @@ def even_division(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5403,13 +5403,13 @@ def even_division(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 16), (3, 8), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5464,13 +5464,13 @@ def even_division(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 16), (3, 8), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5516,13 +5516,13 @@ def even_division(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 16), (3, 8), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5559,13 +5559,13 @@ def even_division(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 16), (3, 8), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5603,13 +5603,13 @@ def even_division(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -5721,13 +5721,13 @@ def even_division(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(12 * [(6, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations, extra_counts)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations, extra_counts)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> staff = lilypond_file["Staff"]
         >>> abjad.override(staff).TextScript.staff_padding = 7
         >>> leaves = abjad.select.leaves(staff)
@@ -5978,13 +5978,13 @@ def even_division(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(9 * [(6, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations, extra_counts)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations, extra_counts)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> staff = lilypond_file["Staff"]
         >>> abjad.override(staff).TextScript.staff_padding = 8
         >>> leaves = abjad.select.leaves(staff)
@@ -6135,13 +6135,13 @@ def even_division(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music, state
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components, state
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music, state = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components, state = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6201,8 +6201,8 @@ def even_division(
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music, state = make_rhythm(durations, previous_state=state)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components, state = make_rhythm(durations, previous_state=state)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6376,13 +6376,13 @@ def extract_trivial(argument) -> None:
         ...     rmakers.beam(container)
         ...     tuplets = abjad.select.tuplets(container)[-2:]
         ...     rmakers.extract_trivial(tuplets)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6482,13 +6482,13 @@ def force_augmentation(argument) -> None:
         ...     container = abjad.Container(tuplets)
         ...     rmakers.force_fraction(container)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6545,13 +6545,13 @@ def force_augmentation(argument) -> None:
         ...     rmakers.force_augmentation(container)
         ...     rmakers.force_fraction(container)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6638,13 +6638,13 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.force_rest(components)
         ...     logical_ties = abjad.select.logical_ties(container)[1:3]
         ...     rmakers.force_note(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(7, 16), (3, 8), (7, 16), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6684,13 +6684,13 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     leaves = abjad.select.get(logical_ties, [0, -1])
         ...     rmakers.force_note(leaves)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(7, 16), (3, 8), (7, 16), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6748,16 +6748,16 @@ def force_repeat_tie(
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
         ...     rmakers.tie(notes)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         Attaches tie to last note in each nonlast tuplet:
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -6971,13 +6971,13 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)[1:3]
         ...     rmakers.force_rest(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(7, 16), (3, 8), (7, 16), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7014,13 +7014,13 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)[-2:]
         ...     rmakers.force_rest(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(7, 16), (3, 8), (7, 16), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7057,13 +7057,13 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)[1:-1]
         ...     rmakers.force_rest(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(7, 16), (3, 8), (7, 16), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7121,13 +7121,13 @@ def hide_trivial(argument) -> None:
         ...     rmakers.beam(container)
         ...     tuplets = abjad.select.tuplets(container)[-2:]
         ...     rmakers.hide_trivial(tuplets)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7224,13 +7224,13 @@ def incised(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7276,13 +7276,13 @@ def incised(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7332,13 +7332,13 @@ def incised(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7384,13 +7384,13 @@ def incised(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7450,13 +7450,13 @@ def incised(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7520,13 +7520,13 @@ def incised(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7596,13 +7596,13 @@ def incised(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures(4 * [(5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7825,8 +7825,8 @@ def multiplied_duration(
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (3, 16), (5, 8), (1, 3)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = rmakers.multiplied_duration(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = rmakers.multiplied_duration(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7860,8 +7860,8 @@ def multiplied_duration(
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (3, 16), (5, 8), (1, 3)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = rmakers.multiplied_duration(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = rmakers.multiplied_duration(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7893,8 +7893,8 @@ def multiplied_duration(
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (3, 16), (5, 8), (1, 3)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = rmakers.multiplied_duration(durations, duration=(1, 2))
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = rmakers.multiplied_duration(durations, duration=(1, 2))
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7926,8 +7926,8 @@ def multiplied_duration(
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (3, 16), (5, 8), (1, 3)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = rmakers.multiplied_duration(durations, duration=(1, 4))
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = rmakers.multiplied_duration(durations, duration=(1, 4))
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7961,8 +7961,8 @@ def multiplied_duration(
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (3, 16), (5, 8), (1, 3)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = rmakers.multiplied_duration(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = rmakers.multiplied_duration(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -7996,8 +7996,8 @@ def multiplied_duration(
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (3, 16), (5, 8), (1, 3)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = rmakers.multiplied_duration(durations, abjad.Rest)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = rmakers.multiplied_duration(durations, abjad.Rest)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8032,8 +8032,8 @@ def multiplied_duration(
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (3, 16), (5, 8), (1, 3)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = rmakers.multiplied_duration(durations, abjad.MultimeasureRest)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = rmakers.multiplied_duration(durations, abjad.MultimeasureRest)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8067,8 +8067,8 @@ def multiplied_duration(
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (3, 16), (5, 8), (1, 3)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = rmakers.multiplied_duration(durations, abjad.Skip)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = rmakers.multiplied_duration(durations, abjad.Skip)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8147,13 +8147,13 @@ def note(
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)
         ...     rmakers.force_rest(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8190,13 +8190,13 @@ def note(
         ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     rmakers.force_rest(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (5, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8235,13 +8235,13 @@ def note(
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)[1:-1]
         ...     rmakers.force_rest(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8280,13 +8280,13 @@ def note(
         ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container, pitched=True)
         ...     rmakers.beam(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 32), (5, 32)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8327,13 +8327,13 @@ def note(
         ...     container = abjad.Container(components)
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     rmakers.beam_groups(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 32), (5, 32)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8378,13 +8378,13 @@ def note(
         ...     nested_music = rmakers.note(durations)
         ...     components = abjad.sequence.flatten(nested_music)
         ...     container = abjad.Container(components)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 32), (5, 32)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8419,13 +8419,13 @@ def note(
         ...     nested_music = rmakers.note(durations)
         ...     components = abjad.sequence.flatten(nested_music)
         ...     container = abjad.Container(components)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8463,13 +8463,13 @@ def note(
         ...     logical_ties = abjad.select.logical_ties(container)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in logical_ties]
         ...     rmakers.tie(leaves)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8511,13 +8511,13 @@ def note(
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)
         ...     leaves = [abjad.select.leaf(_, -1) for _ in logical_ties]
         ...     rmakers.tie(leaves)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8555,13 +8555,13 @@ def note(
         ...     components = abjad.sequence.flatten(nested_music)
         ...     container = abjad.Container(components)
         ...     rmakers.untie(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(7, 16), (1, 4), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8595,13 +8595,13 @@ def note(
         ...     nested_music = rmakers.note(durations)
         ...     components = abjad.sequence.flatten(nested_music)
         ...     container = abjad.Container(components)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 14), (3, 7)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8645,13 +8645,13 @@ def note(
         ...     components = abjad.sequence.flatten(nested_music)
         ...     container = abjad.Container(components)
         ...     rmakers.force_augmentation(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 14), (3, 7)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8698,13 +8698,13 @@ def note(
         ...     container = abjad.Container(components)
         ...     logical_tie = abjad.select.logical_tie(container, 0)
         ...     rmakers.force_rest(logical_tie)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (2, 8), (2, 8), (5, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8744,13 +8744,13 @@ def note(
         ...     container = abjad.Container(components)
         ...     logical_tie = abjad.select.logical_ties(container)[:2]
         ...     rmakers.force_rest(logical_tie)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (2, 8), (2, 8), (5, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8791,13 +8791,13 @@ def note(
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
         ...     rmakers.force_rest(logical_ties)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (2, 8), (2, 8), (5, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8835,13 +8835,13 @@ def note(
         ...     components = abjad.sequence.flatten(nested_music)
         ...     voice = rmakers.wrap_in_time_signature_staff(components, time_signatures)
         ...     rmakers.rewrite_meter(voice)
-        ...     music = abjad.mutate.eject_contents(voice)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(voice)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (6, 16), (9, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations, time_signatures)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations, time_signatures)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -8922,8 +8922,8 @@ def on_beat_grace_container(
         ...         [2, 4],
         ...         grace_leaf_duration=(1, 28)
         ...     )
-        ...     music = abjad.mutate.eject_contents(voice)
-        ...     music_voice = abjad.Voice(music, name="RhythmMaker.Music")
+        ...     components = abjad.mutate.eject_contents(voice)
+        ...     music_voice = abjad.Voice(components, name="RhythmMaker.Music")
         ...     lilypond_file = rmakers.example(
         ...         [music_voice], time_signatures, includes=["abjad.ily"]
         ...     )
@@ -9051,8 +9051,8 @@ def on_beat_grace_container(
         ...         [6, 2],
         ...         grace_leaf_duration=(1, 28)
         ...     )
-        ...     music = abjad.mutate.eject_contents(voice)
-        ...     music_voice = abjad.Voice(music, name="RhythmMaker.Music")
+        ...     components = abjad.mutate.eject_contents(voice)
+        ...     music_voice = abjad.Voice(components, name="RhythmMaker.Music")
         ...     lilypond_file = rmakers.example(
         ...         [music_voice], time_signatures, includes=["abjad.ily"]
         ...     )
@@ -9269,14 +9269,14 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     notes = [abjad.select.note(_, 0) for _ in tuplets]
         ...     rmakers.repeat_tie(notes)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9365,14 +9365,14 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     notes = [abjad.select.notes(_)[1:] for _ in tuplets]
         ...     rmakers.repeat_tie(notes)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9566,13 +9566,13 @@ def rewrite_rest_filled(
         ...     container = abjad.Container(tuplets)
         ...     tuplets = abjad.select.tuplets(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 16), (4, 16), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9639,13 +9639,13 @@ def rewrite_rest_filled(
         ...     tuplets = abjad.select.tuplets(container)
         ...     rmakers.rewrite_rest_filled(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 16), (4, 16), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9685,13 +9685,13 @@ def rewrite_rest_filled(
         ...         spelling=rmakers.Spelling(increase_monotonic=True)
         ...     )
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 16), (4, 16), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9764,13 +9764,13 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 16), (4, 16), (4, 16), (4, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9847,13 +9847,13 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.tie(leaves)
         ...     rmakers.rewrite_sustained(container)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 16), (4, 16), (4, 16), (4, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9914,13 +9914,13 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.tie(leaves)
         ...     rmakers.rewrite_sustained(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 16), (4, 16), (4, 16), (4, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -9965,13 +9965,13 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.tie(notes)
         ...     rmakers.rewrite_sustained(tuplets[-2:])
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10098,13 +10098,13 @@ def swap_trivial(argument) -> None:
         ...     rmakers.beam(container)
         ...     tuplets = abjad.select.tuplets(container)[-2:]
         ...     rmakers.swap_trivial(tuplets)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10194,13 +10194,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10255,13 +10255,13 @@ def talea(
         ...     rmakers.force_rest(logical_ties)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10318,13 +10318,13 @@ def talea(
         ...     rmakers.force_note(logical_ties)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10373,13 +10373,13 @@ def talea(
         ...     rmakers.denominator(container, (1, 16))
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10452,13 +10452,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10527,13 +10527,13 @@ def talea(
         ...     tuplets = abjad.select.tuplets(container)
         ...     rmakers.beam_groups(tuplets)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10650,13 +10650,13 @@ def talea(
         ...     tuplets = rmakers.talea(durations, [1], 16)
         ...     container = abjad.Container(tuplets)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10716,13 +10716,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10796,13 +10796,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container, beam_rests=True)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10870,13 +10870,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container, beam_rests=True, stemlet_length=0.75)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -10952,13 +10952,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11013,13 +11013,13 @@ def talea(
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11078,13 +11078,13 @@ def talea(
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11142,13 +11142,13 @@ def talea(
         ...     rmakers.tie(notes)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 8), (3, 8), (4, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11202,13 +11202,13 @@ def talea(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11282,13 +11282,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.denominator(container, (1, 16))
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11364,13 +11364,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11448,13 +11448,13 @@ def talea(
         ...     rmakers.beam(container)
         ...     rmakers.force_augmentation(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11537,13 +11537,13 @@ def talea(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11602,13 +11602,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.trivialize(container)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11672,13 +11672,13 @@ def talea(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11744,13 +11744,13 @@ def talea(
         ...     notes = abjad.select.notes(container)[:-1]
         ...     rmakers.tie(notes)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11820,13 +11820,13 @@ def talea(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11890,13 +11890,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_rest_filled(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -11958,13 +11958,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12020,13 +12020,13 @@ def talea(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_rest_filled(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12072,13 +12072,13 @@ def talea(
         ...     rmakers.rewrite_sustained(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12123,13 +12123,13 @@ def talea(
         ...     rmakers.force_rest(leaves)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12185,13 +12185,13 @@ def talea(
         ...     rmakers.force_rest(leaves)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12247,13 +12247,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (5, 8), (5, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12307,13 +12307,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (5, 8), (5, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12362,13 +12362,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12417,13 +12417,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12481,13 +12481,13 @@ def talea(
         ...     rmakers.beam(voice)
         ...     rmakers.extract_trivial(voice)
         ...     rmakers.rewrite_meter(voice)
-        ...     music = abjad.mutate.eject_contents(voice)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(voice)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 4), (3, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations, time_signatures)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations, time_signatures)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12552,13 +12552,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12609,13 +12609,13 @@ def talea(
         ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16, extra_counts=[0, 1])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12680,13 +12680,13 @@ def talea(
         ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16, extra_counts=[0, 2])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12762,13 +12762,13 @@ def talea(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12837,13 +12837,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12902,15 +12902,15 @@ def talea(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         Code below raises an exception because talea would need to be read
         multiple times to handle all durations:
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
+        >>> components = make_rhythm(durations)
         Traceback (most recent call last):
             ...
         Exception: CyclicTuple(items=()) + CyclicTuple(items=(1, 2, 3, 4)) is too short to read [6, 6, 6, 6] once.
@@ -12929,13 +12929,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music, state
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components, state
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music, state = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components, state = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -12987,8 +12987,8 @@ def talea(
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music, state = make_rhythm(durations, previous_state=state)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components, state = make_rhythm(durations, previous_state=state)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13041,8 +13041,8 @@ def talea(
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music, state = make_rhythm(durations, previous_state=state)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components, state = make_rhythm(durations, previous_state=state)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13103,13 +13103,13 @@ def talea(
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container, tag=tag)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13245,13 +13245,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13301,13 +13301,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13349,13 +13349,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13401,13 +13401,13 @@ def talea(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13492,14 +13492,14 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
         ...     rmakers.tie(notes)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13589,14 +13589,14 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.untie(notes)
         ...     rmakers.tie(notes)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> time_signatures = rmakers.time_signatures(pairs)
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13715,15 +13715,15 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
         ...     groups = [abjad.select.get(_, [0, -1]) for _ in notes]
         ...     rmakers.tremolo_container(groups, 2)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> containers = abjad.select.components(music, abjad.TremoloContainer)
+        >>> components = make_rhythm(durations)
+        >>> containers = abjad.select.components(components, abjad.TremoloContainer)
         >>> result = [abjad.slur(_) for _ in containers]
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13781,15 +13781,15 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
         ...     groups = [abjad.select.get(_, [0, -1]) for _ in notes]
         ...     rmakers.tremolo_container(groups, 4)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(4, 4), (3, 4)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> containers = abjad.select.components(music, abjad.TremoloContainer)
+        >>> components = make_rhythm(durations)
+        >>> containers = abjad.select.components(components, abjad.TremoloContainer)
         >>> result = [abjad.slur(_) for _ in containers]
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13879,13 +13879,13 @@ def tuplet(
         ...     tuplets = rmakers.tuplet(durations, [(3, 2)])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 2), (3, 8), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -13943,13 +13943,13 @@ def tuplet(
         ...     tuplets = rmakers.tuplet(durations, [(1, -1), (3, 1)])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 2), (3, 8), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14006,13 +14006,13 @@ def tuplet(
         ...     tuplets = rmakers.tuplet(durations, [(1, 1, 1, 1)])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (3, 8), (6, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14083,13 +14083,13 @@ def tuplet(
         ...     tuplets = rmakers.tuplet(durations, [(1, 1, 1, 1)])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (3, 8), (6, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14161,13 +14161,13 @@ def tuplet(
         ...     container = abjad.Container(tuplets)
         ...     tuplets = abjad.select.tuplets(container)
         ...     rmakers.beam_groups(tuplets)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(5, 8), (3, 8), (6, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14263,13 +14263,13 @@ def tuplet(
         ...     tuplets = rmakers.tuplet(durations, [(2, 3), (1, -2, 1)])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 2), (3, 8), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14322,13 +14322,13 @@ def tuplet(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 2), (3, 8), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14384,13 +14384,13 @@ def tuplet(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 2), (3, 8), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14451,13 +14451,13 @@ def tuplet(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.force_diminution(container)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14503,13 +14503,13 @@ def tuplet(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.force_augmentation(container)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14562,13 +14562,13 @@ def tuplet(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.force_diminution(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (3, 8), (7, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14624,13 +14624,13 @@ def tuplet(
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.force_diminution(container)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (3, 8), (7, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14681,13 +14681,13 @@ def tuplet(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.force_augmentation(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (3, 8), (7, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14743,13 +14743,13 @@ def tuplet(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.force_augmentation(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (3, 8), (7, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14804,13 +14804,13 @@ def tuplet(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14869,13 +14869,13 @@ def tuplet(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.trivialize(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14934,13 +14934,13 @@ def tuplet(
         ...     rmakers.beam(container)
         ...     rmakers.trivialize(container)
         ...     rmakers.rewrite_dots(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (3, 8), (3, 8), (3, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -14999,13 +14999,13 @@ def tuplet(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (2, 8), (3, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15072,13 +15072,13 @@ def tuplet(
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (2, 8), (3, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15138,13 +15138,13 @@ def tuplet(
         ...     rmakers.extract_trivial(container)
         ...     notes = abjad.select.notes(container)[:-1]
         ...     rmakers.tie(notes)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (2, 8), (3, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15206,13 +15206,13 @@ def tuplet(
         ...     rmakers.force_rest(tuplets)
         ...     rmakers.rewrite_rest_filled(container)
         ...     rmakers.extract_trivial(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(3, 8), (4, 8), (3, 8), (4, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15259,13 +15259,13 @@ def tuplet(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15323,13 +15323,13 @@ def tuplet(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, (1, 16))
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15386,13 +15386,13 @@ def tuplet(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, (1, 32))
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15449,13 +15449,13 @@ def tuplet(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, (1, 64))
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15513,13 +15513,13 @@ def tuplet(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, 8)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15576,13 +15576,13 @@ def tuplet(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, 12)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15639,13 +15639,13 @@ def tuplet(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.denominator(container, 13)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 16), (4, 16), (6, 16), (8, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15698,13 +15698,13 @@ def tuplet(
         ...     tuplets = rmakers.tuplet(durations, [(3, 2)], tag=tag)
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container, tag=tag)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 2), (3, 8), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15816,13 +15816,13 @@ def tuplet(
         ...     tuplets = rmakers.tuplet(durations, [(3, 2)])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 2), (3, 8), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15880,13 +15880,13 @@ def tuplet(
         ...     tuplets = rmakers.tuplet(durations, [(1, -1), (3, 1)])
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 2), (3, 8), (5, 16), (5, 16)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -15942,13 +15942,13 @@ def tuplet(
         >>> def make_rhythm(durations):
         ...     tuplets = rmakers.tuplet(durations, [(1,)])
         ...     container = abjad.Container(tuplets)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(1, 5), (1, 4), (1, 6), (7, 9)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -16765,13 +16765,13 @@ def untie(argument) -> None:
         ...     notes = abjad.select.get(notes, [0], 4)
         ...     rmakers.untie(notes)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -16869,13 +16869,13 @@ def untie(argument) -> None:
         ...     notes = abjad.select.get(notes, [0], 4)
         ...     rmakers.untie(notes)
         ...     rmakers.beam(container)
-        ...     music = abjad.mutate.eject_contents(container)
-        ...     return music
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     return components
 
         >>> time_signatures = rmakers.time_signatures([(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)])
         >>> durations = [abjad.Duration(_) for _ in time_signatures]
-        >>> music = make_rhythm(durations)
-        >>> lilypond_file = rmakers.example(music, time_signatures)
+        >>> components = make_rhythm(durations)
+        >>> lilypond_file = rmakers.example(components, time_signatures)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
