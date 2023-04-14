@@ -752,15 +752,17 @@ def _make_talea_rhythm_maker_tuplets(durations, leaf_lists, *, tag):
 def _make_time_signature_staff(time_signatures):
     assert time_signatures, repr(time_signatures)
     staff = abjad.Staff(simultaneous=True)
+    score = abjad.Score([staff], name="Score")
     time_signature_voice = abjad.Voice(name="TimeSignatureVoice")
+    staff.append(time_signature_voice)
+    staff.append(abjad.Voice(name="RhythmMaker.Music"))
     for time_signature in time_signatures:
         duration = time_signature.pair
         skip = abjad.Skip(1, multiplier=duration)
         time_signature_voice.append(skip)
         abjad.attach(time_signature, skip, context="Staff")
-    staff.append(time_signature_voice)
-    staff.append(abjad.Voice(name="RhythmMaker.Music"))
-    return staff
+    # return staff
+    return score
 
 
 def _make_tuplet_rhythm_maker_music(
@@ -17148,8 +17150,8 @@ def wrap_in_time_signature_staff(
     assert all(isinstance(_, abjad.TimeSignature) for _ in time_signatures), repr(
         time_signatures
     )
-    staff = _make_time_signature_staff(time_signatures)
-    music_voice = staff["RhythmMaker.Music"]
+    score = _make_time_signature_staff(time_signatures)
+    music_voice = score["RhythmMaker.Music"]
     music_voice.extend(components)
     _validate_tuplets(music_voice)
     return music_voice
