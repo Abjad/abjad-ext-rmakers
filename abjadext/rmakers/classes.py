@@ -368,6 +368,194 @@ class Spelling:
                 }
             >>
 
+    ..  container:: example
+
+        Spells nonassignable durations with monontonically decreasing durations:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations,
+        ...         [5],
+        ...         16,
+        ...         spelling=rmakers.Spelling(increase_monotonic=False),
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(5, 8), (5, 8), (5, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/8
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                    ~
+                    c'16
+                    \time 5/8
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                    ~
+                    c'16
+                    \time 5/8
+                    c'4
+                    ~
+                    c'16
+                    c'4
+                    ~
+                    c'16
+                }
+            >>
+
+    ..  container:: example
+
+        Spells nonassignable durations with monontonically increasing durations:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations,
+        ...         [5],
+        ...         16,
+        ...         spelling=rmakers.Spelling(increase_monotonic=True),
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(5, 8), (5, 8), (5, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 5/8
+                    c'16
+                    ~
+                    c'4
+                    c'16
+                    ~
+                    c'4
+                    \time 5/8
+                    c'16
+                    ~
+                    c'4
+                    c'16
+                    ~
+                    c'4
+                    \time 5/8
+                    c'16
+                    ~
+                    c'4
+                    c'16
+                    ~
+                    c'4
+                }
+            >>
+
+    ..  container:: example
+
+        Forbids durations equal to ``1/4`` or greater:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations, [1, 1, 1, 1, 4, 4], 16,
+        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 4)),
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(3, 4), (3, 4)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'8
+                    ~
+                    c'8
+                    c'8
+                    ~
+                    c'8
+                    ]
+                    \time 3/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'8
+                    ~
+                    c'8
+                    c'8
+                    ~
+                    c'8
+                    ]
+                }
+            >>
+
+        Rewrites forbidden durations with smaller durations tied together.
+
     """
 
     forbidden_note_duration: abjad.Duration | None = None

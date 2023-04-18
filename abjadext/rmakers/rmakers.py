@@ -1,4 +1,3 @@
-import dataclasses
 import inspect
 import math
 import types
@@ -2483,8 +2482,515 @@ def beam(
     stemlet_length: int | float | None = None,
     tag: abjad.Tag | None = None,
 ) -> None:
-    """
+    r"""
     Calls ``abjad.beam()`` on leaves in ``argument``.
+
+    Beams each tuplet:
+
+    ..  container:: example
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Beams tuplets together:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     rmakers.beam_groups(tuplets)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \set stemLeftBeamCount = 0
+                    \set stemRightBeamCount = 2
+                    \time 3/8
+                    c'16
+                    [
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    \time 4/8
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    \time 3/8
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 1
+                    c'16
+                    \set stemLeftBeamCount = 1
+                    \set stemRightBeamCount = 2
+                    \time 4/8
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 2
+                    c'16
+                    \set stemLeftBeamCount = 2
+                    \set stemRightBeamCount = 0
+                    c'16
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Beams nothing:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    \time 4/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    \time 3/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    \time 4/8
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                    c'16
+                }
+            >>
+
+    ..  container:: example
+
+        Does not beam rests:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    ]
+                    r16
+                }
+            >>
+
+    ..  container:: example
+
+        Does beam rests:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container, beam_rests=True)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    ]
+                    \time 3/8
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    ]
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Beams rests with stemlets:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container, beam_rests=True, stemlet_length=0.75)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override Staff.Stem.stemlet-length = 0.75
+                    \time 3/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    \revert Staff.Stem.stemlet-length
+                    c'16
+                    ]
+                    \override Staff.Stem.stemlet-length = 0.75
+                    \time 4/8
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    \revert Staff.Stem.stemlet-length
+                    c'16
+                    ]
+                    \override Staff.Stem.stemlet-length = 0.75
+                    \time 3/8
+                    c'16
+                    [
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    \revert Staff.Stem.stemlet-length
+                    r16
+                    ]
+                    \override Staff.Stem.stemlet-length = 0.75
+                    \time 4/8
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    r16
+                    c'16
+                    c'16
+                    c'16
+                    \revert Staff.Stem.stemlet-length
+                    r16
+                    ]
+                }
+            >>
+
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
@@ -3510,6 +4016,90 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                         \time 8/16
                         c'8
                         c'2
+                    }
+                }
+            >>
+
+    ..  container:: example
+
+        REGRESSION. ``rmakers.denominator()`` Spells tuplet denominator in terms
+        of duration when denominator is given as a duration:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations, [1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.denominator(container, (1, 16))
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'16
+                        ]
+                        ~
+                    }
+                    \times 8/9
+                    {
+                        \time 4/8
+                        c'8.
+                        [
+                        c'16
+                        c'8
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/8
+                    {
+                        \time 3/8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                        ~
+                    }
+                    \times 8/10
+                    {
+                        \time 4/8
+                        c'8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
                     }
                 }
             >>
@@ -5884,6 +6474,93 @@ def force_augmentation(argument) -> None:
                 }
             >>
 
+    ..  container:: example
+
+        Forces augmented tuplets:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1], 16, extra_counts=[0, -1])
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.force_augmentation(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 1/4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 1/4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/3
+                    {
+                        \time 1/4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
     """
     for tuplet in abjad.select.tuplets(argument):
         if not tuplet.augmentation():
@@ -5891,8 +6568,93 @@ def force_augmentation(argument) -> None:
 
 
 def force_diminution(argument) -> None:
-    """
+    r"""
     Forces each tuplet in ``argument`` to notate as a diminution.
+
+    Forces diminished tuplets:
+
+    ..  container:: example
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1], 16, extra_counts=[0, -1])
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.force_diminution(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \times 2/3
+                    {
+                        \time 1/4
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \times 2/3
+                    {
+                        \time 1/4
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    \time 1/4
+                    c'16
+                    [
+                    c'16
+                    c'16
+                    c'16
+                    ]
+                    \times 2/3
+                    {
+                        \time 1/4
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                }
+            >>
+
     """
     for tuplet in abjad.select.tuplets(argument):
         if not tuplet.diminution():
@@ -6376,6 +7138,301 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
                     r4..
                     \time 3/8
                     c'4.
+                }
+            >>
+
+    ..  container:: example
+
+        Silences first and last logical ties:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     logical_ties = abjad.select.logical_ties(container)
+        ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
+        ...     rmakers.force_rest(logical_ties)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ]
+                    ~
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Silences all logical ties. Then sustains first and last logical ties:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     logical_ties = abjad.select.logical_ties(container)
+        ...     rmakers.force_rest(logical_ties)
+        ...     logical_ties = abjad.select.logical_ties(container)
+        ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
+        ...     rmakers.force_note(logical_ties)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    c'16
+                    r8
+                    r8.
+                    \time 4/8
+                    r4
+                    r16
+                    r8
+                    r16
+                    \time 3/8
+                    r8
+                    r4
+                    \time 4/8
+                    r16
+                    r8
+                    r8.
+                    c'8
+                }
+            >>
+
+    ..  container:: example
+
+        Silences every other output tuplet:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     tuplets = abjad.select.get(tuplets, [1], 2)
+        ...     rmakers.force_rest(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_rest_filled(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 4/8
+                    r2
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    r2
+                }
+            >>
+
+    ..  container:: example
+
+        Forces the first leaf and the last two leaves to be rests:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     leaves = abjad.select.leaves(container)
+        ...     leaves = abjad.select.get(leaves, [0, -2, -1])
+        ...     rmakers.force_rest(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ]
+                    ~
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    c'16
+                    [
+                    c'8
+                    ]
+                    r8.
+                    r8
+                }
+            >>
+
+    ..  container:: example
+
+        Forces rest at first leaf of every tuplet:
+
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
+        ...     rmakers.force_rest(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    r4
+                    c'16
+                    [
+                    c'8
+                    c'16
+                    ]
+                    \time 3/8
+                    r8
+                    c'4
+                    \time 4/8
+                    r16
+                    c'8
+                    [
+                    c'8.
+                    c'8
+                    ]
                 }
             >>
 
@@ -8810,11 +9867,86 @@ def rewrite_meter(
     reference_meters: typing.Sequence[abjad.Meter] = (),
     tag: abjad.Tag | None = None,
 ) -> None:
-    """
+    r"""
     Rewrites meter of material in ``voice``.
 
     Use ``rmakers.wrap_in_time_signature_staff()`` to make sure ``voice``
     appears together with time signature information in a staff.
+
+    Rewrites meter:
+
+    ..  container:: example
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [5, 4], 16)
+        ...     voice = rmakers.wrap_in_time_signature_staff(
+        ...         tuplets, time_signatures)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
+        ...     rmakers.rewrite_meter(voice)
+        ...     components = abjad.mutate.eject_contents(voice)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(3, 4), (3, 4), (3, 4)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/4
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    ~
+                    \time 3/4
+                    c'8
+                    [
+                    c'8
+                    ]
+                    ~
+                    c'8
+                    [
+                    c'8
+                    ]
+                    ~
+                    c'8.
+                    [
+                    c'16
+                    ]
+                    ~
+                    \time 3/4
+                    c'8.
+                    [
+                    c'16
+                    ]
+                    ~
+                    c'4
+                    c'4
+                }
+            >>
+
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
@@ -9038,6 +10170,149 @@ def rewrite_rest_filled(
                     \time 5/16
                     r16
                     r4
+                }
+            >>
+
+    ..  container:: example
+
+        Working with ``rewrite_rest_filled``.
+
+        Makes rest-filled tuplets:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations, [3, 3, -6, -6], 16, extra_counts=[1, 0]
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        r4
+                        r16
+                        r8.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 3/8
+                        r8.
+                        c'8.
+                        [
+                        c'16
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'8
+                        r4.
+                    }
+                }
+            >>
+
+        Rewrites rest-filled tuplets:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations, [3, 3, -6, -6], 16, extra_counts=[1, 0]
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.rewrite_rest_filled(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        r16
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        r2
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/7
+                    {
+                        \time 3/8
+                        r8.
+                        c'8.
+                        [
+                        c'16
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'8
+                        r4.
+                    }
                 }
             >>
 
@@ -9349,6 +10624,60 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                 }
             >>
 
+    ..  container:: example
+
+        Sustains every other tuplet:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)
+        ...     tuplets = abjad.select.get(tuplets, [1], 2)
+        ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
+        ...     rmakers.tie(notes)
+        ...     rmakers.rewrite_sustained(tuplets)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 3/8
+                    c'16
+                    [
+                    c'8
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'2
+                    ~
+                    \time 3/8
+                    c'8
+                    c'4
+                    \time 4/8
+                    c'2
+                }
+            >>
+
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
@@ -9567,2339 +10896,6 @@ def talea(
                     c'8.
                     c'8
                     ]
-                }
-            >>
-
-    ..  container:: example
-
-        Silences first and last logical ties:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     logical_ties = abjad.select.logical_ties(container)
-        ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
-        ...     rmakers.force_rest(logical_ties)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    r16
-                    c'8
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ]
-                    ~
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Silences all logical ties. Then sustains first and last logical ties:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     logical_ties = abjad.select.logical_ties(container)
-        ...     rmakers.force_rest(logical_ties)
-        ...     logical_ties = abjad.select.logical_ties(container)
-        ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
-        ...     rmakers.force_note(logical_ties)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    r8
-                    r8.
-                    \time 4/8
-                    r4
-                    r16
-                    r8
-                    r16
-                    \time 3/8
-                    r8
-                    r4
-                    \time 4/8
-                    r16
-                    r8
-                    r8.
-                    c'8
-                }
-            >>
-
-    ..  container:: example
-
-        REGRESSION. Spells tuplet denominator in terms of duration when denominator is
-        given as a duration:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.denominator(container, (1, 16))
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'16
-                        ]
-                        ~
-                    }
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'8.
-                        [
-                        c'16
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8
-                    {
-                        \time 3/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                        ~
-                    }
-                    \times 8/10
-                    {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Beams each duration:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Beams tuplets together:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.beam_groups(tuplets)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \set stemLeftBeamCount = 0
-                    \set stemRightBeamCount = 2
-                    \time 3/8
-                    c'16
-                    [
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 4/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 3/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 4/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 0
-                    c'16
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Beams nothing:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 4/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 3/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 4/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                }
-            >>
-
-    ..  container:: example
-
-        Does not beam rests:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                }
-            >>
-
-    ..  container:: example
-
-        Does beam rests:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container, beam_rests=True)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Beams rests with stemlets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container, beam_rests=True, stemlet_length=0.75)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override Staff.Stem.stemlet-length = 0.75
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    c'16
-                    ]
-                    \override Staff.Stem.stemlet-length = 0.75
-                    \time 4/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    c'16
-                    ]
-                    \override Staff.Stem.stemlet-length = 0.75
-                    \time 3/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    r16
-                    ]
-                    \override Staff.Stem.stemlet-length = 0.75
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    r16
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Does not tie across durations:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [5, 3, 3, 3], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Ties across durations:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [5, 3, 3, 3], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie(leaves)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    ~
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                    ~
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    ~
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Ties across every other tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [5, 3, 3, 3], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     tuplets = abjad.select.get(tuplets, [0], 2)
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie(leaves)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    ~
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    ~
-                    \time 3/8
-                    c'8.
-                    [
-                    c'8.
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        TIE-CONSECUTIVE-NOTES RECIPE:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [5, -3, 3, 3], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.untie(container)
-        ...     runs = abjad.select.runs(container)
-        ...     notes = [abjad.select.notes(_)[:-1] for _ in runs]
-        ...     rmakers.tie(notes)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    r8.
-                    \time 3/8
-                    c'8.
-                    [
-                    ~
-                    c'8.
-                    ]
-                    ~
-                    \time 4/8
-                    c'4
-                    ~
-                    c'16
-                    r8.
-                    \time 3/8
-                    c'8.
-                    [
-                    ~
-                    c'8.
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Working with ``denominator``.
-
-        Reduces terms in tuplet ratio to relative primes when no tuplet command is given:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'16
-                        ]
-                        ~
-                    }
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'8.
-                        [
-                        c'16
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                        ~
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        REGRESSION. Spells tuplet denominator in terms of duration when denominator is
-        given as a duration:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.denominator(container, (1, 16))
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        c'16
-                        ]
-                        ~
-                    }
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'8.
-                        [
-                        c'16
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8
-                    {
-                        \time 3/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                        ~
-                    }
-                    \times 8/10
-                    {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Working with ``diminution``.
-
-        Makes diminished tuplets when ``diminution`` is true (or when no tuplet command
-        is given):
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16, extra_counts=[0, -1])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        Forces augmented tuplets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16, extra_counts=[0, -1])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.force_augmentation(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Working with ``trivialize``.
-
-        Leaves trivializable tuplets as-is when no tuplet command is given. The tuplets
-        in measures 2 and 4 can be written as trivial tuplets, but they are not:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 4/8
-                        c'4.
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \times 2/3
-                    {
-                        \time 4/8
-                        c'4.
-                        c'4.
-                    }
-                }
-            >>
-
-        Rewrites trivializable tuplets as trivial (1:1) tuplets when ``trivialize`` is
-        true:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.trivialize(container)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'4
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'4
-                        c'4
-                    }
-                }
-            >>
-
-        REGRESSION #907a. Rewrites trivializable tuplets even when tuplets contain
-        multiple ties:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.trivialize(container)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
-        ...     rmakers.tie(leaves)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'4
-                        c'4
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'4
-                        c'4
-                    }
-                }
-            >>
-
-        REGRESSION #907b. Rewrites trivializable tuplets even when tuplets contain very
-        long ties:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.trivialize(container)
-        ...     notes = abjad.select.notes(container)[:-1]
-        ...     rmakers.tie(notes)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        ~
-                        c'8.
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'4
-                        ~
-                        c'4
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        ~
-                        c'8.
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'4
-                        ~
-                        c'4
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Working with ``rewrite_rest_filled``.
-
-        Makes rest-filled tuplets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [3, 3, -6, -6], 16, extra_counts=[1, 0]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        r4
-                        r16
-                        r8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        r8.
-                        c'8.
-                        [
-                        c'16
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'8
-                        r4.
-                    }
-                }
-            >>
-
-        Rewrites rest-filled tuplets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [3, 3, -6, -6], 16, extra_counts=[1, 0]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.rewrite_rest_filled(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        r2
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        r8.
-                        c'8.
-                        [
-                        c'16
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'8
-                        r4.
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        No rest commands:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ]
-                    ~
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    c'8
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Silences every other output tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     tuplets = abjad.select.get(tuplets, [1], 2)
-        ...     rmakers.force_rest(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.rewrite_rest_filled(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    r2
-                }
-            >>
-
-    ..  container:: example
-
-        Sustains every other tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     tuplets = abjad.select.get(tuplets, [1], 2)
-        ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
-        ...     rmakers.tie(notes)
-        ...     rmakers.rewrite_sustained(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'2
-                }
-            >>
-
-    ..  container:: example
-
-        Forces the first leaf and the last two leaves to be rests:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     leaves = abjad.select.leaves(container)
-        ...     leaves = abjad.select.get(leaves, [0, -2, -1])
-        ...     rmakers.force_rest(leaves)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    r16
-                    c'8
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ]
-                    ~
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    ]
-                    r8.
-                    r8
-                }
-            >>
-
-    ..  container:: example
-
-        Forces rest at first leaf of every tuplet:
-
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
-        ...     rmakers.force_rest(leaves)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    r16
-                    c'8
-                    [
-                    c'8.
-                    ]
-                    \time 4/8
-                    r4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ]
-                    \time 3/8
-                    r8
-                    c'4
-                    \time 4/8
-                    r16
-                    c'8
-                    [
-                    c'8.
-                    c'8
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Spells nonassignable durations with monontonically decreasing durations:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations,
-        ...         [5],
-        ...         16,
-        ...         spelling=rmakers.Spelling(increase_monotonic=False),
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(5, 8), (5, 8), (5, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 5/8
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    \time 5/8
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    \time 5/8
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                }
-            >>
-
-    ..  container:: example
-
-        Spells nonassignable durations with monontonically increasing durations:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations,
-        ...         [5],
-        ...         16,
-        ...         spelling=rmakers.Spelling(increase_monotonic=True),
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(5, 8), (5, 8), (5, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 5/8
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    \time 5/8
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    \time 5/8
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                }
-            >>
-
-    ..  container:: example
-
-        Forbids no durations:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 1, 1, 1, 4, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 4), (3, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    c'4
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    c'4
-                }
-            >>
-
-    ..  container:: example
-
-        Forbids durations equal to ``1/4`` or greater:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [1, 1, 1, 1, 4, 4], 16,
-        ...         spelling=rmakers.Spelling(forbidden_note_duration=abjad.Duration(1, 4)),
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 4), (3, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    c'8
-                    ~
-                    c'8
-                    ]
-                }
-            >>
-
-        Rewrites forbidden durations with smaller durations tied together.
-
-    ..  container:: example
-
-        Rewrites meter:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [5, 4], 16)
-        ...     voice = rmakers.wrap_in_time_signature_staff(
-        ...         tuplets, time_signatures)
-        ...     rmakers.beam(voice)
-        ...     rmakers.extract_trivial(voice)
-        ...     rmakers.rewrite_meter(voice)
-        ...     components = abjad.mutate.eject_contents(voice)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 4), (3, 4), (3, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/4
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    ~
-                    c'16
-                    [
-                    c'8.
-                    ]
-                    ~
-                    \time 3/4
-                    c'8
-                    [
-                    c'8
-                    ]
-                    ~
-                    c'8
-                    [
-                    c'8
-                    ]
-                    ~
-                    c'8.
-                    [
-                    c'16
-                    ]
-                    ~
-                    \time 3/4
-                    c'8.
-                    [
-                    c'16
-                    ]
-                    ~
-                    c'4
-                    c'4
                 }
             >>
 
@@ -12320,210 +11316,216 @@ def talea(
 
     ..  container:: example
 
-        Working with ``preamble``.
+        Using ``rmakers.talea()`` with the ``preamble`` keyword.
 
-        Preamble less than total duration:
+        ..  container:: example
 
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [8, -4, 8], 32, preamble=[1, 1, 1, 1]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
+            Preamble less than total duration:
 
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> def make_lilypond_file(pairs):
+            ...     time_signatures = rmakers.time_signatures(pairs)
+            ...     durations = [abjad.Duration(_) for _ in time_signatures]
+            ...     tuplets = rmakers.talea(
+            ...         durations, [8, -4, 8], 32, preamble=[1, 1, 1, 1]
+            ...     )
+            ...     container = abjad.Container(tuplets)
+            ...     rmakers.beam(container)
+            ...     rmakers.extract_trivial(container)
+            ...     components = abjad.mutate.eject_contents(container)
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
-        ..  docs::
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file = make_lilypond_file(pairs)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'32
-                    [
-                    c'32
-                    c'32
-                    c'32
-                    ]
-                    c'4
-                    \time 4/8
-                    r8
-                    c'4
-                    c'8
-                    ~
-                    \time 3/8
-                    c'8
-                    r8
-                    c'8
-                    ~
-                    \time 4/8
-                    c'8
-                    c'4
-                    r8
-                }
-            >>
+            ..  docs::
 
-        Preamble more than total duration; ignores counts:
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
+                        c'32
+                        [
+                        c'32
+                        c'32
+                        c'32
+                        ]
+                        c'4
+                        \time 4/8
+                        r8
+                        c'4
+                        c'8
+                        ~
+                        \time 3/8
+                        c'8
+                        r8
+                        c'8
+                        ~
+                        \time 4/8
+                        c'8
+                        c'4
+                        r8
+                    }
+                >>
 
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [8, -4, 8], 32, preamble=[32, 32, 32, 32]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
+        .. container:: example
 
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+            Preamble more than total duration; ignores counts:
 
-        ..  docs::
+            >>> def make_lilypond_file(pairs):
+            ...     time_signatures = rmakers.time_signatures(pairs)
+            ...     durations = [abjad.Duration(_) for _ in time_signatures]
+            ...     tuplets = rmakers.talea(
+            ...         durations, [8, -4, 8], 32, preamble=[32, 32, 32, 32]
+            ...     )
+            ...     container = abjad.Container(tuplets)
+            ...     rmakers.beam(container)
+            ...     rmakers.extract_trivial(container)
+            ...     components = abjad.mutate.eject_contents(container)
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'4.
-                    ~
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 3/8
-                    c'8
-                    c'4
-                    ~
-                    \time 4/8
-                    c'2
-                }
-            >>
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file = make_lilypond_file(pairs)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-    ..  container:: example
+            ..  docs::
 
-        Working with ``end_counts``.
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [8, -4, 8], 32, end_counts=[1, 1, 1, 1]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'4
-                    r8
-                    \time 4/8
-                    c'4
-                    c'4
-                    \time 3/8
-                    r8
-                    c'4
-                    \time 4/8
-                    c'4
-                    r8
-                    c'32
-                    [
-                    c'32
-                    c'32
-                    c'32
-                    ]
-                }
-            >>
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
+                        c'4.
+                        ~
+                        \time 4/8
+                        c'2
+                        ~
+                        \time 3/8
+                        c'8
+                        c'4
+                        ~
+                        \time 4/8
+                        c'2
+                    }
+                >>
 
     ..  container:: example
 
-        REGRESSION. End counts leave 5-durated tie in tact:
+        Using ``rmakers.talea()`` with the ``end_counts`` keyword.
 
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [6], 16, end_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
+        ..  container:: example
 
-        >>> pairs = [(3, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+            >>> def make_lilypond_file(pairs):
+            ...     time_signatures = rmakers.time_signatures(pairs)
+            ...     durations = [abjad.Duration(_) for _ in time_signatures]
+            ...     tuplets = rmakers.talea(
+            ...         durations, [8, -4, 8], 32, end_counts=[1, 1, 1, 1]
+            ...     )
+            ...     container = abjad.Container(tuplets)
+            ...     rmakers.beam(container)
+            ...     rmakers.extract_trivial(container)
+            ...     components = abjad.mutate.eject_contents(container)
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
-        ..  docs::
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file = make_lilypond_file(pairs)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'4.
-                    \time 3/8
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'16
-                    ]
-                }
-            >>
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
+                        c'4
+                        r8
+                        \time 4/8
+                        c'4
+                        c'4
+                        \time 3/8
+                        r8
+                        c'4
+                        \time 4/8
+                        c'4
+                        r8
+                        c'32
+                        [
+                        c'32
+                        c'32
+                        c'32
+                        ]
+                    }
+                >>
+
+        ..  container:: example
+
+            REGRESSION. End counts leave 5-durated tie in tact:
+
+            >>> def make_lilypond_file(pairs):
+            ...     time_signatures = rmakers.time_signatures(pairs)
+            ...     durations = [abjad.Duration(_) for _ in time_signatures]
+            ...     tuplets = rmakers.talea(durations, [6], 16, end_counts=[1])
+            ...     container = abjad.Container(tuplets)
+            ...     rmakers.beam(container)
+            ...     rmakers.extract_trivial(container)
+            ...     components = abjad.mutate.eject_contents(container)
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
+
+            >>> pairs = [(3, 8), (3, 8)]
+            >>> lilypond_file = make_lilypond_file(pairs)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \time 3/8
+                        c'4.
+                        \time 3/8
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'16
+                        ]
+                    }
+                >>
 
     """
     tag = tag or abjad.Tag()
@@ -12666,6 +11668,199 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                 }
             >>
+
+    ..  container:: example
+
+        Ties the last leaf of nonlast tuplets:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [5, 3, 3, 3], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    ~
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                    ~
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    ~
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        Ties across every other tuplet:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [5, 3, 3, 3], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     tuplets = abjad.select.get(tuplets, [0], 2)
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    ~
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    [
+                    c'8.
+                    ]
+                    ~
+                    \time 3/8
+                    c'8.
+                    [
+                    c'8.
+                    ]
+                }
+            >>
+
+    ..  container:: example
+
+        TIE-CONSECUTIVE-NOTES RECIPE:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [5, -3, 3, 3], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.untie(container)
+        ...     runs = abjad.select.runs(container)
+        ...     notes = [abjad.select.notes(_)[:-1] for _ in runs]
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
+        ...     rmakers.extract_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    r8.
+                    \time 3/8
+                    c'8.
+                    [
+                    ~
+                    c'8.
+                    ]
+                    ~
+                    \time 4/8
+                    c'4
+                    ~
+                    c'16
+                    r8.
+                    \time 3/8
+                    c'8.
+                    [
+                    ~
+                    c'8.
+                    ]
+                }
+            >>
+
 
     ..  container:: example
 
@@ -12942,8 +12137,295 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
 
 
 def trivialize(argument) -> None:
-    """
+    r"""
     Trivializes each tuplet in ``argument``.
+
+    Leaves trivializable tuplets as-is when no tuplet command is given. The tuplets
+    in measures 2 and 4 can be written as trivial tuplets, but they are not:
+
+    ..  container:: example
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 4/8
+                        c'4.
+                        c'4.
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \times 2/3
+                    {
+                        \time 4/8
+                        c'4.
+                        c'4.
+                    }
+                }
+            >>
+
+        Rewrites trivializable tuplets as trivial (1:1) tuplets when ``trivialize`` is
+        true:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.trivialize(container)
+        ...     rmakers.beam(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        c'4
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+        REGRESSION #907a. Rewrites trivializable tuplets even when tuplets contain
+        multiple ties:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.trivialize(container)
+        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     rmakers.tie(leaves)
+        ...     rmakers.beam(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        c'4
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        c'8.
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        c'4
+                    }
+                }
+            >>
+
+        REGRESSION #907b. Rewrites trivializable tuplets even when tuplets contain very
+        long ties:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(
+        ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
+        ...     )
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.trivialize(container)
+        ...     notes = abjad.select.notes(container)[:-1]
+        ...     rmakers.tie(notes)
+        ...     rmakers.beam(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     return lilypond_file_
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        ~
+                        c'8.
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        ~
+                        c'4
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 3/8
+                        c'8.
+                        [
+                        ~
+                        c'8.
+                        ]
+                        ~
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 1/1
+                    {
+                        \time 4/8
+                        c'4
+                        ~
+                        c'4
+                    }
+                }
+            >>
+
     """
     for tuplet in abjad.select.tuplets(argument):
         tuplet.trivialize()
