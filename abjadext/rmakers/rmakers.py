@@ -6,6 +6,8 @@ import typing
 
 import abjad
 
+from . import classes as _classes
+
 
 def _apply_ties_to_split_notes(
     tuplets,
@@ -104,8 +106,8 @@ def _function_name(frame):
 def _get_interpolations(interpolations, previous_state):
     specifiers_ = interpolations
     if specifiers_ is None:
-        specifiers_ = abjad.CyclicTuple([Interpolation()])
-    elif isinstance(specifiers_, Interpolation):
+        specifiers_ = abjad.CyclicTuple([_classes.Interpolation()])
+    elif isinstance(specifiers_, _classes.Interpolation):
         specifiers_ = abjad.CyclicTuple([specifiers_])
     else:
         specifiers_ = abjad.CyclicTuple(specifiers_)
@@ -313,7 +315,7 @@ def _make_accelerando(
     Sets note written durations according to interpolation specifier.
     """
     assert isinstance(duration, abjad.Duration)
-    assert all(isinstance(_, Interpolation) for _ in interpolations)
+    assert all(isinstance(_, _classes.Interpolation) for _ in interpolations)
     assert isinstance(index, int)
     interpolation = interpolations[index]
     durations = _interpolate_divide(
@@ -449,7 +451,7 @@ def _make_leaf_and_tuplet_list(
 def _make_middle_durations(middle_duration, incise):
     assert isinstance(middle_duration, abjad.Duration), repr(middle_duration)
     assert middle_duration.denominator == 1, repr(middle_duration)
-    assert isinstance(incise, Incise), repr(incise)
+    assert isinstance(incise, _classes.Incise), repr(incise)
     durations = []
     if not (incise.fill_with_rests):
         if not incise.outer_tuplets_only:
@@ -720,7 +722,7 @@ def _make_talea_tuplets(
     for tuplet in abjad.iterate.components(tuplets, abjad.Tuplet):
         tuplet.normalize_multiplier()
     assert isinstance(self_state, dict)
-    advanced_talea = Talea(
+    advanced_talea = _classes.Talea(
         counts=prepared.talea,
         denominator=talea.denominator,
         end_counts=prepared.end_counts,
@@ -872,782 +874,11 @@ def _validate_tuplets(argument):
         assert len(tuplet), repr(tuplet)
 
 
-# CLASSES
-
-
-@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
-class Incise:
-    """
-    See ``rmakers.incised()`` for examples.
-    """
-
-    body_ratio: tuple[int, ...] = (1,)
-    fill_with_rests: bool = False
-    outer_tuplets_only: bool = False
-    prefix_counts: typing.Sequence[int] = ()
-    prefix_talea: typing.Sequence[int] = ()
-    suffix_counts: typing.Sequence[int] = ()
-    suffix_talea: typing.Sequence[int] = ()
-    talea_denominator: int | None = None
-
-    __documentation_section__ = "Specifiers"
-
-    def __post_init__(self):
-        assert isinstance(self.prefix_talea, typing.Sequence), repr(self.prefix_talea)
-        assert self._is_integer_tuple(self.prefix_talea)
-        assert isinstance(self.prefix_counts, typing.Sequence), repr(self.prefix_counts)
-        assert self._is_length_tuple(self.prefix_counts)
-        if self.prefix_talea:
-            assert self.prefix_counts
-        assert isinstance(self.suffix_talea, typing.Sequence), repr(self.suffix_talea)
-        assert self._is_integer_tuple(self.suffix_talea)
-        assert isinstance(self.suffix_counts, typing.Sequence), repr(self.suffix_counts)
-        assert self._is_length_tuple(self.suffix_counts)
-        if self.suffix_talea:
-            assert self.suffix_counts
-        if self.talea_denominator is not None:
-            assert abjad.math.is_nonnegative_integer_power_of_two(
-                self.talea_denominator
-            )
-        if self.prefix_talea or self.suffix_talea:
-            assert self.talea_denominator is not None
-        assert isinstance(self.body_ratio, tuple), repr(self.body_ratio)
-        assert isinstance(self.fill_with_rests, bool), repr(self.fill_with_rests)
-        assert isinstance(self.outer_tuplets_only, bool), repr(self.outer_tuplets_only)
-
-    @staticmethod
-    def _is_integer_tuple(argument):
-        if argument is None:
-            return True
-        if all(isinstance(_, int) for _ in argument):
-            return True
-        return False
-
-    @staticmethod
-    def _is_length_tuple(argument):
-        if argument is None:
-            return True
-        if abjad.math.all_are_nonnegative_integer_equivalent_numbers(argument):
-            if isinstance(argument, tuple | list):
-                return True
-        return False
-
-    @staticmethod
-    def _reverse_tuple(argument):
-        if argument is not None:
-            return tuple(reversed(argument))
-
-
-@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
-class Interpolation:
-    """
-    See ``rmakers.accelerando()`` for examples.
-    """
-
-    start_duration: abjad.Duration = abjad.Duration(1, 8)
-    stop_duration: abjad.Duration = abjad.Duration(1, 16)
-    written_duration: abjad.Duration = abjad.Duration(1, 16)
-
-    __documentation_section__ = "Specifiers"
-
-    def __post_init__(self) -> None:
-        assert isinstance(self.start_duration, abjad.Duration), repr(
-            self.start_duration
-        )
-        assert isinstance(self.stop_duration, abjad.Duration), repr(self.stop_duration)
-        assert isinstance(self.written_duration, abjad.Duration), repr(
-            self.written_duration
-        )
-
-    def reverse(self) -> "Interpolation":
-        """
-        Swaps start duration and stop duration of interpolation specifier.
-
-        Changes accelerando specifier to ritardando specifier:
-
-        ..  container:: example
-
-            >>> specifier = rmakers.Interpolation(
-            ...     start_duration=abjad.Duration(1, 4),
-            ...     stop_duration=abjad.Duration(1, 16),
-            ...     written_duration=abjad.Duration(1, 16),
-            ... )
-            >>> specifier.reverse()
-            Interpolation(start_duration=Duration(1, 16), stop_duration=Duration(1, 4), written_duration=Duration(1, 16))
-
-        ..  container:: example
-
-            Changes ritardando specifier to accelerando specifier:
-
-            >>> specifier = rmakers.Interpolation(
-            ...     start_duration=abjad.Duration(1, 16),
-            ...     stop_duration=abjad.Duration(1, 4),
-            ...     written_duration=abjad.Duration(1, 16),
-            ... )
-            >>> specifier.reverse()
-            Interpolation(start_duration=Duration(1, 4), stop_duration=Duration(1, 16), written_duration=Duration(1, 16))
-
-        """
-        return type(self)(
-            start_duration=self.stop_duration,
-            stop_duration=self.start_duration,
-            written_duration=self.written_duration,
-        )
-
-
-@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
-class Spelling:
-    r"""
-    Duration spelling specifier.
-
-    ..  container:: example
-
-        Decreases monotically:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in pairs]
-        ...     tuplets = rmakers.talea(
-        ...         durations,
-        ...         [5],
-        ...         16,
-        ...         spelling=rmakers.Spelling(increase_monotonic=False),
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> lilypond_file = make_lilypond_file([(3, 4), (3, 4)])
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/4
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8
-                    ]
-                    ~
-                    \time 3/4
-                    c'8.
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                }
-            >>
-
-    ..  container:: example
-
-        Increases monotically:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations,
-        ...         [5],
-        ...         16,
-        ...         spelling=rmakers.Spelling(increase_monotonic=True),
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 4), (3, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/4
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    c'8
-                    ~
-                    \time 3/4
-                    c'8.
-                    [
-                    c'16
-                    ]
-                    ~
-                    c'4
-                    c'4
-                }
-            >>
-
-    ..  container:: example
-
-        Forbids note durations equal to ``1/4`` or greater:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations,
-        ...         [1, 1, 1, 1, 4, -4],
-        ...         16,
-        ...         spelling=rmakers.Spelling(
-        ...             forbidden_note_duration=abjad.Duration(1, 4)
-        ...         ),
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 4), (3, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    r4
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    r4
-                }
-            >>
-
-    ..  container:: example
-
-        Forbids rest durations equal to ``1/4`` or greater:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations,
-        ...         [1, 1, 1, 1, 4, -4],
-        ...         16,
-        ...         spelling=rmakers.Spelling(
-        ...             forbidden_rest_duration=abjad.Duration(1, 4)
-        ...         ),
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 4), (3, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    r8
-                    r8
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    r8
-                    r8
-                }
-            >>
-
-    """
-
-    forbidden_note_duration: abjad.Duration | None = None
-    forbidden_rest_duration: abjad.Duration | None = None
-    increase_monotonic: bool = False
-
-    __documentation_section__ = "Specifiers"
-
-    def __post_init__(self):
-        if self.forbidden_note_duration is not None:
-            assert isinstance(self.forbidden_note_duration, abjad.Duration), repr(
-                self.forbidden_note_duration
-            )
-        if self.forbidden_rest_duration is not None:
-            assert isinstance(self.forbidden_rest_duration, abjad.Duration), repr(
-                self.forbidden_rest_duration
-            )
-        assert isinstance(self.increase_monotonic, bool), repr(self.increase_monotonic)
-
-
-@dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
-class Talea:
-    """
-    Talea specifier.
-
-    ..  container:: example
-
-        >>> talea = rmakers.Talea(
-        ...     [2, 1, 3, 2, 4, 1, 1],
-        ...     16,
-        ...     preamble=[1, 1, 1, 1],
-        ... )
-
-    ..  container:: example
-
-        Equal to weight of counts:
-
-        >>> rmakers.Talea([1, 2, 3, 4], 16).period
-        10
-
-        Rests make no difference:
-
-        >>> rmakers.Talea([1, 2, -3, 4], 16).period
-        10
-
-        Denominator makes no difference:
-
-        >>> rmakers.Talea([1, 2, -3, 4], 32).period
-        10
-
-        Preamble makes no difference:
-
-        >>> talea = rmakers.Talea(
-        ...     [1, 2, -3, 4],
-        ...     32,
-        ...     preamble=[1, 1, 1],
-        ... )
-
-        >>> talea.period
-        10
-
-    ..  container:: example
-
-        >>> talea = rmakers.Talea(
-        ...     [2, 1, 3, 2, 4, 1, 1],
-        ...     16,
-        ...     preamble=[1, 1, 1, 1],
-        ... )
-
-        >>> talea.preamble
-        [1, 1, 1, 1]
-
-    ..  container:: example
-
-        >>> talea = rmakers.Talea(
-        ...     [16, -4, 16],
-        ...     16,
-        ...     preamble=[1],
-        ... )
-
-        >>> for i, duration in enumerate(talea):
-        ...     duration
-        ...
-        Duration(1, 16)
-        Duration(1, 1)
-        Duration(-1, 4)
-        Duration(1, 1)
-
-    """
-
-    counts: typing.Sequence[int | str]
-    denominator: int
-    end_counts: typing.Sequence[int] = ()
-    preamble: typing.Sequence[int] = ()
-
-    __documentation_section__ = "Specifiers"
-
-    def __post_init__(self):
-        assert isinstance(self.counts, typing.Sequence), repr(self.counts)
-        for count in self.counts:
-            assert isinstance(count, int) or count in "+-", repr(count)
-        assert abjad.math.is_nonnegative_integer_power_of_two(self.denominator)
-        assert isinstance(self.end_counts, typing.Sequence), repr(self.end_counts)
-        assert all(isinstance(_, int) for _ in self.end_counts)
-        assert isinstance(self.preamble, typing.Sequence), repr(self.preamble)
-        assert all(isinstance(_, int) for _ in self.preamble)
-
-    def __contains__(self, argument: int) -> bool:
-        """
-        Is true when talea contains ``argument``.
-
-        With preamble:
-
-        ..  container:: example
-
-            >>> talea = rmakers.Talea(
-            ...     [10],
-            ...     16,
-            ...     preamble=[1, -1, 1],
-            ...     )
-
-            >>> for i in range(1, 23 + 1):
-            ...     i, i in talea
-            ...
-            (1, True)
-            (2, True)
-            (3, True)
-            (4, False)
-            (5, False)
-            (6, False)
-            (7, False)
-            (8, False)
-            (9, False)
-            (10, False)
-            (11, False)
-            (12, False)
-            (13, True)
-            (14, False)
-            (15, False)
-            (16, False)
-            (17, False)
-            (18, False)
-            (19, False)
-            (20, False)
-            (21, False)
-            (22, False)
-            (23, True)
-
-        """
-        assert isinstance(argument, int), repr(argument)
-        assert 0 < argument, repr(argument)
-        if self.preamble:
-            preamble = [abs(_) for _ in self.preamble]
-            cumulative = abjad.math.cumulative_sums(preamble)[1:]
-            if argument in cumulative:
-                return True
-            preamble_weight = abjad.sequence.weight(preamble)
-        else:
-            preamble_weight = 0
-        if self.counts is not None:
-            counts = [abs(_) for _ in self.counts]
-        else:
-            counts = []
-        cumulative = abjad.math.cumulative_sums(counts)[:-1]
-        argument -= preamble_weight
-        argument %= self.period
-        return argument in cumulative
-
-    def __getitem__(self, argument) -> tuple[int, int] | list[tuple[int, int]]:
-        """
-        Gets item or slice identified by ``argument``.
-
-        Gets item at index:
-
-        ..  container:: example
-
-            >>> talea = rmakers.Talea(
-            ...     [2, 1, 3, 2, 4, 1, 1],
-            ...     16,
-            ...     preamble=[1, 1, 1, 1],
-            ... )
-
-            >>> talea[0]
-            (1, 16)
-
-            >>> talea[1]
-            (1, 16)
-
-        ..  container:: example
-
-            Gets items in slice:
-
-            >>> for duration in talea[:6]:
-            ...     duration
-            ...
-            (1, 16)
-            (1, 16)
-            (1, 16)
-            (1, 16)
-            (2, 16)
-            (1, 16)
-
-            >>> for duration in talea[2:8]:
-            ...     duration
-            ...
-            (1, 16)
-            (1, 16)
-            (2, 16)
-            (1, 16)
-            (3, 16)
-            (2, 16)
-
-        """
-        preamble: list[int | str] = list(self.preamble)
-        counts = list(self.counts)
-        counts_ = abjad.CyclicTuple(preamble + counts)
-        if isinstance(argument, int):
-            count = counts_.__getitem__(argument)
-            return (count, self.denominator)
-        elif isinstance(argument, slice):
-            counts_ = counts_.__getitem__(argument)
-            result = [(count, self.denominator) for count in counts_]
-            return result
-        raise ValueError(argument)
-
-    def __iter__(self) -> typing.Iterator[abjad.Duration]:
-        """
-        Iterates talea.
-
-        ..  container:: example
-
-            >>> talea = rmakers.Talea(
-            ...     [2, 1, 3, 2, 4, 1, 1],
-            ...     16,
-            ...     preamble=[1, 1, 1, 1],
-            ... )
-
-            >>> for duration in talea:
-            ...     duration
-            ...
-            Duration(1, 16)
-            Duration(1, 16)
-            Duration(1, 16)
-            Duration(1, 16)
-            Duration(1, 8)
-            Duration(1, 16)
-            Duration(3, 16)
-            Duration(1, 8)
-            Duration(1, 4)
-            Duration(1, 16)
-            Duration(1, 16)
-
-        """
-        for count in self.preamble or []:
-            duration = abjad.Duration(count, self.denominator)
-            yield duration
-        for item in self.counts or []:
-            assert isinstance(item, int)
-            duration = abjad.Duration(item, self.denominator)
-            yield duration
-
-    def __len__(self) -> int:
-        """
-        Gets length.
-
-        ..  container:: example
-
-            >>> len(rmakers.Talea([2, 1, 3, 2, 4, 1, 1], 16))
-            7
-
-        Defined equal to length of counts.
-        """
-        return len(self.counts or [])
-
-    @property
-    def period(self) -> int:
-        """
-        Gets period of talea.
-
-        ..  container:: example
-
-            Equal to weight of counts:
-
-            >>> rmakers.Talea([1, 2, 3, 4], 16).period
-            10
-
-            Rests make no difference:
-
-            >>> rmakers.Talea([1, 2, -3, 4], 16).period
-            10
-
-            Denominator makes no difference:
-
-            >>> rmakers.Talea([1, 2, -3, 4], 32).period
-            10
-
-            Preamble makes no difference:
-
-            >>> talea = rmakers.Talea(
-            ...     [1, 2, -3, 4],
-            ...     32,
-            ...     preamble=[1, 1, 1],
-            ... )
-
-            >>> talea.period
-            10
-
-        """
-        return abjad.sequence.weight(self.counts)
-
-    def advance(self, weight: int) -> "Talea":
-        """
-        Advances talea by ``weight``.
-
-        ..  container:: example
-
-            >>> talea = rmakers.Talea(
-            ...     [2, 1, 3, 2, 4, 1, 1],
-            ...     16,
-            ...     preamble=[1, 1, 1, 1],
-            ... )
-
-            >>> talea.advance(0)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 1, 1, 1])
-
-            >>> talea.advance(1)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 1, 1])
-
-            >>> talea.advance(2)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 1])
-
-            >>> talea.advance(3)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1])
-
-            >>> talea.advance(4)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=())
-
-            >>> talea.advance(5)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 1, 3, 2, 4, 1, 1])
-
-            >>> talea.advance(6)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[1, 3, 2, 4, 1, 1])
-
-            >>> talea.advance(7)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[3, 2, 4, 1, 1])
-
-            >>> talea.advance(8)
-            Talea(counts=[2, 1, 3, 2, 4, 1, 1], denominator=16, end_counts=(), preamble=[2, 2, 4, 1, 1])
-
-        ..  container:: example
-
-            REGRESSION. Works when talea advances by period of talea:
-
-            >>> talea = rmakers.Talea([1, 2, 3, 4], 16)
-            >>> talea
-            Talea(counts=[1, 2, 3, 4], denominator=16, end_counts=(), preamble=())
-
-            >>> talea.advance(10)
-            Talea(counts=[1, 2, 3, 4], denominator=16, end_counts=(), preamble=())
-
-            >>> talea.advance(20)
-            Talea(counts=[1, 2, 3, 4], denominator=16, end_counts=(), preamble=())
-
-        """
-        assert isinstance(weight, int), repr(weight)
-        if weight < 0:
-            raise Exception(f"weight {weight} must be nonnegative.")
-        if weight == 0:
-            return dataclasses.replace(self)
-        preamble: list[int | str] = list(self.preamble)
-        counts = list(self.counts)
-        if weight < abjad.sequence.weight(preamble):
-            consumed, remaining = abjad.sequence.split(
-                preamble, [weight], overhang=True
-            )
-            preamble_ = remaining
-        elif weight == abjad.sequence.weight(preamble):
-            preamble_ = ()
-        else:
-            assert abjad.sequence.weight(preamble) < weight
-            weight -= abjad.sequence.weight(preamble)
-            preamble = counts[:]
-            while True:
-                if weight <= abjad.sequence.weight(preamble):
-                    break
-                preamble += counts
-            if abjad.sequence.weight(preamble) == weight:
-                consumed, remaining = preamble[:], ()
-            else:
-                consumed, remaining = abjad.sequence.split(
-                    preamble, [weight], overhang=True
-                )
-            preamble_ = remaining
-        return dataclasses.replace(
-            self,
-            counts=counts,
-            denominator=self.denominator,
-            preamble=preamble_,
-        )
-
-
-# FUNCTIONS
-
-
 def accelerando(
     durations,
     *interpolations: typing.Sequence[abjad.typings.Duration],
     previous_state: dict | None = None,
-    spelling: Spelling = Spelling(),
+    spelling: _classes.Spelling = _classes.Spelling(),
     state: dict | None = None,
     tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
@@ -3024,7 +2255,7 @@ def accelerando(
     interpolations_ = []
     for interpolation in interpolations:
         interpolation_durations = [abjad.Duration(_) for _ in interpolation]
-        interpolation_ = Interpolation(*interpolation_durations)
+        interpolation_ = _classes.Interpolation(*interpolation_durations)
         interpolations_.append(interpolation_)
     previous_state = previous_state or {}
     if state is None:
@@ -3059,7 +2290,7 @@ def after_grace_container(
     *,
     beam: bool = False,
     slash: bool = False,
-    talea: Talea = Talea([1], 8),
+    talea: _classes.Talea = _classes.Talea([1], 8),
 ) -> None:
     r"""
     Makes (and attaches) after-grace containers.
@@ -3223,7 +2454,7 @@ def after_grace_container(
     assert all(isinstance(_, int) for _ in counts), repr(counts)
     if slash is True:
         assert beam is True, repr(beam)
-    assert isinstance(talea, Talea), repr(talea)
+    assert isinstance(talea, _classes.Talea), repr(talea)
     leaves = abjad.select.leaves(argument, grace=False)
     cyclic_counts = abjad.CyclicTuple(counts)
     start = 0
@@ -3312,7 +2543,7 @@ def before_grace_container(
     beam: bool = False,
     slash: bool = False,
     slur: bool = False,
-    talea: Talea = Talea([1], 8),
+    talea: _classes.Talea = _classes.Talea([1], 8),
 ) -> None:
     r"""
     Makes (and attaches) before-grace containers.
@@ -3743,7 +2974,7 @@ def before_grace_container(
     assert all(isinstance(_, int) for _ in counts), repr(counts)
     if slash is True:
         assert beam is True, repr(beam)
-    assert isinstance(talea, Talea), repr(talea)
+    assert isinstance(talea, _classes.Talea), repr(talea)
     leaves = abjad.select.leaves(argument, grace=False)
     cyclic_counts = abjad.CyclicTuple(counts)
     start = 0
@@ -4325,7 +3556,7 @@ def even_division(
     denominator: str | int = "from_counts",
     extra_counts: typing.Sequence[int] = (0,),
     previous_state: dict | None = None,
-    spelling: Spelling = Spelling(),
+    spelling: _classes.Spelling = _classes.Spelling(),
     state: dict | None = None,
     tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
@@ -7259,7 +6490,7 @@ def incised(
     outer_tuplets_only: bool = False,
     prefix_counts: typing.Sequence[int] = (),
     prefix_talea: typing.Sequence[int] = (),
-    spelling: Spelling = Spelling(),
+    spelling: _classes.Spelling = _classes.Spelling(),
     suffix_counts: typing.Sequence[int] = (),
     suffix_talea: typing.Sequence[int] = (),
     tag: abjad.Tag | None = None,
@@ -7788,7 +7019,7 @@ def incised(
     tag = tag.append(_function_name(inspect.currentframe()))
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
-    incise = Incise(
+    incise = _classes.Incise(
         body_ratio=body_ratio,
         fill_with_rests=fill_with_rests,
         outer_tuplets_only=outer_tuplets_only,
@@ -7865,11 +7096,11 @@ def interpolate(
     start_duration: abjad.typings.Duration,
     stop_duration: abjad.typings.Duration,
     written_duration: abjad.typings.Duration,
-) -> Interpolation:
+) -> _classes.Interpolation:
     """
     Makes interpolation.
     """
-    return Interpolation(
+    return _classes.Interpolation(
         abjad.Duration(start_duration),
         abjad.Duration(stop_duration),
         abjad.Duration(written_duration),
@@ -7881,7 +7112,7 @@ def multiplied_duration(
     prototype: type = abjad.Note,
     *,
     duration: abjad.typings.Duration = (1, 1),
-    spelling: Spelling = Spelling(),
+    spelling: _classes.Spelling = _classes.Spelling(),
     tag: abjad.Tag | None = None,
 ) -> list[abjad.Leaf]:
     r"""
@@ -8197,7 +7428,10 @@ def nongrace_leaves_in_each_tuplet(
 
 
 def note(
-    durations, *, spelling: Spelling = Spelling(), tag: abjad.Tag | None = None
+    durations,
+    *,
+    spelling: _classes.Spelling = _classes.Spelling(),
+    tag: abjad.Tag | None = None,
 ) -> list[abjad.Leaf | abjad.Tuplet]:
     r"""
     Makes one note for every duration in ``durations``.
@@ -8981,7 +8215,7 @@ def on_beat_grace_container(
     grace_polyphony_command: abjad.VoiceNumber = abjad.VoiceNumber(1),
     nongrace_polyphony_command: abjad.VoiceNumber = abjad.VoiceNumber(2),
     tag: abjad.Tag | None = None,
-    talea: Talea = Talea([1], 8),
+    talea: _classes.Talea = _classes.Talea([1], 8),
 ) -> None:
     r"""
     Makes on-beat grace containers.
@@ -9307,7 +8541,7 @@ def on_beat_grace_container(
     tag = tag.append(_function_name(inspect.currentframe()))
     assert isinstance(voice, abjad.Voice), repr(voice)
     assert isinstance(voice_name, str), repr(voice_name)
-    assert isinstance(talea, Talea), repr(talea)
+    assert isinstance(talea, _classes.Talea), repr(talea)
     assert isinstance(grace_polyphony_command, abjad.VoiceNumber), repr(
         grace_polyphony_command
     )
@@ -10270,7 +9504,7 @@ def talea(
     preamble: typing.Sequence[int] = (),
     previous_state: dict | None = None,
     read_talea_once_only: bool = False,
-    spelling: Spelling = Spelling(),
+    spelling: _classes.Spelling = _classes.Spelling(),
     state: dict | None = None,
     tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
@@ -12671,385 +11905,221 @@ def talea(
 
     ..  container:: example
 
-        No extra counts:
+        Using ``rmakers.talea()`` with the ``extra_counts`` keyword.
 
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ]
-                    ~
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    c'8
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Adds one extra count to every other tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16, extra_counts=[0, 1])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'8
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16
-                        c'4
-                        c'16
-                    }
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        c'4
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Adds two extra counts to every other tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16, extra_counts=[0, 2])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ]
-                        ~
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'16
-                        [
-                        c'8.
-                        ]
-                        c'4
-                        c'16
-                        [
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-        The duration of each added count equals the duration of each count in the
-        rhythm-maker's input talea.
-
-    ..  container:: example
-
-        Removes one count from every other tuplet:
-
-        >>> def make_lilypond_file(pairs):
+        >>> def make_lilypond_file(pairs, extra_counts):
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(
-        ...         durations, [1, 2, 3, 4], 16, extra_counts=[0, -1]
+        ...         durations,
+        ...         [1, 2, 3, 4],
+        ...         16,
+        ...         extra_counts=extra_counts,
         ...     )
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
+        ...     rmakers.swap_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
         ...     lilypond_file = rmakers.example(components, time_signatures)
         ...     return lilypond_file
 
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        ..  container:: example
 
-        ..  docs::
+            **#1.** Set ``extra_counts=[0, 1]`` to add one extra count to every
+            other tuplet:
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file = make_lilypond_file(pairs, extra_counts=[0, 1])
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
                     {
-                        \time 3/8
-                        c'16
-                        [
-                        c'8
-                        c'8.
-                        ]
+                        \override Clef.stencil = ##f
                     }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 8/7
                     {
-                        \time 4/8
-                        c'4
-                        c'16
-                        [
-                        c'8
-                        ]
+                        {
+                            \time 3/8
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \times 8/9
+                        {
+                            \time 4/8
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'8
+                            ]
+                            ~
+                        }
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'16
+                        }
+                        \times 8/9
+                        {
+                            \time 4/8
+                            c'8
+                            [
+                            c'8.
+                            ]
+                            c'4
+                        }
                     }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+                >>
+
+        ..  container:: example
+
+            **#2.** Set ``extra_counts=[0, 2]`` to add two extra counts to
+            every other tuplet:
+
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file = make_lilypond_file(pairs, extra_counts=[0, 2])
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
                     {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                        ~
+                        \override Clef.stencil = ##f
                     }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 8/7
                     {
-                        \time 4/8
-                        c'16
-                        [
-                        c'16
-                        c'8
-                        c'8.
-                        ]
+                        {
+                            \time 3/8
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \times 4/5
+                        {
+                            \time 4/8
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        {
+                            \time 3/8
+                            c'4
+                            c'16
+                            [
+                            c'16
+                            ]
+                            ~
+                        }
+                        \times 4/5
+                        {
+                            \time 4/8
+                            c'16
+                            [
+                            c'8.
+                            ]
+                            c'4
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
                     }
-                }
-            >>
+                >>
+
+        ..  container:: example
+
+            **#3.** Set ``extra_counts=[0, -1]`` to remove one count from every
+            other tuplet:
+
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file = make_lilypond_file(pairs, extra_counts=[0, -1])
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        {
+                            \time 3/8
+                            c'16
+                            [
+                            c'8
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/7
+                        {
+                            \time 4/8
+                            c'4
+                            c'16
+                            [
+                            c'8
+                            ]
+                        }
+                        {
+                            \time 3/8
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/7
+                        {
+                            \time 4/8
+                            c'16
+                            [
+                            c'16
+                            c'8
+                            c'8.
+                            ]
+                        }
+                    }
+                >>
 
     ..  container:: example
 
-        Reads talea cyclically:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 3/8
-                    c'4
-                    c'16
-                    [
-                    c'16
-                    ]
-                    ~
-                    \time 3/8
-                    c'16
-                    [
-                    c'8.
-                    c'8
-                    ]
-                    ~
-                    \time 3/8
-                    c'8
-                    [
-                    c'16
-                    c'8
-                    c'16
-                    ]
-                }
-            >>
+        **Reading talea once only.** Set ``read_talea_once_only=True`` to raise
+        an exception if input durations exceed that of a single reading of
+        talea. The effect is to ensure that a talea is long enough to cover all
+        durations without repeating. Useful when, for example, interpolating
+        from short durations to long durations.
 
     ..  container:: example
 
-        **Reading talea once only.** Set ``read_talea_once_only=True`` to
-        ensure talea is long enough to cover all durations without repeating.
-        Provides way of using talea noncyclically when, for example,
-        interpolating from short durations to long durations:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [1, 2, 3, 4], 16, read_talea_once_only=True
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     return components
-
-        Code below raises an exception because talea would need to be read
-        multiple times to handle all durations:
-
-        >>> pairs = [(3, 8), (3, 8), (3, 8), (3, 8)]
-        >>> components = make_lilypond_file(pairs)
-        Traceback (most recent call last):
-            ...
-        Exception: CyclicTuple(items=()) + CyclicTuple(items=(1, 2, 3, 4)) is too short to read [6, 6, 6, 6] once.
-
-    ..  container:: example
-
-        **Examples showing state.** Consumes 4 durations and 31 counts:
+        Using ``rmakers.talea()`` with the ``previous_state`` keyword.
 
         >>> def make_lilypond_file(pairs, *, previous_state=None):
         ...     time_signatures = rmakers.time_signatures(pairs)
@@ -13067,300 +12137,186 @@ def talea(
         ...     lilypond_file = rmakers.example(components, time_signatures)
         ...     return lilypond_file, state
 
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file, state = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+        ..  container:: example
 
-        ..  docs::
+            **#1.** This call consumes 4 durations and 31 counts, as shown in
+            output ``state``:
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file, state = make_lilypond_file(pairs)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
                     {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'8.
-                        ~
+                        \override Clef.stencil = ##f
                     }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
                     {
                         \time 3/8
-                        c'16
-                        c'4
-                        c'8.
-                        ~
-                    }
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
-                }
-            >>
-
-        >>> state
-        {'durations_consumed': 4, 'incomplete_last_note': True, 'logical_ties_produced': 8, 'talea_weight_consumed': 31}
-
-        Advances 4 durations and 31 counts; then consumes another 4 durations and 31
-        counts:
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file, state = make_lilypond_file(pairs, previous_state=state)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'16
                         c'4
                         c'8
                         ~
-                    }
-                    \times 4/5
-                    {
+                        \times 8/9
+                        {
+                            \time 4/8
+                            c'8
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
                         \time 4/8
-                        c'8
-                        c'4
-                        c'4
-                    }
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'8
+                        c'16
                         c'4
                         c'8.
                     }
-                }
-            >>
+                >>
 
-        >>> state
-        {'durations_consumed': 8, 'incomplete_last_note': True, 'logical_ties_produced': 16, 'talea_weight_consumed': 63}
+            >>> for item in state.items():
+            ...     item
+            ('durations_consumed', 4)
+            ('incomplete_last_note', True)
+            ('logical_ties_produced', 8)
+            ('talea_weight_consumed', 31)
 
-        Advances 8 durations and 62 counts; then consumes 4 durations and 31 counts:
+        ..  container:: example
 
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file, state = make_lilypond_file(pairs, previous_state=state)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
+            **#2.** This call advances 4 durations and 31 counts, as read from
+            ``previous_state``. The function then consumes another 4 durations
+            and 32 counts. This equals 8 durations and 63 counts consumed so far,
+            as shown in output ``state``:
 
-        ..  docs::
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file, state = make_lilypond_file(pairs, previous_state=state)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
 
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
                     {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5
+                        {
+                            \time 4/8
+                            c'8
+                            c'4
+                            c'4
+                        }
                         \time 3/8
+                        c'4
+                        c'8
+                        ~
+                        \times 8/9
+                        {
+                            \time 4/8
+                            c'8
+                            c'4
+                            c'8.
+                        }
+                    }
+                >>
+
+            >>> for item in state.items():
+            ...     item
+            ('durations_consumed', 8)
+            ('incomplete_last_note', True)
+            ('logical_ties_produced', 16)
+            ('talea_weight_consumed', 63)
+
+        ..  container:: example
+
+            **#3.** This call advances 8 durations and 63 counts, as read from
+            ``previous_state``. The function then consumes another 4 durations
+            and 33 counts. This equals 12 durations and 96 counts consumed so far,
+            as shown in output ``state``:
+
+            >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+            >>> lilypond_file, state = make_lilypond_file(pairs, previous_state=state)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        \time 4/8
                         c'16
                         c'4
                         c'8.
                         ~
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5
+                        {
+                            \time 4/8
+                            c'8
+                            c'4
+                            c'4
+                        }
                     }
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
-                    ~
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'16
-                        c'4
-                        c'8
-                        ~
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'4
-                    }
-                }
-            >>
+                >>
 
-        >>> state
-        {'durations_consumed': 12, 'logical_ties_produced': 24, 'talea_weight_consumed': 96}
-
-    ..  container:: example
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tag = abjad.Tag("TALEA_RHYTHM_MAKER")
-        ...     tuplets = rmakers.talea(
-        ...         durations, [1, 2, 3, 4], 16, extra_counts=[0, 1], tag=tag
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container, tag=tag)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score, tags=True)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    \tweak text #tuplet-number::calc-fraction-text
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    \times 1/1
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    {
-                        \time 3/8
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'16
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        [
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'8
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'8.
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        ]
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    }
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    \times 8/9
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    {
-                        \time 4/8
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'4
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'16
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        [
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'8
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'8
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        ]
-                        ~
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    }
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    \tweak text #tuplet-number::calc-fraction-text
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    \times 1/1
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    {
-                        \time 3/8
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'16
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'4
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'16
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    }
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    \times 8/9
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    {
-                        \time 4/8
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'8
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        [
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'8.
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        ]
-                          %! TALEA_RHYTHM_MAKER
-                          %! rmakers.talea()
-                        c'4
-                      %! TALEA_RHYTHM_MAKER
-                      %! rmakers.talea()
-                    }
-                }
-            >>
+            >>> for item in state.items():
+            ...     item
+            ('durations_consumed', 12)
+            ('logical_ties_produced', 24)
+            ('talea_weight_consumed', 96)
 
     ..  container:: example
 
@@ -13574,7 +12530,7 @@ def talea(
     tag = tag.append(_function_name(inspect.currentframe()))
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
-    talea = Talea(
+    talea = _classes.Talea(
         counts=counts,
         denominator=denominator,
         end_counts=end_counts,
@@ -14001,7 +12957,7 @@ def tuplet(
     # TODO: remove in favor of dedicated denominator control commands:
     denominator: int | abjad.Duration | str | None = None,
     # TODO: is 'spelling' unused?
-    spelling: Spelling = Spelling(),
+    spelling: _classes.Spelling = _classes.Spelling(),
     tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
     r"""

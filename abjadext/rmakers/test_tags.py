@@ -1,3 +1,5 @@
+import pytest
+
 import abjad
 from abjadext import rmakers
 
@@ -103,5 +105,148 @@ def test_01():
                 }
             }
         >>
+        """
+    )
+
+
+def test_tags_02():
+    """
+    Tags work with rmakers.talea().
+    """
+
+    def make_lilypond_file(pairs):
+        time_signatures = rmakers.time_signatures(pairs)
+        durations = [abjad.Duration(_) for _ in time_signatures]
+        tag = abjad.Tag("TALEA_RHYTHM_MAKER")
+        tuplets = rmakers.talea(
+            durations, [1, 2, 3, 4], 16, extra_counts=[0, 1], tag=tag
+        )
+        container = abjad.Container(tuplets)
+        rmakers.beam(container, tag=tag)
+        components = abjad.mutate.eject_contents(container)
+        lilypond_file = rmakers.example(components, time_signatures)
+        return lilypond_file
+
+    pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+    lilypond_file = make_lilypond_file(pairs)
+    score = lilypond_file["Score"]
+    string = abjad.lilypond(score, tags=True)
+
+    assert string == abjad.string.normalize(
+        r"""
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    \tweak text #tuplet-number::calc-fraction-text
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    \times 1/1
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    {
+                        \time 3/8
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'16
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
+                        [
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'8
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'8.
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
+                        ]
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    }
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    \times 8/9
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    {
+                        \time 4/8
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'4
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'16
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
+                        [
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'8
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'8
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
+                        ]
+                        ~
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    }
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    \tweak text #tuplet-number::calc-fraction-text
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    \times 1/1
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    {
+                        \time 3/8
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'16
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'4
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'16
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    }
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    \times 8/9
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    {
+                        \time 4/8
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'8
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
+                        [
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'8.
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.beam()
+                        ]
+                          %! TALEA_RHYTHM_MAKER
+                          %! rmakers.talea()
+                        c'4
+                      %! TALEA_RHYTHM_MAKER
+                      %! rmakers.talea()
+                    }
+                }
+            >>
         """
     )

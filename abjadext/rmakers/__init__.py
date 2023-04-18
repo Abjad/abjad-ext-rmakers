@@ -2,11 +2,8 @@
 Rhythm-makers.
 """
 from ._version import __version__, __version_info__
+from .classes import Incise, Interpolation, Spelling, Talea
 from .rmakers import (
-    Incise,
-    Interpolation,
-    Spelling,
-    Talea,
     accelerando,
     after_grace_container,
     beam,
