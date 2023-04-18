@@ -7,7 +7,7 @@ import abjad
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Incise:
     """
-    See ``rmakers.incised()`` for examples.
+    Incise specifier.
     """
 
     body_ratio: tuple[int, ...] = (1,)
@@ -70,7 +70,7 @@ class Incise:
 @dataclasses.dataclass(frozen=True, order=True, slots=True, unsafe_hash=True)
 class Interpolation:
     """
-    See ``rmakers.accelerando()`` for examples.
+    Interpolation specifier.
     """
 
     start_duration: abjad.Duration = abjad.Duration(1, 8)

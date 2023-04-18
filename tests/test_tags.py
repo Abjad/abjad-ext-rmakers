@@ -2,7 +2,186 @@ import abjad
 from abjadext import rmakers
 
 
-def test_01():
+def test_tag_01():
+    """
+    Tags work with ``rmakers.accelerando()``.
+    """
+
+    def make_lilypond_file(pairs):
+        time_signatures = rmakers.time_signatures(pairs)
+        durations = [abjad.Duration(_) for _ in time_signatures]
+        tag = abjad.Tag("ACCELERANDO_RHYTHM_MAKER")
+        tuplets = rmakers.accelerando(durations, [(1, 8), (1, 20), (1, 16)], tag=tag)
+        container = abjad.Container(tuplets)
+        rmakers.feather_beam(container, tag=tag)
+        rmakers.duration_bracket(container)
+        components = abjad.mutate.eject_contents(container)
+        lilypond_file_ = rmakers.example(components, time_signatures)
+        return lilypond_file_
+
+    pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
+    lilypond_file = make_lilypond_file(pairs)
+    string = abjad.lilypond(lilypond_file["Score"], tags=True)
+
+    assert string == abjad.string.normalize(
+        r"""
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    \times 1/1
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 63/32
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
+                        [
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 115/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 91/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 35/32
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 29/32
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 13/16
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
+                        ]
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    \times 1/1
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 117/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
+                        [
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 99/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 69/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 13/16
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 47/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
+                        ]
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    \times 1/1
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 4/8
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 63/32
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
+                        [
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 115/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 91/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 35/32
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 29/32
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 13/16
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
+                        ]
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    }
+                    \revert TupletNumber.text
+                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    \times 1/1
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    {
+                        \once \override Beam.grow-direction = #right
+                        \time 3/8
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 117/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
+                        [
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 99/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 69/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 13/16
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.accelerando()
+                        c'16 * 47/64
+                          %! ACCELERANDO_RHYTHM_MAKER
+                          %! rmakers.feather_beam()
+                        ]
+                      %! ACCELERANDO_RHYTHM_MAKER
+                      %! rmakers.accelerando()
+                    }
+                    \revert TupletNumber.text
+                }
+            >>
+        """
+    )
+
+
+def test_02():
     """
     Tags work with rmakers.incised().
     """
@@ -107,7 +286,7 @@ def test_01():
     )
 
 
-def test_tags_02():
+def test_tags_03():
     """
     Tags work with rmakers.talea().
     """
