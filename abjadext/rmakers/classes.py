@@ -168,22 +168,25 @@ class Spelling:
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/4
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    [
-                    c'8
-                    ]
-                    ~
-                    c'8.
-                    c'4
-                    ~
-                    c'16
-                    c'4
+                    \context Voice = "Voice"
+                    {
+                        \time 3/4
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        [
+                        c'8
+                        ]
+                        ~
+                        c'8.
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                    }
                 }
             >>
 
@@ -224,22 +227,25 @@ class Spelling:
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/4
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    c'8
-                    ~
-                    c'8.
-                    [
-                    c'16
-                    ]
-                    ~
-                    c'4
-                    c'4
+                    \context Voice = "Voice"
+                    {
+                        \time 3/4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'8
+                        ~
+                        c'8.
+                        [
+                        c'16
+                        ]
+                        ~
+                        c'4
+                        c'4
+                    }
                 }
             >>
 
@@ -282,27 +288,30 @@ class Spelling:
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    r4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    r4
+                    \context Voice = "Voice"
+                    {
+                        \time 3/4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        r4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        r4
+                    }
                 }
             >>
 
@@ -345,25 +354,28 @@ class Spelling:
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    r8
-                    r8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    c'4
-                    r8
-                    r8
+                    \context Voice = "Voice"
+                    {
+                        \time 3/4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        r8
+                        r8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                        c'4
+                        r8
+                        r8
+                    }
                 }
             >>
 
@@ -404,25 +416,28 @@ class Spelling:
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/8
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
-                    c'4
-                    ~
-                    c'16
+                    \context Voice = "Voice"
+                    {
+                        \time 5/8
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                        c'4
+                        ~
+                        c'16
+                    }
                 }
             >>
 
@@ -463,25 +478,28 @@ class Spelling:
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/8
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
-                    c'16
-                    ~
-                    c'4
+                    \context Voice = "Voice"
+                    {
+                        \time 5/8
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                        c'16
+                        ~
+                        c'4
+                    }
                 }
             >>
 
@@ -520,31 +538,34 @@ class Spelling:
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    c'8
-                    ~
-                    c'8
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'8
-                    ~
-                    c'8
-                    c'8
-                    ~
-                    c'8
-                    ]
+                    \context Voice = "Voice"
+                    {
+                        \time 3/4
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        c'8
+                        ~
+                        c'8
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'8
+                        ~
+                        c'8
+                        c'8
+                        ~
+                        c'8
+                        ]
+                    }
                 }
             >>
 

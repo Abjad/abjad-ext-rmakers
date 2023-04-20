@@ -45,50 +45,53 @@ Examples that show how to work with rmakers in a statal way.
                     \override Clef.stencil = ##f
                 }
                 {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            c'16 * 117/64
+                            [
+                            c'16 * 99/64
+                            c'16 * 69/64
+                            c'16 * 13/16
+                            c'16 * 47/64
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 4/8
+                            c'16 * 3/4
+                            [
+                            c'16 * 25/32
+                            c'16 * 7/8
+                            c'16 * 65/64
+                            c'16 * 79/64
+                            c'16 * 49/32
+                            c'16 * 29/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            c'16 * 117/64
+                            [
+                            c'16 * 99/64
+                            c'16 * 69/64
+                            c'16 * 13/16
+                            c'16 * 47/64
+                            ]
+                        }
+                        \revert TupletNumber.text
                     }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
                 }
             >>
 
@@ -114,52 +117,55 @@ Examples that show how to work with rmakers in a statal way.
                     \override Clef.stencil = ##f
                 }
                 {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 4/8
+                            c'16 * 3/4
+                            [
+                            c'16 * 25/32
+                            c'16 * 7/8
+                            c'16 * 65/64
+                            c'16 * 79/64
+                            c'16 * 49/32
+                            c'16 * 29/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            c'16 * 117/64
+                            [
+                            c'16 * 99/64
+                            c'16 * 69/64
+                            c'16 * 13/16
+                            c'16 * 47/64
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 4/8
+                            c'16 * 3/4
+                            [
+                            c'16 * 25/32
+                            c'16 * 7/8
+                            c'16 * 65/64
+                            c'16 * 79/64
+                            c'16 * 49/32
+                            c'16 * 29/16
+                            ]
+                        }
+                        \revert TupletNumber.text
                     }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
                 }
             >>
 
@@ -185,50 +191,53 @@ Examples that show how to work with rmakers in a statal way.
                     \override Clef.stencil = ##f
                 }
                 {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            c'16 * 117/64
+                            [
+                            c'16 * 99/64
+                            c'16 * 69/64
+                            c'16 * 13/16
+                            c'16 * 47/64
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 4/8
+                            c'16 * 3/4
+                            [
+                            c'16 * 25/32
+                            c'16 * 7/8
+                            c'16 * 65/64
+                            c'16 * 79/64
+                            c'16 * 49/32
+                            c'16 * 29/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            c'16 * 117/64
+                            [
+                            c'16 * 99/64
+                            c'16 * 69/64
+                            c'16 * 13/16
+                            c'16 * 47/64
+                            ]
+                        }
+                        \revert TupletNumber.text
                     }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
                 }
             >>
 
@@ -273,36 +282,39 @@ Examples that show how to work with rmakers in a statal way.
                 \override Clef.stencil = ##f
             }
             {
-                \time 2/8
-                c'16
-                [
-                c'16
-                c'16
-                c'16
-                ]
-                \times 2/3
+                \context Voice = "Voice"
                 {
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                }
-                c'4
-                \times 4/5
-                {
+                    \time 2/8
                     c'16
                     [
                     c'16
                     c'16
                     c'16
-                    c'16
+                    ]
+                    \times 2/3
+                    {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    c'4
+                    \times 4/5
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    c'8
+                    [
+                    c'8
                     ]
                 }
-                c'8
-                [
-                c'8
-                ]
             }
         >>
 
@@ -328,32 +340,35 @@ Examples that show how to work with rmakers in a statal way.
                 \override Clef.stencil = ##f
             }
             {
-                \time 2/8
-                c'4
-                c'16
-                [
-                c'16
-                c'16
-                c'16
-                ]
-                \times 2/3
+                \context Voice = "Voice"
                 {
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                }
-                c'4
-                \times 4/5
-                {
+                    \time 2/8
+                    c'4
                     c'16
                     [
                     c'16
                     c'16
                     c'16
-                    c'16
                     ]
+                    \times 2/3
+                    {
+                        c'8
+                        [
+                        c'8
+                        c'8
+                        ]
+                    }
+                    c'4
+                    \times 4/5
+                    {
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        c'16
+                        c'16
+                        ]
+                    }
                 }
             }
         >>
@@ -403,31 +418,34 @@ Examples that show how to work with rmakers in a statal way.
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'8.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
+                    \context Voice = "Voice"
                     {
                         \time 3/8
+                        c'4
+                        c'8
+                        ~
+                        \times 8/9
+                        {
+                            \time 4/8
+                            c'8
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        \time 4/8
                         c'16
                         c'4
                         c'8.
-                        ~
                     }
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
                 }
             >>
 
@@ -462,32 +480,35 @@ Examples that show how to work with rmakers in a statal way.
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
+                    \context Voice = "Voice"
                     {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5
+                        {
+                            \time 4/8
+                            c'8
+                            c'4
+                            c'4
+                        }
                         \time 3/8
-                        c'16
                         c'4
                         c'8
                         ~
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'4
-                    }
-                    \time 3/8
-                    c'4
-                    c'8
-                    ~
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'8.
+                        \times 8/9
+                        {
+                            \time 4/8
+                            c'8
+                            c'4
+                            c'8.
+                        }
                     }
                 }
             >>
@@ -523,35 +544,38 @@ Examples that show how to work with rmakers in a statal way.
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'8.
+                            ~
+                        }
+                        \time 4/8
                         c'16
                         c'4
                         c'8.
                         ~
-                    }
-                    \time 4/8
-                    c'16
-                    c'4
-                    c'8.
-                    ~
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
-                    {
-                        \time 3/8
-                        c'16
-                        c'4
-                        c'8
-                        ~
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'8
-                        c'4
-                        c'4
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/7
+                        {
+                            \time 3/8
+                            c'16
+                            c'4
+                            c'8
+                            ~
+                        }
+                        \times 4/5
+                        {
+                            \time 4/8
+                            c'8
+                            c'4
+                            c'4
+                        }
                     }
                 }
             >>

@@ -801,64 +801,67 @@ def accelerando(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 4/8
+                            c'16 * 63/32
+                            [
+                            c'16 * 115/64
+                            c'16 * 91/64
+                            c'16 * 35/32
+                            c'16 * 29/32
+                            c'16 * 13/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            c'16 * 117/64
+                            [
+                            c'16 * 99/64
+                            c'16 * 69/64
+                            c'16 * 13/16
+                            c'16 * 47/64
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 4/8
+                            c'16 * 63/32
+                            [
+                            c'16 * 115/64
+                            c'16 * 91/64
+                            c'16 * 35/32
+                            c'16 * 29/32
+                            c'16 * 13/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            c'16 * 117/64
+                            [
+                            c'16 * 99/64
+                            c'16 * 69/64
+                            c'16 * 13/16
+                            c'16 * 47/64
+                            ]
+                        }
+                        \revert TupletNumber.text
                     }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
                 }
             >>
 
@@ -889,68 +892,71 @@ def accelerando(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 4/8
+                            c'16 * 3/4
+                            [
+                            c'16 * 25/32
+                            c'16 * 7/8
+                            c'16 * 65/64
+                            c'16 * 79/64
+                            c'16 * 49/32
+                            c'16 * 29/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 3/8
+                            c'16 * 5/8
+                            [
+                            c'16 * 43/64
+                            c'16 * 51/64
+                            c'16 * 65/64
+                            c'16 * 85/64
+                            c'16 * 25/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 4/8
+                            c'16 * 3/4
+                            [
+                            c'16 * 25/32
+                            c'16 * 7/8
+                            c'16 * 65/64
+                            c'16 * 79/64
+                            c'16 * 49/32
+                            c'16 * 29/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 3/8
+                            c'16 * 5/8
+                            [
+                            c'16 * 43/64
+                            c'16 * 51/64
+                            c'16 * 65/64
+                            c'16 * 85/64
+                            c'16 * 25/16
+                            ]
+                        }
+                        \revert TupletNumber.text
                     }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 4/8
-                        c'16 * 3/4
-                        [
-                        c'16 * 25/32
-                        c'16 * 7/8
-                        c'16 * 65/64
-                        c'16 * 79/64
-                        c'16 * 49/32
-                        c'16 * 29/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
                 }
             >>
 
@@ -981,66 +987,69 @@ def accelerando(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 4/8
+                            c'16 * 63/32
+                            [
+                            c'16 * 115/64
+                            c'16 * 91/64
+                            c'16 * 35/32
+                            c'16 * 29/32
+                            c'16 * 13/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 3/8
+                            c'16 * 5/8
+                            [
+                            c'16 * 43/64
+                            c'16 * 51/64
+                            c'16 * 65/64
+                            c'16 * 85/64
+                            c'16 * 25/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 4/8
+                            c'16 * 63/32
+                            [
+                            c'16 * 115/64
+                            c'16 * 91/64
+                            c'16 * 35/32
+                            c'16 * 29/32
+                            c'16 * 13/16
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #left
+                            \time 3/8
+                            c'16 * 5/8
+                            [
+                            c'16 * 43/64
+                            c'16 * 51/64
+                            c'16 * 65/64
+                            c'16 * 85/64
+                            c'16 * 25/16
+                            ]
+                        }
+                        \revert TupletNumber.text
                     }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 4/8
-                        c'16 * 63/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 91/64
-                        c'16 * 35/32
-                        c'16 * 29/32
-                        c'16 * 13/16
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #left
-                        \time 3/8
-                        c'16 * 5/8
-                        [
-                        c'16 * 43/64
-                        c'16 * 51/64
-                        c'16 * 65/64
-                        c'16 * 85/64
-                        c'16 * 25/16
-                        ]
-                    }
-                    \revert TupletNumber.text
                 }
             >>
 
@@ -1071,40 +1080,43 @@ def accelerando(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 ~ 8 }
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \once \override Beam.grow-direction = #right
-                        \time 5/8
-                        c'16 * 61/32
-                        [
-                        c'16 * 115/64
-                        c'16 * 49/32
-                        c'16 * 5/4
-                        c'16 * 33/32
-                        c'16 * 57/64
-                        c'16 * 13/16
-                        c'16 * 25/32
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                    \times 1/1
-                    {
-                        \once \override Beam.grow-direction = #right
-                        \time 3/8
-                        c'16 * 117/64
-                        [
-                        c'16 * 99/64
-                        c'16 * 69/64
-                        c'16 * 13/16
-                        c'16 * 47/64
-                        ]
-                    }
-                    \revert TupletNumber.text
-                    {
-                        \time 1/8
-                        c'8
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 ~ 8 }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 5/8
+                            c'16 * 61/32
+                            [
+                            c'16 * 115/64
+                            c'16 * 49/32
+                            c'16 * 5/4
+                            c'16 * 33/32
+                            c'16 * 57/64
+                            c'16 * 13/16
+                            c'16 * 25/32
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
+                        \times 1/1
+                        {
+                            \once \override Beam.grow-direction = #right
+                            \time 3/8
+                            c'16 * 117/64
+                            [
+                            c'16 * 99/64
+                            c'16 * 69/64
+                            c'16 * 13/16
+                            c'16 * 47/64
+                            ]
+                        }
+                        \revert TupletNumber.text
+                        {
+                            \time 1/8
+                            c'8
+                        }
                     }
                 }
             >>
@@ -1193,28 +1205,31 @@ def even_division(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/8
+                    \context Voice = "Voice"
                     {
-                        \time 5/16
-                        c'4
-                        c'4
-                    }
-                    \time 6/16
-                    c'8
-                    [
-                    c'8
-                    c'8
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/8
+                        {
+                            \time 5/16
+                            c'4
+                            c'4
+                        }
+                        \time 6/16
                         c'8
                         [
                         c'8
                         c'8
-                        c'8
                         ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4
+                        {
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -1255,33 +1270,36 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/16
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        \time 3/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
+                        \context Voice = "Voice"
+                        {
+                            \time 3/16
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            ]
+                            \time 3/8
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                            \time 3/4
+                            c'16
+                            [
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            c'16
+                            ]
+                        }
                     }
                 >>
 
@@ -1317,23 +1335,26 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/16
-                        c'8.
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        ]
-                        \time 3/4
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        c'8
-                        c'8
-                        ]
+                        \context Voice = "Voice"
+                        {
+                            \time 3/16
+                            c'8.
+                            \time 3/8
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            ]
+                            \time 3/4
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
                     }
                 >>
 
@@ -1372,14 +1393,17 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/16
-                        c'8.
-                        \time 3/8
-                        c'4.
-                        \time 3/4
-                        c'4
-                        c'4
-                        c'4
+                        \context Voice = "Voice"
+                        {
+                            \time 3/16
+                            c'8.
+                            \time 3/8
+                            c'4.
+                            \time 3/4
+                            c'4
+                            c'4
+                            c'4
+                        }
                     }
                 >>
 
@@ -1418,12 +1442,15 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/16
-                        c'8.
-                        \time 3/8
-                        c'4.
-                        \time 3/4
-                        c'2.
+                        \context Voice = "Voice"
+                        {
+                            \time 3/16
+                            c'8.
+                            \time 3/8
+                            c'4.
+                            \time 3/4
+                            c'2.
+                        }
                     }
                 >>
 
@@ -1468,75 +1495,78 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \times 2/3
+                        \context Voice = "Voice"
                         {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \times 2/3
-                        {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
+                            \times 2/3
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 3/5
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \times 2/3
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 3/5
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -1574,75 +1604,78 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \times 4/6
+                        \context Voice = "Voice"
                         {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \times 4/6
-                        {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
+                            \times 4/6
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 3/5
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \times 4/6
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 3/5
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -1680,75 +1713,78 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \times 8/12
+                        \context Voice = "Voice"
                         {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \times 8/12
-                        {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
+                            \times 8/12
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 3/5
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \times 8/12
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 3/5
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -1786,75 +1822,78 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \times 16/24
+                        \context Voice = "Voice"
                         {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \times 16/24
-                        {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
+                            \times 16/24
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 3/5
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \times 16/24
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 3/5
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -1892,75 +1931,78 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \times 8/12
+                        \context Voice = "Voice"
                         {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \times 8/12
-                        {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10
-                        {
-                            \time 3/8
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
+                            \times 8/12
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/10
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \times 8/12
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/10
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -2001,18 +2043,9 @@ def even_division(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7
+                        \context Voice = "Voice"
                         {
+                            \time 3/8
                             c'16
                             [
                             c'16
@@ -2020,12 +2053,34 @@ def even_division(
                             c'16
                             c'16
                             c'16
-                            c'16
                             ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8
-                        {
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/7
+                            {
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/8
+                            {
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                             c'16
                             [
                             c'16
@@ -2033,30 +2088,20 @@ def even_division(
                             c'16
                             c'16
                             c'16
-                            c'16
-                            c'16
                             ]
-                        }
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7
-                        {
-                            c'16
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/7
+                            {
+                                c'16
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -2126,182 +2171,185 @@ def even_division(
                         \override TextScript.staff-padding = 7
                     }
                     {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   0 becomes  0 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7
+                        \context Voice = "Voice"
                         {
+                            \time 6/16
                             c'16
-                            ^ \markup {   1 becomes  1 }
+                            ^ \markup {   0 becomes  0 }
                             [
                             c'16
                             c'16
                             c'16
                             c'16
                             c'16
-                            c'16
                             ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8
-                        {
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/7
+                            {
+                                c'16
+                                ^ \markup {   1 becomes  1 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/8
+                            {
+                                c'16
+                                ^ \markup {   2 becomes  2 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \times 6/9
+                            {
+                                c'16
+                                ^ \markup {   3 becomes  3 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/10
+                            {
+                                c'16
+                                ^ \markup {   4 becomes  4 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/11
+                            {
+                                c'16
+                                ^ \markup {   5 becomes  5 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                             c'16
-                            ^ \markup {   2 becomes  2 }
+                            ^ \markup {   6 becomes  0 }
                             [
                             c'16
                             c'16
                             c'16
                             c'16
                             c'16
-                            c'16
-                            c'16
                             ]
-                        }
-                        \times 6/9
-                        {
-                            c'16
-                            ^ \markup {   3 becomes  3 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10
-                        {
-                            c'16
-                            ^ \markup {   4 becomes  4 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/11
-                        {
-                            c'16
-                            ^ \markup {   5 becomes  5 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        c'16
-                        ^ \markup {   6 becomes  0 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7
-                        {
-                            c'16
-                            ^ \markup {   7 becomes  1 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/8
-                        {
-                            c'16
-                            ^ \markup {   8 becomes  2 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \times 6/9
-                        {
-                            c'16
-                            ^ \markup {   9 becomes  3 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/10
-                        {
-                            c'16
-                            ^ \markup {  10 becomes  4 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/11
-                        {
-                            c'16
-                            ^ \markup {  11 becomes  5 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/7
+                            {
+                                c'16
+                                ^ \markup {   7 becomes  1 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/8
+                            {
+                                c'16
+                                ^ \markup {   8 becomes  2 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \times 6/9
+                            {
+                                c'16
+                                ^ \markup {   9 becomes  3 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/10
+                            {
+                                c'16
+                                ^ \markup {  10 becomes  4 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/11
+                            {
+                                c'16
+                                ^ \markup {  11 becomes  5 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -2373,102 +2421,105 @@ def even_division(
                         \override TextScript.staff-padding = 8
                     }
                     {
-                        \time 6/16
-                        c'16
-                        ^ \markup {   0 becomes  0 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5
+                        \context Voice = "Voice"
                         {
+                            \time 6/16
                             c'16
-                            ^ \markup {  -1 becomes -1 }
+                            ^ \markup {   0 becomes  0 }
                             [
                             c'16
                             c'16
                             c'16
                             c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/4
-                        {
-                            c'16
-                            ^ \markup {  -2 becomes -2 }
-                            [
-                            c'16
-                            c'16
                             c'16
                             ]
-                        }
-                        c'16
-                        ^ \markup {  -3 becomes  0 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5
-                        {
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/5
+                            {
+                                c'16
+                                ^ \markup {  -1 becomes -1 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/4
+                            {
+                                c'16
+                                ^ \markup {  -2 becomes -2 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                             c'16
-                            ^ \markup {  -4 becomes -1 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/4
-                        {
-                            c'16
-                            ^ \markup {  -5 becomes -2 }
-                            [
-                            c'16
-                            c'16
-                            c'16
-                            ]
-                        }
-                        c'16
-                        ^ \markup {  -6 becomes  0 }
-                        [
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        c'16
-                        ]
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5
-                        {
-                            c'16
-                            ^ \markup {  -7 becomes -1 }
+                            ^ \markup {  -3 becomes  0 }
                             [
                             c'16
                             c'16
                             c'16
                             c'16
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/4
-                        {
                             c'16
-                            ^ \markup {  -8 becomes -2 }
+                            ]
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/5
+                            {
+                                c'16
+                                ^ \markup {  -4 becomes -1 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/4
+                            {
+                                c'16
+                                ^ \markup {  -5 becomes -2 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            c'16
+                            ^ \markup {  -6 becomes  0 }
                             [
                             c'16
                             c'16
                             c'16
+                            c'16
+                            c'16
                             ]
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/5
+                            {
+                                c'16
+                                ^ \markup {  -7 becomes -1 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 6/4
+                            {
+                                c'16
+                                ^ \markup {  -8 becomes -2 }
+                                [
+                                c'16
+                                c'16
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -2607,15 +2658,18 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/16
-                    r16
-                    c'4
-                    r16
-                    c'4
-                    r16
-                    c'4
-                    r16
-                    c'4
+                    \context Voice = "Voice"
+                    {
+                        \time 5/16
+                        r16
+                        c'4
+                        r16
+                        c'4
+                        r16
+                        c'4
+                        r16
+                        c'4
+                    }
                 }
             >>
 
@@ -2657,19 +2711,22 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/16
-                    r16
-                    r16
-                    c'8.
-                    r16
-                    r16
-                    c'8.
-                    r16
-                    r16
-                    c'8.
-                    r16
-                    r16
-                    c'8.
+                    \context Voice = "Voice"
+                    {
+                        \time 5/16
+                        r16
+                        r16
+                        c'8.
+                        r16
+                        r16
+                        c'8.
+                        r16
+                        r16
+                        c'8.
+                        r16
+                        r16
+                        c'8.
+                    }
                 }
             >>
 
@@ -2711,15 +2768,18 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/16
-                    c'16
-                    c'4
-                    c'16
-                    c'4
-                    c'16
-                    c'4
-                    c'16
-                    c'4
+                    \context Voice = "Voice"
+                    {
+                        \time 5/16
+                        c'16
+                        c'4
+                        c'16
+                        c'4
+                        c'16
+                        c'4
+                        c'16
+                        c'4
+                    }
                 }
             >>
 
@@ -2761,27 +2821,30 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/16
-                    c'16
-                    [
-                    c'16
-                    c'8.
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8.
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8.
-                    ]
-                    c'16
-                    [
-                    c'16
-                    c'8.
-                    ]
+                    \context Voice = "Voice"
+                    {
+                        \time 5/16
+                        c'16
+                        [
+                        c'16
+                        c'8.
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'8.
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'8.
+                        ]
+                        c'16
+                        [
+                        c'16
+                        c'8.
+                        ]
+                    }
                 }
             >>
 
@@ -2825,34 +2888,37 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
+                    \context Voice = "Voice"
                     {
-                        \time 5/16
-                        r16
-                        c'4
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        r16
-                        c'4
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        r16
-                        c'4
-                        r16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        r16
-                        c'4
-                        r16
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            \time 5/16
+                            r16
+                            c'4
+                            r16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            r16
+                            c'4
+                            r16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            r16
+                            c'4
+                            r16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            r16
+                            c'4
+                            r16
+                        }
                     }
                 }
             >>
@@ -2893,39 +2959,42 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/16
-                    c'8
-                    [
-                    ~
-                    c'32
-                    c'8
-                    ~
-                    c'32
-                    ]
-                    c'8
-                    [
-                    ~
-                    c'32
-                    c'8
-                    ~
-                    c'32
-                    ]
-                    c'8
-                    [
-                    ~
-                    c'32
-                    c'8
-                    ~
-                    c'32
-                    ]
-                    c'8
-                    [
-                    ~
-                    c'32
-                    c'8
-                    ~
-                    c'32
-                    ]
+                    \context Voice = "Voice"
+                    {
+                        \time 5/16
+                        c'8
+                        [
+                        ~
+                        c'32
+                        c'8
+                        ~
+                        c'32
+                        ]
+                        c'8
+                        [
+                        ~
+                        c'32
+                        c'8
+                        ~
+                        c'32
+                        ]
+                        c'8
+                        [
+                        ~
+                        c'32
+                        c'8
+                        ~
+                        c'32
+                        ]
+                        c'8
+                        [
+                        ~
+                        c'32
+                        c'8
+                        ~
+                        c'32
+                        ]
+                    }
                 }
             >>
 
@@ -2967,98 +3036,101 @@ def incised(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
+                    \context Voice = "Voice"
                     {
-                        \time 5/16
-                        c'8
-                        [
-                        ~
-                        c'32
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        ~
-                        c'32
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        ~
-                        c'32
-                        ]
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        [
-                        ~
-                        c'32
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        ~
-                        c'32
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        ~
-                        c'32
-                        ]
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        [
-                        ~
-                        c'32
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        ~
-                        c'32
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        ~
-                        c'32
-                        ]
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        [
-                        ~
-                        c'32
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        ~
-                        c'32
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 32/48
-                    {
-                        c'8
-                        ~
-                        c'32
-                        ]
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            \time 5/16
+                            c'8
+                            [
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            ~
+                            c'32
+                            ]
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            [
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            ~
+                            c'32
+                            ]
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            [
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            ~
+                            c'32
+                            ]
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            [
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 32/48
+                        {
+                            c'8
+                            ~
+                            c'32
+                            ]
+                        }
                     }
                 }
             >>
@@ -3158,15 +3230,18 @@ def multiplied_duration(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 1/4
-                    c'1 * 1/4
-                    \time 3/16
-                    c'1 * 3/16
-                    \time 5/8
-                    c'1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'1 * 1/3
+                    \context Voice = "Voice"
+                    {
+                        \time 1/4
+                        c'1 * 1/4
+                        \time 3/16
+                        c'1 * 3/16
+                        \time 5/8
+                        c'1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        c'1 * 1/3
+                    }
                 }
             >>
 
@@ -3193,15 +3268,18 @@ def multiplied_duration(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 1/4
-                    c'1 * 1/4
-                    \time 3/16
-                    c'1 * 3/16
-                    \time 5/8
-                    c'1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'1 * 1/3
+                    \context Voice = "Voice"
+                    {
+                        \time 1/4
+                        c'1 * 1/4
+                        \time 3/16
+                        c'1 * 3/16
+                        \time 5/8
+                        c'1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        c'1 * 1/3
+                    }
                 }
             >>
 
@@ -3226,15 +3304,18 @@ def multiplied_duration(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 1/4
-                    c'2 * 2/4
-                    \time 3/16
-                    c'2 * 6/16
-                    \time 5/8
-                    c'2 * 10/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'2 * 2/3
+                    \context Voice = "Voice"
+                    {
+                        \time 1/4
+                        c'2 * 2/4
+                        \time 3/16
+                        c'2 * 6/16
+                        \time 5/8
+                        c'2 * 10/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        c'2 * 2/3
+                    }
                 }
             >>
 
@@ -3259,15 +3340,18 @@ def multiplied_duration(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 1/4
-                    c'4 * 4/4
-                    \time 3/16
-                    c'4 * 12/16
-                    \time 5/8
-                    c'4 * 20/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'4 * 4/3
+                    \context Voice = "Voice"
+                    {
+                        \time 1/4
+                        c'4 * 4/4
+                        \time 3/16
+                        c'4 * 12/16
+                        \time 5/8
+                        c'4 * 20/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        c'4 * 4/3
+                    }
                 }
             >>
 
@@ -3294,15 +3378,18 @@ def multiplied_duration(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 1/4
-                    c'1 * 1/4
-                    \time 3/16
-                    c'1 * 3/16
-                    \time 5/8
-                    c'1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    c'1 * 1/3
+                    \context Voice = "Voice"
+                    {
+                        \time 1/4
+                        c'1 * 1/4
+                        \time 3/16
+                        c'1 * 3/16
+                        \time 5/8
+                        c'1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        c'1 * 1/3
+                    }
                 }
             >>
 
@@ -3329,15 +3416,18 @@ def multiplied_duration(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 1/4
-                    r1 * 1/4
-                    \time 3/16
-                    r1 * 3/16
-                    \time 5/8
-                    r1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    r1 * 1/3
+                    \context Voice = "Voice"
+                    {
+                        \time 1/4
+                        r1 * 1/4
+                        \time 3/16
+                        r1 * 3/16
+                        \time 5/8
+                        r1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        r1 * 1/3
+                    }
                 }
             >>
 
@@ -3365,15 +3455,18 @@ def multiplied_duration(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 1/4
-                    R1 * 1/4
-                    \time 3/16
-                    R1 * 3/16
-                    \time 5/8
-                    R1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    R1 * 1/3
+                    \context Voice = "Voice"
+                    {
+                        \time 1/4
+                        R1 * 1/4
+                        \time 3/16
+                        R1 * 3/16
+                        \time 5/8
+                        R1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        R1 * 1/3
+                    }
                 }
             >>
 
@@ -3400,15 +3493,18 @@ def multiplied_duration(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 1/4
-                    s1 * 1/4
-                    \time 3/16
-                    s1 * 3/16
-                    \time 5/8
-                    s1 * 5/8
-                    #(ly:expect-warning "strange time signature found")
-                    \time 1/3
-                    s1 * 1/3
+                    \context Voice = "Voice"
+                    {
+                        \time 1/4
+                        s1 * 1/4
+                        \time 3/16
+                        s1 * 3/16
+                        \time 5/8
+                        s1 * 5/8
+                        #(ly:expect-warning "strange time signature found")
+                        \time 1/3
+                        s1 * 1/3
+                    }
                 }
             >>
 
@@ -3475,14 +3571,17 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    c'4.
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    c'4.
+                    \context Voice = "Voice"
+                    {
+                        \time 4/8
+                        r2
+                        \time 3/8
+                        c'4.
+                        \time 4/8
+                        r2
+                        \time 3/8
+                        c'4.
+                    }
                 }
             >>
 
@@ -3519,15 +3618,18 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    r4.
-                    \time 4/8
-                    r2
-                    \time 5/8
-                    r2
-                    r8
+                    \context Voice = "Voice"
+                    {
+                        \time 4/8
+                        r2
+                        \time 3/8
+                        r4.
+                        \time 4/8
+                        r2
+                        \time 5/8
+                        r2
+                        r8
+                    }
                 }
             >>
 
@@ -3565,16 +3667,19 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 4/8
-                    c'2
-                    \time 3/8
-                    c'4.
-                    \time 4/8
-                    r2
-                    \time 3/8
-                    c'4.
-                    \time 2/8
-                    c'4
+                    \context Voice = "Voice"
+                    {
+                        \time 4/8
+                        c'2
+                        \time 3/8
+                        c'4.
+                        \time 4/8
+                        r2
+                        \time 3/8
+                        c'4.
+                        \time 2/8
+                        c'4
+                    }
                 }
             >>
 
@@ -3611,17 +3716,20 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/32
-                    c'8
-                    [
-                    ~
-                    c'32
-                    ]
-                    c'8
-                    [
-                    ~
-                    c'32
-                    ]
+                    \context Voice = "Voice"
+                    {
+                        \time 5/32
+                        c'8
+                        [
+                        ~
+                        c'32
+                        ]
+                        c'8
+                        [
+                        ~
+                        c'32
+                        ]
+                    }
                 }
             >>
 
@@ -3658,23 +3766,26 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \set stemLeftBeamCount = 0
-                    \set stemRightBeamCount = 1
-                    \time 5/32
-                    c'8
-                    [
-                    ~
-                    \set stemLeftBeamCount = 3
-                    \set stemRightBeamCount = 1
-                    c'32
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 1
-                    c'8
-                    ~
-                    \set stemLeftBeamCount = 3
-                    \set stemRightBeamCount = 0
-                    c'32
-                    ]
+                    \context Voice = "Voice"
+                    {
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 1
+                        \time 5/32
+                        c'8
+                        [
+                        ~
+                        \set stemLeftBeamCount = 3
+                        \set stemRightBeamCount = 1
+                        c'32
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 1
+                        c'8
+                        ~
+                        \set stemLeftBeamCount = 3
+                        \set stemRightBeamCount = 0
+                        c'32
+                        ]
+                    }
                 }
             >>
 
@@ -3709,13 +3820,16 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/32
-                    c'8
-                    ~
-                    c'32
-                    c'8
-                    ~
-                    c'32
+                    \context Voice = "Voice"
+                    {
+                        \time 5/32
+                        c'8
+                        ~
+                        c'32
+                        c'8
+                        ~
+                        c'32
+                    }
                 }
             >>
 
@@ -3750,14 +3864,17 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 4/8
-                    c'2
-                    \time 3/8
-                    c'4.
-                    \time 4/8
-                    c'2
-                    \time 3/8
-                    c'4.
+                    \context Voice = "Voice"
+                    {
+                        \time 4/8
+                        c'2
+                        \time 3/8
+                        c'4.
+                        \time 4/8
+                        c'2
+                        \time 3/8
+                        c'4.
+                    }
                 }
             >>
 
@@ -3795,17 +3912,20 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 3/8
-                    c'4.
-                    ~
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 3/8
-                    c'4.
+                    \context Voice = "Voice"
+                    {
+                        \time 4/8
+                        c'2
+                        ~
+                        \time 3/8
+                        c'4.
+                        ~
+                        \time 4/8
+                        c'2
+                        ~
+                        \time 3/8
+                        c'4.
+                    }
                 }
             >>
 
@@ -3844,16 +3964,19 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 3/8
-                    c'4.
-                    \time 4/8
-                    c'2
-                    ~
-                    \time 3/8
-                    c'4.
+                    \context Voice = "Voice"
+                    {
+                        \time 4/8
+                        c'2
+                        ~
+                        \time 3/8
+                        c'4.
+                        \time 4/8
+                        c'2
+                        ~
+                        \time 3/8
+                        c'4.
+                    }
                 }
             >>
 
@@ -3889,13 +4012,16 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 7/16
-                    c'4..
-                    \time 1/4
-                    c'4
-                    \time 5/16
-                    c'4
-                    c'16
+                    \context Voice = "Voice"
+                    {
+                        \time 7/16
+                        c'4..
+                        \time 1/4
+                        c'4
+                        \time 5/16
+                        c'4
+                        c'16
+                    }
                 }
             >>
 
@@ -3930,21 +4056,24 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 8/14
+                    \context Voice = "Voice"
                     {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 5/14
-                        c'2
-                        ~
-                        c'8
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 4/7
-                    {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 3/7
-                        c'2.
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 8/14
+                        {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 5/14
+                            c'2
+                            ~
+                            c'8
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 4/7
+                        {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 3/7
+                            c'2.
+                        }
                     }
                 }
             >>
@@ -3981,23 +4110,26 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 8/7
+                    \context Voice = "Voice"
                     {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 5/14
-                        c'4
-                        ~
-                        c'16
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 8/7
-                    {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 3/7
-                        c'4.
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 8/7
+                        {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 5/14
+                            c'4
+                            ~
+                            c'16
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 8/7
+                        {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 3/7
+                            c'4.
+                        }
                     }
                 }
             >>
@@ -4035,16 +4167,19 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/8
-                    r2
-                    r8
-                    \time 2/8
-                    c'4
-                    c'4
-                    \time 5/8
-                    c'2
-                    ~
-                    c'8
+                    \context Voice = "Voice"
+                    {
+                        \time 5/8
+                        r2
+                        r8
+                        \time 2/8
+                        c'4
+                        c'4
+                        \time 5/8
+                        c'2
+                        ~
+                        c'8
+                    }
                 }
             >>
 
@@ -4081,16 +4216,19 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/8
-                    r2
-                    r8
-                    \time 2/8
-                    r4
-                    c'4
-                    \time 5/8
-                    c'2
-                    ~
-                    c'8
+                    \context Voice = "Voice"
+                    {
+                        \time 5/8
+                        r2
+                        r8
+                        \time 2/8
+                        r4
+                        c'4
+                        \time 5/8
+                        c'2
+                        ~
+                        c'8
+                    }
                 }
             >>
 
@@ -4128,15 +4266,18 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 5/8
-                    r2
-                    r8
-                    \time 2/8
-                    c'4
-                    c'4
-                    \time 5/8
-                    r2
-                    r8
+                    \context Voice = "Voice"
+                    {
+                        \time 5/8
+                        r2
+                        r8
+                        \time 2/8
+                        c'4
+                        c'4
+                        \time 5/8
+                        r2
+                        r8
+                    }
                 }
             >>
 
@@ -4172,14 +4313,17 @@ def note(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/4
-                    c'2.
-                    \time 6/16
-                    c'4.
-                    \time 9/16
-                    c'4.
-                    ~
-                    c'8.
+                    \context Voice = "Voice"
+                    {
+                        \time 3/4
+                        c'2.
+                        \time 6/16
+                        c'4.
+                        \time 9/16
+                        c'4.
+                        ~
+                        c'8.
+                    }
                 }
             >>
 
@@ -4254,30 +4398,33 @@ def talea(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    ]
-                    \time 4/8
-                    c'4
-                    c'16
-                    [
-                    c'8
-                    c'16
-                    ]
-                    ~
-                    \time 3/8
-                    c'8
-                    c'4
-                    \time 4/8
-                    c'16
-                    [
-                    c'8
-                    c'8.
-                    c'8
-                    ]
+                    \context Voice = "Voice"
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        ]
+                        \time 4/8
+                        c'4
+                        c'16
+                        [
+                        c'8
+                        c'16
+                        ]
+                        ~
+                        \time 3/8
+                        c'8
+                        c'4
+                        \time 4/8
+                        c'16
+                        [
+                        c'8
+                        c'8.
+                        c'8
+                        ]
+                    }
                 }
             >>
 
@@ -4323,39 +4470,42 @@ def talea(
                         \override Clef.stencil = ##f
                     }
                     {
+                        \context Voice = "Voice"
                         {
-                            \time 3/8
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \times 8/9
-                        {
-                            \time 4/8
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'8
-                            ]
-                            ~
-                        }
-                        {
-                            \time 3/8
-                            c'16
-                            c'4
-                            c'16
-                        }
-                        \times 8/9
-                        {
-                            \time 4/8
-                            c'8
-                            [
-                            c'8.
-                            ]
-                            c'4
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'8
+                                c'8.
+                                ]
+                            }
+                            \times 8/9
+                            {
+                                \time 4/8
+                                c'4
+                                c'16
+                                [
+                                c'8
+                                c'8
+                                ]
+                                ~
+                            }
+                            {
+                                \time 3/8
+                                c'16
+                                c'4
+                                c'16
+                            }
+                            \times 8/9
+                            {
+                                \time 4/8
+                                c'8
+                                [
+                                c'8.
+                                ]
+                                c'4
+                            }
                         }
                     }
                 >>
@@ -4382,45 +4532,48 @@ def talea(
                         \override Clef.stencil = ##f
                     }
                     {
+                        \context Voice = "Voice"
                         {
-                            \time 3/8
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \times 4/5
-                        {
-                            \time 4/8
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        {
-                            \time 3/8
-                            c'4
-                            c'16
-                            [
-                            c'16
-                            ]
-                            ~
-                        }
-                        \times 4/5
-                        {
-                            \time 4/8
-                            c'16
-                            [
-                            c'8.
-                            ]
-                            c'4
-                            c'16
-                            [
-                            c'16
-                            ]
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'8
+                                c'8.
+                                ]
+                            }
+                            \times 4/5
+                            {
+                                \time 4/8
+                                c'4
+                                c'16
+                                [
+                                c'8
+                                c'8.
+                                ]
+                            }
+                            {
+                                \time 3/8
+                                c'4
+                                c'16
+                                [
+                                c'16
+                                ]
+                                ~
+                            }
+                            \times 4/5
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'8.
+                                ]
+                                c'4
+                                c'16
+                                [
+                                c'16
+                                ]
+                            }
                         }
                     }
                 >>
@@ -4447,42 +4600,45 @@ def talea(
                         \override Clef.stencil = ##f
                     }
                     {
+                        \context Voice = "Voice"
                         {
-                            \time 3/8
-                            c'16
-                            [
-                            c'8
-                            c'8.
-                            ]
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/7
-                        {
-                            \time 4/8
-                            c'4
-                            c'16
-                            [
-                            c'8
-                            ]
-                        }
-                        {
-                            \time 3/8
-                            c'8.
-                            [
-                            c'8.
-                            ]
-                            ~
-                        }
-                        \tweak text #tuplet-number::calc-fraction-text
-                        \times 8/7
-                        {
-                            \time 4/8
-                            c'16
-                            [
-                            c'16
-                            c'8
-                            c'8.
-                            ]
+                            {
+                                \time 3/8
+                                c'16
+                                [
+                                c'8
+                                c'8.
+                                ]
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 8/7
+                            {
+                                \time 4/8
+                                c'4
+                                c'16
+                                [
+                                c'8
+                                ]
+                            }
+                            {
+                                \time 3/8
+                                c'8.
+                                [
+                                c'8.
+                                ]
+                                ~
+                            }
+                            \tweak text #tuplet-number::calc-fraction-text
+                            \times 8/7
+                            {
+                                \time 4/8
+                                c'16
+                                [
+                                c'16
+                                c'8
+                                c'8.
+                                ]
+                            }
                         }
                     }
                 >>
@@ -4533,28 +4689,31 @@ def talea(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/8
-                        c'32
-                        [
-                        c'32
-                        c'32
-                        c'32
-                        ]
-                        c'4
-                        \time 4/8
-                        r8
-                        c'4
-                        c'8
-                        ~
-                        \time 3/8
-                        c'8
-                        r8
-                        c'8
-                        ~
-                        \time 4/8
-                        c'8
-                        c'4
-                        r8
+                        \context Voice = "Voice"
+                        {
+                            \time 3/8
+                            c'32
+                            [
+                            c'32
+                            c'32
+                            c'32
+                            ]
+                            c'4
+                            \time 4/8
+                            r8
+                            c'4
+                            c'8
+                            ~
+                            \time 3/8
+                            c'8
+                            r8
+                            c'8
+                            ~
+                            \time 4/8
+                            c'8
+                            c'4
+                            r8
+                        }
                     }
                 >>
 
@@ -4592,18 +4751,21 @@ def talea(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/8
-                        c'4.
-                        ~
-                        \time 4/8
-                        c'2
-                        ~
-                        \time 3/8
-                        c'8
-                        c'4
-                        ~
-                        \time 4/8
-                        c'2
+                        \context Voice = "Voice"
+                        {
+                            \time 3/8
+                            c'4.
+                            ~
+                            \time 4/8
+                            c'2
+                            ~
+                            \time 3/8
+                            c'8
+                            c'4
+                            ~
+                            \time 4/8
+                            c'2
+                        }
                     }
                 >>
 
@@ -4643,24 +4805,27 @@ def talea(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/8
-                        c'4
-                        r8
-                        \time 4/8
-                        c'4
-                        c'4
-                        \time 3/8
-                        r8
-                        c'4
-                        \time 4/8
-                        c'4
-                        r8
-                        c'32
-                        [
-                        c'32
-                        c'32
-                        c'32
-                        ]
+                        \context Voice = "Voice"
+                        {
+                            \time 3/8
+                            c'4
+                            r8
+                            \time 4/8
+                            c'4
+                            c'4
+                            \time 3/8
+                            r8
+                            c'4
+                            \time 4/8
+                            c'4
+                            r8
+                            c'32
+                            [
+                            c'32
+                            c'32
+                            c'32
+                            ]
+                        }
                     }
                 >>
 
@@ -4696,14 +4861,17 @@ def talea(
                         \override Clef.stencil = ##f
                     }
                     {
-                        \time 3/8
-                        c'4.
-                        c'4
-                        ~
-                        c'16
-                        [
-                        c'16
-                        ]
+                        \context Voice = "Voice"
+                        {
+                            \time 3/8
+                            c'4.
+                            c'4
+                            ~
+                            c'16
+                            [
+                            c'16
+                            ]
+                        }
                     }
                 >>
 
@@ -4794,35 +4962,38 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 1/2
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'8.
-                        [
-                        c'8
-                        ]
+                        \times 4/5
+                        {
+                            \time 1/2
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 5/16
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -4858,112 +5029,37 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \time 1/2
-                        c'4
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'4.
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        \time 5/16
-                        c'8.
-                        r8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4
-                    {
-                        c'8.
-                        [
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Beams each tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.tuplet(durations, [(1, 1, 1, 1)])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(5, 8), (3, 8), (6, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        \time 5/8
-                        c'8.
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        [
-                        c'16.
-                        c'16.
-                        c'16.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 6/8
-                        c'8.
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 1/2
+                            c'4
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4
+                        {
+                            \time 3/8
+                            c'4.
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            \time 5/16
+                            c'8.
+                            r8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4
+                        {
+                            c'8.
+                            [
+                            c'16
+                            ]
+                        }
                     }
                 }
             >>
@@ -4999,49 +5095,133 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
+                    \context Voice = "Voice"
                     {
-                        \time 5/8
-                        c'8.
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            \time 5/8
+                            c'8.
+                            [
+                            c'8.
+                            c'8.
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 3/8
+                            c'16.
+                            [
+                            c'16.
+                            c'16.
+                            c'16.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 6/8
+                            c'8.
+                            [
+                            c'8.
+                            c'8.
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 4/8
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
                     }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+                }
+            >>
+
+    ..  container:: example
+
+        Beams each tuplet:
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.tuplet(durations, [(1, 1, 1, 1)])
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(5, 8), (3, 8), (6, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
-                        c'16.
-                        [
-                        c'16.
-                        c'16.
-                        c'16.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 6/8
-                        c'8.
-                        [
-                        c'8.
-                        c'8.
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 4/8
-                        c'8
-                        [
-                        c'8
-                        c'8
-                        c'8
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            \time 5/8
+                            c'8.
+                            [
+                            c'8.
+                            c'8.
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 3/8
+                            c'16.
+                            [
+                            c'16.
+                            c'16.
+                            c'16.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 6/8
+                            c'8.
+                            [
+                            c'8.
+                            c'8.
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 4/8
+                            c'8
+                            [
+                            c'8
+                            c'8
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -5078,74 +5258,77 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/9
+                    \context Voice = "Voice"
                     {
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        \time 5/8
-                        c'8.
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8.
-                        ]
-                        c'4.
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8.
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 1
-                        \time 6/8
-                        c'8
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8
-                        ]
-                        c'4
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/8
-                        c'4.
-                        \set stemLeftBeamCount = 0
-                        \set stemRightBeamCount = 1
-                        c'8
-                        [
-                        \set stemLeftBeamCount = 1
-                        \set stemRightBeamCount = 0
-                        c'8
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/9
+                        {
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            \time 5/8
+                            c'8.
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8.
+                            ]
+                            c'4.
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8.
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4.
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 1
+                            \time 6/8
+                            c'8
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8
+                            ]
+                            c'4
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8
+                            ]
+                        }
+                        \times 4/5
+                        {
+                            \time 4/8
+                            c'4.
+                            \set stemLeftBeamCount = 0
+                            \set stemRightBeamCount = 1
+                            c'8
+                            [
+                            \set stemLeftBeamCount = 1
+                            \set stemRightBeamCount = 0
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -5181,28 +5364,31 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 1/2
-                        c'4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ]
+                        \times 4/5
+                        {
+                            \time 1/2
+                            c'4
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 3/8
+                            c'16.
+                            r8.
+                            c'16.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 5/16
+                            c'8
+                            [
+                            c'8.
+                            ]
+                        }
                     }
                 }
             >>
@@ -5241,30 +5427,33 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 1/2
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ]
+                        \times 4/5
+                        {
+                            \time 1/2
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 3/8
+                            c'16.
+                            r8.
+                            c'16.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 5/16
+                            c'8
+                            [
+                            c'8.
+                            ]
+                        }
                     }
                 }
             >>
@@ -5304,37 +5493,40 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 1/2
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'16.
-                        r8.
-                        c'16.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8
-                        [
-                        c'8.
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        c'16.
-                        r8.
-                        c'16.
+                        \times 4/5
+                        {
+                            \time 1/2
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 3/8
+                            c'16.
+                            r8.
+                            c'16.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 5/16
+                            c'8
+                            [
+                            c'8.
+                            ]
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            c'16.
+                            r8.
+                            c'16.
+                        }
                     }
                 }
             >>
@@ -5371,22 +5563,25 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 2/3
+                    \context Voice = "Voice"
                     {
-                        \time 2/8
-                        c'4
-                        c'8
-                    }
-                    \times 2/3
-                    {
-                        c'4
-                        c'8
-                    }
-                    \times 2/3
-                    {
-                        \time 4/8
-                        c'2
-                        c'4
+                        \times 2/3
+                        {
+                            \time 2/8
+                            c'4
+                            c'8
+                        }
+                        \times 2/3
+                        {
+                            c'4
+                            c'8
+                        }
+                        \times 2/3
+                        {
+                            \time 4/8
+                            c'2
+                            c'4
+                        }
                     }
                 }
             >>
@@ -5423,29 +5618,32 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
+                    \context Voice = "Voice"
                     {
-                        \time 2/8
-                        c'8
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        c'8
-                        [
-                        c'16
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 4/8
-                        c'4
-                        c'8
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3
+                        {
+                            \time 2/8
+                            c'8
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3
+                        {
+                            c'8
+                            [
+                            c'16
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/3
+                        {
+                            \time 4/8
+                            c'4
+                            c'8
+                        }
                     }
                 }
             >>
@@ -5482,32 +5680,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 7/16
-                        c'8..
-                        [
-                        c'8..
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 2/8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 3/8
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 7/16
+                            c'8..
+                            [
+                            c'8..
+                            ]
+                        }
                     }
                 }
             >>
@@ -5545,28 +5746,31 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'4
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/8
-                    {
-                        \time 7/16
-                        c'4
-                        c'4
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 2/8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4
+                        {
+                            \time 3/8
+                            c'4
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 7/8
+                        {
+                            \time 7/16
+                            c'4
+                            c'4
+                        }
                     }
                 }
             >>
@@ -5603,32 +5807,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 3/8
-                        c'8.
-                        [
-                        c'8.
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 7/16
-                        c'8..
-                        [
-                        c'8..
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 2/8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 3/8
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 7/16
+                            c'8..
+                            [
+                            c'8..
+                            ]
+                        }
                     }
                 }
             >>
@@ -5666,32 +5873,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        \time 3/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 7/4
-                    {
-                        \time 7/16
-                        c'8
-                        [
-                        c'8
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 2/8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2
+                        {
+                            \time 3/8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 7/4
+                        {
+                            \time 7/16
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -5728,31 +5938,34 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        c'8
-                        [
-                        c'8
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4.
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2
+                        {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            r4
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2
+                        {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -5791,31 +6004,34 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'8.
-                        [
-                        c'8.
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4.
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            r4
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            c'8.
+                            [
+                            c'8.
+                            ]
+                        }
                     }
                 }
             >>
@@ -5854,31 +6070,34 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
-                        c'4.
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        r4
-                        c'4.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/2
-                    {
-                        c'8
-                        [
-                        c'8
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4.
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2
+                        {
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            r4
+                            c'4.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/2
+                        {
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -5917,40 +6136,43 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 2/8
-                        c'8
-                        [
-                        c'8
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 2/8
+                            c'8
+                            [
+                            c'8
+                            ]
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 2/8
+                            c'8
+                            [
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -5991,33 +6213,36 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
-                        c'4
-                        c'4.
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ]
                         ~
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4
+                            c'4.
+                            ~
+                        }
+                        \time 2/8
+                        c'8
+                        [
+                        c'8
+                        ]
                     }
-                    \time 2/8
-                    c'8
-                    [
-                    c'8
-                    ]
-                    ~
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        c'4.
-                        ~
-                    }
-                    \time 2/8
-                    c'8
-                    [
-                    c'8
-                    ]
                 }
             >>
 
@@ -6058,37 +6283,40 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
-                        c'4
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4
+                            ~
+                            c'4.
+                            ~
+                        }
+                        \time 2/8
+                        c'8
+                        [
                         ~
-                        c'4.
+                        c'8
+                        ]
                         ~
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4
+                            ~
+                            c'4.
+                            ~
+                        }
+                        \time 2/8
+                        c'8
+                        [
+                        ~
+                        c'8
+                        ]
                     }
-                    \time 2/8
-                    c'8
-                    [
-                    ~
-                    c'8
-                    ]
-                    ~
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4
-                        ~
-                        c'4.
-                        ~
-                    }
-                    \time 2/8
-                    c'8
-                    [
-                    ~
-                    c'8
-                    ]
                 }
             >>
 
@@ -6127,22 +6355,25 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 3/8
-                        c'4.
-                        c'16.
+                        \times 4/5
+                        {
+                            \time 3/8
+                            c'4.
+                            c'16.
+                        }
+                        \time 4/8
+                        r2
+                        \times 4/5
+                        {
+                            \time 3/8
+                            c'4.
+                            c'16.
+                        }
+                        \time 4/8
+                        r2
                     }
-                    \time 4/8
-                    r2
-                    \times 4/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'16.
-                    }
-                    \time 4/8
-                    r2
                 }
             >>
 
@@ -6181,32 +6412,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \times 4/5
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
                     }
                 }
             >>
@@ -6246,32 +6480,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \times 8/10
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
                     }
                 }
             >>
@@ -6310,32 +6547,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 16/20
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 8/10
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \times 16/20
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
                     }
                 }
             >>
@@ -6374,32 +6614,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 8/10
+                    \context Voice = "Voice"
                     {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 16/20
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 24/20
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 32/40
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
+                        \times 8/10
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 16/20
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 24/20
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \times 32/40
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
                     }
                 }
             >>
@@ -6439,32 +6682,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 8/10
+                    \context Voice = "Voice"
                     {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
+                        \times 8/10
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 8/10
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \times 8/10
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
                     }
                 }
             >>
@@ -6503,32 +6749,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 12/15
+                    \context Voice = "Voice"
                     {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 12/15
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 12/15
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
+                        \times 12/15
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 12/15
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \times 12/15
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
                     }
                 }
             >>
@@ -6567,32 +6816,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \times 4/5
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \times 4/5
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
                     }
                 }
             >>
@@ -6627,89 +6879,92 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    \times 4/5
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    {
-                        \time 1/2
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.tuplet()
-                        c'4.
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.tuplet()
-                        c'4
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    }
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    \tweak text #tuplet-number::calc-fraction-text
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    \times 3/5
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    {
-                        \time 3/8
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.tuplet()
-                        c'4.
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.tuplet()
-                        c'4
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    }
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    \tweak text #tuplet-number::calc-fraction-text
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    \times 1/1
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    {
-                        \time 5/16
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.tuplet()
-                        c'8.
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        [
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.tuplet()
-                        c'8
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        ]
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    }
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    \tweak text #tuplet-number::calc-fraction-text
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
-                    \times 1/1
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
+                    \context Voice = "Voice"
                     {
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
-                        c'8.
-                          %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        [
+                        \times 4/5
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
-                        c'8
+                        {
+                            \time 1/2
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.tuplet()
+                            c'4.
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.tuplet()
+                            c'4
                           %! TUPLET_RHYTHM_MAKER
-                          %! rmakers.beam()
-                        ]
-                      %! TUPLET_RHYTHM_MAKER
-                      %! rmakers.tuplet()
+                          %! rmakers.tuplet()
+                        }
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        \tweak text #tuplet-number::calc-fraction-text
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        \times 3/5
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        {
+                            \time 3/8
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.tuplet()
+                            c'4.
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.tuplet()
+                            c'4
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        }
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        \tweak text #tuplet-number::calc-fraction-text
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        \times 1/1
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        {
+                            \time 5/16
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.tuplet()
+                            c'8.
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.beam()
+                            [
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.tuplet()
+                            c'8
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.beam()
+                            ]
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        }
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        \tweak text #tuplet-number::calc-fraction-text
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        \times 1/1
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        {
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.tuplet()
+                            c'8.
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.beam()
+                            [
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.tuplet()
+                            c'8
+                              %! TUPLET_RHYTHM_MAKER
+                              %! rmakers.beam()
+                            ]
+                          %! TUPLET_RHYTHM_MAKER
+                          %! rmakers.tuplet()
+                        }
                     }
                 }
             >>
@@ -6745,35 +7000,38 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        \time 1/2
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/5
-                    {
-                        \time 3/8
-                        c'4.
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 5/16
-                        c'8.
-                        [
-                        c'8
-                        ]
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        c'8.
-                        [
-                        c'8
-                        ]
+                        \times 4/5
+                        {
+                            \time 1/2
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/5
+                        {
+                            \time 3/8
+                            c'4.
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 5/16
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            c'8.
+                            [
+                            c'8
+                            ]
+                        }
                     }
                 }
             >>
@@ -6809,34 +7067,37 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
+                    \context Voice = "Voice"
                     {
-                        \time 1/2
-                        c'4
-                        r4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 3/4
-                    {
-                        \time 3/8
-                        c'4.
-                        c'8
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/6
-                    {
-                        \time 5/16
-                        c'8.
-                        r8.
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 5/4
-                    {
-                        c'8.
-                        [
-                        c'16
-                        ]
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 1/2
+                            c'4
+                            r4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 3/4
+                        {
+                            \time 3/8
+                            c'4.
+                            c'8
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/6
+                        {
+                            \time 5/16
+                            c'8.
+                            r8.
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 5/4
+                        {
+                            c'8.
+                            [
+                            c'16
+                            ]
+                        }
                     }
                 }
             >>
@@ -6871,32 +7132,35 @@ def tuplet(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 4/5
+                    \context Voice = "Voice"
                     {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 1/5
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 1/1
-                    {
-                        \time 1/4
-                        c'4
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 2/3
-                    {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 1/6
-                        c'4
-                    }
-                    \tweak edge-height #'(0.7 . 0)
-                    \times 8/9
-                    {
-                        #(ly:expect-warning "strange time signature found")
-                        \time 7/9
-                        c'2..
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 4/5
+                        {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 1/5
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 1/1
+                        {
+                            \time 1/4
+                            c'4
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 2/3
+                        {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 1/6
+                            c'4
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \times 8/9
+                        {
+                            #(ly:expect-warning "strange time signature found")
+                            \time 7/9
+                            c'2..
+                        }
                     }
                 }
             >>

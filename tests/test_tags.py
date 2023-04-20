@@ -2,7 +2,7 @@ import abjad
 from abjadext import rmakers
 
 
-def test_tag_01():
+def test_tags_01():
     """
     Tags work with ``rmakers.accelerando()``.
     """
@@ -25,13 +25,15 @@ def test_tag_01():
 
     assert string == abjad.string.normalize(
         r"""
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
+        \context Score = "Score"
+        <<
+            \context RhythmicStaff = "Staff"
+            \with
+            {
+                \override Clef.stencil = ##f
+            }
+            {
+                \context Voice = "Voice"
                 {
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                       %! ACCELERANDO_RHYTHM_MAKER
@@ -176,18 +178,21 @@ def test_tag_01():
                     }
                     \revert TupletNumber.text
                 }
-            >>
+            }
+        >>
         """
     )
 
 
-def test_02():
+def test_tags_02():
     """
     Tags work with rmakers.incised().
     """
 
-    def make_rhythm(durations):
+    def make_lilypond_file(pairs):
         tag = abjad.Tag("INCISED_RHYTHM_MAKER")
+        time_signatures = rmakers.time_signatures(pairs)
+        durations = [abjad.Duration(_) for _ in time_signatures]
         tuplets = rmakers.incised(
             durations,
             extra_counts=[1],
@@ -202,15 +207,13 @@ def test_02():
         container = abjad.Container(tuplets)
         rmakers.force_augmentation(container)
         rmakers.beam(container, tag=tag)
-        music = abjad.mutate.eject_contents(container)
-        return music
+        components = abjad.mutate.eject_contents(container)
+        lilypond_file = rmakers.example(components, time_signatures)
+        return lilypond_file
 
-    time_signatures = rmakers.time_signatures([(8, 8), (4, 8), (6, 8)])
-    durations = [abjad.Duration(_) for _ in time_signatures]
-    music = make_rhythm(durations)
-    lilypond_file = rmakers.example(music, time_signatures)
-    score = lilypond_file["Score"]
-    string = abjad.lilypond(score, tags=True)
+    pairs = [(8, 8), (4, 8), (6, 8)]
+    lilypond_file = make_lilypond_file(pairs)
+    string = abjad.lilypond(lilypond_file["Score"], tags=True)
 
     assert string == abjad.string.normalize(
         r"""
@@ -222,63 +225,66 @@ def test_02():
                 \override Clef.stencil = ##f
             }
             {
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                \tweak text #tuplet-number::calc-fraction-text
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                \times 16/9
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
+                \context Voice = "Voice"
                 {
-                    \time 8/8
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    r16
+                    \tweak text #tuplet-number::calc-fraction-text
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    c'2
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                }
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                \tweak text #tuplet-number::calc-fraction-text
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                \times 8/5
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                {
-                    \time 4/8
+                    \times 16/9
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    c'4
-                    ~
+                    {
+                        \time 8/8
+                          %! INCISED_RHYTHM_MAKER
+                          %! rmakers.incised()
+                        r16
+                          %! INCISED_RHYTHM_MAKER
+                          %! rmakers.incised()
+                        c'2
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    c'16
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                }
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                \tweak text #tuplet-number::calc-fraction-text
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                \times 12/7
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
-                {
-                    \time 6/8
+                    }
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    c'4.
+                    \tweak text #tuplet-number::calc-fraction-text
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    r16
-                  %! INCISED_RHYTHM_MAKER
-                  %! rmakers.incised()
+                    \times 8/5
+                      %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
+                    {
+                        \time 4/8
+                          %! INCISED_RHYTHM_MAKER
+                          %! rmakers.incised()
+                        c'4
+                        ~
+                          %! INCISED_RHYTHM_MAKER
+                          %! rmakers.incised()
+                        c'16
+                      %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
+                    }
+                      %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
+                    \tweak text #tuplet-number::calc-fraction-text
+                      %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
+                    \times 12/7
+                      %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
+                    {
+                        \time 6/8
+                          %! INCISED_RHYTHM_MAKER
+                          %! rmakers.incised()
+                        c'4.
+                          %! INCISED_RHYTHM_MAKER
+                          %! rmakers.incised()
+                        r16
+                      %! INCISED_RHYTHM_MAKER
+                      %! rmakers.incised()
+                    }
                 }
             }
         >>
@@ -306,18 +312,19 @@ def test_tags_03():
 
     pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
     lilypond_file = make_lilypond_file(pairs)
-    score = lilypond_file["Score"]
-    string = abjad.lilypond(score, tags=True)
+    string = abjad.lilypond(lilypond_file["Score"], tags=True)
 
     assert string == abjad.string.normalize(
         r"""
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
+        \context Score = "Score"
+        <<
+            \context RhythmicStaff = "Staff"
+            \with
+            {
+                \override Clef.stencil = ##f
+            }
+            {
+                \context Voice = "Voice"
                 {
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
@@ -424,6 +431,7 @@ def test_tags_03():
                       %! rmakers.talea()
                     }
                 }
-            >>
+            }
+        >>
         """
     )
