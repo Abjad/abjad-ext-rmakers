@@ -1292,15 +1292,11 @@ def before_grace_container(
 
 def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
     r"""
-    Sets denominator of tuplets in ``argument``.
-
-    Tuplet numerators and denominators are reduced to numbers that are
-    relatively prime when ``denominator`` is set to none. This means that
-    ratios like ``6:4`` and ``10:8`` do not arise:
+    Sets tuplet ratio denominator of tuplets in ``argument``.
 
     ..  container:: example
 
-        >>> def make_lilypond_file(pairs):
+        >>> def make_lilypond_file(pairs, denominator=None):
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.tuplet(durations, [(1, 4)])
@@ -1308,506 +1304,24 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     tuplets = abjad.select.tuplets(container)
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.beam(container)
+        ...     rmakers.force_fraction(container)
+        ...     if denominator is not None:
+        ...         rmakers.denominator(container, denominator)
         ...     components = abjad.mutate.eject_contents(container)
         ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     score = lilypond_file["Score"]
+        ...     abjad.override(score).TupletBracket.bracket_visibility = True
+        ...     abjad.override(score).TupletBracket.staff_padding = 4.5
+        ...     abjad.setting(score).tupletFullLength = True
         ...     return lilypond_file
-
-        >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            \with
-            {
-                \override TupletBracket.staff-padding = 4.5
-            }
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
 
     ..  container:: example
 
-        The preferred denominator of each tuplet is set in terms of a unit duration when
-        ``denominator`` is set to a duration. The setting does not affect the first
-        tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.tuplet(durations, [(1, 4)])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots(container)
-        ...     rmakers.denominator(container, (1, 16))
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
+        By default, tuplet numerators and denominators are reduced to numbers
+        that are relatively prime. This means that ratios like ``6:4`` and
+        ``10:8`` do not arise:
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            \with
-            {
-                \override TupletBracket.staff-padding = 4.5
-            }
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Sets the preferred denominator of each tuplet in terms 32nd notes. The setting
-        affects all tuplets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.tuplet(durations, [(1, 4)])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots(container)
-        ...     rmakers.denominator(container, (1, 32))
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            \with
-            {
-                \override TupletBracket.staff-padding = 4.5
-            }
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 16/20
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Sets the preferred denominator each tuplet in terms 64th notes. The setting
-        affects all tuplets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.tuplet(durations, [(1, 4)])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots(container)
-        ...     rmakers.denominator(container, (1, 64))
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            \with
-            {
-                \override TupletBracket.staff-padding = 4.5
-            }
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 8/10
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 16/20
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 24/20
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 32/40
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        The preferred denominator of each tuplet is set directly when ``denominator`` is
-        set to a positive integer. This example sets the preferred denominator of each
-        tuplet to ``8``. Setting does not affect the third tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.tuplet(durations, [(1, 4)])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots(container)
-        ...     rmakers.denominator(container, 8)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            \with
-            {
-                \override TupletBracket.staff-padding = 4.5
-            }
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 8/10
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 8/10
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 8/10
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Sets the preferred denominator of each tuplet to ``12``. Setting affects all
-        tuplets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.tuplet(durations, [(1, 4)])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots(container)
-        ...     rmakers.denominator(container, 12)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.setting(score).proportionalNotationDuration = "#(ly:make-moment 1 28)"
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            \with
-            {
-                \override TupletBracket.staff-padding = 4.5
-                proportionalNotationDuration = #(ly:make-moment 1 28)
-            }
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 12/15
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 12/15
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 12/10
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 12/15
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Sets the preferred denominator of each tuplet to ``13``. Setting does not affect
-        any tuplet:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.tuplet(durations, [(1, 4)])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.rewrite_dots(container)
-        ...     rmakers.denominator(container, 13)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.override(score).TupletBracket.staff_padding = 4.5
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            \with
-            {
-                \override TupletBracket.staff-padding = 4.5
-            }
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \times 4/5
-                    {
-                        \time 2/16
-                        c'32
-                        [
-                        c'8
-                        ]
-                    }
-                    \times 4/5
-                    {
-                        \time 4/16
-                        c'16
-                        c'4
-                    }
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/5
-                    {
-                        \time 6/16
-                        c'16
-                        c'4
-                    }
-                    \times 4/5
-                    {
-                        \time 8/16
-                        c'8
-                        c'2
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        REGRESSION. ``rmakers.denominator()`` Spells tuplet denominator in terms
-        of duration when denominator is given as a duration:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(
-        ...         durations, [1, 2, 3, 4], 16, extra_counts=[1, 1, 2, 2]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.denominator(container, (1, 16))
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
@@ -1817,6 +1331,12 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                \override TupletBracket.bracket-visibility = ##t
+                \override TupletBracket.staff-padding = 4.5
+                tupletFullLength = ##t
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -1825,52 +1345,413 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                 }
                 {
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/7
+                    \times 4/5
                     {
-                        \time 3/8
-                        c'16
+                        \time 2/16
+                        c'32
                         [
                         c'8
-                        c'8.
-                        c'16
-                        ]
-                        ~
-                    }
-                    \times 8/9
-                    {
-                        \time 4/8
-                        c'8.
-                        [
-                        c'16
-                        c'8
-                        c'8.
                         ]
                     }
                     \tweak text #tuplet-number::calc-fraction-text
-                    \times 6/8
+                    \times 4/5
                     {
-                        \time 3/8
+                        \time 4/16
+                        c'16
                         c'4
-                        c'16
-                        [
-                        c'8
-                        c'16
-                        ]
-                        ~
                     }
-                    \times 8/10
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 6/5
                     {
-                        \time 4/8
-                        c'8
+                        \time 6/16
+                        c'16
                         c'4
-                        c'16
-                        [
+                    }
+                    \tweak text #tuplet-number::calc-fraction-text
+                    \times 4/5
+                    {
+                        \time 8/16
                         c'8
-                        c'16
-                        ]
+                        c'2
                     }
                 }
             >>
+
+    ..  container:: example
+
+        Spelling tuplet ratios in terms of a given duration.
+
+        ..  container:: example
+
+            **16th notes.** This attempts to set the denominator of each tuplet
+            ratio in terms of sixteenth notes. Because the first tuplet is so
+            short, its ratio must be read as "5 in the time of 4 thirty-second
+            notes." But the ratios of the three longer tuplets can now be read
+            as "x in the time of y sixteenth notes":
+
+            >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> lilypond_file = make_lilypond_file(pairs, denominator=(1, 16))
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                \with
+                {
+                    \override TupletBracket.bracket-visibility = ##t
+                    \override TupletBracket.staff-padding = 4.5
+                    tupletFullLength = ##t
+                }
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/5
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 6/5
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/10
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            **32nd notes.** This sets the denominator of each tuplet ratios in
+            terms of thirty-second notes. All tuplet ratios can now be read as
+            "x in the time of y thirty-second notes":
+
+            >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> lilypond_file = make_lilypond_file(pairs, denominator=(1, 32))
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> score = lilypond_file["Score"]
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                \with
+                {
+                    \override TupletBracket.bracket-visibility = ##t
+                    \override TupletBracket.staff-padding = 4.5
+                    tupletFullLength = ##t
+                }
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/10
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 16/20
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            **64th notes.** This sets the denominator of each tuplet ratios in
+            terms of sixth-fourth notes. All tuplet ratios can now be read as
+            "x in the time of y sixty-fourth notes":
+
+            >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> lilypond_file = make_lilypond_file(pairs, (1, 64))
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                \with
+                {
+                    \override TupletBracket.bracket-visibility = ##t
+                    \override TupletBracket.staff-padding = 4.5
+                    tupletFullLength = ##t
+                }
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/10
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 16/20
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+    ..  container:: example
+
+        Spelling tuplet ratios with a fixed denominator.
+
+        ..  container:: example
+
+            **Tuplet ratios spelled with denominator equal to 8.** The ratio of
+            the third tuplet is left unchanged. But the ratios of the other
+            tuplets can be spelled "x in the time of 8":
+
+            >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> lilypond_file = make_lilypond_file(pairs, 8)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                \with
+                {
+                    \override TupletBracket.bracket-visibility = ##t
+                    \override TupletBracket.staff-padding = 4.5
+                    tupletFullLength = ##t
+                }
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/10
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 16/20
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            **Tuplet ratios spelled with denominator equal to 12.** The ratios
+            of all tuplets can be spelled "x in the time of 12":
+
+            >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> lilypond_file = make_lilypond_file(pairs, 12)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                \with
+                {
+                    \override TupletBracket.bracket-visibility = ##t
+                    \override TupletBracket.staff-padding = 4.5
+                    tupletFullLength = ##t
+                }
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/10
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 16/20
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
+
+        ..  container:: example
+
+            **Tuplet ratios spelled with denominator equal to 13.** No tuplet
+            ratio can be spelled "x in the time of 13":
+
+            >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
+            >>> lilypond_file = make_lilypond_file(pairs, 13)
+            >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+            ..  docs::
+
+                >>> string = abjad.lilypond(score)
+                >>> print(string)
+                \context Score = "Score"
+                \with
+                {
+                    \override TupletBracket.bracket-visibility = ##t
+                    \override TupletBracket.staff-padding = 4.5
+                    tupletFullLength = ##t
+                }
+                <<
+                    \context RhythmicStaff = "Staff"
+                    \with
+                    {
+                        \override Clef.stencil = ##f
+                    }
+                    {
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 4/5
+                        {
+                            \time 2/16
+                            c'32
+                            [
+                            c'8
+                            ]
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 8/10
+                        {
+                            \time 4/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 12/10
+                        {
+                            \time 6/16
+                            c'16
+                            c'4
+                        }
+                        \tweak text #tuplet-number::calc-fraction-text
+                        \times 16/20
+                        {
+                            \time 8/16
+                            c'8
+                            c'2
+                        }
+                    }
+                >>
 
     """
     if isinstance(denominator, tuple):
@@ -2256,93 +2137,6 @@ def force_augmentation(argument) -> None:
                     \times 4/3
                     {
                         \time 2/8
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                }
-            >>
-
-    ..  container:: example
-
-        Forces augmented tuplets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16, extra_counts=[0, -1])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.force_augmentation(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
-        ...     return lilypond_file
-
-        >>> pairs = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
-                        c'16
-                        [
-                        c'16
-                        c'16
-                        ]
-                    }
-                    \time 1/4
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \tweak text #tuplet-number::calc-fraction-text
-                    \times 4/3
-                    {
-                        \time 1/4
                         c'16
                         [
                         c'16
