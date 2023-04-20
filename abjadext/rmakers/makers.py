@@ -134,7 +134,7 @@ def _interpolate_divide(
 
     ..  container:: example
 
-        >>> rmakers.rmakers._interpolate_divide(
+        >>> rmakers.functions._interpolate_divide(
         ...     total_duration=10,
         ...     start_duration=1,
         ...     stop_duration=1,
@@ -144,7 +144,7 @@ def _interpolate_divide(
         >>> sum(_)
         10.0
 
-        >>> rmakers.rmakers._interpolate_divide(
+        >>> rmakers.functions._interpolate_divide(
         ...     total_duration=10,
         ...     start_duration=5,
         ...     stop_duration=1,
@@ -199,7 +199,7 @@ def _interpolate_exponential(y1, y2, mu, exponent=1) -> float:
         Exponents equal to 1 leave durations unscaled:
 
         >>> for mu in (0, 0.25, 0.5, 0.75, 1):
-        ...     rmakers.rmakers._interpolate_exponential(100, 200, mu, exponent=1)
+        ...     rmakers.functions._interpolate_exponential(100, 200, mu, exponent=1)
         ...
         100
         125.0
@@ -210,7 +210,7 @@ def _interpolate_exponential(y1, y2, mu, exponent=1) -> float:
         Exponents greater than 1 generate ritardandi:
 
         >>> for mu in (0, 0.25, 0.5, 0.75, 1):
-        ...     rmakers.rmakers._interpolate_exponential(100, 200, mu, exponent=2)
+        ...     rmakers.functions._interpolate_exponential(100, 200, mu, exponent=2)
         ...
         100
         106.25
@@ -221,7 +221,7 @@ def _interpolate_exponential(y1, y2, mu, exponent=1) -> float:
         Exponents less than 1 generate accelerandi:
 
         >>> for mu in (0, 0.25, 0.5, 0.75, 1):
-        ...     rmakers.rmakers._interpolate_exponential(100, 200, mu, exponent=0.5)
+        ...     rmakers.functions._interpolate_exponential(100, 200, mu, exponent=0.5)
         ...
         100.0
         150.0

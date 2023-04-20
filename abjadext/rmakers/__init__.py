@@ -3,16 +3,7 @@ Rhythm-makers.
 """
 from ._version import __version__, __version_info__
 from .classes import Incise, Interpolation, Spelling, Talea
-from .makers import (
-    accelerando,
-    even_division,
-    incised,
-    multiplied_duration,
-    note,
-    talea,
-    tuplet,
-)
-from .rmakers import (
+from .functions import (
     after_grace_container,
     beam,
     beam_groups,
@@ -52,6 +43,15 @@ from .rmakers import (
     untie,
     wrap_in_time_signature_staff,
     written_duration,
+)
+from .makers import (
+    accelerando,
+    even_division,
+    incised,
+    multiplied_duration,
+    note,
+    talea,
+    tuplet,
 )
 
 __all__ = [
