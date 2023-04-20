@@ -3,15 +3,22 @@ Rhythm-makers.
 """
 from ._version import __version__, __version_info__
 from .classes import Incise, Interpolation, Spelling, Talea
-from .rmakers import (
+from .makers import (
     accelerando,
+    even_division,
+    incised,
+    multiplied_duration,
+    note,
+    talea,
+    tuplet,
+)
+from .rmakers import (
     after_grace_container,
     beam,
     beam_groups,
     before_grace_container,
     denominator,
     duration_bracket,
-    even_division,
     example,
     extract_rest_filled,
     extract_trivial,
@@ -23,12 +30,9 @@ from .rmakers import (
     force_repeat_tie,
     force_rest,
     hide_trivial,
-    incised,
     interpolate,
     invisible_music,
-    multiplied_duration,
     nongrace_leaves_in_each_tuplet,
-    note,
     on_beat_grace_container,
     reduce_multiplier,
     repeat_tie,
@@ -40,12 +44,10 @@ from .rmakers import (
     swap_length_1,
     swap_skip_filled,
     swap_trivial,
-    talea,
     tie,
     time_signatures,
     tremolo_container,
     trivialize,
-    tuplet,
     unbeam,
     untie,
     wrap_in_time_signature_staff,
