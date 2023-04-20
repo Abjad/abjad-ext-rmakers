@@ -329,7 +329,6 @@ def after_grace_container(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
-                        \time 3/4
                         c'4
                         c'4
                         c'4
@@ -390,7 +389,6 @@ def after_grace_container(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
-                        \time 3/4
                         c'4
                         c'4
                         c'4
@@ -1955,20 +1953,17 @@ def extract_trivial(argument) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
                         c'8
                         ]
                     }
-                    \time 3/8
                     c'8
                     [
                     c'8
                     c'8
                     ]
-                    \time 3/8
                     c'8
                     [
                     c'8
@@ -2062,7 +2057,6 @@ def force_augmentation(argument) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2072,7 +2066,6 @@ def force_augmentation(argument) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2126,7 +2119,6 @@ def force_augmentation(argument) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
-                        \time 2/8
                         c'16
                         [
                         c'16
@@ -2136,7 +2128,6 @@ def force_augmentation(argument) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
-                        \time 2/8
                         c'16
                         [
                         c'16
@@ -2198,14 +2189,12 @@ def force_diminution(argument) -> None:
                     ]
                     \times 2/3
                     {
-                        \time 1/4
                         c'8
                         [
                         c'8
                         c'8
                         ]
                     }
-                    \time 1/4
                     c'16
                     [
                     c'16
@@ -2214,14 +2203,12 @@ def force_diminution(argument) -> None:
                     ]
                     \times 2/3
                     {
-                        \time 1/4
                         c'8
                         [
                         c'8
                         c'8
                         ]
                     }
-                    \time 1/4
                     c'16
                     [
                     c'16
@@ -2230,7 +2217,6 @@ def force_diminution(argument) -> None:
                     ]
                     \times 2/3
                     {
-                        \time 1/4
                         c'8
                         [
                         c'8
@@ -2418,7 +2404,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2428,7 +2413,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2438,7 +2422,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2448,7 +2431,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2458,7 +2440,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -2497,7 +2478,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -2507,7 +2487,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -2517,7 +2496,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -2527,7 +2505,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -2537,7 +2514,6 @@ def force_repeat_tie(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -3088,7 +3064,6 @@ def hide_trivial(argument) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
@@ -3097,7 +3072,6 @@ def hide_trivial(argument) -> None:
                     }
                     \scaleDurations #'(1 . 1)
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
@@ -3106,7 +3080,6 @@ def hide_trivial(argument) -> None:
                     }
                     \scaleDurations #'(1 . 1)
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
@@ -3438,7 +3411,6 @@ def on_beat_grace_container(
                                 \voiceTwo
                                 c'8
                                 ~
-                                \time 3/4
                                 c'8.
                             }
                         >>
@@ -3583,7 +3555,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -3593,7 +3564,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -3603,7 +3573,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -3613,7 +3582,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -3623,7 +3591,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -3681,7 +3648,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -3692,7 +3658,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -3703,7 +3668,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -3714,7 +3678,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -3725,7 +3688,6 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -3825,7 +3787,6 @@ def rewrite_meter(
                     c'8.
                     ]
                     ~
-                    \time 3/4
                     c'8
                     [
                     c'8
@@ -3841,7 +3802,6 @@ def rewrite_meter(
                     c'16
                     ]
                     ~
-                    \time 3/4
                     c'8.
                     [
                     c'16
@@ -3955,7 +3915,6 @@ def rewrite_rest_filled(
                     }
                     \times 4/5
                     {
-                        \time 4/16
                         r16
                         r16
                         r16
@@ -3976,7 +3935,6 @@ def rewrite_rest_filled(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
-                        \time 5/16
                         r16
                         r16
                         r16
@@ -4020,12 +3978,10 @@ def rewrite_rest_filled(
                 {
                     \time 4/16
                     r4
-                    \time 4/16
                     r4
                     \time 5/16
                     r4
                     r16
-                    \time 5/16
                     r4
                     r16
                 }
@@ -4067,12 +4023,10 @@ def rewrite_rest_filled(
                 {
                     \time 4/16
                     r4
-                    \time 4/16
                     r4
                     \time 5/16
                     r16
                     r4
-                    \time 5/16
                     r16
                     r4
                 }
@@ -4295,7 +4249,6 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 4/5
                     {
-                        \time 4/16
                         c'4
                         ~
                         c'16
@@ -4303,7 +4256,6 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 4/5
                     {
-                        \time 4/16
                         c'4
                         ~
                         c'16
@@ -4311,7 +4263,6 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 4/5
                     {
-                        \time 4/16
                         c'4
                         c'16
                     }
@@ -4381,20 +4332,17 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        \time 4/16
                         c'4
                         ~
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        \time 4/16
                         c'4
                         ~
                     }
                     \times 4/5
                     {
-                        \time 4/16
                         c'4
                         c'16
                     }
@@ -4442,15 +4390,12 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                 {
                     \time 4/16
                     c'4
-                    \time 4/16
                     c'4
                     ~
-                    \time 4/16
                     c'4
                     ~
                     \times 4/5
                     {
-                        \time 4/16
                         c'4
                         c'16
                     }
@@ -4505,7 +4450,6 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -4517,13 +4461,11 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/2
                     {
-                        \time 2/8
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 2/2
                     {
-                        \time 2/8
                         c'4
                     }
                 }
@@ -4704,7 +4646,6 @@ def swap_trivial(argument) -> None:
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/3
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
@@ -4712,7 +4653,6 @@ def swap_trivial(argument) -> None:
                         ]
                     }
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
@@ -4720,7 +4660,6 @@ def swap_trivial(argument) -> None:
                         ]
                     }
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
@@ -4788,7 +4727,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4798,7 +4736,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4808,7 +4745,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4818,7 +4754,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -4828,7 +4763,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -5079,7 +5013,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -5090,7 +5023,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -5101,7 +5033,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -5112,7 +5043,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -5123,7 +5053,6 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -6393,7 +6322,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -6404,7 +6332,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -6415,7 +6342,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -6427,7 +6353,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -6438,7 +6363,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         ~
@@ -6498,7 +6422,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -6509,7 +6432,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -6520,7 +6442,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie
@@ -6532,7 +6453,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'8
@@ -6543,7 +6463,6 @@ def untie(argument) -> None:
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'8
                         [
                         \repeatTie

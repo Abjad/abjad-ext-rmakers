@@ -282,18 +282,15 @@ Examples that show how to work with rmakers in a statal way.
                 ]
                 \times 2/3
                 {
-                    \time 2/8
                     c'8
                     [
                     c'8
                     c'8
                     ]
                 }
-                \time 2/8
                 c'4
                 \times 4/5
                 {
-                    \time 2/8
                     c'16
                     [
                     c'16
@@ -302,7 +299,6 @@ Examples that show how to work with rmakers in a statal way.
                     c'16
                     ]
                 }
-                \time 2/8
                 c'8
                 [
                 c'8
@@ -334,7 +330,6 @@ Examples that show how to work with rmakers in a statal way.
             {
                 \time 2/8
                 c'4
-                \time 2/8
                 c'16
                 [
                 c'16
@@ -343,18 +338,15 @@ Examples that show how to work with rmakers in a statal way.
                 ]
                 \times 2/3
                 {
-                    \time 2/8
                     c'8
                     [
                     c'8
                     c'8
                     ]
                 }
-                \time 2/8
                 c'4
                 \times 4/5
                 {
-                    \time 2/8
                     c'16
                     [
                     c'16

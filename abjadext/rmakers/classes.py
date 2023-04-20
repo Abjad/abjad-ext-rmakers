@@ -179,7 +179,6 @@ class Spelling:
                     c'8
                     ]
                     ~
-                    \time 3/4
                     c'8.
                     c'4
                     ~
@@ -234,7 +233,6 @@ class Spelling:
                     c'4
                     c'8
                     ~
-                    \time 3/4
                     c'8.
                     [
                     c'16
@@ -295,7 +293,6 @@ class Spelling:
                     c'8
                     ]
                     r4
-                    \time 3/4
                     c'16
                     [
                     c'16
@@ -358,7 +355,6 @@ class Spelling:
                     c'4
                     r8
                     r8
-                    \time 3/4
                     c'16
                     [
                     c'16
@@ -415,14 +411,12 @@ class Spelling:
                     c'4
                     ~
                     c'16
-                    \time 5/8
                     c'4
                     ~
                     c'16
                     c'4
                     ~
                     c'16
-                    \time 5/8
                     c'4
                     ~
                     c'16
@@ -476,14 +470,12 @@ class Spelling:
                     c'16
                     ~
                     c'4
-                    \time 5/8
                     c'16
                     ~
                     c'4
                     c'16
                     ~
                     c'4
-                    \time 5/8
                     c'16
                     ~
                     c'4
@@ -541,7 +533,6 @@ class Spelling:
                     ~
                     c'8
                     ]
-                    \time 3/4
                     c'16
                     [
                     c'16

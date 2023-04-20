@@ -1209,7 +1209,6 @@ def even_division(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/4
                     {
-                        \time 6/16
                         c'8
                         [
                         c'8
@@ -2014,7 +2013,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
-                            \time 3/8
                             c'16
                             [
                             c'16
@@ -2028,7 +2026,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8
                         {
-                            \time 3/8
                             c'16
                             [
                             c'16
@@ -2040,7 +2037,6 @@ def even_division(
                             c'16
                             ]
                         }
-                        \time 3/8
                         c'16
                         [
                         c'16
@@ -2052,7 +2048,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
-                            \time 3/8
                             c'16
                             [
                             c'16
@@ -2144,7 +2139,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {   1 becomes  1 }
                             [
@@ -2159,7 +2153,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {   2 becomes  2 }
                             [
@@ -2174,7 +2167,6 @@ def even_division(
                         }
                         \times 6/9
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {   3 becomes  3 }
                             [
@@ -2191,7 +2183,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/10
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {   4 becomes  4 }
                             [
@@ -2209,7 +2200,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/11
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {   5 becomes  5 }
                             [
@@ -2225,7 +2215,6 @@ def even_division(
                             c'16
                             ]
                         }
-                        \time 6/16
                         c'16
                         ^ \markup {   6 becomes  0 }
                         [
@@ -2238,7 +2227,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/7
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {   7 becomes  1 }
                             [
@@ -2253,7 +2241,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/8
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {   8 becomes  2 }
                             [
@@ -2268,7 +2255,6 @@ def even_division(
                         }
                         \times 6/9
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {   9 becomes  3 }
                             [
@@ -2285,7 +2271,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/10
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {  10 becomes  4 }
                             [
@@ -2303,7 +2288,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/11
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {  11 becomes  5 }
                             [
@@ -2402,7 +2386,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {  -1 becomes -1 }
                             [
@@ -2415,7 +2398,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {  -2 becomes -2 }
                             [
@@ -2424,7 +2406,6 @@ def even_division(
                             c'16
                             ]
                         }
-                        \time 6/16
                         c'16
                         ^ \markup {  -3 becomes  0 }
                         [
@@ -2437,7 +2418,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {  -4 becomes -1 }
                             [
@@ -2450,7 +2430,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {  -5 becomes -2 }
                             [
@@ -2459,7 +2438,6 @@ def even_division(
                             c'16
                             ]
                         }
-                        \time 6/16
                         c'16
                         ^ \markup {  -6 becomes  0 }
                         [
@@ -2472,7 +2450,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/5
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {  -7 becomes -1 }
                             [
@@ -2485,7 +2462,6 @@ def even_division(
                         \tweak text #tuplet-number::calc-fraction-text
                         \times 6/4
                         {
-                            \time 6/16
                             c'16
                             ^ \markup {  -8 becomes -2 }
                             [
@@ -2634,13 +2610,10 @@ def incised(
                     \time 5/16
                     r16
                     c'4
-                    \time 5/16
                     r16
                     c'4
-                    \time 5/16
                     r16
                     c'4
-                    \time 5/16
                     r16
                     c'4
                 }
@@ -2688,15 +2661,12 @@ def incised(
                     r16
                     r16
                     c'8.
-                    \time 5/16
                     r16
                     r16
                     c'8.
-                    \time 5/16
                     r16
                     r16
                     c'8.
-                    \time 5/16
                     r16
                     r16
                     c'8.
@@ -2744,13 +2714,10 @@ def incised(
                     \time 5/16
                     c'16
                     c'4
-                    \time 5/16
                     c'16
                     c'4
-                    \time 5/16
                     c'16
                     c'4
-                    \time 5/16
                     c'16
                     c'4
                 }
@@ -2800,19 +2767,16 @@ def incised(
                     c'16
                     c'8.
                     ]
-                    \time 5/16
                     c'16
                     [
                     c'16
                     c'8.
                     ]
-                    \time 5/16
                     c'16
                     [
                     c'16
                     c'8.
                     ]
-                    \time 5/16
                     c'16
                     [
                     c'16
@@ -2872,7 +2836,6 @@ def incised(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
-                        \time 5/16
                         r16
                         c'4
                         r16
@@ -2880,7 +2843,6 @@ def incised(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
-                        \time 5/16
                         r16
                         c'4
                         r16
@@ -2888,7 +2850,6 @@ def incised(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
-                        \time 5/16
                         r16
                         c'4
                         r16
@@ -2941,7 +2902,6 @@ def incised(
                     ~
                     c'32
                     ]
-                    \time 5/16
                     c'8
                     [
                     ~
@@ -2950,7 +2910,6 @@ def incised(
                     ~
                     c'32
                     ]
-                    \time 5/16
                     c'8
                     [
                     ~
@@ -2959,7 +2918,6 @@ def incised(
                     ~
                     c'32
                     ]
-                    \time 5/16
                     c'8
                     [
                     ~
@@ -3036,7 +2994,6 @@ def incised(
                     \tweak edge-height #'(0.7 . 0)
                     \times 32/48
                     {
-                        \time 5/16
                         c'8
                         [
                         ~
@@ -3060,7 +3017,6 @@ def incised(
                     \tweak edge-height #'(0.7 . 0)
                     \times 32/48
                     {
-                        \time 5/16
                         c'8
                         [
                         ~
@@ -3084,7 +3040,6 @@ def incised(
                     \tweak edge-height #'(0.7 . 0)
                     \times 32/48
                     {
-                        \time 5/16
                         c'8
                         [
                         ~
@@ -3662,7 +3617,6 @@ def note(
                     ~
                     c'32
                     ]
-                    \time 5/32
                     c'8
                     [
                     ~
@@ -3715,7 +3669,6 @@ def note(
                     c'32
                     \set stemLeftBeamCount = 1
                     \set stemRightBeamCount = 1
-                    \time 5/32
                     c'8
                     ~
                     \set stemLeftBeamCount = 3
@@ -3760,7 +3713,6 @@ def note(
                     c'8
                     ~
                     c'32
-                    \time 5/32
                     c'8
                     ~
                     c'32
@@ -4088,7 +4040,6 @@ def note(
                     r8
                     \time 2/8
                     c'4
-                    \time 2/8
                     c'4
                     \time 5/8
                     c'2
@@ -4135,7 +4086,6 @@ def note(
                     r8
                     \time 2/8
                     r4
-                    \time 2/8
                     c'4
                     \time 5/8
                     c'2
@@ -4183,7 +4133,6 @@ def note(
                     r8
                     \time 2/8
                     c'4
-                    \time 2/8
                     c'4
                     \time 5/8
                     r2
@@ -4749,7 +4698,6 @@ def talea(
                     {
                         \time 3/8
                         c'4.
-                        \time 3/8
                         c'4
                         ~
                         c'16
@@ -4871,7 +4819,6 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        \time 5/16
                         c'8.
                         [
                         c'8
@@ -4935,7 +4882,6 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/4
                     {
-                        \time 5/16
                         c'8.
                         [
                         c'16
@@ -5386,7 +5332,6 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/6
                     {
-                        \time 5/16
                         c'16.
                         r8.
                         c'16.
@@ -5434,7 +5379,6 @@ def tuplet(
                     }
                     \times 2/3
                     {
-                        \time 2/8
                         c'4
                         c'8
                     }
@@ -5491,7 +5435,6 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 4/3
                     {
-                        \time 2/8
                         c'8
                         [
                         c'16
@@ -5795,20 +5738,17 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
-                        \time 3/8
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
-                        \time 3/8
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
@@ -5861,20 +5801,17 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        \time 3/8
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
-                        \time 3/8
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        \time 3/8
                         c'8.
                         [
                         c'8.
@@ -5927,20 +5864,17 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
-                        \time 3/8
                         c'4
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/5
                     {
-                        \time 3/8
                         r4
                         c'4.
                     }
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 3/2
                     {
-                        \time 3/8
                         c'8
                         [
                         c'8
@@ -6762,7 +6696,6 @@ def tuplet(
                       %! TUPLET_RHYTHM_MAKER
                       %! rmakers.tuplet()
                     {
-                        \time 5/16
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
                         c'8.
@@ -6837,7 +6770,6 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 1/1
                     {
-                        \time 5/16
                         c'8.
                         [
                         c'8
@@ -6901,7 +6833,6 @@ def tuplet(
                     \tweak text #tuplet-number::calc-fraction-text
                     \times 5/4
                     {
-                        \time 5/16
                         c'8.
                         [
                         c'16
