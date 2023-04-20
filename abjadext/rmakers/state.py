@@ -1,6 +1,5 @@
 r"""
-
-Here's how you work with ``rmakers.talea()`` in a statal way.
+Examples that show how to work with rmakers in a statal way.
 
 ..  container:: example
 

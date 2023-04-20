@@ -1,3 +1,6 @@
+"""
+The rmakers functions.
+"""
 import inspect
 import math
 import types
@@ -882,25 +885,32 @@ def accelerando(
     tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
-    Makes accelerando figures in ``durations``.
-
-    Makes accelerandi:
+    Makes one accelerando (or ritardando) for each duration in ``durations``.
 
     ..  container:: example
 
-        >>> def make_lilypond_file(pairs):
+        >>> def make_lilypond_file(pairs, interpolations):
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.accelerando(durations, [(1, 8), (1, 20), (1, 16)])
+        ...     tuplets = rmakers.accelerando(durations, *interpolations)
         ...     container = abjad.Container(tuplets)
         ...     rmakers.feather_beam(container)
         ...     rmakers.duration_bracket(container)
+        ...     rmakers.swap_length_1(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     score = lilypond_file["Score"]
+        ...     abjad.override(score).TupletBracket.padding = 2
+        ...     abjad.override(score).TupletBracket.bracket_visibility = True
+        ...     return lilypond_file
+
+    ..  container:: example
+
+        Makes accelerandi:
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> interpolations = [[(1, 8), (1, 20), (1, 16)]]
+        >>> lilypond_file = make_lilypond_file(pairs, interpolations)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -909,6 +919,11 @@ def accelerando(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                \override TupletBracket.bracket-visibility = ##t
+                \override TupletBracket.padding = 2
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -981,19 +996,9 @@ def accelerando(
 
         Makes ritardandi:
 
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.accelerando(durations, [(1, 20), (1, 8), (1, 16)])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.feather_beam(container)
-        ...     rmakers.duration_bracket(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> interpolations = [[(1, 20), (1, 8), (1, 16)]]
+        >>> lilypond_file = make_lilypond_file(pairs, interpolations)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1002,6 +1007,11 @@ def accelerando(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                \override TupletBracket.bracket-visibility = ##t
+                \override TupletBracket.padding = 2
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -1076,23 +1086,11 @@ def accelerando(
 
     ..  container:: example
 
-        Alternates accelerandi and ritardandi:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.accelerando(
-        ...         durations, [(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]
-        ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.duration_bracket(container)
-        ...     rmakers.feather_beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        Makes accelerandi and ritardandi, alternatingly:
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> interpolations = [[(1, 8), (1, 20), (1, 16)], [(1, 20), (1, 8), (1, 16)]]
+        >>> lilypond_file = make_lilypond_file(pairs, interpolations)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1101,6 +1099,11 @@ def accelerando(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                \override TupletBracket.bracket-visibility = ##t
+                \override TupletBracket.padding = 2
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -1173,22 +1176,11 @@ def accelerando(
 
     ..  container:: example
 
-        Makes a single note in short duration:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.accelerando(durations, [(1, 8), (1, 20), (1, 16)])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.duration_bracket(container)
-        ...     rmakers.feather_beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        Populates short duration with single note:
 
         >>> pairs = [(5, 8), (3, 8), (1, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> interpolations = [[(1, 8), (1, 20), (1, 16)]]
+        >>> lilypond_file = make_lilypond_file(pairs, interpolations)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1197,6 +1189,11 @@ def accelerando(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                \override TupletBracket.bracket-visibility = ##t
+                \override TupletBracket.padding = 2
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -1235,12 +1232,13 @@ def accelerando(
                         ]
                     }
                     \revert TupletNumber.text
-                    \time 1/8
-                    c'8
+                    {
+                        \time 1/8
+                        c'8
+                    }
                 }
             >>
 
-    Set interpolations' ``written_duration`` to ``1/16`` or less for multiple beams.
     """
     _assert_are_pairs_durations_or_time_signatures(durations)
     durations = [abjad.Duration(_) for _ in durations]
@@ -1255,7 +1253,7 @@ def accelerando(
     if state is None:
         state = {}
     interpolations_ = _get_interpolations(interpolations_, previous_state)
-    tuplets: list[abjad.Tuplet] = []
+    tuplets = []
     for i, duration in enumerate(durations):
         tuplet = _make_accelerando(duration, interpolations_, i, tag=tag)
         tuplets.append(tuplet)
@@ -1289,27 +1287,29 @@ def after_grace_container(
     r"""
     Makes (and attaches) after-grace containers.
 
-    With ``beam=False`` and ``slash=False`` (default):
-
     ..  container:: example
 
-        >>> def make_lilypond_file(pairs):
+        >>> def make_lilypond_file(pairs, *, beam=False, slash=False):
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
         ...     container = abjad.Container(tuplets)
         ...     tuplets = abjad.select.tuplets(container)
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.after_grace_container(notes, [1, 4])
+        ...     rmakers.after_grace_container(notes, [1, 4], beam=beam, slash=slash)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     score = lilypond_file["Score"]
+        ...     abjad.setting(score).autoBeaming = False
+        ...     return lilypond_file
+
+    ..  container:: example
+
+        With ``beam=False`` and ``slash=False``:
 
         >>> pairs = [(3, 4), (3, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> score = lilypond_file["Score"]
-        >>> abjad.setting(score).autoBeaming = False
+        >>> lilypond_file = make_lilypond_file(pairs, beam=False, slash=False)
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1367,21 +1367,8 @@ def after_grace_container(
 
         With ``beam=True`` and ``slash=True``:
 
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.even_division(durations, [4], extra_counts=[2])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
-        ...     rmakers.after_grace_container(notes, [1, 4], beam=True, slash=True)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
         >>> pairs = [(3, 4), (3, 4)]
-        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> lilypond_file = make_lilypond_file(pairs, beam=True, slash=True)
         >>> score = lilypond_file["Score"]
         >>> abjad.setting(score).autoBeaming = False
         >>> abjad.show(lilypond_file) # doctest: +SKIP
@@ -1478,289 +1465,28 @@ def beam(
     tag: abjad.Tag | None = None,
 ) -> None:
     r"""
-    Calls ``abjad.beam()`` on leaves in ``argument``.
-
-    Beams each tuplet:
+    Beams runs of notes in each component in ``argument``.
 
     ..  container:: example
 
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Beams tuplets together:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
-        ...     rmakers.beam_groups(tuplets)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \set stemLeftBeamCount = 0
-                    \set stemRightBeamCount = 2
-                    \time 3/8
-                    c'16
-                    [
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 4/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 3/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 1
-                    c'16
-                    \set stemLeftBeamCount = 1
-                    \set stemRightBeamCount = 2
-                    \time 4/8
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 2
-                    c'16
-                    \set stemLeftBeamCount = 2
-                    \set stemRightBeamCount = 0
-                    c'16
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Beams nothing:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \time 3/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 4/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 3/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    \time 4/8
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                    c'16
-                }
-            >>
-
-    ..  container:: example
-
-        Does not beam rests:
-
-        >>> def make_lilypond_file(pairs):
+        >>> def make_lilypond_file(pairs, beam_rests=False, stemlet_length=None):
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
         ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
+        ...     rmakers.beam(container, beam_rests=beam_rests)
+        ...     rmakers.swap_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     score = lilypond_file["Score"]
+        ...     if stemlet_length is not None:
+        ...         abjad.override(score).Stem.stemlet_length = stemlet_length
+        ...     abjad.setting(score).autoBeaming = False
+        ...     return lilypond_file
+
+    ..  container:: example
+
+        Beams runs of notes in each tuplet:
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -1772,6 +1498,10 @@ def beam(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                autoBeaming = ##f
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -1779,72 +1509,72 @@ def beam(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    ]
-                    r16
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        ]
+                    }
+                    {
+                        \time 4/8
+                        c'16
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        ]
+                    }
+                    {
+                        \time 3/8
+                        c'16
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                    }
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        ]
+                        r16
+                    }
                 }
             >>
 
     ..  container:: example
 
-        Does beam rests:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container, beam_rests=True)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        Set ``beam_rests=True`` and override ``Stem.stemlet-length = n`` to
+        beam rests with stemlets of length ``n``:
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> lilypond_file = make_lilypond_file(
+        ...     pairs, beam_rests=True, stemlet_length=0.75
+        ... )
         >>> abjad.show(lilypond_file) # doctest: +SKIP
 
         ..  docs::
@@ -1853,6 +1583,11 @@ def beam(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
+            \with
+            {
+                \override Stem.stemlet-length = 0.75
+                autoBeaming = ##f
+            }
             <<
                 \context RhythmicStaff = "Staff"
                 \with
@@ -1860,129 +1595,54 @@ def beam(
                     \override Clef.stencil = ##f
                 }
                 {
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    ]
-                    \time 3/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    ]
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    ]
-                }
-            >>
-
-    ..  container:: example
-
-        Beams rests with stemlets:
-
-        >>> def make_lilypond_file(pairs):
-        ...     time_signatures = rmakers.time_signatures(pairs)
-        ...     durations = [abjad.Duration(_) for _ in time_signatures]
-        ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container, beam_rests=True, stemlet_length=0.75)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
-
-        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
-        >>> lilypond_file = make_lilypond_file(pairs)
-        >>> abjad.show(lilypond_file) # doctest: +SKIP
-
-        ..  docs::
-
-            >>> score = lilypond_file["Score"]
-            >>> string = abjad.lilypond(score)
-            >>> print(string)
-            \context Score = "Score"
-            <<
-                \context RhythmicStaff = "Staff"
-                \with
-                {
-                    \override Clef.stencil = ##f
-                }
-                {
-                    \override Staff.Stem.stemlet-length = 0.75
-                    \time 3/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    c'16
-                    ]
-                    \override Staff.Stem.stemlet-length = 0.75
-                    \time 4/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    c'16
-                    ]
-                    \override Staff.Stem.stemlet-length = 0.75
-                    \time 3/8
-                    c'16
-                    [
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    r16
-                    ]
-                    \override Staff.Stem.stemlet-length = 0.75
-                    \time 4/8
-                    c'16
-                    [
-                    c'16
-                    c'16
-                    r16
-                    c'16
-                    c'16
-                    c'16
-                    \revert Staff.Stem.stemlet-length
-                    r16
-                    ]
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        ]
+                    }
+                    {
+                        \time 3/8
+                        c'16
+                        [
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        ]
+                    }
+                    {
+                        \time 4/8
+                        c'16
+                        [
+                        c'16
+                        c'16
+                        r16
+                        c'16
+                        c'16
+                        c'16
+                        r16
+                        ]
+                    }
                 }
             >>
 
@@ -2009,23 +1669,146 @@ def beam_groups(
     stemlet_length: int | float | None = None,
     tag: abjad.Tag | None = None,
 ) -> None:
-    """
-    Beams ``argument`` groups.
+    r"""
+    Beams groups in ``argument`` with single span beam.
+
+    ..  container:: example
+
+        >>> def make_lilypond_file(pairs):
+        ...     time_signatures = rmakers.time_signatures(pairs)
+        ...     durations = [abjad.Duration(_) for _ in time_signatures]
+        ...     tuplets = rmakers.talea(durations, [1], 16)
+        ...     container = abjad.Container(tuplets)
+        ...     rmakers.beam_groups(tuplets)
+        ...     rmakers.swap_trivial(container)
+        ...     components = abjad.mutate.eject_contents(container)
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
+
+        >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
+        >>> lilypond_file = make_lilypond_file(pairs)
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \context RhythmicStaff = "Staff"
+                \with
+                {
+                    \override Clef.stencil = ##f
+                }
+                {
+                    {
+                        \set stemLeftBeamCount = 0
+                        \set stemRightBeamCount = 2
+                        \time 3/8
+                        c'16
+                        [
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                    }
+                    {
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        \time 4/8
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                    }
+                    {
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        \time 3/8
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 1
+                        c'16
+                    }
+                    {
+                        \set stemLeftBeamCount = 1
+                        \set stemRightBeamCount = 2
+                        \time 4/8
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 2
+                        c'16
+                        \set stemLeftBeamCount = 2
+                        \set stemRightBeamCount = 0
+                        c'16
+                        ]
+                    }
+                }
+            >>
+
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
     unbeam(argument)
-    durations = []
-    components: list[abjad.Component] = []
-    for item in argument:
-        duration = abjad.get.duration(item)
-        durations.append(duration)
-    for item in argument:
-        if isinstance(item, abjad.Tuplet):
-            components.append(item)
-        else:
-            components.extend(item)
-    leaves = abjad.select.leaves(components)
+    durations = [abjad.get.duration(_) for _ in argument]
+    leaves = abjad.select.leaves(argument)
     abjad.beam(
         leaves,
         beam_lone_notes=beam_lone_notes,
@@ -2064,8 +1847,8 @@ def before_grace_container(
         ...     rmakers.before_grace_container(notes, [1, 2, 3])
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 4)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2130,8 +1913,8 @@ def before_grace_container(
         ...     rmakers.before_grace_container(notes, [1, 2, 3], slur=True)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 4)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2196,8 +1979,8 @@ def before_grace_container(
         ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 4)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2266,8 +2049,8 @@ def before_grace_container(
         ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True, slur=True)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 4)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2336,8 +2119,8 @@ def before_grace_container(
         ...     rmakers.before_grace_container(notes, [1, 2, 3], beam=True, slash=True)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 4)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2412,8 +2195,8 @@ def before_grace_container(
         ...     )
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 4)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2519,7 +2302,7 @@ def before_grace_container(
 
 def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
     r"""
-    Sets denominator of every tuplet in ``argument`` to ``denominator``.
+    Sets denominator of tuplets in ``argument``.
 
     Tuplet numerators and denominators are reduced to numbers that are
     relatively prime when ``denominator`` is set to none. This means that
@@ -2536,8 +2319,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.rewrite_dots(container)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2607,8 +2390,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.denominator(container, (1, 16))
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2677,8 +2460,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.denominator(container, (1, 32))
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2747,8 +2530,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.denominator(container, (1, 64))
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2818,8 +2601,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.denominator(container, 8)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2888,8 +2671,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.denominator(container, 12)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -2960,8 +2743,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.denominator(container, 13)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 16), (4, 16), (6, 16), (8, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -3031,8 +2814,8 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -3118,7 +2901,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
 
 def duration_bracket(argument) -> None:
     r"""
-    Applies durtaion bracket to tuplets in ``argument``.
+    Applies duration bracket to tuplets in ``argument``.
 
     Sets duration bracket with no beams:
 
@@ -3131,8 +2914,8 @@ def duration_bracket(argument) -> None:
         ...     container = abjad.Container(tuplets)
         ...     rmakers.duration_bracket(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -3227,7 +3010,7 @@ def even_division(
     tag: abjad.Tag | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
-    Makes even-division tuplets from ``durations``.
+    Makes one even-division tuplet for each duration in ``durations``.
 
     Basic example:
 
@@ -3242,8 +3025,8 @@ def even_division(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 16), (6, 16), (6, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -3305,8 +3088,8 @@ def even_division(
             ...     rmakers.beam(container)
             ...     rmakers.extract_trivial(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(3, 16), (3, 8), (3, 4)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -3367,8 +3150,8 @@ def even_division(
             ...     rmakers.beam(container)
             ...     rmakers.extract_trivial(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(3, 16), (3, 8), (3, 4)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -3422,8 +3205,8 @@ def even_division(
             ...     rmakers.beam(container)
             ...     rmakers.extract_trivial(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(3, 16), (3, 8), (3, 4)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -3468,8 +3251,8 @@ def even_division(
             ...     rmakers.beam(container)
             ...     rmakers.extract_trivial(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(3, 16), (3, 8), (3, 4)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -3518,8 +3301,8 @@ def even_division(
             ...     container = abjad.Container(tuplets)
             ...     rmakers.beam(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -3624,8 +3407,8 @@ def even_division(
             ...     container = abjad.Container(tuplets)
             ...     rmakers.beam(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -3730,8 +3513,8 @@ def even_division(
             ...     container = abjad.Container(tuplets)
             ...     rmakers.beam(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -3836,8 +3619,8 @@ def even_division(
             ...     container = abjad.Container(tuplets)
             ...     rmakers.beam(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -3942,8 +3725,8 @@ def even_division(
             ...     container = abjad.Container(tuplets)
             ...     rmakers.beam(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -4051,8 +3834,8 @@ def even_division(
             ...     rmakers.beam(container)
             ...     rmakers.extract_trivial(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = [(3, 8), (3, 8), (3, 8), (3, 8), (3, 8)]
             >>> lilypond_file = make_lilypond_file(pairs)
@@ -4170,8 +3953,8 @@ def even_division(
             ...     rmakers.beam(container)
             ...     rmakers.extract_trivial(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = 12 * [(6, 16)]
             >>> lilypond_file = make_lilypond_file(pairs, extra_counts)
@@ -4428,8 +4211,8 @@ def even_division(
             ...     rmakers.beam(container)
             ...     rmakers.extract_trivial(container)
             ...     components = abjad.mutate.eject_contents(container)
-            ...     lilypond_file_ = rmakers.example(components, time_signatures)
-            ...     return lilypond_file_
+            ...     lilypond_file = rmakers.example(components, time_signatures)
+            ...     return lilypond_file
 
             >>> pairs = 9 * [(6, 16)]
             >>> lilypond_file = make_lilypond_file(pairs, extra_counts)
@@ -4651,7 +4434,9 @@ def example(
     includes: typing.Sequence[str] = (),
 ) -> abjad.LilyPondFile:
     """
-    Makes example LilyPond file for documentation examples.
+    Makes example LilyPond file.
+
+    Function is a documentation helper.
     """
     assert all(isinstance(_, abjad.Component) for _ in components), repr(components)
     assert time_signatures is not None
@@ -4695,8 +4480,8 @@ def extract_trivial(argument) -> None:
         ...     tuplets = abjad.select.tuplets(container)[-2:]
         ...     rmakers.extract_trivial(tuplets)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -4788,7 +4573,7 @@ def feather_beam(
 
 def force_augmentation(argument) -> None:
     r"""
-    Forces each tuplet in ``argument`` to notate as an augmentation.
+    Spells tuplets in ``argument`` as augmentations.
 
     Without forced augmentation:
 
@@ -4802,8 +4587,8 @@ def force_augmentation(argument) -> None:
         ...     rmakers.force_fraction(container)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -4866,8 +4651,8 @@ def force_augmentation(argument) -> None:
         ...     rmakers.force_fraction(container)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -4932,8 +4717,8 @@ def force_augmentation(argument) -> None:
         ...     rmakers.force_augmentation(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5014,7 +4799,7 @@ def force_augmentation(argument) -> None:
 
 def force_diminution(argument) -> None:
     r"""
-    Forces each tuplet in ``argument`` to notate as a diminution.
+    Spells tuplets in ``argument`` as diminutions.
 
     Forces diminished tuplets:
 
@@ -5029,8 +4814,8 @@ def force_diminution(argument) -> None:
         ...     rmakers.force_diminution(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(1, 4), (1, 4), (1, 4), (1, 4), (1, 4), (1, 4)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5108,7 +4893,7 @@ def force_diminution(argument) -> None:
 
 def force_fraction(argument) -> None:
     """
-    Sets ``force_fraction=True`` on all tuplets in ``argument``.
+    Sets ``force_fraction=True`` on tuplets in ``argument``.
     """
     for tuplet in abjad.select.tuplets(argument):
         tuplet.force_fraction = True
@@ -5132,8 +4917,8 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     logical_ties = abjad.select.logical_ties(container)[1:3]
         ...     rmakers.force_note(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5179,8 +4964,8 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     leaves = abjad.select.get(logical_ties, [0, -1])
         ...     rmakers.force_note(leaves)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5230,7 +5015,7 @@ def force_repeat_tie(
     threshold: bool | tuple[int, int] | typing.Callable = True,
 ) -> None:
     r"""
-    Changes all ties in argument to repeat-ties.
+    Replaces ties in ``argument`` with repeat-ties.
 
     ..  container:: example
 
@@ -5244,8 +5029,8 @@ def force_repeat_tie(
         ...     rmakers.tie(notes)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         Attaches tie to last note in each nonlast tuplet:
 
@@ -5467,8 +5252,8 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     logical_ties = abjad.select.logical_ties(container)[1:3]
         ...     rmakers.force_rest(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5511,8 +5296,8 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     logical_ties = abjad.select.logical_ties(container)[-2:]
         ...     rmakers.force_rest(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5555,8 +5340,8 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     logical_ties = abjad.select.logical_ties(container)[1:-1]
         ...     rmakers.force_rest(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(7, 16), (3, 8), (7, 16), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5601,8 +5386,8 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5665,8 +5450,8 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5721,8 +5506,8 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.rewrite_rest_filled(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5915,8 +5700,8 @@ def hide_trivial(argument) -> None:
         ...     tuplets = abjad.select.tuplets(container)[-2:]
         ...     rmakers.hide_trivial(tuplets)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -5999,7 +5784,7 @@ def incised(
     talea_denominator: int | None = None,
 ) -> list[abjad.Tuplet]:
     r"""
-    Makes incised tuplets from ``durations``.
+    Makes one incised tuplet for each duration in  ``durations``.
 
     Set ``prefix_talea=[-1]`` with ``prefix_counts=[1]`` to incise a rest at the start
     of each tuplet:
@@ -6019,8 +5804,8 @@ def incised(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = 4 * [(5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -6072,8 +5857,8 @@ def incised(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = 4 * [(5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -6129,8 +5914,8 @@ def incised(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = 4 * [(5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -6182,8 +5967,8 @@ def incised(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = 4 * [(5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -6249,8 +6034,8 @@ def incised(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = 4 * [(5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -6320,8 +6105,8 @@ def incised(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = 4 * [(5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -6397,8 +6182,8 @@ def incised(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = 4 * [(5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -6952,8 +6737,8 @@ def note(
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)
         ...     rmakers.force_rest(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -6996,8 +6781,8 @@ def note(
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     rmakers.force_rest(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (5, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7042,8 +6827,8 @@ def note(
         ...     logical_ties = abjad.select.get(logical_ties, [0], 2)[1:-1]
         ...     rmakers.force_rest(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8), (2, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7088,8 +6873,8 @@ def note(
         ...     logical_ties = abjad.select.logical_ties(container, pitched=True)
         ...     rmakers.beam(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 32), (5, 32)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7136,8 +6921,8 @@ def note(
         ...     logical_ties = abjad.select.logical_ties(container)
         ...     rmakers.beam_groups(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 32), (5, 32)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7188,8 +6973,8 @@ def note(
         ...     components = abjad.sequence.flatten(nested_music)
         ...     container = abjad.Container(components)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 32), (5, 32)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7230,8 +7015,8 @@ def note(
         ...     components = abjad.sequence.flatten(nested_music)
         ...     container = abjad.Container(components)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7275,8 +7060,8 @@ def note(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in logical_ties]
         ...     rmakers.tie(leaves)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7324,8 +7109,8 @@ def note(
         ...     leaves = [abjad.select.leaf(_, -1) for _ in logical_ties]
         ...     rmakers.tie(leaves)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7369,8 +7154,8 @@ def note(
         ...     container = abjad.Container(components)
         ...     rmakers.untie(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(7, 16), (1, 4), (5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7410,8 +7195,8 @@ def note(
         ...     components = abjad.sequence.flatten(nested_music)
         ...     container = abjad.Container(components)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 14), (3, 7)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7461,8 +7246,8 @@ def note(
         ...     container = abjad.Container(components)
         ...     rmakers.force_augmentation(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 14), (3, 7)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7515,8 +7300,8 @@ def note(
         ...     logical_tie = abjad.select.logical_tie(container, 0)
         ...     rmakers.force_rest(logical_tie)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7562,8 +7347,8 @@ def note(
         ...     logical_tie = abjad.select.logical_ties(container)[:2]
         ...     rmakers.force_rest(logical_tie)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7610,8 +7395,8 @@ def note(
         ...     logical_ties = abjad.select.get(logical_ties, [0, -1])
         ...     rmakers.force_rest(logical_ties)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(5, 8), (2, 8), (2, 8), (5, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -7655,8 +7440,8 @@ def note(
         ...     voice = rmakers.wrap_in_time_signature_staff(components, time_signatures)
         ...     rmakers.rewrite_meter(voice)
         ...     components = abjad.mutate.eject_contents(voice)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 4), (6, 16), (9, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8076,7 +7861,7 @@ def on_beat_grace_container(
 
 def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
-    Attaches repeat-tie to each leaf in ``argument``.
+    Attaches repeat-ties to leaves in ``argument``.
 
     Attaches repeat-tie to first note in each nonfirst tuplet:
 
@@ -8092,8 +7877,8 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.repeat_tie(notes)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8188,8 +7973,8 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.repeat_tie(notes)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8313,7 +8098,7 @@ def rewrite_meter(
     tag: abjad.Tag | None = None,
 ) -> None:
     r"""
-    Rewrites meter of material in ``voice``.
+    Rewrites meter of components in ``voice``.
 
     Use ``rmakers.wrap_in_time_signature_staff()`` to make sure ``voice``
     appears together with time signature information in a staff.
@@ -8464,8 +8249,8 @@ def rewrite_rest_filled(
         ...     tuplets = abjad.select.tuplets(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8538,8 +8323,8 @@ def rewrite_rest_filled(
         ...     rmakers.rewrite_rest_filled(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8585,8 +8370,8 @@ def rewrite_rest_filled(
         ...     )
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 16), (4, 16), (5, 16), (5, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8633,8 +8418,8 @@ def rewrite_rest_filled(
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8704,8 +8489,8 @@ def rewrite_rest_filled(
         ...     rmakers.beam(container)
         ...     rmakers.rewrite_rest_filled(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8808,8 +8593,8 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8892,8 +8677,8 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.rewrite_sustained(container)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -8960,8 +8745,8 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.rewrite_sustained(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 16), (4, 16), (4, 16), (4, 16)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -9012,8 +8797,8 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.rewrite_sustained(tuplets[-2:])
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -9174,6 +8959,17 @@ def split_measures(voice, *, durations=None, tag: abjad.Tag | None = None) -> No
     abjad.mutate.split(voice[:], durations=durations)
 
 
+def swap_length_1(argument) -> None:
+    """
+    Swaps length-1 tuplets in ``argument`` with containers.
+    """
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if len(tuplet) == 1:
+            container = abjad.Container()
+            abjad.mutate.swap(tuplet, container)
+
+
 def swap_skip_filled(argument) -> None:
     """
     Swaps skip-filled tuplets in ``argument`` with containers.
@@ -9200,8 +8996,8 @@ def swap_trivial(argument) -> None:
         ...     tuplets = abjad.select.tuplets(container)[-2:]
         ...     rmakers.swap_trivial(tuplets)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (3, 8), (3, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -9297,8 +9093,8 @@ def talea(
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -9815,7 +9611,7 @@ def talea(
 
 def tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
-    Attaches one tie to each note in ``argument``.
+    Attaches ties to notes in ``argument``.
 
     Attaches tie to last note in each nonlast tuplet:
 
@@ -9928,8 +9724,8 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -9994,8 +9790,8 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -10059,8 +9855,8 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     rmakers.beam(container)
         ...     rmakers.extract_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -10220,9 +10016,9 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
 
 def time_signatures(pairs: list[tuple[int, int]]) -> list[abjad.TimeSignature]:
     """
-    Documentation helper.
-
     Makes time signatures from ``pairs``.
+
+    Documentation helper.
     """
     assert all(isinstance(_, tuple) for _ in pairs), repr(pairs)
     return [abjad.TimeSignature(_) for _ in pairs]
@@ -10230,7 +10026,7 @@ def time_signatures(pairs: list[tuple[int, int]]) -> list[abjad.TimeSignature]:
 
 def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> None:
     r"""
-    Replaces each note in ``argument`` with a tremolo container.
+    Replaces notes in ``argument`` with tremolo containers.
 
     Repeats figures two times each:
 
@@ -10382,7 +10178,7 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
 
 def trivialize(argument) -> None:
     r"""
-    Trivializes each tuplet in ``argument``.
+    Trivializes tuplets in ``argument``.
 
     Leaves trivializable tuplets as-is when no tuplet command is given. The tuplets
     in measures 2 and 4 can be written as trivial tuplets, but they are not:
@@ -10398,8 +10194,8 @@ def trivialize(argument) -> None:
         ...     container = abjad.Container(tuplets)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -10464,8 +10260,8 @@ def trivialize(argument) -> None:
         ...     rmakers.trivialize(container)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -10535,8 +10331,8 @@ def trivialize(argument) -> None:
         ...     rmakers.tie(leaves)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -10608,8 +10404,8 @@ def trivialize(argument) -> None:
         ...     rmakers.tie(notes)
         ...     rmakers.beam(container)
         ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
-        ...     return lilypond_file_
+        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(pairs)
@@ -12860,7 +12656,7 @@ def tuplet(
 
 def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> None:
     r"""
-    Unbeams each leaf in ``argument``.
+    Unbeams leaves in ``argument``.
 
     Adjusts adjacent start- and stop-beams when ``smart=True``.
 
@@ -13600,7 +13396,7 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
 
 def untie(argument) -> None:
     r"""
-    Deatches ties from each leaf in ``argument``.
+    Unties leaves in ``argument``.
 
     Attaches ties to nonlast notes; then detaches ties from select notes:
 
@@ -13823,8 +13619,9 @@ def wrap_in_time_signature_staff(
     components, time_signatures: list[abjad.TimeSignature]
 ) -> abjad.Voice:
     """
-    Makes staff with two voices: one voice for ``components`` and another voice
-    for ``time_signatures``.
+    Wraps ``components`` in two-voice staff.
+
+    One voice for ``components`` and another voice for ``time_signatures``.
 
     See ``rmakers.rewrite_meter()`` for examples of this function.
     """
@@ -13841,7 +13638,7 @@ def wrap_in_time_signature_staff(
 
 def written_duration(argument, duration: abjad.typings.Duration) -> None:
     """
-    Sets written duration of each leaf in ``argument`` to ``duration``.
+    Sets written duration of leaves in ``argument``.
     """
     duration_ = abjad.Duration(duration)
     leaves = abjad.select.leaves(argument)

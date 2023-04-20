@@ -1,3 +1,6 @@
+"""
+The rmakers classes.
+"""
 import dataclasses
 import typing
 
