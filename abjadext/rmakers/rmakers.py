@@ -1474,13 +1474,13 @@ def beam(
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [1, 1, 1, -1], 16)
         ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container, beam_rests=beam_rests)
+        ...     rmakers.beam(
+        ...         container, beam_rests=beam_rests, stemlet_length=stemlet_length
+        ...     )
         ...     rmakers.swap_trivial(container)
         ...     components = abjad.mutate.eject_contents(container)
         ...     lilypond_file = rmakers.example(components, time_signatures)
         ...     score = lilypond_file["Score"]
-        ...     if stemlet_length is not None:
-        ...         abjad.override(score).Stem.stemlet_length = stemlet_length
         ...     abjad.setting(score).autoBeaming = False
         ...     return lilypond_file
 
@@ -1568,8 +1568,8 @@ def beam(
 
     ..  container:: example
 
-        Set ``beam_rests=True`` and override ``Stem.stemlet-length = n`` to
-        beam rests with stemlets of length ``n``:
+        Set ``beam_rests=True`` and ``stemlet_length=n`` to beam rests with
+        stemlets of length ``n``:
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
         >>> lilypond_file = make_lilypond_file(
@@ -1585,7 +1585,6 @@ def beam(
             \context Score = "Score"
             \with
             {
-                \override Stem.stemlet-length = 0.75
                 autoBeaming = ##f
             }
             <<
@@ -1596,6 +1595,7 @@ def beam(
                 }
                 {
                     {
+                        \override Staff.Stem.stemlet-length = 0.75
                         \time 3/8
                         c'16
                         [
@@ -1605,8 +1605,10 @@ def beam(
                         c'16
                         c'16
                         ]
+                        \revert Staff.Stem.stemlet-length
                     }
                     {
+                        \override Staff.Stem.stemlet-length = 0.75
                         \time 4/8
                         c'16
                         [
@@ -1618,8 +1620,10 @@ def beam(
                         c'16
                         c'16
                         ]
+                        \revert Staff.Stem.stemlet-length
                     }
                     {
+                        \override Staff.Stem.stemlet-length = 0.75
                         \time 3/8
                         c'16
                         [
@@ -1629,8 +1633,10 @@ def beam(
                         c'16
                         r16
                         ]
+                        \revert Staff.Stem.stemlet-length
                     }
                     {
+                        \override Staff.Stem.stemlet-length = 0.75
                         \time 4/8
                         c'16
                         [
@@ -1642,6 +1648,7 @@ def beam(
                         c'16
                         r16
                         ]
+                        \revert Staff.Stem.stemlet-length
                     }
                 }
             >>
