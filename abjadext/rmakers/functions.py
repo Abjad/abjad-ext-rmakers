@@ -3456,12 +3456,12 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[1:]
+        ...     voice = abjad.Voice(tuplets)
+        ...     tuplets = abjad.select.tuplets(voice)[1:]
         ...     notes = [abjad.select.note(_, 0) for _ in tuplets]
         ...     rmakers.repeat_tie(notes)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
+        ...     rmakers.beam(voice)
+        ...     components = abjad.mutate.eject_contents(voice)
         ...     lilypond_file = rmakers.example(components, time_signatures)
         ...     return lilypond_file
 
@@ -3550,12 +3550,12 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
+        ...     voice = abjad.Voice(tuplets)
+        ...     tuplets = abjad.select.tuplets(voice)
         ...     notes = [abjad.select.notes(_)[1:] for _ in tuplets]
         ...     rmakers.repeat_tie(notes)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
+        ...     rmakers.beam(voice)
+        ...     components = abjad.mutate.eject_contents(voice)
         ...     lilypond_file = rmakers.example(components, time_signatures)
         ...     return lilypond_file
 
@@ -6397,14 +6397,14 @@ def untie(argument) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     notes = abjad.select.notes(container)[1:]
+        ...     voice = abjad.Voice(tuplets)
+        ...     notes = abjad.select.notes(voice)[1:]
         ...     rmakers.repeat_tie(notes)
-        ...     notes = abjad.select.notes(container)
+        ...     notes = abjad.select.notes(voice)
         ...     notes = abjad.select.get(notes, [0], 4)
         ...     rmakers.untie(notes)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
+        ...     rmakers.beam(voice)
+        ...     components = abjad.mutate.eject_contents(voice)
         ...     lilypond_file = rmakers.example(components, time_signatures)
         ...     return lilypond_file
 
