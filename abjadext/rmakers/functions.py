@@ -2945,6 +2945,16 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
             abjad.detach(abjad.RepeatTie, next_leaf)
 
 
+def hide_skip_filled(argument) -> None:
+    """
+    Hides skip-filled tuplets in ``argument``.
+    """
+    tuplets = abjad.select.tuplets(argument)
+    for tuplet in tuplets:
+        if all(isinstance(_, abjad.Skip) for _ in tuplet):
+            tuplet.hide = True
+
+
 def hide_trivial(argument) -> None:
     r"""
     Hides trivial tuplets in ``argument``.
