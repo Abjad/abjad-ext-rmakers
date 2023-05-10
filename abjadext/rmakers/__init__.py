@@ -5,6 +5,7 @@ from ._version import __version__, __version_info__
 from .classes import Incise, Interpolation, Spelling, Talea
 from .functions import (
     after_grace_container,
+    attach_time_signatures,
     beam,
     beam_groups,
     before_grace_container,
@@ -64,6 +65,7 @@ __all__ = [
     "Talea",
     "accelerando",
     "after_grace_container",
+    "attach_time_signatures",
     "beam",
     "beam_groups",
     "before_grace_container",

@@ -21,11 +21,10 @@ Examples that show how to work with rmakers in a statal way.
         ...         previous_state=previous_state,
         ...         state=state,
         ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.duration_bracket(container)
-        ...     rmakers.feather_beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file_ = rmakers.example(components, time_signatures)
+        ...     lilypond_file_ = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file_["Voice"]
+        ...     rmakers.duration_bracket(voice)
+        ...     rmakers.feather_beam(voice)
         ...     return lilypond_file_, state
 
         >>> pairs = [(3, 8), (4, 8), (3, 8)]
@@ -258,11 +257,10 @@ Examples that show how to work with rmakers in a statal way.
     ...         durations, [16, 8, 4], extra_counts=[0, 1],
     ...         previous_state=previous_state, state=state
     ...     )
-    ...     container = abjad.Container(tuplets)
-    ...     rmakers.beam(container)
-    ...     rmakers.extract_trivial(container)
-    ...     components = abjad.mutate.eject_contents(container)
-    ...     lilypond_file_ = rmakers.example(components, time_signatures)
+    ...     lilypond_file_ = rmakers.example(tuplets, time_signatures)
+    ...     voice = lilypond_file_["Voice"]
+    ...     rmakers.beam(voice)
+    ...     rmakers.extract_trivial(voice)
     ...     return lilypond_file_, state
 
     >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
