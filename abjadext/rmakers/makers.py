@@ -793,7 +793,7 @@ def accelerando(
                 \override TupletBracket.bracket-visibility = ##t
                 \override TupletBracket.padding = 2
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -862,7 +862,7 @@ def accelerando(
                         \revert TupletNumber.text
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -884,7 +884,7 @@ def accelerando(
                 \override TupletBracket.bracket-visibility = ##t
                 \override TupletBracket.padding = 2
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -957,7 +957,7 @@ def accelerando(
                         \revert TupletNumber.text
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -979,7 +979,7 @@ def accelerando(
                 \override TupletBracket.bracket-visibility = ##t
                 \override TupletBracket.padding = 2
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1050,7 +1050,7 @@ def accelerando(
                         \revert TupletNumber.text
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -1072,7 +1072,7 @@ def accelerando(
                 \override TupletBracket.bracket-visibility = ##t
                 \override TupletBracket.padding = 2
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1118,7 +1118,7 @@ def accelerando(
                         }
                     }
                 }
-            >>
+            }
 
     """
     _assert_are_pairs_durations_or_time_signatures(durations)
@@ -1196,7 +1196,7 @@ def even_division(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1230,7 +1230,7 @@ def even_division(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -1260,7 +1260,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1298,7 +1298,7 @@ def even_division(
                             ]
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1324,7 +1324,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1352,7 +1352,7 @@ def even_division(
                             ]
                         }
                     }
-                >>
+                }
 
             (Fills tuplets less than twice the duration of an eighth note with a single
             attack.)
@@ -1381,7 +1381,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1400,7 +1400,7 @@ def even_division(
                             c'4
                         }
                     }
-                >>
+                }
 
             (Fills tuplets less than twice the duration of a quarter note with a single
             attack.)
@@ -1429,7 +1429,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1446,7 +1446,7 @@ def even_division(
                             c'2.
                         }
                     }
-                >>
+                }
 
             (Fills tuplets less than twice the duration of a half note with a single
             attack.)
@@ -1481,7 +1481,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1562,7 +1562,7 @@ def even_division(
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1589,7 +1589,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1670,7 +1670,7 @@ def even_division(
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1697,7 +1697,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1778,7 +1778,7 @@ def even_division(
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1805,7 +1805,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1886,7 +1886,7 @@ def even_division(
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1913,7 +1913,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1994,7 +1994,7 @@ def even_division(
                             }
                         }
                     }
-                >>
+                }
 
     ..  container:: example
 
@@ -2026,7 +2026,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -2094,7 +2094,7 @@ def even_division(
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -2152,7 +2152,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -2341,7 +2341,7 @@ def even_division(
                             }
                         }
                     }
-                >>
+                }
 
             This modular formula ensures that rhythm-maker ``denominators`` are always
             respected: a very large number of extra counts never causes a
@@ -2401,7 +2401,7 @@ def even_division(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -2510,7 +2510,7 @@ def even_division(
                             }
                         }
                     }
-                >>
+                }
 
             This modular formula ensures that rhythm-maker ``denominators`` are
             always respected: a very small number of extra counts never causes
@@ -2638,7 +2638,7 @@ def incised(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2658,7 +2658,7 @@ def incised(
                         c'4
                     }
                 }
-            >>
+            }
 
     Set ``prefix_talea=[-1]`` with ``prefix_counts=[2]`` to incise 2 rests at the start
     of each tuplet:
@@ -2690,7 +2690,7 @@ def incised(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2714,7 +2714,7 @@ def incised(
                         c'8.
                     }
                 }
-            >>
+            }
 
     Set ``prefix_talea=[1]`` with ``prefix_counts=[1]`` to incise 1 note at the start
     of each tuplet:
@@ -2746,7 +2746,7 @@ def incised(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2766,7 +2766,7 @@ def incised(
                         c'4
                     }
                 }
-            >>
+            }
 
     Set ``prefix_talea=[1]`` with ``prefix_counts=[2]`` to incise 2 notes at the start
     of each tuplet:
@@ -2798,7 +2798,7 @@ def incised(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2830,7 +2830,7 @@ def incised(
                         ]
                     }
                 }
-            >>
+            }
 
     Incise rests at the beginning and end of each tuplet like this:
 
@@ -2864,7 +2864,7 @@ def incised(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2904,7 +2904,7 @@ def incised(
                         }
                     }
                 }
-            >>
+            }
 
     Set ``body_ratio=(1, 1)`` to divide the middle part of each tuplet ``1:1``:
 
@@ -2934,7 +2934,7 @@ def incised(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2978,7 +2978,7 @@ def incised(
                         ]
                     }
                 }
-            >>
+            }
 
     Set ``body_ratio=(1, 1, 1)`` to divide the middle part of each tuplet ``1:1:1``:
 
@@ -3010,7 +3010,7 @@ def incised(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3114,7 +3114,7 @@ def incised(
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -3204,7 +3204,7 @@ def multiplied_duration(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3224,7 +3224,7 @@ def multiplied_duration(
                         c'1 * 1/3
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3242,7 +3242,7 @@ def multiplied_duration(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3262,7 +3262,7 @@ def multiplied_duration(
                         c'1 * 1/3
                     }
                 }
-            >>
+            }
 
         Makes multiplied-duration half notes when ``duration=(1, 2)``:
 
@@ -3278,7 +3278,7 @@ def multiplied_duration(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3298,7 +3298,7 @@ def multiplied_duration(
                         c'2 * 2/3
                     }
                 }
-            >>
+            }
 
         Makes multiplied-duration quarter notes when ``duration=(1, 4)``:
 
@@ -3314,7 +3314,7 @@ def multiplied_duration(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3334,7 +3334,7 @@ def multiplied_duration(
                         c'4 * 4/3
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3352,7 +3352,7 @@ def multiplied_duration(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3372,7 +3372,7 @@ def multiplied_duration(
                         c'1 * 1/3
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3390,7 +3390,7 @@ def multiplied_duration(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3410,7 +3410,7 @@ def multiplied_duration(
                         r1 * 1/3
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3429,7 +3429,7 @@ def multiplied_duration(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3449,7 +3449,7 @@ def multiplied_duration(
                         R1 * 1/3
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3467,7 +3467,7 @@ def multiplied_duration(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3487,7 +3487,7 @@ def multiplied_duration(
                         s1 * 1/3
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -3545,7 +3545,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3564,7 +3564,7 @@ def note(
                         c'4.
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3592,7 +3592,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3612,7 +3612,7 @@ def note(
                         r8
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3641,7 +3641,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3662,7 +3662,7 @@ def note(
                         c'4
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3689,7 +3689,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3711,7 +3711,7 @@ def note(
                         ]
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3738,7 +3738,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3766,7 +3766,7 @@ def note(
                         ]
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3792,7 +3792,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3810,7 +3810,7 @@ def note(
                         c'32
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3836,7 +3836,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3855,7 +3855,7 @@ def note(
                         c'4.
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3884,7 +3884,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3906,7 +3906,7 @@ def note(
                         c'4.
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3936,7 +3936,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3957,7 +3957,7 @@ def note(
                         c'4.
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3984,7 +3984,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4002,7 +4002,7 @@ def note(
                         c'16
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4028,7 +4028,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4055,7 +4055,7 @@ def note(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4082,7 +4082,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4111,7 +4111,7 @@ def note(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4139,7 +4139,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4160,7 +4160,7 @@ def note(
                         c'8
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4188,7 +4188,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4209,7 +4209,7 @@ def note(
                         c'8
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4238,7 +4238,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4258,7 +4258,7 @@ def note(
                         r8
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4285,7 +4285,7 @@ def note(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4304,7 +4304,7 @@ def note(
                         c'8.
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -4369,7 +4369,7 @@ def talea(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4404,7 +4404,7 @@ def talea(
                         ]
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4440,7 +4440,7 @@ def talea(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -4485,7 +4485,7 @@ def talea(
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -4502,7 +4502,7 @@ def talea(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -4553,7 +4553,7 @@ def talea(
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -4570,7 +4570,7 @@ def talea(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -4618,7 +4618,7 @@ def talea(
                             }
                         }
                     }
-                >>
+                }
 
     ..  container:: example
 
@@ -4658,7 +4658,7 @@ def talea(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -4691,7 +4691,7 @@ def talea(
                             r8
                         }
                     }
-                >>
+                }
 
         .. container:: example
 
@@ -4720,7 +4720,7 @@ def talea(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -4743,7 +4743,7 @@ def talea(
                             c'2
                         }
                     }
-                >>
+                }
 
     ..  container:: example
 
@@ -4773,7 +4773,7 @@ def talea(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -4802,7 +4802,7 @@ def talea(
                             ]
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -4828,7 +4828,7 @@ def talea(
                 >>> string = abjad.lilypond(score)
                 >>> print(string)
                 \context Score = "Score"
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -4847,7 +4847,7 @@ def talea(
                             ]
                         }
                     }
-                >>
+                }
 
     """
     tag = tag or abjad.Tag()
@@ -4928,7 +4928,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4969,7 +4969,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4994,7 +4994,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5034,7 +5034,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5059,7 +5059,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5114,7 +5114,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5139,7 +5139,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5194,7 +5194,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5218,7 +5218,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5298,7 +5298,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5323,7 +5323,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5357,7 +5357,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5385,7 +5385,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5421,7 +5421,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5450,7 +5450,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5493,7 +5493,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5520,7 +5520,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5548,7 +5548,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5574,7 +5574,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5609,7 +5609,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5635,7 +5635,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5673,7 +5673,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5700,7 +5700,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5734,7 +5734,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5760,7 +5760,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5798,7 +5798,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5825,7 +5825,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5863,7 +5863,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5889,7 +5889,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5926,7 +5926,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -5954,7 +5954,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5991,7 +5991,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
         REGRESSION: Ignores ``trivialize`` and respects ``rewrite_dots`` when both are
         true. Measures 2 and 4 are first rewritten as trivial but then supplied again
@@ -6019,7 +6019,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6056,7 +6056,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6084,7 +6084,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6130,7 +6130,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6160,7 +6160,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6198,7 +6198,7 @@ def tuplet(
                         ]
                     }
                 }
-            >>
+            }
 
         .. note:: Flattening trivial tuplets makes it possible
             subsequently to rewrite the meter of the untupletted notes.
@@ -6229,7 +6229,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6271,7 +6271,7 @@ def tuplet(
                         ]
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6301,7 +6301,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6328,7 +6328,7 @@ def tuplet(
                         r2
                     }
                 }
-            >>
+            }
 
 
     ..  container:: example
@@ -6357,7 +6357,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6395,7 +6395,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6424,7 +6424,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6462,7 +6462,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6490,7 +6490,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6528,7 +6528,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6556,7 +6556,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6594,7 +6594,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6623,7 +6623,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6661,7 +6661,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6689,7 +6689,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6727,7 +6727,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6755,7 +6755,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6793,7 +6793,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6817,7 +6817,7 @@ def tuplet(
             >>> string = abjad.lilypond(score, tags=True)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6912,7 +6912,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6937,7 +6937,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6978,7 +6978,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -7003,7 +7003,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -7043,7 +7043,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -7068,7 +7068,7 @@ def tuplet(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -7106,7 +7106,7 @@ def tuplet(
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()

@@ -303,7 +303,7 @@ def after_grace_container(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -344,7 +344,7 @@ def after_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -366,7 +366,7 @@ def after_grace_container(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -410,7 +410,7 @@ def after_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
         When ``slash=True`` then ``beam`` must also be true.
 
@@ -504,7 +504,7 @@ def beam(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -569,7 +569,7 @@ def beam(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -592,7 +592,7 @@ def beam(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -659,7 +659,7 @@ def beam(
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -709,7 +709,7 @@ def beam_groups(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -818,7 +818,7 @@ def beam_groups(
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -883,7 +883,7 @@ def before_grace_container(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -916,7 +916,7 @@ def before_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -952,7 +952,7 @@ def before_grace_container(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -985,7 +985,7 @@ def before_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -1019,7 +1019,7 @@ def before_grace_container(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1056,7 +1056,7 @@ def before_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -1090,7 +1090,7 @@ def before_grace_container(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1127,7 +1127,7 @@ def before_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -1161,7 +1161,7 @@ def before_grace_container(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1200,7 +1200,7 @@ def before_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
         (When ``slash=True`` then ``beam`` must also be true.)
 
@@ -1238,7 +1238,7 @@ def before_grace_container(
             {
                 autoBeaming = ##f
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1277,7 +1277,7 @@ def before_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
         (When ``slash=True`` then ``beam`` must also be true.)
 
@@ -1373,7 +1373,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                 \override TupletBracket.staff-padding = 4.5
                 tupletFullLength = ##t
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1414,7 +1414,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -1444,7 +1444,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                     \override TupletBracket.staff-padding = 4.5
                     tupletFullLength = ##t
                 }
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1485,7 +1485,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1509,7 +1509,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                     \override TupletBracket.staff-padding = 4.5
                     tupletFullLength = ##t
                 }
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1550,7 +1550,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1573,7 +1573,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                     \override TupletBracket.staff-padding = 4.5
                     tupletFullLength = ##t
                 }
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1614,7 +1614,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                             }
                         }
                     }
-                >>
+                }
 
     ..  container:: example
 
@@ -1641,7 +1641,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                     \override TupletBracket.staff-padding = 4.5
                     tupletFullLength = ##t
                 }
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1682,7 +1682,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1704,7 +1704,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                     \override TupletBracket.staff-padding = 4.5
                     tupletFullLength = ##t
                 }
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1745,7 +1745,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                             }
                         }
                     }
-                >>
+                }
 
         ..  container:: example
 
@@ -1767,7 +1767,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                     \override TupletBracket.staff-padding = 4.5
                     tupletFullLength = ##t
                 }
-                <<
+                {
                     \context RhythmicStaff = "Staff"
                     \with
                     {
@@ -1808,7 +1808,7 @@ def denominator(argument, denominator: int | abjad.typings.Duration) -> None:
                             }
                         }
                     }
-                >>
+                }
 
     """
     if isinstance(denominator, tuple):
@@ -1908,7 +1908,7 @@ def extract_trivial(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -1948,7 +1948,7 @@ def extract_trivial(argument) -> None:
                         ]
                     }
                 }
-            >>
+            }
 
     """
     tuplets = abjad.select.tuplets(argument)
@@ -2028,7 +2028,7 @@ def force_augmentation(argument) -> None:
                 \override TupletBracket.staff-padding = 4.5
                 tupletFullLength = ##t
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2067,7 +2067,7 @@ def force_augmentation(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -2089,7 +2089,7 @@ def force_augmentation(argument) -> None:
                 \override TupletBracket.staff-padding = 4.5
                 tupletFullLength = ##t
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2128,7 +2128,7 @@ def force_augmentation(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     """
     for tuplet in abjad.select.tuplets(argument):
@@ -2179,7 +2179,7 @@ def force_diminution(argument) -> None:
                 \override TupletBracket.staff-padding = 4.5
                 tupletFullLength = ##t
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2225,7 +2225,7 @@ def force_diminution(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -2247,7 +2247,7 @@ def force_diminution(argument) -> None:
                 \override TupletBracket.staff-padding = 4.5
                 tupletFullLength = ##t
             }
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2293,7 +2293,7 @@ def force_diminution(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     """
     for tuplet in abjad.select.tuplets(argument):
@@ -2340,7 +2340,7 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2359,7 +2359,7 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
                         r4.
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -2390,7 +2390,7 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2409,7 +2409,7 @@ def force_note(argument, *, tag: abjad.Tag | None = None) -> None:
                         c'4.
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -2461,7 +2461,7 @@ def force_repeat_tie(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2508,7 +2508,7 @@ def force_repeat_tie(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -2523,7 +2523,7 @@ def force_repeat_tie(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2570,7 +2570,7 @@ def force_repeat_tie(
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -2646,7 +2646,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2681,7 +2681,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
                         r8
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -2713,7 +2713,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2741,7 +2741,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
                         c'8
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -2771,7 +2771,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2795,7 +2795,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
                         r2
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -2825,7 +2825,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2860,7 +2860,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
                         r8
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -2889,7 +2889,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -2923,7 +2923,7 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
                         ]
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -2981,7 +2981,7 @@ def hide_trivial(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3027,7 +3027,7 @@ def hide_trivial(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     """
     tuplets = abjad.select.tuplets(argument)
@@ -3134,7 +3134,7 @@ def on_beat_grace_container(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3229,7 +3229,7 @@ def on_beat_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3264,7 +3264,7 @@ def on_beat_grace_container(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3414,7 +3414,7 @@ def on_beat_grace_container(
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -3483,7 +3483,7 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3548,7 +3548,7 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -3577,7 +3577,7 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3649,7 +3649,7 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -3719,7 +3719,7 @@ def rewrite_meter(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3765,7 +3765,7 @@ def rewrite_meter(
                         c'4
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -3852,7 +3852,7 @@ def rewrite_rest_filled(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3901,7 +3901,7 @@ def rewrite_rest_filled(
                         }
                     }
                 }
-            >>
+            }
 
         Rewrites rest-filled tuplets:
 
@@ -3927,7 +3927,7 @@ def rewrite_rest_filled(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3946,7 +3946,7 @@ def rewrite_rest_filled(
                         r16
                     }
                 }
-            >>
+            }
 
         With spelling specifier:
 
@@ -3975,7 +3975,7 @@ def rewrite_rest_filled(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -3994,7 +3994,7 @@ def rewrite_rest_filled(
                         r4
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4023,7 +4023,7 @@ def rewrite_rest_filled(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4070,7 +4070,7 @@ def rewrite_rest_filled(
                         }
                     }
                 }
-            >>
+            }
 
         Rewrites rest-filled tuplets:
 
@@ -4097,7 +4097,7 @@ def rewrite_rest_filled(
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4142,7 +4142,7 @@ def rewrite_rest_filled(
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -4204,7 +4204,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4239,7 +4239,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                         }
                     }
                 }
-            >>
+            }
 
         The first three tuplets in the example above qualify as sustained:
 
@@ -4288,7 +4288,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4322,7 +4322,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4356,7 +4356,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4378,7 +4378,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4406,7 +4406,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4448,7 +4448,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4478,7 +4478,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4503,7 +4503,7 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
                         c'2
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -4605,7 +4605,7 @@ def swap_trivial(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4649,7 +4649,7 @@ def swap_trivial(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     """
     tuplets = abjad.select.tuplets(argument)
@@ -4689,7 +4689,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4754,7 +4754,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4783,7 +4783,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4821,7 +4821,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         ]
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4850,7 +4850,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4887,7 +4887,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         ]
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -4917,7 +4917,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -4951,7 +4951,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         ]
                     }
                 }
-            >>
+            }
 
 
     ..  container:: example
@@ -4980,7 +4980,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5052,7 +5052,7 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -5105,7 +5105,7 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5145,7 +5145,7 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
                         }
                     }
                 }
-            >>
+            }
 
         Repeats figures four times each:
 
@@ -5174,7 +5174,7 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5214,7 +5214,7 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
                         }
                     }
                 }
-            >>
+            }
 
     """
     tag = tag or abjad.Tag()
@@ -5258,7 +5258,7 @@ def trivialize(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5299,7 +5299,7 @@ def trivialize(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
         Rewrites trivializable tuplets as trivial (1:1) tuplets when ``trivialize`` is
         true:
@@ -5326,7 +5326,7 @@ def trivialize(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5369,7 +5369,7 @@ def trivialize(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
         REGRESSION #907a. Rewrites trivializable tuplets even when tuplets contain
         multiple ties:
@@ -5398,7 +5398,7 @@ def trivialize(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5444,7 +5444,7 @@ def trivialize(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
         REGRESSION #907b. Rewrites trivializable tuplets even when tuplets contain very
         long ties:
@@ -5473,7 +5473,7 @@ def trivialize(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -5523,7 +5523,7 @@ def trivialize(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     """
     for tuplet in abjad.select.tuplets(argument):
@@ -6354,7 +6354,7 @@ def untie(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6426,7 +6426,7 @@ def untie(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -6457,7 +6457,7 @@ def untie(argument) -> None:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -6530,7 +6530,7 @@ def untie(argument) -> None:
                         }
                     }
                 }
-            >>
+            }
 
     """
     for leaf in abjad.select.leaves(argument):

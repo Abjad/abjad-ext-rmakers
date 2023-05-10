@@ -160,7 +160,7 @@ class Spelling:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -187,7 +187,7 @@ class Spelling:
                         c'4
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -218,7 +218,7 @@ class Spelling:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -245,7 +245,7 @@ class Spelling:
                         c'4
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -278,7 +278,7 @@ class Spelling:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -310,7 +310,7 @@ class Spelling:
                         r4
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -343,7 +343,7 @@ class Spelling:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -373,7 +373,7 @@ class Spelling:
                         r8
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -405,7 +405,7 @@ class Spelling:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -435,7 +435,7 @@ class Spelling:
                         c'16
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -467,7 +467,7 @@ class Spelling:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -497,7 +497,7 @@ class Spelling:
                         c'4
                     }
                 }
-            >>
+            }
 
     ..  container:: example
 
@@ -528,7 +528,7 @@ class Spelling:
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -564,7 +564,7 @@ class Spelling:
                         ]
                     }
                 }
-            >>
+            }
 
         Rewrites forbidden durations with smaller durations tied together.
 

@@ -25,7 +25,7 @@ def test_tags_01():
     assert string == abjad.string.normalize(
         r"""
         \context Score = "Score"
-        <<
+        {
             \context RhythmicStaff = "Staff"
             \with
             {
@@ -178,7 +178,7 @@ def test_tags_01():
                     \revert TupletNumber.text
                 }
             }
-        >>
+        }
         """
     )
 
@@ -217,7 +217,7 @@ def test_tags_02():
     assert string == abjad.string.normalize(
         r"""
         \context Score = "Score"
-        <<
+        {
             \context RhythmicStaff = "Staff"
             \with
             {
@@ -286,7 +286,7 @@ def test_tags_02():
                     }
                 }
             }
-        >>
+        }
         """
     )
 
@@ -315,7 +315,7 @@ def test_tags_03():
     assert string == abjad.string.normalize(
         r"""
         \context Score = "Score"
-        <<
+        {
             \context RhythmicStaff = "Staff"
             \with
             {
@@ -430,6 +430,6 @@ def test_tags_03():
                     }
                 }
             }
-        >>
+        }
         """
     )

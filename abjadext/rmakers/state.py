@@ -37,7 +37,7 @@ Examples that show how to work with rmakers in a statal way.
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -92,7 +92,7 @@ Examples that show how to work with rmakers in a statal way.
                         \revert TupletNumber.text
                     }
                 }
-            >>
+            }
 
         >>> state
         {'durations_consumed': 3, 'logical_ties_produced': 17}
@@ -109,7 +109,7 @@ Examples that show how to work with rmakers in a statal way.
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -166,7 +166,7 @@ Examples that show how to work with rmakers in a statal way.
                         \revert TupletNumber.text
                     }
                 }
-            >>
+            }
 
         >>> state
         {'durations_consumed': 6, 'logical_ties_produced': 36}
@@ -183,7 +183,7 @@ Examples that show how to work with rmakers in a statal way.
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -238,7 +238,7 @@ Examples that show how to work with rmakers in a statal way.
                         \revert TupletNumber.text
                     }
                 }
-            >>
+            }
 
         >>> state
         {'durations_consumed': 9, 'logical_ties_produced': 53}
@@ -273,7 +273,7 @@ Examples that show how to work with rmakers in a statal way.
         >>> string = abjad.lilypond(score)
         >>> print(string)
         \context Score = "Score"
-        <<
+        {
             \context RhythmicStaff = "Staff"
             \with
             {
@@ -314,7 +314,7 @@ Examples that show how to work with rmakers in a statal way.
                     ]
                 }
             }
-        >>
+        }
 
     >>> state
     {'durations_consumed': 5, 'logical_ties_produced': 15}
@@ -331,7 +331,7 @@ Examples that show how to work with rmakers in a statal way.
         >>> string = abjad.lilypond(score)
         >>> print(string)
         \context Score = "Score"
-        <<
+        {
             \context RhythmicStaff = "Staff"
             \with
             {
@@ -369,7 +369,7 @@ Examples that show how to work with rmakers in a statal way.
                     }
                 }
             }
-        >>
+        }
 
     >>> state
     {'durations_consumed': 10, 'logical_ties_produced': 29}
@@ -409,7 +409,7 @@ Examples that show how to work with rmakers in a statal way.
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -445,7 +445,7 @@ Examples that show how to work with rmakers in a statal way.
                         c'8.
                     }
                 }
-            >>
+            }
 
         >>> for item in state.items():
         ...     item
@@ -471,7 +471,7 @@ Examples that show how to work with rmakers in a statal way.
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -509,7 +509,7 @@ Examples that show how to work with rmakers in a statal way.
                         }
                     }
                 }
-            >>
+            }
 
         >>> for item in state.items():
         ...     item
@@ -535,7 +535,7 @@ Examples that show how to work with rmakers in a statal way.
             >>> string = abjad.lilypond(score)
             >>> print(string)
             \context Score = "Score"
-            <<
+            {
                 \context RhythmicStaff = "Staff"
                 \with
                 {
@@ -576,7 +576,7 @@ Examples that show how to work with rmakers in a statal way.
                         }
                     }
                 }
-            >>
+            }
 
         >>> for item in state.items():
         ...     item
