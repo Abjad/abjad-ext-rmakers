@@ -12,12 +12,11 @@ def test_tags_01():
         durations = [abjad.Duration(_) for _ in time_signatures]
         tag = abjad.Tag("ACCELERANDO_RHYTHM_MAKER")
         tuplets = rmakers.accelerando(durations, [(1, 8), (1, 20), (1, 16)], tag=tag)
-        container = abjad.Container(tuplets)
-        rmakers.feather_beam(container, tag=tag)
-        rmakers.duration_bracket(container)
-        components = abjad.mutate.eject_contents(container)
-        lilypond_file_ = rmakers.example(components, time_signatures)
-        return lilypond_file_
+        lilypond_file = rmakers.example(tuplets, time_signatures)
+        voice = lilypond_file["Voice"]
+        rmakers.feather_beam(voice, tag=tag)
+        rmakers.duration_bracket(voice)
+        return lilypond_file
 
     pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
     lilypond_file = make_lilypond_file(pairs)
@@ -304,10 +303,9 @@ def test_tags_03():
         tuplets = rmakers.talea(
             durations, [1, 2, 3, 4], 16, extra_counts=[0, 1], tag=tag
         )
-        container = abjad.Container(tuplets)
-        rmakers.beam(container, tag=tag)
-        components = abjad.mutate.eject_contents(container)
-        lilypond_file = rmakers.example(components, time_signatures)
+        lilypond_file = rmakers.example(tuplets, time_signatures)
+        voice = lilypond_file["Voice"]
+        rmakers.beam(voice, tag=tag)
         return lilypond_file
 
     pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]

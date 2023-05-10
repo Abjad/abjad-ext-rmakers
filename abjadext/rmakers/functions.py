@@ -2751,15 +2751,14 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
         ...     tuplets = abjad.select.get(tuplets, [1], 2)
         ...     rmakers.force_rest(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.rewrite_rest_filled(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
+        ...     rmakers.rewrite_rest_filled(voice)
+        ...     rmakers.extract_trivial(voice)
+        ...     rmakers.attach_time_signatures(voice, time_signatures)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -2806,14 +2805,14 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     leaves = abjad.select.leaves(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     leaves = abjad.select.leaves(voice)
         ...     leaves = abjad.select.get(leaves, [0, -2, -1])
         ...     rmakers.force_rest(leaves)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
+        ...     rmakers.attach_time_signatures(voice, time_signatures)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -2871,14 +2870,13 @@ def force_rest(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
         ...     leaves = [abjad.select.leaf(_, 0) for _ in tuplets]
         ...     rmakers.force_rest(leaves)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
+        ...     rmakers.attach_time_signatures(voice, time_signatures)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -2966,12 +2964,11 @@ def hide_trivial(argument) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     tuplets = abjad.select.tuplets(container)[-2:]
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     rmakers.beam(voice)
+        ...     tuplets = abjad.select.tuplets(tuplets)[-2:]
         ...     rmakers.hide_trivial(tuplets)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (3, 8), (3, 8), (3, 8)]
@@ -4011,10 +4008,9 @@ def rewrite_rest_filled(
         ...     tuplets = rmakers.talea(
         ...         durations, [3, 3, -6, -6], 16, extra_counts=[1, 0]
         ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     rmakers.beam(voice)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -4084,11 +4080,11 @@ def rewrite_rest_filled(
         ...     tuplets = rmakers.talea(
         ...         durations, [3, 3, -6, -6], 16, extra_counts=[1, 0]
         ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.rewrite_rest_filled(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     rmakers.beam(voice)
+        ...     rmakers.rewrite_rest_filled(voice)
+        ...     rmakers.attach_time_signatures(voice, time_signatures)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -4392,14 +4388,12 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
         ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
         ...     rmakers.tie(notes)
         ...     rmakers.rewrite_sustained(tuplets[-2:])
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
         ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8)]
@@ -4464,16 +4458,14 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [1, 2, 3, 4], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
         ...     tuplets = abjad.select.get(tuplets, [1], 2)
         ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
         ...     rmakers.tie(notes)
         ...     rmakers.rewrite_sustained(tuplets)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -4596,12 +4588,11 @@ def swap_trivial(argument) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8])
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     tuplets = abjad.select.tuplets(container)[-2:]
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     rmakers.beam(voice)
+        ...     tuplets = abjad.select.tuplets(tuplets)[-2:]
         ...     rmakers.swap_trivial(tuplets)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (3, 8), (3, 8), (3, 8)]
@@ -4680,13 +4671,12 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     tuplets = abjad.select.tuplets(tuplets)[:-1]
         ...     notes = [abjad.select.note(_, -1) for _ in tuplets]
         ...     rmakers.tie(notes)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
         ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -4774,14 +4764,13 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [5, 3, 3, 3], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     tuplets = abjad.select.tuplets(tuplets)[:-1]
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
         ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -4842,15 +4831,13 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [5, 3, 3, 3], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     tuplets = abjad.select.get(tuplets, [0], 2)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     tuplets = abjad.select.get(tuplets[:-1], [0], 2)
         ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
         ...     rmakers.tie(leaves)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
         ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -4910,15 +4897,14 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.talea(durations, [5, -3, 3, 3], 16)
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.untie(container)
-        ...     runs = abjad.select.runs(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     rmakers.untie(voice)
+        ...     runs = abjad.select.runs(voice)
         ...     notes = [abjad.select.notes(_)[:-1] for _ in runs]
         ...     rmakers.tie(notes)
-        ...     rmakers.beam(container)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
+        ...     rmakers.extract_trivial(voice)
         ...     return lilypond_file
 
         >>> pairs = [(4, 8), (3, 8), (4, 8), (3, 8)]
@@ -4976,14 +4962,12 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
         ...     notes = [abjad.select.notes(_)[:-1] for _ in tuplets]
         ...     rmakers.untie(notes)
         ...     rmakers.tie(notes)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
         ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
@@ -5100,16 +5084,15 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [4])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
         ...     notes = [abjad.select.notes(_) for _ in tuplets]
         ...     groups = [abjad.select.get(_, [0, -1]) for _ in notes]
         ...     rmakers.tremolo_container(groups, 2)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     containers = abjad.select.components(components, abjad.TremoloContainer)
+        ...     rmakers.extract_trivial(voice)
+        ...     containers = abjad.select.components(voice, abjad.TremoloContainer)
         ...     result = [abjad.slur(_) for _ in containers]
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.attach_time_signatures(voice, time_signatures)
         ...     return lilypond_file
 
         >>> pairs = [(4, 4), (3, 4)]
@@ -5170,16 +5153,15 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [4])
-        ...     container = abjad.Container(tuplets)
-        ...     tuplets = abjad.select.tuplets(container)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
         ...     notes = [abjad.select.notes(_) for _ in tuplets]
         ...     groups = [abjad.select.get(_, [0, -1]) for _ in notes]
         ...     rmakers.tremolo_container(groups, 4)
-        ...     rmakers.extract_trivial(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     containers = abjad.select.components(components, abjad.TremoloContainer)
+        ...     rmakers.extract_trivial(voice)
+        ...     containers = abjad.select.components(voice, abjad.TremoloContainer)
         ...     result = [abjad.slur(_) for _ in containers]
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.attach_time_signatures(voice, time_signatures)
         ...     return lilypond_file
 
         >>> pairs = [(4, 4), (3, 4)]
@@ -5261,10 +5243,9 @@ def trivialize(argument) -> None:
         ...     tuplets = rmakers.talea(
         ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
         ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     rmakers.beam(voice)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -5329,11 +5310,10 @@ def trivialize(argument) -> None:
         ...     tuplets = rmakers.talea(
         ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
         ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.trivialize(container)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     rmakers.trivialize(voice)
+        ...     rmakers.beam(voice)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -5400,14 +5380,12 @@ def trivialize(argument) -> None:
         ...     tuplets = rmakers.talea(
         ...         durations, [3, 3, 6, 6], 16, extra_counts=[0, 4]
         ...     )
-        ...     container = abjad.Container(tuplets)
-        ...     rmakers.trivialize(container)
-        ...     tuplets = abjad.select.tuplets(container)[:-1]
-        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets]
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     rmakers.trivialize(voice)
+        ...     leaves = [abjad.select.leaf(_, -1) for _ in tuplets[:-1]]
         ...     rmakers.tie(leaves)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
         ...     return lilypond_file
 
         >>> pairs = [(3, 8), (4, 8), (3, 8), (4, 8)]
@@ -5562,10 +5540,11 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
 
     ..  container:: example
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[0], smart=True)
+        >>> rmakers.unbeam(voice[0], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5580,21 +5559,25 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    d'8
-                    [
-                    e'8
-                    f'8
-                    g'8
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        d'8
+                        [
+                        e'8
+                        f'8
+                        g'8
+                        a'8
+                        ]
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[1], smart=True)
+        >>> rmakers.unbeam(voice[1], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5609,21 +5592,25 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    d'8
-                    e'8
-                    [
-                    f'8
-                    g'8
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        d'8
+                        e'8
+                        [
+                        f'8
+                        g'8
+                        a'8
+                        ]
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[2], smart=True)
+        >>> rmakers.unbeam(voice[2], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5638,23 +5625,27 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    [
-                    d'8
-                    ]
-                    e'8
-                    f'8
-                    [
-                    g'8
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        [
+                        d'8
+                        ]
+                        e'8
+                        f'8
+                        [
+                        g'8
+                        a'8
+                        ]
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[3], smart=True)
+        >>> rmakers.unbeam(voice[3], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5669,23 +5660,27 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    [
-                    d'8
-                    e'8
-                    ]
-                    f'8
-                    g'8
-                    [
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        [
+                        d'8
+                        e'8
+                        ]
+                        f'8
+                        g'8
+                        [
+                        a'8
+                        ]
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[4], smart=True)
+        >>> rmakers.unbeam(voice[4], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5700,21 +5695,25 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    [
-                    d'8
-                    e'8
-                    f'8
-                    ]
-                    g'8
-                    a'8
+                    \new Voice
+                    {
+                        c'8
+                        [
+                        d'8
+                        e'8
+                        f'8
+                        ]
+                        g'8
+                        a'8
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[5], smart=True)
+        >>> rmakers.unbeam(voice[5], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5729,14 +5728,17 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    [
-                    d'8
-                    e'8
-                    f'8
-                    g'8
-                    ]
-                    a'8
+                    \new Voice
+                    {
+                        c'8
+                        [
+                        d'8
+                        e'8
+                        f'8
+                        g'8
+                        ]
+                        a'8
+                    }
                 }
             >>
 
@@ -5744,10 +5746,11 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
 
         Unbeams 2 notes:
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[:2], smart=True)
+        >>> rmakers.unbeam(voice[:2], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5762,21 +5765,25 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    d'8
-                    e'8
-                    [
-                    f'8
-                    g'8
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        d'8
+                        e'8
+                        [
+                        f'8
+                        g'8
+                        a'8
+                        ]
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[1:3], smart=True)
+        >>> rmakers.unbeam(voice[1:3], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5791,21 +5798,25 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    d'8
-                    e'8
-                    f'8
-                    [
-                    g'8
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        d'8
+                        e'8
+                        f'8
+                        [
+                        g'8
+                        a'8
+                        ]
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[2:4], smart=True)
+        >>> rmakers.unbeam(voice[2:4], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5820,23 +5831,27 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    [
-                    d'8
-                    ]
-                    e'8
-                    f'8
-                    g'8
-                    [
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        [
+                        d'8
+                        ]
+                        e'8
+                        f'8
+                        g'8
+                        [
+                        a'8
+                        ]
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[3:5], smart=True)
+        >>> rmakers.unbeam(voice[3:5], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5851,21 +5866,25 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    [
-                    d'8
-                    e'8
-                    ]
-                    f'8
-                    g'8
-                    a'8
+                    \new Voice
+                    {
+                        c'8
+                        [
+                        d'8
+                        e'8
+                        ]
+                        f'8
+                        g'8
+                        a'8
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' e' f' g' a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' e' f' g' a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[4:], smart=True)
+        >>> rmakers.unbeam(voice[4:], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5880,14 +5899,17 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    [
-                    d'8
-                    e'8
-                    f'8
-                    ]
-                    g'8
-                    a'8
+                    \new Voice
+                    {
+                        c'8
+                        [
+                        d'8
+                        e'8
+                        f'8
+                        ]
+                        g'8
+                        a'8
+                    }
                 }
             >>
 
@@ -5895,10 +5917,11 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
 
         Unbeams 1 note:
 
-        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[0], smart=True)
+        >>> rmakers.unbeam(voice[0], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5913,23 +5936,27 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    d'8
-                    e'8
-                    [
-                    f'8
-                    ]
-                    g'8
-                    [
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        d'8
+                        e'8
+                        [
+                        f'8
+                        ]
+                        g'8
+                        [
+                        a'8
+                        ]
+                    }
                 }
             >>
 
-        >>> staff = abjad.Staff("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> voice = abjad.Voice("c'8 [ d' ] e' [ f' ] g' [ a' ]")
+        >>> staff = abjad.Staff([voice])
         >>> score = abjad.Score([staff])
         >>> abjad.setting(score).autoBeaming = False
-        >>> rmakers.unbeam(staff[1], smart=True)
+        >>> rmakers.unbeam(voice[1], smart=True)
         >>> abjad.show(score) # doctest: +SKIP
 
         ..  docs::
@@ -5944,16 +5971,19 @@ def unbeam(argument, *, smart: bool = False, tag: abjad.Tag | None = None) -> No
             <<
                 \new Staff
                 {
-                    c'8
-                    d'8
-                    e'8
-                    [
-                    f'8
-                    ]
-                    g'8
-                    [
-                    a'8
-                    ]
+                    \new Voice
+                    {
+                        c'8
+                        d'8
+                        e'8
+                        [
+                        f'8
+                        ]
+                        g'8
+                        [
+                        a'8
+                        ]
+                    }
                 }
             >>
 
@@ -6304,15 +6334,14 @@ def untie(argument) -> None:
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
         ...     tuplets = rmakers.even_division(durations, [8], extra_counts=[1])
-        ...     container = abjad.Container(tuplets)
-        ...     notes = abjad.select.notes(container)[:-1]
+        ...     lilypond_file = rmakers.example(tuplets, time_signatures)
+        ...     voice = lilypond_file["Voice"]
+        ...     notes = abjad.select.notes(voice)[:-1]
         ...     rmakers.tie(notes)
-        ...     notes = abjad.select.notes(container)
+        ...     notes = abjad.select.notes(voice)
         ...     notes = abjad.select.get(notes, [0], 4)
         ...     rmakers.untie(notes)
-        ...     rmakers.beam(container)
-        ...     components = abjad.mutate.eject_contents(container)
-        ...     lilypond_file = rmakers.example(components, time_signatures)
+        ...     rmakers.beam(voice)
         ...     return lilypond_file
 
         >>> pairs = [(2, 8), (2, 8), (2, 8), (2, 8), (2, 8), (2, 8)]
