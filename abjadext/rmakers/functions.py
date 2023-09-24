@@ -265,6 +265,7 @@ def after_grace_container(
     *,
     beam: bool = False,
     slash: bool = False,
+    tag: abjad.Tag | None = None,
     talea: _classes.Talea = _classes.Talea([1], 8),
 ) -> None:
     r"""
@@ -417,6 +418,8 @@ def after_grace_container(
         Leaves lone after-graces unslashed even when ``slash=True``.
 
     """
+    tag = tag or abjad.Tag()
+    tag = tag.append(_function_name(inspect.currentframe()))
     assert all(isinstance(_, int) for _ in counts), repr(counts)
     if slash is True:
         assert beam is True, repr(beam)
@@ -430,15 +433,15 @@ def after_grace_container(
             continue
         stop = start + count
         durations = talea[start:stop]
-        notes = abjad.makers.make_leaves([0], durations)
-        container = abjad.AfterGraceContainer(notes)
+        notes = abjad.makers.make_leaves([0], durations, tag=tag)
+        container = abjad.AfterGraceContainer(notes, tag=tag)
         abjad.attach(container, leaf)
         if 1 < len(notes):
             if beam is True:
-                abjad.beam(notes)
+                abjad.beam(notes, tag=tag)
             if slash is True:
                 literal = abjad.LilyPondLiteral(r"\slash", site="before")
-                abjad.attach(literal, notes[0])
+                abjad.attach(literal, notes[0], tag=tag)
 
 
 def attach_time_signatures(
