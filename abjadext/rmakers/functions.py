@@ -467,6 +467,7 @@ def beam(
     *,
     beam_lone_notes: bool = False,
     beam_rests: bool = False,
+    do_not_unbeam: bool = False,
     stemlet_length: int | float | None = None,
     tag: abjad.Tag | None = None,
 ) -> None:
@@ -664,11 +665,126 @@ def beam(
                 }
             }
 
+    ..  container:: example
+
+        By default, ``rmakers.beam()`` unbeams input before applying new beams. All
+        beams are lost in this example because ``rmakers.beam()`` finds no tuplets
+        to beam:
+
+        >>> staff = abjad.Staff(r"c'8 [ c'8 c'8 ] c'8 [ c'8 c'8 ] c'8 c'8")
+        >>> abjad.setting(staff).autoBeaming = False
+        >>> abjad.show(staff) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(staff)
+            >>> print(string)
+            \new Staff
+            \with
+            {
+                autoBeaming = ##f
+            }
+            {
+                c'8
+                [
+                c'8
+                c'8
+                ]
+                c'8
+                [
+                c'8
+                c'8
+                ]
+                c'8
+                c'8
+            }
+
+        >>> rmakers.beam(staff)
+        >>> abjad.show(staff) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(staff)
+            >>> print(string)
+            \new Staff
+            \with
+            {
+                autoBeaming = ##f
+            }
+            {
+                c'8
+                c'8
+                c'8
+                c'8
+                c'8
+                c'8
+                c'8
+                c'8
+            }
+
+        Set ``do_not_unbeam=True`` to preserve existing beams:
+
+        >>> staff = abjad.Staff(r"c'8 [ c'8 c'8 ] c'8 [ c'8 c'8 ] c'8 c'8")
+        >>> abjad.setting(staff).autoBeaming = False
+        >>> abjad.show(staff) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(staff)
+            >>> print(string)
+            \new Staff
+            \with
+            {
+                autoBeaming = ##f
+            }
+            {
+                c'8
+                [
+                c'8
+                c'8
+                ]
+                c'8
+                [
+                c'8
+                c'8
+                ]
+                c'8
+                c'8
+            }
+
+        >>> rmakers.beam(staff, do_not_unbeam=True)
+        >>> abjad.show(staff) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> string = abjad.lilypond(staff)
+            >>> print(string)
+            \new Staff
+            \with
+            {
+                autoBeaming = ##f
+            }
+            {
+                c'8
+                [
+                c'8
+                c'8
+                ]
+                c'8
+                [
+                c'8
+                c'8
+                ]
+                c'8
+                c'8
+            }
+
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
     for item in argument:
-        unbeam(item)
+        if not do_not_unbeam:
+            unbeam(item)
         leaves = abjad.select.leaves(item)
         abjad.beam(
             leaves,
