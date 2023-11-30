@@ -4501,8 +4501,6 @@ def rewrite_sustained(argument, *, tag: abjad.Tag | None = None) -> None:
 
     ..  container:: example
 
-        With selector:
-
         >>> def make_lilypond_file(pairs):
         ...     time_signatures = rmakers.time_signatures(pairs)
         ...     durations = [abjad.Duration(_) for _ in time_signatures]
