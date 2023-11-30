@@ -2083,8 +2083,48 @@ def feather_beam(
     stemlet_length: int | float | None = None,
     tag: abjad.Tag | None = None,
 ) -> None:
-    """
+    r"""
     Feather-beams leaves in ``argument``.
+
+    ..  container:: example
+
+        >>> def make_lilypond_file():
+        ...     voice = abjad.Voice("c'16 d' r f' g'8")
+        ...     leaves = abjad.select.leaves(voice)
+        ...     rmakers.feather_beam([leaves], beam_rests=True, stemlet_length=1)
+        ...     staff = abjad.Staff([voice])
+        ...     score = abjad.Score([staff], name="Score")
+        ...     lilypond_file = abjad.LilyPondFile([score])
+        ...     return lilypond_file
+
+        >>> lilypond_file = make_lilypond_file()
+        >>> abjad.show(lilypond_file) # doctest: +SKIP
+
+        ..  docs::
+
+            >>> score = lilypond_file["Score"]
+            >>> string = abjad.lilypond(score)
+            >>> print(string)
+            \context Score = "Score"
+            <<
+                \new Staff
+                {
+                    \new Voice
+                    {
+                        \override Staff.Stem.stemlet-length = 1
+                        \once \override Beam.grow-direction = #left
+                        c'16
+                        [
+                        d'16
+                        r16
+                        f'16
+                        g'8
+                        ]
+                        \revert Staff.Stem.stemlet-length
+                    }
+                }
+            >>
+
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
