@@ -49,8 +49,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 3/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -63,8 +63,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 4/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -79,8 +79,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 3/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -121,8 +121,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 4/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -137,8 +137,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 3/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -151,8 +151,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 4/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -195,8 +195,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 3/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -209,8 +209,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 4/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -225,8 +225,8 @@ Examples that show how to work with rmakers in a statal way.
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 3/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
                             c'16 * 99/64

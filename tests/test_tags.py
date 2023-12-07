@@ -41,8 +41,8 @@ def test_tags_01():
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
                     {
-                        \once \override Beam.grow-direction = #right
                         \time 4/8
+                        \once \override Beam.grow-direction = #right
                           %! ACCELERANDO_RHYTHM_MAKER
                           %! rmakers.accelerando()
                         c'16 * 63/32
@@ -78,8 +78,8 @@ def test_tags_01():
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
                     {
-                        \once \override Beam.grow-direction = #right
                         \time 3/8
+                        \once \override Beam.grow-direction = #right
                           %! ACCELERANDO_RHYTHM_MAKER
                           %! rmakers.accelerando()
                         c'16 * 117/64
@@ -112,8 +112,8 @@ def test_tags_01():
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
                     {
-                        \once \override Beam.grow-direction = #right
                         \time 4/8
+                        \once \override Beam.grow-direction = #right
                           %! ACCELERANDO_RHYTHM_MAKER
                           %! rmakers.accelerando()
                         c'16 * 63/32
@@ -149,8 +149,8 @@ def test_tags_01():
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
                     {
-                        \once \override Beam.grow-direction = #right
                         \time 3/8
+                        \once \override Beam.grow-direction = #right
                           %! ACCELERANDO_RHYTHM_MAKER
                           %! rmakers.accelerando()
                         c'16 * 117/64

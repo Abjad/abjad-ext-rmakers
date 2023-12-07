@@ -3457,8 +3457,8 @@ def on_beat_grace_container(
                                 }
                                 \context Voice = "RhythmMaker.Music"
                                 {
-                                    \voiceTwo
                                     \time 3/4
+                                    \voiceTwo
                                     c'4
                                     ~
                                     c'16

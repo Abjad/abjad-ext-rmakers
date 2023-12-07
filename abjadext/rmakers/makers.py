@@ -805,8 +805,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 4/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 63/32
                             [
                             c'16 * 115/64
@@ -820,8 +820,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 3/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -834,8 +834,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 4/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 63/32
                             [
                             c'16 * 115/64
@@ -849,8 +849,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 3/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
                             c'16 * 99/64
@@ -896,8 +896,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 4/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -912,8 +912,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 3/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 5/8
                             [
                             c'16 * 43/64
@@ -927,8 +927,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 4/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 3/4
                             [
                             c'16 * 25/32
@@ -943,8 +943,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 3/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 5/8
                             [
                             c'16 * 43/64
@@ -991,8 +991,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 4/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 63/32
                             [
                             c'16 * 115/64
@@ -1006,8 +1006,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 3/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 5/8
                             [
                             c'16 * 43/64
@@ -1021,8 +1021,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 4/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 63/32
                             [
                             c'16 * 115/64
@@ -1036,8 +1036,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #left
                             \time 3/8
+                            \once \override Beam.grow-direction = #left
                             c'16 * 5/8
                             [
                             c'16 * 43/64
@@ -1084,8 +1084,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 ~ 8 }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 5/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 61/32
                             [
                             c'16 * 115/64
@@ -1101,8 +1101,8 @@ def accelerando(
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                         \times 1/1
                         {
-                            \once \override Beam.grow-direction = #right
                             \time 3/8
+                            \once \override Beam.grow-direction = #right
                             c'16 * 117/64
                             [
                             c'16 * 99/64
