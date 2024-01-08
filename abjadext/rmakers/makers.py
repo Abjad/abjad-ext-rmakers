@@ -1151,6 +1151,7 @@ def accelerando(
     components, tuplets = abjad.mutate.eject_contents(voice), []
     for component in components:
         assert isinstance(component, abjad.Tuplet)
+        abjad.attach("FEATHER_BEAM_CONTAINER", tuplet)
         tuplets.append(component)
     state.clear()
     state.update(new_state)
