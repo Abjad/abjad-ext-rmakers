@@ -1,6 +1,7 @@
 """
 Rhythm-makers.
 """
+
 from ._version import __version__, __version_info__
 from .classes import Incise, Interpolation, Spelling, Talea
 from .functions import (
