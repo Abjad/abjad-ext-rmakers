@@ -3614,9 +3614,9 @@ def on_beat_grace_container(
 
 def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
-    Attaches repeat-ties to leaves in ``argument``.
+    Attaches repeat-ties to pitched leaves in ``argument``.
 
-    Attaches repeat-tie to first note in each nonfirst tuplet:
+    Attaches repeat-tie to first pitched leaf in each nonfirst tuplet:
 
     ..  container:: example
 
@@ -3814,9 +3814,9 @@ def repeat_tie(argument, *, tag: abjad.Tag | None = None) -> None:
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
-    for note in abjad.select.notes(argument):
+    for leaf in abjad.select.leaves(argument, pitched=True):
         tie = abjad.RepeatTie()
-        abjad.attach(tie, note, tag=tag)
+        abjad.attach(tie, leaf, tag=tag)
 
 
 def reduce_multiplier(argument) -> None:
@@ -4819,9 +4819,9 @@ def swap_trivial(argument) -> None:
 
 def tie(argument, *, tag: abjad.Tag | None = None) -> None:
     r"""
-    Attaches ties to notes in ``argument``.
+    Attaches ties to pitched leaves in ``argument``.
 
-    Attaches tie to last note in each nonlast tuplet:
+    Attaches tie to last pitched leaf in each nonlast tuplet:
 
     ..  container:: example
 
@@ -5215,9 +5215,9 @@ def tie(argument, *, tag: abjad.Tag | None = None) -> None:
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
-    for note in abjad.select.notes(argument):
+    for leaf in abjad.select.leaves(argument, pitched=True):
         tie = abjad.Tie()
-        abjad.attach(tie, note, tag=tag)
+        abjad.attach(tie, leaf, tag=tag)
 
 
 def time_signatures(pairs: list[tuple[int, int]]) -> list[abjad.TimeSignature]:
@@ -5232,7 +5232,7 @@ def time_signatures(pairs: list[tuple[int, int]]) -> list[abjad.TimeSignature]:
 
 def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> None:
     r"""
-    Replaces notes in ``argument`` with tremolo containers.
+    Replaces pitched leaves in ``argument`` with tremolo containers.
 
     Repeats figures two times each:
 
@@ -5377,13 +5377,13 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
     """
     tag = tag or abjad.Tag()
     tag = tag.append(_function_name(inspect.currentframe()))
-    for note in abjad.select.notes(argument):
-        container_duration = note.written_duration
+    for leaf in abjad.select.leaves(argument, pitched=True):
+        container_duration = leaf.written_duration
         note_duration = container_duration / (2 * count)
         left_note = abjad.Note("c'", note_duration)
         right_note = abjad.Note("c'", note_duration)
         container = abjad.TremoloContainer(count, [left_note, right_note], tag=tag)
-        abjad.mutate.replace(note, container)
+        abjad.mutate.replace(leaf, container)
 
 
 def trivialize(argument) -> None:
