@@ -1957,8 +1957,10 @@ def duration_bracket(argument) -> None:
         if all(isinstance(_, abjad.Note) for _ in components):
             durations = [abjad.get.duration(_) for _ in components]
             strings = [_.lilypond_duration_string for _ in durations]
-            string = " ~ ".join(strings)
-            string = rf"\rhythm {{ {string} }}"
+            strings = [rf"\rhythm {{ {_} }}" for _ in strings]
+            string = " + ".join(strings)
+            if "+" in string:
+                string = f"{{ {string} }}"
         else:
             string = abjad.illustrators.components_to_score_markup_string(components)
         string = rf"\markup \scale #'(0.75 . 0.75) {string}"

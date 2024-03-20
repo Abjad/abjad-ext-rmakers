@@ -1082,7 +1082,7 @@ def accelerando(
                 {
                     \context Voice = "Voice"
                     {
-                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 ~ 8 }
+                        \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) { \rhythm { 2 } + \rhythm { 8 } }
                         \times 1/1
                         {
                             \time 5/8
