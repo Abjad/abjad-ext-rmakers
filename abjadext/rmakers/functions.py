@@ -5274,7 +5274,8 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
                 {
                     \context Voice = "Voice"
                     {
-                        \repeat tremolo 2 {
+                        \repeat tremolo 2
+                        {
                             \time 4/4
                             c'16
                             (
@@ -5283,13 +5284,15 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
                         }
                         c'4
                         c'4
-                        \repeat tremolo 2 {
+                        \repeat tremolo 2
+                        {
                             c'16
                             (
                             c'16
                             )
                         }
-                        \repeat tremolo 2 {
+                        \repeat tremolo 2
+                        {
                             \time 3/4
                             c'16
                             (
@@ -5297,7 +5300,8 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
                             )
                         }
                         c'4
-                        \repeat tremolo 2 {
+                        \repeat tremolo 2
+                        {
                             c'16
                             (
                             c'16
@@ -5343,7 +5347,8 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
                 {
                     \context Voice = "Voice"
                     {
-                        \repeat tremolo 4 {
+                        \repeat tremolo 4
+                        {
                             \time 4/4
                             c'32
                             (
@@ -5352,13 +5357,15 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
                         }
                         c'4
                         c'4
-                        \repeat tremolo 4 {
+                        \repeat tremolo 4
+                        {
                             c'32
                             (
                             c'32
                             )
                         }
-                        \repeat tremolo 4 {
+                        \repeat tremolo 4
+                        {
                             \time 3/4
                             c'32
                             (
@@ -5366,7 +5373,8 @@ def tremolo_container(argument, count: int, *, tag: abjad.Tag | None = None) -> 
                             )
                         }
                         c'4
-                        \repeat tremolo 4 {
+                        \repeat tremolo 4
+                        {
                             c'32
                             (
                             c'32
