@@ -47,7 +47,7 @@ Examples that show how to work with rmakers in a statal way.
                     \context Voice = "Voice"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #right
@@ -61,7 +61,7 @@ Examples that show how to work with rmakers in a statal way.
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #left
@@ -77,7 +77,7 @@ Examples that show how to work with rmakers in a statal way.
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #right
@@ -119,7 +119,7 @@ Examples that show how to work with rmakers in a statal way.
                     \context Voice = "Voice"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #left
@@ -135,7 +135,7 @@ Examples that show how to work with rmakers in a statal way.
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #right
@@ -149,7 +149,7 @@ Examples that show how to work with rmakers in a statal way.
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #left
@@ -193,7 +193,7 @@ Examples that show how to work with rmakers in a statal way.
                     \context Voice = "Voice"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #right
@@ -207,7 +207,7 @@ Examples that show how to work with rmakers in a statal way.
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #left
@@ -223,7 +223,7 @@ Examples that show how to work with rmakers in a statal way.
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #right
@@ -289,7 +289,7 @@ Examples that show how to work with rmakers in a statal way.
                     c'16
                     c'16
                     ]
-                    \times 2/3
+                    \tuplet 3/2
                     {
                         c'8
                         [
@@ -298,7 +298,7 @@ Examples that show how to work with rmakers in a statal way.
                         ]
                     }
                     c'4
-                    \times 4/5
+                    \tuplet 5/4
                     {
                         c'16
                         [
@@ -348,7 +348,7 @@ Examples that show how to work with rmakers in a statal way.
                     c'16
                     c'16
                     ]
-                    \times 2/3
+                    \tuplet 3/2
                     {
                         c'8
                         [
@@ -357,7 +357,7 @@ Examples that show how to work with rmakers in a statal way.
                         ]
                     }
                     c'4
-                    \times 4/5
+                    \tuplet 5/4
                     {
                         c'16
                         [
@@ -422,7 +422,7 @@ Examples that show how to work with rmakers in a statal way.
                         c'4
                         c'8
                         ~
-                        \times 8/9
+                        \tuplet 9/8
                         {
                             \time 4/8
                             c'8
@@ -431,7 +431,7 @@ Examples that show how to work with rmakers in a statal way.
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4
+                        \tuplet 4/3
                         {
                             \time 3/8
                             c'16
@@ -481,7 +481,7 @@ Examples that show how to work with rmakers in a statal way.
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7
+                        \tuplet 7/6
                         {
                             \time 3/8
                             c'16
@@ -489,7 +489,7 @@ Examples that show how to work with rmakers in a statal way.
                             c'8
                             ~
                         }
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 4/8
                             c'8
@@ -500,7 +500,7 @@ Examples that show how to work with rmakers in a statal way.
                         c'4
                         c'8
                         ~
-                        \times 8/9
+                        \tuplet 9/8
                         {
                             \time 4/8
                             c'8
@@ -545,7 +545,7 @@ Examples that show how to work with rmakers in a statal way.
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4
+                        \tuplet 4/3
                         {
                             \time 3/8
                             c'16
@@ -559,7 +559,7 @@ Examples that show how to work with rmakers in a statal way.
                         c'8.
                         ~
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/7
+                        \tuplet 7/6
                         {
                             \time 3/8
                             c'16
@@ -567,7 +567,7 @@ Examples that show how to work with rmakers in a statal way.
                             c'8
                             ~
                         }
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 4/8
                             c'8

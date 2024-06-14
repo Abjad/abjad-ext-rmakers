@@ -804,7 +804,7 @@ def accelerando(
                     \context Voice = "Voice"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #right
@@ -819,7 +819,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #right
@@ -833,7 +833,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #right
@@ -848,7 +848,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #right
@@ -895,7 +895,7 @@ def accelerando(
                     \context Voice = "Voice"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #left
@@ -911,7 +911,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #left
@@ -926,7 +926,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #left
@@ -942,7 +942,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #left
@@ -990,7 +990,7 @@ def accelerando(
                     \context Voice = "Voice"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #right
@@ -1005,7 +1005,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #left
@@ -1020,7 +1020,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             \once \override Beam.grow-direction = #right
@@ -1035,7 +1035,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #left
@@ -1083,7 +1083,7 @@ def accelerando(
                     \context Voice = "Voice"
                     {
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) { \rhythm { 2 } + \rhythm { 8 } }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 5/8
                             \once \override Beam.grow-direction = #right
@@ -1100,7 +1100,7 @@ def accelerando(
                         }
                         \revert TupletNumber.text
                         \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             \once \override Beam.grow-direction = #right
@@ -1208,7 +1208,7 @@ def even_division(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/8
+                        \tuplet 8/5
                         {
                             \time 5/16
                             c'4
@@ -1221,7 +1221,7 @@ def even_division(
                         c'8
                         ]
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4
+                        \tuplet 4/3
                         {
                             c'8
                             [
@@ -1492,7 +1492,7 @@ def even_division(
                     {
                         \context Voice = "Voice"
                         {
-                            \times 2/3
+                            \tuplet 3/2
                             {
                                 \time 4/8
                                 c'16
@@ -1511,7 +1511,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 3/5
+                            \tuplet 5/3
                             {
                                 \time 3/8
                                 c'16
@@ -1527,7 +1527,7 @@ def even_division(
                                 c'16
                                 ]
                             }
-                            \times 2/3
+                            \tuplet 3/2
                             {
                                 \time 4/8
                                 c'16
@@ -1546,7 +1546,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 3/5
+                            \tuplet 5/3
                             {
                                 \time 3/8
                                 c'16
@@ -1600,7 +1600,7 @@ def even_division(
                     {
                         \context Voice = "Voice"
                         {
-                            \times 4/6
+                            \tuplet 6/4
                             {
                                 \time 4/8
                                 c'16
@@ -1619,7 +1619,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 3/5
+                            \tuplet 5/3
                             {
                                 \time 3/8
                                 c'16
@@ -1635,7 +1635,7 @@ def even_division(
                                 c'16
                                 ]
                             }
-                            \times 4/6
+                            \tuplet 6/4
                             {
                                 \time 4/8
                                 c'16
@@ -1654,7 +1654,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 3/5
+                            \tuplet 5/3
                             {
                                 \time 3/8
                                 c'16
@@ -1708,7 +1708,7 @@ def even_division(
                     {
                         \context Voice = "Voice"
                         {
-                            \times 8/12
+                            \tuplet 12/8
                             {
                                 \time 4/8
                                 c'16
@@ -1727,7 +1727,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 3/5
+                            \tuplet 5/3
                             {
                                 \time 3/8
                                 c'16
@@ -1743,7 +1743,7 @@ def even_division(
                                 c'16
                                 ]
                             }
-                            \times 8/12
+                            \tuplet 12/8
                             {
                                 \time 4/8
                                 c'16
@@ -1762,7 +1762,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 3/5
+                            \tuplet 5/3
                             {
                                 \time 3/8
                                 c'16
@@ -1816,7 +1816,7 @@ def even_division(
                     {
                         \context Voice = "Voice"
                         {
-                            \times 16/24
+                            \tuplet 24/16
                             {
                                 \time 4/8
                                 c'16
@@ -1835,7 +1835,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 3/5
+                            \tuplet 5/3
                             {
                                 \time 3/8
                                 c'16
@@ -1851,7 +1851,7 @@ def even_division(
                                 c'16
                                 ]
                             }
-                            \times 16/24
+                            \tuplet 24/16
                             {
                                 \time 4/8
                                 c'16
@@ -1870,7 +1870,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 3/5
+                            \tuplet 5/3
                             {
                                 \time 3/8
                                 c'16
@@ -1924,7 +1924,7 @@ def even_division(
                     {
                         \context Voice = "Voice"
                         {
-                            \times 8/12
+                            \tuplet 12/8
                             {
                                 \time 4/8
                                 c'16
@@ -1943,7 +1943,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/10
+                            \tuplet 10/6
                             {
                                 \time 3/8
                                 c'16
@@ -1959,7 +1959,7 @@ def even_division(
                                 c'16
                                 ]
                             }
-                            \times 8/12
+                            \tuplet 12/8
                             {
                                 \time 4/8
                                 c'16
@@ -1978,7 +1978,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/10
+                            \tuplet 10/6
                             {
                                 \time 3/8
                                 c'16
@@ -2047,7 +2047,7 @@ def even_division(
                             c'16
                             ]
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/7
+                            \tuplet 7/6
                             {
                                 c'16
                                 [
@@ -2060,7 +2060,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/8
+                            \tuplet 8/6
                             {
                                 c'16
                                 [
@@ -2082,7 +2082,7 @@ def even_division(
                             c'16
                             ]
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/7
+                            \tuplet 7/6
                             {
                                 c'16
                                 [
@@ -2175,7 +2175,7 @@ def even_division(
                             c'16
                             ]
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/7
+                            \tuplet 7/6
                             {
                                 c'16
                                 ^ \markup {   1 becomes  1 }
@@ -2189,7 +2189,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/8
+                            \tuplet 8/6
                             {
                                 c'16
                                 ^ \markup {   2 becomes  2 }
@@ -2203,7 +2203,7 @@ def even_division(
                                 c'16
                                 ]
                             }
-                            \times 6/9
+                            \tuplet 9/6
                             {
                                 c'16
                                 ^ \markup {   3 becomes  3 }
@@ -2219,7 +2219,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/10
+                            \tuplet 10/6
                             {
                                 c'16
                                 ^ \markup {   4 becomes  4 }
@@ -2236,7 +2236,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/11
+                            \tuplet 11/6
                             {
                                 c'16
                                 ^ \markup {   5 becomes  5 }
@@ -2263,7 +2263,7 @@ def even_division(
                             c'16
                             ]
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/7
+                            \tuplet 7/6
                             {
                                 c'16
                                 ^ \markup {   7 becomes  1 }
@@ -2277,7 +2277,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/8
+                            \tuplet 8/6
                             {
                                 c'16
                                 ^ \markup {   8 becomes  2 }
@@ -2291,7 +2291,7 @@ def even_division(
                                 c'16
                                 ]
                             }
-                            \times 6/9
+                            \tuplet 9/6
                             {
                                 c'16
                                 ^ \markup {   9 becomes  3 }
@@ -2307,7 +2307,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/10
+                            \tuplet 10/6
                             {
                                 c'16
                                 ^ \markup {  10 becomes  4 }
@@ -2324,7 +2324,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/11
+                            \tuplet 11/6
                             {
                                 c'16
                                 ^ \markup {  11 becomes  5 }
@@ -2424,7 +2424,7 @@ def even_division(
                             c'16
                             ]
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/5
+                            \tuplet 5/6
                             {
                                 c'16
                                 ^ \markup {  -1 becomes -1 }
@@ -2436,7 +2436,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/4
+                            \tuplet 4/6
                             {
                                 c'16
                                 ^ \markup {  -2 becomes -2 }
@@ -2456,7 +2456,7 @@ def even_division(
                             c'16
                             ]
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/5
+                            \tuplet 5/6
                             {
                                 c'16
                                 ^ \markup {  -4 becomes -1 }
@@ -2468,7 +2468,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/4
+                            \tuplet 4/6
                             {
                                 c'16
                                 ^ \markup {  -5 becomes -2 }
@@ -2488,7 +2488,7 @@ def even_division(
                             c'16
                             ]
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/5
+                            \tuplet 5/6
                             {
                                 c'16
                                 ^ \markup {  -7 becomes -1 }
@@ -2500,7 +2500,7 @@ def even_division(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 6/4
+                            \tuplet 4/6
                             {
                                 c'16
                                 ^ \markup {  -8 becomes -2 }
@@ -2876,7 +2876,7 @@ def incised(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             \time 5/16
                             r16
@@ -2884,21 +2884,21 @@ def incised(
                             r16
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             r16
                             c'4
                             r16
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             r16
                             c'4
                             r16
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             r16
                             c'4
@@ -3022,7 +3022,7 @@ def incised(
                     \context Voice = "Voice"
                     {
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
                         {
                             \time 5/16
                             c'8
@@ -3031,37 +3031,14 @@ def incised(
                             c'32
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
                         {
                             c'8
                             ~
                             c'32
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
-                        {
-                            c'8
-                            ~
-                            c'32
-                            ]
-                        }
-                        \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
-                        {
-                            c'8
-                            [
-                            ~
-                            c'32
-                        }
-                        \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
-                        {
-                            c'8
-                            ~
-                            c'32
-                        }
-                        \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
                         {
                             c'8
                             ~
@@ -3069,7 +3046,7 @@ def incised(
                             ]
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
                         {
                             c'8
                             [
@@ -3077,14 +3054,14 @@ def incised(
                             c'32
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
                         {
                             c'8
                             ~
                             c'32
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
                         {
                             c'8
                             ~
@@ -3092,7 +3069,7 @@ def incised(
                             ]
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
                         {
                             c'8
                             [
@@ -3100,14 +3077,37 @@ def incised(
                             c'32
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
                         {
                             c'8
                             ~
                             c'32
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 32/48
+                        \tuplet 48/32
+                        {
+                            c'8
+                            ~
+                            c'32
+                            ]
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \tuplet 48/32
+                        {
+                            c'8
+                            [
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \tuplet 48/32
+                        {
+                            c'8
+                            ~
+                            c'32
+                        }
+                        \tweak edge-height #'(0.7 . 0)
+                        \tuplet 48/32
                         {
                             c'8
                             ~
@@ -4040,7 +4040,7 @@ def note(
                     \context Voice = "Voice"
                     {
                         \tweak edge-height #'(0.7 . 0)
-                        \times 8/14
+                        \tuplet 14/8
                         {
                             #(ly:expect-warning "strange time signature found")
                             \time 5/14
@@ -4049,7 +4049,7 @@ def note(
                             c'8
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 4/7
+                        \tuplet 7/4
                         {
                             #(ly:expect-warning "strange time signature found")
                             \time 3/7
@@ -4095,7 +4095,7 @@ def note(
                     {
                         \tweak text #tuplet-number::calc-fraction-text
                         \tweak edge-height #'(0.7 . 0)
-                        \times 8/7
+                        \tuplet 7/8
                         {
                             #(ly:expect-warning "strange time signature found")
                             \time 5/14
@@ -4105,7 +4105,7 @@ def note(
                         }
                         \tweak text #tuplet-number::calc-fraction-text
                         \tweak edge-height #'(0.7 . 0)
-                        \times 8/7
+                        \tuplet 7/8
                         {
                             #(ly:expect-warning "strange time signature found")
                             \time 3/7
@@ -4459,7 +4459,7 @@ def talea(
                                 c'8.
                                 ]
                             }
-                            \times 8/9
+                            \tuplet 9/8
                             {
                                 \time 4/8
                                 c'4
@@ -4476,7 +4476,7 @@ def talea(
                                 c'4
                                 c'16
                             }
-                            \times 8/9
+                            \tuplet 9/8
                             {
                                 \time 4/8
                                 c'8
@@ -4521,7 +4521,7 @@ def talea(
                                 c'8.
                                 ]
                             }
-                            \times 4/5
+                            \tuplet 5/4
                             {
                                 \time 4/8
                                 c'4
@@ -4540,7 +4540,7 @@ def talea(
                                 ]
                                 ~
                             }
-                            \times 4/5
+                            \tuplet 5/4
                             {
                                 \time 4/8
                                 c'16
@@ -4590,7 +4590,7 @@ def talea(
                                 ]
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 8/7
+                            \tuplet 7/8
                             {
                                 \time 4/8
                                 c'4
@@ -4608,7 +4608,7 @@ def talea(
                                 ~
                             }
                             \tweak text #tuplet-number::calc-fraction-text
-                            \times 8/7
+                            \tuplet 7/8
                             {
                                 \time 4/8
                                 c'16
@@ -4939,21 +4939,21 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 1/2
                             c'4.
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4.
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 5/16
                             c'8.
@@ -4962,7 +4962,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             c'8.
                             [
@@ -5006,28 +5006,28 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 1/2
                             c'4
                             r4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4
+                        \tuplet 4/3
                         {
                             \time 3/8
                             c'4.
                             c'8
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             \time 5/16
                             c'8.
                             r8.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/4
+                        \tuplet 4/5
                         {
                             c'8.
                             [
@@ -5071,7 +5071,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             \time 5/8
                             c'8.
@@ -5082,7 +5082,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             c'16.
@@ -5093,7 +5093,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 6/8
                             c'8.
@@ -5104,7 +5104,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             c'8
@@ -5151,7 +5151,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             \time 5/8
                             c'8.
@@ -5162,7 +5162,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             c'16.
@@ -5173,7 +5173,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 6/8
                             c'8.
@@ -5184,7 +5184,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 4/8
                             c'8
@@ -5230,7 +5230,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/9
+                        \tuplet 9/5
                         {
                             \set stemLeftBeamCount = 0
                             \set stemRightBeamCount = 1
@@ -5252,7 +5252,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4.
@@ -5265,7 +5265,7 @@ def tuplet(
                             c'8
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \set stemLeftBeamCount = 1
                             \set stemRightBeamCount = 1
@@ -5285,7 +5285,7 @@ def tuplet(
                             c'8
                             ]
                         }
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 4/8
                             c'4.
@@ -5334,14 +5334,14 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 1/2
                             c'4
                             c'4.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             c'16.
@@ -5349,7 +5349,7 @@ def tuplet(
                             c'16.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 5/16
                             c'8
@@ -5396,7 +5396,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 1/2
                             c'4
@@ -5404,7 +5404,7 @@ def tuplet(
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             c'16.
@@ -5413,7 +5413,7 @@ def tuplet(
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 5/16
                             c'8
@@ -5461,7 +5461,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 1/2
                             c'4
@@ -5469,7 +5469,7 @@ def tuplet(
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             c'16.
@@ -5477,7 +5477,7 @@ def tuplet(
                             c'16.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 5/16
                             c'8
@@ -5487,7 +5487,7 @@ def tuplet(
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             c'16.
                             r8.
@@ -5531,18 +5531,18 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 2/3
+                        \tuplet 3/2
                         {
                             \time 2/8
                             c'4
                             c'8
                         }
-                        \times 2/3
+                        \tuplet 3/2
                         {
                             c'4
                             c'8
                         }
-                        \times 2/3
+                        \tuplet 3/2
                         {
                             \time 4/8
                             c'2
@@ -5586,7 +5586,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3
+                        \tuplet 3/4
                         {
                             \time 2/8
                             c'8
@@ -5595,7 +5595,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3
+                        \tuplet 3/4
                         {
                             c'8
                             [
@@ -5603,7 +5603,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 4/3
+                        \tuplet 3/4
                         {
                             \time 4/8
                             c'4
@@ -5647,7 +5647,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 2/8
                             c'8
@@ -5656,7 +5656,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             c'8.
@@ -5665,7 +5665,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 7/16
                             c'8..
@@ -5712,7 +5712,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 2/8
                             c'8
@@ -5721,14 +5721,14 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4
+                        \tuplet 4/3
                         {
                             \time 3/8
                             c'4
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 7/8
+                        \tuplet 8/7
                         {
                             \time 7/16
                             c'4
@@ -5772,7 +5772,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 2/8
                             c'8
@@ -5781,7 +5781,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 3/8
                             c'8.
@@ -5790,7 +5790,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 7/16
                             c'8..
@@ -5837,7 +5837,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 2/8
                             c'8
@@ -5846,7 +5846,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2
+                        \tuplet 2/3
                         {
                             \time 3/8
                             c'8
@@ -5855,7 +5855,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 7/4
+                        \tuplet 4/7
                         {
                             \time 7/16
                             c'8
@@ -5901,25 +5901,25 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4.
                             r4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2
+                        \tuplet 2/3
                         {
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             r4
                             c'4.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2
+                        \tuplet 2/3
                         {
                             c'8
                             [
@@ -5966,25 +5966,25 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4.
                             r4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             c'4.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             r4
                             c'4.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             c'8.
                             [
@@ -6031,25 +6031,25 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4.
                             r4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2
+                        \tuplet 2/3
                         {
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             r4
                             c'4.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/2
+                        \tuplet 2/3
                         {
                             c'8
                             [
@@ -6096,7 +6096,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4
@@ -6104,7 +6104,7 @@ def tuplet(
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 2/8
                             c'8
@@ -6114,7 +6114,7 @@ def tuplet(
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4
@@ -6122,7 +6122,7 @@ def tuplet(
                             ~
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 2/8
                             c'8
@@ -6172,7 +6172,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4
@@ -6186,7 +6186,7 @@ def tuplet(
                         ]
                         ~
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4
@@ -6241,7 +6241,7 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4
@@ -6257,7 +6257,7 @@ def tuplet(
                         ]
                         ~
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4
@@ -6312,7 +6312,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 3/8
                             c'4.
@@ -6320,7 +6320,7 @@ def tuplet(
                         }
                         \time 4/8
                         r2
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 3/8
                             c'4.
@@ -6368,7 +6368,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 2/16
                             c'32
@@ -6376,20 +6376,20 @@ def tuplet(
                             c'8
                             ]
                         }
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5
+                        \tuplet 5/6
                         {
                             \time 6/16
                             c'16
                             c'4
                         }
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 8/16
                             c'8
@@ -6435,7 +6435,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 2/16
                             c'32
@@ -6443,20 +6443,20 @@ def tuplet(
                             c'8
                             ]
                         }
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5
+                        \tuplet 5/6
                         {
                             \time 6/16
                             c'16
                             c'4
                         }
-                        \times 8/10
+                        \tuplet 10/8
                         {
                             \time 8/16
                             c'8
@@ -6501,7 +6501,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 2/16
                             c'32
@@ -6509,20 +6509,20 @@ def tuplet(
                             c'8
                             ]
                         }
-                        \times 8/10
+                        \tuplet 10/8
                         {
                             \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/10
+                        \tuplet 10/12
                         {
                             \time 6/16
                             c'16
                             c'4
                         }
-                        \times 16/20
+                        \tuplet 20/16
                         {
                             \time 8/16
                             c'8
@@ -6567,7 +6567,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 8/10
+                        \tuplet 10/8
                         {
                             \time 2/16
                             c'32
@@ -6575,20 +6575,20 @@ def tuplet(
                             c'8
                             ]
                         }
-                        \times 16/20
+                        \tuplet 20/16
                         {
                             \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 24/20
+                        \tuplet 20/24
                         {
                             \time 6/16
                             c'16
                             c'4
                         }
-                        \times 32/40
+                        \tuplet 40/32
                         {
                             \time 8/16
                             c'8
@@ -6634,7 +6634,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 8/10
+                        \tuplet 10/8
                         {
                             \time 2/16
                             c'32
@@ -6642,20 +6642,20 @@ def tuplet(
                             c'8
                             ]
                         }
-                        \times 8/10
+                        \tuplet 10/8
                         {
                             \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5
+                        \tuplet 5/6
                         {
                             \time 6/16
                             c'16
                             c'4
                         }
-                        \times 8/10
+                        \tuplet 10/8
                         {
                             \time 8/16
                             c'8
@@ -6700,7 +6700,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 12/15
+                        \tuplet 15/12
                         {
                             \time 2/16
                             c'32
@@ -6708,20 +6708,20 @@ def tuplet(
                             c'8
                             ]
                         }
-                        \times 12/15
+                        \tuplet 15/12
                         {
                             \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 12/10
+                        \tuplet 10/12
                         {
                             \time 6/16
                             c'16
                             c'4
                         }
-                        \times 12/15
+                        \tuplet 15/12
                         {
                             \time 8/16
                             c'8
@@ -6766,7 +6766,7 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 2/16
                             c'32
@@ -6774,20 +6774,20 @@ def tuplet(
                             c'8
                             ]
                         }
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 4/16
                             c'16
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 6/5
+                        \tuplet 5/6
                         {
                             \time 6/16
                             c'16
                             c'4
                         }
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 8/16
                             c'8
@@ -6830,7 +6830,7 @@ def tuplet(
                     {
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
-                        \times 4/5
+                        \tuplet 5/4
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
                         {
@@ -6849,7 +6849,7 @@ def tuplet(
                         \tweak text #tuplet-number::calc-fraction-text
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
-                        \times 3/5
+                        \tuplet 5/3
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
                         {
@@ -6868,7 +6868,7 @@ def tuplet(
                         \tweak text #tuplet-number::calc-fraction-text
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
-                        \times 1/1
+                        \tuplet 1/1
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
                         {
@@ -6893,7 +6893,7 @@ def tuplet(
                         \tweak text #tuplet-number::calc-fraction-text
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
-                        \times 1/1
+                        \tuplet 1/1
                           %! TUPLET_RHYTHM_MAKER
                           %! rmakers.tuplet()
                         {
@@ -6948,21 +6948,21 @@ def tuplet(
                 {
                     \context Voice = "Voice"
                     {
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             \time 1/2
                             c'4.
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/5
+                        \tuplet 5/3
                         {
                             \time 3/8
                             c'4.
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 5/16
                             c'8.
@@ -6971,7 +6971,7 @@ def tuplet(
                             ]
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             c'8.
                             [
@@ -7015,28 +7015,28 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 1/2
                             c'4
                             r4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 3/4
+                        \tuplet 4/3
                         {
                             \time 3/8
                             c'4.
                             c'8
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/6
+                        \tuplet 6/5
                         {
                             \time 5/16
                             c'8.
                             r8.
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 5/4
+                        \tuplet 4/5
                         {
                             c'8.
                             [
@@ -7080,27 +7080,27 @@ def tuplet(
                     \context Voice = "Voice"
                     {
                         \tweak edge-height #'(0.7 . 0)
-                        \times 4/5
+                        \tuplet 5/4
                         {
                             #(ly:expect-warning "strange time signature found")
                             \time 1/5
                             c'4
                         }
                         \tweak text #tuplet-number::calc-fraction-text
-                        \times 1/1
+                        \tuplet 1/1
                         {
                             \time 1/4
                             c'4
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 2/3
+                        \tuplet 3/2
                         {
                             #(ly:expect-warning "strange time signature found")
                             \time 1/6
                             c'4
                         }
                         \tweak edge-height #'(0.7 . 0)
-                        \times 8/9
+                        \tuplet 9/8
                         {
                             #(ly:expect-warning "strange time signature found")
                             \time 7/9

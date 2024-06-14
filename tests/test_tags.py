@@ -37,7 +37,7 @@ def test_tags_01():
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
-                    \times 1/1
+                    \tuplet 1/1
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
                     {
@@ -74,7 +74,7 @@ def test_tags_01():
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
-                    \times 1/1
+                    \tuplet 1/1
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
                     {
@@ -108,7 +108,7 @@ def test_tags_01():
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 2 }
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
-                    \times 1/1
+                    \tuplet 1/1
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
                     {
@@ -145,7 +145,7 @@ def test_tags_01():
                     \override TupletNumber.text = \markup \scale #'(0.75 . 0.75) \rhythm { 4. }
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
-                    \times 1/1
+                    \tuplet 1/1
                       %! ACCELERANDO_RHYTHM_MAKER
                       %! rmakers.accelerando()
                     {
@@ -231,7 +231,7 @@ def test_tags_02():
                     \tweak text #tuplet-number::calc-fraction-text
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    \times 16/9
+                    \tuplet 9/16
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
                     {
@@ -250,7 +250,7 @@ def test_tags_02():
                     \tweak text #tuplet-number::calc-fraction-text
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    \times 8/5
+                    \tuplet 5/8
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
                     {
@@ -270,7 +270,7 @@ def test_tags_02():
                     \tweak text #tuplet-number::calc-fraction-text
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
-                    \times 12/7
+                    \tuplet 7/12
                       %! INCISED_RHYTHM_MAKER
                       %! rmakers.incised()
                     {
@@ -329,7 +329,7 @@ def test_tags_03():
                     \tweak text #tuplet-number::calc-fraction-text
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
-                    \times 1/1
+                    \tuplet 1/1
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
                     {
@@ -354,7 +354,7 @@ def test_tags_03():
                     }
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
-                    \times 8/9
+                    \tuplet 9/8
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
                     {
@@ -386,7 +386,7 @@ def test_tags_03():
                     \tweak text #tuplet-number::calc-fraction-text
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
-                    \times 1/1
+                    \tuplet 1/1
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
                     {
@@ -405,7 +405,7 @@ def test_tags_03():
                     }
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
-                    \times 8/9
+                    \tuplet 9/8
                       %! TALEA_RHYTHM_MAKER
                       %! rmakers.talea()
                     {
