@@ -66,8 +66,9 @@ reformat:
 
 release:
 	make clean
+	python -m pip install --upgrade setuptools
 	make build
-	pip install -U twine
+	python -m pip install --upgrade twine
 	twine upload dist/*.tar.gz
 
 check:
