@@ -31,9 +31,7 @@ if __name__ == "__main__":
         ],
         description=description,
         include_package_data=True,
-        install_requires=[
-            "abjad>=3.19",
-        ],
+        install_requires=["abjad>=3.20"],
         license="MIT",
         long_description=pathlib.Path("README.md").read_text(),
         keywords=", ".join(
