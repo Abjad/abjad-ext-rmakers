@@ -16,7 +16,7 @@ def read_version():
     return local_dict["__version__"]
 
 
-description = "Rhythm-makers extend Abjad with tools for rhythmic construction."
+description = "Rhythm-makers extend Abjad with tools for the construction of rhythm."
 
 if __name__ == "__main__":
     setuptools.setup(
@@ -25,8 +25,8 @@ if __name__ == "__main__":
         classifiers=[
             "Development Status :: 3 - Alpha",
             "License :: OSI Approved :: GNU General Public License (GPL)",
-            "Programming Language :: Python :: 3.10",
-            "Programming Language :: Python :: Implementation :: CPython",
+            "Programming Language :: Python :: 3.12",
+            "Programming Language :: Python :: 3.13",
             "Topic :: Artistic Software",
         ],
         description=description,
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         name=f"abjad-ext-{name}",
         packages=["abjadext"],
         platforms="Any",
-        python_requires=">=3.10",
+        python_requires=">=3.12",
         url="http://abjad.github.io",
         version=read_version(),
     )
