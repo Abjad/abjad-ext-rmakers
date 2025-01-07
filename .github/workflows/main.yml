@@ -42,8 +42,7 @@ jobs:
         python -m pip install -e .
     - name: Log versions
       run: |
-        # lilypond is installed in /home/runner/bin
-        export PATH=/home/runner/bin:${PATH}
+        export PATH=/tmp/lilypond-2.25.22/bin:/home/runner/bin:$PATH
         black --version
         flake8 --version
         isort --version
@@ -53,7 +52,6 @@ jobs:
         lilypond --version
     - name: Run checks and tests
       run: |
-        # lilypond is installed in /home/runner/bin
         export PATH=/home/runner/bin:${PATH}
         export MYPYPATH=$MYPYPATH:/tmp/abjad
         echo $MYPYPATH
