@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.12", "3.13", "3.14-dev"]
+        python-version: ["3.12", "3.13"]
 
     steps:
     - uses: actions/checkout@v2
@@ -22,7 +23,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install LilyPond
       run: |
-        lilypond_version=2.25.22
+        lilypond_version=2.25.23
         lilypond_archive=lilypond-${lilypond_version}-linux-x86_64.tar.gz
         lilypond_url=https://gitlab.com/lilypond/lilypond/-/releases/
         lilypond_url=${lilypond_url}/v${lilypond_version}/downloads/${lilypond_archive}
@@ -42,7 +43,7 @@ jobs:
         python -m pip install -e .
     - name: Log versions
       run: |
-        export PATH=/tmp/lilypond-2.25.22/bin:/home/runner/bin:$PATH
+        export PATH=/tmp/lilypond-2.25.23/bin:/home/runner/bin:$PATH
         black --version
         flake8 --version
         isort --version
