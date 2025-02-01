@@ -16,8 +16,6 @@ def read_version():
     return local_dict["__version__"]
 
 
-description = "Rhythm-makers extend Abjad with tools for the construction of rhythm."
-
 if __name__ == "__main__":
     setuptools.setup(
         author="Trevor Bača",
@@ -29,18 +27,12 @@ if __name__ == "__main__":
             "Programming Language :: Python :: 3.13",
             "Topic :: Artistic Software",
         ],
-        description=description,
+        description="rmakers extends Abjad with tools for rhythm construction.",
         include_package_data=True,
-        install_requires=["abjad>=3.20"],
+        install_requires=["abjad>=3.21"],
         license="MIT",
         long_description=pathlib.Path("README.md").read_text(),
-        keywords=", ".join(
-            [
-                "music composition",
-                "music notation",
-                "lilypond",
-            ]
-        ),
+        keywords="lilypond, music composition, music notation",
         name=f"abjad-ext-{name}",
         packages=["abjadext"],
         platforms="Any",
