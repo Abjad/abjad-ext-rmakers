@@ -71,7 +71,7 @@ jobs:
         git clone -b trevor/dev https://github.com/Abjad/abjad.git /tmp/abjad
         python -m pip install /tmp/abjad[dev]
 
-    - name: Install rmakers
+    - name: Install this package
       run: |
         # Namespace packages require -e installation;
         # remove -e after rmakers is changed back to a vanilla package
