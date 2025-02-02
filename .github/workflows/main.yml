@@ -7,6 +7,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  MYPYPATH: /tmp/abjad
+
 jobs:
   build:
 
@@ -40,7 +43,6 @@ jobs:
 
     - name: Write environment variables
       run: |
-        echo "MYPYPATH=$MYPYPATH:/tmp/abjad" >> $GITHUB_ENV
         PATH="/tmp/lilypond-${{ matrix.lilypond-version }}/bin:home/runner/bin:$PATH"
         echo "PATH=$PATH" >> $GITHUB_ENV
         echo "PYTHONUNBUFFERED=TRUE" >> $GITHUB_ENV
