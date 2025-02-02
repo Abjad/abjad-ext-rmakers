@@ -9,6 +9,7 @@ on:
 
 env:
   MYPYPATH: /tmp/abjad
+  PYTHONUNBUFFERED: TRUE
 
 jobs:
   build:
@@ -45,7 +46,6 @@ jobs:
       run: |
         PATH="/tmp/lilypond-${{ matrix.lilypond-version }}/bin:home/runner/bin:$PATH"
         echo "PATH=$PATH" >> $GITHUB_ENV
-        echo "PYTHONUNBUFFERED=TRUE" >> $GITHUB_ENV
 
     - name: Log environment variables
       run: |
