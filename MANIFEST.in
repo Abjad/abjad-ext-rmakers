@@ -1,3 +1,7 @@
-recursive-exclude abjadext *.pyc
-recursive-exclude abjadext __pycache__
-recursive-include abjadext *
+include LICENSE
+include README.md
+include conftest.py
+include mypy.ini
+include pytest.ini
+
+recursive-include abjadext/ *
