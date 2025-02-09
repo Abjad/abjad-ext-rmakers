@@ -86,7 +86,7 @@ jobs:
         pip --version
         pytest --version
 
-    - name: Run checks
+    - name: Run lints
       run: |
         make black-check
         make flake8
