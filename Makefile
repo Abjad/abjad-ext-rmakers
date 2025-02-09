@@ -43,9 +43,6 @@ release:
 	make build
 	twine upload dist/*.tar.gz
 
-lint: black-check flake8 isort-check
-
-# TODO
-# lint: black-check flake8 isort-check mypy
+lint: black-check flake8 isort-check mypy
 
 test: lint pytest
