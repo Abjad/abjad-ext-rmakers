@@ -4,8 +4,9 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
-def add_libraries(doctest_namespace):
-    print(abjad, abjad.__version__)
+def inject_abjad_into_doctest_namespace(doctest_namespace):
+    """
+    Inject Abjad and rmakers into doctest namespace.
+    """
     doctest_namespace["abjad"] = abjad
-    doctest_namespace["abjadext"] = abjadext
     doctest_namespace["rmakers"] = abjadext.rmakers
