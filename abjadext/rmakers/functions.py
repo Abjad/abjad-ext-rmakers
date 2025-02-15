@@ -3940,8 +3940,8 @@ def rewrite_meter(
     meters, preferred_meters = [], []
     for skip in time_signature_voice:
         time_signature = abjad.get.indicator(skip, abjad.TimeSignature)
-        rtc = abjad.rhythmtrees.RhythmTreeContainer(time_signature.pair)
-        meter = abjad.Meter(rtc)
+        rtc = abjad.meter.make_best_guess_rtc(time_signature.pair)
+        meter = abjad.Meter(rtc, do_not_populate=True)
         meters.append(meter)
     durations = [abjad.Duration(_) for _ in meters]
     reference_meters = reference_meters or ()
