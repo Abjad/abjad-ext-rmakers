@@ -3950,7 +3950,7 @@ def rewrite_meter(
     assert all(isinstance(_, list) for _ in lists), repr(lists)
     for meter, list_ in zip(meters, lists):
         for reference_meter in reference_meters:
-            if reference_meter == meter:
+            if reference_meter.pair == meter.pair:
                 meter = reference_meter
                 break
         preferred_meters.append(meter)
