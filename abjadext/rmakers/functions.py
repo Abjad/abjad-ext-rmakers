@@ -3959,9 +3959,8 @@ def rewrite_meter(
             if not abjad.get.parentage(leaf).count(abjad.Tuplet):
                 nontupletted_leaves.append(leaf)
         unbeam(nontupletted_leaves)
-        abjad.Meter.rewrite_meter(
+        meter.rewrite(
             list_,
-            meter,
             boundary_depth=boundary_depth,
             rewrite_tuplets=False,
         )
