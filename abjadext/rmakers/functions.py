@@ -3940,7 +3940,8 @@ def rewrite_meter(
     meters, preferred_meters = [], []
     for skip in time_signature_voice:
         time_signature = abjad.get.indicator(skip, abjad.TimeSignature)
-        meter = abjad.Meter(time_signature.pair)
+        rtc = abjad.meter.make_best_guess_rtc(time_signature.pair)
+        meter = abjad.Meter(rtc)
         meters.append(meter)
     durations = [abjad.Duration(_) for _ in meters]
     reference_meters = reference_meters or ()
@@ -3949,7 +3950,7 @@ def rewrite_meter(
     assert all(isinstance(_, list) for _ in lists), repr(lists)
     for meter, list_ in zip(meters, lists):
         for reference_meter in reference_meters:
-            if reference_meter == meter:
+            if reference_meter.pair == meter.pair:
                 meter = reference_meter
                 break
         preferred_meters.append(meter)
@@ -3958,9 +3959,8 @@ def rewrite_meter(
             if not abjad.get.parentage(leaf).count(abjad.Tuplet):
                 nontupletted_leaves.append(leaf)
         unbeam(nontupletted_leaves)
-        abjad.Meter.rewrite_meter(
+        meter.rewrite(
             list_,
-            meter,
             boundary_depth=boundary_depth,
             rewrite_tuplets=False,
         )
