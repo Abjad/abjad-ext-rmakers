@@ -31,7 +31,7 @@ isort-reformat:
 	      --thirdparty=ply --thirdparty=uqbar --trailing-comma --use-parentheses .
 
 mypy:
-	mypy .
+	mypy source
 
 pytest:
 	pytest .

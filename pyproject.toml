@@ -25,9 +25,11 @@ dependencies = [
 [project.urls]
 Homepage = "http://abjad.github.io"
 
+[tool.setuptools]
+package-dir = { "" = "source" }
+
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["abjadext"]
+where = ["source"]
 
 [tool.setuptools.package-data]
 "abjadext" = ["**/*"]
