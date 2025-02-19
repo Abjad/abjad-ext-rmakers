@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "abjad-ext-rmakers"
+name = "rmakers"
 version = "3.21"
 description = "rmakers extends Abjad with tools for rhythm construction."
 authors = [ { name = "Trevor Bača", email = "trevor.baca@gmail.com" } ]
@@ -23,13 +23,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "http://abjad.github.io"
+Homepage = "http://rmakers.github.io"
 
 [tool.setuptools]
 package-dir = { "" = "source" }
 
 [tool.setuptools.packages.find]
 where = ["source"]
-
-[tool.setuptools.package-data]
-"abjadext" = ["**/*"]
+include = ["rmakers*"]
