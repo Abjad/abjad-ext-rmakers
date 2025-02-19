@@ -1,4 +1,4 @@
-name: abjad-ext-rmakers
+name: ci
 
 on:
   push:
