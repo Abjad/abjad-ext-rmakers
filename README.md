@@ -1,4 +1,4 @@
-abjad-ext-rmakers
-=================
+rmakers
+=======
 
-Abjad's rhythm-maker extension package.
+Trevor Bača's rhythm-maker package for Abjad.
