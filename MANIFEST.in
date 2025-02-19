@@ -4,4 +4,4 @@ include conftest.py
 include mypy.ini
 include pytest.ini
 
-recursive-include abjadext/ *
+recursive-include source/rmakers *
